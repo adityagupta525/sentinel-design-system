@@ -1,0 +1,96 @@
+<!-- @dsCard group="Pages" viewport="1000x1400" name="UserBubble" subtitle="The advisor speaks in a peach bubble; Sentinel never does — and that asymmetry is the reading order" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>UserBubble — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { UserBubble, QAPair, SentinelBlock, SentinelText, MessageActions, ParseNote, Composer, Dock } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble','--color-bubble-edge','--color-ink','--text-14','--leading-19','--weight-semibold','--dur-enter','--ease','--font-ui'];
+
+function App() {
+  return (
+    <PageShell
+      name="UserBubble" group="Chat" status="shipped"
+      requires={['UserBubble','QAPair','SentinelBlock','SentinelText']}
+      summary="What the advisor said. Peach, right-aligned, capped at 280pt, with one square-ish corner where a tail would be. It is the only bubble in the thread — Sentinel does not get one, and that asymmetry is the whole reading order.">
+
+      <Block n={1} title="Specimen" sub="Inside a 343pt column, so the right alignment and the 280pt cap are both visible.">
+        <Specimen width={343}><UserBubble text="Why did Sharma's portfolio drift this quarter?" /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The 6pt corner is bottom-right — the corner nearest the advisor's thumb and the composer they just typed into. The other three are 20pt.">
+        <Anatomy width={343}
+          top="Right-aligned in the column; max width 280pt, so it never spans the thread"
+          left="Radius 20 / 20 / 6 / 20 — the tail corner is bottom-right"
+          right="10pt above and below, 12pt either side; 1px bubble-edge hairline"
+          bottom="14/19 semibold ink on --color-bubble. Semibold, because the advisor's own words anchor the exchange">
+          <UserBubble text="Why did Sharma's portfolio drift this quarter?" />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="None. One prop, one appearance — deliberately, because a bubble that could be styled would start carrying meaning, and in this system meaning is carried by words.">
+        <Grid cols={1} items={[
+          { label: 'The only form there is', node: <UserBubble text="Start a SIP for Meera" />, note: 'If you need the advisor\'s words to read differently — quieter, collapsed, historical — that is QAPair, not a variant of this.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Length is the only thing that varies, and it varies a lot. All four of these are the same component.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'Short', node: <UserBubble text="Rebalance him" />, note: 'The bubble shrinks to the text. It never stretches to a minimum width.' },
+          { label: 'Wraps at 280pt', node: <UserBubble text="Why did Sharma's portfolio drift this quarter, and what would it cost to fix it before the year ends?" />, note: 'Wraps inside the cap; the cap is what keeps a long question from reading as a paragraph of body copy.' },
+          { label: 'An amount, echoed back', node: <UserBubble text="₹1,85,000" />, note: 'Indian grouping here too — the thread is one document and a figure is formatted once (rule 4).' },
+          { label: 'One unbroken token', node: <UserBubble text="INF179K01WK5INF179K01WK5INF179K01WK5" />, note: 'No hyphen, no space, nothing to break on. Until v12 this ran straight out of the bubble\'s own background and past the cap; overflowWrap now breaks it mid-token (F-18). Prose never reaches this rule — it breaks at spaces first.' },
+          { label: 'A pasted scheme code', node: <UserBubble text="HDFC-LIQUID-DIRECT-GROWTH-INF179K01WK5" />, note: 'It wraps — the hyphens are break opportunities, so this stays inside the cap. A code with no hyphen and no space would not: there is no overflow-wrap here, and the bubble would run past 280pt.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Bubble, then parse note, then Sentinel with no bubble at all. The eye goes right, left, left — and the answer is the wide thing, which is the right emphasis.">
+        <Thread
+          dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <UserBubble text="Start a SIP for Meera at 1.8 lakh" />
+          <MessageActions role="user" />
+          <ParseNote text="understood as ₹1,80,000" />
+          <SentinelBlock><SentinelText text="That is above the ₹50,000 monthly cap in her mandate. I can set it at the cap, or flag it for an amendment." /></SentinelBlock>
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props"><Props src="../components/chat/UserBubble.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <UserBubble text="Is he over his small-cap ceiling?" />
+            <SentinelBlock><SentinelText text="Yes — 31.0% against a 25% ceiling." /></SentinelBlock>
+          </div>}
+          doCaption="One bubble, on the advisor's side. Sentinel answers on the canvas with a sparkle and a label — no bubble, no second colour."
+          dontNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <UserBubble text="Is he over his small-cap ceiling?" />
+            <div style={{ display: 'flex', width: '100%' }}>
+              <div style={{ maxWidth: 280, borderRadius: '20px 20px 20px 6px', background: 'var(--color-surface)', padding: '10px 12px', boxShadow: '0 0 0 1px var(--color-line)' }}>
+                <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>Yes — 31.0% against a 25% ceiling.</p>
+              </div>
+            </div>
+          </div>}
+          dontCaption="Never mirror the bubble for Sentinel. A second bubble makes the exchange symmetrical, and it is not: Sentinel's replies carry cards, tables and charts that a 280pt bubble cannot hold." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="One entrance, and it is the same one every card in the thread uses.">
+        <Motion rows={[
+          { name: 'Enter', property: 'ds-rise — opacity 0 → 1, translateY(8px) → 0', duration: '240 ms (--dur-enter)', reduced: 'Fade only; no rise.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

@@ -1,0 +1,118 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="MoneyComposer" subtitle="The amount input — ₹ in a fixed slot, Indian grouping as you type, and never the only input on a screen" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>MoneyComposer — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { MoneyComposer, formatINR, Composer, Dock, ChipRow, AnswerChip, SentinelBlock, SentinelText, UserBubble } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-line','--color-bronze-deep','--color-ink','--color-muted','--radius-20','--radius-full','--space-12','--shadow-composer','--text-16','--leading-20','--gradient-dark-cta','--dur-press','--ease'];
+
+const Log = ({ label = 'onSend' }) => {
+  const [v, setV] = React.useState(null);
+  return (
+    <div>
+      <MoneyComposer onSend={setV} />
+      <p style={{ ...window.pageNote, fontSize: 11 }}>{v === null ? `${label} has not fired.` : <React.Fragment>{label} received <code style={{fontFamily:'ui-monospace, monospace'}}>"{v}"</code> — a formatted string, not a number.</React.Fragment>}</p>
+    </div>
+  );
+};
+
+function App() {
+  const [thread, setThread] = React.useState('');
+  return (
+    <PageShell
+      name="MoneyComposer" group="Composer" status="shipped"
+      requires={['MoneyComposer','Composer','Dock','ChipRow','AnswerChip']}
+      summary="The amount input. A ₹ in a fixed slot, a hairline, and Indian-grouped digits as you type — so the advisor reads the number the way they will say it out loud, before they send it. It answers one question; it never replaces the ask bar.">
+
+      <Block n={1} title="Specimen" sub="343pt, the width it takes inside a dock.">
+        <Specimen width={343}><MoneyComposer onSend={() => {}} /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The ₹ slot is 20pt and fixed. That is the whole reason this component exists instead of a placeholder that says “amount”: the symbol never moves, so a column of amounts down a thread lines up on the rupee sign and not on the first digit.">
+        <Anatomy width={343}
+          top="20pt radius · 12pt padding · surface + composer shadow + 1px line"
+          left="₹ 16/20 semibold, bronze-deep, in a fixed 20pt slot; 1px × 22pt divider with 10pt either side"
+          right="42pt send disc — dark CTA gradient, 0.4 opacity until a digit exists"
+          bottom="Input 16/20 medium — larger than Composer's 14/20, because this is a figure and not a sentence">
+          <MoneyComposer onSend={() => {}} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="There is one. The only thing a caller changes is the placeholder, and it is always an offer beside something else — “or type…”, never “enter an amount”, because this input is the way out of the chips, not the first thing asked.">
+        <Grid cols={2} items={[
+          { label: 'Default', node: <MoneyComposer onSend={() => {}} />, note: 'placeholder="or type an amount"' },
+          { label: 'Named to the question', node: <MoneyComposer onSend={() => {}} placeholder="or type a monthly SIP" />, note: 'The chips above offered ₹10k / ₹25k / ₹50k. The placeholder names the same unit they did.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Type in the live one. Letters never reach the field — the change handler strips everything that is not a digit, so there is no error state to design, because there is no way to be wrong.">
+        <Grid cols={2} items={[
+          { label: 'Empty — send at 0.4 and disabled', node: <MoneyComposer onSend={() => {}} />, note: 'Disabled and dimmed, not hidden. The advisor can see where the button will be.' },
+          { label: 'Live — try letters, try 185000', node: <Log />, note: 'Grouping is applied on every keystroke: 1,85,000 — two digits at a time above the last three.' },
+        ]} />
+        <div style={{ marginTop: 20 }}>
+          <p style={window.pageLbl}>formatINR, exported beside the component</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: '6px 20px', marginTop: 8 }}>
+            {['9', '999', '1234', '185000', '2500000', '42000000', '', 'abc'].map((d) => (
+              <code key={d || 'empty'} style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11.5, color: 'var(--color-ink-soft)' }}>
+                formatINR("{d}") → "{formatINR(d)}"
+              </code>
+            ))}
+          </div>
+          <p style={window.pageNote}>Use it anywhere you print a rupee figure, not only here. A number formatted two different ways in one thread is the defect rule 4 is written against.</p>
+        </div>
+      </Block>
+
+      <Block n={5} title="In context" sub="Chips first, then this. The advisor answers with a tap in the common cases and types only when the answer is not on offer — which is why the placeholder starts with “or”.">
+        <Thread
+          before={<React.Fragment>
+            <UserBubble text="Start a SIP for Meera" />
+            <SentinelBlock><SentinelText text="How much a month? Her mandate allows up to ₹50,000 into equity." /></SentinelBlock>
+          </React.Fragment>}
+          dock={<Dock
+            chips={<ChipRow>{['₹10,000','₹25,000','₹50,000'].map((c) => <AnswerChip key={c} label={c} onClick={() => {}} />)}</ChipRow>}
+            composer={<MoneyComposer onSend={() => {}} placeholder="or type a monthly SIP" />} />}>
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="onSend receives the FORMATTED string — “₹1,85,000”, not 185000. The component holds its own digits; there is no value/onChange pair to wire.">
+        <Props src="../components/composer/MoneyComposer.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<Dock
+            chips={<ChipRow>{['₹10,000','₹25,000'].map((c) => <AnswerChip key={c} label={c} onClick={() => {}} />)}</ChipRow>}
+            composer={<MoneyComposer onSend={() => {}} placeholder="or type a monthly SIP" />} />}
+          doCaption="This dock is answering a question Sentinel just asked, and the thread goes on below it. The amount field is the escape hatch from the chips."
+          dontNode={<div style={{ opacity: 0.999 }}>
+            <MoneyComposer onSend={() => {}} />
+            <p style={{ ...window.pageNote, fontSize: 11 }}>…and no ask bar anywhere on the screen.</p>
+          </div>}
+          dontCaption="Never let this be the only input on a screen. It answers one question and cannot take “actually, what is her mandate?” — swapping the ask bar for it takes the product away (rule 3)." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="The focus treatment is Composer's, to the token. Until v12 this card had none at all — the input carries outline:none and the card had no focus state, so a keyboard user tabbing in saw nothing move (F-17). It is carried on the box-shadow, not a border, because this card's hairline was always a shadow and a border would have cost 2pt of height for a focus fix.">
+        <Motion rows={[
+          { name: 'Focus', property: 'box-shadow: 0 0 0 1px --color-bronze, --focus-ring', duration: '150 ms (--dur-press)', reduced: 'Appears at once. The ring is the indicator, not the fade.' },
+          { name: 'Send disc press', property: 'transform: scale(0.94)', duration: '150 ms (--dur-press)', reduced: 'No scale. The press still registers.' },
+          { name: 'Send enable', property: 'opacity: 0.4 → 1', duration: 'immediate', reduced: 'Unchanged — it is a state, not an animation.' },
+          { name: 'Grouping', property: 'text, on every keystroke', duration: 'none', reduced: 'Unchanged. Digits never animate into place; a number that moves is a number being read twice.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

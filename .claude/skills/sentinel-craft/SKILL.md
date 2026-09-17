@@ -46,7 +46,7 @@ down. Reading a stack is not looking.
 ```bash
 npm run build:bundle                              # the pages read the bundle, not the source
 npm run preview                                   # then open it
-node tools/check-previews.mjs --shots /tmp/shots  # all 47 pages, at their own @dsCard viewport
+node tools/check-previews.mjs --shots /tmp/shots  # all 58 pages, at their own @dsCard viewport
 ```
 
 **The bundle step is not optional.** Preview pages load `_ds_bundle.js`; a source change is invisible
@@ -61,7 +61,7 @@ Then, before the commit:
 
 ```bash
 npm run check                            # barrel, bundle, integrity, adherence
-node tools/check-previews.mjs            # 47/47, or say which one regressed and why
+node tools/check-previews.mjs            # 58/58, or say which one regressed and why
 ```
 
 **Never restyle.** Colour, type, radii, shadow and motion character are settled. Fix gaps, alignment,
@@ -77,7 +77,11 @@ Order matters — a foundational failure must not be hidden under polish:
 3. **Alignment and scale** — one set of edges per card; every value in `references/scale.md`.
 4. **Type and number discipline** — a role not a raw size; Indian grouping; one decimal; tabular
    figures on anything that changes.
-5. **Motion** — one easing, the real durations, reduced-motion in all three places.
+5. **Motion** — one easing, the real durations, reduced-motion in all three places. Screens use
+   `ds-screen-in` / `ds-screen-out`; **there is no shared-element transition** — an artifact expands in
+   place, and a screen that "smart animates" a card into a page has invented something. A wait is
+   `SentinelThinking`, and its `verb` is a provenance claim: it must name the source the answer then
+   cites. Several real ordered steps are `ProgressTrace`, not a verb that keeps changing.
 6. **Copy** — sentence case, no emoji, no exclamation marks, limits stated plainly.
 
 Report in the format in `references/review-format.md`. Stress one component with the axes in
@@ -93,8 +97,9 @@ design-system/components/<group>/<Name>.d.ts    the contract, with the reasoning
 design-system/pages/<Name>.html                 specimen · anatomy · variants · states · tokens · props · do/don't · motion
 ```
 
-Then `npm run build:barrel && npm run build:bundle`. Do **not** run `npm run build:index` — see F-8 in
-`docs/FINDINGS.md`; the shipped generator is older than the file it produced and drops a column.
+Then `npm run build:barrel && npm run build:bundle && npm run build:index`. The `build:index` warning
+that stood here is spent: F-8's dropped `literals` column was re-derived in v12 and the rule is now
+written down in the generator, so the index regenerates whole.
 
 Read `design-system/pages/StepTrace.html` first. It is what a finished spec page looks like, down to
 the motion table that states each animation's reduced-motion behaviour.

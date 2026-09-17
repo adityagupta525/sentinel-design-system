@@ -1,0 +1,122 @@
+<!-- @dsCard group="Pages" viewport="1000x1400" name="SentinelText" subtitle="Sentinel prose — no bubble, two weights, and the Medium line is the answer" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SentinelText — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SentinelText, SentinelBlock, UserBubble, Provenance, MessageActions, ConstraintCallout, Composer, Dock } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-ink-soft','--color-ink','--text-14','--leading-20','--weight-medium','--weight-regular','--type-body-font','--ease','--font-ui'];
+
+const LINES = [
+  'Two-thirds of the drift is the small-cap rally. You did not cause it, and selling into it has a cost.',
+  'The remaining third is the March SIP landing in the same sleeve every month.',
+  'I can rebalance to the mandate in three moves, or leave it and revisit at the next review.',
+];
+
+function App() {
+  return (
+    <PageShell
+      name="SentinelText" group="Chat" status="shipped"
+      requires={['SentinelText','SentinelBlock','Provenance','ConstraintCallout']}
+      summary="Sentinel's prose. 14/20 on the canvas with no bubble behind it, in two weights — Medium for the line that carries the answer, Regular for the lines that support it. It is the quietest component here and it does most of the talking.">
+
+      <Block n={1} title="Specimen" sub="Never rendered alone in the product: it belongs inside a SentinelBlock, which supplies the sparkle and the attribution.">
+        <Specimen width={343}>
+          <SentinelBlock><SentinelText text={LINES[0]} /></SentinelBlock>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The absence is the design. No bubble, no fill, no left rule — Sentinel writes on the paper, and the peach bubble opposite is what makes the thread readable as a conversation.">
+        <Anatomy width={343}
+          top="14/20 on --color-ink-soft, not --color-ink. A shade back from the advisor's own words"
+          left="Full column width — it is not capped at 280pt the way a bubble is"
+          right="No background, no border, no padding of its own. Spacing comes from the block around it"
+          bottom="Margin 0 — a run of lines is spaced by its parent, so paragraph rhythm is one decision and not one per line">
+          <SentinelText text={LINES[0]} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Two weights — 500 against 400. Measured in the browser, not assumed: the prop resolves to those two values. At 14px it is a quiet difference, and that is the intended volume — the emphasis is meant to be felt reading down a thread, not seen as a headline.">
+        <Grid cols={2} items={[
+          { label: 'Medium (default)', node: <SentinelText text="Small cap is 31.0% of his equity, against a 25% ceiling." />, note: 'The line that answers the question. One per block.' },
+          { label: 'Regular', node: <SentinelText weight="Regular" text="It has been above the ceiling since the March rally, and the monthly SIP lands in the same sleeve." />, note: 'Everything after it. Support, caveat, offer.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="No interactive states — it is text. What it does have is a composition rule, and getting it wrong is the common defect.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'A three-line answer, weighted', node: (
+            <SentinelBlock>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+                <SentinelText text={LINES[0]} />
+                <SentinelText weight="Regular" text={LINES[1]} />
+                <SentinelText weight="Regular" text={LINES[2]} />
+              </div>
+            </SentinelBlock>
+          ), note: 'First line Medium, the rest Regular, 8pt apart. Reading the Medium lines alone down a thread should still be the answer.' },
+          { label: 'All Medium', node: (
+            <SentinelBlock>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+                {LINES.map((l) => <SentinelText key={l} text={l} />)}
+              </div>
+            </SentinelBlock>
+          ), note: 'Nothing is emphasised, so nothing is the answer. This is what a default-everywhere call site produces, and it is the reason the prop exists.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Prose, then the figure's provenance, then the constraint that limits it. The text does not carry the number twice.">
+        <Thread
+          before={<UserBubble text="Why did Sharma's portfolio drift this quarter?" />}
+          dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <SentinelBlock>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+              <SentinelText text={LINES[0]} />
+              <SentinelText weight="Regular" text={LINES[1]} />
+              <Provenance text="As of 30 Sep · from his Q3 statement" />
+            </div>
+          </SentinelBlock>
+          <MessageActions role="assistant" />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens" sub="This component reads literals: 0 in pages/_index.json — every value it sets comes from a token. It still spells the four parts out by hand rather than taking --type-body-font, which resolves to exactly its Regular form: there is no Medium counterpart role, so using the shorthand for one weight and longhand for the other would read worse than doing both the same way.">
+        <Tokens names={TOK} />
+      </Block>
+
+      <Block n={7} title="Props"><Props src="../components/chat/SentinelText.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<SentinelBlock>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+              <SentinelText text="He is 6.2% off his mandate, and small cap is the whole of it." />
+              <SentinelText weight="Regular" text="Three moves bring him back inside it without touching the debt leg." />
+            </div>
+          </SentinelBlock>}
+          doCaption="Inside a block, under the sparkle. The answer is attributed, and the weights say which sentence is the answer."
+          dontNode={<div>
+            <SentinelText text="He is 6.2% off his mandate, and small cap is the whole of it." />
+            <div style={{ marginTop: 8 }}><SentinelText weight="Regular" text="Three moves bring him back inside it without touching the debt leg." /></div>
+          </div>}
+          dontCaption="Never loose on the canvas. With no sparkle and no label, this is unattributed prose on a page that also carries the advisor's own words — and in a wealth tool, who said a number is part of the number." />
+      </Block>
+
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          { name: 'Enter', property: 'ds-fade — opacity 0 → 1', duration: '300 ms', reduced: 'Unchanged — it is already opacity only, which is what reduced motion asks for.' },
+          { name: 'Streaming', property: 'none', duration: '—', reduced: 'Unchanged. Text is rendered when it is ready; there is no typewriter, and no per-word fade to track.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

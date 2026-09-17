@@ -6,17 +6,26 @@ export function formatINR(digits) {
   const n = clean.slice(-3), rest = clean.slice(0, -3);
   return (rest ? rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' : '') + n;
 }
-/* C18 · ₹ prefix in a 20px slot, hairline, Indian-grouped digits. */
+/* C18 · ₹ prefix in a 20px slot, hairline, Indian-grouped digits.
+   The focused card takes Composer's treatment exactly — bronze border plus --focus-ring over
+   --dur-press. Until v12 it took nothing at all: the input carries outline:none, the card had no
+   focus state, and a keyboard user tabbing into the amount field saw the card it had already been
+   looking at. Same tokens, same duration, no new visual language — the two composers sit in the same
+   dock slot and cannot answer a keyboard differently.
+   Carried on the box-shadow rather than a border, because this card's hairline was always a shadow:
+   swapping it for Composer's real 1px border would have made the card 2px taller and its field 2px
+   narrower for a focus fix. Same appearance, no layout change. */
 export function MoneyComposer({ onSend, placeholder = 'or type an amount' }) {
   const [raw, setRaw] = React.useState('');
+  const [focus, setFocus] = React.useState(false);
   const formatted = formatINR(raw);
   const canSend = raw.length > 0;
   return (
-    <div style={{ width: '100%', borderRadius: 'var(--radius-20)', background: 'var(--color-surface)', padding: 'var(--space-12)', boxSizing: 'border-box', boxShadow: 'var(--shadow-composer), 0 0 0 1px var(--color-line)' }}>
+    <div style={{ width: '100%', borderRadius: 'var(--radius-20)', background: 'var(--color-surface)', padding: 'var(--space-12)', boxSizing: 'border-box', boxShadow: focus ? '0 0 0 1px var(--color-bronze), var(--focus-ring)' : 'var(--shadow-composer), 0 0 0 1px var(--color-line)', transition: 'box-shadow var(--dur-press)' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{ display: 'flex', width: 20, flexShrink: 0, justifyContent: 'center' }}><span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-16)', color: 'var(--color-bronze-deep)' }}>₹</span></div>
         <div style={{ margin: '0 10px', height: 22, width: 1, flexShrink: 0, background: 'var(--color-line)' }} />
-        <input value={formatted} inputMode="numeric" onChange={(e) => setRaw(e.target.value.replace(/\D/g, ''))} onKeyDown={(e) => e.key === 'Enter' && canSend && onSend && onSend('₹' + formatted)} placeholder={placeholder} className="ds-composer-input"
+        <input value={formatted} inputMode="numeric" onChange={(e) => setRaw(e.target.value.replace(/\D/g, ''))} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} onKeyDown={(e) => e.key === 'Enter' && canSend && onSend && onSend('₹' + formatted)} placeholder={placeholder} className="ds-composer-input"
           style={{ width: '100%', border: 'none', background: 'transparent', outline: 'none', padding: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-16)', lineHeight: 'var(--leading-20)', color: 'var(--color-ink)' }} />
       </div>
       <div style={{ marginTop: 'var(--space-12)', display: 'flex', justifyContent: 'flex-end' }}>

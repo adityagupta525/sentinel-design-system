@@ -1,0 +1,99 @@
+<!-- @dsCard group="Pages" viewport="1000x1400" name="QAPair" subtitle="A question already answered — collapsed to one muted line and a bubble one step down" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>QAPair — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { QAPair, UserBubble, SentinelBlock, SentinelText, ProgressRail, Composer, Dock, EyebrowDivider } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble','--color-bubble-edge','--color-muted','--color-ink','--text-12','--text-13','--leading-16','--leading-18','--space-6','--font-ui'];
+
+const QS = [
+  { q: 'How old is Meera?', a: 'Use her KYC age — 38' },
+  { q: 'What is the horizon?', a: '7 years' },
+  { q: 'Any liquidity she needs kept aside?', a: '₹5,00,000' },
+];
+
+function App() {
+  return (
+    <PageShell
+      name="QAPair" group="Chat" status="shipped"
+      requires={['QAPair','UserBubble','SentinelBlock','ProgressRail']}
+      summary="A question already answered. Sentinel's question collapses to one muted line and the advisor's answer keeps its bubble, one step smaller than a live one — so a five-question intake reads as a short record instead of ten alternating turns.">
+
+      <Block n={1} title="Specimen" sub="One pair. The question is Sentinel's, shortened; the bubble is the advisor's answer.">
+        <Specimen width={343}><QAPair question="How old is Meera?" answer="Use her KYC age — 38" /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Every dimension here is one step down from the live exchange: 12pt question against 14pt body, 13/18 answer against UserBubble's 14/19, 8pt of vertical padding against 10.">
+        <Anatomy width={343}
+          top="Question 12/16 medium, muted — one line, ellipsised, never wrapped"
+          left="6pt between the question and the bubble"
+          right="Answer bubble: 13/18 semibold, 8pt / 12pt padding, same 20/20/6/20 radius, same peach"
+          bottom="Same max width as UserBubble (280pt) — a past answer is narrower because of its type, not its cap">
+          <QAPair question="Any liquidity she needs kept aside?" answer="₹5,00,000" />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Two, and the second one is what starts a journey.">
+        <Grid cols={2} items={[
+          { label: 'With a question', node: <QAPair question="What is the horizon?" answer="7 years" />, note: 'The normal form: Sentinel asked, the advisor answered, both are now history.' },
+          { label: 'Seed — question omitted', node: <QAPair answer="Plan a retirement corpus for Meera" />, note: 'The advisor\'s opening ask, once the journey has moved past it. Nothing asked it, so nothing is shown above it.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="The question truncates and the answer does not. That asymmetry is on purpose: the question is a reminder, the answer is the record.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'Question too long for the line', node: <QAPair question="Is there any liquidity she needs kept aside over the next eighteen months, before the horizon?" answer="₹5,00,000" />, note: 'One line, ellipsis. It is a label for an answer the advisor already gave — they do not need to re-read it.' },
+          { label: 'Answer that runs on', node: <QAPair question="Anything else I should know?" answer="She may sell the Pune flat next year, so keep the debt leg liquid and do not lock anything past March." />, note: 'Wraps freely inside the bubble. An answer is never truncated — it is the thing being recorded.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="This is the component's whole argument. Three answered questions take the room that one live exchange would, and the rail above says how far in the advisor is.">
+        <Thread
+          before={<React.Fragment>
+            <ProgressRail n={4} total={6} />
+            <div style={{ height: 4 }} />
+          </React.Fragment>}
+          dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="or type your answer" />} />}>
+          {QS.map((x) => <QAPair key={x.q} question={x.q} answer={x.a} />)}
+          <SentinelBlock><SentinelText text="Last one — is this corpus for her, or for both of them?" /></SentinelBlock>
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props"><Props src="../components/chat/QAPair.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
+            {QS.slice(0, 2).map((x) => <QAPair key={x.q} question={x.q} answer={x.a} />)}
+          </div>}
+          doCaption="A run of answered questions, collapsed. The advisor scans what they have already told Sentinel and sees at a glance that nothing is wrong."
+          dontNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <SentinelBlock><SentinelText text="How old is Meera?" /></SentinelBlock>
+            <UserBubble text="Use her KYC age — 38" />
+            <SentinelBlock><SentinelText text="What is the horizon?" /></SentinelBlock>
+            <UserBubble text="7 years" />
+          </div>}
+          dontCaption="Do not leave a finished intake as live turns. Four blocks for two facts, each with a sparkle claiming Sentinel is speaking now — and the question the advisor is actually being asked is pushed off the screen." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="None. A collapsed pair is history; it does not arrive, it was already there.">
+        <Motion rows={[
+          { name: 'Enter', property: 'none', duration: '—', reduced: 'Unchanged. If a pair animated in, it would read as a new question being asked.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

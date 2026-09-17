@@ -313,6 +313,65 @@ Unlike F-6 this one was never invalid markup — a `<style>` inside a `<div>` is
 duplication and nothing else. Recorded because the *search* is the lesson: a defect found by reading
 one component should end with a grep for its shape.
 
+### F-15 · `SentinelThinking.prompt.md` described motion the component does not have — *fixed*
+The prompt file, which is what an agent building a screen reads:
+
+> the short (≈620ms) wait state: shimmering sparkle label + three 6px bronze dots **bouncing 3px**
+
+The component pulses opacity over 1200ms and has never bounced. `readme.md` states the reasoning in
+the opposite direction — *"no bounce, because a 6px dot hopping beside text reads as jitter"* — so the
+prompt file was not merely stale, it instructed the exact thing the spec rejects, at half the duration.
+
+Rewritten from the source. Found while adding `verb`; the lesson is the same as F-14 — the `.prompt.md`
+files are a third contract surface beside the `.d.ts` and the spec, and nothing checks them.
+
+### F-16 · The wait state could not say what it was waiting on — *new capability, opt-in*
+Not a defect. `SentinelThinking` rendered three pulsing dots under the label "Sentinel", which says
+"wait" and nothing else. Six of six AI assistants surveyed pair the wait with a named verb; none ships
+a bare pulse.
+
+`SentinelThinking` now takes **`verb`**, which replaces the label — "Reading his Q3 statement…". The
+motion is byte-identical with it and without it, and omitting it gives exactly the previous render, so
+every existing call site is unchanged. `SentinelBlock` already had the `label` prop; nothing new was
+invented to carry it.
+
+The constraint is in the contract, not the style guide: **the verb must be true and checkable**,
+because it names the source the answer will cite. A wait that says "Reading his Q3 statement…" and
+then produces a figure from somewhere else has broken rule 4 before the figure arrives. There is no
+rotating list of verbs, and no "Thinking…".
+
+### F-17 · `MoneyComposer` had no focus indicator at all — *fixed*
+Found while writing its spec page, and confirmed by focusing the field in a real browser and looking
+at it rather than by reading the source: **nothing changed.** The input carries `outline: none`
+inline, the card had no focus state, and the two together leave a keyboard user tabbing into the
+amount field looking at the card they were already looking at. WCAG 2.4.7, failed outright.
+
+`Composer` — the same slot in the same dock — has had the treatment since v1: bronze hairline plus
+`--focus-ring`, transitioned over `--dur-press`. `MoneyComposer` now takes it, same tokens, same
+duration, nothing new invented.
+
+**Carried on the box-shadow, not a border.** `Composer` paints its hairline with a real
+`1px solid` border; this card has always painted its with a box-shadow. Copying `Composer`'s border
+would have made the card 2pt taller and its field 2pt narrower — a layout change, in a component
+whose whole argument is that the ₹ sits in a fixed slot — as the price of a focus ring. The shadow
+form renders identically and moves nothing.
+
+### F-18 · A pasted scheme code escaped the bubble — *fixed*
+Found by putting one in a `UserBubble` on its new spec page and looking at the render: an unbroken
+identifier — no hyphen, no space — does not wrap. It runs past the 280pt cap and out of the bubble's
+own peach background, with the tail of the token sitting on the canvas.
+
+A hyphenated code (`HDFC-LIQUID-DIRECT-GROWTH-INF179K01WK5`) wraps on its own, which is why this went
+unseen: the realistic-looking example is the one that works. An ISIN pasted alone is the one that does
+not, and an advisor pastes ISINs.
+
+`overflowWrap: 'anywhere'` on `UserBubble`'s paragraph and on `QAPair`'s answer, which is the same
+bubble one step down. Prose never reaches the rule — it breaks at spaces long before — so nothing else
+in the thread renders differently. `QAPair`'s question needed nothing: it is already one ellipsised
+line.
+
+Both the before and the after are on `pages/UserBubble.html`, block 4, as a state rather than a note.
+
 ---
 
 ## Considered and rejected

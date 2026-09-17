@@ -41,7 +41,7 @@ to a file layout that is ours to change.
 | **85 components** | Every one with a hand-written `.d.ts` carrying the prop contract **and the reasoning**. The doc comments are the design review; read them before guessing at a prop. |
 | **One token layer** | `tokens/*.css` — colour, type, spacing, radius, motion. Roles, not values. |
 | **16 guideline pages** | Rendered specimens: colour, type, spacing, radius, shadow, motion, texture. |
-| **19 component spec pages** | Specimen, anatomy with dimensions, every variant, every state, tokens, props, do/don't, and a motion table naming each animation's reduced-motion behaviour. |
+| **26 component spec pages** | Specimen, anatomy with dimensions, every variant, every state, tokens, props, do/don't, and a motion table naming each animation's reduced-motion behaviour. |
 | **11 group boards** | Every component in a group on one board — 61 of the 85 are visible here. |
 | **3 runnable prototypes** | The app, the risk journey, the proposal journey. The product, assembled. |
 | **An adherence lint config** | `_adherence.oxlintrc.json` — point your linter at it. |
@@ -160,7 +160,7 @@ someone takes on purpose rather than an API that vanishes under you.
 
 Stated plainly, because a handover that oversells is worse than one that does not.
 
-- **19 of 85 components have a full spec page.** The other 66 have source, a contract and a place on a
+- **26 of 85 components have a full spec page.** The other 59 have source, a contract and a place on a
   group board — enough to use, short of the anatomy/states/do-don't treatment. `pages/00-Index.html`
   lists which is which, generated from disk, so it cannot claim a page that is not there.
 - **`docs/FINDINGS.md`** carries every known defect and every deliberate deviation, including the ones

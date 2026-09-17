@@ -2,8 +2,8 @@
  "generated": "2026-09-17",
  "generator": "scripts/build-index.js",
  "counts": {
-  "building": 64,
-  "shipped": 21
+  "building": 59,
+  "shipped": 26
  },
  "rows": [
   {
@@ -547,14 +547,17 @@
   {
    "name": "MoneyComposer",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "MoneyComposer.html",
    "file": "components/composer/MoneyComposer.jsx",
    "tokens": [
+    "--color-bronze",
     "--color-bronze-deep",
     "--color-ink",
     "--color-line",
     "--color-surface",
+    "--dur-press",
+    "--focus-ring",
     "--font-ui",
     "--gradient-dark-cta",
     "--leading-20",
@@ -567,7 +570,7 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 6
+   "literals": 7
   },
   {
    "name": "ParseNote",
@@ -622,8 +625,8 @@
   {
    "name": "QAPair",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "QAPair.html",
    "file": "components/chat/QAPair.jsx",
    "tokens": [
     "--color-bubble",
@@ -743,8 +746,8 @@
   {
    "name": "SentinelText",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "SentinelText.html",
    "file": "components/chat/SentinelText.jsx",
    "tokens": [
     "--color-ink-soft",
@@ -759,8 +762,8 @@
   {
    "name": "SentinelThinking",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "SentinelThinking.html",
    "file": "components/chat/SentinelThinking.jsx",
    "tokens": [
     "--color-bronze",
@@ -806,8 +809,8 @@
   {
    "name": "UserBubble",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "UserBubble.html",
    "file": "components/chat/UserBubble.jsx",
    "tokens": [
     "--color-bubble",

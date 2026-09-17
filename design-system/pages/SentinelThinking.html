@@ -1,0 +1,114 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="SentinelThinking" subtitle="The wait — opacity only, and a label that can name the source the answer will cite" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SentinelThinking — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SentinelThinking, SentinelBlock, SentinelText, UserBubble, Provenance, ProgressTrace, Composer, Dock, MessageActions } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze','--color-muted','--radius-full','--space-5','--space-8','--space-10','--text-12','--leading-16','--ease','--font-ui'];
+
+/* The point of the verb, demonstrated: the wait says what it is reading, the answer cites the same
+   source. Runs on a timer so the pairing is seen, not described. */
+function Arrival() {
+  const [done, setDone] = React.useState(false);
+  React.useEffect(() => { const t = setTimeout(() => setDone(true), 2600); return () => clearTimeout(t); }, [done]);
+  return (
+    <div>
+      {done ? (
+        <SentinelBlock>
+          <SentinelText text="Small cap is 31.0% of his equity, against a 25% ceiling in his mandate." />
+          <div style={{ marginTop: 'var(--space-8)' }}><Provenance text="As of 30 Sep · from his Q3 statement" /></div>
+        </SentinelBlock>
+      ) : <SentinelThinking verb="Reading his Q3 statement…" />}
+      <button type="button" onClick={() => setDone(false)} style={{ marginTop: 12, appearance: 'none', border: 'none', cursor: 'pointer', borderRadius: 'var(--radius-full)', padding: '7px 14px', background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)', fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 11.5, color: 'var(--color-ink)' }}>Run it again</button>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="SentinelThinking" group="Chat" status="shipped"
+      requires={['SentinelThinking','SentinelBlock','SentinelText','Provenance','ProgressTrace']}
+      summary="The wait. Three bronze dots pulsing on opacity under a shimmering label — and, since v12, a label that can say what is being read. The motion is the same either way; what makes a wait readable is the system naming the work, not the wait looking busier.">
+
+      <Block n={1} title="Specimen" sub="The default: no verb, label reads “Sentinel”. This is what every existing call site renders.">
+        <Specimen width={343}><SentinelThinking /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Nothing here is sized to the answer. There is no skeleton, because a skeleton is a promise about a shape the answer may not take — the reply might be a sentence, a card, or a table.">
+        <Anatomy width={343}
+          top="Sparkle + label 12/16 bold, muted — SentinelBlock's own header, shimmering"
+          left="10pt between the label row and the dots"
+          right="Three 6pt discs, bronze, 5pt apart, nudged 1pt right so the first dot reads as aligned under the sparkle"
+          bottom="dot-pulse 1.2s, staggered 150ms — opacity 0.28 → 1, never position">
+          <SentinelThinking />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="One prop. The motion is byte-identical across all of these — the only difference is whether the system tells you what it is doing.">
+        <Grid cols={2} items={[
+          { label: 'Bare', node: <SentinelThinking />, note: 'Correct when the wait is under ~1s, or when the work genuinely has no name the advisor would recognise.' },
+          { label: 'verb — a source', node: <SentinelThinking verb="Reading his Q3 statement…" />, note: 'The best kind: it names the document the answer will cite.' },
+          { label: 'verb — a constraint', node: <SentinelThinking verb="Checking the mandate…" />, note: 'Names what is being checked, so the answer arriving as a “no” is already framed.' },
+          { label: 'verb — a count', node: <SentinelThinking verb="Pricing 3 moves…" />, note: 'A number in the verb sets the size of the answer before it lands.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="There is one state — waiting. What changes is how long it lasts, and that decides which component you are looking at.">
+        <Grid cols={2} items={[
+          { label: 'Under a second', node: <SentinelThinking />, note: 'A verb that appears and vanishes is worse than no verb: it asks to be read and does not wait to be.' },
+          { label: 'A second or more', node: <SentinelThinking verb="Reading his Q3 statement…" />, note: 'Long enough to read. This is where the verb earns its place.' },
+          { label: 'Too long for a label', node: <ProgressTrace autoplay={false} initialActive={1} seconds={7} steps={['Reading his Q3 statement — 18 funds', 'Checking the mandate', 'Pricing 3 moves']} />, note: 'Several real, ordered steps → ProgressTrace, not a verb that keeps changing.' },
+          { label: 'Truncation', node: <div style={{ width: 200 }}><SentinelThinking verb="Reconciling his September statement against the mandate…" /></div>, note: 'Constrained to 200pt to force it. The label WRAPS — it does not truncate — and every extra line pushes the dots further down the thread. Keep the verb under ~40 characters; that is a limit on the writing, not a guard in the component.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Watch the label and then the provenance line. They name the same document — that is the contract, not a nicety.">
+        <Thread
+          before={<UserBubble text="Is Ravi over his small-cap ceiling?" />}
+          dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <Arrival />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="The verb must be true and checkable. It is a provenance claim made before the figure arrives.">
+        <Props src="../components/chat/SentinelThinking.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div>
+            <SentinelThinking verb="Reading his Q3 statement…" />
+            <div style={{ marginTop: 14, opacity: 0.55 }}><Provenance text="As of 30 Sep · from his Q3 statement" /></div>
+          </div>}
+          doCaption="The verb names the source, and the provenance under the answer names the same source. An advisor can repeat both to a client."
+          dontNode={<div>
+            <SentinelThinking verb="Thinking…" />
+            <div style={{ marginTop: 14, opacity: 0.55 }}><Provenance text="As of 30 Sep · from his Q3 statement" /></div>
+          </div>}
+          dontCaption="“Thinking…” says nothing the dots did not. Worse is a verb that does not match the provenance — that has broken rule 4 before the figure even arrives. No rotating list of verbs." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="Two loops, both on opacity, both 1.2s. There is no spinner in this system and nothing here rotates, bounces or blurs.">
+        <Motion rows={[
+          { name: 'Dots', property: 'dot-pulse — opacity 0.28 → 1, 150ms stagger', duration: '1200 ms, infinite', reduced: 'Holds at full opacity. The dots stay, still.' },
+          { name: 'Label', property: 'sentinel-shimmer — opacity 0.35 → 1', duration: '1200 ms, infinite', reduced: 'Holds at full opacity.' },
+          { name: 'Verb change', property: 'none', duration: '—', reduced: 'Unchanged. The label is not animated between verbs; if it changes, it changes.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

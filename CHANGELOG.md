@@ -5,6 +5,25 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
 ## Unreleased
 
 ### Added
+- **`ds-screen-in` / `ds-screen-out`** in `tokens/effects.css` — the screen transition `readme.md` has
+  specified since v1 and no keyframe carried, with its reduced-motion redefinitions.
+- **`guidelines/motion-screens.html`** — both keyframes running live, beside the artifact that
+  deliberately does not use them, and the statement that this system has no shared-element transition.
+- **`SentinelThinking` takes `verb`** — "Reading his Q3 statement…" in place of the "Sentinel" label.
+  The motion is unchanged; omitting it renders exactly as before. The verb must name the source the
+  answer will cite.
+- Spec pages for **MoneyComposer, SentinelThinking, UserBubble, QAPair, SentinelText** — 26 of 85
+  components now have one.
+
+### Fixed
+- **`MoneyComposer` had no focus indicator at all** (F-17). It now takes `Composer`'s treatment, on the
+  box-shadow rather than a border so the card does not change size.
+- **A pasted scheme code escaped the bubble** (F-18). `overflowWrap` on `UserBubble` and `QAPair`.
+- `guidelines/motion.html` advertised `canvas · 380ms`, deleted in v11 for a surface removed in v5 (F-13).
+- `SentinelThinking.prompt.md` described dots "bouncing 3px" at half the real duration — the opposite of
+  what the spec says and the component does (F-15).
+- `Composer` and `MoneyComposer` each carried the same placeholder stylesheet inside themselves (F-14).
+
 - Repository scaffolding around the imported design system: preview server, barrel generator, index
   runner, integrity check, CI, contribution rules.
 - `design-system/index.js` and `index.d.ts` — the public entry point `_adherence.oxlintrc.json`
