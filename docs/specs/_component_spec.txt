@@ -1,0 +1,179 @@
+Table of Contents
+TOC \o "1-2" \h \z \u
+Sentinel — component request spec
+Response to the team’s nine component requests. Written against Sentinel DS · 2026.09, so everything here binds to existing tokens and reuses existing components wherever one already does the job.
+
+Part 0 — What is actually new
+Nine requests, but not nine components. Handing over nine new ones would reintroduce exactly the drift the pill and token audits just removed.
+#
+Request
+Verdict
+1
+Upload document / uploaded successfully
+New — FileUpload
+2
+Download PPT / PDF
+Extension — Pill gains a loading state; DownloadAction is a thin wrapper
+3
+List (clients, question options)
+Extension — one ListRow + List. Question options are not a list — see §3.4
+4
+End-state card with Save / Download / Rebalance
+Extension — ResultCard on top of the artifact card
+5
+Follow-up questions after a response
+Already exists — InlineActionRow + Pill, plus an optional label
+6
+Saved proposals / reviews / rebalances
+Already exists — List with variant="action"
+7
+Fund info / fund manager info card
+New — InfoCard with two kinds
+8
+Multi-column table with scroll, filters, sorting, expand
+Extension — DataTable, a substantial widening of DataTableCard
+9
+Overlap matrix with add/remove funds and properties
+New — OverlapView, and the matrix should not be the mobile default
+Four new components. Three extensions. Two that already ship.
+One system gap the request exposes: Pill has no loading state, and both upload and download need one. Fix that first, because three of the nine depend on it.
+
+Part 1 — Pill gains a loading state (prerequisite)
+Pill: {  size: 'md' | 'sm'  tone: /* the six existing tones */  loading?: boolean        // NEW  leadingGlyph?: GlyphKind  disabled?: boolean}
+Behaviour when loading is true: the leading glyph is replaced by a 12 px indeterminate spinner, the label swaps to its progress verb (Download → Preparing…), and the pill becomes non-interactive.
+It must keep its rendered width. A pill that shrinks or grows mid-action reflows the whole row and moves the other targets under the user’s thumb. Measure the idle label, hold that width, and let the progress verb sit inside it.
+loading and disabled are separate. Loading means working; disabled means unavailable.
+
+Part 2 — FileUpload (new)
+type UploadState = 'empty' | 'uploading' | 'success' | 'error'type UploadError = 'too-large' | 'wrong-type' | 'failed' | 'virus-flagged'FileUpload: {  state: UploadState  accept: string[]              // e.g. ['.pdf', '.xlsx', '.csv']  maxSizeMb: number  fileName?: string             // required from 'uploading' onward  fileSizeKb?: number  progress?: number             // 0–100, 'uploading' only  error?: UploadError  onSelect: (f: File) => void  onRetry?: () => void  onRemove?: () => void}
+Anatomy by state.
+empty — a dashed-border box using --color-line with a dash pattern (per the item-8 decision, no separate dashed colour). Title at 14 px --color-ink, sub-label at 12 px --color-muted naming the accepted types and the size cap: PDF, XLSX or CSV · up to 10 MB. State the constraint before the user hits it, not after.
+uploading — file name, a progress bar on --color-track with a --color-bronze fill animated with scaleX, and the percentage as text. Never a bare spinner: name the file being uploaded.
+success — Badge variant="status" tone="ok" reading Uploaded, the file name, its size, and a Remove action. The badge carries a word, never colour alone.
+error — the peach callout treatment on --color-status-over-bg with a --color-status-over-fg eyebrow. The body names the specific reason and offers exactly one recovery:
+too-large — That file is 14 MB. The limit is 10 MB. → Choose another file
+wrong-type — Sentinel reads PDF, XLSX and CSV. That was a .docx. → Choose another file
+failed — The upload did not finish. → Try again
+virus-flagged — That file did not pass the security scan and was not stored. → no retry; this one is terminal
+One product rule for the team to confirm, not for design to decide. These are client documents. The empty state should say what happens to an uploaded file — where it is stored and for how long. Mark it [PLACEHOLDER — data handling statement to supply] and render it locked, the same treatment as the disclosure block.
+
+Part 3 — List and ListRow (extension, covers #3 and #6)
+One row component with constrained pairings, not three list components.
+type ListRowVariant  = 'nav' | 'select' | 'multi' | 'action' | 'static'type ListRowSize     = 'md' | 'lg'          // 56 / 72 — lg only when a subtitle is presenttype ListRowLeading  = 'none' | 'avatar' | 'icon' | 'index'type ListRowTrailing = 'chevron' | 'radio' | 'checkbox' | 'badge' | 'menu' | 'meta' | 'none'ListRow: {  variant: ListRowVariant  size?: ListRowSize  leading?: ListRowLeading  title: string  subtitle?: string  meta?: string                 // right-aligned secondary, 11.5 px --color-muted  trailing?: ListRowTrailing  badge?: { variant: 'status' | 'meta', tone?: StatusTone, text: string }  selected?: boolean  disabled?: boolean  onPress?: () => void  onMenu?: () => void}
+3.1 Legal pairings — enforce these, do not leave them to the caller
+variant
+Legal trailing
+Means
+nav
+chevron, meta
+Goes somewhere
+select
+radio
+One of a set
+multi
+checkbox
+Several of a set
+action
+menu
+Has its own operations
+static
+badge, meta, none
+Displays only; no press target
+The chevron belongs to nav and nowhere else. That is the same rule that removed chevrons from answer chips — an affordance that means “navigates” must never appear on something that selects.
+static rows take no onPress and are exempt from the touch-target rule, exactly like Badge.
+3.2 List wrapper
+type ListDividers = 'none' | 'inset' | 'full'List: {  dividers?: ListDividers        // default 'inset'  header?: string                // eyebrow style  footer?: ReactNode             // e.g. the 'Show all 43' ghost button  groupBy?: 'none' | 'client' | 'date' | 'journey'  emptyState: { title: string, body?: string, action?: ReactNode }  loading?: boolean              // skeleton rows with live labels}
+emptyState is required, not optional. Every list in this product will be empty on someone’s first day.
+3.3 Saved items (#6) is this component, configured
+type SavedItemAction = 'open' | 'download' | 'duplicate' | 'rename' | 'delete'
+List groupBy="client" + ListRow variant="action" trailing="menu", with the row’s meta carrying the provenance line — Saved 14 Sep · 6 funds.
+Two things the team should settle:
+Delete needs a confirm, and delete may not belong in the menu at all for a sent item. A proposal that has gone to a client is an audit record. If compliance expects that trail to survive, the menu on a sent item should offer archive, not delete. That is a policy question, not a design one — flag it rather than building delete and discovering later.
+Destructive confirms use the peach callout, not a red dialog. Delete Amit's proposal? This cannot be undone. with Delete as the only primary and Keep it as the escape.
+3.4 “Options of a question” is not a list — this one needs correcting
+The request groups question options under List. They belong to the chip family instead: AnswerChip as a pill where the label is self-evident, or its card-with-subtitle form where the wording changes the meaning.
+The reason is the placement law already written into the readme: pills in the dock answer the pending question and advance the journey; pills inline act on the answer just given. If question options become list rows in the message body, that law breaks and the advisor loses the only cue that tells the two apart.
+Keep options in the dock, as chips.
+
+Part 4 — ResultCard (extension, #4)
+The end state of a proposal, review or rebalance. Built on the artifact card, not a new container.
+type ResultJourney = 'proposal' | 'review' | 'rebalance'type ResultState   = 'draft' | 'saved' | 'sent'ResultCard: {  journey: ResultJourney  state: ResultState  title: string  provenance: string            // required — 'As of 15 Sep · from her September statement'  summary?: string  children: ReactNode           // the table, chart or move list  savedAt?: string              // 'saved' and 'sent' only  onSave?: () => void  onDownload?: (f: DownloadFormat) => void  onPrimary?: () => void}
+4.1 One primary per card, and it differs by journey
+journey
+Primary CTA
+Secondary pills
+proposal
+Send to Mr. Aggrawal →
+Save, Download
+review
+Fix it →
+Save, Download
+rebalance
+Approve both moves →
+Save, Download
+Layout follows the dock law: the secondary pills sit in an InlineActionRow, the dark CTA below them, and the composer below that. Three stacked rows. The CTA never replaces the composer.
+Save and Download are Pill size="md" tone="outline". The primary is the dark CTA on --gradient-dark-cta.
+4.2 The primary never fires directly
+onPrimary opens the confirm step — disclosure above the numbers, the compliance status rows, then the commit. Sending a recommendation under an advisor’s ARN is the moment they take responsibility for it, and they must see what the client will see first.
+state transitions: draft → saved on Save, which adds a Badge variant="meta" reading Saved · 16 Sep. saved → sent only after the confirm completes, at which point the primary is replaced by the success state — a drawn check, a timestamp, and a settlement line.
+
+Part 5 — Follow-up questions (#5, already exists)
+InlineActionRow + Pill, with one addition:
+InlineActionRow: {  label?: string                // NEW — default 'What you can ask next'  dismissible?: boolean         // NEW  children: ReactNode[]         // max 3 pills}
+The label turns a chip row from decoration into an invitation. dismissible matters because suggestion chips the user cannot get rid of are a documented anti-pattern — if the advisor ignores them twice, they should be able to clear them.
+Cap at three. A fourth follow-up is a sign the answer did not actually answer.
+These are inline, so they act on the answer just given and post as a new turn. They never answer a pending question — that is the dock’s job.
+
+Part 6 — InfoCard (new, #7)
+type InfoCardKind = 'fund' | 'manager'type ShelfStatus  = 'on-shelf' | 'not-on-shelf' | 'under-review'InfoCard: {  kind: InfoCardKind  name: string  provenance: string            // required  shelf?: ShelfStatus           // fund only  heroValue?: string            // fund only — 3Y return, Darker Grotesque  heroLabel?: string  facts: { label: string, value: string, locked?: boolean }[]  children?: ReactNode          // the rolling-return strip, holdings table}
+kind='fund' — name, AMC, category, the shelf badge via Badge variant="status" reusing the over/under/ok tones, hero return in the display face, the V7 rolling-return strip, then fact rows: TER, AUM, exit load, benchmark, turnover.
+kind='manager' — name, tenure, funds managed, AUM managed, managing since.
+The manager card earns its place through one thing: tenure against fund age. Render a small two-segment bar showing how much of the fund’s track record belongs to the current manager. That is what turns a number into a judgement — a three-year record under a manager who arrived last year is not that manager’s record. Without this the card is decorative and should not be built.
+Every performance figure is [PLACEHOLDER — fund data to supply] and renders visually locked. The existing unsourced 1Y/3Y numbers in the source fall under this too. Structure is ours to build; these numbers are not.
+
+Part 7 — DataTable (extension, #8)
+type ColumnKind  = 'text' | 'number' | 'percent' | 'currency' | 'badge' | 'bar' | 'sparkline'type ColumnAlign = 'start' | 'end'type SortDir     = 'asc' | 'desc' | 'none'type Density     = 'compact' | 'default'type Overflow    = 'fold' | 'scroll'Column: {  key: string  label: string  kind: ColumnKind  align?: ColumnAlign           // defaults: text→start, everything else→end  width?: number  sticky?: boolean              // exactly one column may be sticky  sortable?: boolean  hideBelow?: number            // viewport width at which it drops out}DataTable: {  columns: Column[]  rows: Row[]  density?: Density  overflow?: Overflow           // default 'fold'  sort?: { key: string, dir: SortDir }  onSort?: (key: string) => void  filters?: FilterSpec[]  expandable?: (row: Row) => ReactNode  rowActions?: SavedItemAction[]  maxRows?: number              // 'fold' only  emptyState: EmptyState  loading?: boolean}
+7.1 The rules that make this survive 375 pt
+Exactly one sticky column, and it is always the entity name. Without it the table is unreadable the moment it scrolls sideways. Enforce “exactly one” in the type, not in review.
+At most three columns visible beside the sticky one. Beyond that, horizontal scroll with a fade on the right edge and a one-time nudge on first render so the advisor knows there is more. A table that hides data with no signal is worse than a narrower table.
+Numbers align end, text aligns start, always. This is not a per-caller choice; the default derives from kind and should rarely be overridden.
+kind='bar' renders the sequential bar behind the figure at 10 % opacity. The cell reads as text first and the bar is a secondary cue. No categorical colour anywhere in a table.
+Sorting: one column at a time, cycling none → desc → asc. Multi-column sort is unusable on a phone. The active column shows a caret in its header; the others show nothing until tapped.
+expandable opens in place, not in a modal. The chevron lives in the sticky column, the detail block pushes the rows below it down, and the expanded row keeps its sticky cell aligned.
+overflow='fold' shows maxRows then a ghost footer — Show all 43. This is the pattern already in the review journey; keep it as the default because a 43-row table inside a chat thread is not a good idea.
+loading renders skeleton rows carrying live labels, not a spinner — Reading her September statement. The skeleton bar uses --color-track.
+
+Part 8 — OverlapView (new, #9) — and the matrix is not the default
+type OverlapViewMode   = 'pairs' | 'matrix'type OverlapProperty   = 'top10' | 'all-holdings' | 'sector' | 'market-cap' | 'style'OverlapView: {  mode: OverlapViewMode         // default 'pairs' on phone  funds: { id: string, name: string, inComparison: boolean }[]   // max 5  properties: { id: OverlapProperty, label: string, active: boolean }[]  cells: { a: string, b: string, pct: number }[]  onToggleFund: (id: string) => void  onToggleProperty: (id: OverlapProperty) => void  onChangeMode?: (m: OverlapViewMode) => void}
+8.1 Why pairs is the default
+A symmetric matrix of five funds is twenty-five cells, of which only ten carry information — the diagonal is meaningless and the upper triangle repeats the lower. At 375 pt those ten values do not fit legibly.
+pairs is the same information as a sorted list, and it reads at phone width:
+Parag Parikh Flexi ↔ HDFC Large Cap      62%  ████████Parag Parikh Flexi ↔ Motilal Midcap      31%  ████HDFC Large Cap     ↔ Motilal Midcap      18%  ██
+Sorted by overlap descending, so the problem pair is the first thing read. Each row is a ListRow variant="static" with the bar behind the figure. It scales to any number of funds, and it needs no horizontal scroll.
+matrix stays available for wide viewports and for export: sticky row headers, horizontally scrolling columns, lower triangle only, diagonal cells blank rather than 100 %, cells tinted on the four-step bronze ramp with the percentage always printed as text.
+8.2 The two controls
+Funds — a Pill-based row of the funds in the comparison with a remove affordance, plus + Add fund opening a bottom sheet with List variant="multi". The cap of five is stated in the sheet (Up to 5 funds), not silently enforced by a disabled button with no explanation.
+Properties — this is the query-chip pattern already specified for Fund Explorer, reused exactly:
+top 10 holdings ✕ · sector ✕ · + add property
+Removable pills showing what the overlap is computed on, so the advisor can see and change the basis of the number rather than trusting it blind. Reusing that component here is the reason it was worth building.
+8.3 Colour, and the edge cases
+Sequential bronze ramp, four steps, light to dark for low to high. No categorical colour — this is magnitude. Every cell prints its percentage, so the colour is never the only carrier.
+Fewer than two funds selected → Pick at least two funds to compare.
+No properties active → Pick at least one property to compare on. The matrix renders empty rather than defaulting to something the advisor did not choose.
+A fund against itself → blank cell. Never 100 %.
+Overlap unavailable for a pair → an em dash and a footnote naming why, not a zero. A zero and a missing value are different facts.
+
+Part 9 — Build order
+Pill loading state — three of the nine depend on it.
+ListRow + List with the legal-pairing table. This unlocks #3, #6 and the pickers inside #8 and #9.
+FileUpload.
+DownloadAction as a Pill wrapper.
+ResultCard, and the InlineActionRow label and dismiss props.
+DataTable.
+InfoCard.
+OverlapView — pairs first, matrix second.
+Items 1 and 2 are the ones worth getting exactly right; everything after them is assembly.
+Part 10 — Three questions for the team, not for design
+Can a sent proposal be deleted, or only archived? This decides whether delete appears in the saved-items menu.
+What happens to an uploaded client document — where is it stored, for how long, and who can see it? The upload empty state should say so.
+Where does fund performance data come from? Every figure in InfoCard, DataTable and OverlapView is a placeholder until this is answered, and none of them should reach a client-facing screen before then.

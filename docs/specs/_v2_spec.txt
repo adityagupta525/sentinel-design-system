@@ -1,0 +1,277 @@
+Table of Contents
+TOC \o "1-2" \h \z \u
+Sentinel v2 — Chat-led Journeys, Artifacts & Charts
+Reference pack for the Figma agent. Attach this file with the command.
+Design system: unchanged. The locked screens — Home / Default, Chat / Drift, Client Review — remain the visual source of truth. Frame 375 × 812 pt. Cream/sand surfaces, serif display for hero text, sans for UI, existing card radius, hairline dividers, peach callout, black pill CTA, OVER CEILING pill, bronze→sand bar. No new hex values, fonts, radii or shadows except the one addition named in §4.3, which is approved.
+
+Part 1 — Critique of the four screens
+1.1 Home / Default — prompt templates regressed
+The three suggestion rows were replaced with Start Meera's risk profile, Build a ₹25 lakh proposal for Meera, Check what Meera already holds. All three point at one client, which reads as a demo script rather than a product.
+The original trio was better because each row demonstrates a different class of capability:
+Row
+Capability class
+Why it belongs on the landing screen
+Show me Diwali offer from HDFC AMC
+External intelligence — fetch, interpret, act
+Proves Sentinel knows the market, not just the book
+Build a proposal for Mr. Amit Aggrawal
+Generative — produce a deliverable
+Proves it makes something the advisor can send
+Why did Sharma's portfolio drift this quarter?
+Diagnostic — explain a cause
+The hardest question an advisor gets asked, and the strongest demo
+Restore all three verbatim, including Mr. and the Aggrawal spelling. Journeys for each are in Part 3.
+1.2 Proposal chat screen — dead space and wrong chip affordance
+Two defects.
+Vertical dead space. How much is going in? sits at the top; the chips sit ~440 pt below it. The thread grows top-down while the interactive layer is docked to the bottom, so a short message leaves the screen looking broken or still loading.
+Fix: bottom-anchor the thread. Content grows upward from the composer, the way a messaging app does. With one message the pair sits just above the chips; as the thread lengthens it scrolls off the top. This also puts the newest message closest to the thumb, which is where the reader’s eye already is.
+Chevrons on answer chips. ₹10 lakh > reads as navigate elsewhere. A chevron is a disclosure affordance and it already belongs to the Home suggestion rows. A choice chip must not carry one.
+Fix: answer chips carry no chevron. On select, a 12 pt check replaces nothing — it fades in at the leading edge as the chip fills. Reserve the chevron for the Home rows and for Open on an artifact card footer.
+Also: the ₹ prefix sits inside the field to the left of the placeholder, so it reads as part of the placeholder string. Set it as a fixed prefix in its own 20 pt slot with a hairline between prefix and input, so it stays put while text is typed.
+1.3 Client Review — left the conversation
+The screen is correct in isolation and wrong in the product. It has a client header, no chat context, no composer, and no way back. In a chat-led app a result is never a destination you get stranded in.
+Fix: this becomes an artifact (§2). It appears in the thread as a card; tapping it opens this full-bleed canvas with a ‹ Back to chat pill in the header slot and a docked composer at the bottom of the canvas so the advisor can keep asking questions about what is on screen. Nothing about the card’s visual treatment changes — only its framing and its exits.
+It is also missing every chart. Charts are specified in §4.
+1.4 Proposal Builder — two competing progress models
+The 1 Client — 2 Allocation — 3 Funds — 4 Review stepper is a wizard pattern. In a chat-led product the conversation is the stepper. Running both means the user is told where they are twice, in two different languages, and the wizard implies a Back button the chat does not have.
+Fix: delete the stepper from the chat. Inside the proposal artifact canvas, replace it with a Decisions strip — a read-only horizontal summary of what has been settled (₹25 L · 6 funds · Moderate · 3 months), each token tappable to reopen that one question in the chat. Same information, honest about the model, and more useful because it is editable.
+Further defects on that screen:
+Header pill reads Proposal instead of Sentinel. The pill is the app’s identity, not a page title. Keep Sentinel; the word Proposal belongs to the artifact’s own title row.
+SUMMARY eyebrow sits above a card whose first line is the summary. Drop the eyebrow.
+34% > 15% uses > as an arrow while > is also the chevron elsewhere. Use →, or better, the dumbbell mark from §4.2 so the size of the change is visible and not just stated.
+No explanation anywhere. Every fund and every percentage needs a tap-to-explain, because the advisor will be asked “why this fund” by the client within a minute of sending it.
+Send proposal to Sunita fires with no preview and no disclosure. An advisor cannot send a recommendation to a client without seeing exactly what the client will see. Add a Client-view preview artifact and a disclosure line before the send.
+1.5 What is already right — keep it
+The restraint, the warm surfaces, the density of the holdings rows, the single black CTA per screen, the eyebrow labels, the peach callout carrying bad news without turning red. The palette does something most fintech does not: it makes a compliance breach legible without alarm. Do not trade that for conventional dashboard colour.
+
+Part 2 — The Artifact system (the core upgrade)
+The largest gap between these screens and a 2026-grade AI product is that results have nowhere to live. Right now a result either sits as loose text in the chat or takes over as a standalone screen. The pattern that solves this is the artifact: a result is an object in the conversation that can be opened, kept, revised and shared.
+This is the dominant direction in AI interface design — the “generative UI” pattern, where the model returns components rather than prose. Reference reading is listed in Part 6.
+2.1 Artifact card (in-thread) — component A1
+Lives in the message stream, full content width minus the 16 pt gutter. Built from the existing white card.
+┌─────────────────────────────────────┐│ ▸ DRIFT ANALYSIS      · 15 SEP      │  eyebrow row (existing eyebrow style)│ Sharma's equity is 9 points over    │  title 16/24 medium│                                     ││   [ compact chart — 96 pt tall ]    │  the preview, never scrollable│                                     ││ ─────────────────────────────────── │  hairline│  Open ›      Why?      Share        │  footer action row, 44 pt└─────────────────────────────────────┘
+Rules: - Preview height is fixed at 96 pt. An artifact card never scrolls inside the thread and never shows a table — a table preview shows its top 3 rows and a +40 more line. - The footer row is always three slots: primary (Open ›), explain (Why?), share. Missing actions leave the slot empty rather than re-centring the others. - Tapping the card body or Open › pushes the canvas. Tapping Why? opens the explainer sheet without leaving the thread. - Variants: chart, table, document, message-draft, comparison.
+2.2 Artifact canvas (full screen) — component A2
+Header: ‹ Back to chat pill in the left slot, artifact title centred, ⋯ on the right (Share, Export PDF, Duplicate, Revise).
+Body: the full result, scrollable, at the density of the existing Client Review screen.
+Footer: the docked composer, placeholder Ask about this — so a follow-up question is asked in front of the thing being discussed, and the answer appends to the thread behind it. This is the single detail that makes the app feel intelligent rather than sectioned.
+Below the composer, up to three contextual chips generated from what is on screen: on the drift canvas, Fix it, Show the 5 we skipped, Why is 12% bad?.
+2.3 Artifact rail — component A3
+Artifacts persist. Add a horizontally scrolling rail of 64 pt mini-cards, reachable from the hamburger drawer as Saved work, grouped by client. This is what makes the app a tool rather than a session — the advisor’s Monday-morning answer to “what did I build last week”.
+2.4 Query chip — component A4
+When the advisor types a sentence, show how Sentinel parsed it as removable pills above the answer:
+large cap ✕ · TER < 0.6% ✕ · beat benchmark 3Y ✕ · on your shelf ✕
+Each pill removable, and a + Add filter ghost pill. This does three jobs at once: it proves comprehension, it makes the query editable without retyping, and it teaches the advisor what Sentinel can filter on. It is the highest-value component in this document and nothing in the current screens does its job.
+2.5 Response states — component A5
+The current design has one state: finished. An advisory tool needs six. Grounded in the AI-chat anatomy reference in Part 6.
+State
+Treatment
+Queued
+Sparkle label + a 3-dot pulse, 200 ms–2 s
+Thinking
+Sparkle shimmer + one live line of what it is doing (Checking 43 holdings against her mandate…)
+Reasoning
+Collapsible How I got this › — closed by default, opens to the steps and sources. Trust-critical for a regulated product; this is the component that survives a compliance review
+Streaming
+Text renders progressively with a thin 2 pt caret at the end. Auto-scroll releases the moment the user scrolls up, and does not recapture
+Complete
+Actions revealed, timestamp set
+Error / Stopped
+Specific cause, partial output kept, exactly one recovery action (Try again / Continue)
+Do not fake typing delay on text that has already arrived, and never hide a Stop.
+
+Part 3 — The journeys
+Copy below is final. Chips are listed primary-first.
+3.1 Journey A — Diwali offer from HDFC AMC
+The capability this proves: Sentinel reads the market, matches it to the book, and drafts the outreach. Three artifacts in one conversation.
+A1 · Entry User: Show me Diwali offer from HDFC AMC Sentinel, thinking: Checking AMC circulars from the last 14 days… Sentinel: HDFC AMC has two things running for Diwali. One is worth your time.
+Artifact card A1 / document — eyebrow AMC OFFER · VALID TO 04 NOV, title Festive switch window, preview: two-row list.
+A2 · The offer canvas (on Open ›) Title HDFC AMC — Diwali 2026 - Stat tile row: Exit load Nil on switches within HDFC funds · Window 19 Oct – 04 Nov · Applies to 11 schemes - Body: Switches between HDFC equity schemes carry no exit load for the window. STT and capital gains still apply — this is a load waiver, not a tax waiver. - Peach callout C11: eyebrow WHAT IT DOES NOT COVER, body New money into HDFC funds gets no benefit. Neither do switches out to another AMC. Twelve of your clients would read this as "free to move" — it is not. - Second offer, de-emphasised in a grey card: NFO — HDFC Manufacturing Fund. New scheme, no track record. Not on your compliance shelf. with the NOT ON SHELF pill. - Chips: Who does this help? (primary) · ? Is this forwardable as-is? · Show the 11 schemes
+A3 · Client match — the intelligent turn User: Who does this help? Sentinel: Fourteen clients hold an HDFC equity fund that you have already flagged for a switch. For nine of them the waiver covers the whole move.
+Artifact card → canvas Who the window helps - Concentration-style ranked table C13: CLIENT · HOLDS · TO SWITCH · SAVED, 9 rows, SAVED column carrying a sequential bar behind the figure (§4.1). Footer 9 of 14 fully covered · 5 partly · total saved ₹1,18,400 - Below the table, the honest line: For the other five the switch crosses to another AMC, so the waiver only covers the first leg. - Chips: Draft a message for the nine (primary) · Show the five · Sort by amount saved
+A4 · The draft Artifact card A1 / message-draft — eyebrow WHATSAPP DRAFT · 9 RECIPIENTS, title Festive switch — no exit load, preview: first two lines of the message.
+Canvas shows the message in a phone-bubble mock at true width, an editable body, a Personalise with first name toggle, the mandatory disclosure block (Mutual fund investments are subject to market risk…), and the recipient list as removable pills. CTA Send to 9 clients →. Above it, chips: ? What must the disclosure say? · Send to myself first
+Design note. The disclosure is not decoration. An offer forwarded without it is a compliance incident, so it renders as a locked block inside the draft — visible, not removable, in the peach callout treatment.
+3.2 Journey B — Why did Sharma’s portfolio drift this quarter?
+The strongest demo in the product, because it answers a why and nothing on the market does this well. The insight: drift has causes, and the advisor is only responsible for some of them.
+B1 · Entry User: Why did Sharma's portfolio drift this quarter? Sentinel, thinking: Comparing 30 Jun against today across 18 holdings… Sentinel: Equity went from 62% to 71% against a 60% target. Three things moved it, and only one of them was a decision.
+Artifact card A1 / chart — eyebrow DRIFT ATTRIBUTION · Q2 → Q3, title 62% → 71%, mostly the market, preview: the compact attribution bar.
+B2 · Attribution canvas — the hero artifact Title What moved Sharma's equity
+Diverging attribution bar (§4.2), centred on the 60% target line:
+Target                         60%Small-cap rally            +6.1  ████████His own top-up in July     +3.4  █████Your Nov switch out        −1.2  ██        (de-emphasised — this one was intentional)Debt fund NAV drift        +0.7  █                          ─────Today                          71%
+Rules: the bar reads top-to-bottom as a chain, each contribution 20 pt thick with a 2 px surface gap, values direct-labelled at the tip, one hue only, and the intentional contribution rendered in the de-emphasis grey with a hairline outline so “what you did” separates from “what happened to you” without a second colour.
+Beneath it: Two-thirds of the drift is the small-cap rally. You did not cause this, and selling into it has a cost — that is the trade-off below.
+Stat tile row C21: Cost of doing nothing ₹4,40,000 in a 20% fall · Cost of fixing it now ₹11,200 exit load + STCG · Drift if left to Dec ≈ 74% with a sparkline.
+Chips: Fix it (primary) · ? Why is 71% a problem at all · Show me the 18 holdings
+B3 · Holdings detail — the existing Client Review canvas, now reached properly from the chat and carrying the dumbbell chart from §4.2.
+B4 · Rebalance — the two-move response already specified, reached from Fix it, ending in the Approve both moves → CTA and a preview of what Sharma will be told.
+3.3 Journey C — Build a proposal for Mr. Amit Aggrawal
+Conversation unchanged from the existing spec (How much is going in? → How many funds should she hold? → the 25% ceiling constraint → the six-fund table). Four changes:
+Thread is bottom-anchored (§1.2). No dead space on the first question.
+Chips lose their chevrons; the ₹ prefix gets its own slot.
+The stepper is gone. The Decisions strip (§1.4) sits at the top of the proposal canvas: ₹25 L · 6 funds · Moderate · over 3 months, each token tappable to reopen that question.
+Before the CTA, a Client-view preview artifact: exactly what Amit receives — the fund table, the SIP schedule, the disclosure block, the advisor’s name and ARN. CTA becomes Send to Mr. Aggrawal →, and above it the chip ? What Amit will and will not see.
+The proposal table itself gains a WHY column carrying a 16 pt ? glyph per row, opening a one-paragraph explainer sheet per fund. Advisors do not send what they cannot defend.
+3.4 Journey D — Fund Explorer, chat-led
+Not a search screen. A comparison engine that happens to accept sentences.
+D1 · Entry Entry from the Fund explorer chip, or typed: large cap under 0.6% TER that beat its benchmark three years running
+Sentinel renders the Query chip row A4 first: > large cap ✕ · TER < 0.6% ✕ · beat benchmark 3Y ✕ · on your shelf ✕ · + Add filter
+Note the fourth pill: Sentinel added on your shelf itself, and says so — I have limited this to your compliance shelf. Remove that pill to search all 1,412 schemes. A filter the system adds on the user’s behalf must be visible and removable, never silent.
+Sentinel: Four funds clear all four. Two of them clear it comfortably.
+D2 · Shortlist artifact — A1 / table → canvas Four funds clear this Table C13: FUND · TER · 3Y · 5Y · VS BENCH · AUM, 4 rows, the 3Y column carrying a sequential bar behind each figure. Filter chips above: All 4 · Comfortable (2) · Marginal (2). Each row has a leading checkbox for comparison. Selecting two reveals a docked Compare 2 › bar. Chips: Compare the top two (primary) · Loosen TER to 0.8% · Which of my clients should hold these?
+D3 · Compare canvas - Dumbbell chart (§4.2), one row per fund: benchmark return as the hollow dot, fund return as the filled dot, the gap as the connecting bar. Instantly shows which fund beats its benchmark by more, which no table of numbers does. - Table beneath: TER · AUM · Manager tenure · Exit load · Turnover · Top-10 concentration, differences bolded. - Plain-English verdict, not just numbers: Parag Parikh is the cheaper of the two and its manager has run it for nine years. HDFC Large Cap beat its benchmark by more, but it changed managers in 2024, so its three-year record is not one person's work. This paragraph is the product. A table anyone can build; the reading is what the advisor is paying for. - Chips: Add a third · Which suits a 54 Moderate? · Save this comparison
+D4 · Fund one-pager Hero number (3Y return, serif display), sparkline beneath, rolling-return strip (§4.2), top-10 holdings table, shelf badge (ON YOUR SHELF / NOT ON SHELF, reusing the OVER CEILING pill mechanics), and a Who this fits line tied to a risk band.
+D5 · Reverse lookup — the move that sells the product User: Which of my clients should hold this? Sentinel: Of your 512, eleven have room for it and match its risk band. Four already hold something that overlaps it by more than 60%. Artifact: ranked client table with a ROOM column and an OVERLAPS WITH column. Chips: Draft proposals for the eleven · Show the four overlaps
+
+Part 4 — Charts (validated)
+4.1 The colour rule — why there is no donut
+The warm palette was tested as a categorical chart palette with a validator, not by eye. Results:
+Candidate
+Verdict
+Existing bronze→sand ramp #A9743F · #C9A77C · #E0CDB6
+FAIL — adjacent pair ΔE 11.4 for normal vision (15 is the floor), all three below the chroma floor, two below 3:1 contrast
+Muted earthy trio #B45F3C · #6E7B4B · #4A6072
+FAIL — ΔE 3.8 under protanopia. Olive and terracotta are the same colour to a red-weak reader
+Four-hue muted set
+FAIL — ΔE 1.5 under protanopia
+Saturated set #C2410C · #0F766E · #4F46E5
+Passes separation — and destroys the cream-and-sand identity
+Conclusion: colour in Sentinel never encodes identity. This is a constraint, not a compromise — it forces every chart into forms that are more honest anyway.
+The three jobs colour is allowed to do:
+Magnitude — one hue, light to dark. The existing bronze ramp, four steps: #E0CDB6 · #C9A77C · #A9743F · #7A4E28. Monotonic in lightness, so it survives greyscale and print.
+Status — the existing trio only: peach/terracotta over, sand/brown under, pale green Close enough. Never reused as a series colour. Always shipped with a word, never colour alone.
+Emphasis — one bronze mark against warm-grey marks, when one item is the story. The most useful and most underused form.
+Identity is carried by direct labels. Where two touching segments must be told apart without labels, the second channel is a 45° hatch texture, not a second hue.
+Consequences: no pie, no donut, no multi-hue stacked bar, no dual-axis chart, ever. The existing allocation bar stays exactly as it is — it works because Equity, Debt and Cash are labelled with values directly above it.
+4.2 The chart set
+Fixed mark specs across all of them: bars ≤ 24 pt thick with a 4 pt rounded data-end and a square baseline end; lines 2 pt; markers ≥ 8 pt with a 2 px surface ring; area fills at 10% opacity; gridlines hairline, solid, one step off the surface; a 2 px surface gap between any touching marks. Text always in text tokens, never in the data colour.
+ID
+Chart
+Job
+Where it goes
+V1
+Stacked bar, direct-labelled (existing)
+Part-to-whole
+Allocation, everywhere. Unchanged
+V2
+Dumbbell
+Before → after per item
+Agreed vs actual per bucket; fund vs benchmark in Compare. Hollow dot = target/benchmark, filled dot = actual, connecting bar = the gap. One hue, two shades
+V3
+Diverging attribution bar
+Contributions to a change
+The Sharma hero artifact. Centred on the target line, chain reading top-down, intentional contributions in de-emphasis grey with a hairline
+V4
+Ranked sequential bar
+Compare magnitude, low→high
+Concentration, client-match SAVED column, 3Y column. Bar sits behind the figure in a table cell, at 10% opacity, so the cell reads as text first
+V5
+Stat tile + sparkline
+One headline number
+Cost of doing nothing ₹4,40,000. Label sentence-case, value in the serif display face, delta and sparkline beneath. Never a one-bar bar chart
+V6
+Meter
+A single ratio against a limit
+31% held against a 25% ceiling. Same-ramp track, limit as a hairline tick. Never a two-slice pie
+V7
+Rolling-return strip
+Trend over time, one series
+Fund one-pager. Single line, 2 pt, endpoint labelled only
+V8
+Table with embedded bars
+More than ~7 classes that all matter
+The 43 holdings. Top 8 shown, tail folded into +35 smaller — never more hues
+Hover and tap: every chart mark gets a tap target larger than the mark and a tooltip. Every chart has a Table view toggle in the canvas ⋯ menu, so no value is ever gated behind a colour.
+4.3 The one approved addition
+Two tokens, both derived from what already exists:
+data/track — the existing sand at 40%, for meter and bar tracks.
+data/de-emphasis — a warm grey at the same lightness as the mid bronze, for the “this was intentional” marks in V3 and for context series. It must be visibly grey next to the bronze, and it must not read as a third brand colour.
+Nothing else is added.
+
+Part 5 — Motion
+5.1 Where each tool belongs
+Figma shipped native timeline animation at Config 2026 — keyframes, cubic easing (the same easing model Rive uses), loop modes, an AI agent that generates a sequence from a text prompt, and export to MP4, WebM, GIF and animated SVG. The limit is that it animates at the artboard level: it plays the same way every time.
+Tool
+Use it for
+Do not use it for
+Figma Motion (native)
+Everything in §5.2. Screen transitions, artifact reveal, chip morph, stagger, the count-up. All of it is deterministic
+Anything that has to respond to real data or input
+Rive (rive.app)
+The sparkle thinking state (a state machine that idles, thinks, resolves), and data-bound bar fills where the bar length comes from the real number. State machines, data binding, runtimes for iOS/Android/Flutter/React Native
+Static screen transitions — overkill
+Lottie / Lottie Creator (lottiefiles.com)
+The one-shot success tick after Approve both moves. JSON, tiny, runs everywhere
+Interactive states; its state machines are far weaker than Rive’s
+Jitter (jitter.video)
+Fastest path from a Figma frame to a shareable motion preview for stakeholder sign-off
+Production assets
+Motion (motion.dev, formerly Framer Motion) / GSAP
+Hand to the engineers as the implementation target — Motion covers React, JS and Vue at a small footprint. Record which easing curve each Figma transition uses so the build matches
+Design-time work
+Recommended pipeline: design and animate in Figma Motion, export the sparkle and the data-bound bars to Rive, hand engineers the Figma Motion easing values against Motion or GSAP.
+5.2 The motion spec
+Calm and premium. Nothing bouncy, no spring overshoot. Easing cubic(0.2, 0.8, 0.2, 1) unless stated.
+Moment
+Spec
+Screen push / pop
+320 ms, ease-out
+Chip row entrance
+Stagger 60 ms each, fade + 8 pt up
+Chip → user bubble
+Selected chip morphs into the bubble, 280 ms; unselected chips fade 150 ms. The single most important transition in the app — it makes the answer feel taken rather than submitted
+Question collapse
+Height to the one-line label, 240 ms
+Thinking
+Sparkle shimmer loop 600 ms, live status line crossfades 200 ms per update
+Streaming text
+Real progressive render, 30–60 ms paint batches. Caret 2 pt, blink 1 s. First token under 800 ms or show the thinking state instead
+Reasoning disclosure
+Height 260 ms, chevron rotates 90°
+Artifact card entrance
+Card scales 0.96 → 1.0 with fade, 300 ms, 120 ms after the text above it settles. The chart inside animates only after the card has landed
+Artifact card → canvas
+Shared-element transition: the card’s chart is the same node, scaling into place, 380 ms. This is what sells the artifact as an object rather than a link
+V1 bar fill
+Segments stagger 120 ms, 480 ms total, ease-in-out
+V2 dumbbell
+Hollow dot appears, then the bar draws toward the filled dot, 400 ms — the direction is the story
+V3 attribution
+Contributions draw in sequence top-down, 200 ms each, then the Today total counts up
+Hero number count-up
+0 → 54 over 600 ms, ease-out, serif face. Badge fades in after it lands
+Meter V6
+Track first, then fill to value 400 ms, then the limit tick snaps in with a 1-frame emphasis
+Sticky CTA
+Rises from below the safe area 320 ms, once the result has finished rendering
+Keyboard
+250 ms ease-out, composer travels with it
+Bottom sheet
+300 ms ease-out, backdrop 40% charcoal
+Press feedback
+Scale 0.98, 120 ms, on every tappable element
+Reduced-motion: replace every transform with a 150 ms crossfade, keep the count-up but jump to the final value, and never remove the state change itself.
+
+Part 6 — Where to look, and what to take
+Named sources, with what specifically to pull from each. This list is deliberately short and specialist — general galleries have poor signal for this problem.
+6.1 Pattern and flow references
+Mobbin — https://mobbin.com 600,000+ screens from 1,200+ apps across iOS, Android and web, captured as full flows rather than marketing shots. Take: search AI, assistant, chat and study the composer anatomy — where the chip row sits relative to the composer, how attachment and send share the bar, what happens at keyboard-up. Then search portfolio and holdings for table density at 375 pt. Do not take their colour or type; take the spacing decisions.
+11FS Pulse — https://11fs.com/products/11fs-pulse The only one of these built specifically for financial services: 24,000+ recorded user journeys from 900+ banking and fintech brands across 30+ product categories and 50+ countries, plus a Jobs-to-be-Done benchmarking tool and scored journey reports. Subscription, demo-gated. Take: the consent and confirmation patterns — how regulated apps disclose, preview and confirm an action that moves a client’s money. This is exactly the gap in §1.4 (Send proposal to Sunita with no preview) and §3.1 (the locked disclosure block). This is the source most worth the subscription for Sentinel specifically, and the one least likely to be already on your list.
+Page Flows — https://pageflows.com Video recordings of user journeys, annotated step by step. Take: timing. A screenshot cannot tell you how long a transition runs or how a stagger feels. Watch onboarding and upgrade recordings with a stopwatch and calibrate §5.2 against what real products actually ship — most designers over-animate by roughly double.
+Refero — https://refero.design 110,000+ web and iOS screens, 6,000 flows, with AI search. Take: empty states, filter UI and comparison layouts — directly applicable to the Fund Explorer shortlist and compare canvases (§3.4).
+UI Garage — https://www.uigarage.net Weekly-curated mobile patterns; skews toward emerging rather than settled conventions. Take: fresh card and chip treatments. Use it to check that the artifact card in §2.1 does not look like 2023.
+6.2 Interface-pattern reading
+Designing AI chat interfaces: anatomy, patterns, pitfalls — https://www.setproduct.com/blog/ai-chat-interface-ui-design The source behind §2.5. Nine regions of a chat layout, the six assistant-message states, streaming rules (incremental parse, 30–60 ms paint batches, auto-scroll release), and an anti-pattern list. Take: the six response states and the streaming rules, verbatim. Also its warning that SMS-style bubbles undercut a professional tool — relevant to how much bubble treatment the Sentinel assistant messages should carry. Currently the assistant text is un-bubbled and left-aligned, which is correct; keep it.
+The landscape of generative UI in 2026 — https://dev.to/blove/the-landscape-of-generative-ui-in-2026 Context for why artifacts are replacing prose answers.
+6.3 Motion references
+Figma Motion vs Rive, what’s actually different — https://www.rivemasterclass.com/blog/figma-motion-vs-rive The basis for §5.1. Figma Motion’s artboard-level model versus Rive’s state machines, data binding and runtimes.
+Figma Config 2026 recap — https://explainx.ai/blog/figma-config-2026-complete-recap-motion-code-shaders-ai-2026 What shipped natively, so the agent builds with current features rather than plugins.
+Rive — https://rive.app · LottieFiles Featured — https://lottiefiles.com/featured · Motionographer — https://motionographer.com Take from Motionographer: staging and timing taste from film and broadcast, where a sequence has to read in one pass. Useful specifically for §5.2’s artifact entrance, where three things animate in order and must not compete.
+6.4 How to use this list
+The method, in order: find the pattern on Mobbin or Refero → watch its timing on Page Flows or 11FS Pulse → note the structural decision, not the styling → rebuild it in Sentinel’s tokens. Nothing is copied. A pattern that cannot survive being redrawn in cream, sand and bronze with no second hue is the wrong pattern for this product.
+
+Part 7 — Deliverables
+Pages: Components, Tokens, Home, Journey A — Diwali, Journey B — Drift, Journey C — Proposal, Journey D — Fund Explorer, Charts, Prototype.
+Frames named A / 01 Entry, A / 02 Offer canvas, B / 01 Entry, and so on.
+One prototype, one start point at Home, flow left to right, transition durations annotated on the connectors.
+Before finishing: place Chat / Drift beside B / 01 Entry, and Client Review beside B / 03 Holdings, and fix every deviation in spacing, type, colour and card treatment until the pairs are indistinguishable.
