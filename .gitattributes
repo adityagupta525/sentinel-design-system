@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.png binary
+*.docx binary
+design-system/_ds_bundle.js linguist-generated=true
+design-system/index.js linguist-generated=true
+design-system/index.d.ts linguist-generated=true

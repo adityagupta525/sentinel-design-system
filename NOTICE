@@ -1,0 +1,36 @@
+# Third-party notices
+
+## Icons
+
+Four glyphs — `file`, `circle-check`, `download`, `loader-circle` — are imported verbatim from
+**Lucide** (https://lucide.dev), licensed **ISC**:
+
+> Copyright (c) 2022 Lucide Contributors
+>
+> Permission to use, copy, modify, and/or distribute this software for any purpose with or without
+> fee is hereby granted, provided that the above copyright notice and this permission notice appear
+> in all copies.
+>
+> THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+> SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+> AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+> WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+> NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+> OF THIS SOFTWARE.
+
+The remaining six stroke glyphs (menu, plus, chevron-right, attach, arrow, sparkle) originate in the
+product's own Figma source and are not Lucide-derived. `design-system/readme.md` logs this split as
+open debt (contradiction 38): the two origins sit on different grids and are to be reconciled at the
+app's next visual refresh.
+
+## Fonts
+
+Served from the Google Fonts CDN, both under the SIL Open Font License 1.1:
+
+- **Urbanist** — Corey Hu. All UI text, weights 400 / 500 / 600 / 700.
+- **Darker Grotesque** — Gabriel Lam. The display face, Medium (500) only.
+
+## Development dependencies
+
+React, ReactDOM, Babel (standalone), d3-scale and d3-shape are used by the preview pages and the local
+dev server only. They are not redistributed as part of this design system.
