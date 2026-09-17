@@ -174,6 +174,73 @@ the file — collect the raw hex, px and font-family literals a component still 
 what `_adherence.oxlintrc.json` forbids — so the index can report adherence per component. Until then,
 treat `pages/_index.json` as hand-maintained and do not regenerate it.
 
+### F-9 · The 11.5px debt was not paid, it spread — and it is no longer alone
+First output of the `sentinel-craft` scale pass: 11 distinct off-token values across 32 uses in 82
+components. Most are correct and are listed under *Considered and rejected* below. Two are not.
+
+`guidelines/contradictions.md` line 22 already logs this one:
+
+> | 22 | One-off value | Home jump rows, Drawer, FundExplorer, Offer | `11.5px` font size — only
+> non-integer size in the system |
+
+Both halves of that row are now out of date.
+
+**It moved.** None of the four surfaces it names still carry it. Today `fontSize: 11.5` sits in
+`chat/MessageActions.jsx:13`, `data/ChartLegend.jsx:18`, `data/ChartLegend.jsx:19`,
+`data/ChartLine.jsx:102`, `data/ChartLine.jsx:139`, `forms/SearchField.jsx:15`,
+`lists/ListRow.jsx:37` and `lists/ListRow.jsx:49` — eight uses across five components, and the chart
+family, which was built after the contradiction was logged, inherited it. `readme.md:231` even
+specifies it for the legend: *"optional value right-aligned in `--color-muted`, 11.5px"*.
+
+**It is not the only one.** `data/ChartLine.jsx:103` renders the series name under the end label at
+`fontSize: 10.5`, a second non-integer size.
+
+**The two documents disagree, and that is the root cause.** `readme.md:44` lists the sizes as
+*"10, 11, 11.5, 12, 13, 14, 15, 16, 18"* — 11.5 among them, legitimate. `contradictions.md` 22 calls it
+a one-off to remove. `tokens/typography.css` publishes neither 11.5 nor 10.5, so every use hardcodes a
+number, which is exactly what the ramp's own header forbids: *"a component now asks for a role instead
+of a number."*
+
+**This needs a ruling, not a patch.** Either 11.5 is a real step and the token layer publishes
+`--text-11-5` with a role, and 10.5 is snapped to it or to `--text-10`; or it is debt and the eight
+uses move to `--text-11` or `--text-12`. The second changes how five components look, so it is a
+decision, not a fix. Until then nothing here is *wrong* — it is undocumented in the one place a
+component reads.
+
+### F-10 · Two dimensions the vocabulary does not carry
+`spacing.css` publishes a named height for every box in the product — 32 filter chip, 36 chip, 42 icon
+button, 44 touch floor, 46/52/56 rows, 48 CTA. Two boxes are outside it:
+
+- `actions/ClientChip.jsx:9` — `height: 28`
+- `chat/ResponseFeedback.jsx:32,36` — `width: 28, height: 28`
+
+and one inset is off all three spacing tiers:
+
+- `cards/DataTableCard.jsx:20,25` — `padding: '9px 0'`
+
+Low severity and none of it is visible as a defect. It matters because the token file's promise is that
+a box asks for a named height; three that do not are three that will drift when the row rhythm is next
+tuned. A `--h-chip-sm: 28px` and moving the table row to `--space-10` would close it.
+
+> Both components with `28` sit inside `Pressable`, so the 44pt target is intact — the visual box is
+> small, the hit area is not. Verified, not assumed.
+
+---
+
+## Considered and rejected
+
+From the same pass. Each was measured, looked at, and deliberately left alone.
+
+| Location | Candidate | Rejected because |
+| --- | --- | --- |
+| `cards/ArtifactCard.jsx:35,36,76,77` | `96` is off every spacing tier | It is the documented peek height. The component's own header: *"PEEK IS 96px, FIXED — recognition, not reading"*, with the reasoning for why a taller card would eat the thread |
+| `chat/StepTrace.jsx:50`, `chat/ProgressTrace.jsx:33` | `left: 9` is off-scale | Optical alignment: it centres a 1px spine under a node. An offset that centres is not spacing, and rounding it would visibly misalign the trace |
+| `shell/ScreenBackdrop.jsx:7,8` | `320`, `93`, `105`, `120` | Radii and offsets of the two soft auras. Decorative geometry, not a spacing relationship; the values are the gradient |
+| `shell/HomeIndicator.jsx:5` | `134` | The iOS home indicator bar is 134pt wide. A platform constant, not ours to round |
+| `shell/StatusSpacer.jsx:10` | `1.5`, `11`, `22` | Interior geometry of a 16×12 battery glyph drawn at sub-pixel precision. Icon drawing, not layout |
+| `tokens/spacing.css` | Flatten `--space-2/3/5/13/14` onto 8pt | The file names them exceptions with stated uses — a 2px rail, a 13px pill inset, 14px card padding. Flattening restyles every card and every chip |
+| `actions/Pressable.jsx` | Press at `scale(0.96)`, per common guidance | `--press-scale` is 0.98, `--press-scale-icon` 0.94, set in the token layer and documented in `readme.md` |
+
 ---
 
 ## Resolved
