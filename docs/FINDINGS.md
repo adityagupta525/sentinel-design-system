@@ -247,6 +247,29 @@ outside the system are now inside it.
 > One row still measures 55 against its siblings' 56. That is content-driven, not the padding, and it
 > is left recorded rather than chased.
 
+### F-11 · `StickyCTA` is dead, superseded, and still public — *deprecated, not deleted*
+Found by measuring where every component is actually rendered rather than by reading the list: 61 of
+85 appear on a group board, 19 on a spec page, 2 only inside a UI kit, and three nowhere at all.
+
+Two of the three are fine. `IconInfo` is internal to `InfoDot` and `MotionGuard` is internal to
+`Pressable`; neither is a component a designer browses for.
+
+`StickyCTA` is the third, and it is dead. Nothing imports it, nothing renders it, and its own header
+has said so since v3:
+
+> C17 · sticky primary CTA wrapper. **In v3+ the Dock's cta slot replaces this.**
+
+It nevertheless ships in the barrel and in the bundle, so a team handed this library can find it and
+use it — and what they would get is a wrapper that predates the dock law, with no chips row above and
+no composer below, which is the layout rule 3 exists to prevent.
+
+**Deprecated in both the source and the contract, not deleted.** Removing an export is an API break,
+and it should be a decision someone takes on purpose rather than something that vanishes under a
+consuming team. The `.d.ts` now carries `@deprecated` with the one-line replacement.
+
+**Open question for the owner:** delete it before the dev handover, or keep it deprecated for a
+release? Nothing depends on it either way.
+
 ---
 
 ## Considered and rejected
