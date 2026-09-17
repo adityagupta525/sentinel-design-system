@@ -14,7 +14,12 @@ import { ChartReadout } from './ChartReadout.jsx';
    the client's own series (6.59 / 7.24) and --color-muted for the benchmark (6.26 / 6.88), which also
    separates the two from each other. The old muted (--color-data-deemph, 2.52) drew an invisible line. */
 const FONT = 'var(--font-ui)';
-export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', target, width = 311, valueFormat = (v) => `${v}%`, xFormat = (x) => String(x), scrub = false, run = true, domain }) {
+/* One decimal, because every figure in this product carries one — 18.4%, 12.1%, −14.2% — and because
+   a default of `${v}%` printed 14.600000000000000075 on the fund card the first time a caller passed a
+   computed series. A chart that renders whatever float it is handed is a chart an advisor cannot read
+   out to a client. */
+const oneDecimal = (v) => `${Number(v).toFixed(1)}%`;
+export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', target, width = 311, valueFormat = oneDecimal, xFormat = (x) => String(x), scrub = false, run = true, domain }) {
   const peek = density === 'peek';
   const plot = PLOT[peek ? 'peek' : 'expanded'];
   const labelBand = peek ? 14 : AXIS_BAND;
@@ -23,8 +28,15 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
   const drawn = React.useRef(false);
   React.useEffect(() => { drawn.current = true; }, []);
   const animate = run && !drawn.current;
-  const padR = peek ? 34 : 62;
-  const w = Math.max(80, width - padR);
+  /* v12 · THE PLOT IS THE FULL WIDTH OF THE CARD. It used to reserve a 34/62px gutter on the right
+     and park the end label in it, which left the line, the baseline and the x-axis ending short of
+     every other edge in the card — the title, the range pills and the stat rows all ran full width
+     and the chart alone stopped early. Two stray edges, and the chart read as a pasted-in object
+     rather than part of the card.
+     The label now sits ON the plot at the end of the line, which is what the comment below always
+     claimed it did. `labelW` is only how wide that overlay may grow before it wraps. */
+  const labelW = peek ? 34 : 62;
+  const w = Math.max(80, width);
   const all = use.flatMap((s) => s.points.map((p) => p.y));
   /* An explicit domain is how small multiples share one scale — without it each chart would nice its
      own range and three charts that look comparable would not be. */
@@ -55,7 +67,7 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
     <div style={{ width: '100%' }}>
       {scrub && !peek && <div style={{ marginBottom: 'var(--space-6)' }}><ChartReadout label={active ? xFormat(active.x) : ''} value={active ? valueFormat(active.y) : ''} active={tip != null} /></div>}
       <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', gap: 0 }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: 0, touchAction: 'pan-y', paddingRight: padR }} onPointerDown={onMove} onPointerMove={(e) => tip != null && onMove(e)} onPointerUp={() => setTip(null)} onPointerLeave={() => setTip(null)}>
+        <div style={{ position: 'relative', flex: 1, minWidth: 0, touchAction: 'pan-y' }} onPointerDown={onMove} onPointerMove={(e) => tip != null && onMove(e)} onPointerUp={() => setTip(null)} onPointerLeave={() => setTip(null)}>
           <svg ref={svgRef} width="100%" height={plot} viewBox={`0 0 ${w} ${plot}`} preserveAspectRatio="none" style={{ display: 'block', overflow: 'visible' }}>
             <style>{'@keyframes ds-draw-on{to{stroke-dashoffset:0}}@media (prefers-reduced-motion:reduce){@keyframes ds-draw-on{from{stroke-dashoffset:0;opacity:0}to{stroke-dashoffset:0;opacity:1}}}'}</style>
             {target && <line x1="0" x2={w} y1={y(target.value)} y2={y(target.value)} stroke="var(--color-line)" strokeWidth="1" strokeDasharray="4 2" vectorEffect="non-scaling-stroke" />}
@@ -71,13 +83,22 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
             <line x1="0" x2={w} y1={plot - 0.5} y2={plot - 0.5} stroke="var(--color-line)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
             {scrub && tip != null && active && <line x1={x(active.x)} x2={x(active.x)} y1="0" y2={plot - 1} stroke="var(--color-bronze-deep)" strokeWidth="1" vectorEffect="non-scaling-stroke" />}
           </svg>
-          {/* End labels sit AT the end of each line, inside the plot box: identity and value in one place,
-              so the block costs plot + axis band and nothing more. */}
+          {/* End labels sit AT the end of each line, ON the plot: identity and value in one place, so
+              the block costs plot + axis band and nothing more.
+              Which SIDE of the endpoint they sit on is read from the line itself. A line arriving from
+              below leaves the space above its end empty, and vice versa — so the label goes to the
+              empty side and never lies across the stroke it is labelling. Right-aligned to the plot
+              edge, where the last point already is. */}
           {use.map((s, i) => {
             const last = s.points[s.points.length - 1];
-            const top = Math.min(Math.max(y(last.y) - (peek ? 8 : 15), 0), plot - (peek ? 16 : 44));
+            const prev = s.points[s.points.length - 2] || last;
+            const h = peek ? 16 : 30;          /* value, plus the series name when it is shown */
+            const gap = peek ? 5 : 7;
+            const rising = y(last.y) <= y(prev.y);   /* SVG y grows downward: smaller y = higher */
+            const wanted = rising ? y(last.y) + gap : y(last.y) - gap - h;
+            const top = Math.min(Math.max(wanted, 0), plot - h);
             return (
-              <div key={s.label} style={{ position: 'absolute', right: 0, top, width: padR - 6, display: 'flex', flexDirection: 'column' }}>
+              <div key={s.label} style={{ position: 'absolute', right: 0, top, maxWidth: labelW, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', textAlign: 'right', pointerEvents: 'none' }}>
                 <span style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 11.5 : 12, lineHeight: 'var(--leading-15)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)' }}>{valueFormat(last.y)}</span>
                 {!peek && <span style={{ overflowWrap: 'break-word', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 10.5, lineHeight: 'var(--leading-14)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-muted)' }}>{s.label}</span>}
               </div>
@@ -85,15 +106,22 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
           })}
         </div>
       </div>
-      <div style={{ display: 'flex', height: labelBand, alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-8)', paddingRight: padR }}>
+      <div style={{ display: 'flex', height: labelBand, alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-8)' }}>
         {peek ? (
           <React.Fragment>
             <span style={{ fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-14)', color: 'var(--color-muted)' }}>{use[0] ? xFormat(use[0].points[0].x) : ''}</span>
             <span style={{ fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-14)', color: 'var(--color-muted)' }}>{use[0] ? xFormat(use[0].points[use[0].points.length - 1].x) : ''}</span>
           </React.Fragment>
         ) : (
-          ticks(d0, d1, 2).slice(0, 2).map((t, i) => (
-            <span key={t} style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-14)', color: 'var(--color-muted)' }}>{i === 0 && use[0] ? xFormat(use[0].points[0].x) : use[0] ? xFormat(use[0].points[use[0].points.length - 1].x) : ''}</span>
+          /* Two labels: first x and last x. This used to map over `ticks(d0, d1, 2)` — the Y domain's
+             ticks — to decide how many X labels to draw, so the count of one axis was set by the other.
+             When that call returned a single tick the trailing label silently vanished, which is what
+             the fund card showed: a chart that started at 1 and ended nowhere. Same two labels as the
+             peek branch above; only the tabular numerals differ. */
+          [0, 1].map((i) => (
+            <span key={i} style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-14)', color: 'var(--color-muted)' }}>
+              {use[0] ? xFormat(use[0].points[i === 0 ? 0 : use[0].points.length - 1].x) : ''}
+            </span>
           ))
         )}
       </div>

@@ -33,7 +33,7 @@ export function InfoCard({ name, meta, figure, figureNote, series, range, onRang
           </div>
           {/* Monzo: the past-performance line sits ABOVE the chart, not at the foot of the screen. */}
           {caveat && <p style={{ margin: `var(--space-6) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)', textWrap: 'pretty' }}>{caveat}</p>}
-          {series && <div style={{ marginTop: 'var(--space-10)' }}><ChartLine series={series} width={311} run={false} valueFormat={(v) => `${v}%`} /></div>}
+          {series && <div style={{ marginTop: 'var(--space-10)' }}><ChartLine series={series} width={311} run={false} /></div>}
           <div style={{ marginTop: 'var(--space-10)' }}><RangePills value={range} onChange={onRange} /></div>
         </React.Fragment>
       )}
