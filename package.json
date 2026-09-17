@@ -1,0 +1,48 @@
+{
+  "name": "@centricity/sentinel-design-system",
+  "version": "2026.9.0",
+  "description": "Sentinel — the design system for Centricity WealthTech's chat-led wealth-management assistant for advisors.",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./design-system/index.d.ts",
+      "default": "./design-system/index.js"
+    },
+    "./styles.css": "./design-system/styles.css",
+    "./tokens/*": "./design-system/tokens/*",
+    "./assets/*": "./design-system/assets/*",
+    "./adherence": "./design-system/_adherence.oxlintrc.json"
+  },
+  "files": [
+    "design-system"
+  ],
+  "scripts": {
+    "preview": "node tools/preview-server.mjs",
+    "build:barrel": "node tools/build-barrel.mjs",
+    "build:index": "node tools/build-index.mjs",
+    "check:integrity": "node tools/check-integrity.mjs",
+    "lint:adherence": "oxlint --config design-system/_adherence.oxlintrc.json design-system",
+    "check": "npm run build:barrel && npm run check:integrity && npm run lint:adherence"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@babel/standalone": "^7.29.0",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "esbuild": "^0.28.2",
+    "oxlint": "^0.15.0",
+    "playwright": "^1.56.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
