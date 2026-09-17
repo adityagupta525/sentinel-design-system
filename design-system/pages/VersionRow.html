@@ -21,7 +21,7 @@ function App(){
   const [cur,setCur] = React.useState('v3');
   const [log,setLog] = React.useState(null);
   return (
-  <PageShell name="VersionRow" group="Chat" status="shipped" requires={${req}}
+  <PageShell name="VersionRow" group="Chat" status="shipped" requires={['VersionRow','ArtifactCard','SentinelBlock','SentinelText','Pill']}
     summary="Every revision of an artifact as a row in the thread, with a revert on each. The mechanism is Wabi's — V1 ↺ · V2 ↺ · V3 ↺ in the conversation itself — and it closes a product hole rather than a visual one: an advisor who has revised a proposal twice has no way back to the version the client actually saw, and 'the one I sent on Tuesday' is the version that matters when the client rings.">
     <Block n={1} title="Specimen"><Specimen width={343}><VersionRow versions={V} currentId="v3" onRevert={()=>{}} /></Specimen></Block>
     <Block n={2} title="Anatomy">

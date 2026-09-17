@@ -32,7 +32,7 @@ const FAIL = [
 function App(){
   const [open,setOpen] = React.useState(true);
   return (
-  <PageShell name="StepTrace" group="Chat" status="shipped" requires={${req}}
+  <PageShell name="StepTrace" group="Chat" status="shipped" requires={['StepTrace','SentinelBlock','SentinelText','Pill','ArtifactCard']}
     summary="What the assistant did, as collapsible one-line rows with per-step state. Four AI products have converged on this mechanism — Manus indents a step's reasoning beneath it, Linktree's Analysis ⌄ opens a ruled list of ticked steps, ChatGPT collapses a tool call to Ran 3 commands ›, DeepSeek heads its trace Thought for 5 seconds ⌄. For an advisor it is provenance, not decoration: read her holdings · matched to the mandate · checked the compliance shelf is what they repeat to the client.">
     <Block n={1} title="Specimen" sub="Open, all four steps done — the state an advisor reads back to a client.">
       <Specimen width={343}><StepTrace id="s1" defaultOpen steps={FULL} /></Specimen>
