@@ -890,7 +890,7 @@ var __ds_out = (() => {
 
   // design-system/components/chat/QAPair.jsx
   function QAPair({ question, answer }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", flexDirection: "column", gap: "var(--space-6)" } }, question && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, question), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { maxWidth: 280, borderRadius: "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "8px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-13)", lineHeight: "var(--leading-18)", color: "var(--color-ink)" } }, answer))));
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", flexDirection: "column", gap: "var(--space-6)" } }, question && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, question), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { maxWidth: 280, borderRadius: "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "8px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-13)", lineHeight: "var(--leading-18)", color: "var(--color-ink)", overflowWrap: "anywhere" } }, answer))));
   }
 
   // design-system/components/chat/ResponseFeedback.jsx
@@ -952,8 +952,8 @@ var __ds_out = (() => {
   }
 
   // design-system/components/chat/SentinelThinking.jsx
-  function SentinelThinking() {
-    return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, { shimmer: true }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-5)", paddingLeft: 1 } }, [0, 1, 2].map((i) => /* @__PURE__ */ react_global_default.createElement("span", { key: i, style: { width: 6, height: 6, borderRadius: "var(--radius-full)", background: "var(--color-bronze)", animation: `dot-pulse 1200ms var(--ease) ${i * 150}ms infinite` } }))));
+  function SentinelThinking({ verb }) {
+    return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, { shimmer: true, label: verb || "Sentinel" }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-5)", paddingLeft: 1 } }, [0, 1, 2].map((i) => /* @__PURE__ */ react_global_default.createElement("span", { key: i, style: { width: 6, height: 6, borderRadius: "var(--radius-full)", background: "var(--color-bronze)", animation: `dot-pulse 1200ms var(--ease) ${i * 150}ms infinite` } }))));
   }
 
   // design-system/components/chat/StepTrace.jsx
@@ -992,7 +992,7 @@ var __ds_out = (() => {
 
   // design-system/components/chat/UserBubble.jsx
   function UserBubble({ text }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end", animation: "ds-rise var(--dur-enter) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { maxWidth: 280, borderRadius: "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "10px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-14)", lineHeight: "var(--leading-19)", color: "var(--color-ink)" } }, text)));
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end", animation: "ds-rise var(--dur-enter) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { maxWidth: 280, borderRadius: "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "10px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-14)", lineHeight: "var(--leading-19)", color: "var(--color-ink)", overflowWrap: "anywhere" } }, text)));
   }
 
   // design-system/components/chat/VersionRow.jsx
@@ -1042,14 +1042,17 @@ var __ds_out = (() => {
   }
   function MoneyComposer({ onSend, placeholder = "or type an amount" }) {
     const [raw, setRaw] = react_global_default.useState("");
+    const [focus, setFocus] = react_global_default.useState(false);
     const formatted = formatINR(raw);
     const canSend = raw.length > 0;
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "var(--space-12)", boxSizing: "border-box", boxShadow: "var(--shadow-composer), 0 0 0 1px var(--color-line)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: 20, flexShrink: 0, justifyContent: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-16)", color: "var(--color-bronze-deep)" } }, "\u20B9")), /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "0 10px", height: 22, width: 1, flexShrink: 0, background: "var(--color-line)" } }), /* @__PURE__ */ react_global_default.createElement(
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "var(--space-12)", boxSizing: "border-box", boxShadow: focus ? "0 0 0 1px var(--color-bronze), var(--focus-ring)" : "var(--shadow-composer), 0 0 0 1px var(--color-line)", transition: "box-shadow var(--dur-press)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: 20, flexShrink: 0, justifyContent: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-16)", color: "var(--color-bronze-deep)" } }, "\u20B9")), /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "0 10px", height: 22, width: 1, flexShrink: 0, background: "var(--color-line)" } }), /* @__PURE__ */ react_global_default.createElement(
       "input",
       {
         value: formatted,
         inputMode: "numeric",
         onChange: (e) => setRaw(e.target.value.replace(/\D/g, "")),
+        onFocus: () => setFocus(true),
+        onBlur: () => setFocus(false),
         onKeyDown: (e) => e.key === "Enter" && canSend && onSend && onSend("\u20B9" + formatted),
         placeholder,
         className: "ds-composer-input",
