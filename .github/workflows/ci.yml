@@ -29,6 +29,12 @@ jobs:
           git diff --exit-code design-system/_ds_bundle.js \
             || { echo '::error::_ds_bundle.js is stale — run npm run build:bundle'; exit 1; }
 
+      - name: sentinel-craft's scale still matches the tokens
+        run: |
+          npm run build:scale
+          git diff --exit-code .claude/skills/sentinel-craft/references/scale.md \
+            || { echo '::error::scale.md is stale — run npm run build:scale'; exit 1; }
+
       - name: design-system matches its recorded baseline
         run: npm run check:integrity
 

@@ -26,9 +26,10 @@
     "build:barrel": "node tools/build-barrel.mjs",
     "build:bundle": "node tools/build-bundle.mjs",
     "build:index": "node tools/build-index.mjs",
+    "build:scale": "node tools/extract-scale.mjs",
     "check:integrity": "node tools/check-integrity.mjs",
     "lint:adherence": "oxlint --config design-system/_adherence.oxlintrc.json design-system",
-    "check": "npm run build:barrel && npm run build:bundle && npm run check:integrity && npm run lint:adherence"
+    "check": "npm run build:barrel && npm run build:bundle && npm run build:scale && npm run check:integrity && npm run lint:adherence"
   },
   "peerDependencies": {
     "react": ">=18"

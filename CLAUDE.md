@@ -6,6 +6,14 @@ The design system for Sentinel, Centricity WealthTech's chat-led wealth-manageme
 advisors. `design-system/` is a Claude Design project imported verbatim; the repository is the
 scaffolding around it.
 
+## Start here
+
+**Load the `sentinel-craft` skill before touching anything in `design-system/`, and before judging
+whether spacing, alignment or craft is wrong.** It carries this system's own scale — generated from
+`tokens/*.css`, so it cannot drift — its four hard rules, its real motion values, and the record of
+which outside advice was rejected and why. Auditing Sentinel against a generic 4/8pt grid flags
+11.5px type, 42px rows and 14px card padding, all three of which are the product.
+
 ## Standing instructions
 
 - **Never restyle.** The visual language is settled. Fix gaps, spacing, correctness and consistency;
@@ -18,7 +26,10 @@ scaffolding around it.
   commit.** That is the mechanism that keeps "imported verbatim" honest and every later edit visible.
 - **Look at the work.** `npm run preview`, then render it. `node tools/check-previews.mjs --shots <dir>`
   renders all 47 preview pages at their declared `@dsCard` viewport and reports console errors, 404s
-  and pages that mount nothing.
+  and pages that mount nothing. A finding you did not see did not happen.
+- **Never report a visual finding from source alone, or a code finding from a screenshot alone.**
+  `DownloadAction` was blamed for a nested `<button>` from a stack trace; the wrapper was
+  `ArtifactCard`, four frames down.
 
 ## Architecture worth knowing
 
@@ -37,6 +48,7 @@ scaffolding around it.
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   In progress: F-1 and F-2 fixed, F-3 needs a product decision, F-4 and F-6 open.
+   F-1, F-2, F-3, F-4, F-6 and F-7 fixed. F-8 is open and blocks `npm run build:index` — the shipped
+  generator is older than the file it produced and would drop the `literals` column.
 3. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for.
