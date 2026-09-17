@@ -34,6 +34,14 @@
 @keyframes ds-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes ds-fade{from{opacity:0}to{opacity:1}}
 @keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* Screen transitions. readme.md has specified these since v1 — "screens slide 100% in / -30% out at
+   320ms" — and no keyframe carried them: the app kit defined its own private copy and every other
+   surface had nothing to reach for. Named here so a journey is assembled from the system rather than
+   invented per screen. The outgoing screen parallaxes to -30% and holds its opacity; it is covered,
+   not faded. There is no scale and no blur: this is the same slide the phone platform makes, not a
+   zoom, and an artifact does NOT use it (it expands in place — see ArtifactCard). */
+@keyframes ds-screen-in{from{transform:translateX(100%);opacity:.6}to{transform:none;opacity:1}}
+@keyframes ds-screen-out{from{transform:translateX(0)}to{transform:translateX(-30%)}}
 /* DataTable's one-time nudge: a hint that the row continues past the right edge, fired once on first
    render and only when there is something off-screen to find. Global and identical for every table, so
    it lives here rather than as a <style> inside the component — the same correction Pressable and Pill
@@ -54,6 +62,9 @@
 /* Pill extends vertically only — its width is its label, and a horizontal extension would overlap the
    next chip in a row. --hit is set per instance by the component. */
 .ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}
+/* Both composers shipped this identical one-line sheet inside themselves, so a thread carrying a
+   Composer and a MoneyComposer carried two copies of the same rule. Same correction as .ds-pill. */
+.ds-composer-input::placeholder{color:var(--color-muted)}
 /* Reduced motion — the law, implemented, not asserted. Every looping or entrance animation in the
    system resolves to its final state with an opacity fade and nothing else: no translate, no scale,
    no rotation, no pulse. Keyframes are redefined rather than cancelled, so nothing is left mid-way
@@ -64,5 +75,7 @@
 @keyframes dot-pulse{0%,100%{opacity:1}}
 @keyframes ds-rise{from{opacity:0}to{opacity:1}}
 @keyframes ds-grow{from{transform:scaleX(1)}to{transform:scaleX(1)}}
+@keyframes ds-screen-in{from{opacity:0;transform:none}to{opacity:1;transform:none}}
+@keyframes ds-screen-out{from{transform:none}to{transform:none}}
 *,*::before,*::after{transition-duration:1ms!important;scroll-behavior:auto!important}
 }

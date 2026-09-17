@@ -270,6 +270,49 @@ consuming team. The `.d.ts` now carries `@deprecated` with the one-line replacem
 **Open question for the owner:** delete it before the dev handover, or keep it deprecated for a
 release? Nothing depends on it either way.
 
+### F-12 · The screen transition was specified for twelve versions and never named — *fixed*
+`readme.md` has carried the same sentence since v1:
+
+> Screens slide 100% in / −30% out at 320ms
+
+`--dur-screen` existed and was used — by a chevron rotation, a rail, and four cards' entrance rise.
+The transition the duration is *named after* had no keyframe anywhere in `tokens/`. The only
+implementation in the repository was `kit-slide`, defined privately inside
+`ui_kits/sentinel-app/index.html`, covering the incoming screen only; the −30% outgoing parallax was
+never built at all.
+
+So a team assembling a journey on this system had a documented transition, a token for its duration,
+and nothing to reach for — which is how a screen ends up with an invented one.
+
+**`ds-screen-in` and `ds-screen-out` now live in `tokens/effects.css`** with the documented values and
+their reduced-motion redefinitions: `in` drops to a fade, `out` holds in place and lets the incoming
+screen fade over it, so nothing is stranded at −30%. `guidelines/motion-screens.html` runs both live.
+
+The app kit's private `kit-slide` was left alone: it renders three shipped prototypes and its values
+are identical. Replacing it buys nothing and risks the one thing that must not break.
+
+### F-13 · `guidelines/motion.html` advertised a duration deleted two versions earlier — *fixed*
+The motion specimen listed **canvas · 380ms · scale .96 → 1, origin 40%**. The canvas was removed from
+the product in v5 (contradiction 40) and `--dur-canvas` deleted in v11 for exactly that reason. The
+guideline page went on selling it — and it is the page a developer reads *instead of* the 43 KB spec,
+which makes a stale row here more expensive than a stale paragraph there.
+
+Replaced with the treatment that actually superseded it — `artifact · 300ms · height to natural, in
+place` — with a note recording what stood there and why it went, rather than a silent edit.
+
+**This is the shared-element answer.** There is no smart-animate in this system: an artifact grows
+where it sits and the thread keeps its scroll position. Named now so a screen team does not build one.
+
+### F-14 · Both composers shipped the same one-line stylesheet inside themselves — *fixed*
+`Composer` and `MoneyComposer` each rendered `<style>{'.ds-composer-input::placeholder{…}'}</style>`
+as a child. Same class, same declaration, one copy per mounted instance — the same defect as F-6, in
+two more places, and it survived F-6 because F-6 was fixed by reading `Pill`, not by searching for the
+pattern. Moved to `tokens/effects.css` beside `.ds-pill::before`.
+
+Unlike F-6 this one was never invalid markup — a `<style>` inside a `<div>` is legal — so it cost
+duplication and nothing else. Recorded because the *search* is the lesson: a defect found by reading
+one component should end with a grep for its shape.
+
 ---
 
 ## Considered and rejected

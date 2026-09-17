@@ -18,7 +18,6 @@ export function MoneyComposer({ onSend, placeholder = 'or type an amount' }) {
         <div style={{ margin: '0 10px', height: 22, width: 1, flexShrink: 0, background: 'var(--color-line)' }} />
         <input value={formatted} inputMode="numeric" onChange={(e) => setRaw(e.target.value.replace(/\D/g, ''))} onKeyDown={(e) => e.key === 'Enter' && canSend && onSend && onSend('₹' + formatted)} placeholder={placeholder} className="ds-composer-input"
           style={{ width: '100%', border: 'none', background: 'transparent', outline: 'none', padding: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-16)', lineHeight: 'var(--leading-20)', color: 'var(--color-ink)' }} />
-        <style>{'.ds-composer-input::placeholder{color:var(--color-muted)}'}</style>
       </div>
       <div style={{ marginTop: 'var(--space-12)', display: 'flex', justifyContent: 'flex-end' }}>
         <button type="button" disabled={!canSend} onClick={() => canSend && onSend && onSend('₹' + formatted)} style={{ appearance: 'none', border: 'none', display: 'flex', width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--gradient-dark-cta)', opacity: canSend ? 1 : 0.4, cursor: canSend ? 'pointer' : 'default', padding: 0 }}><IconArrow /></button>

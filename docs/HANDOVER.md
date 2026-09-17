@@ -116,6 +116,16 @@ global keyframes, each component's own `<style>` for the five component-local on
 inside the bundle so a project that loads the bundle with its own styles still honours it. Keyframes
 are **redefined, not cancelled**, so nothing is stranded mid-transform.
 
+**Screens** slide with `ds-screen-in` (100% in, opacity .6 → 1) over `ds-screen-out` (0 → −30%), both at
+`--dur-screen`. Both carry `both` fill, so **you remove the outgoing screen yourself after 320ms** — the
+keyframe holds it at −30%, it does not unmount it. Slide on a push only, never on a tab change or a
+filter: a slide says "you have gone somewhere", and it should be true.
+
+**There is no shared-element transition, and you should not build one.** An artifact expands in place —
+height to natural over 300ms, the thread keeping its scroll position and the composer staying put. The
+full-screen canvas it would have morphed into was removed from the product in v5.
+`guidelines/motion-screens.html` runs both live.
+
 If you add an animation, add its reduced-motion behaviour in the same commit and put the row in the
 component's motion table.
 

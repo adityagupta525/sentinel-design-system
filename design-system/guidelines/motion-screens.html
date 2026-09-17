@@ -1,0 +1,117 @@
+<!-- @dsCard group="Effects" viewport="900x560" name="Screen transitions" subtitle="ds-screen-in / ds-screen-out at 320ms — and the one surface that does not use them" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Screen transitions — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<style>
+body{margin:0;padding:20px;background:var(--color-desk);font-family:var(--font-ui);color:var(--color-ink)}
+h2{margin:0 0 4px;font:600 15px/20px var(--font-ui)}
+p.n{margin:0;font:400 12px/17px var(--font-ui);color:var(--color-muted);max-width:620px}
+.k{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted)}
+.wrap{display:flex;gap:28px;align-items:flex-start;margin-top:16px;flex-wrap:wrap}
+.stage{position:relative;width:260px;height:330px;border-radius:24px;overflow:hidden;background:var(--color-canvas);box-shadow:0 0 0 1px var(--ring-frame)}
+.scr{position:absolute;inset:0;padding:16px;box-sizing:border-box;background:var(--color-canvas);background-image:var(--paper-texture);background-size:var(--paper-texture-size)}
+.scr h3{margin:0 0 10px;font:600 15px/20px var(--font-ui)}
+.card{border-radius:var(--radius-16);background:var(--color-surface);box-shadow:var(--shadow-card);padding:var(--space-14);margin-bottom:10px}
+.card b{display:block;font:700 11.5px/16px var(--font-ui);color:var(--color-muted)}
+.card span{display:block;margin-top:4px;font:600 17px/22px var(--font-ui);font-variant-numeric:tabular-nums}
+.in{animation:ds-screen-in var(--dur-screen) var(--ease) both}
+.out{animation:ds-screen-out var(--dur-screen) var(--ease) both}
+button{appearance:none;border:none;cursor:pointer;border-radius:var(--radius-full);padding:9px 16px;background:var(--gradient-dark-cta);color:var(--color-surface);font:600 12px/1 var(--font-ui)}
+button.ghost{background:var(--color-surface);color:var(--color-ink);box-shadow:0 0 0 1px var(--color-line)}
+table{border-collapse:collapse;margin-top:10px;background:var(--color-surface);border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-line)}
+th{text-align:left;padding:8px 12px;font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);border-bottom:1px solid var(--color-line)}
+td{padding:9px 12px;font:500 11.5px/16px var(--font-ui);border-bottom:.5px solid var(--color-line-soft);vertical-align:top}
+td.m{font-family:ui-monospace,monospace;font-size:11px}
+td.q{color:var(--color-muted)}
+code{font-family:ui-monospace,monospace;font-size:11px}
+.art{border-radius:var(--radius-16);background:var(--color-surface);box-shadow:var(--shadow-card);overflow:hidden;transition:height 300ms var(--ease)}
+.art .body{padding:var(--space-14)}
+a{color:var(--color-bronze-deep)}
+</style></head><body>
+
+<h2>Screens slide. One artifact does not.</h2>
+<p class="n"><code>readme.md</code> has specified this transition since v1 — <em>screens slide 100% in / −30% out at
+320ms</em> — and until v12 no keyframe carried it: the app kit defined a private copy and every other surface
+had nothing to reach for. <code>ds-screen-in</code> and <code>ds-screen-out</code> are that specification,
+named. Press the buttons; this is the real thing, not a recording.</p>
+
+<div class="wrap">
+  <div>
+    <span class="k">push · ds-screen-in over ds-screen-out</span>
+    <div class="stage" id="stage">
+      <div class="scr" id="a">
+        <h3>Ravi Menon</h3>
+        <div class="card"><b>Portfolio</b><span>₹1,85,00,000</span></div>
+        <div class="card"><b>Drift from mandate</b><span>6.2%</span></div>
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button id="push">Push ›</button>
+      <button id="back" class="ghost">‹ Back</button>
+    </div>
+  </div>
+
+  <div>
+    <span class="k">not a screen · expands in place</span>
+    <div class="stage">
+      <div class="scr">
+        <h3>Sentinel</h3>
+        <div class="art" id="art" style="height:150px">
+          <div class="body">
+            <b style="display:block;font:700 11.5px/16px var(--font-ui);color:var(--color-muted)">SMALL CAP EXPOSURE</b>
+            <span style="display:block;margin-top:4px;font:600 17px/22px var(--font-ui);font-variant-numeric:tabular-nums">31.0%</span>
+            <p class="n" style="margin-top:8px">Against a 25% ceiling in his mandate. The thread does not go
+            anywhere — the card grows, its header scrolls under the bar, and the composer stays where it was.</p>
+            <p class="n" style="margin-top:8px">As of 30 Sep · from his Q3 statement</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px"><button id="toggle" class="ghost">Expand / collapse</button></div>
+  </div>
+</div>
+
+<table>
+  <thead><tr><th>Motion</th><th>Property</th><th>Duration</th><th>Under reduced motion</th></tr></thead>
+  <tbody>
+    <tr><td>Incoming screen</td><td class="m">ds-screen-in — translateX(100%) → 0, opacity .6 → 1</td><td>320 ms (--dur-screen)</td><td class="q">Fade only; no translate.</td></tr>
+    <tr><td>Outgoing screen</td><td class="m">ds-screen-out — translateX(0) → −30%</td><td>320 ms (--dur-screen)</td><td class="q">Holds in place. The incoming screen fades over it, so nothing is stranded mid-transform.</td></tr>
+    <tr><td>Artifact expand</td><td class="m">height → natural</td><td>300 ms</td><td class="q">Height jumps; the card still expands in place.</td></tr>
+  </tbody>
+</table>
+
+<p class="n" style="margin-top:14px"><b style="color:var(--color-ink)">There is no shared-element transition in this system.</b>
+An artifact does not morph into a full-screen canvas — the canvas was removed from the product in v5 and
+<code>--dur-canvas</code> deleted in v11. If a screen you are building wants to &ldquo;smart animate&rdquo; a card
+into a page, the answer here is that the card grows where it sits and the thread keeps its scroll position.
+That is the continuity the transition would have been for, bought without a second scroller.</p>
+
+<p class="n" style="margin-top:8px">Both keyframes carry <code>both</code> fill, so the outgoing screen must be
+removed by the caller after 320ms — the keyframe holds it at −30% and does not unmount it. Slide only on a
+push, never on a tab change or a filter: a slide states &ldquo;you have gone somewhere&rdquo;, and lying about
+that is worse than no motion.</p>
+
+<script>
+var stage=document.getElementById('stage'),n=1;
+function screen(title,rows){var d=document.createElement('div');d.className='scr';
+  d.innerHTML='<h3>'+title+'</h3>'+rows.map(function(r){return '<div class="card"><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');return d;}
+var deck=[[['Portfolio','₹1,85,00,000'],['Drift from mandate','6.2%']],
+          [['Quant Small Cap','₹4,20,000'],['Since 12 Mar','+8.4%']],
+          [['Parag Parikh Flexi','₹9,10,000'],['Overlap with held','18.0%']]];
+document.getElementById('push').onclick=function(){
+  var cur=stage.lastElementChild; n++;
+  var nx=screen(['Ravi Menon','Holding','Fund'][n%3], deck[n%3]);
+  nx.className='scr in'; stage.appendChild(nx);
+  cur.className='scr out';
+  setTimeout(function(){ if(stage.children.length>1) stage.removeChild(stage.firstElementChild); },340);
+};
+document.getElementById('back').onclick=function(){
+  var cur=stage.lastElementChild; n--;
+  var pv=screen(['Ravi Menon','Holding','Fund'][((n%3)+3)%3], deck[((n%3)+3)%3]);
+  pv.className='scr'; pv.style.animation='ds-screen-out var(--dur-screen) var(--ease) reverse both';
+  stage.insertBefore(pv,cur);
+  cur.style.animation='ds-screen-in var(--dur-screen) var(--ease) reverse both';
+  setTimeout(function(){ if(stage.contains(cur)) stage.removeChild(cur); pv.style.animation='none'; },340);
+};
+var art=document.getElementById('art'),open=false;
+document.getElementById('toggle').onclick=function(){ open=!open; art.style.height=open?(art.firstElementChild.offsetHeight+'px'):'150px'; };
+</script>
+</body></html>
