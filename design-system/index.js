@@ -64,6 +64,7 @@ export { useCountUp, HeroNumberCard } from './components/cards/HeroNumberCard.js
 export { InfoCard } from './components/cards/InfoCard.jsx';
 export { MoveCard } from './components/cards/MoveCard.jsx';
 export { RejectCallout } from './components/cards/RejectCallout.jsx';
+export { ResultCard, ResultActions, ResultPrimary } from './components/cards/ResultCard.jsx';
 /* chat */
 export { DetourBanner } from './components/chat/DetourBanner.jsx';
 export { GreetingDivider } from './components/chat/GreetingDivider.jsx';

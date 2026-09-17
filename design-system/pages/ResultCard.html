@@ -1,0 +1,134 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="ResultCard" subtitle="The end state of a proposal, review or rebalance — one primary, and it never fires directly" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ResultCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ResultCard, ResultActions, ResultPrimary, MoveCard, DataTableCard, HeroNumberCard, SentinelBlock, SentinelText, Composer, Dock, StandingDisclosure, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-bubble','--color-cta','--color-muted','--color-ink-soft','--radius-16','--space-12','--h-cta','--type-body-font','--type-caption-font','--dur-press','--ease'];
+
+const MOVES = [
+  { from: 'Quant Small Cap', to: 'Parag Parikh Flexi Cap', amount: '₹4.2 L', why: 'Small cap is 31% against a 25% ceiling.' },
+  { from: 'HDFC Liquid', to: 'ICICI Corporate Bond', amount: '₹2.0 L', why: 'Idle since March; the mandate allows debt.' },
+];
+const Moves = () => (
+  <div style={{display:'flex',flexDirection:'column',gap:'var(--space-10)'}}>
+    {MOVES.map(m => (
+      <div key={m.from} style={{borderRadius:'var(--radius-12)',background:'var(--color-chip)',boxShadow:'0 0 0 1px var(--color-bubble-edge)',padding:'var(--space-12)'}}>
+        <p style={{margin:0,font:'var(--type-row-font)',color:'var(--color-ink)'}}>{m.from} → {m.to}</p>
+        <p style={{margin:'var(--space-2) 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>{m.amount} · {m.why}</p>
+      </div>
+    ))}
+  </div>
+);
+const Table = () => (
+  <DataTableCard
+    columns={[{key:'fund',label:'Fund'},{key:'now',label:'Now',align:'end'},{key:'after',label:'After',align:'end'}]}
+    rows={[
+      {fund:'Parag Parikh Flexi Cap', now:'18%', after:'34%'},
+      {fund:'ICICI Corporate Bond', now:'12%', after:'20%'},
+      {fund:'Quant Small Cap', now:'31%', after:'14%'},
+    ]} />
+);
+
+function App() {
+  const [state, setState] = React.useState('draft');
+  const [ask, setAsk] = React.useState('');
+  return (
+  <PageShell name="ResultCard" group="Chat" status="shipped" requires={['ResultCard','ResultActions','ResultPrimary','MoveCard','DataTableCard','Dock','Composer']}
+    summary="The end state of a proposal, a review or a rebalance — built ON the artifact card rather than beside it, so an advisor never leaves the thread to read the thing they asked for. Three exports, because the spec puts the actions in the dock and one component cannot render into three dock slots: the card, the Save/Download chips, and the one dark CTA. The primary never fires directly — it opens the confirm step, because sending a recommendation under an advisor's ARN is the moment they take responsibility for it.">
+
+    <Block n={1} title="Specimen" sub="A rebalance in its draft state, at real width, on the product background.">
+      <Specimen width={343}>
+        <ResultCard journey="rebalance" state="draft" title="Two moves, not seven"
+          summary="Both bring him inside his mandate. Nothing else moves."
+          provenance="As of 30 Sep · from his Q3 statement and mandate on file">
+          <Moves />
+        </ResultCard>
+      </Specimen>
+    </Block>
+
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. The card is ArtifactCard state='expanded' — never a peek, because the advisor came here to read it.">
+      <Anatomy width={343} top="eyebrow 10/700 · title 16/24" bottom="provenance 11 · Badge meta when saved" left="radius: 16" right="content gap: 12">
+        <ResultCard journey="proposal" state="saved" savedAt="16 Sep" title="4 funds, ₹25 L"
+          provenance="Drafted 14 Sep · fees from the scheme documents">
+          <Table />
+        </ResultCard>
+      </Anatomy>
+    </Block>
+
+    <Block n={3} title="Variants" sub="Three journeys, and the primary differs by journey because the consequence does. The label names the consequence, never the control.">
+      <Grid cols={3} itemWidth={300} items={[
+        {label:'proposal', node:<ResultPrimary journey="proposal" client="Mr. Aggrawal" />, note:'Send to Mr. Aggrawal — the client is named, so the advisor reads who receives it.'},
+        {label:'review', node:<ResultPrimary journey="review" />, note:'Fix it — a review that found nothing does not reach this state.'},
+        {label:'rebalance · 2 moves', node:<ResultPrimary journey="rebalance" moves={2} />, note:'Approve both moves. One move reads "the move"; three reads "all 3 moves".'},
+      ]} />
+    </Block>
+
+    <Block n={4} title="States" sub="draft → saved on Save. saved → sent only after the confirm completes — never on the press itself.">
+      <Grid cols={3} itemWidth={300} items={[
+        {label:'draft', node:<ResultActions state="draft" onSave={()=>{}} onDownload={async()=>new Promise(r=>setTimeout(r,900))} />, note:'Save is live; Download waits on the network with its label held.'},
+        {label:'saved', node:<ResultActions state="saved" />, note:'Save becomes an inert "Saved" — selected, not disabled-looking.'},
+        {label:'sent', node:<ResultPrimary journey="rebalance" state="sent" sentAt="16 Sep, 9:41" />, note:'The CTA is replaced by a drawn check, a timestamp and a settlement line. Never confetti.'},
+      ]} />
+    </Block>
+
+    <Block n={5} title="Live — Save, then Download" sub="The whole dock, as the advisor sees it: chips, CTA, composer. The CTA stacks above the composer and never replaces it.">
+      <Specimen width={375}>
+        <div style={{display:'flex',flexDirection:'column',gap:'var(--space-12)'}}>
+          <div style={{padding:'0 var(--gutter)'}}>
+            <ResultCard journey="rebalance" state={state} savedAt={state==='draft'?undefined:'16 Sep'} title="Two moves, not seven"
+              summary="Both bring him inside his mandate."
+              provenance="As of 30 Sep · from his Q3 statement">
+              <Moves />
+            </ResultCard>
+          </div>
+          <Dock
+            chips={<ResultActions state={state} onSave={()=>setState('saved')} onDownload={async()=>new Promise(r=>setTimeout(r,1100))} />}
+            cta={<ResultPrimary journey="rebalance" state={state} moves={2} onPrimary={()=>setState('sent')} sentAt="16 Sep, 9:41" />}
+            composer={<Composer value={ask} onChange={setAsk} onSend={()=>setAsk('')} placeholder="Ask about this" />}
+            disclosure />
+        </div>
+      </Specimen>
+      <p style={{margin:'var(--space-8) 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>State: {state}. Press Save, then the dark CTA — in the product the CTA opens the confirm step first; here it completes so the sent state is reachable.</p>
+    </Block>
+
+    <Block n={6} title="In context" sub="In the thread, where the artifact lives. There is no canvas to go back from.">
+      <Thread before={<SentinelBlock><SentinelText text="Two moves bring him inside his mandate. I have not placed anything." /></SentinelBlock>}>
+        <ResultCard journey="rebalance" state="draft" title="Two moves, not seven"
+          provenance="As of 30 Sep · from his Q3 statement and mandate on file">
+          <Moves />
+        </ResultCard>
+      </Thread>
+    </Block>
+
+    <Block n={7} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={8} title="Props"><Props src="../components/cards/ResultCard.d.ts" /></Block>
+
+    <Block n={9} title="Do / don't">
+      <DoDont
+        doNode={<div style={{width:300}}><ResultCard journey="review" state="draft" title="Three things to fix" provenance="As of 30 Sep · from her September statement"><Table /></ResultCard></div>}
+        doCaption="Provenance under the result. The advisor can answer where every figure came from."
+        dontNode={<div style={{width:300,opacity:.98}}><ResultCard journey="review" state="draft" title="Three things to fix" provenance="—"><Table /></ResultCard></div>}
+        dontCaption="A result with no source. The client asks one question and the advisor has nothing to say." />
+    </Block>
+
+    <Block n={10} title="Motion">
+      <Motion rows={[
+        {name:'Card enter', property:'ds-artifact — opacity 0→1, scale .96→1', duration:'300 ms', reduced:'Opacity only; no scale.'},
+        {name:'Save press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'Unchanged — 1 ms transition.'},
+        {name:'Download wait', property:'ds-spin on the glyph slot; label and width hold', duration:'900 ms, looping', reduced:'Spinner stops; the label still holds.'},
+        {name:'Sent', property:'ds-draw on the check', duration:'200 ms, once', reduced:'Holds drawn.'},
+      ]} />
+    </Block>
+  </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

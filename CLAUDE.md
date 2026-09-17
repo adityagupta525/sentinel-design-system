@@ -48,7 +48,11 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   F-1, F-2, F-3, F-4, F-6 and F-7 fixed. F-8 is open and blocks `npm run build:index` — the shipped
-  generator is older than the file it produced and would drop the `literals` column.
-3. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
+   F-1 through F-10 closed. `_index.json` reports `literals` again — how many raw style values each
+   component still hardcodes — so adherence is measurable per component: 28 of 83 are fully clean.
+3. **The four components the request spec named and nobody built** —
+   `ResultCard` ✅ · `DataTable` · `OverlapView` · `InfoCard kind='manager'`.
+   Their specs are complete in `docs/specs/_component_spec.txt` Parts 4, 6, 7 and 8. This is writing,
+   not designing: read the part before starting, it answers the layout questions.
+4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for.

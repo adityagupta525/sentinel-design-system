@@ -3,8 +3,8 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 66,
-  "shipped": 16,
-  "specified": 3
+  "shipped": 17,
+  "specified": 2
  },
  "rows": [
   {
@@ -644,11 +644,24 @@
   {
    "name": "ResultCard",
    "group": "Chat",
-   "spec": "Component request spec · Part 4, re-pointed by v9 §1.1",
-   "status": "specified",
-   "page": null,
-   "file": null,
-   "tokens": [],
+   "status": "shipped",
+   "page": "ResultCard.html",
+   "file": "components/cards/ResultCard.jsx",
+   "tokens": [
+    "--chip-gap",
+    "--color-ink",
+    "--color-ink-soft",
+    "--color-muted",
+    "--h-cta",
+    "--space-10",
+    "--space-12",
+    "--space-4",
+    "--space-8",
+    "--type-body-font",
+    "--type-body-strong-font",
+    "--type-caption-font"
+   ],
+   "locals": [],
    "literals": 0
   },
   {
