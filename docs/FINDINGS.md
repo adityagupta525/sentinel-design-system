@@ -160,7 +160,7 @@ a single tick the trailing label silently disappeared, which is why the fund car
 and ended nowhere. It now draws first-x and last-x directly, the way the peek branch beside it already
 did.
 
-### F-8 · `scripts/build-index.js` is older than the index it produced
+### F-8 · `scripts/build-index.js` is older than the index it produced — *resolved by re-derivation*
 The committed `pages/_index.json` carries a **`literals`** key on every row. The generator in
 `scripts/` never writes one — it emits `tokens` and `locals` only. So the file in the repo was produced
 by a later version of the script than the one that shipped with the bundle.
@@ -169,10 +169,25 @@ Running the generator today therefore *removes* a column: same 85 rows, same nam
 every row loses its `literals` list. That is a silent data loss dressed as a regeneration, which is why
 `npm run build:index` is not part of `npm run check` and the regenerated file is not committed.
 
-**Fix.** Recover the literals scan. It is almost certainly the same shape as the token scan already in
-the file — collect the raw hex, px and font-family literals a component still contains, which is exactly
-what `_adherence.oxlintrc.json` forbids — so the index can report adherence per component. Until then,
-treat `pages/_index.json` as hand-maintained and do not regenerate it.
+**Not recovered — re-derived, and the difference matters.** The original rule is not written down
+anywhere. Five reconstructions were tested against the committed numbers; the closest matched **13 of
+82 rows**, so guessing was abandoned rather than dressed up.
+
+The column is now defined in the script, in words a reader can check: *how many raw style values a
+component still hardcodes instead of taking from a token* — a bare number handed to a style prop, plus
+raw hex, raw px and raw `font-family`. That is the per-component version of what
+`_adherence.oxlintrc.json` forbids project-wide. SVG path data, `viewBox` and shape attributes are
+excluded, because drawing geometry is artwork rather than a style decision; `0` and `1` are excluded as
+identity values.
+
+The definition validates on the one case that has an obvious right answer: **every `Icon*` component
+now reads 0**, which is what an icon that draws itself correctly should read.
+
+Counts differ from the file this replaces. That is intended, and `npm run build:index` is back in
+`npm run check` and in CI.
+
+First reading: **28 of 82 components are fully token-clean.** The most hardcoded are `ArtifactCard` 21,
+`List` 15, `StatusSpacer` 14, `ProgressTrace` 13, `ClientChip` 13, `Pill` 13.
 
 ### F-9 · The 11.5px debt was not paid, it spread — and it is no longer alone
 First output of the `sentinel-craft` scale pass: 11 distinct off-token values across 32 uses in 82
@@ -207,7 +222,7 @@ uses move to `--text-11` or `--text-12`. The second changes how five components 
 decision, not a fix. Until then nothing here is *wrong* — it is undocumented in the one place a
 component reads.
 
-### F-10 · Two dimensions the vocabulary does not carry
+### F-10 · Two dimensions the vocabulary does not carry — *fixed*
 `spacing.css` publishes a named height for every box in the product — 32 filter chip, 36 chip, 42 icon
 button, 44 touch floor, 46/52/56 rows, 48 CTA. Two boxes are outside it:
 
@@ -218,12 +233,19 @@ and one inset is off all three spacing tiers:
 
 - `cards/DataTableCard.jsx:20,25` — `padding: '9px 0'`
 
-Low severity and none of it is visible as a defect. It matters because the token file's promise is that
-a box asks for a named height; three that do not are three that will drift when the row rhythm is next
-tuned. A `--h-chip-sm: 28px` and moving the table row to `--space-10` would close it.
+**`--h-chip-sm: 28px` published**, and both components ask for it. No visual change. The target is
+still 44: `ClientChip`'s own header says so, and both thumbs sit inside `Pressable`. Verified, not
+assumed.
 
-> Both components with `28` sit inside `Pressable`, so the 44pt target is intact — the visual box is
-> small, the hit area is not. Verified, not assumed.
+**The `9px` inset was worse than it looked, and only measuring showed it.** The guess was that 9
+produced a named row height. Rendered, `DataTableCard` rows measured **57–58px** — outside the row
+vocabulary entirely (42 / 46 / 52 / 56) and off every spacing tier, so nothing in the system said how
+tall a table row is. At `--space-8` they land on **56 = `--h-row-md`**, the height `ListRow` already
+uses for a one-line row, and the inset joins the scale. Two pixels per row, and two values that were
+outside the system are now inside it.
+
+> One row still measures 55 against its siblings' 56. That is content-driven, not the padding, and it
+> is left recorded rather than chased.
 
 ---
 

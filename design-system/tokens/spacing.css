@@ -26,6 +26,10 @@
 --h-row-lg:46px;          /* Jump-back-in / drawer rows */
 --h-row-xl:52px;          /* holdings, compliance rows */
 --h-chip:36px;--h-filter-chip:32px;--h-cta:48px;--h-icon-btn:42px;
+--h-chip-sm:28px;         /* v12 · ClientChip's box and ResponseFeedback's thumb targets. Both were
+   setting 28 by hand, the only box in the product outside this vocabulary. The visual box is 28; the
+   TARGET is still 44 — ClientChip's own header says so and both thumbs sit inside Pressable. Naming
+   it changes nothing visually and stops the value drifting when the row rhythm is next tuned. */
 
 --radius-6:6px;           /* bubble tail corner */
 --radius-8:8px;           /* keyboard keys, tooltip */

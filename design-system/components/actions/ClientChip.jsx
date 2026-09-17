@@ -6,7 +6,7 @@ import React from 'react';
    target even though the chip itself is 28px tall. */
 export function ClientChip({ name, initial, onRemove, disabled = false }) {
   return (
-    <span style={{ display: 'inline-flex', height: 28, maxWidth: 200, alignItems: 'center', gap: 'var(--space-6)', borderRadius: 'var(--radius-full)', background: 'var(--color-chip)', boxShadow: '0 0 0 1px var(--color-line)', padding: onRemove ? '0 2px 0 4px' : '0 10px 0 4px', boxSizing: 'border-box', opacity: disabled ? 0.4 : 1 }}>
+    <span style={{ display: 'inline-flex', height: 'var(--h-chip-sm)', maxWidth: 200, alignItems: 'center', gap: 'var(--space-6)', borderRadius: 'var(--radius-full)', background: 'var(--color-chip)', boxShadow: '0 0 0 1px var(--color-line)', padding: onRemove ? '0 2px 0 4px' : '0 10px 0 4px', boxSizing: 'border-box', opacity: disabled ? 0.4 : 1 }}>
       <span style={{ display: 'flex', width: 20, height: 20, flexShrink: 0, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--surface-avatar)', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-10)', color: 'var(--color-bronze-deep)' }}>{initial || (name || '?').trim().charAt(0).toUpperCase()}</span>
       <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', lineHeight: 'var(--leading-16)', color: 'var(--color-ink)' }}>{name}</span>
       {onRemove && (

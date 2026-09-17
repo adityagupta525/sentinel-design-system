@@ -46,6 +46,29 @@ export async function buildIndex({ ls, readFile, saveFile, today }) {
       const name = m[1];
       const src = await readFile(`components/${dir}/${f}`);
       const referenced = Array.from(new Set((src.match(/var\(--[a-z0-9-]+\)/g) || []).map((t) => t.slice(4, -1)))).sort();
+      /* `literals` — how many raw style values this component still hardcodes instead of taking from a
+         token. It is the per-component version of what _adherence.oxlintrc.json forbids project-wide:
+         raw hex, raw px, raw font-family, and a bare number handed to a style prop.
+
+         RE-DERIVED, NOT RECOVERED (v12). The committed pages/_index.json carried this column from a
+         later build of this script than the one that shipped, and the rule it used is not written down
+         anywhere. Rather than guess at it — the closest reconstruction matched 13 of 82 rows — the
+         definition is stated here and the column is rebuilt from it, so the number means something a
+         reader can check. Counts will differ from the file it replaces; that is the point.
+
+         Drawing geometry is not a style value: an SVG's path data, viewBox and shape attributes are
+         artwork, and an icon that draws itself correctly should read 0. 0 and 1 are excluded as
+         identity values — an opacity of 1 or an inset of 0 is not a spacing decision. */
+      const drawing = src
+        .replace(/<svg\b[\s\S]*?<\/svg>/g, '')
+        .replace(/<svg\b[^>]*\/>/g, '')
+        .replace(/<(?:path|rect|circle|line|polyline|polygon|ellipse|g|defs|clipPath|stop|linearGradient)\b[^>]*\/?>/g, '')
+        .replace(/\/\*[\s\S]*?\*\//g, '');
+      const numeric = (drawing.match(/[A-Za-z_$][\w$]*\s*:\s*-?\d+(?:\.\d+)?\b/g) || [])
+        .map((m) => Math.abs(parseFloat(m.split(':').pop())))
+        .filter((n) => n !== 0 && n !== 1);
+      const rawCss = (drawing.match(/#[0-9a-fA-F]{3,8}\b|\b\d+(?:\.\d+)?px\b|font-family\s*:/g) || []);
+      const literals = numeric.length + rawCss.length;
       /* Split what the source references into tokens and component-local custom properties. The column
          is headed "tokens it consumes", so it may only contain names that `tokens/` actually defines;
          a local like Pill's `--hit` (the ≥44px hit-area variable) is real but is not a token, and
@@ -53,7 +76,7 @@ export async function buildIndex({ ls, readFile, saveFile, today }) {
       const tokens = referenced.filter((t) => defined.has(t));
       const locals = referenced.filter((t) => !defined.has(t));
       const page = pageFiles.includes(name + '.html') ? `${name}.html` : null;
-      rows.push({ name, group: OVERRIDE[name] || GROUP_BY_DIR[dir], status: page ? 'shipped' : 'building', page, file: `components/${dir}/${f}`, tokens, locals });
+      rows.push({ name, group: OVERRIDE[name] || GROUP_BY_DIR[dir], status: page ? 'shipped' : 'building', page, file: `components/${dir}/${f}`, tokens, locals, literals });
     }
   }
   /* A SPECIFIED row is the backlog: specified in a document, no component on disk. Once the component
@@ -62,7 +85,7 @@ export async function buildIndex({ ls, readFile, saveFile, today }) {
      cannot say a component is there when it isn't; the same promise has to hold the other way. Built
      wins over specified, and the backlog list needs no editing as components arrive. */
   const built = new Set(rows.map((r) => r.name));
-  for (const s of SPECIFIED) if (!built.has(s.name)) rows.push({ ...s, status: 'specified', page: null, file: null, tokens: [] });
+  for (const s of SPECIFIED) if (!built.has(s.name)) rows.push({ ...s, status: 'specified', page: null, file: null, tokens: [], literals: 0 });
   rows.sort((a, b) => ORDER.indexOf(a.group) - ORDER.indexOf(b.group) || a.name.localeCompare(b.name));
   const counts = rows.reduce((o, r) => (o[r.status] = (o[r.status] || 0) + 1, o), {});
   const out = { generated: today, generator: 'scripts/build-index.js', counts, rows };

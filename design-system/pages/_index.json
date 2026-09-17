@@ -1,34 +1,12 @@
 {
  "generated": "2026-09-17",
  "generator": "scripts/build-index.js",
- "note": "Derived by scanning components/**. A row exists because <Name>.jsx + <Name>.d.ts both exist on disk; status is shipped only when pages/<Name>.html exists. The tokens column lists only names that tokens/ defines; a component-local custom property is reported as a local. The literals column is the count of raw dimensional values still inline in that file — contradiction 50 tracks it down. Specified rows have no source file by definition and cite the document that specifies them.",
  "counts": {
   "building": 66,
   "shipped": 16,
   "specified": 3
  },
  "rows": [
-  {
-   "name": "CanvasHeader",
-   "group": "Foundations",
-   "status": "building",
-   "page": null,
-   "file": "components/shell/CanvasHeader.jsx",
-   "tokens": [
-    "--color-bronze-deep",
-    "--color-ink",
-    "--color-line",
-    "--color-surface",
-    "--font-ui",
-    "--radius-full",
-    "--space-4",
-    "--text-12",
-    "--text-14",
-    "--weight-semibold"
-   ],
-   "locals": [],
-   "literals": 11
-  },
   {
    "name": "DemoFooter",
    "group": "Foundations",
@@ -43,19 +21,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 4
-  },
-  {
-   "name": "Dock",
-   "group": "Foundations",
-   "status": "building",
-   "page": null,
-   "file": "components/shell/Dock.jsx",
-   "tokens": [
-    "--space-8"
-   ],
-   "locals": [],
-   "literals": 2
+   "literals": 0
   },
   {
    "name": "Eyebrow",
@@ -70,7 +36,7 @@
     "--weight-bold"
    ],
    "locals": [],
-   "literals": 3
+   "literals": 0
   },
   {
    "name": "EyebrowDivider",
@@ -84,7 +50,7 @@
     "--space-10"
    ],
    "locals": [],
-   "literals": 3
+   "literals": 1
   },
   {
    "name": "HomeIndicator",
@@ -238,9 +204,16 @@
    "status": "building",
    "page": null,
    "file": "components/shell/MotionGuard.jsx",
-   "tokens": [],
-   "locals": [],
-   "literals": 0
+   "tokens": [
+    "--border-focus",
+    "--border-focus-width",
+    "--focus-ring"
+   ],
+   "locals": [
+    "--hit-x",
+    "--hit-y"
+   ],
+   "literals": 1
   },
   {
    "name": "PhoneFrame",
@@ -255,7 +228,7 @@
     "--shadow-phone"
    ],
    "locals": [],
-   "literals": 5
+   "literals": 3
   },
   {
    "name": "Provenance",
@@ -271,7 +244,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 3
+   "literals": 0
   },
   {
    "name": "ScreenBackdrop",
@@ -287,25 +260,7 @@
     "--paper-texture-size"
    ],
    "locals": [],
-   "literals": 6
-  },
-  {
-   "name": "ScrollToBottomButton",
-   "group": "Foundations",
-   "status": "building",
-   "page": null,
-   "file": "components/shell/ScrollToBottomButton.jsx",
-   "tokens": [
-    "--color-bronze-deep",
-    "--color-line",
-    "--color-surface",
-    "--dur-fast",
-    "--ease",
-    "--radius-full",
-    "--shadow-float"
-   ],
-   "locals": [],
-   "literals": 2
+   "literals": 8
   },
   {
    "name": "StandingDisclosure",
@@ -321,7 +276,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 4
+   "literals": 1
   },
   {
    "name": "StatusSpacer",
@@ -338,48 +293,7 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 13
-  },
-  {
-   "name": "TopBar",
-   "group": "Foundations",
-   "status": "building",
-   "page": null,
-   "file": "components/shell/TopBar.jsx",
-   "tokens": [
-    "--color-ink",
-    "--color-line",
-    "--color-surface",
-    "--font-ui",
-    "--radius-full",
-    "--shadow-card",
-    "--text-14",
-    "--weight-semibold"
-   ],
-   "locals": [],
-   "literals": 11
-  },
-  {
-   "name": "AllocationCard",
-   "group": "Chat",
-   "status": "building",
-   "page": null,
-   "file": "components/cards/AllocationCard.jsx",
-   "tokens": [
-    "--color-ink",
-    "--color-line-soft",
-    "--color-surface",
-    "--color-track",
-    "--dur-bar",
-    "--font-ui",
-    "--leading-20",
-    "--radius-16",
-    "--radius-full",
-    "--text-14",
-    "--weight-medium"
-   ],
-   "locals": [],
-   "literals": 13
+   "literals": 14
   },
   {
    "name": "ArtifactCard",
@@ -417,33 +331,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 31
-  },
-  {
-   "name": "Badge",
-   "group": "Chat",
-   "status": "building",
-   "page": null,
-   "file": "components/cards/Badge.jsx",
-   "tokens": [
-    "--color-chip",
-    "--color-line",
-    "--color-muted",
-    "--color-status-ok-bg",
-    "--color-status-ok-fg",
-    "--color-status-over-bg",
-    "--color-status-over-fg",
-    "--color-status-under-bg",
-    "--color-status-under-fg",
-    "--font-ui",
-    "--radius-full",
-    "--text-10",
-    "--text-11",
-    "--weight-bold",
-    "--weight-medium"
-   ],
-   "locals": [],
-   "literals": 4
+   "literals": 21
   },
   {
    "name": "Composer",
@@ -471,7 +359,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 18
+   "literals": 10
   },
   {
    "name": "ConstraintCallout",
@@ -492,46 +380,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 6
-  },
-  {
-   "name": "DataTableCard",
-   "group": "Chat",
-   "status": "building",
-   "page": null,
-   "file": "components/cards/DataTableCard.jsx",
-   "tokens": [
-    "--color-bronze-deep",
-    "--color-chip",
-    "--color-ink",
-    "--color-line",
-    "--color-line-soft",
-    "--color-muted",
-    "--color-surface",
-    "--dur-enter",
-    "--dur-screen",
-    "--ease",
-    "--font-ui",
-    "--leading-17",
-    "--leading-19",
-    "--leading-22",
-    "--radius-12",
-    "--radius-16",
-    "--shadow-card",
-    "--space-10",
-    "--space-12",
-    "--space-14",
-    "--space-6",
-    "--space-8",
-    "--text-12",
-    "--text-13",
-    "--text-16",
-    "--weight-bold",
-    "--weight-medium",
-    "--weight-regular"
-   ],
-   "locals": [],
-   "literals": 26
+   "literals": 4
   },
   {
    "name": "DetourBanner",
@@ -554,7 +403,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 7
+   "literals": 6
   },
   {
    "name": "DisclosureBlock",
@@ -576,33 +425,19 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 8
+   "literals": 3
   },
   {
-   "name": "ExplainerSheet",
+   "name": "Dock",
    "group": "Chat",
    "status": "building",
    "page": null,
-   "file": "components/cards/ExplainerSheet.jsx",
+   "file": "components/shell/Dock.jsx",
    "tokens": [
-    "--color-ink",
-    "--color-ink-soft",
-    "--color-line",
-    "--color-surface",
-    "--ease",
-    "--font-ui",
-    "--leading-20",
-    "--leading-24",
-    "--radius-full",
-    "--scrim",
-    "--space-10",
-    "--text-14",
-    "--text-18",
-    "--weight-regular",
-    "--weight-semibold"
+    "--space-8"
    ],
    "locals": [],
-   "literals": 14
+   "literals": 4
   },
   {
    "name": "GreetingDivider",
@@ -613,56 +448,11 @@
    "tokens": [
     "--color-bronze-deep",
     "--color-line",
-    "--font-display",
     "--space-8",
-    "--weight-medium"
+    "--type-greeting-font"
    ],
    "locals": [],
-   "literals": 8
-  },
-  {
-   "name": "HeroNumberCard",
-   "group": "Chat",
-   "status": "building",
-   "page": null,
-   "file": "components/cards/HeroNumberCard.jsx",
-   "tokens": [
-    "--color-alloc-debt",
-    "--color-bronze",
-    "--color-bronze-deep",
-    "--color-bubble-edge",
-    "--color-ink",
-    "--color-ink-soft",
-    "--color-line",
-    "--color-muted",
-    "--color-selected",
-    "--color-surface",
-    "--color-track",
-    "--dur-screen",
-    "--ease",
-    "--font-display",
-    "--font-ui",
-    "--leading-18",
-    "--leading-20",
-    "--leading-24",
-    "--radius-16",
-    "--radius-full",
-    "--shadow-card",
-    "--space-10",
-    "--space-12",
-    "--space-14",
-    "--space-16",
-    "--space-5",
-    "--space-8",
-    "--text-13",
-    "--text-14",
-    "--text-16",
-    "--weight-bold",
-    "--weight-medium",
-    "--weight-regular"
-   ],
-   "locals": [],
-   "literals": 25
+   "literals": 4
   },
   {
    "name": "InfoCard",
@@ -697,7 +487,7 @@
     "--weight-bold"
    ],
    "locals": [],
-   "literals": 23
+   "literals": 0
   },
   {
    "name": "MessageActions",
@@ -707,13 +497,11 @@
    "file": "components/chat/MessageActions.jsx",
    "tokens": [
     "--color-muted",
-    "--font-ui",
-    "--leading-16",
     "--space-16",
-    "--weight-medium"
+    "--type-meta-font"
    ],
    "locals": [],
-   "literals": 6
+   "literals": 5
   },
   {
    "name": "MoneyComposer",
@@ -739,33 +527,7 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 16
-  },
-  {
-   "name": "MoveCard",
-   "group": "Chat",
-   "status": "building",
-   "page": null,
-   "file": "components/cards/MoveCard.jsx",
-   "tokens": [
-    "--color-bronze-deep",
-    "--color-ink",
-    "--color-muted",
-    "--color-surface",
-    "--font-display",
-    "--font-ui",
-    "--leading-18",
-    "--leading-22",
-    "--radius-16",
-    "--shadow-card",
-    "--space-12",
-    "--text-13",
-    "--text-15",
-    "--weight-medium",
-    "--weight-regular"
-   ],
-   "locals": [],
-   "literals": 12
+   "literals": 6
   },
   {
    "name": "ParseNote",
@@ -783,7 +545,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 5
+   "literals": 0
   },
   {
    "name": "ProgressTrace",
@@ -815,7 +577,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 24
+   "literals": 13
   },
   {
    "name": "QAPair",
@@ -838,7 +600,7 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 12
+   "literals": 8
   },
   {
    "name": "RejectCallout",
@@ -851,7 +613,7 @@
     "--space-8"
    ],
    "locals": [],
-   "literals": 2
+   "literals": 0
   },
   {
    "name": "ResponseFeedback",
@@ -867,6 +629,7 @@
     "--color-line",
     "--color-muted",
     "--color-selected",
+    "--h-chip-sm",
     "--h-filter-chip",
     "--radius-full",
     "--space-12",
@@ -876,7 +639,7 @@
     "--type-label-font"
    ],
    "locals": [],
-   "literals": 10
+   "literals": 0
   },
   {
    "name": "ResultCard",
@@ -886,8 +649,25 @@
    "page": null,
    "file": null,
    "tokens": [],
-   "locals": [],
    "literals": 0
+  },
+  {
+   "name": "ScrollToBottomButton",
+   "group": "Chat",
+   "status": "building",
+   "page": null,
+   "file": "components/shell/ScrollToBottomButton.jsx",
+   "tokens": [
+    "--color-bronze-deep",
+    "--color-line",
+    "--color-surface",
+    "--dur-fast",
+    "--ease",
+    "--radius-full",
+    "--shadow-float"
+   ],
+   "locals": [],
+   "literals": 6
   },
   {
    "name": "SentinelBlock",
@@ -905,7 +685,7 @@
     "--weight-bold"
    ],
    "locals": [],
-   "literals": 5
+   "literals": 0
   },
   {
    "name": "SentinelText",
@@ -921,7 +701,7 @@
     "--text-14"
    ],
    "locals": [],
-   "literals": 3
+   "literals": 0
   },
   {
    "name": "SentinelThinking",
@@ -936,7 +716,7 @@
     "--space-5"
    ],
    "locals": [],
-   "literals": 4
+   "literals": 2
   },
   {
    "name": "StepTrace",
@@ -968,7 +748,7 @@
     "--type-row-font"
    ],
    "locals": [],
-   "literals": 12
+   "literals": 4
   },
   {
    "name": "UserBubble",
@@ -988,7 +768,7 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 7
+   "literals": 8
   },
   {
    "name": "VersionRow",
@@ -1023,7 +803,29 @@
     "--type-row-font"
    ],
    "locals": [],
-   "literals": 10
+   "literals": 2
+  },
+  {
+   "name": "AllocationCard",
+   "group": "Data",
+   "status": "building",
+   "page": null,
+   "file": "components/cards/AllocationCard.jsx",
+   "tokens": [
+    "--color-ink",
+    "--color-line-soft",
+    "--color-surface",
+    "--color-track",
+    "--dur-bar",
+    "--font-ui",
+    "--leading-20",
+    "--radius-16",
+    "--radius-full",
+    "--text-14",
+    "--weight-medium"
+   ],
+   "locals": [],
+   "literals": 7
   },
   {
    "name": "AttributionChart",
@@ -1058,7 +860,33 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 27
+   "literals": 12
+  },
+  {
+   "name": "Badge",
+   "group": "Data",
+   "status": "building",
+   "page": null,
+   "file": "components/cards/Badge.jsx",
+   "tokens": [
+    "--color-chip",
+    "--color-line",
+    "--color-muted",
+    "--color-status-ok-bg",
+    "--color-status-ok-fg",
+    "--color-status-over-bg",
+    "--color-status-over-fg",
+    "--color-status-under-bg",
+    "--color-status-under-fg",
+    "--font-ui",
+    "--radius-full",
+    "--text-10",
+    "--text-11",
+    "--weight-bold",
+    "--weight-medium"
+   ],
+   "locals": [],
+   "literals": 3
   },
   {
    "name": "ChartBar",
@@ -1067,6 +895,7 @@
    "page": "ChartBar.html",
    "file": "components/data/ChartBar.jsx",
    "tokens": [
+    "--border-1",
     "--border-hairline",
     "--color-bronze-deep",
     "--color-ink",
@@ -1084,10 +913,8 @@
     "--weight-bold",
     "--weight-medium"
    ],
-   "locals": [
-    "--radius-4"
-   ],
-   "literals": 12
+   "locals": [],
+   "literals": 5
   },
   {
    "name": "ChartLegend",
@@ -1098,15 +925,13 @@
    "tokens": [
     "--color-ink",
     "--color-muted",
-    "--font-ui",
-    "--leading-16",
     "--radius-full",
     "--space-4",
     "--space-6",
-    "--weight-medium"
+    "--type-meta-font"
    ],
    "locals": [],
-   "literals": 11
+   "literals": 4
   },
   {
    "name": "ChartLine",
@@ -1123,17 +948,20 @@
     "--font-ui",
     "--leading-14",
     "--leading-15",
-    "--leading-16",
     "--space-14",
     "--space-6",
     "--space-8",
+    "--text-10",
     "--text-11",
+    "--text-11-5",
+    "--text-12",
     "--tint-bronze-06",
+    "--type-meta-font",
     "--weight-bold",
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 18
+   "literals": 1
   },
   {
    "name": "ChartReadout",
@@ -1155,7 +983,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 8
+   "literals": 1
   },
   {
    "name": "ChartShare",
@@ -1165,6 +993,7 @@
    "file": "components/data/ChartShare.jsx",
    "tokens": [
     "--border-hairline",
+    "--color-alloc-debt",
     "--color-bronze-deep",
     "--color-line",
     "--color-muted",
@@ -1182,7 +1011,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 7
+   "literals": 1
   },
   {
    "name": "ChartTooltip",
@@ -1209,7 +1038,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 13
+   "literals": 9
   },
   {
    "name": "ConcentrationBar",
@@ -1228,7 +1057,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 7
+   "literals": 2
   },
   {
    "name": "DataTable",
@@ -1238,8 +1067,46 @@
    "page": null,
    "file": null,
    "tokens": [],
-   "locals": [],
    "literals": 0
+  },
+  {
+   "name": "DataTableCard",
+   "group": "Data",
+   "status": "building",
+   "page": null,
+   "file": "components/cards/DataTableCard.jsx",
+   "tokens": [
+    "--color-bronze-deep",
+    "--color-chip",
+    "--color-ink",
+    "--color-line",
+    "--color-line-soft",
+    "--color-muted",
+    "--color-surface",
+    "--dur-enter",
+    "--dur-screen",
+    "--ease",
+    "--font-ui",
+    "--leading-17",
+    "--leading-19",
+    "--leading-22",
+    "--radius-12",
+    "--radius-16",
+    "--shadow-card",
+    "--space-10",
+    "--space-12",
+    "--space-14",
+    "--space-6",
+    "--space-8",
+    "--text-12",
+    "--text-13",
+    "--text-16",
+    "--weight-bold",
+    "--weight-medium",
+    "--weight-regular"
+   ],
+   "locals": [],
+   "literals": 5
   },
   {
    "name": "DrawnCheck",
@@ -1263,7 +1130,7 @@
    "page": null,
    "file": "components/data/Dumbbell.jsx",
    "tokens": [
-    "--border-hairline",
+    "--border-1",
     "--color-bronze",
     "--color-bronze-deep",
     "--color-canvas",
@@ -1282,7 +1149,77 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 13
+   "literals": 8
+  },
+  {
+   "name": "HeroNumberCard",
+   "group": "Data",
+   "status": "building",
+   "page": null,
+   "file": "components/cards/HeroNumberCard.jsx",
+   "tokens": [
+    "--color-alloc-debt",
+    "--color-bronze",
+    "--color-bronze-deep",
+    "--color-bubble-edge",
+    "--color-ink",
+    "--color-ink-soft",
+    "--color-line",
+    "--color-muted",
+    "--color-selected",
+    "--color-surface",
+    "--color-track",
+    "--dur-screen",
+    "--ease",
+    "--font-ui",
+    "--leading-18",
+    "--leading-20",
+    "--leading-24",
+    "--radius-16",
+    "--radius-full",
+    "--shadow-card",
+    "--space-10",
+    "--space-12",
+    "--space-14",
+    "--space-16",
+    "--space-5",
+    "--space-8",
+    "--text-13",
+    "--text-14",
+    "--text-16",
+    "--type-display-font",
+    "--weight-bold",
+    "--weight-medium",
+    "--weight-regular"
+   ],
+   "locals": [],
+   "literals": 6
+  },
+  {
+   "name": "MoveCard",
+   "group": "Data",
+   "status": "building",
+   "page": null,
+   "file": "components/cards/MoveCard.jsx",
+   "tokens": [
+    "--color-bronze-deep",
+    "--color-ink",
+    "--color-muted",
+    "--color-surface",
+    "--font-display",
+    "--font-ui",
+    "--leading-18",
+    "--leading-22",
+    "--radius-16",
+    "--shadow-card",
+    "--space-12",
+    "--text-13",
+    "--text-15",
+    "--weight-medium",
+    "--weight-regular"
+   ],
+   "locals": [],
+   "literals": 4
   },
   {
    "name": "OverlapView",
@@ -1292,26 +1229,7 @@
    "page": null,
    "file": null,
    "tokens": [],
-   "locals": [],
    "literals": 0
-  },
-  {
-   "name": "ProgressRail",
-   "group": "Data",
-   "status": "building",
-   "page": null,
-   "file": "components/data/ProgressRail.jsx",
-   "tokens": [
-    "--color-line",
-    "--dur-fast",
-    "--dur-screen",
-    "--ease",
-    "--gradient-rail",
-    "--radius-full",
-    "--space-5"
-   ],
-   "locals": [],
-   "literals": 7
   },
   {
    "name": "StatTile",
@@ -1338,7 +1256,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 6
+   "literals": 0
   },
   {
    "name": "AnswerChip",
@@ -1367,7 +1285,7 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 9
+   "literals": 3
   },
   {
    "name": "ChipRow",
@@ -1381,7 +1299,7 @@
     "--space-8"
    ],
    "locals": [],
-   "literals": 2
+   "literals": 0
   },
   {
    "name": "ClientChip",
@@ -1396,6 +1314,7 @@
     "--color-line",
     "--color-muted",
     "--font-ui",
+    "--h-chip-sm",
     "--leading-16",
     "--radius-full",
     "--space-6",
@@ -1406,7 +1325,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 13
+   "literals": 12
   },
   {
    "name": "DarkButton",
@@ -1426,7 +1345,7 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 5
+   "literals": 2
   },
   {
    "name": "DecisionsStrip",
@@ -1447,7 +1366,7 @@
     "--weight-bold"
    ],
    "locals": [],
-   "literals": 9
+   "literals": 7
   },
   {
    "name": "DownloadAction",
@@ -1481,7 +1400,7 @@
     "--type-caption-font"
    ],
    "locals": [],
-   "literals": 11
+   "literals": 2
   },
   {
    "name": "InfoDot",
@@ -1507,7 +1426,7 @@
     "--space-8"
    ],
    "locals": [],
-   "literals": 1
+   "literals": 0
   },
   {
    "name": "Pill",
@@ -1533,10 +1452,8 @@
     "--tint-bronze-dashed",
     "--weight-bold"
    ],
-   "locals": [
-    "--hit"
-   ],
-   "literals": 6
+   "locals": [],
+   "literals": 13
   },
   {
    "name": "Pressable",
@@ -1545,17 +1462,11 @@
    "page": null,
    "file": "components/actions/Pressable.jsx",
    "tokens": [
-    "--border-focus",
-    "--border-focus-width",
     "--dur-press",
-    "--ease",
-    "--focus-ring"
+    "--ease"
    ],
-   "locals": [
-    "--hit-x",
-    "--hit-y"
-   ],
-   "literals": 2
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "RangePills",
@@ -1582,7 +1493,7 @@
     "--type-label-font"
    ],
    "locals": [],
-   "literals": 5
+   "literals": 0
   },
   {
    "name": "SearchField",
@@ -1599,15 +1510,15 @@
     "--dur-press",
     "--focus-ring",
     "--font-ui",
-    "--leading-16",
     "--leading-20",
     "--radius-20",
     "--space-8",
     "--text-14",
+    "--type-meta-font",
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 13
+   "literals": 5
   },
   {
    "name": "SelectionMark",
@@ -1625,7 +1536,7 @@
     "--radius-full"
    ],
    "locals": [],
-   "literals": 5
+   "literals": 6
   },
   {
    "name": "StickyCTA",
@@ -1638,7 +1549,7 @@
     "--ease"
    ],
    "locals": [],
-   "literals": 1
+   "literals": 4
   },
   {
    "name": "SuggestionRow",
@@ -1658,7 +1569,52 @@
     "--weight-semibold"
    ],
    "locals": [],
-   "literals": 5
+   "literals": 2
+  },
+  {
+   "name": "CanvasHeader",
+   "group": "Navigation",
+   "status": "building",
+   "page": null,
+   "file": "components/shell/CanvasHeader.jsx",
+   "tokens": [
+    "--color-bronze-deep",
+    "--color-ink",
+    "--color-line",
+    "--color-surface",
+    "--font-ui",
+    "--radius-full",
+    "--space-4",
+    "--text-12",
+    "--text-14",
+    "--weight-semibold"
+   ],
+   "locals": [],
+   "literals": 8
+  },
+  {
+   "name": "ExplainerSheet",
+   "group": "Navigation",
+   "status": "building",
+   "page": null,
+   "file": "components/cards/ExplainerSheet.jsx",
+   "tokens": [
+    "--color-ink",
+    "--color-ink-soft",
+    "--color-line",
+    "--color-surface",
+    "--ease",
+    "--font-ui",
+    "--leading-20",
+    "--radius-full",
+    "--scrim",
+    "--space-10",
+    "--text-14",
+    "--type-sheet-title-font",
+    "--weight-regular"
+   ],
+   "locals": [],
+   "literals": 12
   },
   {
    "name": "FollowUpRow",
@@ -1687,7 +1643,7 @@
     "--type-eyebrow-font"
    ],
    "locals": [],
-   "literals": 9
+   "literals": 0
   },
   {
    "name": "List",
@@ -1716,7 +1672,7 @@
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 20
+   "literals": 15
   },
   {
    "name": "ListRow",
@@ -1742,12 +1698,50 @@
     "--text-14",
     "--text-16",
     "--tint-bronze-06",
+    "--type-meta-font",
     "--weight-bold",
     "--weight-medium",
     "--weight-regular"
    ],
    "locals": [],
-   "literals": 23
+   "literals": 4
+  },
+  {
+   "name": "ProgressRail",
+   "group": "Navigation",
+   "status": "building",
+   "page": null,
+   "file": "components/data/ProgressRail.jsx",
+   "tokens": [
+    "--color-line",
+    "--dur-fast",
+    "--dur-screen",
+    "--ease",
+    "--gradient-rail",
+    "--radius-full",
+    "--space-5"
+   ],
+   "locals": [],
+   "literals": 4
+  },
+  {
+   "name": "TopBar",
+   "group": "Navigation",
+   "status": "building",
+   "page": null,
+   "file": "components/shell/TopBar.jsx",
+   "tokens": [
+    "--color-ink",
+    "--color-line",
+    "--color-surface",
+    "--font-ui",
+    "--radius-full",
+    "--shadow-card",
+    "--text-14",
+    "--weight-semibold"
+   ],
+   "locals": [],
+   "literals": 10
   }
  ]
 }

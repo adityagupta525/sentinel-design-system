@@ -29,11 +29,11 @@ export function ResponseFeedback({ value, onRate, onReason, reasons = REASONS, n
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', margin: `calc(-1 * var(--space-4)) 0 calc(-1 * var(--space-6))` }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
         <Pressable onClick={() => rate(rating === 'up' ? null : 'up')} pressed={rating === 'up'} label="This answer was right"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28 }}>
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 'var(--h-chip-sm)', height: 'var(--h-chip-sm)' }}>
           <Thumb active={rating === 'up'} />
         </Pressable>
         <Pressable onClick={() => rate(rating === 'down' ? null : 'down')} pressed={rating === 'down'} label="Something is wrong with this answer"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28 }}>
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 'var(--h-chip-sm)', height: 'var(--h-chip-sm)' }}>
           <Thumb down active={rating === 'down'} />
         </Pressable>
         {rating && <span role="status" style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{rating === 'up' ? 'Noted' : reason ? 'Noted · ' + reason : 'Noted — what was wrong?'}</span>}

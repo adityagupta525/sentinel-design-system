@@ -35,6 +35,7 @@ Fixed dimensions that are not spacing and are never "rounded to the grid":
 | `--h-filter-chip` | `32px` |  |
 | `--h-cta` | `48px` |  |
 | `--h-icon-btn` | `42px` |  |
+| `--h-chip-sm` | `28px` | v12 · ClientChip's box and ResponseFeedback's thumb targets. Both were setting 28 by hand, the only box in the product outside this vocabulary. The visual box is 28; the TARGET is still 44 — ClientChip's own header says so and both thumbs sit inside Pressable. Naming it changes nothing visually and stops the value drifting when the row rhythm is next tuned. |
 
 > `--h-touch` is the floor: **nothing operable is smaller than 44**. A visual box may be smaller —
 > `Pressable` and `Pill` extend to 44 with a pseudo-element — but the target may not.
