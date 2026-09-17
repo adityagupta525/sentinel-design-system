@@ -56,7 +56,13 @@ export async function buildIndex({ ls, readFile, saveFile, today }) {
       rows.push({ name, group: OVERRIDE[name] || GROUP_BY_DIR[dir], status: page ? 'shipped' : 'building', page, file: `components/${dir}/${f}`, tokens, locals });
     }
   }
-  for (const s of SPECIFIED) rows.push({ ...s, status: 'specified', page: null, file: null, tokens: [] });
+  /* A SPECIFIED row is the backlog: specified in a document, no component on disk. Once the component
+     lands, the constant above still names it, and the index would then carry the component twice —
+     once shipped and once specified — reporting real work as undone. The header promises this file
+     cannot say a component is there when it isn't; the same promise has to hold the other way. Built
+     wins over specified, and the backlog list needs no editing as components arrive. */
+  const built = new Set(rows.map((r) => r.name));
+  for (const s of SPECIFIED) if (!built.has(s.name)) rows.push({ ...s, status: 'specified', page: null, file: null, tokens: [] });
   rows.sort((a, b) => ORDER.indexOf(a.group) - ORDER.indexOf(b.group) || a.name.localeCompare(b.name));
   const counts = rows.reduce((o, r) => (o[r.status] = (o[r.status] || 0) + 1, o), {});
   const out = { generated: today, generator: 'scripts/build-index.js', counts, rows };
