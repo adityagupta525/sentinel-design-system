@@ -1,0 +1,30 @@
+<!-- @dsCard group="Components" viewport="700x330" name="Iconography" subtitle="Six source glyphs, five Lucide additions, and the stroke rule" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 8px}.g{display:grid;justify-items:center;gap:6}.g span{font:500 11px var(--font-ui);color:var(--color-muted)}.row{display:flex;gap:26px;flex-wrap:wrap;align-items:center}.note{font:500 12px/1.6 var(--font-ui);color:var(--color-muted);margin:14px 0 0}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { IconMenu, IconPlus, IconChevronRight, IconAttach, IconArrow, IconSparkle, IconFile, IconCheckCircle, IconDownload, IconSpinner, SelectionMark, Pill } = window.SentinelDesignSystem_0682a2;
+const Cell = ({ n, children }) => <div className="g">{children}<span>{n}</span></div>;
+const App = () => <div>
+  <p className="lbl">Source set · from the Figma export · six grids, 1.33–1.5px stroke · kept as-is</p>
+  <div className="row">
+    <Cell n="IconMenu"><IconMenu size={24} /></Cell><Cell n="IconPlus"><IconPlus size={24} /></Cell><Cell n="IconChevronRight"><IconChevronRight size={20} /></Cell><Cell n="IconAttach"><IconAttach size={22} /></Cell><Cell n="IconSparkle"><IconSparkle size={22} /></Cell>
+    <Cell n="IconArrow"><span style={{display:'flex',width:42,height:42,alignItems:'center',justifyContent:'center',borderRadius:9999,background:'var(--gradient-dark-cta)'}}><IconArrow /></span></Cell>
+  </div>
+  <p className="lbl" style={{marginTop:22}}>Additions · Lucide (ISC) · 24px grid, stroke 1.5, rendered 20px</p>
+  <div className="row">
+    <Cell n="IconFile"><IconFile /></Cell><Cell n="IconCheckCircle"><IconCheckCircle /></Cell><Cell n="IconDownload"><IconDownload /></Cell><Cell n="IconSpinner"><IconSpinner /></Cell>
+    <Cell n="SelectionMark radio"><div style={{display:'flex',gap:6}}><SelectionMark kind="radio" /><SelectionMark kind="radio" selected /></div></Cell>
+    <Cell n="SelectionMark checkbox"><div style={{display:'flex',gap:6}}><SelectionMark kind="checkbox" /><SelectionMark kind="checkbox" selected /></div></Cell>
+  </div>
+  <p className="lbl" style={{marginTop:22}}>Text does the rest</p>
+  <div className="row" style={{gap:8}}>
+    <Pill label="Remove" size="sm" /><Pill label="Download PDF" size="sm" /><Pill label="Download PPTX" size="sm" /><Pill label="Send on WhatsApp" size="sm" /><Pill label="Parag Parikh ↔ HDFC Large Cap" size="sm" tone="filter" />
+  </div>
+  <p className="note">Stroke 1.5 at 20px rendered — Lucide's 2px default is too heavy beside a 1px hairline. Never thicken it, never change the grid, recolour only within ink / bronze / muted / status-fg. No brand marks: <strong>Send on WhatsApp</strong> is text alone, since an approximated third-party mark is a trademark problem, not a style choice. Sort carets are the existing chevron rotated; ↔ and · are characters.</p>
+</div>;
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

@@ -1,0 +1,17 @@
+<!-- @dsCard group="Components" viewport="700x120" name="Icons" subtitle="Six stroke glyphs from the Figma export" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.g{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 6px}.col{width:343px}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { Eyebrow, EyebrowDivider, Provenance, DemoFooter, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, CanvasHeader, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, ActionCard, DarkButton, StickyCTA, SuggestionRow, DecisionsStrip, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
+const L = ({t}) => <p className="lbl">{t}</p>;
+
+const App = () => <div className="row" style={{gap:24}}>
+  {[['IconMenu',IconMenu],['IconPlus',IconPlus],['IconChevronRight',IconChevronRight],['IconAttach',IconAttach],['IconSparkle',IconSparkle]].map(([n,I]) => <div key={n} style={{display:'grid',justifyItems:'center',gap:6}}><I size={28} /><span style={{font:'500 11px var(--font-ui)',color:'var(--color-muted)'}}>{n}</span></div>)}
+  <div style={{display:'grid',justifyItems:'center',gap:6}}><span style={{display:'flex',width:42,height:42,alignItems:'center',justifyContent:'center',borderRadius:9999,background:'var(--gradient-dark-cta)'}}><IconArrow /></span><span style={{font:'500 11px var(--font-ui)',color:'var(--color-muted)'}}>IconArrow</span></div>
+</div>;
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

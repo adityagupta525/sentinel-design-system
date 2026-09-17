@@ -1,0 +1,2 @@
+export interface ComposerProps { value: string; onChange: (v: string) => void; onFocus?: () => void; onSend?: () => void; /** Context placeholders: home "Ask Sentinel about a client, a fund, or a plan" · thread "Ask Sentinel" · answer "or type your answer" · canvas "Ask about this" · sheet "Ask a follow-up". */ placeholder?: string; autoFocus?: boolean; /** Send disabled, Stop square in the send slot. */ streaming?: boolean; onStop?: () => void; }
+export function Composer(props: ComposerProps): JSX.Element;

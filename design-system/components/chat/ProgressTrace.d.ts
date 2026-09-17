@@ -1,0 +1,2 @@
+export interface ProgressTraceProps { /** Real work, named: "Reading Sharma's holdings — 18 funds". */ steps: string[]; stepMs?: number; /** Shown behind a left hairline once done and expanded. */ reasoning?: string; onDone?: () => void; /** false freezes the trace — and its clock — for specimens and artboards. */ autoplay?: boolean; initialActive?: number; /** Duration shown while frozen (autoplay=false). */ seconds?: number; }
+export function ProgressTrace(props: ProgressTraceProps): JSX.Element;

@@ -1,0 +1,25 @@
+<!-- @dsCard group="Components" viewport="700x760" name="Data" subtitle="Rails, bars, dumbbell, attribution — the chart family has its own pages under Pages" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.g{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 6px}.col{width:343px}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { Eyebrow, EyebrowDivider, Provenance, DemoFooter, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, CanvasHeader, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, ActionCard, DarkButton, StickyCTA, SuggestionRow, DecisionsStrip, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, ChartLegend, ChartShare, ChartTooltip, CHART_RAMP, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
+const L = ({t}) => <p className="lbl">{t}</p>;
+
+const Ramp = () => <div style={{display:'flex',gap:0,borderRadius:9999,overflow:'hidden',height:10,width:200}}>{CHART_RAMP.map((c,i)=><span key={i} style={{flex:1,background:c}} />)}</div>;
+const Tip = () => { const [on,setOn] = React.useState(true); return (
+  <div style={{position:'relative',display:'inline-flex',width:44,height:44,alignItems:'center',justifyContent:'center'}}>
+    <button onClick={()=>setOn(v=>!v)} style={{appearance:'none',border:'none',cursor:'pointer',width:44,height:44,borderRadius:9999,background:'transparent',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{width:10,height:10,borderRadius:9999,background:'var(--color-bronze)'}} /></button>
+    {on && <ChartTooltip label="Small-cap rally" value="+6.1 pts" meta="As of 30 Sep · Q3 statement" />}
+  </div>); };
+const App = () => <div className="g" style={{gridTemplateColumns:'343px 1fr',gap:20,alignItems:'start'}}>
+  <div className="g" style={{gap:16}}><div style={{margin:'0 -16px'}}><ProgressRail n={5} total={12} /></div><ConcentrationBar fraction={0.8} label="Top 14 funds = 80% of ₹18.4 L" /><Dumbbell label="Equity" actual={71} target={60} /><div className="row"><Badge variant="status" tone="over">12% over</Badge><Badge variant="status" tone="under">9% under</Badge><Badge variant="status" tone="ok">Close enough</Badge><Badge>Flexi cap</Badge><DrawnCheck /></div></div>
+  <div style={{background:'var(--color-surface)',borderRadius:16,padding:14,boxShadow:'var(--shadow-card)'}}><Eyebrow style={{marginBottom:8}}>Drift attribution · Q2 → Q3</Eyebrow><AttributionChart from={62} to={71} contributions={[{label:'Small-cap rally',value:6.1,note:'the market, not a decision of yours'},{label:'His July top-up',value:2.0,note:'went into Quant Small Cap'},{label:'Funds crept up-cap',value:0.9}]} /></div>
+  <div className="g" style={{gap:16}}><div><L t="the four-step ramp · the only chart palette" /><Ramp /></div><div><L t="ChartShare · the pie, answered — see pages/ChartShare.html" /><ChartShare segments={[{label:'Equity',value:71},{label:'Debt',value:23},{label:'Cash',value:6}]} run={false} /></div></div>
+  <div className="g" style={{gap:16}}><div><L t="ChartTooltip · tap, not hover · 44pt target" /><div style={{paddingTop:96}}><Tip /></div></div><div><L t="ChartLegend · ranked, left-aligned" /><div style={{width:220}}><ChartLegend items={[{label:'Parag Parikh Flexi Cap',value:'₹4.1 L',amount:4.1},{label:'HDFC Large Cap',value:'₹2.6 L',amount:2.6},{label:'Motilal Midcap',value:'₹1.2 L',amount:1.2}]} /></div></div></div>
+</div>;
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

@@ -1,0 +1,17 @@
+<!-- @dsCard group="Components" viewport="700x470" name="Chat" subtitle="Bubbles, Sentinel block, thinking, trace, Q&A pair, banners, last-message actions" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.g{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 6px}.col{width:343px}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { Eyebrow, EyebrowDivider, Provenance, DemoFooter, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, CanvasHeader, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, ActionCard, DarkButton, StickyCTA, SuggestionRow, DecisionsStrip, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, MessageActions, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
+const L = ({t}) => <p className="lbl">{t}</p>;
+
+const App = () => <div className="g" style={{gridTemplateColumns:'343px 1fr',gap:20}}>
+  <div className="g"><UserBubble text="Why did Sharma's portfolio drift this quarter?" /><MessageActions role="user" /><ParseNote text="understood as ₹1,80,000" /><SentinelBlock><SentinelText text="Two-thirds of the drift is the small-cap rally. You did not cause it, and selling into it has a cost." /></SentinelBlock><MessageActions role="assistant" /><SentinelThinking /><QAPair question="How old is Meera?" answer="Use her KYC age — 38" /></div>
+  <div className="g"><GreetingDivider>Good afternoon, Ashish</GreetingDivider><DetourBanner label="Paused — risk profile, question 5 of 12" onResume={()=>{}} /><ProgressTrace autoplay={false} initialActive={1} steps={["Reading Sharma's holdings — 18 funds","Comparing against his mandate","Checking Q2 statements","Attributing the drift"]} /></div>
+</div>;
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

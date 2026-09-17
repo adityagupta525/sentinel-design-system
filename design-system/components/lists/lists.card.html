@@ -1,0 +1,56 @@
+<!-- @dsCard group="Components" viewport="760x560" name="Lists" subtitle="ListRow with its legal pairings, List with header / dividers / footer / empty state, ClientChip" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lists</title><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-canvas);font-family:var(--font-ui)}#root{padding:24px}.g{display:grid;grid-template-columns:343px 343px;gap:24px;align-items:start}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 8px}.note{font:400 11px/15px var(--font-ui);color:var(--color-data-deemph);margin:8px 0 0}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head>
+<body><div id="root"></div>
+<script type="text/babel">
+const { List, ListRow, ClientChip, Pill, SearchField } = window.SentinelDesignSystem_0682a2;
+const L = ({t}) => <p className="lbl">{t}</p>;
+const App = () => {
+  const [q,setQ] = React.useState('');
+  const [sel,setSel] = React.useState(1);
+  return <div className="g">
+    <div>
+      <L t="List · saved work, progress hints" />
+      <List header="Saved work" rowProps={{variant:'nav', trailing:'chevron'}}
+        items={[{title:"Meera's risk profile", meta:'Step 7 of 16'},{title:'₹25 L proposal', meta:'Draft · 2 funds'},{title:"Sharma's rebalance", meta:'2 moves'}]}
+        footer={<Pill label="See all 12" tone="tertiary" size="sm" />}
+        emptyState={{title:'Nothing in progress'}} />
+      <p className="note">Capped with a footer row, never independently scrollable — one scroll per surface.</p>
+    </div>
+    <div>
+      <L t="ListRow · relative time and a bound client" />
+      <List dividers="inset" emptyState={{title:'No threads yet'}}>
+        <ListRow variant="nav" title="Why did Sharma's portfolio drift…" chip={<ClientChip name="R. Sharma" />} meta="2h ago" trailing="meta" onPress={()=>{}} />
+        <ListRow variant="nav" title="Diwali offer from HDFC AMC" meta="Yesterday" trailing="meta" onPress={()=>{}} />
+        <ListRow variant="nav" title="What Meera holds" chip={<ClientChip name="Meera Iyer" />} meta="12 Sep" trailing="meta" onPress={()=>{}} />
+      </List>
+    </div>
+    <div>
+      <L t="ListRow · select, action, static" />
+      <List dividers="inset" emptyState={{title:'No clients yet'}}>
+        <ListRow variant="select" leading="avatar" title="Sunita Nair" subtitle="Reviewed 12 Sep" selected={sel===0} onPress={()=>setSel(0)} />
+        <ListRow variant="select" leading="avatar" title="R. Sharma" subtitle="Rebalanced 16 Sep" selected={sel===1} onPress={()=>setSel(1)} />
+        <ListRow variant="action" title="₹25 L proposal" subtitle="Saved 14 Sep · 6 funds" onMenu={()=>{}} />
+        <ListRow variant="static" title="Equity" meta="71%" trailing="meta" />
+        <ListRow variant="static" title="Mandate" badge={{variant:'status', tone:'over', text:'Over'}} trailing="badge" />
+      </List>
+      <p className="note">Chevron belongs to <code>nav</code> alone. An illegal pairing falls back to the variant's default and warns.</p>
+    </div>
+    <div>
+      <L t="Empty state · required, in the product's voice" />
+      <List header="Clients" emptyState={{title:"No clients bound yet", body:"Tap a client anywhere and the next thread opens bound to them.", action:<Pill label="Find a client" size="sm" />}} />
+      <div style={{marginTop:24}}><L t="SearchField + ClientChip" />
+        <SearchField value={q} onChange={setQ} placeholder="Search 512 clients" />
+        <div style={{marginTop:10,display:'flex',gap:8,alignItems:'center'}}><ClientChip name="R. Sharma" onRemove={()=>{}} /><ClientChip name="Meera Iyer" /></div>
+        <p className="note">The chip with ✕ is composer-resident; without it, read-only inside a row.</p>
+      </div>
+    </div>
+  </div>;
+};
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>

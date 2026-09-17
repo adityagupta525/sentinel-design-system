@@ -1,0 +1,28 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Actions" subtitle="Chips, answer chips, filter chips, dark CTA, rows, decisions strip" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.g{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 6px}.col{width:343px}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { Eyebrow, EyebrowDivider, Provenance, DemoFooter, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, CanvasHeader, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, InlineActionRow, DarkButton, StickyCTA, SuggestionRow, DecisionsStrip, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
+const L = ({t}) => <p className="lbl">{t}</p>;
+
+const App = () => <div className="g" style={{gap:14}}>
+  <div><L t="AnswerChip · outline / smart / tertiary / muted / primary / selected" /><div className="row"><AnswerChip label="Fixed salary" /><AnswerChip label="Use her KYC age — 38" variant="smart" /><AnswerChip label="Why a 25% cap?" variant="tertiary" /><AnswerChip label="Skip to the result" variant="muted" /><AnswerChip label="Let's go" variant="primary" /><AnswerChip label="Stayed put" selected /></div></div>
+  <div className="row" style={{alignItems:'flex-start',gap:20}}>
+    <div style={{width:300}}><L t="AnswerChip with subtitle" /><AnswerChip label="A monthly SIP instead" subtitle="Spread the amount over months" /></div>
+    <div><L t="Pill · md 36 (surface) / sm 32 (in-card) · hit area always ≥44" /><div className="row"><Pill label="Review a portfolio" /><Pill label="Proposal" selected /><Pill label="All 43" size="sm" tone="filter" selected /><Pill label="Over 2%" size="sm" tone="filter" /></div></div>
+  </div>
+  <div className="row" style={{alignItems:'flex-start',gap:20}}>
+    <div style={{width:343}}><L t="DarkButton" /><DarkButton label="Rebalance to his mandate" /></div>
+    <div style={{width:300}}><L t="InlineActionRow · in a message body" /><InlineActionRow actions={[{label:'Tell Sharma now'},{label:'Back to his portfolio'}]} /></div>
+  </div>
+  <div className="row" style={{alignItems:'flex-start',gap:20}}>
+    <div style={{width:343}}><L t="SuggestionRow" /><div style={{background:'var(--color-surface)',borderRadius:16,padding:'0 12px',boxShadow:'var(--shadow-card)'}}><SuggestionRow label="Show me Diwali offer from HDFC AMC" /><SuggestionRow label="Build a proposal for Mr. Amit Aggrawal" /><SuggestionRow label="Why did Sharma's portfolio drift this quarter?" last /></div></div>
+    <div style={{width:300}}><L t="DecisionsStrip" /><DecisionsStrip tokens={[{label:'₹25 L'},{label:'6 funds'},{label:'Moderate'},{label:'Over 3 months'}]} /></div>
+  </div>
+</div>;
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

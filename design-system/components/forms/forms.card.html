@@ -1,0 +1,38 @@
+<!-- @dsCard group="Components" viewport="700x230" name="Forms" subtitle="SelectionMark — radio and checkbox forms; SearchField — what a searchable List renders" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 8px}.note{font:500 12px/1.6 var(--font-ui);color:var(--color-muted);margin:12px 0 0}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { SelectionMark, SearchField } = window.SentinelDesignSystem_0682a2;
+const Row = ({ kind, selected, disabled, title, meta }) => (
+  <div style={{display:'flex',height:52,alignItems:'center',gap:12,borderBottom:'0.5px solid var(--color-line-soft)',opacity:disabled?0.4:1}}>
+    <SelectionMark kind={kind} selected={selected} disabled={disabled} />
+    <span style={{flex:1,font:'500 14px/20px var(--font-ui)',color:'var(--color-ink)'}}>{title}</span>
+    <span style={{font:'500 11.5px var(--font-ui)',color:'var(--color-muted)'}}>{meta}</span>
+  </div>
+);
+const Search = () => { const [q,setQ] = React.useState('Sharm'); return <SearchField value={q} onChange={setQ} />; };
+const App = () => <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24}}>
+  <div style={{gridColumn:'1 / -1'}}>
+    <p className="lbl">SearchField · picking one client out of 512</p>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}><SearchField /><Search /></div>
+    <p className="note">The composer's style at one row and 44px — a filter, never a second composer. <code>Clear</code> is text, not a glyph.</p>
+  </div>
+  <div>
+    <p className="lbl">radio · one of a set</p>
+    <div style={{background:'var(--color-surface)',borderRadius:16,padding:'0 14px',boxShadow:'var(--shadow-card)'}}>
+      <Row kind="radio" selected title="Moderate" meta="54" /><Row kind="radio" title="Balanced" meta="62" />
+    </div>
+  </div>
+  <div>
+    <p className="lbl">checkbox · several of a set</p>
+    <div style={{background:'var(--color-surface)',borderRadius:16,padding:'0 14px',boxShadow:'var(--shadow-card)'}}>
+      <Row kind="checkbox" selected title="Parag Parikh Flexi Cap" meta="0.63%" /><Row kind="checkbox" disabled title="HDFC Manufacturing" meta="not on shelf" />
+    </div>
+  </div>
+</div>;
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>
