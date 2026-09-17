@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"StickyCTA","sourcePath":"components/actions/StickyCTA.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"StickyCTA","sourcePath":"components/actions/StickyCTA.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -42,6 +42,7 @@ var __ds_out = (() => {
     ConcentrationBar: () => ConcentrationBar,
     ConstraintCallout: () => ConstraintCallout,
     DarkButton: () => DarkButton,
+    DataTable: () => DataTable,
     DataTableCard: () => DataTableCard,
     DecisionsStrip: () => DecisionsStrip,
     DemoFooter: () => DemoFooter,
@@ -422,6 +423,117 @@ var __ds_out = (() => {
   // design-system/components/cards/ConstraintCallout.jsx
   function ConstraintCallout({ eyebrow, body }) {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-16)", background: "var(--color-bubble)", padding: "12px 14px", boxShadow: "0 0 0 1px var(--color-bubble-edge)", boxSizing: "border-box", animation: "ds-rise 260ms var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, { color: "var(--color-bronze-deep)" }, eyebrow), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "4px 0 0", ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-13)", lineHeight: "var(--leading-19)", color: "var(--color-ink-soft)" } } }, body));
+  }
+
+  // design-system/components/cards/DataTable.jsx
+  var ALIGN = { text: "start", badge: "start", number: "end", percent: "end", currency: "end", bar: "end", sparkline: "end" };
+  var NUDGE = "ds-table-nudge";
+  var Caret = ({ dir }) => /* @__PURE__ */ react_global_default.createElement(
+    "svg",
+    {
+      width: "9",
+      height: "9",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      "aria-hidden": "true",
+      style: { display: "block", flexShrink: 0, transform: dir === "asc" ? "rotate(180deg)" : "none", transition: "transform var(--dur-fast) var(--ease)" }
+    },
+    /* @__PURE__ */ react_global_default.createElement("path", { d: "M6 9.5l6 6 6-6", stroke: "var(--color-bronze-deep)", strokeWidth: "2.6", strokeLinecap: "round", strokeLinejoin: "round" })
+  );
+  var Chevron2 = ({ open }) => /* @__PURE__ */ react_global_default.createElement(
+    "svg",
+    {
+      width: "11",
+      height: "11",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      "aria-hidden": "true",
+      style: { display: "block", flexShrink: 0, transform: open ? "rotate(180deg)" : "none", transition: "transform var(--dur-fast) var(--ease)" }
+    },
+    /* @__PURE__ */ react_global_default.createElement("path", { d: "M6 9.5l6 6 6-6", stroke: "var(--color-muted)", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" })
+  );
+  var warned = false;
+  function stickyKey(columns) {
+    const marked = columns.filter((c) => c.sticky);
+    if (marked.length > 1 && !warned && typeof console !== "undefined") {
+      warned = true;
+      console.warn("DataTable: exactly one column may be sticky, and it is the entity name. Using the first.");
+    }
+    return (marked[0] || columns[0] || {}).key;
+  }
+  function Cell({ col, row, max }) {
+    const v = row[col.key];
+    const align = col.align || ALIGN[col.kind] || "start";
+    const base = { minWidth: 0, textAlign: align === "end" ? "right" : "left", font: "var(--type-row-font)", color: "var(--color-ink)" };
+    if (col.kind === "bar") {
+      const n = Number(row[`${col.key}Value`] ?? (parseFloat(String(v)) || 0));
+      const pct = max > 0 ? Math.max(0, Math.min(1, n / max)) : 0;
+      return /* @__PURE__ */ react_global_default.createElement("div", { style: { ...base, position: "relative", paddingRight: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", inset: 0, transformOrigin: "right center", transform: `scaleX(${pct})`, background: "var(--tint-bronze-06)", borderRadius: "var(--radius-6)" } }), /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative" }, className: "ds-tabular" }, v));
+    }
+    const tabular2 = col.kind && col.kind !== "text" && col.kind !== "badge";
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: base, className: tabular2 ? "ds-tabular" : void 0 }, v);
+  }
+  function DataTable({
+    columns = [],
+    rows = [],
+    density = "default",
+    overflow = "fold",
+    sort,
+    onSort,
+    filters,
+    expandable,
+    maxRows = 5,
+    emptyState,
+    loading = false,
+    loadingLabel,
+    title,
+    onShowAll
+  }) {
+    const [open, setOpen] = react_global_default.useState(null);
+    const bodyRef = react_global_default.useRef(null);
+    const sticky = stickyKey(columns);
+    const rest = columns.filter((c) => c.key !== sticky);
+    const scrolls = overflow === "scroll" || rest.length > 3;
+    const rowPad = density === "compact" ? "var(--space-6)" : "var(--space-8)";
+    react_global_default.useEffect(() => {
+      const el = bodyRef.current;
+      if (!el || !scrolls) return;
+      if (el.scrollWidth <= el.clientWidth + 1) return;
+      el.classList.add(NUDGE);
+      const t = setTimeout(() => el.classList.remove(NUDGE), 900);
+      return () => clearTimeout(t);
+    }, [scrolls, rows.length]);
+    const cycle = (key) => {
+      if (!onSort) return;
+      onSort(key, !sort || sort.key !== key ? "desc" : sort.dir === "desc" ? "asc" : "none");
+    };
+    const shown = overflow === "fold" && !loading ? rows.slice(0, maxRows) : rows;
+    const hidden = rows.length - shown.length;
+    const maxima = {};
+    for (const c of columns) if (c.kind === "bar") maxima[c.key] = Math.max(...rows.map((r) => Number(r[`${c.key}Value`] ?? (parseFloat(String(r[c.key])) || 0))), 0);
+    const headCell = (c) => {
+      const align = c.align || ALIGN[c.kind] || "start";
+      const active = sort && sort.key === c.key && sort.dir !== "none";
+      const inner = /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", alignItems: "center", gap: "var(--space-4)", flexDirection: align === "end" ? "row-reverse" : "row" } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, c.label), active && /* @__PURE__ */ react_global_default.createElement(Caret, { dir: sort.dir }));
+      return c.sortable && onSort ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => cycle(c.key), expand: "none", label: `Sort by ${c.label}`, style: { display: "block", width: "100%", textAlign: align === "end" ? "right" : "left" } }, inner) : /* @__PURE__ */ react_global_default.createElement("div", { style: { textAlign: align === "end" ? "right" : "left" } }, inner);
+    };
+    const cellW = (c) => c.width ? { width: c.width, flexShrink: 0 } : { flex: 1, minWidth: 0 };
+    const stickyCol = columns.find((c) => c.key === sticky) || columns[0];
+    const body = /* @__PURE__ */ react_global_default.createElement(
+      "div",
+      {
+        ref: bodyRef,
+        className: scrolls ? "ds-table-scroll noscroll" : void 0,
+        style: scrolls ? { overflowX: "auto", overflowY: "hidden", WebkitOverflowScrolling: "touch" } : void 0
+      },
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { minWidth: scrolls ? "max-content" : void 0 } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-end", gap: "var(--space-10)", paddingBottom: "var(--space-6)", borderBottom: "var(--border-hairline) solid var(--color-line-soft)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...cellW(stickyCol), position: scrolls ? "sticky" : void 0, left: 0, background: "var(--color-surface)", minWidth: scrolls ? stickyCol.width || 132 : 0 } }, headCell(stickyCol)), rest.map((c) => /* @__PURE__ */ react_global_default.createElement("div", { key: c.key, style: cellW(c) }, headCell(c)))), loading ? Array.from({ length: Math.min(maxRows, 4) }).map((_, i) => /* @__PURE__ */ react_global_default.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: "var(--space-10)", padding: `${rowPad} 0`, borderBottom: "var(--border-hairline) solid var(--color-line-soft)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...cellW(stickyCol), minWidth: scrolls ? stickyCol.width || 132 : 0 } }, i === 0 && loadingLabel ? /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, loadingLabel) : /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "block", height: "var(--space-10)", width: "70%", borderRadius: "var(--radius-6)", background: "var(--color-track)", animation: "sentinel-shimmer 1200ms ease-in-out infinite" } })), rest.map((c) => /* @__PURE__ */ react_global_default.createElement("div", { key: c.key, style: cellW(c) }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "block", height: "var(--space-10)", width: "60%", marginLeft: "auto", borderRadius: "var(--radius-6)", background: "var(--color-track)", animation: "sentinel-shimmer 1200ms ease-in-out infinite" } }))))) : shown.map((r, i) => {
+        const isOpen = open === i;
+        const detail = expandable ? expandable(r) : null;
+        return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, { key: r.id || i }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-10)", padding: `${rowPad} 0`, borderBottom: "var(--border-hairline) solid var(--color-line-soft)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...cellW(stickyCol), position: scrolls ? "sticky" : void 0, left: 0, background: "var(--color-surface)", minWidth: scrolls ? stickyCol.width || 132 : 0 } }, detail ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => setOpen(isOpen ? null : i), expanded: isOpen, label: `${r[sticky]} \u2014 details`, style: { display: "flex", width: "100%", alignItems: "center", gap: "var(--space-6)" } }, /* @__PURE__ */ react_global_default.createElement(Chevron2, { open: isOpen }), /* @__PURE__ */ react_global_default.createElement(Cell, { col: stickyCol, row: r, max: maxima[stickyCol.key] })) : /* @__PURE__ */ react_global_default.createElement(Cell, { col: stickyCol, row: r, max: maxima[stickyCol.key] })), rest.map((c) => /* @__PURE__ */ react_global_default.createElement("div", { key: c.key, style: cellW(c) }, /* @__PURE__ */ react_global_default.createElement(Cell, { col: c, row: r, max: maxima[c.key] })))), isOpen && detail && /* @__PURE__ */ react_global_default.createElement("div", { style: { padding: `var(--space-10) 0`, borderBottom: "var(--border-hairline) solid var(--color-line-soft)", animation: "ds-fade var(--dur-enter) var(--ease) both" } }, detail));
+      }))
+    );
+    const empty = !loading && rows.length === 0;
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", boxSizing: "border-box", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)" } }, title && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-10)`, font: "var(--type-title-font)", color: "var(--color-ink)" } }, title), filters && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-12)" } }, filters), empty ? /* @__PURE__ */ react_global_default.createElement("div", { style: { padding: `var(--space-16) 0` } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-body-strong-font)", color: "var(--color-ink)" } }, emptyState && emptyState.title), emptyState && emptyState.body && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-4) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, emptyState.body), emptyState && emptyState.action && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, emptyState.action)) : /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative" } }, body, scrolls && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", top: 0, right: 0, bottom: 0, width: "var(--space-24)", pointerEvents: "none", background: "linear-gradient(to right, transparent, var(--color-surface))" } })), !loading && hidden > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: `Show all ${rows.length}`, size: "sm", tone: "filter", onClick: onShowAll })));
   }
 
   // design-system/components/cards/DataTableCard.jsx
@@ -1141,7 +1253,7 @@ var __ds_out = (() => {
   }
 
   // design-system/components/lists/FollowUpRow.jsx
-  var Chevron2 = () => /* @__PURE__ */ react_global_default.createElement("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", "aria-hidden": "true", style: { display: "block", flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M9 6l6 6-6 6", stroke: "var(--color-bronze-deep)", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }));
+  var Chevron3 = () => /* @__PURE__ */ react_global_default.createElement("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", "aria-hidden": "true", style: { display: "block", flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M9 6l6 6-6 6", stroke: "var(--color-bronze-deep)", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }));
   function FollowUpRow({ items = [], label = "Here's what you can ask next", onAsk, leading }) {
     if (!items.length) return null;
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-6)`, font: "var(--type-eyebrow-font)", letterSpacing: "var(--tracking-eyebrow)", textTransform: "uppercase", color: "var(--color-muted)" } }, label), /* @__PURE__ */ react_global_default.createElement("div", { style: { borderRadius: "var(--radius-12)", background: "var(--color-surface)", boxShadow: `inset 0 0 0 var(--border-1) var(--color-line)`, padding: `0 var(--space-14)`, boxSizing: "border-box" } }, items.map((it, i) => {
@@ -1156,7 +1268,7 @@ var __ds_out = (() => {
         },
         (q.leading || leading) && /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, display: "flex" } }, q.leading || leading),
         /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-body-strong-font)", color: "var(--color-ink)", textWrap: "pretty" } }, q.question), q.note && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, q.note)),
-        /* @__PURE__ */ react_global_default.createElement(Chevron2, null)
+        /* @__PURE__ */ react_global_default.createElement(Chevron3, null)
       );
     })));
   }
@@ -1164,14 +1276,14 @@ var __ds_out = (() => {
   // design-system/components/lists/ListRow.jsx
   var LEGAL = { nav: ["chevron", "meta"], select: ["radio"], multi: ["checkbox"], action: ["menu"], static: ["badge", "meta", "none"] };
   var DEFAULT_TRAILING = { nav: "chevron", select: "radio", multi: "checkbox", action: "menu", static: "none" };
-  var warned = {};
+  var warned2 = {};
   function resolveTrailing(variant, trailing) {
     const legal = LEGAL[variant] || LEGAL.static;
     if (!trailing) return DEFAULT_TRAILING[variant] || "none";
     if (legal.indexOf(trailing) !== -1) return trailing;
     const key = variant + "/" + trailing;
-    if (!warned[key]) {
-      warned[key] = 1;
+    if (!warned2[key]) {
+      warned2[key] = 1;
       console.warn(`ListRow: trailing="${trailing}" is not legal on variant="${variant}" (legal: ${legal.join(", ")}). Falling back to "${DEFAULT_TRAILING[variant]}".`);
     }
     return DEFAULT_TRAILING[variant];

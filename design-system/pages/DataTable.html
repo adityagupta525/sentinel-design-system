@@ -1,0 +1,132 @@
+<!-- @dsCard group="Pages" viewport="1000x1600" name="DataTable" subtitle="Sorting, filters, expand-in-place and one sticky column — the rules that make a table survive 375pt" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DataTable — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { DataTable, Pill, ChipRow, SentinelBlock, SentinelText, Badge, Provenance } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-track','--tint-bronze-06','--color-line-soft','--border-hairline','--radius-16','--space-8','--space-14','--type-row-font','--dur-fast','--ease'];
+
+const COLS = [
+  { key:'name',  label:'Fund',    kind:'text',    sticky:true, sortable:true, width:150 },
+  { key:'held',  label:'Held',    kind:'currency', sortable:true },
+  { key:'weight',label:'Weight',  kind:'bar',      sortable:true },
+];
+const WIDE = [
+  ...COLS,
+  { key:'cat',  label:'Category', kind:'text' },
+  { key:'ter',  label:'TER',      kind:'percent' },
+  { key:'shelf',label:'Shelf',    kind:'badge' },
+];
+const ROWS = [
+  { id:'ppfc', name:'Parag Parikh Flexi Cap', held:'₹4.2 L', weight:'34%', weightValue:34, cat:'Flexi cap', ter:'data to supply', shelf:<Badge variant="status" tone="ok">On shelf</Badge> },
+  { id:'icbo', name:'ICICI Corporate Bond',   held:'₹2.4 L', weight:'20%', weightValue:20, cat:'Corporate bond', ter:'data to supply', shelf:<Badge variant="status" tone="ok">On shelf</Badge> },
+  { id:'qsc',  name:'Quant Small Cap',        held:'₹3.7 L', weight:'31%', weightValue:31, cat:'Small cap', ter:'data to supply', shelf:<Badge variant="status" tone="over">Not on shelf</Badge> },
+  { id:'hdfl', name:'HDFC Flexi Cap',         held:'₹1.1 L', weight:'9%',  weightValue:9,  cat:'Flexi cap', ter:'data to supply', shelf:<Badge variant="status" tone="ok">On shelf</Badge> },
+  { id:'utin', name:'UTI Nifty 50 Index',     held:'₹0.7 L', weight:'6%',  weightValue:6,  cat:'Index', ter:'data to supply', shelf:<Badge variant="status" tone="under">Under review</Badge> },
+  { id:'sbcb', name:'SBI Corporate Bond',     held:'₹0.4 L', weight:'3%',  weightValue:3,  cat:'Corporate bond', ter:'data to supply', shelf:<Badge variant="status" tone="ok">On shelf</Badge> },
+];
+const EMPTY = { title:'Nothing matches every filter.', body:'Drop one and I will widen the search.', action:<Pill label="Clear filters" size="sm" tone="filter" /> };
+
+function App() {
+  const [sort, setSort] = React.useState({ key:'weight', dir:'desc' });
+  const sorted = React.useMemo(() => {
+    if (!sort || sort.dir === 'none') return ROWS;
+    const num = (r) => Number(r[sort.key + 'Value'] ?? (parseFloat(String(r[sort.key]).replace(/[^\d.]/g,'')) || 0));
+    const out = [...ROWS].sort((a,b) => sort.key === 'name' ? String(a.name).localeCompare(String(b.name)) : num(a) - num(b));
+    return sort.dir === 'desc' ? out.reverse() : out;
+  }, [sort]);
+  const onSort = (key, dir) => setSort(dir === 'none' ? null : { key, dir });
+
+  return (
+  <PageShell name="DataTable" group="Data" status="shipped" requires={['DataTable','Pill','Badge','ChipRow']}
+    summary="The full table — sorting, filters, expand in place, and horizontal scroll when the columns outgrow the screen. DataTableCard stays the three-column card that sits in a thread; this is its widening. Every rule here exists because a table at 375pt fails in a specific way without it: one sticky column or the numbers have nothing to attach to; three visible columns beside it or the advisor never learns there is more; numbers on a shared right edge or a column cannot be read down.">
+
+    <Block n={1} title="Specimen" sub="Three columns and a sticky name, at real width, on the product background.">
+      <Specimen width={343}>
+        <DataTable title="What Meera holds" columns={COLS} rows={sorted} sort={sort} onSort={onSort} emptyState={EMPTY} maxRows={4} onShowAll={()=>{}} />
+      </Specimen>
+    </Block>
+
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. The sticky column is the entity name — always, and there is exactly one.">
+      <Anatomy width={343} top="header: Eyebrow 10/700 · caret 9" bottom="row inset 8 · hairline 0.5" left="sticky column 150" right="figures share one right edge">
+        <DataTable columns={COLS} rows={ROWS.slice(0,3)} sort={{key:'weight',dir:'desc'}} onSort={()=>{}} emptyState={EMPTY} overflow="scroll" />
+      </Anatomy>
+    </Block>
+
+    <Block n={3} title="Column kinds" sub="Alignment is derived from kind, not chosen per caller. text and badge start; every figure ends.">
+      <Grid cols={1} items={[
+        {label:'text · currency · bar', node:<div style={{width:343}}><DataTable columns={COLS} rows={ROWS.slice(0,3)} emptyState={EMPTY} overflow="scroll" /></div>,
+         note:'kind="bar" draws the magnitude behind the figure in --tint-bronze-06. The cell reads as text first; the bar is a secondary cue. No categorical colour anywhere in a table.'},
+      ]} />
+    </Block>
+
+    <Block n={4} title="Sorting" sub="One column at a time, cycling none → desc → asc. Only the active column shows a caret; press a header to move it.">
+      <Specimen width={343}>
+        <DataTable columns={COLS} rows={sorted} sort={sort} onSort={onSort} emptyState={EMPTY} overflow="scroll" />
+      </Specimen>
+      <p style={{margin:'var(--space-8) 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>Live — sort is {sort ? `${sort.key} ${sort.dir}` : 'none'}. Press Fund, Held or Weight.</p>
+    </Block>
+
+    <Block n={5} title="Six columns — scroll, fade and the one-time nudge" sub="Beyond three columns beside the sticky one the body scrolls. The fade says the row continues; the nudge, once on first render, says it before you touch anything.">
+      <Specimen width={343}>
+        <DataTable title="Her shelf" columns={WIDE} rows={ROWS.slice(0,4)} emptyState={EMPTY} overflow="scroll" />
+      </Specimen>
+    </Block>
+
+    <Block n={6} title="Expand in place" sub="The chevron lives in the sticky column and the detail pushes the rows below it down — never a modal, so the row you opened does not move under your thumb.">
+      <Specimen width={343}>
+        <DataTable columns={COLS} rows={ROWS.slice(0,4)} emptyState={EMPTY} overflow="scroll"
+          expandable={(r) => (
+            <div style={{display:'flex',flexDirection:'column',gap:'var(--space-6)'}}>
+              <p style={{margin:0,font:'var(--type-row-font)',color:'var(--color-ink)'}}>{r.cat} · {r.held} held</p>
+              <Provenance text="As of 30 Sep · from her September statement" />
+            </div>
+          )} />
+      </Specimen>
+    </Block>
+
+    <Block n={7} title="States" sub="Fold is the default: a 43-row table inside a chat thread is not a good idea. Loading carries a live label, not a spinner.">
+      <Grid cols={1} items={[
+        {label:'fold — 4 of 6', node:<div style={{width:343}}><DataTable columns={COLS} rows={ROWS} maxRows={4} emptyState={EMPTY} onShowAll={()=>{}} /></div>, note:'The ghost pill names the real total, so the advisor knows what is hidden.'},
+        {label:'loading', node:<div style={{width:343}}><DataTable columns={COLS} rows={[]} loading loadingLabel="Reading her September statement" emptyState={EMPTY} /></div>, note:'A skeleton that says what it is doing is the difference between waiting and wondering.'},
+        {label:'empty', node:<div style={{width:343}}><DataTable columns={COLS} rows={[]} emptyState={EMPTY} /></div>, note:'Never "No data". It names the filter and offers the way out.'},
+      ]} />
+    </Block>
+
+    <Block n={8} title="In context" sub="In the thread, under the answer that produced it.">
+      <Thread before={<SentinelBlock><SentinelText text="Forty-three holdings. These six are 94% of the money." /></SentinelBlock>}>
+        <DataTable title="What Meera holds" columns={COLS} rows={ROWS} maxRows={4} emptyState={EMPTY} onShowAll={()=>{}} />
+      </Thread>
+    </Block>
+
+    <Block n={9} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={10} title="Props"><Props src="../components/cards/DataTable.d.ts" /></Block>
+
+    <Block n={11} title="Do / don't">
+      <DoDont
+        doNode={<div style={{width:300}}><DataTable columns={COLS} rows={ROWS.slice(0,3)} emptyState={EMPTY} overflow="scroll" /></div>}
+        doCaption="Figures on one right edge, the name sticky. The column can be read down."
+        dontNode={<div style={{width:300}}><DataTable columns={COLS.map(c => ({...c, align:'start'}))} rows={ROWS.slice(0,3)} emptyState={EMPTY} overflow="scroll" /></div>}
+        dontCaption="Figures aligned start. Nothing lines up, and comparing two rows means reading every digit." />
+    </Block>
+
+    <Block n={12} title="Motion">
+      <Motion rows={[
+        {name:'Sort caret', property:'transform: rotate(180deg)', duration:'200 ms', reduced:'No rotation; the caret still moves column.'},
+        {name:'Expand', property:'ds-fade on the detail block', duration:'240 ms', reduced:'Unchanged — already opacity only.'},
+        {name:'Scroll nudge', property:'ds-table-nudge — translateX −10 and back', duration:'640 ms, once', reduced:'Does not run. The fade carries the same fact.'},
+        {name:'Loading', property:'sentinel-shimmer on --color-track', duration:'1200 ms, looping', reduced:'Holds at full opacity.'},
+      ]} />
+    </Block>
+  </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

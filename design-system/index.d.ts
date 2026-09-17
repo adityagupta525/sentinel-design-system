@@ -105,6 +105,8 @@ export type { BadgeProps } from './components/cards/Badge';
 export { Badge } from './components/cards/Badge';
 export type { ConstraintCalloutProps } from './components/cards/ConstraintCallout';
 export { ConstraintCallout } from './components/cards/ConstraintCallout';
+export type { ColumnKind, ColumnAlign, SortDir, Density, TableOverflow, DataTableColumn, DataTableRow, DataTableEmptyState, DataTableProps } from './components/cards/DataTable';
+export { DataTable } from './components/cards/DataTable';
 export type { TableCol, TableRow, DataTableCardProps } from './components/cards/DataTableCard';
 export { DataTableCard } from './components/cards/DataTableCard';
 export type { DisclosureBlockProps } from './components/cards/DisclosureBlock';

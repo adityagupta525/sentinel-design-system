@@ -27,12 +27,12 @@ const Moves = () => (
   </div>
 );
 const Table = () => (
-  <DataTableCard
-    columns={[{key:'fund',label:'Fund'},{key:'now',label:'Now',align:'end'},{key:'after',label:'After',align:'end'}]}
+  <DataTableCard title="Where the money sits"
+    columns={[{key:'name',header:'Fund'},{key:'now',header:'Now',align:'right'},{key:'after',header:'After',align:'right'}]}
     rows={[
-      {fund:'Parag Parikh Flexi Cap', now:'18%', after:'34%'},
-      {fund:'ICICI Corporate Bond', now:'12%', after:'20%'},
-      {fund:'Quant Small Cap', now:'31%', after:'14%'},
+      {name:'Parag Parikh Flexi Cap', now:'18%', after:'34%'},
+      {name:'ICICI Corporate Bond', now:'12%', after:'20%'},
+      {name:'Quant Small Cap', now:'31%', after:'14%'},
     ]} />
 );
 

@@ -57,6 +57,7 @@ export { AllocationCard } from './components/cards/AllocationCard.jsx';
 export { ArtifactCard } from './components/cards/ArtifactCard.jsx';
 export { Badge } from './components/cards/Badge.jsx';
 export { ConstraintCallout } from './components/cards/ConstraintCallout.jsx';
+export { DataTable } from './components/cards/DataTable.jsx';
 export { DataTableCard } from './components/cards/DataTableCard.jsx';
 export { DisclosureBlock } from './components/cards/DisclosureBlock.jsx';
 export { ExplainerSheet } from './components/cards/ExplainerSheet.jsx';
