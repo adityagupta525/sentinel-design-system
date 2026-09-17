@@ -2,8 +2,8 @@
  "generated": "2026-09-17",
  "generator": "scripts/build-index.js",
  "counts": {
-  "building": 65,
-  "shipped": 20
+  "building": 64,
+  "shipped": 21
  },
  "rows": [
   {
@@ -466,8 +466,8 @@
   {
    "name": "Dock",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "Dock.html",
    "file": "components/shell/Dock.jsx",
    "tokens": [
     "--space-8"

@@ -1,0 +1,105 @@
+<!-- @dsCard group="Pages" viewport="1000x1400" name="Dock & Composer" subtitle="Three rows, one law — chips, CTA, composer. The CTA stacks above it and nothing replaces it" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Dock & Composer — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Dock, Composer, MoneyComposer, DarkButton, ChipRow, Pill, AnswerChip, StandingDisclosure, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-cta','--color-cta-top','--color-cta-bottom','--radius-20','--radius-16','--border-focus','--focus-ring','--space-8','--gutter','--h-cta','--h-icon-btn','--dur-press'];
+
+function App() {
+  const [a, setA] = React.useState('');
+  const [b, setB] = React.useState('');
+  const [c, setC] = React.useState('');
+  const [amount, setAmount] = React.useState('');   /* last value MoneyComposer handed back */
+  const [streaming, setStreaming] = React.useState(false);
+  return (
+  <PageShell name="Dock & Composer" group="Chat" status="shipped" requires={['Dock','Composer','MoneyComposer','DarkButton','ChipRow','StandingDisclosure']}
+    summary="Rule 3 of the four, made into a component. The composer is on every screen — home, the thread, the journey, the drawer, and while an artifact card is expanded. A call to action stacks ABOVE it inside the Dock; it never replaces it. The advisor can always just ask, and a screen that takes that away has taken away the product. The confirm sheet is the single documented exception.">
+
+    <Block n={1} title="Specimen" sub="The dock at rest on home: composer and the standing disclosure, nothing else.">
+      <Specimen width={375}>
+        <Dock composer={<Composer value={a} onChange={setA} onSend={()=>setA('')} placeholder="Ask Sentinel about a client, a fund, or a plan" />} disclosure />
+      </Specimen>
+    </Block>
+
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. Three rows with an 8px gap, and the disclosure below them all.">
+      <Anatomy width={375} top="chips → CTA → composer" bottom="padding 6 / 16 / 8" left="composer radius 20" right="send disc 42, CTA 48">
+        <Dock
+          chips={<ChipRow><Pill label="Show the 18 holdings" /><Pill label="Why a 25% cap?" tone="tertiary" /></ChipRow>}
+          cta={<DarkButton label="Rebalance to his mandate" arrow full />}
+          composer={<Composer value={b} onChange={setB} onSend={()=>setB('')} placeholder="Ask Sentinel" />}
+          disclosure />
+      </Anatomy>
+    </Block>
+
+    <Block n={3} title="The three rows" sub="Each row is optional except the composer. They stack in one order and never swap.">
+      <Grid cols={1} items={[
+        {label:'composer only', node:<div style={{width:343}}><Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />} /></div>, note:'Home, and the thread at rest.'},
+        {label:'chips + composer', node:<div style={{width:343}}><Dock chips={<ChipRow><AnswerChip label="Use her KYC age — 38" /><AnswerChip label="She isn’t sure yet" tone="muted" /></ChipRow>} composer={<Composer value="" onChange={()=>{}} placeholder="or type your answer" />} /></div>, note:'A pending question. The placeholder changes to “or type your answer” — the chips are the fast path, typing is still open.'},
+        {label:'CTA + composer', node:<div style={{width:343}}><Dock cta={<DarkButton label="Rebalance to his mandate" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} /></div>, note:'The CTA stacks ABOVE. It never takes the composer’s place.'},
+        {label:'all three', node:<div style={{width:343}}><Dock chips={<ChipRow><Pill label="Show the 18 holdings" /></ChipRow>} cta={<DarkButton label="Approve both moves" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} disclosure /></div>, note:'The most a dock ever carries.'},
+      ]} />
+    </Block>
+
+    <Block n={4} title="Composer states" sub="Focus is a bronze 1px border plus a 3px 24% ring, 150ms. Send is inert until there is something to send.">
+      <Grid cols={2} itemWidth={320} items={[
+        {label:'empty — send inert', node:<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />, note:'The disc is there but at 40%: the control exists, it just has nothing to do yet.'},
+        {label:'typed — send live', node:<Composer value="Why did Sharma’s portfolio drift?" onChange={()=>{}} onSend={()=>{}} />, note:'Bronze disc, arrow rotates −15° on press.'},
+        {label:'streaming — Stop', node:<Composer value="" onChange={()=>{}} streaming onStop={()=>{}} placeholder="Sentinel is answering" />, note:'The send slot becomes Stop on the dark gradient. Same disc, same place — nothing moves under the thumb.'},
+        {label:'money', node:<MoneyComposer value={amount} onChange={setAmount} onSend={()=>setAmount('')} />, note:'Indian grouping as you type. ₹1,85,000, never 185,000.'},
+      ]} />
+    </Block>
+
+    <Block n={5} title="Live" sub="Type, send, and press Stop. The composer never leaves and the disc never moves.">
+      <Specimen width={375}>
+        <Dock
+          chips={<ChipRow><Pill label="Show the 18 holdings" /><Pill label="Why a 25% cap?" tone="tertiary" /></ChipRow>}
+          composer={<Composer value={c} onChange={setC} streaming={streaming}
+            onSend={()=>{ setC(''); setStreaming(true); setTimeout(()=>setStreaming(false), 2400); }}
+            onStop={()=>setStreaming(false)}
+            placeholder={streaming ? 'Sentinel is answering' : 'Ask Sentinel'} />}
+          disclosure />
+      </Specimen>
+      <p style={{margin:'var(--space-8) 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>
+        {streaming ? 'Streaming — the disc is Stop.' : 'Type something and press send.'}{amount ? ` · MoneyComposer last sent ${amount}.` : ''}
+      </p>
+    </Block>
+
+    <Block n={6} title="In context" sub="Under the answer, where it always is.">
+      <Thread before={<SentinelBlock><SentinelText text="Two moves bring him inside his mandate. I have not placed anything." /></SentinelBlock>}
+        dock={<Dock cta={<DarkButton label="Approve both moves" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} disclosure />}>
+        <div />
+      </Thread>
+    </Block>
+
+    <Block n={7} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={8} title="Props"><Props src="../components/shell/Dock.d.ts" /></Block>
+
+    <Block n={9} title="Do / don't">
+      <DoDont
+        doNode={<div style={{width:300}}><Dock cta={<DarkButton label="Rebalance to his mandate" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} /></div>}
+        doCaption="The CTA stacks above. The advisor can act, or ask instead."
+        dontNode={<div style={{width:300}}><div style={{position:'relative',zIndex:10,padding:'6px 16px 8px'}}><DarkButton label="Rebalance to his mandate" arrow full /></div></div>}
+        dontCaption="The CTA alone. One path forward, and no way to ask a question first — which is the product." />
+    </Block>
+
+    <Block n={10} title="Motion">
+      <Motion rows={[
+        {name:'Focus', property:'border-color + box-shadow to --focus-ring', duration:'150 ms', reduced:'Unchanged — colour only.'},
+        {name:'Send press', property:'scale(0.94) on the 42px disc; the arrow rotates −15°', duration:'150 ms', reduced:'No rotation; the scale is the feedback.'},
+        {name:'Send → Stop', property:'The glyph swaps in place; the disc does not move', duration:'200 ms', reduced:'Unchanged.'},
+        {name:'Dock enter', property:'ds-rise — opacity + 8px', duration:'240 ms', reduced:'Opacity only; the translate is dropped.'},
+      ]} />
+    </Block>
+  </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>
