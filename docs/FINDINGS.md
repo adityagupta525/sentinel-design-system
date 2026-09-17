@@ -13,7 +13,7 @@ Nothing here proposes a visual change. Fixing these makes the system do what it 
 
 ## P0 — the page is dead
 
-### F-1 · `pages/StepTrace.html` does not run
+### F-1 · `pages/StepTrace.html` does not run — *fixed*
 A template placeholder was never interpolated, so the file ships the literal characters `${req}`:
 
 ```jsx
@@ -26,8 +26,8 @@ component itself is fine — only its spec page is broken.
 **Fix.** Replace `${req}` with the array the page's own destructure already names, matching every
 other page (`requires={['Pill','Badge',…]}`).
 
-### F-2 · `pages/VersionRow.html` does not run
-Identical cause at 14:72. Same fix.
+### F-2 · `pages/VersionRow.html` does not run — *fixed*
+Identical cause at 14:72. Same fix. Both pages now render; `check-previews` went 44/47 → 46/47.
 
 > Both are listed `shipped` in `pages/_index.json`, because the generator checks that
 > `pages/<Name>.html` **exists** — not that it runs. Worth closing that gap too: `npm run check`
@@ -35,23 +35,47 @@ Identical cause at 14:72. Same fix.
 
 ## P1 — invalid markup, real accessibility cost
 
-### F-3 · `DownloadAction` nests a `<button>` inside a `<button>`
-React reports it on `pages/DownloadAction.html`:
+### F-3 · `ArtifactCard` puts a `<button>` around anything you give it
+First recorded against `DownloadAction`, which is where React reports it. That was the wrong address.
+The full stack reads bottom-up:
 
 ```
 validateDOMNesting(...): <button> cannot appear as a descendant of <button>
-  at Pill → at DownloadAction → at Pressable
+  at Pill → at DownloadAction → at div → at div → at Pressable
 ```
 
-`DownloadAction` renders a `Pill` (a `<button>`) inside a `Pressable` (also a `<button>`). Nested
-interactive elements are invalid HTML; browsers recover by unnesting them, which means the rendered
-DOM is not the one the component describes. Screen readers announce a control inside a control, and
-the inner press target's ≥44px extension — the thing `Pill` exists to guarantee — lands inside
-another hit area rather than beside it.
+`DownloadAction` is four lines and renders a single `Pill`; it nests nothing. The wrapper is
+`ArtifactCard`, which in its `peek` state wraps the **whole body — eyebrow, title, `children` and
+provenance — in a `Pressable`** so that tapping anywhere expands the card:
 
-**Fix.** One control per control. Either `DownloadAction` composes `Pill` and drops the `Pressable`
-wrapper, or the wrapper becomes a plain element and `Pill` keeps the press behaviour. The second is
-likely right: `Pill` already owns press, disabled, loading and the hit area.
+```jsx
+{expanded
+  ? <div style={{ padding: '2px 14px 0' }}>{body}</div>
+  : <Pressable onClick={toggle} style={{ display: 'block', width: '100%', … }}>{body}</Pressable>}
+```
+
+So it is not one page's mistake. **Any interactive child of a peeking `ArtifactCard` is a button inside
+a button** — a Pill, a DownloadAction, an InfoDot, a chart with a tappable point. Browsers recover by
+unnesting, so the rendered DOM is not the one the component describes; assistive technology announces a
+control inside a control; and the inner control's ≥44pt extension lands inside another target instead
+of beside it.
+
+It also duplicates an affordance the card already has: the footer carries an explicit `Expand ▾`
+`Pressable` wired to the same `toggle`.
+
+**This one needs a decision, not a patch** — it is about how a peeking card behaves, which is product,
+not craft:
+
+- **(a) The body stops being a button.** `peek` renders `body` in a plain `div`; expanding happens
+  through the footer `Expand ▾` that already exists, and through the title row if it should stay
+  tappable. Correct markup, smaller tap target.
+- **(b) Peek holds no interactive children.** Keep tap-anywhere, and say in the contract that `children`
+  in `peek` are a preview — sparkline, stat row, three table rows — never controls. That matches what
+  the component's own header already says (*"PEEK IS 96px, FIXED — recognition, not reading"*), and
+  makes `pages/DownloadAction.html` block 5 the thing that needs changing, not the card.
+
+(b) looks closer to the design's intent; (a) is the safer engineering answer. Either is a small change.
+Both are visual-neutral except for where a press registers.
 
 ## P2 — the system misreports itself
 
@@ -78,6 +102,26 @@ backlog list can then be left alone as components land.
 **Not applied yet.** The regeneration is held so the import stays byte-identical; this is the first
 thing to land in the polish pass.
 
+### F-6 · `Pill` ships a `<style>` element inside its `<button>`, once per instance
+`Pill` renders its ≥44pt hit-area rule as a `<style>` child of the button it draws:
+
+```jsx
+<button className="ds-pill" …>
+  <style>{'.ds-pill::before{content:"";position:absolute;…}'}</style>
+```
+
+`Pressable` had exactly this and fixed it, and its header says why in the system's own words:
+
+> a `<style>` child of `<button>` is an invalid content model and duplicated once per instance
+> (53 copies on the RangePills page). They are global and identical for every instance, so the
+> stylesheet is where they belong.
+
+The rule is global and identical for every Pill too, and `pages/RangePills.html` alone draws dozens.
+
+**Fix.** Move `.ds-pill::before` into `tokens/effects.css` beside `.ds-pressable[data-hit]::before`,
+which is already there. `Pill` keeps setting `--hit` inline, so the rule still reads the right value
+per instance. Unambiguous, visual-neutral, and it is the fix the system already chose once.
+
 ---
 
 ## Resolved
@@ -94,7 +138,7 @@ Generated now by `tools/build-barrel.mjs` from what is on disk: 83 modules, 103 
 
 ## Structural constraints — not bugs, but they shape the work
 
-### C-1 · The preview pages cannot see a source change
+### C-1 · The preview pages cannot see a source change — *resolved*
 The pages do not import `components/`. They load `_ds_bundle.js`, which publishes everything onto
 `window.SentinelDesignSystem_0682a2`. That bundle is compiled by Claude Design, not by this repository.
 `page-kit.jsx` says so itself when a component is missing:
@@ -102,10 +146,12 @@ The pages do not import `components/`. They load `_ds_bundle.js`, which publishe
 > The bundle recompiles from source at the end of a turn — reload then. The page is not broken; the
 > build is behind it.
 
-So a `.jsx` fix here is invisible in the previews until the bundle is rebuilt. Either the bundle is
-regenerated upstream and re-imported, or this repo grows its own bundler step that produces the same
-global. **This is the decision that gates the polish pass** — worth settling before component fixes
-start, because otherwise every fix is unverifiable by eye.
+`tools/build-bundle.mjs` now builds it here. Same namespace, same single global, React resolved to the
+one the page already loaded. Its output renders `ui_kits/sentinel-app` to a **byte-identical
+screenshot** against the imported bundle, and all 47 pages behave the same, so it is a drop-in.
+
+The constraint that remains is a habit, not a blocker: **run `npm run build:bundle` after a component
+change or you are looking at the previous build.** CI fails when the committed bundle is stale.
 
 ### C-2 · The icon set has two origins
 Six glyphs from the product's Figma source (grids of 17.33 / 18 / 15 / 12.37 / 13.33 / 12.58, strokes
