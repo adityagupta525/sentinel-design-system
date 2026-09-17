@@ -1,0 +1,130 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="ArtifactCard" subtitle="The artifact's only surface — it expands in place, because there is nowhere to go back from" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ArtifactCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ArtifactCard, HeroNumberCard, DataTableCard, ChartLine, Pill, DownloadAction, SentinelBlock, SentinelText, Composer, Dock, Provenance } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-line-soft','--color-track','--radius-16','--radius-12','--space-14','--space-12','--space-10','--border-hairline','--h-touch','--dur-screen','--ease'];
+
+const pts = (n,base) => Array.from({length:n},(_,i)=>({x:i+1,y:base+Math.round(Math.sin(i/1.6)*3)+i*0.8}));
+const Spark = () => <ChartLine density="peek" series={[{label:'NAV', points:pts(8,12)}]} width={311} run={false} />;
+const Table = () => (
+  <DataTableCard title="Top holdings"
+    columns={[{key:'name',header:'Fund'},{key:'w',header:'Weight',align:'right'}]}
+    rows={[{name:'Parag Parikh Flexi Cap', w:'34%'},{name:'Quant Small Cap', w:'31%'},{name:'ICICI Corporate Bond', w:'20%'}]}
+    footer="+40 more" />
+);
+
+function App() {
+  const [state, setState] = React.useState('peek');
+  const [ask, setAsk] = React.useState('');
+  const toggle = () => setState(s => s === 'peek' ? 'expanded' : 'peek');
+  return (
+  <PageShell name="ArtifactCard" group="Chat" status="shipped" requires={['ArtifactCard','HeroNumberCard','DataTableCard','ChartLine','Dock','Composer']}
+    summary="A1 — the artifact card in the thread, and now the artifact's ONLY surface. The three artifact canvases were removed from the product in v5, so the card expands and collapses in place and there is nowhere to go back from: no back arrow, because there is no canvas behind it. Two contracts carry the whole component — peek is 96px fixed, and an expanded card takes its content's natural height while the THREAD carries the scroll. Break either and the card stops feeling like part of the conversation.">
+
+    <Block n={1} title="Specimen" sub="Peek, at real width, on the product background. Recognition, not reading.">
+      <Specimen width={343}>
+        <ArtifactCard state="peek" eyebrow="Client review · Meera Nair" title="43 holdings, ₹12.4 L"
+          provenance="As of 30 Sep · from her September statement"
+          onToggle={()=>{}} onWhy={()=>{}} onShare={()=>{}}>
+          <Spark />
+        </ArtifactCard>
+      </Specimen>
+    </Block>
+
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. The 96px preview is a hard clip, not a scroller — what does not fit is hidden, and the card says so by being obviously cut.">
+      <Anatomy width={343} top="eyebrow 10/700 · title 16/24" bottom="footer row 44 · hairline 0.5" left="radius 16 · padding 14" right="preview: 96 fixed">
+        <ArtifactCard state="peek" eyebrow="Proposal · R. Sharma" title="4 funds, ₹25 L"
+          provenance="Drafted 14 Sep · fees from the scheme documents"
+          onToggle={()=>{}}>
+          <Spark />
+        </ArtifactCard>
+      </Anatomy>
+    </Block>
+
+    <Block n={3} title="Three states" sub="filling is not a spinner — it is the card's own shape, shimmering, so the advisor already knows what is arriving.">
+      <Grid cols={3} itemWidth={300} items={[
+        {label:'peek', node:<ArtifactCard state="peek" eyebrow="Rebalance" title="Two moves, not seven" onToggle={()=>{}}><Spark /></ArtifactCard>,
+         note:'96px, fixed. A sparkline strip, one stat row, or a table’s top three rows. Never a chart with axes.'},
+        {label:'filling', node:<ArtifactCard state="filling" eyebrow="Rebalance" title="Working on his mandate" onToggle={()=>{}}><Spark /></ArtifactCard>,
+         note:'The shape arrives before the data. Shimmer on --color-track; the press is inert while it fills.'},
+        {label:'expanded', node:<ArtifactCard state="expanded" eyebrow="Rebalance" title="Two moves, not seven" provenance="As of 30 Sep" onToggle={()=>{}} onMenu={()=>{}}><Table /></ArtifactCard>,
+         note:'Natural height. The eyebrow and title move into the header row, and the ⋯ menu appears beside them.'},
+      ]} />
+    </Block>
+
+    <Block n={4} title="Live — expand in place" sub="Press the card body, or Expand in the footer. The card grows where it stands; the thread scrolls, the card does not.">
+      <Specimen width={375}>
+        <div style={{display:'flex',flexDirection:'column',gap:'var(--space-12)'}}>
+          <div style={{padding:'0 var(--gutter)'}}>
+            <ArtifactCard state={state} eyebrow="Client review · Meera Nair" title="43 holdings, ₹12.4 L"
+              provenance="As of 30 Sep · from her September statement"
+              onToggle={toggle} onWhy={()=>{}} onShare={()=>{}} onMenu={()=>{}}>
+              {state === 'expanded' ? <Table /> : <Spark />}
+            </ArtifactCard>
+          </div>
+          <Dock composer={<Composer value={ask} onChange={setAsk} onSend={()=>setAsk('')} placeholder={state==='expanded' ? 'Ask about this' : 'Ask Sentinel about a client, a fund, or a plan'} />} disclosure />
+        </div>
+      </Specimen>
+      <p style={{margin:'var(--space-8) 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>
+        State: {state}. Note the composer placeholder — it becomes “Ask about this” while a card is expanded. The composer never leaves.
+      </p>
+    </Block>
+
+    <Block n={5} title="A control inside the preview still acts as itself" sub="v12. Peek used to wrap the whole body in the press target, so every interactive child became a button inside a button. The press target is now a sibling BEHIND the content: the card's chrome passes its clicks through, and children keep their own.">
+      <Specimen width={343}>
+        <ArtifactCard state="peek" eyebrow="Proposal · R. Sharma" title="4 funds, ₹25 L"
+          provenance="Drafted 14 Sep" onToggle={()=>{}}>
+          <div style={{display:'flex',gap:'var(--chip-gap)',alignItems:'center'}}>
+            <DownloadAction format="PDF" onDownload={async()=>new Promise(r=>setTimeout(r,900))} />
+            <Pill label="Send on WhatsApp" size="md" tone="outline" />
+          </div>
+        </ArtifactCard>
+      </Specimen>
+      <p style={{margin:'var(--space-8) 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>
+        Press Download — it downloads. Press the title — the card expands. Two targets, no nesting. The overlay is aria-hidden and out of the tab order; the footer’s Expand is the keyboard path.
+      </p>
+    </Block>
+
+    <Block n={6} title="In context" sub="Between the question and what comes next. The artifact lives in the thread; there is no canvas to go back from.">
+      <Thread before={<SentinelBlock><SentinelText text="Forty-three holdings, and two of them are doing the same job. I have not changed anything." /></SentinelBlock>}>
+        <ArtifactCard state="peek" eyebrow="Client review · Meera Nair" title="43 holdings, ₹12.4 L"
+          provenance="As of 30 Sep · from her September statement" onToggle={()=>{}} onWhy={()=>{}}>
+          <Spark />
+        </ArtifactCard>
+      </Thread>
+    </Block>
+
+    <Block n={7} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={8} title="Props"><Props src="../components/cards/ArtifactCard.d.ts" /></Block>
+
+    <Block n={9} title="Do / don't">
+      <DoDont
+        doNode={<div style={{width:300}}><ArtifactCard state="peek" eyebrow="Client review" title="43 holdings, ₹12.4 L" onToggle={()=>{}}><Spark /></ArtifactCard></div>}
+        doCaption="A sparkline strip at peek. Recognition in one glance, and the detail is one press away."
+        dontNode={<div style={{width:300,overflow:'hidden'}}><ArtifactCard state="peek" eyebrow="Client review" title="43 holdings, ₹12.4 L" onToggle={()=>{}}><div style={{height:220,overflow:'auto'}}><Table /></div></ArtifactCard></div>}
+        dontCaption="A scroller inside the preview. A scrolling region inside a scrolling thread is the pattern the removed canvas existed to avoid." />
+    </Block>
+
+    <Block n={10} title="Motion">
+      <Motion rows={[
+        {name:'Card enter', property:'ds-artifact — opacity 0→1, scale .96→1', duration:'300 ms, once', reduced:'Opacity only; the scale is dropped so nothing is stranded mid-transform.'},
+        {name:'Expand', property:'height to natural; the thread scrolls the header under the app bar', duration:'300 ms', reduced:'Unchanged — height is not a transform.'},
+        {name:'Chevron', property:'transform: rotate(180deg)', duration:'320 ms (--dur-screen)', reduced:'No rotation; the label still changes.'},
+        {name:'Filling', property:'sentinel-shimmer on --color-track', duration:'1200 ms, looping', reduced:'Holds at full opacity.'},
+        {name:'Press', property:'transform: scale(0.98) from Pressable', duration:'150 ms', reduced:'Unchanged — 1 ms transition.'},
+      ]} />
+    </Block>
+  </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

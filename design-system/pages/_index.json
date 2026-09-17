@@ -2,8 +2,8 @@
  "generated": "2026-09-17",
  "generator": "scripts/build-index.js",
  "counts": {
-  "building": 66,
-  "shipped": 19
+  "building": 65,
+  "shipped": 20
  },
  "rows": [
   {
@@ -297,8 +297,8 @@
   {
    "name": "ArtifactCard",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ArtifactCard.html",
    "file": "components/cards/ArtifactCard.jsx",
    "tokens": [
     "--border-hairline",
