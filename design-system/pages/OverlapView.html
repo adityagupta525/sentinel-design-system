@@ -1,0 +1,129 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="OverlapView" subtitle="How much two funds are the same fund — pairs on a phone, and four edge cases that are each a different fact" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>OverlapView — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { OverlapView, SentinelBlock, SentinelText, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble-edge','--color-alloc-debt','--color-bronze','--color-bronze-deep','--color-surface','--color-track','--tint-bronze-06','--h-chip-sm','--radius-8','--type-label-font','--type-row-font'];
+
+const FUNDS = [
+  { id:'ppfc', name:'Parag Parikh Flexi', inComparison:true },
+  { id:'hdlc', name:'HDFC Large Cap',     inComparison:true },
+  { id:'mmid', name:'Motilal Midcap',     inComparison:true },
+  { id:'qsc',  name:'Quant Small Cap',    inComparison:false },
+];
+const PROPS = [
+  { id:'top10', label:'top 10 holdings', active:true },
+  { id:'sector', label:'sector', active:true },
+  { id:'style', label:'style', active:false },
+];
+const CELLS = [
+  { a:'ppfc', b:'hdlc', pct:62 },
+  { a:'ppfc', b:'mmid', pct:31 },
+  { a:'hdlc', b:'mmid', pct:18 },
+  { a:'ppfc', b:'qsc',  pct:null },
+  { a:'hdlc', b:'qsc',  pct:44 },
+  { a:'mmid', b:'qsc',  pct:71 },
+];
+
+function App() {
+  const [funds, setFunds] = React.useState(FUNDS);
+  const [props, setProps] = React.useState(PROPS);
+  const [mode, setMode] = React.useState('pairs');
+  const toggleFund = (id) => setFunds(fs => fs.map(f => f.id === id ? {...f, inComparison: !f.inComparison} : f));
+  const toggleProp = (id) => setProps(ps => ps.map(p => p.id === id ? {...p, active: !p.active} : p));
+
+  return (
+  <PageShell name="OverlapView" group="Data" status="shipped" requires={['OverlapView','Pill','ListRow']}
+    summary="How much two funds are the same fund. Pairs is the default because a matrix is not the phone answer: five funds make twenty-five cells of which only ten carry information — the diagonal is meaningless and the upper triangle repeats the lower — and at 375pt those ten do not fit legibly. The same ten as a list sorted descending puts the problem pair first and needs no horizontal scroll. Colour is magnitude only, four steps of one bronze ramp, and every cell prints its percentage, so colour is never the only carrier.">
+
+    <Block n={1} title="Specimen" sub="Three funds in the comparison, sorted by overlap descending. The first row is the one that matters.">
+      <Specimen width={343}>
+        <OverlapView funds={FUNDS.slice(0,3)} properties={PROPS} cells={CELLS} />
+      </Specimen>
+    </Block>
+
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. The bar sits behind the row, so the row reads as a row and the magnitude is a second glance.">
+      <Anatomy width={343} top="Eyebrow 10/700 · chips 28 tall" bottom="bar: --tint-bronze-06 behind the row" left="row: ListRow variant=static" right="value: --type-label-font, tabular">
+        <OverlapView funds={FUNDS.slice(0,3)} properties={PROPS} cells={CELLS} />
+      </Anatomy>
+    </Block>
+
+    <Block n={3} title="Live — pairs and matrix" sub="Remove a fund, change what the overlap is computed on, or switch the mode. The property chips are the point: they show the basis of the number so an advisor can change it rather than trust it blind.">
+      <Specimen width={375}>
+        <OverlapView mode={mode} funds={funds} properties={props} cells={CELLS}
+          onToggleFund={toggleFund} onToggleProperty={toggleProp} onChangeMode={setMode}
+          onAddFund={()=>{}} onAddProperty={()=>{}} />
+      </Specimen>
+      <p style={{margin:'var(--space-8) 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>
+        Mode: {mode}. In the comparison: {funds.filter(f=>f.inComparison).length}. Computed on: {props.filter(p=>p.active).map(p=>p.label).join(' · ') || 'nothing'}.
+      </p>
+    </Block>
+
+    <Block n={4} title="Matrix — lower triangle only" sub="Sticky name column, columns scroll. The diagonal and everything above it is blank: a fund against itself is not 100%, it is not a comparison.">
+      <Specimen width={375}>
+        <OverlapView mode="matrix" funds={FUNDS.map(f=>({...f,inComparison:true}))} properties={PROPS} cells={CELLS} />
+      </Specimen>
+    </Block>
+
+    <Block n={5} title="The colour ramp" sub="Four steps, light for low and dark for high. The two dark steps take surface-coloured text — ink on bronze-deep measures 2.25:1 and does not clear the floor for text.">
+      <Specimen width={375}>
+        <OverlapView mode="matrix" funds={[
+          {id:'a',name:'Low 12%',inComparison:true},{id:'b',name:'Mid 31%',inComparison:true},
+          {id:'c',name:'High 55%',inComparison:true},{id:'d',name:'Highest 88%',inComparison:true},
+        ]} properties={PROPS} cells={[
+          {a:'a',b:'b',pct:12},{a:'a',b:'c',pct:31},{a:'a',b:'d',pct:55},
+          {a:'b',b:'c',pct:44},{a:'b',b:'d',pct:88},{a:'c',b:'d',pct:71},
+        ]} />
+      </Specimen>
+    </Block>
+
+    <Block n={6} title="The four states that are not errors" sub="Each is a different fact, and each reads differently. A zero and a missing value are not the same thing.">
+      <Grid cols={1} items={[
+        {label:'one fund', node:<div style={{width:343}}><OverlapView funds={[FUNDS[0], {...FUNDS[1], inComparison:false}, {...FUNDS[2], inComparison:false}]} properties={PROPS} cells={CELLS} onAddFund={()=>{}} /></div>,
+         note:'Asks for a second fund. It does not render an empty table and leave the advisor guessing.'},
+        {label:'no property active', node:<div style={{width:343}}><OverlapView funds={FUNDS.slice(0,3)} properties={PROPS.map(p=>({...p,active:false}))} cells={CELLS} onAddProperty={()=>{}} /></div>,
+         note:'Renders nothing rather than quietly defaulting to a basis the advisor did not choose.'},
+        {label:'a pair that cannot be computed', node:<div style={{width:343}}><OverlapView funds={[FUNDS[0],FUNDS[1],{...FUNDS[3],inComparison:true}]} properties={PROPS} cells={CELLS} footnote="Quant Small Cap has not disclosed September holdings — the pair is unavailable, not zero." /></div>,
+         note:'An em dash and a footnote naming why. Printing 0% would state something untrue about the client’s money.'},
+        {label:'at the cap', node:<div style={{width:343}}><OverlapView maxFunds={3} funds={FUNDS.slice(0,3)} properties={PROPS} cells={CELLS} onAddFund={()=>{}} onToggleFund={()=>{}} /></div>,
+         note:'The cap is stated in words. Never a disabled button with no explanation.'},
+      ]} />
+    </Block>
+
+    <Block n={7} title="In context" sub="In the thread, after the advisor asked whether two funds are doing the same job.">
+      <Thread before={<SentinelBlock><SentinelText text="Her two flexi caps hold 62% of the same names. That is one fund's worth of risk in two line items." /></SentinelBlock>}>
+        <OverlapView funds={FUNDS.slice(0,3)} properties={PROPS} cells={CELLS} />
+      </Thread>
+    </Block>
+
+    <Block n={8} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={9} title="Props"><Props src="../components/data/OverlapView.d.ts" /></Block>
+
+    <Block n={10} title="Do / don't">
+      <DoDont
+        doNode={<div style={{width:300}}><OverlapView funds={FUNDS.slice(0,3)} properties={PROPS} cells={CELLS} /></div>}
+        doCaption="Pairs, sorted descending, with the basis stated above. The worst pair is the first thing read."
+        dontNode={<div style={{width:300}}><OverlapView funds={FUNDS.slice(0,3)} properties={PROPS.map(p=>({...p,active:false}))} cells={CELLS} /></div>}
+        dontCaption="A number with no stated basis is one nobody can defend to a client. The view refuses rather than guessing." />
+    </Block>
+
+    <Block n={11} title="Motion">
+      <Motion rows={[
+        {name:'Chip remove', property:'transform: scale(0.98) on the ✕', duration:'150 ms', reduced:'Unchanged — 1 ms transition.'},
+        {name:'Mode switch', property:'The list is replaced, not cross-faded', duration:'—', reduced:'Unchanged.'},
+        {name:'Row press', property:'None — variant="static" is not pressable', duration:'—', reduced:'Unchanged.'},
+      ]} />
+    </Block>
+  </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

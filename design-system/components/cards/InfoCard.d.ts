@@ -6,7 +6,34 @@ export interface InfoCardStat {
   /** This one figure has no confirmed owner — renders as —— while the rest of the card works. */
   locked?: boolean;
 }
+export type InfoCardKind = 'fund' | 'manager';
+export type ShelfStatus = 'on-shelf' | 'not-on-shelf' | 'under-review';
+
+export interface ManagerTenure {
+  /** Years this manager has run the fund. */
+  managerYears: number;
+  /** Years of track record the fund has in total. */
+  fundYears: number;
+  /** "Mar 2021". Rendered as "Managing since Mar 2021." */
+  since?: string;
+}
+
 export interface InfoCardProps {
+  /** Default 'fund'. 'manager' replaces the figure, chart and range row with the TENURE BAR and
+   *  nothing else — the spec is blunt that without the bar the card is decorative and should not be
+   *  built, because a three-year record under a manager who arrived last year is not that manager's
+   *  record and a number alone leaves the advisor doing that arithmetic in front of a client. */
+  kind?: InfoCardKind;
+  /** Fund only. Renders the compliance shelf as a Badge on the over / under / ok tones. A manager has
+   *  no shelf status: the compliance shelf holds no opinion about a person. */
+  shelf?: ShelfStatus;
+  /** 'manager' only, and effectively required for it — the card has no reason to exist without it.
+   *  Two segments of one hue plus the track: the manager's years in bronze, the rest in --color-track.
+   *  Both are labelled directly. Below a third of the record it also says so in words. */
+  tenure?: ManagerTenure;
+  /** "As of 30 Sep · from the scheme information document". Required in practice for any figure an
+   *  advisor may have to defend — which on this card is all of them. */
+  provenance?: string;
   name: string;
   meta?: string;
   /** The headline figure, in the display face. */

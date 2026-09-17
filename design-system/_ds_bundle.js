@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"StickyCTA","sourcePath":"components/actions/StickyCTA.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"StickyCTA","sourcePath":"components/actions/StickyCTA.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -80,6 +80,7 @@ var __ds_out = (() => {
     MoneyComposer: () => MoneyComposer,
     MotionGuard: () => MotionGuard,
     MoveCard: () => MoveCard,
+    OverlapView: () => OverlapView,
     PLOT: () => PLOT,
     ParseNote: () => ParseNote,
     PhoneFrame: () => PhoneFrame,
@@ -694,8 +695,8 @@ var __ds_out = (() => {
       if (!el) return;
       const box = el.getBoundingClientRect();
       const rel = Math.min(Math.max(e.clientX - box.left, 0), box.width);
-      const step = box.width / Math.max(use[0].points.length - 1, 1);
-      setTip(Math.min(Math.round(rel / step), use[0].points.length - 1));
+      const step2 = box.width / Math.max(use[0].points.length - 1, 1);
+      setTip(Math.min(Math.round(rel / step2), use[0].points.length - 1));
     };
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, scrub && !peek && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-6)" } }, /* @__PURE__ */ react_global_default.createElement(ChartReadout, { label: active ? xFormat(active.x) : "", value: active ? valueFormat(active.y) : "", active: tip != null })), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", display: "flex", alignItems: "flex-start", gap: 0 } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", flex: 1, minWidth: 0, touchAction: "pan-y" }, onPointerDown: onMove, onPointerMove: (e) => tip != null && onMove(e), onPointerUp: () => setTip(null), onPointerLeave: () => setTip(null) }, /* @__PURE__ */ react_global_default.createElement("svg", { ref: svgRef, width: "100%", height: plot, viewBox: `0 0 ${w} ${plot}`, preserveAspectRatio: "none", style: { display: "block", overflow: "visible" } }, /* @__PURE__ */ react_global_default.createElement("style", null, "@keyframes ds-draw-on{to{stroke-dashoffset:0}}@media (prefers-reduced-motion:reduce){@keyframes ds-draw-on{from{stroke-dashoffset:0;opacity:0}to{stroke-dashoffset:0;opacity:1}}}"), target && /* @__PURE__ */ react_global_default.createElement("line", { x1: "0", x2: w, y1: y(target.value), y2: y(target.value), stroke: "var(--color-line)", strokeWidth: "1", strokeDasharray: "4 2", vectorEffect: "non-scaling-stroke" }), use.length === 1 && /* @__PURE__ */ react_global_default.createElement("path", { d: areaPath(pts(use[0]), plot - 1), fill: "var(--tint-bronze-06)" }), use.slice().reverse().map((s, ri) => {
       const i = use.length - 1 - ri;
@@ -740,9 +741,26 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-14)" } }, series.map((s) => /* @__PURE__ */ react_global_default.createElement("div", { key: s.label }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "0 0 4px", font: "var(--type-meta-font)", color: "var(--color-ink)" } }, s.label), /* @__PURE__ */ react_global_default.createElement(ChartLine, { series: [{ ...s }], domain, density: "peek", tone, width, valueFormat, xFormat, run: false }))));
   }
 
+  // design-system/components/text/Provenance.jsx
+  function Provenance({ text }) {
+    return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-11)", lineHeight: "var(--leading-15)", color: "var(--color-muted)" } }, text);
+  }
+
   // design-system/components/cards/InfoCard.jsx
-  function InfoCard({ name, meta, figure, figureNote, series, range, onRange, stats = [], onExplain, caveat, locked = false, lockReason }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)", textWrap: "pretty" } }, name), meta && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-2) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, meta))), locked ? /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", borderRadius: "var(--radius-12)", background: "var(--color-canvas)", boxShadow: `inset 0 0 0 var(--border-1) var(--color-line)`, padding: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-figure-font)", color: "var(--color-data-deemph)", fontVariantNumeric: "tabular-nums" } }, "\u2014\u2014"), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-4) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, lockReason || "Locked until the fund performance source is confirmed. Sentinel will not show a figure it cannot attribute.")) : /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-6)", marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, font: "var(--type-total-font)", color: "var(--color-bronze-deep)" } }, figure), figureNote && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, figureNote)), caveat && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, caveat), series && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(ChartLine, { series, width: 311, run: false })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(RangePills, { value: range, onChange: onRange }))), stats.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "grid", gridTemplateColumns: `repeat(${Math.min(stats.length, 2)}, minmax(0, 1fr))`, gap: "var(--space-8)", marginTop: "var(--space-12)" } }, stats.map((s) => /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, style: { borderRadius: "var(--radius-12)", background: "var(--color-canvas)", boxShadow: `inset 0 0 0 var(--border-1) var(--color-line)`, padding: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, s.label), /* @__PURE__ */ react_global_default.createElement(InfoDot, { figure: s.label, onOpen: () => onExplain && onExplain(s.label) })), /* @__PURE__ */ react_global_default.createElement("p", { style: { ...tabular, margin: `var(--space-2) 0 0`, font: "var(--type-row-font)", fontWeight: "var(--weight-bold)", color: locked || s.locked ? "var(--color-data-deemph)" : "var(--color-ink)" } }, locked || s.locked ? "\u2014\u2014" : s.value)))));
+  var TENURE_THIN = 0.34;
+  var SHELF = {
+    "on-shelf": { tone: "ok", text: "On your shelf" },
+    "not-on-shelf": { tone: "over", text: "Not on your shelf" },
+    "under-review": { tone: "under", text: "Under review" }
+  };
+  function Tenure({ managerYears, fundYears, since }) {
+    const share = fundYears > 0 ? Math.max(0, Math.min(1, managerYears / fundYears)) : 0;
+    const thin = share < TENURE_THIN;
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", height: "var(--space-10)", borderRadius: "var(--radius-full)", overflow: "hidden", background: "var(--color-track)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { width: `${share * 100}%`, background: "var(--color-bronze)", transformOrigin: "left center", animation: "ds-grow var(--dur-bar) var(--ease) both" } })), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", justifyContent: "space-between", gap: "var(--space-8)", marginTop: "var(--space-6)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, `Theirs \xB7 ${managerYears} yr`), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-muted)" } }, `Before them \xB7 ${Math.max(0, +(fundYears - managerYears).toFixed(1))} yr`)), since && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, `Managing since ${since}.`), thin && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, `Most of the fund's ${fundYears}-year record was built before they arrived. Read the long numbers as the fund's, not theirs.`));
+  }
+  function InfoCard({ kind = "fund", name, meta, figure, figureNote, series, range, onRange, stats = [], onExplain, caveat, locked = false, lockReason, shelf, tenure, provenance }) {
+    const manager = kind === "manager";
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)", textWrap: "pretty" } }, name), meta && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-2) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, meta)), !manager && shelf && SHELF[shelf] && /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: SHELF[shelf].tone }, SHELF[shelf].text)), manager ? tenure ? /* @__PURE__ */ react_global_default.createElement(Tenure, { ...tenure }) : null : locked ? /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", borderRadius: "var(--radius-12)", background: "var(--color-canvas)", boxShadow: `inset 0 0 0 var(--border-1) var(--color-line)`, padding: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-figure-font)", color: "var(--color-data-deemph)", fontVariantNumeric: "tabular-nums" } }, "\u2014\u2014"), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-4) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, lockReason || "Locked until the fund performance source is confirmed. Sentinel will not show a figure it cannot attribute.")) : /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-6)", marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, font: "var(--type-total-font)", color: "var(--color-bronze-deep)" } }, figure), figureNote && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, figureNote)), caveat && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, caveat), series && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(ChartLine, { series, width: 311, run: false })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(RangePills, { value: range, onChange: onRange }))), provenance && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(Provenance, { text: provenance })), stats.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "grid", gridTemplateColumns: `repeat(${Math.min(stats.length, 2)}, minmax(0, 1fr))`, gap: "var(--space-8)", marginTop: "var(--space-12)" } }, stats.map((s) => /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, style: { borderRadius: "var(--radius-12)", background: "var(--color-canvas)", boxShadow: `inset 0 0 0 var(--border-1) var(--color-line)`, padding: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, s.label), /* @__PURE__ */ react_global_default.createElement(InfoDot, { figure: s.label, onOpen: () => onExplain && onExplain(s.label) })), /* @__PURE__ */ react_global_default.createElement("p", { style: { ...tabular, margin: `var(--space-2) 0 0`, font: "var(--type-row-font)", fontWeight: "var(--weight-bold)", color: locked || s.locked ? "var(--color-data-deemph)" : "var(--color-ink)" } }, locked || s.locked ? "\u2014\u2014" : s.value)))));
   }
 
   // design-system/components/cards/MoveCard.jsx
@@ -753,11 +771,6 @@ var __ds_out = (() => {
   // design-system/components/cards/RejectCallout.jsx
   function RejectCallout({ eyebrow, body, chips = [], onChip }) {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(ConstraintCallout, { eyebrow, body }), chips.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--space-8)" } }, chips.map((c) => /* @__PURE__ */ react_global_default.createElement(Pill, { key: c, label: c, onClick: () => onChip && onChip(c) }))));
-  }
-
-  // design-system/components/text/Provenance.jsx
-  function Provenance({ text }) {
-    return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-11)", lineHeight: "var(--leading-15)", color: "var(--color-muted)" } }, text);
   }
 
   // design-system/components/data/DrawnCheck.jsx
@@ -852,7 +865,7 @@ var __ds_out = (() => {
     react_global_default.useEffect(() => {
       if (!autoplay) return;
       let idx = initialActive, t;
-      const step = () => {
+      const step2 = () => {
         idx += 1;
         if (idx >= steps.length) {
           setActive(steps.length);
@@ -862,9 +875,9 @@ var __ds_out = (() => {
           return;
         }
         setActive(idx);
-        t = setTimeout(step, stepMs);
+        t = setTimeout(step2, stepMs);
       };
-      t = setTimeout(step, stepMs);
+      t = setTimeout(step2, stepMs);
       return () => clearTimeout(t);
     }, []);
     const chev = (rot) => /* @__PURE__ */ react_global_default.createElement("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", style: { transform: rot ? "rotate(-90deg)" : "none" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M4.5 3 7.5 6l-3 3", stroke: "var(--color-muted)", strokeWidth: "1.3", strokeLinecap: "round", strokeLinejoin: "round" }));
@@ -1151,6 +1164,139 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, label && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "0 0 8px", ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-13)", color: "var(--color-ink)" } } }, label), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", height: 16, width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "absolute", left: 0, right: 0, top: "50%", height: "var(--border-1)", transform: "translateY(-50%)", background: "var(--color-track)" } }), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "absolute", top: "50%", height: 2, transform: "translateY(-50%)", left: pct(lo), width: pct(hi - lo) } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: "100%", width: "100%", background: "var(--color-bronze)", transformOrigin: "left", animation: "ds-grow 400ms var(--ease) both" } })), /* @__PURE__ */ react_global_default.createElement("div", { style: { ...dot, left: pct(target), border: "2px solid var(--color-bronze)", background: "var(--color-canvas)", boxShadow: "0 0 0 2px var(--color-surface)" } }), /* @__PURE__ */ react_global_default.createElement("div", { style: { ...dot, left: pct(actual), background: "var(--color-bronze)", boxShadow: "0 0 0 2px var(--color-surface)" } })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-5)", display: "flex", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } }, actualLabel ?? `${actual}%`, " now"), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", color: "var(--color-bronze-deep)" } }, "\u2192 ", targetLabel ?? `${target}%`)));
   }
 
+  // design-system/components/forms/SelectionMark.jsx
+  function SelectionMark({ kind, selected = false, disabled = false }) {
+    const ring = selected ? "var(--color-bronze)" : "var(--color-line)";
+    const base = { display: "inline-flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", boxSizing: "border-box", opacity: disabled ? 0.4 : 1, transition: "background-color var(--dur-press) var(--ease)" };
+    if (kind === "radio") {
+      return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-full)", boxShadow: `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 10, height: 10, borderRadius: "var(--radius-full)", background: "var(--color-bronze)" } }));
+    }
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-6)", background: selected ? "var(--color-bronze)" : "transparent", boxShadow: selected ? "none" : `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("svg", { width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "2.6", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "m5 12 5 5 9-9" })));
+  }
+
+  // design-system/components/lists/ListRow.jsx
+  var LEGAL = { nav: ["chevron", "meta"], select: ["radio"], multi: ["checkbox"], action: ["menu"], static: ["badge", "meta", "none"] };
+  var DEFAULT_TRAILING = { nav: "chevron", select: "radio", multi: "checkbox", action: "menu", static: "none" };
+  var warned2 = {};
+  function resolveTrailing(variant, trailing) {
+    const legal = LEGAL[variant] || LEGAL.static;
+    if (!trailing) return DEFAULT_TRAILING[variant] || "none";
+    if (legal.indexOf(trailing) !== -1) return trailing;
+    const key = variant + "/" + trailing;
+    if (!warned2[key]) {
+      warned2[key] = 1;
+      console.warn(`ListRow: trailing="${trailing}" is not legal on variant="${variant}" (legal: ${legal.join(", ")}). Falling back to "${DEFAULT_TRAILING[variant]}".`);
+    }
+    return DEFAULT_TRAILING[variant];
+  }
+  function ListRow({ variant = "static", size, leading = "none", leadingContent, index, title, subtitle, meta, chip, trailing, badge, selected = false, disabled = false, onPress, onMenu }) {
+    const tr = resolveTrailing(variant, trailing);
+    const isStatic = variant === "static";
+    const h = (size || (subtitle ? "lg" : "md")) === "lg" ? 72 : 56;
+    const [down, setDown] = react_global_default.useState(false);
+    const lead = leading === "none" ? null : /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: leading === "index" ? 20 : 32, height: leading === "index" ? 20 : 32, flexShrink: 0, alignItems: "center", justifyContent: leading === "index" ? "flex-start" : "center", borderRadius: "var(--radius-full)", background: leading === "avatar" ? "var(--surface-avatar)" : "transparent" } }, leading === "avatar" ? /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", color: "var(--color-bronze-deep)" } }, leadingContent || (title || "?").trim().charAt(0).toUpperCase()) : leading === "index" ? /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } }, index) : leadingContent);
+    const trail = tr === "chevron" ? /* @__PURE__ */ react_global_default.createElement(IconChevronRight, { size: 16, stroke: "var(--color-bronze-deep)" }) : tr === "radio" ? /* @__PURE__ */ react_global_default.createElement(SelectionMark, { kind: "radio", selected, disabled }) : tr === "checkbox" ? /* @__PURE__ */ react_global_default.createElement(SelectionMark, { kind: "checkbox", selected, disabled }) : tr === "badge" && badge ? /* @__PURE__ */ react_global_default.createElement(Badge, { variant: badge.variant, tone: badge.tone }, badge.text) : tr === "meta" && meta ? /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-muted)", whiteSpace: "nowrap" } }, meta) : null;
+    const body = /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, lead, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)", textAlign: "left" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-6)", minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 1 auto", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" } }, title), chip), subtitle && /* @__PURE__ */ react_global_default.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, subtitle)), tr !== "meta" && meta && /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, font: "var(--type-meta-font)", color: "var(--color-muted)", whiteSpace: "nowrap" } }, meta), trail && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexShrink: 0, alignItems: "center" } }, trail), tr === "menu" && /* @__PURE__ */ react_global_default.createElement(
+      "button",
+      {
+        type: "button",
+        onClick: (e) => {
+          e.stopPropagation();
+          onMenu && onMenu();
+        },
+        disabled,
+        style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", display: "flex", width: 44, height: 44, marginRight: -12, flexShrink: 0, alignItems: "center", justifyContent: "center", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-16)", lineHeight: 1, color: "var(--color-ink)" }
+      },
+      "\u22EF"
+    ));
+    const shared = { display: "flex", width: "100%", minHeight: h, alignItems: "center", gap: "var(--space-12)", padding: "8px 0", boxSizing: "border-box", opacity: disabled ? 0.4 : 1 };
+    if (isStatic || !onPress) return /* @__PURE__ */ react_global_default.createElement("div", { style: { ...shared, background: "transparent" } }, body);
+    return /* @__PURE__ */ react_global_default.createElement(
+      "button",
+      {
+        type: "button",
+        onClick: onPress,
+        disabled,
+        onPointerDown: () => !disabled && setDown(true),
+        onPointerUp: () => setDown(false),
+        onPointerLeave: () => setDown(false),
+        style: { ...shared, appearance: "none", border: "none", margin: 0, cursor: disabled ? "default" : "pointer", outline: "none", font: "inherit", background: down ? "var(--tint-bronze-06)" : "transparent", transition: "background-color var(--dur-press) var(--ease)" }
+      },
+      body
+    );
+  }
+
+  // design-system/components/data/OverlapView.jsx
+  var RAMP = ["var(--color-bubble-edge)", "var(--color-alloc-debt)", "var(--color-bronze)", "var(--color-bronze-deep)"];
+  var step = (pct) => pct >= 60 ? 3 : pct >= 40 ? 2 : pct >= 20 ? 1 : 0;
+  var onRamp = (i) => i >= 2 ? "var(--color-surface)" : "var(--color-ink)";
+  var CHIP_MAX = 200;
+  var LABEL_W = 104;
+  var CELL_W = 72;
+  var Cross = () => /* @__PURE__ */ react_global_default.createElement("svg", { width: "9", height: "9", viewBox: "0 0 12 12", fill: "none", "aria-hidden": "true", style: { display: "block" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M3 3l6 6M9 3l-6 6", stroke: "var(--color-bronze-deep)", strokeWidth: "1.5", strokeLinecap: "round" }));
+  function FundChip({ label, onRemove, disabled }) {
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", height: "var(--h-chip-sm)", maxWidth: CHIP_MAX, alignItems: "center", gap: "var(--space-6)", borderRadius: "var(--radius-full)", background: "var(--color-chip)", boxShadow: "0 0 0 1px var(--color-bubble-edge)", padding: onRemove ? "0 var(--space-2) 0 var(--space-10)" : "0 var(--space-10)", opacity: disabled ? 0.4 : 1 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", font: "var(--type-label-font)", color: "var(--color-bronze-deep)" } }, label), onRemove && /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: onRemove,
+        disabled,
+        label: `Remove ${label}`,
+        style: { display: "flex", width: "var(--space-20)", height: "var(--space-20)", alignItems: "center", justifyContent: "center", flexShrink: 0, borderRadius: "var(--radius-full)" }
+      },
+      /* @__PURE__ */ react_global_default.createElement(Cross, null)
+    ));
+  }
+  function Note({ children }) {
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { padding: `var(--space-16) 0` } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-body-strong-font)", color: "var(--color-ink)" } }, children));
+  }
+  function OverlapView({
+    mode = "pairs",
+    funds = [],
+    properties = [],
+    cells = [],
+    maxFunds = 5,
+    onToggleFund,
+    onToggleProperty,
+    onAddFund,
+    onAddProperty,
+    onChangeMode,
+    footnote
+  }) {
+    const inPlay = funds.filter((f) => f.inComparison);
+    const active = properties.filter((p) => p.active);
+    const name = (id) => (funds.find((f) => f.id === id) || {}).name || id;
+    const pairs = react_global_default.useMemo(
+      () => cells.filter((c) => c.a !== c.b).filter((c) => inPlay.some((f) => f.id === c.a) && inPlay.some((f) => f.id === c.b)).slice().sort((x, y) => (y.pct == null ? -1 : y.pct) - (x.pct == null ? -1 : x.pct)),
+      [cells, funds]
+    );
+    const value = (a, b) => {
+      const c = cells.find((x) => x.a === a && x.b === b || x.a === b && x.b === a);
+      return c ? c.pct : void 0;
+    };
+    const controls = /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("div", null, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, "Comparing"), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--chip-gap)", marginTop: "var(--space-8)" } }, inPlay.map((f) => /* @__PURE__ */ react_global_default.createElement(FundChip, { key: f.id, label: f.name, onRemove: onToggleFund ? () => onToggleFund(f.id) : void 0 })), onAddFund && /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Add fund", size: "sm", tone: "tertiary", onClick: onAddFund, disabled: inPlay.length >= maxFunds })), inPlay.length >= maxFunds && /* The cap is stated, never a disabled button with no explanation (§8.2). */
+    /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, `Up to ${maxFunds} funds.`)), /* @__PURE__ */ react_global_default.createElement("div", null, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, "Computed on"), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--chip-gap)", marginTop: "var(--space-8)" } }, active.map((p) => /* @__PURE__ */ react_global_default.createElement(FundChip, { key: p.id, label: p.label, onRemove: onToggleProperty ? () => onToggleProperty(p.id) : void 0 })), onAddProperty && /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Add property", size: "sm", tone: "tertiary", onClick: onAddProperty }))));
+    let body;
+    if (inPlay.length < 2) body = /* @__PURE__ */ react_global_default.createElement(Note, null, "Pick at least two funds to compare.");
+    else if (active.length === 0) body = /* @__PURE__ */ react_global_default.createElement(Note, null, "Pick at least one property to compare on.");
+    else if (mode === "matrix") {
+      const cols = inPlay.slice(1);
+      const rowsF = inPlay.slice(0, -1);
+      body = /* @__PURE__ */ react_global_default.createElement("div", { style: { overflowX: "auto" }, className: "noscroll" }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minWidth: "max-content" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-end", gap: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: LABEL_W, flexShrink: 0, position: "sticky", left: 0, background: "var(--color-surface)" } }), cols.map((c) => /* @__PURE__ */ react_global_default.createElement("div", { key: c.id, style: { width: CELL_W, flexShrink: 0, paddingBottom: "var(--space-6)" } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, c.name)))), rowsF.map((r, ri) => /* @__PURE__ */ react_global_default.createElement("div", { key: r.id, style: { display: "flex", alignItems: "stretch", gap: "var(--space-2)", marginTop: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: LABEL_W, flexShrink: 0, position: "sticky", left: 0, background: "var(--color-surface)", display: "flex", alignItems: "center", paddingRight: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-row-font)", color: "var(--color-ink)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, r.name)), cols.map((c, ci) => {
+        if (ci < ri) return /* @__PURE__ */ react_global_default.createElement("div", { key: c.id, style: { width: CELL_W, flexShrink: 0 } });
+        const pct = value(r.id, c.id);
+        const s = pct == null ? null : step(pct);
+        return /* @__PURE__ */ react_global_default.createElement("div", { key: c.id, style: { width: CELL_W, flexShrink: 0, height: "var(--h-filter-chip)", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-8)", background: s == null ? "var(--color-track)" : RAMP[s] } }, /* @__PURE__ */ react_global_default.createElement("span", { className: "ds-tabular", style: { font: "var(--type-label-font)", color: s == null ? "var(--color-muted)" : onRamp(s) } }, pct == null ? "\u2014" : `${pct}%`));
+      })))));
+    } else {
+      body = /* @__PURE__ */ react_global_default.createElement("div", null, pairs.map((c) => {
+        const s = c.pct == null ? null : step(c.pct);
+        return /* @__PURE__ */ react_global_default.createElement("div", { key: `${c.a}|${c.b}`, style: { position: "relative" } }, s != null && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", top: "var(--space-4)", bottom: "var(--space-4)", left: 0, width: `${Math.max(2, c.pct)}%`, background: "var(--tint-bronze-06)", borderRadius: "var(--radius-6)" } }), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative" } }, /* @__PURE__ */ react_global_default.createElement(ListRow, { variant: "static", title: `${name(c.a)} \u2194 ${name(c.b)}`, trailing: "meta", meta: c.pct == null ? "\u2014" : `${c.pct}%` })));
+      }));
+    }
+    const missing = pairs.some((c) => c.pct == null);
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", boxSizing: "border-box", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)" } }, "How much these are the same fund"), onChangeMode && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", gap: "var(--space-6)", flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Pairs", size: "sm", tone: "filter", selected: mode === "pairs", onClick: () => onChangeMode("pairs") }), /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Matrix", size: "sm", tone: "filter", selected: mode === "matrix", onClick: () => onChangeMode("matrix") }))), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, controls), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, body), (footnote || missing) && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(Provenance, { text: footnote || "An em dash is a pair whose holdings are not both disclosed yet \u2014 not a zero." })));
+  }
+
   // design-system/components/data/ProgressRail.jsx
   function ProgressRail({ n, total, dim = false }) {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", padding: "2px 16px 6px", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-5)", display: "flex", justifyContent: "flex-end", opacity: 1 } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, "Question ", n, " of ", total)), /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 2, width: "100%", overflow: "hidden", borderRadius: "var(--radius-full)", background: "var(--color-line)", opacity: dim ? 0.4 : 1, transition: "opacity var(--dur-fast) var(--ease)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: "100%", width: "100%", borderRadius: "var(--radius-full)", background: "var(--gradient-rail)", transformOrigin: "left", transform: `scaleX(${n / total})`, transition: "transform var(--dur-screen) var(--ease)" } })));
@@ -1217,16 +1363,6 @@ var __ds_out = (() => {
     ) : null);
   }
 
-  // design-system/components/forms/SelectionMark.jsx
-  function SelectionMark({ kind, selected = false, disabled = false }) {
-    const ring = selected ? "var(--color-bronze)" : "var(--color-line)";
-    const base = { display: "inline-flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", boxSizing: "border-box", opacity: disabled ? 0.4 : 1, transition: "background-color var(--dur-press) var(--ease)" };
-    if (kind === "radio") {
-      return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-full)", boxShadow: `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 10, height: 10, borderRadius: "var(--radius-full)", background: "var(--color-bronze)" } }));
-    }
-    return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-6)", background: selected ? "var(--color-bronze)" : "transparent", boxShadow: selected ? "none" : `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("svg", { width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "2.6", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "m5 12 5 5 9-9" })));
-  }
-
   // design-system/components/icons/IconCheckCircle.jsx
   function IconCheckCircle({ stroke = "var(--color-status-ok-fg)", size = 20 }) {
     return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", alignItems: "center", justifyContent: "center", width: size, height: size, flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "m9 12 2 2 4-4" })));
@@ -1271,58 +1407,6 @@ var __ds_out = (() => {
         /* @__PURE__ */ react_global_default.createElement(Chevron3, null)
       );
     })));
-  }
-
-  // design-system/components/lists/ListRow.jsx
-  var LEGAL = { nav: ["chevron", "meta"], select: ["radio"], multi: ["checkbox"], action: ["menu"], static: ["badge", "meta", "none"] };
-  var DEFAULT_TRAILING = { nav: "chevron", select: "radio", multi: "checkbox", action: "menu", static: "none" };
-  var warned2 = {};
-  function resolveTrailing(variant, trailing) {
-    const legal = LEGAL[variant] || LEGAL.static;
-    if (!trailing) return DEFAULT_TRAILING[variant] || "none";
-    if (legal.indexOf(trailing) !== -1) return trailing;
-    const key = variant + "/" + trailing;
-    if (!warned2[key]) {
-      warned2[key] = 1;
-      console.warn(`ListRow: trailing="${trailing}" is not legal on variant="${variant}" (legal: ${legal.join(", ")}). Falling back to "${DEFAULT_TRAILING[variant]}".`);
-    }
-    return DEFAULT_TRAILING[variant];
-  }
-  function ListRow({ variant = "static", size, leading = "none", leadingContent, index, title, subtitle, meta, chip, trailing, badge, selected = false, disabled = false, onPress, onMenu }) {
-    const tr = resolveTrailing(variant, trailing);
-    const isStatic = variant === "static";
-    const h = (size || (subtitle ? "lg" : "md")) === "lg" ? 72 : 56;
-    const [down, setDown] = react_global_default.useState(false);
-    const lead = leading === "none" ? null : /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: leading === "index" ? 20 : 32, height: leading === "index" ? 20 : 32, flexShrink: 0, alignItems: "center", justifyContent: leading === "index" ? "flex-start" : "center", borderRadius: "var(--radius-full)", background: leading === "avatar" ? "var(--surface-avatar)" : "transparent" } }, leading === "avatar" ? /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", color: "var(--color-bronze-deep)" } }, leadingContent || (title || "?").trim().charAt(0).toUpperCase()) : leading === "index" ? /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } }, index) : leadingContent);
-    const trail = tr === "chevron" ? /* @__PURE__ */ react_global_default.createElement(IconChevronRight, { size: 16, stroke: "var(--color-bronze-deep)" }) : tr === "radio" ? /* @__PURE__ */ react_global_default.createElement(SelectionMark, { kind: "radio", selected, disabled }) : tr === "checkbox" ? /* @__PURE__ */ react_global_default.createElement(SelectionMark, { kind: "checkbox", selected, disabled }) : tr === "badge" && badge ? /* @__PURE__ */ react_global_default.createElement(Badge, { variant: badge.variant, tone: badge.tone }, badge.text) : tr === "meta" && meta ? /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-muted)", whiteSpace: "nowrap" } }, meta) : null;
-    const body = /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, lead, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)", textAlign: "left" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-6)", minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 1 auto", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" } }, title), chip), subtitle && /* @__PURE__ */ react_global_default.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, subtitle)), tr !== "meta" && meta && /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, font: "var(--type-meta-font)", color: "var(--color-muted)", whiteSpace: "nowrap" } }, meta), trail && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexShrink: 0, alignItems: "center" } }, trail), tr === "menu" && /* @__PURE__ */ react_global_default.createElement(
-      "button",
-      {
-        type: "button",
-        onClick: (e) => {
-          e.stopPropagation();
-          onMenu && onMenu();
-        },
-        disabled,
-        style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", display: "flex", width: 44, height: 44, marginRight: -12, flexShrink: 0, alignItems: "center", justifyContent: "center", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-16)", lineHeight: 1, color: "var(--color-ink)" }
-      },
-      "\u22EF"
-    ));
-    const shared = { display: "flex", width: "100%", minHeight: h, alignItems: "center", gap: "var(--space-12)", padding: "8px 0", boxSizing: "border-box", opacity: disabled ? 0.4 : 1 };
-    if (isStatic || !onPress) return /* @__PURE__ */ react_global_default.createElement("div", { style: { ...shared, background: "transparent" } }, body);
-    return /* @__PURE__ */ react_global_default.createElement(
-      "button",
-      {
-        type: "button",
-        onClick: onPress,
-        disabled,
-        onPointerDown: () => !disabled && setDown(true),
-        onPointerUp: () => setDown(false),
-        onPointerLeave: () => setDown(false),
-        style: { ...shared, appearance: "none", border: "none", margin: 0, cursor: disabled ? "default" : "pointer", outline: "none", font: "inherit", background: down ? "var(--tint-bronze-06)" : "transparent", transition: "background-color var(--dur-press) var(--ease)" }
-      },
-      body
-    );
   }
 
   // design-system/components/lists/List.jsx

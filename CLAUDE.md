@@ -50,9 +50,9 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
    F-1 through F-10 closed. `_index.json` reports `literals` again — how many raw style values each
    component still hardcodes — so adherence is measurable per component: 28 of 83 are fully clean.
-3. **The four components the request spec named and nobody built** —
-   `ResultCard` ✅ · `DataTable` · `OverlapView` · `InfoCard kind='manager'`.
-   Their specs are complete in `docs/specs/_component_spec.txt` Parts 4, 6, 7 and 8. This is writing,
-   not designing: read the part before starting, it answers the layout questions.
+3. **The four components the request spec named and nobody built** — done.
+   `ResultCard` · `DataTable` · `OverlapView` · `InfoCard kind='manager'`, each with its contract and
+   a spec page. `pages/_index.json` now reports **0 specified**: the backlog the system carried since
+   v9 is empty. 19 shipped, 66 building, 50/50 pages render clean.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for.

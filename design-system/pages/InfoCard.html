@@ -45,22 +45,47 @@ function App(){
       {sheet && <div style={{marginTop:12,maxWidth:343}}><ExplainerSheet title={'How is '+sheet+' worked out?'} onClose={()=>setSheet(null)}
         body={['Compound annual growth of the scheme NAV over the trailing period, net of expenses.','Source and period are stated on the factsheet. Sentinel does not recompute it.']} /></div>}
     </Block>
-    <Block n={5} title="In context">
+    <Block n={5} title="kind='manager' — the tenure bar, or nothing" sub="The manager card earns its place through one thing. The spec: &ldquo;Render a small two-segment bar showing how much of the fund&rsquo;s track record belongs to the current manager. Without this the card is decorative and should not be built.&rdquo;">
+      <Grid cols={2} itemWidth={320} items={[
+        {label:'most of the record is theirs', node:
+          <InfoCard kind="manager" name="Rajeev Thakkar" meta="Manages 4 funds · ₹18,400 Cr"
+            tenure={{managerYears:11.4, fundYears:12.1, since:'May 2013'}}
+            provenance="As of 30 Sep · from the scheme information document"
+            stats={[{label:'Funds managed', value:'4'},{label:'AUM managed', value:'₹18,400 Cr'}]} onExplain={setSheet} />,
+         note:'The long numbers are his. An advisor can say so.'},
+        {label:'most of it is not', node:
+          <InfoCard kind="manager" name="A. Sharma" meta="Manages 2 funds · ₹3,100 Cr"
+            tenure={{managerYears:1.2, fundYears:11.0, since:'Jul 2024'}}
+            provenance="As of 30 Sep · from the scheme information document"
+            stats={[{label:'Funds managed', value:'2'},{label:'AUM managed', value:'₹3,100 Cr'}]} onExplain={setSheet} />,
+         note:'Below a third of the record, the card says it in words too — the arithmetic an advisor would otherwise do in front of a client.'},
+      ]} />
+    </Block>
+
+    <Block n={6} title="The shelf badge" sub="Fund only. A manager has no shelf status: the compliance shelf holds no opinion about a person.">
+      <Grid cols={3} itemWidth={240} items={[
+        {label:'on your shelf', node:<InfoCard name="Parag Parikh Flexi Cap" meta="Direct · Growth" shelf="on-shelf" figure="18.4%" figureNote="3Y CAGR" series={[{label:'NAV', points:pts(8,12)}]} range="3Y" />},
+        {label:'not on your shelf', node:<InfoCard name="Quant Small Cap" meta="Direct · Growth" shelf="not-on-shelf" figure="—" figureNote="locked" locked lockReason="Not on your shelf. Sentinel will not show performance for a fund you cannot recommend." />},
+        {label:'under review', node:<InfoCard name="UTI Nifty 50 Index" meta="Direct · Growth" shelf="under-review" figure="12.0%" figureNote="3Y CAGR" series={[{label:'NAV', points:pts(8,10)}]} range="3Y" />},
+      ]} />
+    </Block>
+
+    <Block n={7} title="In context">
       <Thread before={<SentinelBlock><SentinelText text="Her largest holding, and the one carrying the drift." /></SentinelBlock>}>
         <InfoCard name="Parag Parikh Flexi Cap" meta="Direct · Growth · ₹4.1 L held" figure="18.4%" figureNote="3Y CAGR"
           caveat="Past performance does not indicate future returns." series={[{label:'NAV', points:pts(8,12)}]} range={r} onRange={setR} stats={STATS} onExplain={setSheet} />
       </Thread>
     </Block>
-    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
-    <Block n={7} title="Props"><Props src="../components/cards/InfoCard.d.ts" /></Block>
-    <Block n={8} title="Do / Don't">
+    <Block n={8} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={9} title="Props"><Props src="../components/cards/InfoCard.d.ts" /></Block>
+    <Block n={10} title="Do / Don't">
       <DoDont
         doNode={<div style={{width:300}}><InfoCard name="Motilal Midcap" meta="Direct · Growth" stats={STATS} locked /></div>}
         doCaption="No confirmed performance source, so the figure abstains and says why. An advisor can defend a blank; they cannot defend a number with no owner."
         dontNode={<div style={{width:300}}><InfoCard name="Motilal Midcap" meta="Direct · Growth" figure="21.8%" figureNote="3Y CAGR · indicative" series={[{label:'NAV', points:pts(8,14)}]} range="3Y" stats={STATS} /></div>}
         dontCaption="The same card with a plausible figure and the word 'indicative' doing the work. This is the one failure mode a wealth tool cannot have." />
     </Block>
-    <Block n={9} title="Motion">
+    <Block n={11} title="Motion">
       <Motion rows={[
         {name:'Figure count-up', property:'text, cubic-out', duration:'600 ms', reduced:'Jumps to the final figure.'},
         {name:'Series draw-on', property:'stroke-dashoffset', duration:'600 ms, first reveal only', reduced:'Lands drawn.'},

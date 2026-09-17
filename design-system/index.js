@@ -94,6 +94,7 @@ export { ChartTooltip } from './components/data/ChartTooltip.jsx';
 export { ConcentrationBar } from './components/data/ConcentrationBar.jsx';
 export { DrawnCheck } from './components/data/DrawnCheck.jsx';
 export { Dumbbell } from './components/data/Dumbbell.jsx';
+export { OverlapView } from './components/data/OverlapView.jsx';
 export { ProgressRail } from './components/data/ProgressRail.jsx';
 export { StatTile, Sparkline } from './components/data/StatTile.jsx';
 export { hasD3, niceDomain, ticks, linear, band, linePath, areaPath, CHART_RAMP, toneColor, markColor, SEGMENT_GAP, trackInset, PLOT, AXIS_BAND, tabular } from './components/data/chartMath.jsx';
