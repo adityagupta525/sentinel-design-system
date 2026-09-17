@@ -52,9 +52,34 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
           <div style={{ margin: '0 14px', height: 'var(--border-hairline)', background: 'var(--color-line-soft)' }} />
         </React.Fragment>
       )}
+      {/* v12 · TAP-ANYWHERE WITHOUT NESTING A CONTROL. Peek used to wrap the whole body — children
+          included — in the Pressable, so every interactive child became a <button> inside a <button>:
+          invalid markup the browser silently unnests, a control announced inside a control, and the
+          child's own ≥44pt extension landing inside someone else's target. Any Pill, DownloadAction or
+          InfoDot in a peeking card hit it, so it was the card's bug, not the caller's.
+          The press target is now a SIBLING behind the content, not an ancestor of it. The card's own
+          chrome — eyebrow, title, provenance — passes its clicks through to it, while `children` keep
+          their own pointer events, so a control in the preview acts instead of expanding the card.
+          It is aria-hidden and out of the tab order on purpose: the footer's `Expand ▾` is the same
+          action and is the keyboard path, and two tab stops for one action is noise. */}
       {expanded
         ? <div style={{ padding: '2px 14px 0' }}>{body}</div>
-        : <Pressable onClick={filling ? undefined : toggle} style={{ display: 'block', width: '100%', padding: '14px 14px 0', textAlign: 'left' }}>{body}</Pressable>}
+        : (
+          <div style={{ position: 'relative' }}>
+            <div aria-hidden="true" style={{ position: 'absolute', inset: 0 }}>
+              <Pressable onClick={filling ? undefined : toggle} expand="none" tabIndex={-1}
+                style={{ position: 'absolute', inset: 0, width: '100%', display: 'block' }} />
+            </div>
+            <div style={{ position: 'relative', padding: '14px 14px 0', textAlign: 'left', pointerEvents: 'none' }}>
+              <Eyebrow>{eyebrow}</Eyebrow>
+              <div style={{ marginTop: 'var(--space-4)' }}>{titleEl}</div>
+              <div style={{ height: 96, marginTop: 'var(--space-10)', overflow: 'hidden', pointerEvents: 'auto' }}>
+                {filling ? <div style={{ height: 96, borderRadius: 'var(--radius-12)', background: 'var(--color-track)', animation: 'sentinel-shimmer 1200ms ease-in-out infinite' }} /> : children}
+              </div>
+              {provenance && <p style={{ margin: '10px 0 0', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-15)', color: 'var(--color-muted)' }}>{provenance}</p>}
+            </div>
+          </div>
+        )}
       <div style={{ margin: '12px 14px 0', height: 'var(--border-hairline)', background: 'var(--color-line-soft)' }} />
       <div style={{ display: 'flex', padding: '0 14px' }}>
         <Pressable onClick={filling ? undefined : toggle} style={slot}>
