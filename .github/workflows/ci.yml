@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Barrel is up to date with the components on disk
+        run: |
+          npm run build:barrel
+          git diff --exit-code design-system/index.js design-system/index.d.ts \
+            || { echo '::error::index.js/index.d.ts are stale — run npm run build:barrel'; exit 1; }
+
+      - name: design-system matches its recorded baseline
+        run: npm run check:integrity
+
+      - name: Token and import adherence
+        run: npm run lint:adherence
+
+      - name: Every preview page renders without a console error
+        run: node tools/check-previews.mjs
