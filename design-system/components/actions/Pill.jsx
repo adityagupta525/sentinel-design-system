@@ -17,7 +17,13 @@ function Glyph({ kind }) {
   if (kind === 'smart') return <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="8" rx="1.5" stroke="var(--color-bronze-deep)" strokeWidth="1.1" /><path d="M3.2 5.2h2.2M3.2 7.2h4.4" stroke="var(--color-bronze-deep)" strokeWidth="1.1" strokeLinecap="round" /></svg>;
   return null;
 }
-/* Loading: the label HOLDS — the pill never becomes a spinner with no words, and it never changes width
+/* The ≥44pt hit-area rule lives in tokens/effects.css, not in a <style> here. It used to ship as a
+   <style> child of this <button>: an invalid content model, and one identical copy per Pill on the
+   page — RangePills alone draws dozens. Pressable had exactly this and moved it out for the same
+   reason; the rule is global and identical for every instance, so the stylesheet is where it belongs.
+   Pill still sets --hit inline, so each instance still extends by its own amount.
+
+   Loading: the label HOLDS — the pill never becomes a spinner with no words, and it never changes width
    mid-press, which would move the thing under the finger. The glyph slot carries a 13px bronze spinner
    and the label drops to 60%; the press target and the width stay exactly as they were. Inert while
    loading, but not dimmed like `disabled`: a pill waiting on the network is working, not unavailable. */
@@ -37,7 +43,6 @@ export function Pill({ label, size = 'md', tone = 'outline', selected = false, o
     <button type="button" onClick={inert ? undefined : onClick} disabled={inert} className="ds-pill" aria-busy={loading || undefined}
       onPointerDown={() => !inert && setDown(true)} onPointerUp={() => setDown(false)} onPointerLeave={() => setDown(false)}
       style={{ position: 'relative', appearance: 'none', border: 'none', cursor: inert ? 'default' : 'pointer', display: 'inline-flex', height: s.h, flexShrink: 0, alignItems: 'center', gap: 'var(--space-6)', borderRadius: 'var(--radius-full)', padding: `0 ${s.px}px`, background: t.bg, boxShadow: t.ring ? `0 0 0 1px ${t.ring}` : 'none', outline: t.dashed ? '1px dashed var(--tint-bronze-dashed)' : 'none', outlineOffset: -1, opacity: disabled ? 0.4 : 1, transform: down ? 'scale(0.98)' : 'none', transition: 'transform var(--dur-press) var(--ease), background-color var(--dur-press)', '--hit': `${hit}px` }}>
-      <style>{'.ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}'}</style>
       {loading ? <Spinner fg={t.fg} /> : selected ? <Glyph kind="check" /> : <Glyph kind={tone} />}
       <span style={{ whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: s.font, lineHeight: `${s.lh}px`, color: t.fg, opacity: loading ? 0.6 : t.fgOpacity || 1 }}>{label}</span>
     </button>

@@ -45,6 +45,9 @@
 .ds-pressable{outline:none}
 .ds-pressable:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
 .ds-pressable[data-hit]::before{content:"";position:absolute;left:calc(-1 * var(--hit-x));right:calc(-1 * var(--hit-x));top:calc(-1 * var(--hit-y));bottom:calc(-1 * var(--hit-y))}
+/* Pill extends vertically only — its width is its label, and a horizontal extension would overlap the
+   next chip in a row. --hit is set per instance by the component. */
+.ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}
 /* Reduced motion — the law, implemented, not asserted. Every looping or entrance animation in the
    system resolves to its final state with an opacity fade and nothing else: no translate, no scale,
    no rotation, no pulse. Keyframes are redefined rather than cancelled, so nothing is left mid-way

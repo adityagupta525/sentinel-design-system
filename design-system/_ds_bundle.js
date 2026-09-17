@@ -169,7 +169,6 @@ var __ds_out = (() => {
         onPointerLeave: () => setDown(false),
         style: { position: "relative", appearance: "none", border: "none", cursor: inert ? "default" : "pointer", display: "inline-flex", height: s.h, flexShrink: 0, alignItems: "center", gap: "var(--space-6)", borderRadius: "var(--radius-full)", padding: `0 ${s.px}px`, background: t.bg, boxShadow: t.ring ? `0 0 0 1px ${t.ring}` : "none", outline: t.dashed ? "1px dashed var(--tint-bronze-dashed)" : "none", outlineOffset: -1, opacity: disabled ? 0.4 : 1, transform: down ? "scale(0.98)" : "none", transition: "transform var(--dur-press) var(--ease), background-color var(--dur-press)", "--hit": `${hit}px` }
       },
-      /* @__PURE__ */ react_global_default.createElement("style", null, '.ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}'),
       loading ? /* @__PURE__ */ react_global_default.createElement(Spinner, { fg: t.fg }) : selected ? /* @__PURE__ */ react_global_default.createElement(Glyph, { kind: "check" }) : /* @__PURE__ */ react_global_default.createElement(Glyph, { kind: tone }),
       /* @__PURE__ */ react_global_default.createElement("span", { style: { whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: s.font, lineHeight: `${s.lh}px`, color: t.fg, opacity: loading ? 0.6 : t.fgOpacity || 1 } }, label)
     );
