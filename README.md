@@ -33,6 +33,9 @@ The previews load React, ReactDOM, Babel and d3 from public CDNs. Where those ar
 server swaps in the copies under `node_modules` **as it serves** — the HTML on disk is never rewritten,
 so the pages keep working unmodified wherever they are hosted.
 
+The pages read components from `_ds_bundle.js`, not from source, so **`npm run build:bundle` after every
+component change** — otherwise you are looking at the previous build.
+
 ## Using it in a product
 
 ```jsx
@@ -101,6 +104,7 @@ Carried into every output. From `design-system/SKILL.md`:
 |---|---|
 | `npm run preview` | Serve the design system at `localhost:4321` |
 | `npm run build:barrel` | Regenerate `index.js` / `index.d.ts` from the components on disk |
+| `npm run build:bundle` | Rebuild `_ds_bundle.js` — **required before a source change shows in any preview** |
 | `npm run build:index` | Regenerate `pages/_index.json` |
 | `npm run check:integrity` | Verify `design-system/` against the recorded baseline |
 | `npm run lint:adherence` | Run the token/import rules over the system itself |

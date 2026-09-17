@@ -23,6 +23,12 @@ jobs:
           git diff --exit-code design-system/index.js design-system/index.d.ts \
             || { echo '::error::index.js/index.d.ts are stale — run npm run build:barrel'; exit 1; }
 
+      - name: Bundle is up to date with the components on disk
+        run: |
+          npm run build:bundle
+          git diff --exit-code design-system/_ds_bundle.js \
+            || { echo '::error::_ds_bundle.js is stale — run npm run build:bundle'; exit 1; }
+
       - name: design-system matches its recorded baseline
         run: npm run check:integrity
 

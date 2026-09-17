@@ -26,8 +26,10 @@ scaffolding around it.
   hand-written `.d.ts`. `design-system/index.js` is the generated barrel and the only public entry.
 - The preview pages do **not** import the source. They load `_ds_bundle.js`, which publishes
   everything onto `window.SentinelDesignSystem_0682a2`, and compile inline JSX with Babel standalone
-  from a CDN. So a source change is not visible in a page until the bundle is rebuilt — and the
-  bundle is built by Claude Design, not by this repo. Treat that as a known constraint.
+  from a CDN. **So a source change is invisible in the pages until the bundle is rebuilt — run
+  `npm run build:bundle` after every component change, before looking at anything.** The bundle was
+  built upstream by Claude Design; `tools/build-bundle.mjs` now builds it here, and its output renders
+  the app pixel-for-pixel identically to the imported one.
 - The dev server rewrites CDN URLs to `node_modules` copies in flight when the CDN is unreachable.
   Files on disk are never rewritten.
 
@@ -35,5 +37,6 @@ scaffolding around it.
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
+   In progress: F-1 and F-2 fixed, F-3 needs a product decision, F-4 and F-6 open.
 3. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for.
