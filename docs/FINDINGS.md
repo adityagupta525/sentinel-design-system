@@ -35,7 +35,7 @@ Identical cause at 14:72. Same fix. Both pages now render; `check-previews` went
 
 ## P1 — invalid markup, real accessibility cost
 
-### F-3 · `ArtifactCard` puts a `<button>` around anything you give it
+### F-3 · `ArtifactCard` puts a `<button>` around anything you give it — *fixed*
 First recorded against `DownloadAction`, which is where React reports it. That was the wrong address.
 The full stack reads bottom-up:
 
@@ -74,12 +74,19 @@ not craft:
   the component's own header already says (*"PEEK IS 96px, FIXED — recognition, not reading"*), and
   makes `pages/DownloadAction.html` block 5 the thing that needs changing, not the card.
 
-(b) looks closer to the design's intent; (a) is the safer engineering answer. Either is a small change.
-Both are visual-neutral except for where a press registers.
+**Fixed as neither, because a third answer keeps both halves.** The press target is now a *sibling
+behind* the content rather than an ancestor of it: an absolutely positioned `Pressable` fills the peek
+area, the content sits above it with `pointer-events: none`, and the `children` slot alone turns pointer
+events back on. So the card's own chrome — eyebrow, title, provenance — passes its clicks through and
+expands the card, while a control in the preview acts as itself. Tap-anywhere survives, the markup is
+valid, and the contract does not have to forbid anything.
+
+The overlay is `aria-hidden` and `tabIndex={-1}`: the footer's `Expand ▾` is the same action and is the
+keyboard path, and two tab stops for one action is noise.
 
 ## P2 — the system misreports itself
 
-### F-4 · `scripts/build-index.js` reports three built components as unbuilt
+### F-4 · `scripts/build-index.js` reports three built components as unbuilt — *fixed, but see F-8*
 Its `SPECIFIED` backlog constant still lists `FileUpload`, `DownloadAction` and `InfoCard`, all three
 of which now exist on disk with sources, contracts and pages. Regenerating the index today produces
 **88 rows with 6 specified** — the three real gaps plus three phantoms, each component appearing
@@ -99,10 +106,13 @@ The converse fails: it tells us a component is *not* there when it is.
 **Fix.** Skip a `SPECIFIED` row whose name already produced a row from disk. One condition, and the
 backlog list can then be left alone as components land.
 
-**Not applied yet.** The regeneration is held so the import stays byte-identical; this is the first
-thing to land in the polish pass.
+**Fixed** — built wins over specified, so the backlog constant needs no editing as components arrive.
+With it, the generator produces 85 rows and 3 specified, matching the committed index exactly.
 
-### F-6 · `Pill` ships a `<style>` element inside its `<button>`, once per instance
+**But the regenerated file is still not committed**, because running the generator today would lose a
+column. See F-8.
+
+### F-6 · `Pill` ships a `<style>` element inside its `<button>`, once per instance — *fixed*
 `Pill` renders its ≥44pt hit-area rule as a `<style>` child of the button it draws:
 
 ```jsx
@@ -118,9 +128,51 @@ thing to land in the polish pass.
 
 The rule is global and identical for every Pill too, and `pages/RangePills.html` alone draws dozens.
 
-**Fix.** Move `.ds-pill::before` into `tokens/effects.css` beside `.ds-pressable[data-hit]::before`,
-which is already there. `Pill` keeps setting `--hit` inline, so the rule still reads the right value
-per instance. Unambiguous, visual-neutral, and it is the fix the system already chose once.
+**Fixed.** `.ds-pill::before` now sits in `tokens/effects.css` beside `.ds-pressable[data-hit]::before`.
+`Pill` still sets `--hit` inline, so each instance still extends by its own amount.
+
+### F-7 · The fund chart did not line up with its own card — *fixed*
+Reported from the product side: on `InfoCard` the line chart and its value did not sit on the card's
+edges, and the value took its own column instead of sitting on the chart.
+
+Three separate causes, all in `ChartLine`:
+
+**a · A reserved gutter made the plot narrower than everything around it.** `padR` (34 at peek, 62
+expanded) was subtracted from the drawing width and applied as `paddingRight` to both the plot and the
+axis band, so the line, the baseline and the x labels all stopped 62px short of the card's right edge —
+while the title, the range pills and the stat tiles ran the full width. Two stray edges in one card, and
+the chart read as something pasted in rather than part of it.
+
+The plot now runs the full width. The end label sits **on** the plot at the line's end, which is what
+the code comment above it always claimed: *"End labels sit AT the end of each line, inside the plot
+box"*. Which side of the endpoint it takes is read from the line itself — a line arriving from below
+leaves the space above its end empty, so the label goes there and never lies across the stroke it
+labels.
+
+**b · The chart printed a raw float.** The default formatter was `` (v) => `${v}%` ``, so a computed
+series rendered **`14.60000000000000075%`** on the card. Every figure in this product carries one
+decimal — 18.4%, 12.1%, −14.2% — and an advisor cannot read seventeen of them to a client. The default
+is now one decimal, and `InfoCard` no longer overrides it with the raw one.
+
+**c · The x-axis label count was set by the y axis.** The expanded branch mapped over
+`ticks(d0, d1, 2)` — the *y* domain's ticks — to decide how many *x* labels to draw. When that returned
+a single tick the trailing label silently disappeared, which is why the fund card's chart started at 1
+and ended nowhere. It now draws first-x and last-x directly, the way the peek branch beside it already
+did.
+
+### F-8 · `scripts/build-index.js` is older than the index it produced
+The committed `pages/_index.json` carries a **`literals`** key on every row. The generator in
+`scripts/` never writes one — it emits `tokens` and `locals` only. So the file in the repo was produced
+by a later version of the script than the one that shipped with the bundle.
+
+Running the generator today therefore *removes* a column: same 85 rows, same names, same statuses, but
+every row loses its `literals` list. That is a silent data loss dressed as a regeneration, which is why
+`npm run build:index` is not part of `npm run check` and the regenerated file is not committed.
+
+**Fix.** Recover the literals scan. It is almost certainly the same shape as the token scan already in
+the file — collect the raw hex, px and font-family literals a component still contains, which is exactly
+what `_adherence.oxlintrc.json` forbids — so the index can report adherence per component. Until then,
+treat `pages/_index.json` as hand-maintained and do not regenerate it.
 
 ---
 

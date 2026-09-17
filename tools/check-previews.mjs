@@ -10,10 +10,18 @@ import { readdir, mkdir, writeFile } from 'node:fs/promises';
 import { join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { createServer as probe } from 'node:net';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DS = join(HERE, '..', 'design-system');
-const PORT = Number(process.env.PORT || 4399);
+/* A free port, asked for rather than assumed. A fixed one meant two runs at once shared a server, and
+   whichever finished first killed it out from under the other — which reports every remaining page as
+   a failure that never happened. A harness that can invent failures is worse than no harness. */
+const PORT = Number(process.env.PORT) || await new Promise((resolve, reject) => {
+  const s = probe();
+  s.once('error', reject);
+  s.listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => resolve(port)); });
+});
 const arg = (f) => { const i = process.argv.indexOf(f); return i > -1 ? process.argv[i + 1] : null; };
 const SHOTS = arg('--shots');
 const ONLY = arg('--only');
