@@ -1,0 +1,83 @@
+<!-- @dsCard group="Pages" viewport="1000x1400" name="ChartLine" subtitle="One or two series, end-labelled, on d3 scales — never three" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ChartLine — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ChartLine, ChartLineMultiples, ArtifactCard, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOKENS = ['--color-bronze-deep','--color-data-deemph','--tint-bronze-06','--color-line','--color-muted','--color-ink','--font-ui','--ease','--dur-count'];
+const q = [{x:1,y:62},{x:2,y:64},{x:3,y:63},{x:4,y:67},{x:5,y:69},{x:6,y:71}];
+const bench = [{x:1,y:60},{x:2,y:60},{x:3,y:61},{x:4,y:60},{x:5,y:62},{x:6,y:61}];
+const M = ['Apr','May','Jun','Jul','Aug','Sep'];
+const xf = (x) => M[x-1] || String(x);
+function App() {
+  return (
+    <PageShell name="ChartLine" group="Data" status="shipped" requires={['ChartLine','ChartLineMultiples','ArtifactCard','SentinelBlock']} summary="One or two series, both end-labelled directly, no legend. Scales, nice ticks and the monotone path come from d3-scale and d3-shape; every stroke, fill and duration is ours. Three or more series is small multiples, not three colours — this palette cannot carry a third identity hue.">
+      <Block n={1} title="Specimen" sub="Expanded density: plot 180 + a 14 px axis band.">
+        <Specimen width={343}><ChartLine series={[{label:"Sharma's equity", points:q}]} target={{value:60}} width={311} valueFormat={(v)=>v+'%'} xFormat={xf} /></Specimen>
+      </Block>
+      <Block n={2} title="Anatomy" sub="Dimensions outside the frame. The dashed line is the target — the only horizontal rule a Sentinel line chart draws.">
+        <Anatomy width={311} top="plot 180" bottom="axis band 14" left="nice domain, rounded outward" right="end label, tabular">
+          <ChartLine series={[{label:"Sharma's equity", points:q}]} target={{value:60}} width={311} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />
+        </Anatomy>
+      </Block>
+      <Block n={3} title="Variants">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'one series', node:<ChartLine series={[{label:'Equity', points:q}]} width={280} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />, note:'Area fill only here — --tint-bronze-06.'},
+          {label:'two series', node:<ChartLine series={[{label:'Sharma', points:q},{label:'Benchmark', points:bench}]} width={280} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />, note:'Series 2 dashed 4-2, muted, drawn behind. No fill.'},
+          {label:'with target', node:<ChartLine series={[{label:'Equity', points:q}]} target={{value:60}} width={280} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />, note:'One dashed rule. Never a grid.'},
+          {label:'peek · 96 pt card', node:<ChartLine density="peek" series={[{label:'Equity', points:q}]} width={280} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />, note:'Sparkline strip: plot 72 + one 14 px end-label row = 86. Fits 96 with the card chrome.'},
+          {label:'three or more → small multiples', node:<ChartLineMultiples series={[{label:'Equity', points:q},{label:'Debt', points:bench},{label:'Cash', points:[{x:1,y:8},{x:2,y:7},{x:3,y:6},{x:4,y:6},{x:5,y:5},{x:6,y:6}]}]} width={280} valueFormat={(v)=>v+'%'} xFormat={xf} />, note:'One chart each, shared scale, stacked down the card.'},
+          {label:'scrub', node:<ChartLine scrub series={[{label:'Equity', points:q}]} width={280} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />, note:'Drag it: the ChartReadout row is reserved above the plot.'},
+        ]} />
+      </Block>
+      <Block n={4} title="States" sub="Drawing on, at rest, and scrubbing. There is no empty state — a chart with no points is not rendered; the card shows its own empty copy.">
+        <Grid cols={3} itemWidth={280} items={[
+          {label:'first reveal', node:<ChartLine series={[{label:'Equity', points:q}]} width={240} valueFormat={(v)=>v+'%'} xFormat={xf} />, note:'stroke-dashoffset, 600 ms, once.'},
+          {label:'at rest', node:<ChartLine series={[{label:'Equity', points:q}]} width={240} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />},
+          {label:'scrubbing', node:<ChartLine scrub series={[{label:'Equity', points:q}]} width={240} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />, note:'1 px crosshair; nothing else moves.'},
+        ]} />
+      </Block>
+      <Block n={5} title="In context" sub="Inside an ArtifactCard at peek and expanded — the block that catches a chart that only works in isolation.">
+        <Thread before={<SentinelBlock><SentinelText text="Equity is 71% against a 60% target. Two-thirds of that is the small-cap rally." /></SentinelBlock>}>
+          <ArtifactCard state="peek" eyebrow="Equity drift · Apr → Sep" title="62% → 71%, mostly the market" provenance="As of 30 Sep · from his Q3 statement" onToggle={()=>{}} onWhy={()=>{}} onMenu={()=>{}}>
+            <ChartLine density="peek" series={[{label:'Equity', points:q}]} width={311} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />
+          </ArtifactCard>
+          <ArtifactCard state="expanded" eyebrow="Equity drift · Apr → Sep" title="62% → 71%, mostly the market" provenance="As of 30 Sep · from his Q3 statement" onToggle={()=>{}} onWhy={()=>{}} onMenu={()=>{}}>
+            <ChartLine scrub series={[{label:'Sharma', points:q},{label:'Benchmark', points:bench}]} target={{value:60}} width={311} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />
+          </ArtifactCard>
+        </Thread>
+      </Block>
+      <Block n={6} title="Tokens"><Tokens names={TOKENS} /></Block>
+      <Block n={7} title="Props"><Props src="../components/data/ChartLine.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<ChartLine series={[{label:'Sharma', points:q},{label:'Benchmark', points:bench}]} width={280} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />}
+          doCaption="Two series, end-labelled, the benchmark muted and dashed behind. Identity comes from the label."
+          dontNode={<svg width="280" height="130" viewBox="0 0 280 130" style={{display:'block'}}>
+            {[0,1,2,3].map(i=><line key={i} x1="0" x2="280" y1={20+i*30} y2={20+i*30} stroke="var(--color-line)" strokeWidth="1" />)}
+            <polyline points="0,100 56,88 112,92 168,64 224,52 280,40" fill="none" stroke="var(--color-bronze-deep)" strokeWidth="2" />
+            <polyline points="0,110 56,104 112,96 168,100 224,86 280,92" fill="none" stroke="var(--color-alloc-debt)" strokeWidth="2" />
+            <polyline points="0,70 56,74 112,60 168,72 224,66 280,58" fill="none" stroke="var(--color-bubble-edge)" strokeWidth="2" />
+            <g style={{fontFamily:'var(--font-ui)',fontSize:9,fill:'var(--color-muted)'}}><circle cx="8" cy="122" r="4" fill="var(--color-bronze-deep)" /><text x="16" y="125">Equity</text><circle cx="70" cy="122" r="4" fill="var(--color-alloc-debt)" /><text x="78" y="125">Debt</text><circle cx="120" cy="122" r="4" fill="var(--color-bubble-edge)" /><text x="128" y="125">Cash</text></g>
+          </svg>}
+          dontCaption="Three series in three ramp steps with a legend and a grid. The adjacent pair measures ΔE 11.4 against a floor of 15 — to a red-weak reader two of these lines are the same line. Use small multiples." />
+      </Block>
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          {name:'Line draw-on', property:'stroke-dashoffset — the one named exception to transform/opacity', duration:'600 ms (the data-reveal budget), ease-out, once', reduced:'Lands drawn, opacity fade only.'},
+          {name:'Crosshair', property:'x position of a 1 px line', duration:'none — it tracks the finger', reduced:'Unchanged; it is not an animation.'},
+          {name:'Card expand', property:'height to natural', duration:'300 ms', reduced:'Jumps, opacity fade.'},
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

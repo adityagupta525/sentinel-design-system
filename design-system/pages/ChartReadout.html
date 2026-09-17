@@ -1,0 +1,73 @@
+<!-- @dsCard group="Pages" viewport="1000x1100" name="ChartReadout" subtitle="The scrub row — fixed above the plot, reserved when idle" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ChartReadout — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ChartReadout, ChartLine, ArtifactCard, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOKENS = ['--color-muted','--color-ink','--color-bronze-deep','--color-line','--font-ui'];
+const q = [{x:1,y:62},{x:2,y:64},{x:3,y:63},{x:4,y:67},{x:5,y:69},{x:6,y:71}];
+const M = ['Apr','May','Jun','Jul','Aug','Sep'];
+const xf = (x) => M[x-1] || String(x);
+function App() {
+  return (
+    <PageShell name="ChartReadout" group="Data" status="shipped" requires={['ChartReadout','ChartLine','ArtifactCard','SentinelBlock']} summary="For dragging along a plot. A fixed row above the chart, never a box that follows the finger — during a scrub the finger is sitting on the thing you are trying to read. The row is reserved when idle, showing the latest value, so it never appears out of nowhere and shifts the layout.">
+      <Block n={1} title="Specimen">
+        <Specimen width={343}><ChartReadout label="30 Sep" value="71%" active /></Specimen>
+      </Block>
+      <Block n={2} title="Anatomy">
+        <Anatomy width={311} top="row 22, reserved — never conditional" bottom="sits directly above the plot" left="x label: 11 muted" right="value: 13 ink, tabular">
+          <ChartReadout label="30 Sep" value="71%" active />
+        </Anatomy>
+      </Block>
+      <Block n={3} title="Variants">
+        <Grid cols={2} itemWidth={280} items={[
+          {label:'idle — latest value', node:<ChartReadout label="Latest · 30 Sep" value="71%" />, note:'Bronze value: nothing is being touched.'},
+          {label:'scrubbing', node:<ChartReadout label="12 Jul" value="67%" active />, note:'Ink value: the finger is down.'},
+          {label:'with an idle note', node:<ChartReadout label="" idleNote="Drag to read a month" value="71%" />},
+          {label:'long x label', node:<ChartReadout label="Q3 FY26 · quarter to 30 Sep" value="71%" active />, note:'The label truncates; the value never does.'},
+        ]} />
+      </Block>
+      <Block n={4} title="States" sub="Idle and active. There is no loading state — the row shows the latest value or nothing at all, and no empty state, because a reserved row with a value is the empty state.">
+        <Grid cols={2} itemWidth={280} items={[
+          {label:'idle', node:<ChartReadout label="Latest · 30 Sep" value="71%" />},
+          {label:'active', node:<ChartReadout label="12 Jul" value="67%" active />},
+        ]} />
+      </Block>
+      <Block n={5} title="In context" sub="Drag across the plot inside a real card — the row above it changes, nothing else moves.">
+        <Thread before={<SentinelBlock><SentinelText text="Six months of his equity share. Drag across it." /></SentinelBlock>}>
+          <ArtifactCard state="expanded" eyebrow="Equity drift · Apr → Sep" title="62% → 71%" provenance="As of 30 Sep · from his Q3 statement" onToggle={()=>{}} onMenu={()=>{}}>
+            <ChartLine scrub series={[{label:'Equity', points:q}]} target={{value:60}} width={311} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />
+          </ArtifactCard>
+        </Thread>
+      </Block>
+      <Block n={6} title="Tokens"><Tokens names={TOKENS} /></Block>
+      <Block n={7} title="Props"><Props src="../components/data/ChartReadout.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{width:260}}><ChartReadout label="12 Jul" value="67%" active /><ChartLine scrub series={[{label:'Equity', points:q}]} width={260} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} /></div>}
+          doCaption="Fixed row above the plot. The value is readable while the finger is on the line."
+          dontNode={<div style={{position:'relative',width:260,height:96}}>
+            <ChartLine series={[{label:'Equity', points:q}]} width={260} valueFormat={(v)=>v+'%'} xFormat={xf} run={false} />
+            <div style={{position:'absolute',left:120,top:20,borderRadius:8,background:'var(--color-surface)',boxShadow:'inset 0 0 0 0.5px var(--color-line), var(--shadow-float)',padding:'8px 10px'}}><p style={{margin:0,fontFamily:'var(--font-ui)',fontWeight:500,fontSize:11,color:'var(--color-muted)'}}>12 Jul</p><p style={{margin:0,fontFamily:'var(--font-ui)',fontWeight:700,fontSize:13,color:'var(--color-ink)'}}>67%</p></div>
+            <div style={{position:'absolute',left:104,top:8,width:56,height:56,borderRadius:9999,background:'var(--scrim)',opacity:0.25}} />
+          </div>}
+          dontCaption="A floating box under the thumb. The circle is the finger: it covers the mark and usually the box too." />
+      </Block>
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          {name:'Crosshair track', property:'x position of a 1 px line', duration:'none — follows the finger', reduced:'Unchanged; not an animation.'},
+          {name:'Value change', property:'text swap, no transition', duration:'0 ms', reduced:'Unchanged. A tweening number cannot be read mid-scrub.'},
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

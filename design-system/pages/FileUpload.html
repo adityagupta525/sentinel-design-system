@@ -1,0 +1,81 @@
+<!-- @dsCard group="Pages" viewport="1000x1240" name="FileUpload" subtitle="The file in the thread, parsing in stages — the stages ARE the summary" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>FileUpload — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { FileUpload, FollowUpRow, Pill, SentinelBlock, SentinelText, StepTrace } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-chip','--color-muted','--color-ink','--shadow-card','--radius-16','--radius-8','--space-14','--space-12','--type-body-strong-font','--type-caption-font','--border-1'];
+const F = {name:'Sharma_Q3_statement.pdf', meta:'4 pages · 1.2 MB'};
+const S = {
+  parsing:[{label:'Found 4 pages', state:'done'},{label:'Read 12 holdings', state:'done', meta:'12'},{label:'Matching to his mandate', state:'running'},{label:'Pricing the drift', state:'pending'}],
+  done:[{label:'Found 4 pages', state:'done'},{label:'Read 12 holdings', state:'done', meta:'12'},{label:'Matched to his mandate', state:'done'},{label:'Priced the drift', state:'done', meta:'₹11,200'}],
+  failed:[{label:'Found 4 pages', state:'done'},{label:'Read 9 of 12 holdings', state:'failed', detail:'Three rows on page 3 are scanned images, not text.'},{label:'Pricing the drift', state:'pending'}],
+};
+function App(){
+  const [st,setSt] = React.useState('parsing');
+  return (
+  <PageShell name="FileUpload" group="Input" status="shipped" requires={['FileUpload','StepTrace','FollowUpRow','Pill']}
+    summary="The file as a chip in the thread, parsing in stages. The field standard for document parsing is a per-stage list rather than one progress bar, because the stages are what the reader cares about — Alan ticks ✓ Document detection then runs ••• Anti-fraud analysis; Monese and Veriff tick four stages with a spinner on the active one; Notion sits the file chip in the thread above the answer with a follow-up beside it.">
+    <Block n={1} title="Specimen" sub="Mid-parse: two stages ticked, one running, one waiting.">
+      <Specimen width={343}><FileUpload file={F} stages={S.parsing} /></Specimen>
+    </Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={311} top="card padding 14 · radius 16" bottom="StepTrace dense: 8 px step gap" left="file glyph 32 box" right="meta: tabular">
+        <FileUpload file={F} stages={S.parsing} />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'parsing', node:<FileUpload file={F} stages={S.parsing} />},
+        {label:'read — the trace collapses to the summary', node:<FileUpload file={F} state="done" stages={S.done} summary="Read his September statement · 4 pages · 12 holdings" />, note:'There is no separate success state to design: the stages ARE the summary, arriving progressively.'},
+        {label:'partial failure', node:<FileUpload file={F} state="failed" stages={S.failed} onRetry={()=>{}} />, note:'The failed stage keeps its place and retries itself — not the 40-page upload.'},
+        {label:'with a follow-up — Notion\'s shape', node:<FileUpload file={F} state="done" stages={S.done} summary="Read it · 12 holdings" actions={<FollowUpRow label="Next" items={['What changed since June?']} onAsk={()=>{}} />} />},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Per stage: pending, running, done, failed — inherited from StepTrace. The card itself is parsing, done or failed. No empty state: a FileUpload with no file is not rendered.">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'live — step it through', node:<FileUpload file={F} state={st} stages={S[st]} onRetry={()=>{}} summary={st==='done'?'Read his September statement · 4 pages · 12 holdings':undefined} />, note:'Showing: '+st},
+        {label:'removable', node:<FileUpload file={F} stages={S.parsing} onRemove={()=>{}} />, note:'Remove is a word, not an ✕ alone.'},
+      ]} />
+      <div style={{marginTop:10,display:'flex',gap:8}}>
+        {['parsing','done','failed'].map(k=>(<Pill key={k} label={k} size="sm" tone={st===k?'primary':'outline'} onClick={()=>setSt(k)} />))}
+      </div>
+    </Block>
+    <Block n={5} title="In context">
+      <Thread before={<div style={{borderRadius:'var(--radius-20)',background:'var(--color-bubble)',boxShadow:'0 0 0 1px var(--color-bubble-edge)',padding:'10px 14px',marginLeft:'auto',maxWidth:'80%'}}><span style={{font:'var(--type-body-font)',color:'var(--color-ink)'}}>Here's his Q3 statement</span></div>}
+        after={<SentinelBlock><SentinelText text="Equity is 71% against the 60% you agreed. Two-thirds of that is the small-cap rally." /></SentinelBlock>}>
+        <FileUpload file={F} state="done" stages={S.done} summary="Read his September statement · 4 pages · 12 holdings" />
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/forms/FileUpload.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{width:300}}><FileUpload file={F} state="done" stages={S.done} summary="Read his September statement · 4 pages · 12 holdings" /></div>}
+        doCaption="The outcome describes the advisor's world: what was read, how much of it, what it cost to fix."
+        dontNode={<div style={{width:300,borderRadius:16,background:'var(--color-surface)',boxShadow:'var(--shadow-card)',padding:14}}>
+          <p style={{margin:0,font:'var(--type-body-strong-font)',color:'var(--color-ink)'}}>Sharma_Q3_statement.pdf</p>
+          <div style={{marginTop:10,height:4,borderRadius:9999,background:'var(--color-track)',overflow:'hidden'}}><div style={{width:'72%',height:'100%',background:'var(--color-bronze-deep)'}} /></div>
+          <p style={{margin:'8px 0 0',font:'var(--type-caption-font)',color:'var(--color-muted)'}}>Uploaded successfully</p>
+        </div>}
+        dontCaption="One bar and 'uploaded successfully'. The advisor learns that our server has the file, which is the one fact they did not need — and the stages that would have told them what we read are gone." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Active stage node', property:'opacity 0.28 → 1 (dot-pulse)', duration:'1200 ms, looping', reduced:'Holds at full opacity.'},
+        {name:'Stage settling to done', property:'opacity 0.4 → 1', duration:'200 ms', reduced:'Unchanged.'},
+        {name:'Trace collapsing on completion', property:'unmount + chevron rotate', duration:'200 ms', reduced:'No rotation.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

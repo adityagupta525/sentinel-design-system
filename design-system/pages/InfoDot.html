@@ -1,0 +1,75 @@
+<!-- @dsCard group="Pages" viewport="1000x900" name="InfoDot" subtitle="The ⓘ that takes a figure to its explanation — a copy rule with a control" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>InfoDot — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { InfoDot, StatTile, ExplainerSheet, ChartBar, SentinelBlock, SentinelText, Badge } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-muted','--color-bronze-deep','--color-ink','--focus-ring','--border-focus','--border-focus-width','--h-touch'];
+function App(){
+  const [sheet,setSheet] = React.useState(null);
+  return (
+  <PageShell name="InfoDot" group="Input" status="shipped" requires={['InfoDot','StatTile','ExplainerSheet','ChartBar']}
+    summary="The rule as a component: any figure an advisor must defend carries an ⓘ to its explanation. Shopee puts one on every stat in a fund detail; ours goes on any figure whose basis a client could ask for. It opens the ExplainerSheet the system already had — never a tooltip, because a tooltip cannot hold a formula, a date range and a source, and at 375 pt the next tap kills it.">
+    <Block n={1} title="Specimen">
+      <Specimen width={343}><div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:6}}>
+        <span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>CAGR 1Y</span><InfoDot figure="CAGR 1Y" onOpen={()=>setSheet('CAGR 1Y')} />
+      </div></Specimen>
+    </Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={150} top="glyph 14 · Lucide info, 1.5 px" bottom="44 pt target, from Pressable" left="stroke: --color-muted" right="label names the FIGURE">
+        <div style={{display:'flex',alignItems:'center',gap:6}}><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>Max drawdown 1Y</span><InfoDot figure="Max drawdown 1Y" /></div>
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={3} itemWidth={240} items={[
+        {label:'beside a stat label', node:<StatTile label="CAGR 1Y" value="12.1%" onExplain={()=>setSheet('CAGR 1Y')} />},
+        {label:'on a chart caveat', node:<div style={{width:200}}><ChartBar bars={[{label:'Equity',value:71},{label:'Debt',value:23}]} width={190} run={false} caveat="Rounded for simplicity." /></div>, note:'The caveat is the companion rule — it sits AT the number and needs no control.'},
+        {label:'16 px, in a row', node:<span style={{display:'flex',alignItems:'center',gap:6}}><span style={{font:'var(--type-row-font)'}}>Exit load</span><InfoDot figure="Exit load" size={16} /></span>},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Rest, pressed, focused. No disabled state: a figure that cannot be explained should not be on screen — it renders locked instead.">
+      <Grid cols={3} itemWidth={240} items={[
+        {label:'rest', node:<InfoDot figure="CAGR 1Y" onOpen={()=>setSheet('CAGR 1Y')} />},
+        {label:'keyboard focus', node:<div style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>Tab to it — the ring is a solid bronze-deep at 2 px (6.59:1) plus the halo. The halo alone measures 1.22:1 and fails 2.4.13.</div>},
+        {label:'a figure with no owner', node:<StatTile label="3Y CAGR" value="——" locked caveat="Locked until the performance source is confirmed." />, note:'Locked, not explained away.'},
+      ]} />
+      {sheet && <div style={{marginTop:12,maxWidth:343}}><ExplainerSheet title={'How is '+sheet+' worked out?'} onClose={()=>setSheet(null)} body={['Compound annual growth of the scheme NAV over the trailing period, net of expenses.','Source and period are stated on the factsheet. Sentinel does not recompute it.']} /></div>}
+    </Block>
+    <Block n={5} title="In context">
+      <Thread before={<SentinelBlock><SentinelText text="Her largest holding has returned 18.4% over three years." /></SentinelBlock>}>
+        <div style={{display:'flex',gap:8}}>
+          <StatTile label="CAGR 1Y" value="12.1%" onExplain={()=>setSheet('CAGR 1Y')} />
+          <StatTile label="Max drawdown 1Y" value="−14.2%" onExplain={()=>setSheet('Max drawdown 1Y')} />
+        </div>
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/actions/InfoDot.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<StatTile label="CAGR 1Y" value="12.1%" onExplain={()=>setSheet('CAGR 1Y')} />}
+        doCaption="ⓘ on the figure, opening a sheet that can hold the formula, the period and the source."
+        dontNode={<div style={{position:'relative',width:230,paddingTop:44}}>
+          <div style={{position:'absolute',top:0,left:0,borderRadius:8,background:'var(--color-surface)',boxShadow:'inset 0 0 0 0.5px var(--color-line), var(--shadow-float)',padding:'8px 10px',maxWidth:200}}>
+            <span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>Compound annual growth rate over…</span>
+          </div>
+          <StatTile label="CAGR 1Y" value="12.1%" />
+        </div>}
+        dontCaption="A tooltip. It truncates the one sentence that mattered, it has nowhere to put the source, and the next tap anywhere destroys it." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'No scale.'},
+        {name:'Sheet open', property:'transform: translateY(100%) → 0', duration:'280 ms', reduced:'Opacity fade, no slide.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

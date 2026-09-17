@@ -1,0 +1,77 @@
+<!-- @dsCard group="Pages" viewport="1000x1180" name="VersionRow" subtitle="Every revision of an artifact in the thread, with a revert on each" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>VersionRow — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { VersionRow, ArtifactCard, SentinelBlock, SentinelText, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-selected','--color-chip','--color-bronze','--color-bronze-deep','--color-line','--color-line-soft','--h-row-md','--radius-12','--border-hairline','--type-row-font','--type-caption-font','--type-label-font'];
+const V = [
+  {id:'v1', name:'V1', summary:'First pass — 6 funds', meta:'Mon 11:04 am', sent:true},
+  {id:'v2', name:'V2', summary:'Swapped the mid-cap for a flexi-cap', meta:'Mon 3:40 pm'},
+  {id:'v3', name:'V3', summary:'Trimmed to 4 funds', meta:'Yesterday 4:12 pm'},
+];
+function App(){
+  const [cur,setCur] = React.useState('v3');
+  const [log,setLog] = React.useState(null);
+  return (
+  <PageShell name="VersionRow" group="Chat" status="shipped" requires={${req}}
+    summary="Every revision of an artifact as a row in the thread, with a revert on each. The mechanism is Wabi's — V1 ↺ · V2 ↺ · V3 ↺ in the conversation itself — and it closes a product hole rather than a visual one: an advisor who has revised a proposal twice has no way back to the version the client actually saw, and 'the one I sent on Tuesday' is the version that matters when the client rings.">
+    <Block n={1} title="Specimen"><Specimen width={343}><VersionRow versions={V} currentId="v3" onRevert={()=>{}} /></Specimen></Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={311} top="row 56 · hairline divider between" bottom="revert: word + glyph, 44 pt target" left="V-chip 34×22, tabular" right="state line: showing now / sent">
+        <VersionRow versions={V} currentId="v3" onRevert={()=>{}} />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'three revisions', node:<VersionRow versions={V} currentId="v3" onRevert={()=>{}} />},
+        {label:'first draft only', node:<VersionRow versions={[V[0]]} currentId="v1" onRevert={()=>{}} />, note:'One row is legitimate — the trail starts at V1.'},
+        {label:'viewing an older version', node:<VersionRow versions={V} currentId="v1" onRevert={()=>{}} />, note:'The sand chip follows what is on screen, not the newest.'},
+        {label:'read-only (no revert)', node:<VersionRow versions={V} currentId="v3" />, note:'For a shared or archived artifact.'},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Per row: current, sent-to-client, historical. No loading state — versions are local history, already in hand.">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'live — press Revert', node:<VersionRow versions={V} currentId={cur} onRevert={(id)=>{setCur(id);setLog(id);}} />, note:log ? 'Reverted to '+log+'. In the product this APPENDS a V4 restoring it — the trail only grows.' : 'Press a Revert and watch the sand chip move.'},
+        {label:'the sent version is historical', node:<VersionRow versions={V} currentId="v3" onRevert={()=>{}} />, note:'V1 says "sent to the client" even though V3 is showing. That is the whole point of the component.'},
+      ]} />
+    </Block>
+    <Block n={5} title="In context" sub="Under the artifact it belongs to.">
+      <Thread before={<SentinelBlock><SentinelText text="Here is the proposal with the mid-cap taken out." /></SentinelBlock>}>
+        <ArtifactCard state="peek" eyebrow="Proposal · R. Sharma" title="4 funds, ₹25 L" provenance="Drafted 14 Sep · revised twice" onToggle={()=>{}} onMenu={()=>{}}>
+          <div style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>Parag Parikh Flexi Cap · HDFC Large Cap · ICICI Corporate Bond · SBI Liquid</div>
+        </ArtifactCard>
+        <VersionRow versions={V} currentId="v3" onRevert={()=>{}} />
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/chat/VersionRow.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{width:300}}><VersionRow versions={V} currentId="v3" onRevert={()=>{}} /></div>}
+        doCaption="Each revision says what changed and which one the client received. Revert appends; it never destroys the trail."
+        dontNode={<div style={{width:300,borderRadius:12,background:'var(--color-surface)',boxShadow:'inset 0 0 0 1px var(--color-line)',padding:'0 12px'}}>
+          {['V1','V2','V3'].map((n,i)=>(<div key={n} style={{display:'flex',minHeight:44,alignItems:'center',justifyContent:'space-between',borderTop:i?'0.5px solid var(--color-line-soft)':'none'}}>
+            <span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>{n}</span>
+            <span style={{font:'var(--type-label-font)',color:'var(--color-status-over-fg)'}}>Delete</span></div>))}
+        </div>}
+        dontCaption="Version numbers with no description and a destructive action. The advisor cannot tell which is the one the client saw, and one tap removes the evidence." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Row press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'No scale.'},
+        {name:'New revision appended', property:'opacity + translateY(8) — ds-rise', duration:'240 ms', reduced:'Opacity only.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

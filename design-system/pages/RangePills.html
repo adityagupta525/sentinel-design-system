@@ -1,0 +1,74 @@
+<!-- @dsCard group="Pages" viewport="1000x1120" name="RangePills" subtitle="The time range for a performance series — the control the chart family had none of" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>RangePills — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { RangePills, ChartLine, ArtifactCard, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-chip','--color-selected','--color-bronze','--color-bronze-deep','--color-line','--h-filter-chip','--radius-full','--space-6','--space-12','--type-label-font','--tracking-pill','--border-1'];
+const pts = (n,base) => Array.from({length:n},(_,i)=>({x:i+1,y:base+Math.round(Math.sin(i/1.7)*4)+i*0.6}));
+function App(){
+  const [r,setR] = React.useState('1Y');
+  return (
+  <PageShell name="RangePills" group="Input" status="shipped" requires={['RangePills','ChartLine','ArtifactCard']}
+    summary="The time range for a performance series. Shopee's fund detail carries 1M 3M YTD 1Y 3Y 5Y ALL under the figure; our chart family had no range control at all, and a number with no period attached is not a number an advisor can defend. Pill's filter tone at 32 px in one row — not tabs, because tabs change what you are looking at and a range changes the window on the same thing.">
+    <Block n={1} title="Specimen"><Specimen width={343}><RangePills value="1Y" onChange={()=>{}} /></Specimen></Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={311} top="chip 32 · 44 pt tap target" bottom="gap 6 · row scrolls when it overflows 343" left="radius full" right="selected: sand + bronze ring">
+        <RangePills value="1Y" onChange={()=>{}} />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'default five', node:<RangePills value="1Y" onChange={()=>{}} />},
+        {label:'seven — the row scrolls', node:<div style={{width:260}}><RangePills ranges={['1M','3M','YTD','1Y','3Y','5Y','ALL']} value="3Y" onChange={()=>{}} /></div>, note:'Horizontal inside vertical is orthogonal, so this is allowed. Vertical inside vertical is not.'},
+        {label:'two — a before/after', node:<RangePills ranges={['This quarter','Last quarter']} value="This quarter" onChange={()=>{}} />, note:'Labels can be words; the geometry does not change.'},
+        {label:'locked', node:<RangePills locked />, note:'The fund performance source is one of the three decisions that are not ours. Inert, and it says why.'},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Selected, unselected, pressed, locked. No loading state — the range is a filter over data already in hand; the chart owns any wait.">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'live — press one', node:<RangePills value={r} onChange={setR} />, note:'Selected: '+r+'. aria-pressed moves with it.'},
+        {label:'locked', node:<RangePills locked lockedNote="Ranges unavailable until Rahul confirms the performance source." />},
+      ]} />
+    </Block>
+    <Block n={5} title="In context" sub="Under the figure, above the chart — Shopee's order, and Monzo's caveat placement.">
+      <Thread before={<SentinelBlock><SentinelText text="Parag Parikh Flexi Cap, her largest holding." /></SentinelBlock>}>
+        <ArtifactCard state="expanded" eyebrow="Parag Parikh Flexi Cap" title="18.4% over three years" provenance="As of 30 Sep · NAV series from the scheme factsheet" onToggle={()=>{}} onMenu={()=>{}}>
+          <div style={{display:'flex',flexDirection:'column',gap:10}}>
+            <p style={{margin:0,font:'var(--type-caption-font)',color:'var(--color-muted)'}}>Past performance does not indicate future returns.</p>
+            <ChartLine series={[{label:'NAV', points:pts(8,12)}]} width={311} run={false} valueFormat={(v)=>v.toFixed(1)+'%'} xFormat={()=>''} />
+            <RangePills value={r} onChange={setR} />
+          </div>
+        </ArtifactCard>
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/actions/RangePills.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<RangePills value="1Y" onChange={()=>{}} />}
+        doCaption="One selected at all times, so the figure above always has a period attached."
+        dontNode={<div style={{display:'flex',gap:0,borderBottom:'1px solid var(--color-line)'}}>
+          {['1M','3M','1Y','3Y','ALL'].map((t,i)=>(<span key={t} style={{padding:'8px 12px',font:'var(--type-label-font)',color:i===2?'var(--color-ink)':'var(--color-muted)',borderBottom:i===2?'2px solid var(--color-bronze-deep)':'none',marginBottom:-1}}>{t}</span>))}
+        </div>}
+        dontCaption="Drawn as tabs. It promises arrow-key navigation between panels and reads as 'five different screens' — but there is one panel and one series; only the window changed." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'No scale; the sand fill still moves.'},
+        {name:'Selection move', property:'background-color', duration:'150 ms', reduced:'Unchanged — colour, not movement.'},
+        {name:'Series redraw on change', property:'stroke-dashoffset (ChartLine)', duration:'600 ms, first reveal only', reduced:'Lands drawn.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

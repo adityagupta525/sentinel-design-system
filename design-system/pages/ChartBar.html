@@ -1,0 +1,70 @@
+<!-- @dsCard group="Pages" viewport="1000x1300" name="ChartBar" subtitle="Vertical for time, horizontal for comparison — ramp by rank, never by category" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ChartBar — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ChartBar, ArtifactCard, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOKENS = ['--color-bronze-deep','--color-bronze','--color-alloc-debt','--color-bubble-edge','--color-status-over-fg','--color-line','--color-muted','--color-ink','--font-ui','--ease'];
+const alloc = [{label:'Equity', value:71},{label:'Debt', value:23},{label:'Cash', value:6}];
+const quarters = [{label:'Q4', value:58},{label:'Q1', value:62},{label:'Q2', value:66},{label:'Q3', value:71}];
+function App() {
+  const [run, setRun] = React.useState(0);
+  return (
+    <PageShell name="ChartBar" group="Data" status="shipped" requires={['ChartBar','ArtifactCard','SentinelBlock']} summary="Vertical for time, horizontal for comparison. Bars take ramp steps by ordinal rank, never by category. 24 px at the thickest, 4 px rounded at the data end, square where it meets the baseline, values direct-labelled in tabular figures.">
+      <Block n={1} title="Specimen" sub="Horizontal: the comparison case.">
+        <Specimen width={343}><ChartBar bars={alloc} width={311} /></Specimen>
+      </Block>
+      <Block n={2} title="Anatomy">
+        <Anatomy width={311} top="row 22 · bar 16 · gap 8" bottom="baseline: square end" left="label 33%" right="value, tabular">
+          <ChartBar bars={alloc} width={311} run={false} />
+        </Anatomy>
+      </Block>
+      <Block n={3} title="Variants">
+        <Grid cols={2} itemWidth={280} items={[
+          {label:'horizontal · comparison', node:<ChartBar bars={alloc} width={260} run={false} />},
+          {label:'vertical · time', node:<ChartBar orientation="vertical" bars={quarters} width={260} run={false} />, note:'Bands and gaps from d3 scaleBand — even rhythm, no per-chart arithmetic.'},
+          {label:'one bar in status tone', node:<ChartBar bars={[{label:'Equity', value:71, tone:'status'},{label:'Debt', value:23},{label:'Cash', value:6}]} width={260} run={false} />, note:'status is one crossed limit and nothing else — never a whole series.'},
+          {label:'peek · 96 pt card', node:<ChartBar density="peek" bars={alloc} width={260} run={false} />, note:'3 rows × 18 + gaps = 62. Four rows is the cap at peek; five does not fit and the answer is the table view, not a smaller font.'},
+        ]} />
+      </Block>
+      <Block n={4} title="States" sub="Assembling and at rest. No disabled state — a bar is not interactive; no empty state — the card owns that copy.">
+        <Grid cols={2} itemWidth={280} items={[
+          {label:'assembling', node:<div key={run}><ChartBar bars={alloc} width={260} /></div>, note:'scaleY from the bottom, 480 ms, staggered 60 ms down the rows.'},
+          {label:'at rest', node:<ChartBar bars={alloc} width={260} run={false} />, note:'run={false} inside a card that has already animated.'},
+        ]} />
+        <div style={{marginTop:10}}><button type="button" onClick={()=>setRun(run+1)} style={{appearance:'none',border:'none',cursor:'pointer',borderRadius:9999,padding:'8px 13px',background:'var(--color-chip)',boxShadow:'0 0 0 1px var(--color-bubble-edge)',fontFamily:'var(--font-ui)',fontWeight:700,fontSize:12,color:'var(--color-bronze-deep)'}}>Replay the assembly</button></div>
+      </Block>
+      <Block n={5} title="In context">
+        <Thread before={<SentinelBlock><SentinelText text="His mix today, largest first." /></SentinelBlock>}>
+          <ArtifactCard state="expanded" eyebrow="Allocation · 30 Sep" title="Equity 71%, against a 60% target" provenance="As of 30 Sep · from his Q3 statement" onToggle={()=>{}} onMenu={()=>{}}>
+            <ChartBar bars={alloc} width={311} run={false} />
+          </ArtifactCard>
+        </Thread>
+      </Block>
+      <Block n={6} title="Tokens"><Tokens names={TOKENS} /></Block>
+      <Block n={7} title="Props"><Props src="../components/data/ChartBar.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<ChartBar bars={alloc} width={260} run={false} />}
+          doCaption="Ranked: the ramp encodes magnitude, so the darkest bar is always the largest and the chart reads in greyscale."
+          dontNode={<ChartBar bars={[{label:'Equity', value:71, tone:'ramp'},{label:'Debt', value:23, tone:'status'},{label:'Cash', value:6, tone:'muted'}]} width={260} run={false} />}
+          dontCaption="A tone per category. Now colour means identity, status means nothing, and a reader has to learn a key that the labels already gave them." />
+      </Block>
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          {name:'Bar grow', property:'transform: scaleY from bottom (scaleX from left when horizontal)', duration:'480 ms, 60 ms stagger', reduced:'Lands full length, opacity fade.'},
+          {name:'Value count-up', property:'text, cubic-out', duration:'600 ms', reduced:'Jumps to the final figure.'},
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

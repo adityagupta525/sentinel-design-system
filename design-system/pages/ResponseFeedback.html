@@ -1,0 +1,69 @@
+<!-- @dsCard group="Pages" viewport="1000x1080" name="ResponseFeedback" subtitle="Marking an answer wrong — the affordance Sentinel had nowhere" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ResponseFeedback — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { ResponseFeedback, SentinelBlock, SentinelText, MessageActions, ArtifactCard } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-muted','--color-bronze-deep','--color-selected','--color-chip','--color-line','--h-filter-chip','--radius-full','--type-caption-font','--type-label-font','--space-6','--space-12'];
+function App(){
+  return (
+  <PageShell name="ResponseFeedback" group="Chat" status="shipped" requires={['ResponseFeedback','SentinelBlock','MessageActions']}
+    summary="Sentinel had no way, anywhere, to mark an answer wrong — in a product whose whole value is the quality of its answers and whose answers an advisor has to defend to a client. The mechanism is Mindvalley's Eve AI (thumbs at the foot of a response), with two changes: no emoji, so the glyphs are drawn on the icon set's 24 px grid at 1.5 px; and confirmation happens on the control that was pressed, because the no-toasts law leaves the acknowledgement nowhere else to go.">
+    <Block n={1} title="Specimen"><Specimen width={343}><ResponseFeedback /></Specimen></Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={240} top="glyph 15 in a 28 box · 44 pt target" bottom="reason chips 32, wrapping" left="gap 12 between thumbs" right="status text, muted">
+        <ResponseFeedback value="down" />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={2} itemWidth={280} items={[
+        {label:'unrated', node:<ResponseFeedback />},
+        {label:'up — one tap and done', node:<ResponseFeedback value="up" />, note:'Confirmation on the control: the thumb fills and the row says Noted.'},
+        {label:'down — asks why', node:<ResponseFeedback value="down" />, note:'Deliberately not symmetrical. A down-vote without a reason is the least useful signal there is.'},
+        {label:'with a destination note', node:<ResponseFeedback note="Goes to the model team with the thread id, not the client data." />},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Unrated, up, down, down-with-reason. No loading and no error state: the signal is fire-and-forget, and a failed send that told the advisor so would cost more attention than the signal is worth.">
+      <Grid cols={2} itemWidth={280} items={[
+        {label:'live — press a thumb', node:<ResponseFeedback onRate={()=>{}} onReason={()=>{}} />, note:'Press down, then pick a reason. Both confirm in place.'},
+        {label:'reason chosen', node:<ResponseFeedback value="down" />, note:'Once a reason lands, the chips retire and the row states it.'},
+      ]} />
+    </Block>
+    <Block n={5} title="In context" sub="At the foot of the LAST assistant message, beside MessageActions — not under every turn.">
+      <Thread>
+        <SentinelBlock><SentinelText text="Two-thirds of the drift is the small-cap rally. You did not cause it, and selling into it has a cost." /></SentinelBlock>
+        <MessageActions role="assistant" />
+        <ResponseFeedback />
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/chat/ResponseFeedback.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<ResponseFeedback value="down" />}
+        doCaption="Down asks what was wrong, with four chips an advisor can hit between meetings. The reason is the whole value of the signal."
+        dontNode={<div style={{width:280}}>
+          <div style={{display:'flex',gap:12,marginBottom:10}}><span style={{fontSize:18}}>👍</span><span style={{fontSize:18}}>👎</span></div>
+          <textarea placeholder="Tell us more about what went wrong…" style={{width:'100%',height:60,borderRadius:8,border:'1px solid var(--color-line)',padding:8,font:'var(--type-caption-font)',boxSizing:'border-box'}} />
+        </div>}
+        dontCaption="Emoji instead of the icon set, and a free-text box that asks an advisor for an essay between meetings. Both get ignored, and the emoji break the palette." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Thumb press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'No scale; the fill still lands.'},
+        {name:'Reason chips appear', property:'opacity', duration:'200 ms', reduced:'Unchanged — opacity only.'},
+        {name:'Confirmation', property:'text swap in place (no toast)', duration:'0 ms', reduced:'Unchanged.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

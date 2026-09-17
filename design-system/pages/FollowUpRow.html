@@ -1,0 +1,74 @@
+<!-- @dsCard group="Pages" viewport="1000x1180" name="FollowUpRow" subtitle="A follow-up that exceeds one line becomes a row, not a pill" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>FollowUpRow — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { FollowUpRow, Pill, ChipRow, SentinelBlock, SentinelText, Composer, StandingDisclosure, IconSparkle } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-line','--color-line-soft','--color-ink','--color-muted','--color-bronze-deep','--h-row-md','--radius-12','--space-14','--border-hairline','--type-body-strong-font','--type-caption-font','--type-eyebrow-font'];
+const ITEMS = [
+  {question:'What about the 34 tiny funds?', note:'They are 4% of the portfolio and 60% of the paperwork'},
+  {question:'What would this look like if we did nothing until April?'},
+  {question:'Which of these would trip her mandate?', note:'Equity ceiling 60%, on file since March'},
+];
+function App(){
+  const [asked,setAsked] = React.useState(null);
+  return (
+  <PageShell name="FollowUpRow" group="Navigation" status="shipped" requires={['FollowUpRow','Pill','ChipRow','Composer']}
+    summary="A follow-up that runs past one line is not a pill — its radius-full ends turn into a lozenge and its 44 pt target becomes two rows of uneven target. Three products solve it as a row: Mindvalley groups full-width rows under a label, GitHub Copilot uses two-line title-and-description cards, Agoda uses a leading icon and a trailing chevron. Drawn here in ListRow's geometry. Pill keeps the short follow-ups; this takes the real questions.">
+    <Block n={1} title="Specimen"><Specimen width={343}><FollowUpRow items={ITEMS.slice(0,2)} onAsk={()=>{}} /></Specimen></Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={311} top="row 56 min, grows with the question" bottom="hairline divider, none after the last" left="eyebrow label above" right="chevron 14, bronze">
+        <FollowUpRow items={ITEMS.slice(0,2)} onAsk={()=>{}} />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'questions only', node:<FollowUpRow items={['What about the 34 tiny funds?','What would this cost in April?']} onAsk={()=>{}} />},
+        {label:'with a note — GitHub\'s two-line card', node:<FollowUpRow items={ITEMS.slice(0,1)} onAsk={()=>{}} />},
+        {label:'with a leading glyph — Agoda', node:<FollowUpRow leading={<IconSparkle size={14} />} items={ITEMS.slice(0,2)} onAsk={()=>{}} />},
+        {label:'the boundary: short enough for pills', node:<ChipRow animate={false}><Pill label="Why 71%?" tone="tertiary" /><Pill label="Show holdings" /></ChipRow>, note:'One line each, so they stay pills. That is the rule, in both directions.'},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Rest, pressed, and empty — which renders nothing at all, because a follow-up group with no questions is not an empty state to design, it is a group that should not be in the thread.">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'live — press a row', node:<FollowUpRow items={ITEMS} onAsk={setAsked} />, note:asked ? 'Sent to the composer: “'+asked+'”' : 'Press one.'},
+        {label:'empty → renders null', node:<div style={{font:'var(--type-caption-font)',color:'var(--color-data-deemph)'}}>(nothing, by design)</div>},
+      ]} />
+    </Block>
+    <Block n={5} title="In context" sub="Inline, under the answer — never in the dock. Rows belong to one message and scroll away with it; the dock is for what persists.">
+      <Thread before={<SentinelBlock><SentinelText text="Two-thirds of the drift is the small-cap rally. You did not cause it, and selling into it has a cost." /></SentinelBlock>}
+        dock={<div style={{display:'flex',flexDirection:'column',gap:8}}>
+          <ChipRow animate={false}><Pill label="Fix it" tone="primary" /><Pill label="Why?" tone="tertiary" /></ChipRow>
+          <Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />
+          <StandingDisclosure />
+        </div>}>
+        <FollowUpRow items={ITEMS} onAsk={()=>{}} />
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/lists/FollowUpRow.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{width:300}}><FollowUpRow items={ITEMS.slice(0,1)} onAsk={()=>{}} /></div>}
+        doCaption="The long question gets a row: one target, one rag, room for the note that makes it worth asking."
+        dontNode={<div style={{width:300,display:'flex'}}><span style={{display:'inline-flex',alignItems:'center',minHeight:36,padding:'6px 13px',borderRadius:9999,background:'var(--color-chip)',boxShadow:'0 0 0 1px var(--color-bubble-edge)',font:'var(--type-label-font)',color:'var(--color-bronze-deep)',textWrap:'pretty'}}>What about the 34 tiny funds that are 4% of the portfolio?</span></div>}
+        dontCaption="The same question forced into a pill. It wraps, so the ends stop reading as a pill, and the 44 pt target becomes two rows of uneven target." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Row press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'No scale.'},
+        {name:'Group entrance', property:'opacity + translateY(8) — ds-rise', duration:'240 ms, 60 ms stagger', reduced:'Opacity only.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

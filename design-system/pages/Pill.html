@@ -1,0 +1,78 @@
+<!-- @dsCard group="Pages" viewport="1000x1180" name="Pill" subtitle="The one tappable chip — two sizes, six tones, and the loading state three components wait on" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pill — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Pill, Badge, SentinelBlock, SentinelText, ChipRow, Composer, StandingDisclosure, DarkButton } = window.SentinelDesignSystem_0682a2;
+const TOKENS = ['--color-chip','--color-bubble','--color-bubble-edge','--color-selected','--color-bronze','--color-bronze-deep','--color-ink','--color-line','--tint-bronze-dashed','--font-ui','--dur-press','--ease'];
+function App() {
+  const [busy, setBusy] = React.useState(false);
+  return (
+    <PageShell name="Pill" group="Input" status="shipped" requires={['Pill','Badge','SentinelBlock','ChipRow','Composer','StandingDisclosure','DarkButton']} summary="The one tappable rounded-full chip. Visual height 36 (md) or 32 (sm); the tap target is always ≥44px through an invisible vertical extension, so a caller cannot get it wrong. If it is not tappable it is a Badge.">
+      <Block n={1} title="Specimen" sub="Alone, at real size, on the product background.">
+        <Specimen width={343}><div style={{display:'flex',justifyContent:'center'}}><Pill label="Use her KYC age — 38" tone="smart" /></div></Specimen>
+      </Block>
+      <Block n={2} title="Anatomy" sub="Dimensions annotated outside the frame.">
+        <Anatomy width={196} top="36 visual height · 44 tap target" bottom="13 px side padding · 6 px gap" left="radius: full" right="12 / 700 label">
+          <div style={{display:'flex'}}><Pill label="Use her KYC age — 38" tone="smart" /></div>
+        </Anatomy>
+      </Block>
+      <Block n={3} title="Variants" sub="Six tones × two sizes. The tone carries the job, never decoration.">
+        <Grid cols={3} items={[
+          {label:'outline · md', node:<Pill label="Show the 18 holdings" />, note:'The default. Chips in the thread and the Dock.'},
+          {label:'smart · md', node:<Pill label="Use her KYC age — 38" tone="smart" />, note:'Peach: prefilled from a record.'},
+          {label:'tertiary · md', node:<Pill label="Why a 25% cap?" tone="tertiary" />, note:'Dashed, "?" — asks rather than answers.'},
+          {label:'muted · md', node:<Pill label="She isn't sure yet" tone="muted" />, note:'The escape hatch.'},
+          {label:'primary · md', node:<Pill label="Let's go" tone="primary" />, note:'Sand fill, ink label.'},
+          {label:'filter · sm', node:<Pill label="All 43" size="sm" tone="filter" />, note:'32px, inside a card.'},
+        ]} />
+      </Block>
+      <Block n={4} title="States" sub="Default, pressed, selected, loading, disabled. There is no error state — a pill does not hold a value that can be wrong.">
+        <Grid cols={3} items={[
+          {label:'default', node:<Pill label="Download PDF" />},
+          {label:'pressed', node:<div style={{transform:'scale(0.98)',transformOrigin:'left'}}><Pill label="Download PDF" /></div>, note:'scale 0.98 over 150 ms.'},
+          {label:'selected', node:<Pill label="All 43" size="sm" tone="filter" selected />, note:'Sand fill, bronze ring, check.'},
+          {label:'loading', node:<Pill label="Download PDF" loading />, note:'Label holds, width holds, press inert. Working — not unavailable.'},
+          {label:'disabled', node:<Pill label="Download PDF" disabled />, note:'40% opacity. Unavailable.'},
+          {label:'live', node:<Pill label={busy ? 'Preparing' : 'Download PDF'} loading={busy} onClick={()=>{setBusy(true);setTimeout(()=>setBusy(false),2200);}} />, note:'Tap it.'},
+        ]} />
+      </Block>
+      <Block n={5} title="In context" sub="A 375 pt thread fragment: the chip row above a CTA and the composer.">
+        <Thread before={<SentinelBlock><SentinelText text="Two-thirds of the drift is the small-cap rally. You did not cause it, and selling into it has a cost." /></SentinelBlock>}
+          dock={<div style={{display:'flex',flexDirection:'column',gap:8}}>
+            <ChipRow animate={false}><Pill label="Why is 71% a problem?" tone="tertiary" /><Pill label="Show the 18 holdings" /></ChipRow>
+            <DarkButton label="Rebalance to his mandate" />
+            <Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />
+            <StandingDisclosure />
+          </div>}>
+          <div style={{display:'flex',gap:8}}><Pill label="Download PDF" loading /></div>
+        </Thread>
+      </Block>
+      <Block n={6} title="Tokens"><Tokens names={TOKENS} /></Block>
+      <Block n={7} title="Props"><Props src="../components/actions/Pill.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<Pill label="Download PDF" loading />}
+          doCaption="Keep the label while it works. The width never changes, so the target under the finger never moves."
+          dontNode={<div style={{display:'inline-flex',height:36,width:44,alignItems:'center',justifyContent:'center',borderRadius:9999,background:'var(--color-chip)',boxShadow:'0 0 0 1px var(--color-bubble-edge)'}}><span style={{width:13,height:13,borderRadius:9999,boxShadow:'inset 0 0 0 2px var(--color-bronze)'}} /></div>}
+          dontCaption="Never collapse to a bare spinner. The advisor loses what they pressed, and the row reflows around it." />
+      </Block>
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          {name:'Press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'No scale; the press tint alone.'},
+          {name:'Loading spinner', property:'transform: rotate', duration:'900 ms, looping', reduced:'Holds still; the label and aria-busy still say it is working.'},
+          {name:'Chip row entrance', property:'opacity + translateY(8)', duration:'240 ms, 60 ms stagger', reduced:'Opacity only.'},
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

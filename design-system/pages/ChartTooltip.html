@@ -1,0 +1,88 @@
+<!-- @dsCard group="Pages" viewport="1000x1120" name="ChartTooltip" subtitle="Tap a single mark — above it, 44 pt target, leader line instead of a tail" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ChartTooltip — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ChartTooltip, ChartBar, ArtifactCard, SentinelBlock, SentinelText, Pill } = window.SentinelDesignSystem_0682a2;
+const TOKENS = ['--color-surface','--color-line','--shadow-float','--color-muted','--color-ink','--color-data-deemph','--font-ui','--ease'];
+function Mark({ anchor = 'above', open = true, label = 'Small-cap rally', value = '+6.1 pts', meta }) {
+  const [on, setOn] = React.useState(open);
+  return (
+    <div style={{position:'relative',display:'inline-flex',width:44,height:44,alignItems:'center',justifyContent:'center'}}>
+      <button type="button" onClick={()=>setOn(!on)} style={{appearance:'none',border:'none',background:'transparent',cursor:'pointer',width:44,height:44,borderRadius:9999,display:'flex',alignItems:'center',justifyContent:'center'}}>
+        <span style={{width:10,height:10,borderRadius:9999,background:'var(--color-bronze)'}} />
+      </button>
+      {on && <ChartTooltip anchor={anchor} label={label} value={value} meta={meta} />}
+    </div>
+  );
+}
+function App() {
+  return (
+    <PageShell name="ChartTooltip" group="Data" status="shipped" requires={['ChartTooltip','ChartBar','ArtifactCard','SentinelBlock']} summary="For tapping a single mark — hover does not exist at 375 pt, and scrubbing is ChartReadout. Surface fill, radius 8, padding 8/10, hairline as an inset half-pixel line: the HeroNumberCard idiom, so it belongs. No arrow or tail; a 1 px leader line runs to the mark, because a tail clips at the plot's edge and a clipped tail just looks broken.">
+      <Block n={1} title="Specimen">
+        <Specimen width={343}><div style={{display:'flex',justifyContent:'center',paddingTop:76}}><Mark /></div></Specimen>
+      </Block>
+      <Block n={2} title="Anatomy">
+        <Anatomy width={200} top="radius 8 · padding 8 / 10" bottom="leader line 1 px · target 44 pt" left="label 11 muted" right="value 13 ink, tabular">
+          <div style={{display:'flex',justifyContent:'center',paddingTop:72}}><Mark meta="As of 30 Sep · Q3 statement" /></div>
+        </Anatomy>
+      </Block>
+      <Block n={3} title="Variants">
+        <Grid cols={3} itemWidth={220} items={[
+          {label:'above (default)', node:<div style={{paddingTop:76}}><Mark /></div>},
+          {label:'below — near the top edge', node:<div style={{paddingBottom:76}}><Mark anchor="below" /></div>, note:'Flip rather than clip.'},
+          {label:'with provenance', node:<div style={{paddingTop:92}}><Mark meta="As of 30 Sep · Q3 statement" /></div>, note:'The third line is where the figure came from.'},
+        ]} />
+      </Block>
+      <Block n={4} title="States" sub="Tapped and dismissed. That is the whole set — it has no hover, no loading and no disabled state.">
+        <Grid cols={2} itemWidth={220} items={[
+          {label:'tapped', node:<div style={{paddingTop:76}}><Mark /></div>},
+          {label:'dismissed — the mark alone', node:<div style={{paddingTop:76}}><Mark open={false} /></div>, note:'Next tap anywhere dismisses it.'},
+        ]} />
+      </Block>
+      <Block n={5} title="In context" sub="On a bar chart inside a card, with the table view in the ⋯ — the escape hatch that keeps every value reachable as text.">
+        <Thread before={<SentinelBlock><SentinelText text="What moved his equity share this quarter. Tap a bar." /></SentinelBlock>}>
+          <ArtifactCard state="expanded" eyebrow="Drift attribution · Q2 → Q3" title="+9 points, two-thirds of it the market" provenance="As of 30 Sep · from his Q3 statement" onToggle={()=>{}} onMenu={()=>{}}>
+            <div style={{position:'relative'}}>
+              <ChartBar bars={[{label:'Small-cap rally', value:6.1},{label:'July top-up', value:2.0},{label:'Crept up-cap', value:0.9}]} width={311} valueFormat={(v)=>'+'+v.toFixed(1)} run={false} />
+              <div style={{position:'absolute',left:150,top:-8}}><Mark label="Small-cap rally" value="+6.1 pts" meta="As of 30 Sep · Q3 statement" /></div>
+            </div>
+          </ArtifactCard>
+        </Thread>
+      </Block>
+      <Block n={6} title="Tokens"><Tokens names={TOKENS} /></Block>
+      <Block n={7} title="Props"><Props src="../components/data/ChartTooltip.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{paddingTop:76,display:'flex',justifyContent:'center'}}><Mark /></div>}
+          doCaption="Above the mark, leader line, 44 pt of target around a 10 px dot."
+          dontNode={<div style={{paddingTop:60,display:'flex',justifyContent:'center'}}>
+            <div style={{position:'relative'}}>
+              <span style={{display:'block',width:10,height:10,borderRadius:9999,background:'var(--color-bronze)'}} />
+              <div style={{position:'absolute',left:-70,bottom:18,width:150,borderRadius:8,background:'var(--color-surface)',boxShadow:'inset 0 0 0 0.5px var(--color-line), var(--shadow-float)',padding:'8px 10px'}}>
+                <p style={{margin:0,fontFamily:'var(--font-ui)',fontWeight:500,fontSize:11,color:'var(--color-muted)'}}>Small-cap rally</p>
+                <p style={{margin:0,fontFamily:'var(--font-ui)',fontWeight:700,fontSize:13,color:'var(--color-ink)'}}>+6.1 pts</p>
+                <span style={{position:'absolute',left:64,top:'100%',width:0,height:0,borderLeft:'6px solid transparent',borderRight:'6px solid transparent',borderTop:'6px solid var(--color-surface)',clipPath:'inset(0 0 0 60%)'}} />
+              </div>
+            </div>
+          </div>}
+          dontCaption="A tail, and a 10 px tap target. The tail is clipped at the plot edge — which is what a tail does there — and the mark is a third of the 44 pt minimum." />
+      </Block>
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          {name:'Tooltip appear', property:'opacity + translateY(4)', duration:'160 ms (micro budget)', reduced:'Opacity only, no offset.'},
+          {name:'Dismiss', property:'unmount', duration:'0 ms', reduced:'Unchanged.'},
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

@@ -1,0 +1,93 @@
+<!-- @dsCard group="Pages" viewport="1000x900" name="00 Index" subtitle="Every component: group, status, its page, and the tokens it consumes — generated from the tree, not from a list" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>00 Index — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>html,body{margin:0;background:var(--color-canvas);font-family:var(--font-ui)}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head>
+<body><div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+const F = 'var(--font-ui)';
+const TONE = { shipped: 'ok', building: 'under', specified: 'over' };
+const ORDER = ['Foundations', 'Chat', 'Data', 'Input', 'Navigation'];
+function Chip({ status, children }) {
+  const t = TONE[status] || 'under';
+  return <span style={{ display:'inline-flex', alignItems:'center', borderRadius:9999, padding:'3px 8px', background:`var(--color-status-${t}-bg)`, color:`var(--color-status-${t}-fg)`, fontFamily:F, fontWeight:700, fontSize:9.5, textTransform:'uppercase', letterSpacing:'0.04em', whiteSpace:'nowrap' }}>{children || status}</span>;
+}
+function App() {
+  const [data, setData] = useState(null);
+  const [err, setErr] = useState(null);
+  const [checked, setChecked] = useState({});
+  const [q, setQ] = useState('');
+  const [only, setOnly] = useState('all');
+  useEffect(() => {
+    fetch('./_index.json').then(r => r.ok ? r.json() : Promise.reject(r.status)).then(setData).catch(e => setErr(String(e)));
+  }, []);
+  /* The index claims a page exists only after asking for it. A row whose page has gone reads PAGE MISSING. */
+  useEffect(() => {
+    if (!data) return;
+    data.rows.filter(r => r.page).forEach(r => {
+      fetch('./' + r.page, { method: 'GET' }).then(res => setChecked(c => ({ ...c, [r.name]: res.ok }))).catch(() => setChecked(c => ({ ...c, [r.name]: false })));
+    });
+  }, [data]);
+  if (err) return <p style={{ padding:24, fontFamily:F, color:'var(--color-status-over-fg)' }}>Could not read _index.json ({err}). Regenerate it with scripts/build-index.js.</p>;
+  if (!data) return <p style={{ padding:24, fontFamily:F, color:'var(--color-muted)' }}>Reading the tree…</p>;
+  const rows = data.rows.filter(r => (only === 'all' || r.status === only) && (!q || r.name.toLowerCase().includes(q.toLowerCase())));
+  const th = { textAlign:'left', padding:'8px 10px', fontFamily:F, fontWeight:700, fontSize:9.5, letterSpacing:'0.08em', textTransform:'uppercase', color:'var(--color-muted)', borderBottom:'1px solid var(--color-line)', whiteSpace:'nowrap' };
+  const td = { padding:'9px 10px', fontFamily:F, fontWeight:500, fontSize:12, lineHeight:'17px', color:'var(--color-ink)', borderBottom:'0.5px solid var(--color-line-soft)', verticalAlign:'top' };
+  const filterPill = (key, label) => (
+    <button key={key} type="button" onClick={() => setOnly(key)} style={{ appearance:'none', border:'none', cursor:'pointer', borderRadius:9999, height:32, padding:'0 12px', background: only===key ? 'var(--color-selected)' : 'var(--color-chip)', boxShadow: only===key ? '0 0 0 1px var(--color-bronze)' : '0 0 0 1px var(--color-line)', fontFamily:F, fontWeight:700, fontSize:12, color: only===key ? 'var(--color-ink)' : 'var(--color-bronze-deep)' }}>{label}</button>
+  );
+  return (
+    <div style={{ maxWidth:1000, margin:'0 auto', padding:'28px 24px 64px', display:'flex', flexDirection:'column', gap:20 }}>
+      <header style={{ display:'flex', flexDirection:'column', gap:10 }}>
+        <h1 style={{ margin:0, fontFamily:F, fontWeight:600, fontSize:26, lineHeight:'32px', color:'var(--color-ink)' }}>00 Index</h1>
+        <p style={{ margin:0, maxWidth:680, fontFamily:F, fontWeight:400, fontSize:13, lineHeight:'19px', color:'var(--color-ink-soft)' }}>
+          Every component in the system: its group, its status, the page it lives on, and the tokens it consumes.
+          <strong> A component with no page is not in the system</strong> — not shipped, not half-shipped, not in it. So <code>shipped</code> here means source <em>and</em> page; <code>building</code> means the source compiles into the bundle but its page has not been drawn yet; <code>specified</code> means it exists only in a document.
+        </p>
+        <p style={{ margin:0, maxWidth:680, fontFamily:F, fontWeight:400, fontSize:11.5, lineHeight:'17px', color:'var(--color-muted)' }}>
+          Generated {data.generated} by <code>{data.generator}</code> from the tree: a row exists because <code>&lt;Name&gt;.jsx</code> and <code>&lt;Name&gt;.d.ts</code> both exist on disk, and the token column is the <code>var(--…)</code> names read out of the source <strong>and checked against the names <code>tokens/</code> defines</strong> — a component-local custom property is reported as a local, never as a token. Page links are fetched on load, so a row whose page has gone says so.
+        </p>
+      </header>
+      <div style={{ display:'flex', flexWrap:'wrap', gap:10, alignItems:'center' }}>
+        {filterPill('all', `All ${data.rows.length}`)}
+        {['shipped','building','specified'].map(s => filterPill(s, `${s} ${data.counts[s] || 0}`))}
+        <input value={q} onChange={e => setQ(e.target.value)} placeholder="Find a component" style={{ height:32, minWidth:180, borderRadius:20, border:'1px solid var(--color-line)', background:'var(--color-surface)', padding:'0 14px', outline:'none', fontFamily:F, fontWeight:500, fontSize:12, color:'var(--color-ink)' }} />
+      </div>
+      <div style={{ borderRadius:12, background:'var(--color-surface)', boxShadow:'inset 0 0 0 1px var(--color-line)', overflowX:'auto' }}>
+        <table style={{ width:'100%', borderCollapse:'collapse' }}>
+          <thead><tr><th style={th}>Component</th><th style={th}>Group</th><th style={th}>Status</th><th style={th}>Page</th><th style={th}>Tokens</th></tr></thead>
+          <tbody>
+            {ORDER.filter(g => rows.some(r => r.group === g)).map(g => (
+              <React.Fragment key={g}>
+                <tr><td colSpan={5} style={{ ...td, background:'var(--color-chip)', fontWeight:700, fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', color:'var(--color-muted)' }}>{g} · {rows.filter(r => r.group === g).length}</td></tr>
+                {rows.filter(r => r.group === g).map(r => (
+                  <tr key={r.name}>
+                    <td style={{ ...td, fontWeight:600 }}>{r.page ? <a href={'./' + r.page} style={{ textDecoration:'none' }}>{r.name}</a> : r.name}</td>
+                    <td style={{ ...td, color:'var(--color-muted)' }}>{r.group}</td>
+                    <td style={td}><Chip status={checked[r.name] === false ? 'specified' : r.status}>{checked[r.name] === false ? 'page missing' : r.status}</Chip></td>
+                    <td style={{ ...td, color:'var(--color-muted)', fontSize:11.5 }}>{r.page ? <a href={'./' + r.page}>{r.page}</a> : r.spec ? r.spec : <span title={r.file || ''}>— group card only</span>}</td>
+                    <td style={{ ...td, color:'var(--color-muted)', fontSize:11, maxWidth:340 }}>
+                      {r.tokens.length ? <span title={r.tokens.join(' · ')}>{r.tokens.length} · {r.tokens.slice(0,3).join(' · ')}{r.tokens.length > 3 ? ' …' : ''}</span> : '—'}
+                      {r.locals && r.locals.length ? <span title={'component-local custom properties, not tokens: ' + r.locals.join(' · ')} style={{ color:'var(--color-data-deemph)' }}> · +{r.locals.length} local</span> : null}
+                    </td>
+                  </tr>
+                ))}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <section style={{ display:'flex', flexDirection:'column', gap:8, borderRadius:12, background:'var(--color-surface)', boxShadow:'inset 0 0 0 1px var(--color-line)', padding:16 }}>
+        <p style={{ margin:0, fontFamily:F, fontWeight:700, fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', color:'var(--color-muted)' }}>Backlog reconciliation</p>
+        <p style={{ margin:0, maxWidth:680, fontFamily:F, fontWeight:400, fontSize:12, lineHeight:'18px', color:'var(--color-ink-soft)' }}>
+          v10 counted <strong>sixteen</strong> components specified and not built. Three were built in the v7 pass and had pages missing rather than components — <code>List</code> / <code>ListRow</code>, <code>SearchField</code>, <code>ClientChip</code>. Seven were built in this pass: <code>Pill</code>'s loading state and the six charts. That leaves the <strong>six</strong> rows above reading <code>specified</code>, each citing the document it lives in. The index reports what is on disk, so it shows six rather than sixteen — and the sixty-five <code>building</code> rows are the same debt in its other form: real components whose pages have not been drawn.
+        </p>
+      </section>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>

@@ -1,0 +1,73 @@
+<!-- @dsCard group="Pages" viewport="1000x980" name="DownloadAction" subtitle="Download as one decision in one place — a deliberately thin Pill wrapper" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DownloadAction — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { DownloadAction, Pill, ArtifactCard, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-chip','--color-selected','--color-bubble-edge','--color-bronze','--color-bronze-deep','--h-chip','--radius-full','--type-label-font','--dur-press','--ease'];
+const slow = () => new Promise(r=>setTimeout(r,1600));
+function App(){
+  return (
+  <PageShell name="DownloadAction" group="Input" status="shipped" requires={['DownloadAction','Pill','ArtifactCard']}
+    summary="A deliberately thin Pill wrapper, so that download is one decision in one place rather than a loading flag wired by hand at every call site. It was blocked on Pill gaining loading; that landed in v10, so this is four lines of real behaviour and nothing else.">
+    <Block n={1} title="Specimen"><Specimen width={343}><div style={{display:'flex',justifyContent:'center'}}><DownloadAction format="PDF" onDownload={slow} /></div></Specimen></Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={160} top="36 visual · 44 tap target" bottom="width never changes between states" left="radius full" right="Pill's tones, unchanged">
+        <div style={{display:'flex'}}><DownloadAction format="PDF" onDownload={slow} /></div>
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={3} itemWidth={220} items={[
+        {label:'PDF', node:<DownloadAction format="PDF" onDownload={slow} />},
+        {label:'PPTX, custom label', node:<DownloadAction format="PPTX" label="Download the deck" onDownload={slow} />},
+        {label:'small, in a card', node:<DownloadAction format="CSV" size="sm" onDownload={slow} />},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Idle, working, saved, failed, disabled. Press one and watch it resolve in place — there is no toast to catch it.">
+      <Grid cols={3} itemWidth={220} items={[
+        {label:'live · succeeds', node:<DownloadAction format="PDF" onDownload={slow} />, note:'Label holds, then reads Saved to Files for two seconds.'},
+        {label:'live · fails', node:<DownloadAction format="PDF" onDownload={async()=>{await slow(); throw new Error('no');}} />, note:'Reads Try again — what to do next, not what broke.'},
+        {label:'disabled', node:<DownloadAction format="PDF" disabled />, note:'Unavailable, not working. 40% opacity.'},
+      ]} />
+    </Block>
+    <Block n={5} title="In context" sub="On an artifact's foot, where an export belongs.">
+      <Thread before={<SentinelBlock><SentinelText text="The proposal is ready. It states the fees and the exit load on page 2." /></SentinelBlock>}>
+        <ArtifactCard state="peek" eyebrow="Proposal · R. Sharma" title="4 funds, ₹25 L" provenance="Drafted 14 Sep · fees from the scheme documents" onToggle={()=>{}} onMenu={()=>{}}>
+          <div style={{display:'flex',gap:8,alignItems:'center'}}><DownloadAction format="PDF" onDownload={slow} /><Pill label="Send on WhatsApp" size="md" tone="outline" /></div>
+        </ArtifactCard>
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/actions/DownloadAction.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<DownloadAction format="PDF" onDownload={slow} />}
+        doCaption="Confirmation lands on the control that was pressed. The advisor's eye is already there."
+        dontNode={<div style={{width:280,position:'relative'}}>
+          <Pill label="Download PDF" />
+          <div style={{marginTop:12,borderRadius:8,background:'var(--color-ink)',padding:'10px 12px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <span style={{font:'var(--type-caption-font)',color:'var(--color-surface)'}}>Your download is ready</span>
+            <span style={{font:'var(--type-label-font)',color:'var(--color-bronze)'}}>✕</span>
+          </div>
+        </div>}
+        dontCaption="A toast. It appears away from the press, in a colour this palette does not own, and it expires before an advisor between meetings has looked up." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Press', property:'transform: scale(0.98)', duration:'150 ms', reduced:'No scale.'},
+        {name:'Working spinner', property:'transform: rotate', duration:'900 ms, looping', reduced:'Holds still; aria-busy still says it is working.'},
+        {name:'Saved → idle', property:'label + tone swap, no transition', duration:'2000 ms dwell', reduced:'Unchanged.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

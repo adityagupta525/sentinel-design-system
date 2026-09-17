@@ -1,0 +1,71 @@
+<!-- @dsCard group="Pages" viewport="1000x1120" name="ChartLegend" subtitle="Only where a direct label cannot go — ranked, left-aligned, ink labels" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ChartLegend — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ChartLegend, ChartShare, ChartLine, ArtifactCard, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOKENS = ['--color-bronze-deep','--color-bronze','--color-alloc-debt','--color-bubble-edge','--color-ink','--color-muted','--font-ui'];
+const items = [{label:'Equity', value:'71%', amount:71},{label:'Debt', value:'23%', amount:23},{label:'Cash', value:'6%', amount:6}];
+const overlap = [{label:'Parag Parikh Flexi ↔ HDFC Large Cap', value:'62%', amount:62},{label:'Parag Parikh Flexi ↔ Motilal Midcap', value:'31%', amount:31},{label:'HDFC Large Cap ↔ Motilal Midcap', value:'18%', amount:18}];
+function App() {
+  return (
+    <PageShell name="ChartLegend" group="Data" status="shipped" requires={['ChartLegend','ChartShare','ArtifactCard','SentinelBlock']} summary="Direct labels first: a legend is what we use when direct labelling is impossible. One series never has one, two series are end-labelled, so its real homes are ChartShare and the overlap bars. Ordered by value descending, always — the legend then doubles as the ranking and reads with no colour at all.">
+      <Block n={1} title="Specimen">
+        <Specimen width={343}><ChartLegend items={items} /></Specimen>
+      </Block>
+      <Block n={2} title="Anatomy">
+        <Anatomy width={311} top="dot 8 · gap 6 · row 16" bottom="left edge aligns to the plot's left edge" left="label: ink, wraps" right="value: muted, tabular">
+          <ChartLegend items={items} />
+        </Anatomy>
+      </Block>
+      <Block n={3} title="Variants">
+        <Grid cols={2} itemWidth={280} items={[
+          {label:'stacked (default)', node:<ChartLegend items={items} />},
+          {label:'inline', node:<ChartLegend layout="inline" items={items} />, note:'Only when the row is short and the card is wide.'},
+          {label:'long labels wrap', node:<ChartLegend items={overlap} />, note:'Wrapping, never truncation — a truncated fund name is two funds.'},
+          {label:'fixed order', node:<ChartLegend sort={false} items={[{label:'Cash', value:'6%'},{label:'Debt', value:'23%'},{label:'Equity', value:'71%'}]} />, note:'sort={false} is for a deliberately fixed order only. The default is descending.'},
+        ]} />
+      </Block>
+      <Block n={4} title="States" sub="A legend has one state. It is not interactive, not selectable, and never a filter — that is a Pill.">
+        <Grid cols={2} itemWidth={280} items={[
+          {label:'default', node:<ChartLegend items={items} />},
+          {label:'with no colour at all', node:<div style={{filter:'grayscale(1)'}}><ChartLegend items={items} /></div>, note:'The ranking still carries it. That is the test.'},
+        ]} />
+      </Block>
+      <Block n={5} title="In context" sub="Under a ChartShare, aligned to the plot's left edge.">
+        <Thread before={<SentinelBlock><SentinelText text="Where his money sits today." /></SentinelBlock>}>
+          <ArtifactCard state="expanded" eyebrow="Allocation · 30 Sep" title="Equity 71%, debt 23%, cash 6%" provenance="As of 30 Sep · from his Q3 statement" onToggle={()=>{}} onMenu={()=>{}}>
+            <ChartShare segments={[{label:'Equity', value:71},{label:'Debt', value:23},{label:'Cash', value:6}]} run={false} />
+          </ArtifactCard>
+        </Thread>
+      </Block>
+      <Block n={6} title="Tokens"><Tokens names={TOKENS} /></Block>
+      <Block n={7} title="Props"><Props src="../components/data/ChartLegend.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<ChartLegend items={items} />}
+          doCaption="Dot carries identity, label stays ink, rows ranked. Left-aligned to the plot."
+          dontNode={<div style={{display:'flex',justifyContent:'center',gap:14,flexWrap:'wrap'}}>
+            {[['Cash','var(--color-alloc-debt)'],['Equity','var(--color-bronze-deep)'],['Debt','var(--color-bronze)']].map(([l,c])=>(
+              <span key={l} style={{display:'inline-flex',alignItems:'center',gap:6}}><span style={{width:8,height:8,borderRadius:9999,background:c}} /><span style={{fontFamily:'var(--font-ui)',fontWeight:700,fontSize:11.5,color:c}}>{l}</span></span>
+            ))}
+          </div>}
+          dontCaption="Centred, alphabetical, and the label wearing the data colour. The ranking is gone, the rag is gone, and two of those labels fail contrast as text." />
+      </Block>
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          {name:'Legend entrance', property:'opacity', duration:'240 ms, after the bar assembles', reduced:'Unchanged — opacity only already.'},
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

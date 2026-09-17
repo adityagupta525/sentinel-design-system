@@ -1,0 +1,74 @@
+<!-- @dsCard group="Pages" viewport="1000x1280" name="InfoCard" subtitle="Fund detail — figure, chart, range row, a stat pair where each figure carries its ⓘ" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>InfoCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { InfoCard, InfoDot, RangePills, SentinelBlock, SentinelText, ExplainerSheet, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-canvas','--color-bronze-deep','--color-data-deemph','--color-line','--color-muted','--radius-16','--radius-12','--type-total-font','--type-figure-font','--type-caption-font','--space-14','--border-1'];
+const pts = (n,base) => Array.from({length:n},(_,i)=>({x:i+1,y:base+Math.round(Math.sin(i/1.6)*3)+i*0.8}));
+const STATS = [{label:'CAGR 1Y', value:'12.1%'},{label:'Max drawdown 1Y', value:'−14.2%'}];
+function App(){
+  const [r,setR] = React.useState('3Y');
+  const [sheet,setSheet] = React.useState(null);
+  return (
+  <PageShell name="InfoCard" group="Data" status="shipped" requires={['InfoCard','InfoDot','RangePills']}
+    summary="Fund detail, with the anatomy our stat tiles were missing: figure → chart → range row → a stat pair where each figure carries its own ⓘ. That is Shopee's fund-detail shape, and reading it surfaced both of the gaps it closes — we had no range control at all, and no way for a figure to explain itself when we already had the sheet that would do it.">
+    <Block n={1} title="Specimen">
+      <Specimen width={343}><InfoCard name="Parag Parikh Flexi Cap" meta="Direct · Growth · ₹4.1 L held" figure="18.4%" figureNote="3Y CAGR"
+        caveat="Past performance does not indicate future returns." series={[{label:'NAV', points:pts(8,12)}]} range={r} onRange={setR} stats={STATS} onExplain={setSheet} /></Specimen>
+    </Block>
+    <Block n={2} title="Anatomy">
+      <Anatomy width={311} top="figure in the display face, tabular" bottom="stat pair: 2 columns, ⓘ on each" left="caveat ABOVE the chart" right="range row under it">
+        <InfoCard name="Parag Parikh Flexi Cap" meta="Direct · Growth" figure="18.4%" figureNote="3Y CAGR" caveat="Past performance does not indicate future returns." series={[{label:'NAV', points:pts(8,12)}]} range="3Y" stats={STATS} />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'full', node:<InfoCard name="Parag Parikh Flexi Cap" meta="Direct · Growth" figure="18.4%" figureNote="3Y CAGR" series={[{label:'NAV', points:pts(8,12)}]} range="3Y" stats={STATS} onExplain={setSheet} />},
+        {label:'no chart — holdings detail', node:<InfoCard name="ICICI Corporate Bond" meta="Direct · Growth · ₹2.6 L held" figure="7.2%" figureNote="1Y return" stats={[{label:'Modified duration', value:'2.1 yr'},{label:'Credit quality', value:'AAA 94%'}]} onExplain={setSheet} />},
+        {label:'locked — performance source unconfirmed', node:<InfoCard name="Motilal Midcap" meta="Direct · Growth" stats={STATS} locked />, note:'One of the three decisions that are not ours. It shows —— and says why, rather than drawing a plausible line.'},
+        {label:'one locked stat', node:<InfoCard name="HDFC Large Cap" meta="Direct · Growth" figure="14.9%" figureNote="3Y CAGR" series={[{label:'NAV', points:pts(8,10)}]} range="3Y" stats={[STATS[0], {label:'Max drawdown 1Y', value:'—', locked:true}]} onExplain={setSheet} />, note:'The card works; the unattributable figure alone abstains.'},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Rest, range changed, a figure explained, locked. No loading state on the card — the chart owns its own reveal.">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'live — press a range, then an ⓘ', node:<InfoCard name="Parag Parikh Flexi Cap" meta="Direct · Growth" figure="18.4%" figureNote={r+' CAGR'} series={[{label:'NAV', points:pts(8,12)}]} range={r} onRange={setR} stats={STATS} onExplain={setSheet} />, note:sheet ? 'Opened the explainer for: '+sheet : 'Range: '+r},
+        {label:'the ⓘ on its own', node:<span style={{display:'flex',alignItems:'center',gap:6,font:'var(--type-caption-font)',color:'var(--color-muted)'}}>CAGR 1Y <InfoDot figure="CAGR 1Y" onOpen={()=>setSheet('CAGR 1Y')} /></span>, note:'44 pt target around a 14 px glyph. The label names the figure, not the icon.'},
+      ]} />
+      {sheet && <div style={{marginTop:12,maxWidth:343}}><ExplainerSheet title={'How is '+sheet+' worked out?'} onClose={()=>setSheet(null)}
+        body={['Compound annual growth of the scheme NAV over the trailing period, net of expenses.','Source and period are stated on the factsheet. Sentinel does not recompute it.']} /></div>}
+    </Block>
+    <Block n={5} title="In context">
+      <Thread before={<SentinelBlock><SentinelText text="Her largest holding, and the one carrying the drift." /></SentinelBlock>}>
+        <InfoCard name="Parag Parikh Flexi Cap" meta="Direct · Growth · ₹4.1 L held" figure="18.4%" figureNote="3Y CAGR"
+          caveat="Past performance does not indicate future returns." series={[{label:'NAV', points:pts(8,12)}]} range={r} onRange={setR} stats={STATS} onExplain={setSheet} />
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/cards/InfoCard.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{width:300}}><InfoCard name="Motilal Midcap" meta="Direct · Growth" stats={STATS} locked /></div>}
+        doCaption="No confirmed performance source, so the figure abstains and says why. An advisor can defend a blank; they cannot defend a number with no owner."
+        dontNode={<div style={{width:300}}><InfoCard name="Motilal Midcap" meta="Direct · Growth" figure="21.8%" figureNote="3Y CAGR · indicative" series={[{label:'NAV', points:pts(8,14)}]} range="3Y" stats={STATS} /></div>}
+        dontCaption="The same card with a plausible figure and the word 'indicative' doing the work. This is the one failure mode a wealth tool cannot have." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Figure count-up', property:'text, cubic-out', duration:'600 ms', reduced:'Jumps to the final figure.'},
+        {name:'Series draw-on', property:'stroke-dashoffset', duration:'600 ms, first reveal only', reduced:'Lands drawn.'},
+        {name:'Explainer sheet', property:'transform: translateY(100%) → 0', duration:'280 ms', reduced:'Opacity fade, no slide.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>

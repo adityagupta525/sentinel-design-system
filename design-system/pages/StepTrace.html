@@ -1,0 +1,86 @@
+<!-- @dsCard group="Pages" viewport="1000x1320" name="StepTrace" subtitle="What the assistant did — collapsible one-line rows with per-step state" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>StepTrace — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { StepTrace, SentinelBlock, SentinelText, Pill, ArtifactCard } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze','--color-line','--color-canvas','--color-ink-soft','--color-muted','--color-status-over-bg','--color-status-over-fg','--type-row-font','--type-label-font','--type-caption-font','--space-24','--border-1','--dur-fast','--ease'];
+const FULL = [
+  {label:'Read her holdings', state:'done', meta:'12 holdings'},
+  {label:'Matched to the mandate', state:'done', detail:'Equity ceiling 60%, on file since March'},
+  {label:'Checked the compliance shelf', state:'done', meta:'4 approved'},
+  {label:'Priced the switch', state:'done', meta:'₹11,200'},
+];
+const MID = [
+  {label:'Read her holdings', state:'done', meta:'12 holdings'},
+  {label:'Matched to the mandate', state:'running'},
+  {label:'Checked the compliance shelf', state:'pending'},
+  {label:'Priced the switch', state:'pending'},
+];
+const FAIL = [
+  {label:'Read her holdings', state:'done', meta:'12 holdings'},
+  {label:'Matched to the mandate', state:'failed', detail:'Her mandate on file is from 2024 and has no equity ceiling.', retry:<Pill label="Use the 2026 draft" size="sm" tone="tertiary" />},
+  {label:'Priced the switch', state:'pending'},
+];
+function App(){
+  const [open,setOpen] = React.useState(true);
+  return (
+  <PageShell name="StepTrace" group="Chat" status="shipped" requires={${req}}
+    summary="What the assistant did, as collapsible one-line rows with per-step state. Four AI products have converged on this mechanism — Manus indents a step's reasoning beneath it, Linktree's Analysis ⌄ opens a ruled list of ticked steps, ChatGPT collapses a tool call to Ran 3 commands ›, DeepSeek heads its trace Thought for 5 seconds ⌄. For an advisor it is provenance, not decoration: read her holdings · matched to the mandate · checked the compliance shelf is what they repeat to the client.">
+    <Block n={1} title="Specimen" sub="Open, all four steps done — the state an advisor reads back to a client.">
+      <Specimen width={343}><StepTrace id="s1" defaultOpen steps={FULL} /></Specimen>
+    </Block>
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. Spine and node are ProgressTrace's, unchanged.">
+      <Anatomy width={311} top="summary row 44 tap target" bottom="step gap 12 · dense 8" left="node 16 on a 1px spine" right="meta: tabular, right">
+        <StepTrace id="s2" defaultOpen steps={FULL} />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'collapsed', node:<StepTrace id="v1" steps={FULL} />, note:'The one-liner is derived: "Read 4 sources".'},
+        {label:'collapsed · custom summary', node:<StepTrace id="v2" steps={FULL} summary="Thought for 4s" />, note:'DeepSeek\'s phrasing, our type.'},
+        {label:'dense — inside FileUpload', node:<StepTrace id="v3" dense defaultOpen steps={FULL.slice(0,3)} />, note:'8px step gap for a file chip.'},
+        {label:'with reasoning detail', node:<StepTrace id="v4" defaultOpen steps={[FULL[1], FULL[2]]} />, note:'Manus indents the reasoning under its step.'},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Per step: pending, running, done, failed. The trace itself is open or collapsed — there is no disabled state, because a trace is a record, not a control.">
+      <Grid cols={3} itemWidth={311} items={[
+        {label:'running', node:<StepTrace id="s5" defaultOpen steps={MID} />, note:'Pending steps sit at 40%. Only the active row is at full opacity.'},
+        {label:'done', node:<StepTrace id="s6" defaultOpen steps={FULL} />},
+        {label:'failed', node:<StepTrace id="s7" defaultOpen steps={FAIL} />, note:'The row keeps its place, carries the word, and offers its retry inline — Mimo\'s missing half.'},
+      ]} />
+    </Block>
+    <Block n={5} title="In context" sub="Between the question and the answer, where the advisor looks for provenance.">
+      <Thread before={<div style={{borderRadius:'var(--radius-20)',background:'var(--color-bubble)',boxShadow:'0 0 0 1px var(--color-bubble-edge)',padding:'10px 14px',marginLeft:'auto',maxWidth:'80%'}}><span style={{font:'var(--type-body-font)',color:'var(--color-ink)'}}>Can Meera take the small-cap switch?</span></div>}>
+        <StepTrace id="ctx" open={open} onToggle={setOpen} steps={FULL} />
+        <SentinelBlock><SentinelText text="She can, but it puts her 4 points over the equity ceiling you agreed in March." /></SentinelBlock>
+      </Thread>
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/chat/StepTrace.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{width:300}}><StepTrace id="d1" defaultOpen steps={FULL} /></div>}
+        doCaption="Steps named in the advisor's words, with what each one found. This is the sentence they repeat to the client."
+        dontNode={<div style={{width:300}}><StepTrace id="d2" defaultOpen steps={[{label:'GET /portfolio/v2', state:'done', meta:'204ms'},{label:'mandate_service.match()', state:'done', meta:'ok'},{label:'shelf_filter(approved=true)', state:'done'}]} /></div>}
+        dontCaption="The same three steps named after our infrastructure. Accurate, useless, and it breaks the rule that success copy describes the user's world." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Chevron', property:'transform: rotate(180deg)', duration:'200 ms', reduced:'No rotation; the label still changes.'},
+        {name:'Running node', property:'opacity 0.28 → 1 (dot-pulse)', duration:'1200 ms, looping', reduced:'Holds at full opacity.'},
+        {name:'Step settling to done', property:'opacity 0.4 → 1', duration:'200 ms', reduced:'Unchanged — already opacity only.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+</script>
+</body></html>
