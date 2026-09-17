@@ -10,7 +10,7 @@ export function MessageActions({ role = 'assistant', actions, onAction }) {
     <div style={{ display: 'flex', gap: 'var(--space-16)', justifyContent: role === 'user' ? 'flex-end' : 'flex-start', margin: '-8px 0 -10px' }}>
       {list.map((a) => (
         <button key={a} type="button" onClick={() => onAction && onAction(a)}
-          style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', minHeight: 44, padding: '12px 2px', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 11.5, lineHeight: 'var(--leading-16)', color: 'var(--color-muted)' }}>{LABELS[a] || a}</button>
+          style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', minHeight: 44, padding: '12px 2px', font: 'var(--type-meta-font)', color: 'var(--color-muted)' }}>{LABELS[a] || a}</button>
       ))}
     </div>
   );

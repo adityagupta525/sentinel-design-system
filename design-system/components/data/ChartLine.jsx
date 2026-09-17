@@ -99,8 +99,8 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
             const top = Math.min(Math.max(wanted, 0), plot - h);
             return (
               <div key={s.label} style={{ position: 'absolute', right: 0, top, maxWidth: labelW, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', textAlign: 'right', pointerEvents: 'none' }}>
-                <span style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 11.5 : 12, lineHeight: 'var(--leading-15)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)' }}>{valueFormat(last.y)}</span>
-                {!peek && <span style={{ overflowWrap: 'break-word', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 10.5, lineHeight: 'var(--leading-14)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-muted)' }}>{s.label}</span>}
+                <span style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 'var(--text-11-5)' : 'var(--text-12)', lineHeight: 'var(--leading-15)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)' }}>{valueFormat(last.y)}</span>
+                {!peek && <span style={{ overflowWrap: 'break-word', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-10)', lineHeight: 'var(--leading-14)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-muted)' }}>{s.label}</span>}
               </div>
             );
           })}
@@ -136,7 +136,7 @@ export function ChartLineMultiples({ series = [], width = 311, valueFormat, xFor
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-14)' }}>
       {series.map((s) => (
         <div key={s.label}>
-          <p style={{ margin: '0 0 4px', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 11.5, lineHeight: 'var(--leading-16)', color: 'var(--color-ink)' }}>{s.label}</p>
+          <p style={{ margin: '0 0 4px', font: 'var(--type-meta-font)', color: 'var(--color-ink)' }}>{s.label}</p>
           <ChartLine series={[{ ...s }]} domain={domain} density="peek" tone={tone} width={width} valueFormat={valueFormat} xFormat={xFormat} run={false} />
         </div>
       ))}

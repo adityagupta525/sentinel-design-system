@@ -6,7 +6,7 @@
    cannot drift from the system it audits. Run it whenever tokens change; CI checks it is current.
 
    Usage: npm run build:scale */
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -30,6 +30,23 @@ const pick = (list, re) => list.filter((d) => re.test(d.name));
 const px = (list) => [...new Set(list.map((d) => parseFloat(d.value)).filter((n) => !Number.isNaN(n)))].sort((a, b) => a - b);
 
 const sp = decls(spacing), ty = decls(type), ef = decls(effects), co = decls(colors);
+
+/* Which raw font sizes components still set by hand. Scanned, not asserted: the first draft of this
+   file carried a sentence naming 11.5 and 10.5 as offenders, and it was wrong the day 11.5 became a
+   published step. A note about the code has to be read off the code. */
+const stepPx = new Set([...ty.filter((d) => /^--(text|display)-/.test(d.name)).map((d) => parseFloat(d.value))]);
+const raw = new Map();
+for (const dir of await readdir(join(DS, 'components'))) {
+  for (const file of (await readdir(join(DS, 'components', dir))).filter((f) => f.endsWith('.jsx'))) {
+    const src = await readFile(join(DS, 'components', dir, file), 'utf8');
+    for (const m of src.matchAll(/fontSize:\s*'?(-?\d+(?:\.\d+)?)'?/g)) {
+      const v = parseFloat(m[1]);
+      if (stepPx.has(v)) continue;
+      if (!raw.has(v)) raw.set(v, new Set());
+      raw.get(v).add(`components/${dir}/${file}`);
+    }
+  }
+}
 
 /* The three spacing tiers are the token file's own words, not a judgement made here: it labels
    4/8/12/16/20/24 the scale, 6 and 10 tolerated, and 2/3/5/13/14 exceptions to justify at use. */
@@ -93,7 +110,12 @@ A component asks for a **role**, never a number:
 ${table(roles)}
 
 > A raw step is for something that genuinely needs one axis alone. A component reaching past both is
-> a finding. Note that 11.5 and 10.5 appear in components and are **not** steps — flag those.
+> a finding.
+${raw.size
+  ? `>\n> **Font sizes currently set by hand that are not steps** — each one is a finding:\n>\n` +
+    [...raw.entries()].sort((a, b) => a[0] - b[0])
+      .map(([v, files]) => `> - \`${v}\` — ${[...files].join(', ')}`).join('\n')
+  : '>\n> No component currently sets a font size outside this ramp.'}
 
 ## Motion
 

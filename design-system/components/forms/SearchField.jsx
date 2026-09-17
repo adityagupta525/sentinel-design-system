@@ -12,7 +12,7 @@ export function SearchField({ value = '', onChange, placeholder = 'Search 512 cl
       <style>{'.ds-search-input::placeholder{color:var(--color-muted)}'}</style>
       {value ? (
         <button type="button" onClick={() => { onClear && onClear(); onChange && onChange(''); }}
-          style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', minHeight: 44, padding: '0 2px', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 11.5, lineHeight: 'var(--leading-16)', color: 'var(--color-muted)' }}>Clear</button>
+          style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', minHeight: 44, padding: '0 2px', font: 'var(--type-meta-font)', color: 'var(--color-muted)' }}>Clear</button>
       ) : null}
     </div>
   );

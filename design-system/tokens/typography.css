@@ -20,6 +20,14 @@
 /* Raw steps — kept, because the ramp is composed of them and a one-off must still name a real step. */
 --text-10:10px;   /* Badge label, OVER CEILING pill */
 --text-11:11px;   /* Eyebrow, Provenance, disclosures */
+--text-11-5:11.5px; /* v12 · the one non-integer step, and it earned the slot. Seven components were
+   already setting 11.5 by hand with the SAME weight and the SAME leading — medium / 16 — differing
+   only in colour: MessageActions, ChartLegend (label and value), ChartLine's caption, SearchField and
+   ListRow (both meta slots). readme.md has listed it among the literal sizes since v1 and §231
+   specifies it for the legend; contradictions 22 called it a one-off to delete. Seven identical uses
+   is not a one-off, it is a role nobody had named, so it is named below rather than removed — which
+   would have restyled five components to settle a bookkeeping argument.
+   It is the only half-step, and the product renders at 2x/3x, where it resolves exactly. */
 --text-12:12px;   /* chip labels, Sentinel label, parse note */
 --text-13:13px;   /* rows, callout body, meter labels */
 --text-14:14px;   /* body, bubbles, composer input */
@@ -46,7 +54,7 @@
 
 /* ── The roles. Ask for one of these, never for a number. ───────────────────────────────
    Each role binds size · leading · weight · family in ONE declaration: font: var(--type-row-font).
-   Twelve shorthands and nothing else — the first draft of this ramp also published --type-row-size,
+   Thirteen shorthands and nothing else — the first draft of this ramp also published --type-row-size,
    --type-row-leading and --type-row-weight per role, and the closing dead-token count showed all 43
    of them unreferenced on the same day they were written, because a component always wants the whole
    role. Cut rather than kept, so the ramp is 12 tokens a reader can hold in their head. Anything
@@ -62,6 +70,7 @@
 --type-row-font:var(--weight-medium) var(--text-13)/var(--leading-18) var(--font-ui);
 --type-label-font:var(--weight-bold) var(--text-12)/var(--leading-16) var(--font-ui);
 --type-caption-font:var(--weight-regular) var(--text-11)/var(--leading-15) var(--font-ui);
+--type-meta-font:var(--weight-medium) var(--text-11-5)/var(--leading-16) var(--font-ui);
 --type-eyebrow-font:var(--weight-bold) var(--text-10)/var(--leading-14) var(--font-ui);
 }
 body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}

@@ -15,8 +15,8 @@ export function ChartLegend({ items = [], layout = 'stacked', sort = true }) {
       {rows.map((it, i) => (
         <div key={it.label} style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-6)', width: stacked ? '100%' : 'auto', minWidth: 0 }}>
           <span style={{ flexShrink: 0, width: 8, height: 8, marginTop: 'var(--space-4)', borderRadius: 'var(--radius-full)', background: CHART_RAMP[Math.min(it.step ? it.step - 1 : i, CHART_RAMP.length - 1)] }} />
-          <span style={{ flex: stacked ? 1 : '0 1 auto', minWidth: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 11.5, lineHeight: 'var(--leading-16)', color: 'var(--color-ink)', overflowWrap: 'break-word' }}>{it.label}</span>
-          {it.value != null && <span style={{ ...tabular, flexShrink: 0, marginLeft: stacked ? 8 : 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 11.5, lineHeight: 'var(--leading-16)', color: 'var(--color-muted)', textAlign: 'right' }}>{it.value}</span>}
+          <span style={{ flex: stacked ? 1 : '0 1 auto', minWidth: 0, font: 'var(--type-meta-font)', color: 'var(--color-ink)', overflowWrap: 'break-word' }}>{it.label}</span>
+          {it.value != null && <span style={{ ...tabular, flexShrink: 0, marginLeft: stacked ? 8 : 0, font: 'var(--type-meta-font)', color: 'var(--color-muted)', textAlign: 'right' }}>{it.value}</span>}
         </div>
       ))}
     </div>

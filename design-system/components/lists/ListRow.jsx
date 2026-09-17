@@ -34,7 +34,7 @@ export function ListRow({ variant = 'static', size, leading = 'none', leadingCon
     : tr === 'radio' ? <SelectionMark kind="radio" selected={selected} disabled={disabled} />
       : tr === 'checkbox' ? <SelectionMark kind="checkbox" selected={selected} disabled={disabled} />
         : tr === 'badge' && badge ? <Badge variant={badge.variant} tone={badge.tone}>{badge.text}</Badge>
-          : tr === 'meta' && meta ? <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 11.5, lineHeight: 'var(--leading-16)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{meta}</span>
+          : tr === 'meta' && meta ? <span style={{ font: 'var(--type-meta-font)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{meta}</span>
             : null;
   const body = (
     <React.Fragment>
@@ -46,7 +46,7 @@ export function ListRow({ variant = 'static', size, leading = 'none', leadingCon
         </span>
         {subtitle && <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-12)', lineHeight: 'var(--leading-16)', color: 'var(--color-muted)' }}>{subtitle}</span>}
       </span>
-      {tr !== 'meta' && meta && <span style={{ flexShrink: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 11.5, lineHeight: 'var(--leading-16)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{meta}</span>}
+      {tr !== 'meta' && meta && <span style={{ flexShrink: 0, font: 'var(--type-meta-font)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{meta}</span>}
       {trail && <span style={{ display: 'flex', flexShrink: 0, alignItems: 'center' }}>{trail}</span>}
       {tr === 'menu' && (
         <button type="button" onClick={(e) => { e.stopPropagation(); onMenu && onMenu(); }} disabled={disabled}

@@ -56,7 +56,7 @@ Plus `--radius-full` (9999) for pills and chips. 16 and 20 are load-bearing: car
 
 ## Type
 
-Raw steps: **10 · 11 · 12 · 13 · 14 · 15 · 16 · 18** · display **24 · 27 · 40 · 64** · leadings **14 · 15 · 16 · 17 · 18 · 19 · 20 · 22 · 24**.
+Raw steps: **10 · 11 · 11.5 · 12 · 13 · 14 · 15 · 16 · 18** · display **24 · 27 · 40 · 64** · leadings **14 · 15 · 16 · 17 · 18 · 19 · 20 · 22 · 24**.
 
 A component asks for a **role**, never a number:
 
@@ -73,10 +73,13 @@ A component asks for a **role**, never a number:
 | `--type-row-font` | `var(--weight-medium) var(--text-13)/var(--leading-18) var(--font-ui)` |  |
 | `--type-label-font` | `var(--weight-bold) var(--text-12)/var(--leading-16) var(--font-ui)` |  |
 | `--type-caption-font` | `var(--weight-regular) var(--text-11)/var(--leading-15) var(--font-ui)` |  |
+| `--type-meta-font` | `var(--weight-medium) var(--text-11-5)/var(--leading-16) var(--font-ui)` |  |
 | `--type-eyebrow-font` | `var(--weight-bold) var(--text-10)/var(--leading-14) var(--font-ui)` |  |
 
 > A raw step is for something that genuinely needs one axis alone. A component reaching past both is
-> a finding. Note that 11.5 and 10.5 appear in components and are **not** steps — flag those.
+> a finding.
+>
+> No component currently sets a font size outside this ramp.
 
 ## Motion
 
@@ -129,7 +132,7 @@ Easing is one value, `cubic-bezier(0.2,0.8,0.2,1)`, everywhere.
 
 - 13 spacing tokens
 - 9 radius tokens
-- 12 type steps
-- 12 type roles
+- 13 type steps
+- 13 type roles
 - 6 durations
 - 8 shadow tokens
