@@ -200,13 +200,20 @@ group board, and a page written from a guess is worth less than one written from
 
 None of these is a design problem. Each is a fact the archive does not settle, and I will not guess one.
 
-1. **The single-fund ceiling: 15% or 25%?** `Portfolio.tsx:86` flags this itself — it says 15% while
-   the risk, proposal and confirm flows all say 25%. `Reference_Review.png` shows "Quant Small Cap ·
-   single fund · held 31% · limit 25% · over by 6%", so the evidence favours **25%**. Confirm it.
+1. ~~**The single-fund ceiling: 15% or 25%?**~~ **LOCKED 18 Sep 2026: 25%.** The owner's ruling, and
+   the reason is not preference — the design system has only ever shipped 25%, in words, on two pages:
+   `pages/ConstraintCallout.html` says *"past the 25% ceiling on any single fund"* and
+   `pages/ResultCard.html` says *"no fund crosses 25%"*. **15% appears nowhere in the system** — no
+   page, no document, no token — outside the contradiction row that logged the conflict.
+   `Portfolio.tsx:86` in the archive is the single outlier and flags itself in-code as NEEDS DECISION;
+   `Reference_Review.png` in the same archive shows *single fund · held 31% · limit 25% · over by 6%*.
+   Every screen built from here uses **25%**, and the archive's review screen is corrected when it is
+   rebuilt. Logged as contradiction 32, resolved.
 2. **`Reference_Proposal.png` answers "₹50 lakh" and returns a proposal headed "Where ₹25 lakh would
    go".** One of the two is the real number.
 3. **`preview-drawing.png`** — your own markup on Home, a red circle around the three quick-action
-   chips, with no note. What did you mean: remove them, change them, or move them?
+   chips, with no note. **Deferred by you until you have seen the review artifact**, so the answer comes
+   from looking at the current Home rather than from memory.
 4. **The greeting** is hardcoded "Good afternoon, Ashish". Time-of-day bands, and where the advisor's
    name comes from.
 5. **The three reference PNGs are dark with a green accent** — an earlier visual direction, not this
