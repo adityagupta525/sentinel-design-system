@@ -131,9 +131,20 @@ Before believing any of the numbers above:
 
 ```bash
 npm ci
-npm run check                 # barrel, bundle, index, scale, integrity, adherence
-node tools/check-previews.mjs # expect 73/73
+npx playwright install chromium   # ONCE per machine — see below
+npm run check                     # barrel, bundle, index, scale, integrity, adherence
+node tools/check-previews.mjs     # expect 73/73
+npm run preview                   # → http://localhost:4321/pages/00-Index.html
 ```
+
+**`npx playwright install chromium` is not optional on a local machine.** `playwright` is a
+devDependency so `npm ci` installs the *library*, but not the browser binary. Without it
+`check-previews` exits with `playwright not found` and **you cannot look at the work** — which is the
+one thing this project will not let you skip. The cloud container this was built in had Chromium
+pre-installed, so the step is easy to miss.
+
+Pushing from a local clone needs git credentials for `adityagupta525/sentinel-design-system`
+(`gh auth login`, or an SSH key). Reading and rendering need nothing.
 
 `npm run check` ends with **170 warnings and 0 errors**. The warnings are the system's own adherence
 debt measured against itself — `pages/_index.json` reports it per component as `literals`. That number
