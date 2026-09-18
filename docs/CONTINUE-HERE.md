@@ -45,6 +45,11 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **F-30, the owner's third catch:** the artifact peek RESERVED 96pt instead of capping at it, so a 62pt
+  chart left 34pt of empty card above the provenance line; and `ChartBar`'s three tracks ended 4pt apart
+  because the value column sized to its text. Both fixed in the system — `maxHeight` instead of `height`
+  (card 243 → 209, gap 44 → 10) and `minWidth: '4ch'` on the value (tracks all end at 334). The widget in
+  the owner's screenshot was the KIT's hand-drawn copy, which gets neither fix; see below.
 - **Owner's second ask, open:** the review artifact's *UI kits* section shows the OLD Home (“Jump back in”,
   chips) because `design-system/ui_kits/sentinel-app/home.jsx` IS the imported kit's Home. The kit is
   “states, not product screens” (`readme.md:258`) and the standing rule is not to touch `ui_kits/`. Two
