@@ -48,6 +48,9 @@ behaviour already visible on a group board.
 5. **`docs/FINDINGS.md`** — 26 findings, every one with how it was found. Read it before you decide
    something is a bug; several obvious-looking "bugs" are recorded there as deliberate.
 6. **`docs/HANDOVER.md`** — what a developer consuming this library needs.
+7. **`docs/SCREENS-PLAN.md`** — roadmap step 4, planned and not yet approved: the screen inventory,
+   the state matrix, the gap list and which journey goes first. Read it with
+   `docs/screens-source/README.md` beside it.
 
 > ⚠️ **`docs/HANDOFF.md` is NOT instructions for you.** It is the readme that came inside the original
 > Claude Design export, kept for provenance. It tells an agent *"don't render these files in a browser
@@ -108,7 +111,9 @@ Be honest about these with the owner rather than guessing around them.
 2. ~~**F-25**~~ — closed 18 Sep 2026: Tab is trapped and wraps at the boundary, acting only while focus
    is inside the sheet so a page of open specimens does not fight over it. Measured before and after.
 3. ~~**F-11**~~ — `StickyCTA` deleted 18 Sep 2026, on the owner's ruling. 84 components remain.
-4. **Next phase.** Tier 2 (44 short pages) or screens. The recommendation on record is **screens**:
+4. **`docs/SCREENS-PLAN.md` is waiting for a yes.** It also carries six content decisions that are
+   yours alone — the 15% / 25% single-fund ceiling is the sharpest.
+5. **Next phase.** Tier 2 (43 short pages) or screens. The recommendation on record is **screens**:
    everything a screen is assembled from is now page-verified, and the Tier 2 gaps will show up as
    real gaps while building rather than as guesses on a page.
 
