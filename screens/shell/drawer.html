@@ -16,11 +16,18 @@
    the page blank. Only the names this file adds are destructured. */
 const { List, Pressable, IconSparkle, IconPlus } = window.SentinelDesignSystem_0682a2;
 
+/* CAPPED AT 3 / 7 / 8, with a "See all" footer on each. Not a number I chose: List.jsx:8 states it —
+   "One scroll: a List never scrolls independently inside a scrolling surface. Cap it and give it a
+   footer row instead — that is why the drawer's sections are capped at 3 / 7 / 8 with See all." The
+   first cut of this screen rendered 4 / 4 / 4 uncapped, which is how the client book ended up below
+   the fold with nothing saying it was there. */
+const CAP = { saved: 3, recent: 7, clients: 8 };
 const SAVED = [
   { title: "Meera Nair's risk profile", meta: '12 questions' },
   { title: '₹25 L proposal', meta: '6 funds' },
   { title: 'What Meera holds', meta: '43 funds' },
   { title: "Sharma's rebalance", meta: '2 moves' },
+  { title: "Sunita Nair's Q2 review", meta: '31 funds' },
 ];
 /* Two lines, not one. Measured first: in a 300pt drawer a row is 244pt of content, and
    "Mr. Amit Aggrawal — proposal draft" needs 226pt for its title alone — it rendered at 153 and lost a
@@ -33,9 +40,12 @@ const RECENT = [
   { title: 'HDFC Diwali offer', subtitle: 'AMC circular', meta: '16 Sep' },
   { title: 'Meera Nair', subtitle: 'Q3 review', meta: '15 Sep' },
 ];
+const MORE = ['Sunita Nair — exit load', 'Meera Nair — SIP change', 'R. Sharma — mandate note', 'HDFC — NFO circular', 'Mr. Amit Aggrawal — KYC']
+  .map((t, i) => ({ title: t.split(' — ')[0], subtitle: t.split(' — ')[1], meta: `${12 - i} Sep` }));
 const initials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
 const client = (name) => ({ title: name, leading: 'avatar', leadingContent: initials(name), trailing: 'chevron' });
-const CLIENTS = ['Meera Nair', 'Mr. Amit Aggrawal', 'Sunita Nair', 'R. Sharma'].map(client);
+const CLIENTS = ['Meera Nair', 'Mr. Amit Aggrawal', 'Sunita Nair', 'R. Sharma', 'Kavita Rao', 'Anil Menon',
+  'Priya Deshpande', 'Vikram Shah', 'Lakshmi Iyer', 'Rohan Gupta'].map(client);
 const CLIENTS_LONG = ['Ramasubramanian Venkataraghavan', 'Mr. Amit Aggrawal', 'Sunita Nair'].map(client);
 
 /* The appearance control. There is ONE theme: no token in tokens/*.css carries a dark value and no
@@ -69,9 +79,18 @@ function AppearanceLock({ value = 'Light', options = ['Light', 'Dark'] }) {
   );
 }
 
-function Drawer({ saved = SAVED, recent = RECENT, clients = CLIENTS, loading = false, recentFailed = false }) {
+function Drawer({ saved = SAVED, recent = RECENT.concat(MORE), clients = CLIENTS, loading = false, recentFailed = false, scrolled = false }) {
   const [value, setValue] = React.useState('');
   const row = { variant: 'nav', trailing: 'chevron' };
+  const scroller = React.useRef(null);
+  React.useEffect(() => { if (scrolled && scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight; }, [scrolled]);
+  /* The footer is the "See all" row List is built to take, and it only appears when the cap actually
+     bit — a footer under a list that is already complete is a door to nothing. */
+  const seeAll = (all, cap) => (all.length > cap
+    ? <Pressable onClick={() => {}} label={`See all ${all.length}`} style={{ display: 'flex', minHeight: 44, width: '100%', alignItems: 'center' }}>
+        <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>See all {all.length} ›</span>
+      </Pressable>
+    : undefined);
   return (
     <>
       {/* The scrim. Modal layers only, and the drawer's is 25% — sheets are 40%. Full-bleed, so the
@@ -93,8 +112,9 @@ function Drawer({ saved = SAVED, recent = RECENT, clients = CLIENTS, loading = f
           </Pressable>
         </div>
 
-        <div className="noscroll" style={{ flex: 1, overflowY: 'auto', padding: '8px var(--gutter) 0', display: 'flex', flexDirection: 'column', gap: 'var(--space-14)' }}>
-          <List header="Jump back in" items={saved.map((r) => ({ ...r, onPress: () => {} }))} rowProps={row} loading={loading}
+        <div ref={scroller} className="noscroll" style={{ flex: 1, overflowY: 'auto', padding: '8px var(--gutter) 0', display: 'flex', flexDirection: 'column', gap: 'var(--space-14)' }}>
+          <List header="Jump back in" items={saved.slice(0, CAP.saved).map((r) => ({ ...r, onPress: () => {} }))} rowProps={row} loading={loading}
+                footer={seeAll(saved, CAP.saved)}
                 emptyState={{ title: 'Nothing saved yet', body: 'Work you start shows up here so you can pick it up tomorrow.' }} />
 
           {recentFailed ? (
@@ -105,11 +125,13 @@ function Drawer({ saved = SAVED, recent = RECENT, clients = CLIENTS, loading = f
               </p>
             </div>
           ) : (
-            <List header="Recent" items={recent.map((r) => ({ ...r, onPress: () => {} }))} rowProps={row} loading={loading}
+            <List header="Recent" items={recent.slice(0, CAP.recent).map((r) => ({ ...r, onPress: () => {} }))} rowProps={row} loading={loading}
+                  footer={seeAll(recent, CAP.recent)}
                   emptyState={{ title: 'No threads yet', body: 'Every question you ask is kept here.' }} />
           )}
 
-          <List header="Clients" items={clients.map((r) => ({ ...r, onPress: () => {} }))} rowProps={{ variant: 'nav' }} loading={loading}
+          <List header="Clients" items={clients.slice(0, CAP.clients).map((r) => ({ ...r, onPress: () => {} }))} rowProps={{ variant: 'nav' }} loading={loading}
+                footer={seeAll(clients, CAP.clients)}
                 emptyState={{ title: 'No clients on file', body: 'Your book appears here once it is connected.' }} />
 
           <p style={{ margin: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-15)', color: 'var(--color-muted)' }}>
@@ -164,8 +186,11 @@ mountScreen(
   >
     <Section title="1 · The screen" sub="300pt wide over a 25% scrim. The layer behind is the real Home, rendered from the same home.jsx the Home page uses — not a copy.">
       <StateRow>
-        <State label="typical" note="Three sections, each a List: saved work, recent threads, the book. Rows are ListRow at 56 — the height settled when this list left Home, bought with the required empty state, the skeleton, the footer row and the chevron contract.">
+        <State label="typical · at the top" note="Three sections, each a List, each capped with a “See all” row: 3 saved, 7 recent, 8 clients. Rows are ListRow at 56 — the height settled when this list left Home, bought with the required empty state, the skeleton, the footer row and the chevron contract.">
           <Scene />
+        </State>
+        <State label="typical · scrolled" note="The same drawer, scrolled to the end. The client book lives down here, and the drawer carries ONE scroll — no List scrolls inside it, which is what the caps exist to make possible.">
+          <Scene scrolled />
         </State>
         <State label="first run" tone="under" note="All three empty, and each says its own sentence rather than “No data”. List requires an emptyState, which is why none of these could have been forgotten.">
           <Scene saved={[]} recent={[]} clients={[]} />
@@ -217,6 +242,13 @@ mountScreen(
         narrower gutter for being a narrower surface. The gutter guard sees this correctly because the panel
         declares <code>data-gutter="edge"</code> and becomes the frame for everything inside it.
       </Note>
+      <Note title="The caps were in the system and I had not applied them">
+        The first cut rendered 4 / 4 / 4 uncapped, and the client book ended up below the fold with nothing
+        saying it was there. <code>List.jsx:8</code> already states the answer: <em>&ldquo;One scroll: a List
+        never scrolls independently inside a scrolling surface. Cap it and give it a footer row instead — that
+        is why the drawer&rsquo;s sections are capped at 3 / 7 / 8 with See all.&rdquo;</em> Applied, with a
+        &ldquo;See all&rdquo; row that appears only when the cap actually bit.
+      </Note>
       <Note title="And one row was losing a third of its label">
         &ldquo;Mr. Amit Aggrawal &mdash; proposal draft&rdquo; needed <strong>226pt</strong> of title and had
         <strong>153</strong>. It rendered as an ellipsis eating the topic. The fix was not shorter copy, which
@@ -233,11 +265,12 @@ mountScreen(
         the two controls at the bottom and did not mention it. It is here because the rule says so. Taking it
         out is a decision for the owner, not for me.
       </Note>
-      <Note title="Still open — a 512-client book behind a four-row list">
-        The product&rsquo;s own copy says a 512-client book. This screen shows four names and has no search.
-        <code> SearchField</code> is in the system and unused. That is gap G6 in <code>SCREENS-PLAN.md</code>, and
-        it is not fixed here because the brief did not ask for it and adding a search box changes what the drawer
-        is.
+      <Note title="Still open — a 512-client book behind an eight-row list">
+        The product&rsquo;s own copy says a 512-client book. This screen shows the first eight and a
+        &ldquo;See all&rdquo; row, and it has no search. <code>SearchField</code> is in the system and unused.
+        That is gap G6 in <code>SCREENS-PLAN.md</code>, and it is not fixed here because the brief did not ask
+        for it and adding a search box changes what the drawer is. The cap makes the list honest; it does not
+        make 512 names reachable.
       </Note>
     </Section>
 
