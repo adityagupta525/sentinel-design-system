@@ -201,11 +201,12 @@ group board, and a page written from a guess is worth less than one written from
 None of these is a design problem. Each is a fact the archive does not settle, and I will not guess one.
 
 1. ~~**The single-fund ceiling: 15% or 25%?**~~ **LOCKED 18 Sep 2026: the SINGLE-FUND ceiling is 25%.**
-   The owner's ruling, and the reason is not preference — the system states it in words in one
-   sentence, carried on two surfaces, `pages/ConstraintCallout.html:34` and
-   `components/cards/cards.card.html:16`: *"One of them would have to hold 34% of his money — past the
-   25% ceiling on any single fund."* **15% appears nowhere in the system** — no page, no document, no
-   token. `Portfolio.tsx:86` in the archive is the single outlier and flags itself in-code as NEEDS
+   The owner's ruling, and the reason is not preference — the system states it in words in **two**
+   sentences across **three** places. *"One of them would have to hold 34% of his money — past the 25%
+   ceiling on any single fund"* is on `pages/ConstraintCallout.html:34` and again inside
+   `components/cards/cards.card.html:16`; *"No fund crosses 25%"* is the `DataTableCard` footer on that
+   same board line and in `components/cards/DataTableCard.prompt.md:3`. **15% appears nowhere in the
+   system** — no page, no document, no token. `Portfolio.tsx:86` in the archive is the single outlier and flags itself in-code as NEEDS
    DECISION. Logged as contradiction 32, resolved.
 
    **⚠️ Two different rules share the number 25%, and only the first is ruled.** The other is the

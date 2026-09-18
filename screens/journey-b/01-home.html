@@ -39,13 +39,13 @@ function greetingFor(hour) {
 
 /* ONE component, six states. Each state is a different `saved` prop, never a different tree — a state
    drawn by hand is a state that can drift from the one the product will actually render. */
-function Home({ saved = 'ready', hour = 15, advisor = 'Ashish', rows = SAVED, footer }) {
+function Home({ saved = 'ready', hour = 15, time = '3:04', advisor = 'Ashish', rows = SAVED, footer }) {
   const [value, setValue] = React.useState('');
   const card = { width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: '0 var(--space-12)', boxShadow: 'var(--shadow-card-soft)' };
   return (
     <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
       <ScreenBackdrop />
-      <StatusSpacer />
+      <StatusSpacer time={time} />
       <TopBar title="Sentinel" onMenu={() => {}} onNew={() => setValue('')} />
 
       <div style={{ position: 'relative', zIndex: 1, paddingTop: 'var(--space-4)' }}>
@@ -140,16 +140,18 @@ mountScreen(
 
     <Section title="3 · The greeting is a band, not a constant" sub="The archive hardcodes “Good afternoon, Ashish”. That is wrong for sixteen hours of the day, and the advisor's name comes from the session.">
       <StateRow>
-        <State label="06:00" note="Good morning">   <Home saved="ready" hour={6} /></State>
-        <State label="15:00" note="Good afternoon"><Home saved="ready" hour={15} /></State>
-        <State label="19:00" note="Good evening">  <Home saved="ready" hour={19} /></State>
+        <State label="morning"   note="6:12 · Good morning">  <Home saved="ready" hour={6}  time="6:12" /></State>
+        <State label="afternoon" note="3:04 · Good afternoon"><Home saved="ready" hour={15} time="3:04" /></State>
+        <State label="evening"   note="7:19 · Good evening">  <Home saved="ready" hour={19} time="7:19" /></State>
       </StateRow>
-      <Note title="Found by building this — the clock disagrees with the greeting">
-        Read the status bar on the three phones above: all of them say <strong>9:41</strong>, including the one
-        greeting the advisor good evening. <code>StatusSpacer</code> hardcodes 9:41 and takes no props, which is
-        right for a component specimen and wrong the moment a screen renders a time-of-day state. Left alone
-        rather than worked around, because a <code>time</code> prop is a change to a shipped component and that
-        is the owner's call — see decision 3 below.
+      <Note title="Found by building this, then fixed">
+        The first cut of this page rendered all three phones reading <strong>9:41</strong>, including the one
+        greeting the advisor good evening. <code>StatusSpacer</code> hardcoded the clock and took no props: right
+        for a component specimen, wrong the moment a screen states a time of day. It now takes an optional
+        <code> time</code>, defaulting to <code>'9:41'</code>, so every board and spec page renders exactly as
+        before — proved by hashing all 75 pages either side of the change. On a real phone the status bar is the
+        operating system's, so its 12- or 24-hour format is the platform's choice and not this system's; the
+        format here follows the specimen.
       </Note>
     </Section>
 
@@ -175,12 +177,9 @@ mountScreen(
         with your own red circle around “Review a portfolio · Proposal · Fund explorer”, and no note beside it.
         They are drawn here exactly as the archive has them. What did the circle mean?
       </Note>
-      <Note title="3 · A time on StatusSpacer">
-        <code>StatusSpacer</code> hardcodes 9:41 and takes no props, so every screen that renders a time-of-day
-        state contradicts its own status bar — visible in section 3 above. The fix is one optional prop,
-        <code>time</code>, defaulting to <code>'9:41'</code> so nothing that renders today changes. That is a
-        change to a shipped component and to its contract, so it is not made here. Say the word and it is a
-        three-line change with an integrity update in the same commit.
+      <Note title="3 · A time on StatusSpacer — settled">
+        Ruled and done: <code>StatusSpacer</code> takes an optional <code>time</code> defaulting to
+        <code> '9:41'</code>. Section 3 above renders it.
       </Note>
     </Section>
   </ScreenShell>
