@@ -88,16 +88,56 @@ for the review artifact, say so and it goes in `screens/` only — never in the 
 Six states per screen. **Bold** = not in the archive and required in the real product. This is where
 the Figma Make mock is weakest, which is the point of writing it down before building.
 
-### 1 · Home
+### 1 · Home — **built, 18 Sep 2026** · `screens/journey-b/01-home.html`
 
-| State | In the archive | What it must be |
-|---|---|---|
-| empty | ✗ | **A first-run advisor has no saved work.** The archive hardcodes four "Jump back in" rows. **Vote: omit the whole section when it is empty** — a card with an empty state is a promise of content that is not there. The three capability suggestions stay, because they are capability, not history. |
-| loading | ✗ | **"Jump back in" reads from a server.** Vote: render it only once resolved. **No skeleton** — a four-row skeleton for a section that may have zero rows tells a lie that lasts 400ms. |
-| typical | ✓ | As the archive, minus the hardcoded greeting. |
-| edge | ✗ | **A long client name; a fifth saved item (the archive hardcodes four); the greeting at 06:00 and at 23:00 — the archive hardcodes "Good afternoon, Ashish" and the advisor's name.** |
-| refused | n/a | Home does not refuse; the composer hands everything to the thread. |
-| error | ✗ | **Saved work fails to load.** Vote: omit the section and say so in one muted line, in the product's voice — never a red banner on the first screen of the day. |
+The matrix below is what the screen actually is, after the owner's structural rulings. It is shorter
+than the first draft because two whole sections left the screen.
+
+**What Home is now:** greeting, three rows, composer. Nothing else.
+
+- **"Jump back in" moved to the menu.** Saved work is history, and history belongs with the rest of it
+  — recent threads and the client list. Home answers "what can I do, and for whom", not "what were you
+  doing yesterday". The empty and loading states that section carried went with it; they are the
+  drawer's question now.
+- **The quick-action chips are gone.** Not because their destinations disappeared — they never opened
+  a canvas at all, `docs/screens-source/src/App.tsx:58` says a chip is a conversational turn and
+  `handleChip` posts the label to the thread. They are gone because they repeated the card above them
+  in the abstract, four hundred points below it, and because `Dock.d.ts` calls that slot "Contextual
+  AnswerChips" while Home has had no conversation yet.
+
+**The three rows are built from the advisor's own book.**
+
+| | |
+|---|---|
+| Named | `Start Meera Nair's risk profile` · `Build a proposal for Mr. Amit Aggrawal` · `Why did Sharma's portfolio drift this quarter?` |
+| Unnamed | `Start a risk profile` · `Build a proposal` · `Explain a portfolio's drift` |
+
+Ordered by the client lifecycle — know them, build for them, keep it right — not by recency, because
+recency is what the menu is for. Every label routes: checked by hand against the three intent patterns
+in `docs/screens-source/src/lib/router.ts`, which match on "risk profil", "propos" and "drift".
+
+**Risk profiling was added, and it was the real defect.** It is the longest journey and the product's
+spine, and it was absent from Home entirely.
+
+**The AMC offer row was removed, and the reason is written down so it does not return.** "Show me
+Diwali offer from HDFC AMC" was the only row that is not the advisor's own client work; it is a
+distributor's marketing inventory. An advisor's day starts with a client, not with a fund house's
+campaign. And the day a wealth tool's home screen leads with an AMC's offer is the day the advisor
+starts reading the product as a **sales channel**, which is against the whole basis of its trust.
+**If this row is ever proposed again — most likely under the word "engagement" — that is the reason it
+was taken out.**
+
+| State | What it is |
+|---|---|
+| typical | The book is loaded, so every row names a client. |
+| empty · loading · error | **One frame, not three.** The capability-shaped rows are the BASE CASE and the names are an enhancement that arrives. A first day, a book that has not arrived, and a book that failed to load all render the same screen. So Home has no skeleton to show and no failure to report: it is never blank, and it never promises a name it does not have. "Which client?" is then answered by the thread, which is the same disambiguation the router already does in reverse. |
+| edge | **A long advisor name.** The greeting wraps to two lines rather than truncating — measured at 375 against a 343 content box, "Ramasubramanian" runs 349 and "Lakshminarayanan" 351. The row grows 43 → 70 and the 27pt comes out of the empty middle; the composer does not move and the phone never exceeds 812. |
+| refused | n/a. Home never refuses — a refusal is a thing Sentinel says, and Sentinel has not spoken yet. |
+
+**Open on this screen, for the owner:** `GreetingDivider`'s dashed hairlines are `flex: 1`, so a long
+name squeezes them to nothing — 47pt beside "Ashish", 12pt beside "Vishwanathan", none beyond — and the
+component stops looking like a divider. A `max-width` on the text would reserve them, at the cost of
+wrapping shorter names sooner.
 
 ### 2 · Thread
 
