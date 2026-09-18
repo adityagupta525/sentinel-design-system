@@ -1,3 +1,10 @@
+> **Historical. This is NOT instructions for an agent working on this repository.**
+>
+> This is the readme that came inside the original Claude Design export, kept for provenance. Two of
+> its instructions are the opposite of this project's rules: it points at a `project/` directory that
+> does not exist here, and it says *"don't render these files in a browser or take screenshots"* —
+> while `CLAUDE.md` requires exactly that. **`CLAUDE.md` and `docs/CONTINUE-HERE.md` win.**
+
 # CODING AGENTS: READ THIS FIRST
 
 This is a **handoff bundle** from Claude Design (claude.ai/design).

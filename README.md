@@ -5,6 +5,9 @@ The design system for **Sentinel** — the chat-led wealth-management assistant 
 a client, a fund or a plan; Sentinel answers in a thread, asks one question at a time, and turns the
 answers into artifacts — a risk number, a proposal, a holdings review, a two-move rebalance.
 
+> **Picking this up in a new session?** Read **`docs/CONTINUE-HERE.md`** — the state of the work,
+> the rulings made in conversation, what is open, and what is deliberately not in this repository.
+
 One product surface: the iOS-style mobile app, mobile-first at **375 × 812**.
 
 > **Provenance.** `design-system/` is the Claude Design project *Sentinel Design System* imported

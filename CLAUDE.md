@@ -8,6 +8,11 @@ scaffolding around it.
 
 ## Start here
 
+**New session, or a different account? Read `docs/CONTINUE-HERE.md` first.** It carries the state of
+the work, the rulings that were made in conversation and are not visible in the code, what is open, and
+what is deliberately not in this repository.
+
+
 **Load the `sentinel-craft` skill before touching anything in `design-system/`, and before judging
 whether spacing, alignment or craft is wrong.** It carries this system's own scale — generated from
 `tokens/*.css`, so it cannot drift — its four hard rules, its real motion values, and the record of
@@ -48,11 +53,15 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   F-1 through F-10 closed. `_index.json` reports `literals` again — how many raw style values each
-   component still hardcodes — so adherence is measurable per component: 28 of 83 are fully clean.
+   F-1 … F-26 recorded; **open: F-11, F-21, F-25**. `_index.json` reports `literals` — how many raw
+   style values each component still hardcodes — so adherence is measurable per component:
+   **31 of 85** are fully clean.
 3. **The four components the request spec named and nobody built** — done.
    `ResultCard` · `DataTable` · `OverlapView` · `InfoCard kind='manager'`, each with its contract and
-   a spec page. `pages/_index.json` now reports **0 specified**: the backlog the system carried since
-   v9 is empty. 19 shipped, 66 building, 50/50 pages render clean.
+   a spec page. `pages/_index.json` reports **0 specified**: the backlog the system carried since v9
+   is empty.
+3b. **Spec pages, Tier 1** — done. **41 of 85 shipped**, 44 building, 73/73 pages render clean.
+   Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
+   Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for.
