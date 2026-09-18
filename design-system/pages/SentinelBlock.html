@@ -1,0 +1,109 @@
+<!-- @dsCard group="Pages" viewport="1000x1600" name="SentinelBlock" subtitle="Attribution — a sparkle, a name, and everything that turn produced under one of them" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SentinelBlock — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SentinelBlock, SentinelText, SentinelThinking, ProgressTrace, MoveCard, Provenance, UserBubble, MessageActions, Composer, Dock, HeroNumberCard } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-muted','--color-ink','--space-8','--space-10','--text-12','--leading-16','--weight-bold','--font-ui','--ease'];
+
+function App() {
+  return (
+    <PageShell
+      name="SentinelBlock" group="Chat" status="shipped"
+      requires={['SentinelBlock','SentinelText','SentinelThinking','ProgressTrace','MoveCard','Provenance']}
+      summary="Attribution. A sparkle, the word “Sentinel”, and then whatever the answer is — prose, a trace, a card, a table. It is the wrapper that makes an answer attributable, and in a wealth tool who said a number is part of the number.">
+
+      <Block n={1} title="Specimen" sub="The header is the component. Everything under it is children.">
+        <Specimen width={343}>
+          <SentinelBlock><SentinelText text="Small cap is 31.0% of his equity, against a 25% ceiling." /></SentinelBlock>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="No bubble, no fill, no left rule, no avatar. The advisor gets the peach bubble and Sentinel gets the paper — and that asymmetry is what makes a thread readable at a glance.">
+        <Anatomy width={343}
+          top="Sparkle 12pt + label, 8pt apart. Label is 12/16 BOLD on --color-muted"
+          left="Full column width. The block never indents its children"
+          right="10pt between the header row and the first child, and nothing else — spacing inside is the child's"
+          bottom="No background and no border. The header is the only thing this component draws">
+          <SentinelBlock><SentinelText text="Small cap is 31.0% of his equity, against a 25% ceiling." /></SentinelBlock>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Two props, and both are usually left alone. `label` is what SentinelThinking's verb rides on; `shimmer` is what makes the header say “still working”.">
+        <Grid cols={2} items={[
+          { label: 'Default', node: <SentinelBlock><SentinelText text="Yes — 31.0% against a 25% ceiling." /></SentinelBlock>, note: 'Every answered turn in the product.' },
+          { label: 'shimmer', node: <SentinelBlock shimmer><SentinelText text="Reading…" /></SentinelBlock>, note: 'The label pulses 0.35 → 1 over 1.2s. Opacity only, and the sparkle pulses with it.' },
+          { label: 'label — a verb', node: <SentinelBlock shimmer label="Reading his Q3 statement…"><SentinelThinking /></SentinelBlock>, note: 'This is exactly what SentinelThinking\'s `verb` does. The prop existed from v1; v12 gave it a caller.' },
+          { label: 'label — a named tool', node: <SentinelBlock label="Sentinel · compliance shelf"><SentinelText text="312 funds pass, of 1,840 on the platform." /></SentinelBlock>, note: 'Legitimate when the answer comes from a named source the advisor would recognise. Still Sentinel speaking.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="None of its own. What varies is what it wraps — and the point of the component is that all of these are the same speaker.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Prose', node: <SentinelBlock><SentinelText text="Two-thirds of the drift is the small-cap rally." /></SentinelBlock>, note: 'The common case.' },
+          { label: 'A waiting state', node: <SentinelBlock shimmer label="Pricing 3 moves…"><SentinelThinking /></SentinelBlock>, note: 'SentinelThinking renders its own block. Do not wrap it in a second one.' },
+          { label: 'A trace', node: <ProgressTrace autoplay={false} initialActive={1} seconds={3} steps={['Reading his Q3 statement — 18 funds', 'Checking the mandate', 'Pricing 3 moves']} />, note: 'ProgressTrace also renders its own block — same reason.' },
+          { label: 'Cards', node: (
+            <SentinelBlock>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+                <SentinelText text="Three moves, all inside the equity sleeve." />
+                <MoveCard n={1} title="Move ₹4,20,000 out of Quant Small Cap" body="Small cap is 31% against a 25% ceiling." />
+                <Provenance text="As of 30 Sep · from his Q3 statement" />
+              </div>
+            </SentinelBlock>
+          ), note: 'Prose, artifact and provenance under one attribution. The block is what says all three came from the same answer.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Alternating with the advisor. One side has a bubble and the other does not — and the sparkle is the only mark of who is speaking.">
+        <Thread dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <UserBubble text="Is he over his small-cap ceiling?" />
+          <SentinelBlock>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+              <SentinelText text="Yes — 31.0% against a 25% ceiling in his mandate." />
+              <SentinelText weight="Regular" text="It has been above it since the March rally, and the monthly SIP lands in the same sleeve." />
+              <Provenance text="As of 30 Sep · from his Q3 statement" />
+            </div>
+          </SentinelBlock>
+          <MessageActions role="assistant" />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props"><Props src="../components/chat/SentinelBlock.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<SentinelBlock>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+              <SentinelText text="Small cap is 31.0% against a 25% ceiling." />
+              <Provenance text="As of 30 Sep · from his Q3 statement" />
+            </div>
+          </SentinelBlock>}
+          doCaption="One block per turn, holding everything that turn produced. The figure, its provenance and the prose around it are attributed together."
+          dontNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+            <SentinelBlock><SentinelText text="Small cap is 31.0% against a 25% ceiling." /></SentinelBlock>
+            <SentinelBlock><Provenance text="As of 30 Sep · from his Q3 statement" /></SentinelBlock>
+          </div>}
+          dontCaption="Never one block per element. Two sparkles read as two turns, so the advisor scans for a second answer that is not there — and the provenance stops looking like it belongs to the figure above it." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="One, and only when asked for. The block has no entrance — its children bring their own.">
+        <Motion rows={[
+          { name: 'Shimmer', property: 'sentinel-shimmer — opacity 0.35 → 1 on the whole header row', duration: '1200 ms, infinite', reduced: 'Holds at full opacity.' },
+          { name: 'Enter', property: 'none', duration: '—', reduced: 'Unchanged. SentinelText fades, cards rise; the block itself does nothing.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

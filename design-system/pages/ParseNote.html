@@ -1,0 +1,109 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="ParseNote" subtitle="What Sentinel understood — one muted line, so a misread is caught by the person who typed it" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ParseNote — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ParseNote, UserBubble, SentinelBlock, SentinelText, MessageActions, ConstraintCallout, MoneyComposer, Composer, Dock, ClientChip } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-muted','--text-12','--leading-16','--space-2','--weight-regular','--font-ui','--ease'];
+
+function App() {
+  return (
+    <PageShell
+      name="ParseNote" group="Chat" status="shipped"
+      requires={['ParseNote','UserBubble','SentinelBlock','SentinelText','ConstraintCallout']}
+      summary="What Sentinel understood. One muted line under the advisor's bubble, right-aligned to it — “understood as ₹1,80,000”. It exists so a misread is caught by the person who typed it, in the second after they typed it, rather than three screens later in a proposal.">
+
+      <Block n={1} title="Specimen" sub="It never appears alone. The bubble above it is half the component.">
+        <Specimen width={343}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+            <UserBubble text="Start a SIP for Meera at 1.8 lakh" />
+            <ParseNote text="understood as ₹1,80,000" />
+          </div>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Right-aligned, because it belongs to the bubble and the bubble is on the right. The 2pt of right padding is not decoration — it makes the note's optical right edge line up with the bubble's rounded one.">
+        <Anatomy width={343}
+          top="Full width, text right-aligned — it tracks the bubble's edge, not the column's"
+          left="12/16 regular on --color-muted. The quietest type in the thread"
+          right="2pt right padding so the note lines up with the bubble's curved edge above it"
+          bottom="No background, no icon, no border. It is a footnote and it should read as one">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+            <UserBubble text="Start a SIP for Meera at 1.8 lakh" />
+            <ParseNote text="understood as ₹1,80,000" />
+          </div>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="One prop. What changes is what was ambiguous, and the note names the resolved value in the form the advisor will read aloud.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'An amount', node: <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}><UserBubble text="1.8 lakh" /><ParseNote text="understood as ₹1,80,000" /></div>, note: 'Indian grouping, in full. "1.8 lakh" and "1,80,000" are the same number and only one of them can be checked against a statement.' },
+          { label: 'A date', node: <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}><UserBubble text="review him next quarter" /><ParseNote text="understood as 1 Jan 2027" /></div>, note: 'Day-first, spelled. "Next quarter" is a phrase; a date is a commitment.' },
+          { label: 'A person', node: <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}><UserBubble text="the Sharma file" /><ParseNote text="understood as Anil Sharma · ₹3,10,00,000" /></div>, note: 'Two Sharmas on the book is the normal case. The portfolio value is the disambiguator an advisor actually recognises.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="No states. What it has is a boundary: a note reports an interpretation it is confident about. Anything less certain is a question, and anything refused is a constraint.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Confident → ParseNote', node: <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}><UserBubble text="1.8 lakh" /><ParseNote text="understood as ₹1,80,000" /></div>, note: 'One reading, stated. The advisor glances and moves on.' },
+          { label: 'Ambiguous → ask, do not guess', node: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+              <UserBubble text="the Sharma file" />
+              <SentinelBlock><SentinelText text="Two Sharmas — Anil (₹3,10,00,000) or Priya (₹64,00,000)?" /></SentinelBlock>
+            </div>
+          ), note: 'A note that guesses between two clients is a note that will be believed. When there are two readings, Sentinel asks.' },
+          { label: 'Refused → ConstraintCallout', node: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+              <UserBubble text="₹60,00,000" />
+              <ConstraintCallout eyebrow="That does not fit" body="₹60,00,000 is above the ₹50 L ceiling on Meera's mandate. I have not applied it." />
+            </div>
+          ), note: 'Understood perfectly, and not applied. That is not a parse note — it is a constraint, and it needs the peach surface.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Bubble, actions, note, then the answer. The note sits between what the advisor said and what Sentinel did about it — which is exactly where a misread has to be caught.">
+        <Thread
+          dock={<Dock composer={<MoneyComposer onSend={() => {}} placeholder="or type another amount" />} />}>
+          <UserBubble text="Start a SIP for Meera at 1.8 lakh" />
+          <MessageActions role="user" />
+          <ParseNote text="understood as ₹1,80,000" />
+          <SentinelBlock><SentinelText text="That is above the ₹50,000 monthly cap in her mandate." /></SentinelBlock>
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props"><Props src="../components/chat/ParseNote.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+            <UserBubble text="1.8 lakh" />
+            <ParseNote text="understood as ₹1,80,000" />
+          </div>}
+          doCaption="States the resolved value in full, in the form the advisor will check against a statement. Wrong is obvious at a glance, which is the only test this component has to pass."
+          dontNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+            <UserBubble text="1.8 lakh" />
+            <ParseNote text="input parsed successfully" />
+          </div>}
+          dontCaption="Never a status. “Parsed successfully” is a claim about the software, not about the money — it cannot be wrong, so it cannot be checked, and it takes the one line that could have caught a ₹18,00,000 typo." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="One fade, and it is the same one SentinelText uses — because this line is Sentinel speaking, quietly, under the advisor's own words.">
+        <Motion rows={[
+          { name: 'Enter', property: 'ds-fade — opacity 0 → 1', duration: '300 ms', reduced: 'Unchanged — already opacity only.' },
+          { name: 'Change', property: 'none — a note is not re-parsed in place', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

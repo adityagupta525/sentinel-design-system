@@ -2,8 +2,8 @@
  "generated": "2026-09-18",
  "generator": "scripts/build-index.js",
  "counts": {
-  "building": 49,
-  "shipped": 36
+  "building": 44,
+  "shipped": 41
  },
  "rows": [
   {
@@ -335,8 +335,8 @@
   {
    "name": "Composer",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "Composer.html",
    "file": "components/composer/Composer.jsx",
    "tokens": [
     "--color-bronze",
@@ -420,8 +420,8 @@
   {
    "name": "DetourBanner",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "DetourBanner.html",
    "file": "components/chat/DetourBanner.jsx",
    "tokens": [
     "--color-bronze-deep",
@@ -533,8 +533,8 @@
   {
    "name": "MessageActions",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "MessageActions.html",
    "file": "components/chat/MessageActions.jsx",
    "tokens": [
     "--color-muted",
@@ -575,8 +575,8 @@
   {
    "name": "ParseNote",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ParseNote.html",
    "file": "components/chat/ParseNote.jsx",
    "tokens": [
     "--color-muted",
@@ -728,8 +728,8 @@
   {
    "name": "SentinelBlock",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "SentinelBlock.html",
    "file": "components/chat/SentinelBlock.jsx",
    "tokens": [
     "--color-muted",

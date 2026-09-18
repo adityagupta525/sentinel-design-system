@@ -1,0 +1,120 @@
+<!-- @dsCard group="Pages" viewport="1000x1600" name="MessageActions" subtitle="Copy, Edit, Retry — last message only, as text, because the chip row is right below" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>MessageActions — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { MessageActions, UserBubble, SentinelBlock, SentinelText, ParseNote, ChipRow, AnswerChip, Composer, Dock, QAPair, ConstraintCallout } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-muted','--type-meta-font','--text-11-5','--leading-16','--space-16','--h-touch','--ease'];
+
+function Live() {
+  const [last, setLast] = React.useState(null);
+  return (
+    <div>
+      <SentinelBlock><SentinelText text="Yes — 31.0% against a 25% ceiling." /></SentinelBlock>
+      <MessageActions role="assistant" onAction={setLast} />
+      <p style={{ ...window.pageNote, fontSize: 11 }}>{last === null ? 'Tap Copy or Retry.' : <React.Fragment>onAction received <code style={{fontFamily:'ui-monospace, monospace'}}>"{last}"</code>.</React.Fragment>}</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="MessageActions" group="Chat" status="shipped"
+      requires={['MessageActions','UserBubble','SentinelBlock','SentinelText','ParseNote']}
+      summary="Copy, Edit, Retry — under the LAST message only, as text, never as pills. At 375pt a row under every turn is noise, and a row of ghost pills here would compete with the chip row directly below it.">
+
+      <Block n={1} title="Specimen" sub="Live, under an assistant turn. Tap one.">
+        <Specimen width={343}><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The row is 44pt tall and looks like it is not. Each action is a 44pt button whose vertical padding the row then pulls back out with a negative margin — so the touch target is legal and the optical spacing still reads as “just under the bubble”.">
+        <Anatomy width={343}
+          top="Aligned to its message: left under an assistant turn, right under the advisor's"
+          left="Each action: minHeight 44pt with 12pt vertical padding — the target is real, not a hitbox trick"
+          right="16pt between actions. The row's margin is -8pt top and -10pt bottom, cancelling that padding optically"
+          bottom="--type-meta-font (11.5px medium) on --color-muted. Text, never a pill, never an icon">
+          <div><SentinelBlock><SentinelText text="Yes — 31.0% against a 25% ceiling." /></SentinelBlock><MessageActions role="assistant" /></div>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="The role picks both the alignment and the default actions. Passing `actions` overrides the defaults but not the alignment — that stays with the speaker.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: "role='assistant' → Copy, Retry, left", node: <div><SentinelBlock><SentinelText text="Two-thirds of the drift is the small-cap rally." /></SentinelBlock><MessageActions role="assistant" /></div>, note: 'Copy takes the answer to a client email. Retry asks the same question again.' },
+          { label: "role='user' → Edit, right", node: <div><UserBubble text="Rebalance him to 60% equity" /><MessageActions role="user" /></div>, note: 'One action, on the advisor\'s side, under their own words.' },
+          { label: "actions overridden", node: <div><SentinelBlock><SentinelText text="Three moves, all inside the equity sleeve." /></SentinelBlock><MessageActions role="assistant" actions={['copy']} /></div>, note: 'Retry dropped: this answer took a compliance shelf query, and re-running it is not free.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="No visual states — no disabled, no pressed tint, no “Copied!” confirmation. What it does have is one action with a consequence.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Edit on a journey answer is Edit on a DECISION', node: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+              <QAPair question="What is the horizon?" answer="7 years" />
+              <MessageActions role="user" />
+              <ConstraintCallout eyebrow="Before you edit" body="Editing this reopens question 7. The four answers after it will be asked again." />
+            </div>
+          ), note: 'The contract says onAction must warn what it costs BEFORE discarding anything. Silent data loss is not acceptable in an advisory tool, and the warning is the caller\'s job — this component only reports the tap.' },
+          { label: 'Under the last message only', node: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+              <UserBubble text="Is he over his ceiling?" />
+              <SentinelBlock><SentinelText text="Yes — 31.0% against 25%." /></SentinelBlock>
+              <UserBubble text="And the debt leg?" />
+              <SentinelBlock><SentinelText text="Inside the mandate, 24% against a 20–30% band." /></SentinelBlock>
+              <MessageActions role="assistant" />
+            </div>
+          ), note: 'Four turns, one row. Rendering it under all four would put eight 44pt targets in a 375pt column above the dock.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Between the answer and the chips. This is the crowding the “text, never pills” rule exists to prevent — read this block and then imagine the row as ghost pills.">
+        <Thread
+          before={<React.Fragment>
+            <UserBubble text="Start a SIP for Meera at 1.8 lakh" />
+            <MessageActions role="user" />
+            <ParseNote text="understood as ₹1,80,000" />
+          </React.Fragment>}
+          dock={<Dock
+            chips={<ChipRow><AnswerChip label="Use the ₹50,000 cap" onClick={() => {}} /><AnswerChip label="Amend the mandate" onClick={() => {}} /></ChipRow>}
+            composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <SentinelBlock><SentinelText text="That is above the ₹50,000 monthly cap in her mandate." /></SentinelBlock>
+          <MessageActions role="assistant" />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props"><Props src="../components/chat/MessageActions.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div><SentinelBlock><SentinelText text="Yes — 31.0% against a 25% ceiling." /></SentinelBlock><MessageActions role="assistant" /></div>}
+          doCaption="Two words, muted, under the last turn. They are available to anyone looking for them and invisible to anyone reading the answer."
+          dontNode={<div>
+            <SentinelBlock><SentinelText text="Yes — 31.0% against a 25% ceiling." /></SentinelBlock>
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+              {['Copy', 'Retry', 'Share'].map((l) => <span key={l} style={{ display: 'inline-flex', alignItems: 'center', height: 32, borderRadius: 'var(--radius-full)', padding: '0 12px', background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)', fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 12, color: 'var(--color-ink)' }}>{l}</span>)}
+            </div>
+          </div>}
+          dontCaption="Never pills. Directly below this sits the chip row — the advisor's actual next move — and three ghost pills here read as the same kind of thing, so the eye stops at the wrong row. Text is what makes these secondary." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="None at all. An action row that animates draws attention to itself, which is the opposite of its job.">
+        <Motion rows={[
+          { name: 'Press', property: 'none — a plain button, not Pressable', duration: '—', reduced: 'Unchanged.' },
+          { name: 'Enter', property: 'none', duration: '—', reduced: 'Unchanged. It appears with its message.' },
+          { name: 'Copy feedback', property: 'none in this component — the caller decides', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

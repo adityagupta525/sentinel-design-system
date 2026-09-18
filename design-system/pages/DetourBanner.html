@@ -1,0 +1,132 @@
+<!-- @dsCard group="Pages" viewport="1000x1800" name="DetourBanner" subtitle="The journey you walked away from, kept — 32pt, quiet, and never a scold" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DetourBanner — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { DetourBanner, TopBar, ScreenBackdrop, StatusSpacer, HomeIndicator, ProgressRail, QAPair, SentinelBlock, SentinelText, UserBubble, Composer, Dock, ChipRow, AnswerChip } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-chip','--color-line','--color-muted','--color-bronze-deep','--radius-10','--radius-full','--space-12','--text-12','--dur-enter','--ease'];
+
+const Phone = ({ children }) => (
+  <div style={{ position: 'relative', width: 375, borderRadius: 24, overflow: 'hidden', boxShadow: '0 0 0 1px var(--ring-frame)' }}>
+    <ScreenBackdrop /><div style={{ position: 'relative' }}>{children}</div>
+  </div>
+);
+
+function Live() {
+  const [away, setAway] = React.useState(true);
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Phone>
+        <StatusSpacer /><TopBar onMenu={() => {}} onNew={() => {}} />
+        {away && <DetourBanner label="Risk journey · paused at 4 of 6" onResume={() => setAway(false)} />}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '12px 16px 16px' }}>
+          {away ? (
+            <React.Fragment>
+              <UserBubble text="Actually — what is Parag Parikh's expense ratio?" />
+              <SentinelBlock><SentinelText text="0.63% direct, 1.33% regular. As of 30 Sep." /></SentinelBlock>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <ProgressRail n={4} total={6} />
+              <SentinelBlock><SentinelText text="Back to it — is this corpus for her, or for both of them?" /></SentinelBlock>
+              <ChipRow><AnswerChip label="Her" onClick={() => {}} /><AnswerChip label="Both" onClick={() => {}} /></ChipRow>
+            </React.Fragment>
+          )}
+        </div>
+        <div style={{ padding: '0 16px 8px' }}><Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} /></div>
+        <HomeIndicator />
+        {!away && <div style={{ padding: '0 16px 12px' }}><button type="button" onClick={() => setAway(true)} style={{ appearance: 'none', border: 'none', cursor: 'pointer', borderRadius: 'var(--radius-full)', padding: '7px 14px', background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)', fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 11.5, color: 'var(--color-ink)' }}>Wander off again</button></div>}
+      </Phone>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="DetourBanner" group="Chat" status="shipped"
+      requires={['DetourBanner','TopBar','ScreenBackdrop','ProgressRail','QAPair']}
+      summary="The journey you walked away from, kept. Pinned under the top bar while the advisor asks about something else, so a six-question intake survives a client interrupting to ask about an expense ratio — and nothing is lost by answering them.">
+
+      <Block n={1} title="Specimen" sub="Live. Press Resume, then “Wander off again”.">
+        <Live />
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="32pt tall — under every row height in the system, deliberately. It is a reminder, not a row, and it has to cost almost none of a 375 × 812 screen.">
+        <Anatomy width={343}
+          top="Pinned under the TopBar with 16pt side margins — inset, so it reads as ON the thread, not as a second bar"
+          left="32pt tall, radius 10, --color-chip fill with a 1px --color-line ring. No shadow"
+          right="“Resume” is bold 12pt bronze-deep, Pressable — so it takes the 44pt hit extension and the focus ring"
+          bottom="Label 12pt medium muted. It states where the journey stopped, never just “paused”">
+          <div style={{ background: 'var(--color-canvas)', padding: '8px 0' }}>
+            <DetourBanner label="Risk journey · paused at 4 of 6" onResume={() => {}} />
+          </div>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="None. Two props, and the label is where all the judgement lives — it has to name the journey AND the position, because “paused” alone tells an advisor nothing about what resuming costs.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Named and positioned', node: <div style={{ background: 'var(--color-canvas)', padding: '6px 0' }}><DetourBanner label="Risk journey · paused at 4 of 6" onResume={() => {}} /></div>, note: 'Two of six left. The advisor can decide whether to finish it now or after the call.' },
+          { label: 'A proposal, mid-build', node: <div style={{ background: 'var(--color-canvas)', padding: '6px 0' }}><DetourBanner label="Proposal for Meera · paused at the shelf" onResume={() => {}} /></div>, note: 'Where there are no numbered steps, name the stage instead.' },
+          { label: 'Too vague', node: <div style={{ background: 'var(--color-canvas)', padding: '6px 0' }}><DetourBanner label="Paused" onResume={() => {}} /></div>, note: 'What NOT to pass. It names neither the journey nor the position, so Resume is a button into the unknown.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Rendered or not — the caller owns that. What matters is what it is paired with, and the rail is the pairing.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Away — banner, no rail', node: (
+            <div style={{ background: 'var(--color-canvas)', padding: '8px 0' }}>
+              <DetourBanner label="Risk journey · paused at 4 of 6" onResume={() => {}} />
+              <div style={{ padding: '12px 16px 0' }}><UserBubble text="What is Parag Parikh's expense ratio?" /></div>
+            </div>
+          ), note: 'The journey is not on screen, so its rail is not either. The banner is the only thing holding the place.' },
+          { label: 'Resumed — rail, no banner', node: (
+            <div style={{ background: 'var(--color-canvas)', padding: '8px 16px' }}>
+              <ProgressRail n={4} total={6} />
+              <div style={{ height: 10 }} />
+              <QAPair question="What is the horizon?" answer="7 years" />
+            </div>
+          ), note: 'Both at once would state the same fact twice, in two vocabularies, at the top of a 375pt screen.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="The whole reason it exists: a client interrupts, the advisor answers them, and the intake is still there afterwards.">
+        <Live />
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props"><Props src="../components/chat/DetourBanner.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ background: 'var(--color-canvas)', padding: '6px 0' }}><DetourBanner label="Risk journey · paused at 4 of 6" onResume={() => {}} /></div>}
+          doCaption="Quiet, inset, 32pt, with one action. It holds the advisor's place without competing with the answer they came here for."
+          dontNode={<div style={{ background: 'var(--color-canvas)', padding: '6px 0' }}>
+            <div style={{ margin: '0 16px', display: 'flex', height: 44, alignItems: 'center', justifyContent: 'space-between', borderRadius: 'var(--radius-12)', background: 'var(--color-bubble)', padding: '0 12px', boxShadow: '0 0 0 1px var(--color-bubble-edge)' }}>
+              <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 13, color: 'var(--color-danger)' }}>Unfinished journey!</span>
+              <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 12, color: 'var(--color-bronze-deep)' }}>Resume</span>
+            </div>
+          </div>}
+          dontCaption="Never peach, never danger, never an exclamation mark. Wandering off is the product working as intended — the advisor asked a question and got an answer. A banner that scolds them for it teaches them not to ask." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="One entrance, the thread's own. Resuming is not animated: the journey does not slide back, it is simply there again.">
+        <Motion rows={[
+          { name: 'Enter', property: 'ds-rise — opacity 0 → 1, translateY(8px) → 0', duration: '240 ms (--dur-enter)', reduced: 'Fade only; no rise.' },
+          { name: 'Resume press', property: 'transform: scale(0.98) via Pressable', duration: '150 ms (--dur-press)', reduced: 'No scale.' },
+          { name: 'Dismiss', property: 'none — it is unmounted by the caller', duration: '—', reduced: 'Unchanged. There is no exit animation and no close control: the only way out is to finish or resume.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

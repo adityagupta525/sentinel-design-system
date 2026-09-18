@@ -532,6 +532,26 @@ Two details that were decisions rather than defaults:
 scrim. Left out because a trap needs a decision about what happens at the boundary, and this sheet
 holds exactly one control. Recorded rather than quietly skipped.
 
+### F-26 · Tier 1 is complete, and `Composer` had no page — *closed*
+Worth recording because of how it was nearly missed. `pages/Dock.html` is titled **"Dock & Composer"**
+and covers four composer states, so the component felt done. The index disagreed: it counts a page
+only at `pages/<Name>.html`, and `pages/Composer.html` did not exist — so the component that **rule 3
+is about** sat in the `building` column, correctly, while a human reading the page list would have
+said it was covered.
+
+The index was right and the impression was wrong. `Composer` now has its own page, and so do the four
+remaining chat-spine components — `SentinelBlock`, `MessageActions`, `ParseNote`, `DetourBanner`.
+
+**Tier 1 is closed at 41 of 85.** The definition, stated so the next tier is not argued about: every
+component that *carries one of the four rules*, or that the chat spine is *built from*. What is left
+is Tier 2 — chips, buttons, marks, icons, shells — components whose contract is short and whose
+behaviour is visible on a group board.
+
+One drift fixed on the way: `Composer.d.ts` listed its context placeholders as
+`… · canvas "Ask about this" · sheet …`. That surface was removed from the product in v5 and the
+placeholder outlived its name, exactly as the motion guideline outlived `--dur-canvas` (F-13). It is
+`artifact` now — which is where that placeholder actually appears.
+
 ---
 
 ## Considered and rejected

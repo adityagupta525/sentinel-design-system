@@ -1,0 +1,121 @@
+<!-- @dsCard group="Pages" viewport="1000x1700" name="Composer" subtitle="The ask bar — rule 3 as a component. On every screen, and nothing replaces it" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Composer — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Composer, MoneyComposer, Dock, ChipRow, AnswerChip, DarkButton, SentinelBlock, SentinelText, UserBubble, StandingDisclosure, ClientChip } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-line','--color-bronze','--color-ink','--color-muted','--radius-20','--radius-full','--space-12','--space-2','--shadow-composer','--focus-ring','--gradient-dark-cta','--text-14','--leading-20','--dur-press','--ease'];
+
+const PLACEHOLDERS = [
+  ['home', 'Ask Sentinel about a client, a fund, or a plan'],
+  ['thread', 'Ask Sentinel'],
+  ['answer', 'or type your answer'],
+  ['artifact', 'Ask about this'],
+  ['sheet', 'Ask a follow-up'],
+];
+
+function Live() {
+  const [v, setV] = React.useState('');
+  const [streaming, setStreaming] = React.useState(false);
+  const [sent, setSent] = React.useState(null);
+  return (
+    <div>
+      <Composer value={v} onChange={setV} streaming={streaming}
+        onSend={() => { setSent(v); setV(''); setStreaming(true); setTimeout(() => setStreaming(false), 2200); }}
+        onStop={() => setStreaming(false)} placeholder="Ask Sentinel" />
+      <p style={{ ...window.pageNote, fontSize: 11 }}>{streaming ? 'Streaming — the send arrow is a Stop square. Press it.' : sent === null ? 'Type something and press Enter or the arrow.' : <React.Fragment>Last sent: <code style={{fontFamily:'ui-monospace, monospace'}}>"{sent}"</code>. onSend takes no argument — the caller already holds the value.</React.Fragment>}</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="Composer" group="Composer" status="shipped"
+      requires={['Composer','MoneyComposer','Dock','ChipRow','AnswerChip','DarkButton','StandingDisclosure']}
+      summary="The ask bar. Rule 3 is about this component: it is on every screen, a CTA stacks above it and nothing replaces it. Two rows — the field, then attach and send — because a single-row composer cannot hold a 14/20 line of text and a 42pt disc without shrinking one of them.">
+
+      <Block n={1} title="Specimen" sub="Live. Type, press Enter, and watch the send disc become a Stop square for two seconds.">
+        <Specimen width={343}><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The field sits alone on the first row at full width. Nothing shares that line — not the attach control, not a character count, not a model picker — so a long question never wraps against a button.">
+        <Anatomy width={343}
+          top="Radius 20, surface, 12pt padding. 1px --color-line border, --shadow-composer at rest"
+          left="Field 14/20 medium ink, no border, no outline of its own — the CARD carries focus"
+          right="Attach: a 42pt disc with a 1px ring. Send: 42pt on the dark CTA gradient, 0.4 until there is text"
+          bottom="12pt between the two rows; 2pt of right padding so the send disc's optical edge lines up with the field's">
+          <Composer value="Why did Sharma's portfolio drift this quarter?" onChange={() => {}} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="No tone, no size. What changes is the placeholder, and it is the only thing in this component that knows which screen it is on.">
+        <Grid cols={1} itemWidth={343} items={PLACEHOLDERS.map(([where, text]) => ({
+          label: where, node: <Composer value="" onChange={() => {}} placeholder={text} />,
+          note: where === 'artifact' ? 'Set when an ArtifactCard expands. The composer does not move — only what it offers to talk about changes.' :
+                where === 'answer' ? 'During a journey, beside the chips. "or" because the chips are the offer and typing is the way out of them.' :
+                where === 'home' ? 'The longest one, and the only place the product says what it can be asked about.' :
+                where === 'sheet' ? 'Under an open sheet. The advisor can ask about the definition they are reading.' :
+                'Inside a thread, once the subject is established.',
+        }))} />
+      </Block>
+
+      <Block n={4} title="States" sub="Four, and the fourth is the one that matters: while Sentinel is talking, the same disc is a Stop. It never becomes a spinner, and it never disappears.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'Empty — send disabled at 0.4', node: <Composer value="" onChange={() => {}} />, note: 'Dimmed and inert. Visible, so the advisor knows where it will be.' },
+          { label: 'Typed — send live', node: <Composer value="Rebalance him to his mandate" onChange={() => {}} />, note: 'Enabled on the first non-whitespace character. Enter sends.' },
+          { label: 'Streaming — Stop in the send slot', node: <Composer value="" onChange={() => {}} streaming onStop={() => {}} />, note: 'Same disc, same 42pt, same place. A 13pt square, not an icon of one — an advisor stopping a wrong answer should not have to aim.' },
+          { label: 'Focused', node: <div><Composer value="" onChange={() => {}} autoFocus /><p style={{ ...window.pageNote, fontSize: 11 }}>Bronze border and the --focus-ring halo, over --dur-press. The field itself carries outline:none; the CARD is the indicator.</p></div>, note: 'autoFocus is on here so the state is visible without a click.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Rule 3, rendered. The CTA stacks ABOVE the composer inside the Dock — it never replaces it, so the advisor can always ask a question instead of approving.">
+        <Thread
+          before={<React.Fragment>
+            <UserBubble text="Rebalance Ravi to his mandate" />
+            <SentinelBlock><SentinelText text="Three moves. Two inside the equity sleeve." /></SentinelBlock>
+          </React.Fragment>}
+          dock={<Dock
+            chips={<ChipRow><AnswerChip label="Show the tax" onClick={() => {}} /><AnswerChip label="Why these three?" onClick={() => {}} /></ChipRow>}
+            cta={<DarkButton label="Approve all three" arrow full />}
+            composer={<Composer value="" onChange={() => {}} placeholder="Ask about any move" />} />}>
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="Controlled: the caller owns `value`. `onSend` takes no argument because the caller already has it — and `streaming` is the caller's knowledge, not something this component can detect.">
+        <Props src="../components/composer/Composer.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<Dock cta={<DarkButton label="Approve all three" arrow full />} composer={<Composer value="" onChange={() => {}} placeholder="Ask about any move" />} />}
+          doCaption="CTA above, composer below, both present. The advisor approves or asks — and asking does not cost them the approval."
+          dontNode={<div style={{ padding: '6px 0' }}>
+            <DarkButton label="Approve all three" arrow full />
+            <p style={{ ...window.pageNote, fontSize: 11 }}>…and no ask bar on the screen at all.</p>
+          </div>}
+          dontCaption="Never swap the composer for a CTA. A screen that only offers Approve has taken the product away: the advisor's one remaining move is to commit money, and the question they wanted to ask first has nowhere to go (rule 3)." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="Two transitions and no entrance. The composer is already there when a screen arrives — it does not animate in, because it never went anywhere.">
+        <Motion rows={[
+          { name: 'Focus', property: 'border-color + box-shadow → --focus-ring', duration: '150 ms (--dur-press)', reduced: 'Appears at once; the ring is the indicator, not the fade.' },
+          { name: 'Send enable', property: 'opacity 0.4 → 1', duration: 'immediate', reduced: 'Unchanged — a state, not an animation.' },
+          { name: 'Send → Stop', property: 'the node is swapped in place', duration: 'immediate', reduced: 'Unchanged. Nothing cross-fades; the disc must be hittable the instant streaming starts.' },
+          { name: 'Enter', property: 'none', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

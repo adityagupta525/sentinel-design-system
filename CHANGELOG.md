@@ -14,7 +14,9 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
   answer will cite.
 - Spec pages for **MoneyComposer, SentinelThinking, UserBubble, QAPair, SentinelText, ProgressTrace,
   List, ListRow, HeroNumberCard, AllocationCard, MoveCard, ConstraintCallout, DisclosureBlock, TopBar,
-  ExplainerSheet** — 36 of 85 components now have one.
+  ExplainerSheet, Composer, SentinelBlock, MessageActions, ParseNote, DetourBanner** — 41 of 85
+  components now have one, and **Tier 1 is complete**: every component that carries one of the four
+  rules, or that the chat spine is built from, has a page.
 - **`--color-alloc-equity` · `--color-alloc-cash` · `--color-alloc-track`** — three tokens the
   contracts named and the token layer never defined. Aliased to the values the app already used.
 
