@@ -1,0 +1,19 @@
+<!-- @dsCard group="Fixture" viewport="500x900" name="Gutter fixture — broken" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, Dock" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Gutter fixture — broken</title>
+<link rel="stylesheet" href="../../design-system/styles.css">
+<style>body{margin:0;background:var(--color-desk)}</style>
+</head><body><div id="root">
+  <!-- A phone: 375x812, overflow hidden, big radius — the signature the guard looks for. -->
+  <div style="position:relative;width:375px;height:812px;overflow:hidden;border-radius:44px;background:var(--color-canvas)">
+    <!-- full-bleed chrome: left 0, right 0. Exempt by geometry. -->
+    <div style="height:44px;background:var(--color-surface)">status</div>
+    <!-- THE DEFECT: parent pads 16 each side, child is width:100% and content-box with its own
+         12px padding, so it renders 367 wide starting at 16 and runs 8pt past the right edge. -->
+    <div style="padding:24px 16px 0">
+      <div style="width:100%;padding:0 12px;background:var(--color-surface);border-radius:16px">
+        <p style="margin:0;padding:12px 0;font-family:var(--font-ui)">This card breaks the right gutter</p>
+      </div>
+    </div>
+  </div>
+</div></body></html>

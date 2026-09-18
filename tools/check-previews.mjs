@@ -17,6 +17,11 @@ const DS = join(HERE, '..', 'design-system');
 /* screens/ is a second tree, walked the same way and served by the same server's repository-root
    fallback. Its pages are prefixed so a screen and a spec page can never collide on a shot name. */
 const SCREENS = join(HERE, '..', 'screens');
+/* --self-test runs the guard against two fixtures instead of the repository: one that breaks the
+   right gutter by exactly the mistake that got past 75/75, and the same markup with box-sizing put
+   back. A guard that has never been seen to fail is not a guard. */
+const FIXTURES = join(HERE, 'fixtures');
+const SELF_TEST = process.argv.includes('--self-test');
 /* A free port, asked for rather than assumed. A fixed one meant two runs at once shared a server, and
    whichever finished first killed it out from under the other — which reports every remaining page as
    a failure that never happened. A harness that can invent failures is worse than no harness. */
@@ -33,6 +38,54 @@ const JSON_OUT = arg('--json');
 /* Viewport comes from the page's own @dsCard marker where it has one — the card says how wide the
    design is meant to be seen, and shooting it at some other width measures nothing. */
 const CARD = /<!--\s*@dsCard([^>]*?)-->/;
+const GUTTER = /<!--\s*@gutter([^>]*?)-->/;
+/* ── The gutter guard ──────────────────────────────────────────────────────────────────────────────
+   check-previews asks "did it render and did it throw". It never asked "is it inside the screen", so
+   a card that ran 8pt past the right edge passed 75/75 while being visibly clipped by the phone.
+   Found 18 Sep 2026 on screens/journey-b/01-home.html: a width:100% child with its own 12px padding
+   and no box-sizing renders 367 wide inside a 343 box.
+
+   What it checks: inside every phone frame (375x812, overflow hidden, a large radius), an element must
+   sit at least `min` points from both edges.
+
+   What it does not check, and why:
+   · FULL-BLEED, by geometry — left 0 AND right 0. The backdrop, the status bar, the top bar, the
+     greeting row, the dock and the home indicator are all deliberately edge to edge. The page names
+     them in its own @gutter marker so the exemption is readable rather than implied.
+   · CLIPPED, by an ancestor between the element and the phone whose overflow-x is hidden/auto/scroll/
+     clip. ScreenBackdrop's two aura blobs sit at left:-93 and right:-120 inside an overflow:hidden
+     box; they cannot break a gutter they cannot reach. The phone itself is excluded from that scan on
+     purpose — the phone clipping something IS the bug.
+   · Anything with no area.
+   Run `node tools/check-previews.mjs --self-test` to watch it fail on tools/fixtures/gutter-broken.html
+   and pass on gutter-ok.html. */
+const GUTTER_PROBE = (min) => {
+  const phones = [...document.querySelectorAll('div')].filter((d) => {
+    const r = d.getBoundingClientRect(), cs = getComputedStyle(d);
+    return Math.round(r.width) === 375 && Math.round(r.height) === 812
+      && cs.overflow.includes('hidden') && parseFloat(cs.borderTopLeftRadius) > 20;
+  });
+  const bad = [];
+  for (const phone of phones) {
+    const pr = phone.getBoundingClientRect();
+    for (const el of phone.querySelectorAll('*')) {
+      const r = el.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) continue;
+      let clipped = false;
+      for (let a = el.parentElement; a && a !== phone; a = a.parentElement) {
+        if (/hidden|auto|scroll|clip/.test(getComputedStyle(a).overflowX)) { clipped = true; break; }
+      }
+      if (clipped) continue;
+      const L = Math.round(r.left - pr.left), R = Math.round(pr.right - r.right);
+      if (L === 0 && R === 0) continue;
+      if (L < min || R < min) {
+        bad.push(`<${el.tagName.toLowerCase()}> left ${L} right ${R} width ${Math.round(r.width)} — "${(el.textContent || '').trim().slice(0, 32)}"`);
+      }
+    }
+  }
+  return { phones: phones.length, bad: [...new Set(bad)] };
+};
+
 const ATTR = (s, k) => (new RegExp(`${k}="([^"]*)"`).exec(s) || [])[1];
 
 async function* walk(dir) {
@@ -44,7 +97,7 @@ async function* walk(dir) {
 
 const { readFile } = await import('node:fs/promises');
 const pages = [];
-for (const [base, prefix] of [[DS, ''], [SCREENS, 'screens/']]) {
+for (const [base, prefix] of (SELF_TEST ? [[FIXTURES, 'tools/fixtures/']] : [[DS, ''], [SCREENS, 'screens/']])) {
  let any = false;
  try { for await (const _ of walk(base)) { any = true; break; } } catch { continue; }
  if (!any) continue;
@@ -67,7 +120,11 @@ for (const [base, prefix] of [[DS, ''], [SCREENS, 'screens/']]) {
      at all. Requiring exactly one failed all 17 of them the first time this check ran. */
   if (count(/id="root"/g) > 1) structure.push(`id="root" appears ${count(/id="root"/g)}\u00d7 — must be at most 1`);
   if (count(/page-kit\.jsx/g) > 1) structure.push(`page-kit.jsx loaded ${count(/page-kit\.jsx/g)}\u00d7 — must be at most 1`);
-  pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400, structure });
+  const gutterMark = GUTTER.exec(text.slice(0, 900))?.[1] ?? '';
+  const gutterMin = Number(ATTR(gutterMark, 'min') || 16);
+  const fullBleed = ATTR(gutterMark, 'fullBleed') || '';
+  pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400, structure,
+               gutter: prefix === 'screens/' || rel.startsWith('tools/'), gutterMin, fullBleed });
  }
 }
 pages.sort((a, b) => a.rel.localeCompare(b.rel));
@@ -103,8 +160,14 @@ for (const p of pages) {
     await page.waitForTimeout(1200);
   } catch (e) { errors.push('DID NOT MOUNT ' + e.message.slice(0, 120)); }
   const mounted = await page.evaluate(() => (document.getElementById('root') || document.body).innerHTML.length).catch(() => 0);
+  /* The gutter guard, on screens only: a spec page is a specimen board and has no screen edges. */
+  let gutter = null;
+  if (p.gutter) {
+    gutter = await page.evaluate(`(${GUTTER_PROBE.toString()})(${p.gutterMin})`).catch(() => null);
+    if (gutter && gutter.bad.length) for (const b of gutter.bad) errors.push(`GUTTER ${b}`);
+  }
   if (SHOTS) await page.screenshot({ path: join(SHOTS, `${p.name}.png`), fullPage: true }).catch(() => {});
-  results.push({ ...p, errors, missing, mounted });
+  results.push({ ...p, errors, missing, mounted, gutter });
   await page.close();
 }
 await browser.close();
@@ -113,9 +176,24 @@ stop();
 const bad = results.filter((r) => r.errors.length || r.missing.length || r.mounted < 200);
 for (const r of results) {
   const flag = r.errors.length || r.missing.length ? 'FAIL' : r.mounted < 200 ? 'EMPTY' : 'ok';
-  console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}`);
+  console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}${r.gutter ? `  gutter>=${r.gutterMin} on ${r.gutter.phones} phone${r.gutter.phones === 1 ? '' : 's'}` : ''}`);
+  if (r.gutter && r.fullBleed) console.log(`         full-bleed by design: ${r.fullBleed}`);
   for (const e of [...r.errors, ...r.missing].slice(0, 4)) console.log(`         ↳ ${e}`);
 }
 if (JSON_OUT) await writeFile(JSON_OUT, JSON.stringify(results, null, 1));
+
+if (SELF_TEST) {
+  const broken = results.find((r) => r.rel.includes('gutter-broken'));
+  const ok = results.find((r) => r.rel.includes('gutter-ok'));
+  const brokeCount = broken ? broken.errors.filter((e) => e.startsWith('GUTTER')).length : -1;
+  const okCount = ok ? ok.errors.filter((e) => e.startsWith('GUTTER')).length : -1;
+  console.log(`\nself-test · gutter-broken reported ${brokeCount} gutter error(s) — expected at least 1`);
+  console.log(`self-test · gutter-ok     reported ${okCount} gutter error(s) — expected 0`);
+  const pass = brokeCount >= 1 && okCount === 0;
+  console.log(pass ? '\nself-test PASSED — the guard fails on the defect and passes on the fix.'
+                   : '\nself-test FAILED — a guard that cannot fail is not a guard.');
+  process.exit(pass ? 0 : 1);
+}
+
 console.log(`\n${results.length - bad.length}/${results.length} pages render clean.`);
 process.exit(bad.length ? 1 : 0);

@@ -48,3 +48,26 @@ node tools/check-previews.mjs # walks design-system/ AND screens/
 6. **Every figure carries provenance; every motion states its reduced-motion answer.** Both on the
    screen's own page, so a reviewer never has to take it on trust.
 7. **Rendered at 375 × 812 and looked at** before it is called done.
+8. **Nothing breaks the 16pt gutter.** `check-previews` enforces it on every `screens/` page: inside
+   each phone frame, an element must sit at least 16pt from both edges. Full-bleed chrome is exempt by
+   geometry — left 0 **and** right 0 — and each page names its own in a `@gutter` marker so the
+   exemption is readable:
+
+   ```html
+   <!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, Dock, HomeIndicator" -->
+   ```
+
+   Anything clipped by an `overflow` ancestor *below* the phone is skipped, because it cannot reach a
+   gutter it cannot escape — that is what exempts `ScreenBackdrop`'s two aura blobs at `left: -93` and
+   `right: -120`. The phone itself is excluded from that scan on purpose: the phone clipping something
+   **is** the bug.
+
+   This exists because it was missed. Screen 1 shipped a card 367pt wide in a 343 box, 8pt past the
+   right edge and visibly cut off, and `75/75 pages render clean` was true the whole time — the harness
+   asked whether the page rendered and threw, never whether it fitted. The cause was a `width: 100%`
+   child carrying its own `padding: 0 12px` without `box-sizing: border-box`, which is the one mistake
+   most likely to recur on every screen after it. Watch it fail:
+
+   ```bash
+   node tools/check-previews.mjs --self-test
+   ```

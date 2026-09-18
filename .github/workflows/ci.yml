@@ -50,5 +50,10 @@ jobs:
       - name: Token and import adherence
         run: npm run lint:adherence
 
+      - name: The gutter guard can still fail
+        # A guard that has never been seen to fail is not a guard. This runs it against a fixture
+        # carrying the exact defect it was written for, and against the same markup fixed.
+        run: node tools/check-previews.mjs --self-test
+
       - name: Every preview page renders without a console error
         run: node tools/check-previews.mjs
