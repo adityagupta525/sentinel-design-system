@@ -13,7 +13,8 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
   The motion is unchanged; omitting it renders exactly as before. The verb must name the source the
   answer will cite.
 - Spec pages for **MoneyComposer, SentinelThinking, UserBubble, QAPair, SentinelText, ProgressTrace,
-  List, ListRow, HeroNumberCard, AllocationCard** — 31 of 85 components now have one.
+  List, ListRow, HeroNumberCard, AllocationCard, MoveCard, ConstraintCallout, DisclosureBlock, TopBar,
+  ExplainerSheet** — 36 of 85 components now have one.
 - **`--color-alloc-equity` · `--color-alloc-cash` · `--color-alloc-track`** — three tokens the
   contracts named and the token layer never defined. Aliased to the values the app already used.
 
@@ -27,7 +28,14 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
 - `Composer` and `MoneyComposer` each carried the same placeholder stylesheet inside themselves (F-14).
 - **The allocation bar was drawing Equity and Cash invisibly** on the cards board, because two of the
   three tokens its own contract names did not exist (F-19).
-- `AllocationCard` hardcoded `42` where `--h-row: 42px` exists and names it in its comment (F-20).
+- `AllocationCard` hardcoded `42` where `--h-row: 42px` exists and names it in its comment (F-20),
+  and three more of the same: `MoveCard` and `AttributionChart` spelled out a display **type role** by
+  hand, `SuggestionRow` hardcoded `--h-row`, `TopBar` hardcoded `--h-topbar` (F-24). Proven a no-op by
+  hashing five board screenshots before and after — all five byte-identical.
+- **`ExplainerSheet` was not a dialog.** No role, no `aria-modal`, no label; Escape did nothing; focus
+  stayed outside the scrim, and the scrim is a `<div onClick>` so it was not a keyboard exit either.
+  Now a labelled `role="dialog"` that Escape closes, with focus moving in and back out to the opener.
+  Tab is still not trapped — logged, not skipped (F-25).
 - **`ProgressTrace` printed `Thought for 4s · 4s`** whenever a finished trace was reopened — live in
   the product, not only in a specimen — and a frozen trace could not reach the done state at all, so
   no page had ever shown that header (F-22).

@@ -43,7 +43,7 @@ export function AttributionChart({ from, to, targetLabel = 'Target', target, con
       <div style={{ margin: '12px 0 8px', height: 'var(--border-hairline)', width: '100%', background: 'var(--color-line)' }} />
       <div style={cap}>
         <p style={capLabel}>{todayLabel}</p>
-        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 'var(--weight-medium)', fontSize: 40, lineHeight: 1, color: 'var(--color-bronze-deep)' }}>{skeleton ? from : shown}%</span>
+        <span style={{ font: 'var(--type-total-font)', color: 'var(--color-bronze-deep)' }}>{skeleton ? from : shown}%</span>
       </div>
     </div>
   );

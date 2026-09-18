@@ -1,0 +1,101 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="MoveCard" subtitle="One instruction, numbered — what to do, and why, in terms of the mandate" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>MoveCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { MoveCard, SentinelBlock, SentinelText, Provenance, UserBubble, Composer, Dock, DarkButton, ConstraintCallout } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-bronze-deep','--color-ink','--color-muted','--radius-16','--space-12','--shadow-card','--type-figure-font','--display-24','--text-15','--leading-22','--text-13','--leading-18','--ease'];
+
+const MOVES = [
+  { n: 1, title: 'Move ₹4,20,000 out of Quant Small Cap', body: 'Into Parag Parikh Flexi Cap. Small cap is 31% against a 25% ceiling.' },
+  { n: 2, title: 'Move ₹2,00,000 out of HDFC Liquid', body: 'Into ICICI Corporate Bond. Idle since March; the mandate allows debt.' },
+  { n: 3, title: 'Leave the ELSS alone', body: 'Still in its three-year lock-in until 12 Feb. Nothing to do here.' },
+];
+
+function App() {
+  return (
+    <PageShell
+      name="MoveCard" group="Cards" status="shipped"
+      requires={['MoveCard','SentinelBlock','SentinelText','Provenance','ConstraintCallout']}
+      summary="One instruction, numbered. A display numeral in the margin, what to do in the title, and why in the line under it — so an advisor can read a rebalance to a client in order and stop at any number.">
+
+      <Block n={1} title="Specimen" sub="One card. The numeral is the only display-type in it and it sits outside the text column.">
+        <Specimen width={343}><MoveCard {...MOVES[0]} /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The numeral hangs in its own column, so titles of any length still line up with each other down a list — which is what makes three moves read as one plan rather than three cards.">
+        <Anatomy width={343}
+          top="13pt / 14pt padding, radius 16, surface, card shadow — the standard card, not a variant"
+          left="Numeral: --type-figure-font (Darker Grotesque 24/1, bronze-deep). 12pt to the text column"
+          right="Title 15/22 medium ink. Body 13/18 regular muted, 3pt under it"
+          bottom="No divider, no chevron, no action. A move card is a statement, and the approval lives in the dock">
+          <MoveCard {...MOVES[0]} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="None. Three props and no tone, because a move that is bad news is still a move — the constraint that makes it bad goes in a ConstraintCallout above the list, where it applies to the whole plan.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'The only form there is', node: <MoveCard {...MOVES[1]} />, note: 'If a single move needs a warning of its own, that is a sign the plan is wrong, not that this card needs a tone.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="No interactive states — nothing here is pressable. What varies is length, and a move that is an instruction not to act.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'A long title', node: <MoveCard n={1} title="Move ₹4,20,000 out of Quant Small Cap and into Parag Parikh Flexi Cap" body="Small cap is 31% against a 25% ceiling." />, note: 'Wraps freely; the numeral stays on the first line and the text column holds its left edge.' },
+          { label: 'A move that is “do nothing”', node: <MoveCard {...MOVES[2]} />, note: 'Numbered like the rest. An advisor reading a plan aloud needs the untouched holdings accounted for, or the client asks about them anyway.' },
+          { label: 'Two digits', node: <MoveCard n={12} title="Move ₹80,000 out of Axis Bluechip" body="Into the same flexi cap as move 1." />, note: 'The numeral column is not fixed-width; at 12 the text column shifts right. Fine to 99, and a 12-move rebalance is a different problem.' },
+          { label: 'Short body', node: <MoveCard n={4} title="Stop the Quant SIP" body="From 1 Nov." />, note: 'The card shrinks to its content. There is no minimum height.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Numbered down a thread under the constraint that shaped them, with the approval in the dock — never on the cards.">
+        <Thread
+          before={<React.Fragment>
+            <UserBubble text="Rebalance Ravi to his mandate" />
+            <SentinelBlock><SentinelText text="Three moves. Two inside the equity sleeve, so the debt leg is untouched." /></SentinelBlock>
+            <ConstraintCallout eyebrow="Before you approve" body="Move 1 realises ₹38,000 of short-term gain. There is no exit load." />
+          </React.Fragment>}
+          dock={<Dock cta={<DarkButton label="Approve all three" arrow full />} composer={<Composer value="" onChange={() => {}} placeholder="Ask about any move" />} />}>
+          {MOVES.map((m) => <MoveCard key={m.n} {...m} />)}
+          <Provenance text="As of 30 Sep · from his Q3 statement" />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens" sub="The numeral was the literals font-display / weight-medium / 24 / 1 until v12, while --display-24 carried the comment “MoveCard numeral” and --type-figure-font already wrapped it. InfoCard and StatTile took the role; this component spelled it out beside them (F-24).">
+        <Tokens names={TOK} />
+      </Block>
+
+      <Block n={7} title="Props"><Props src="../components/cards/MoveCard.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+            <MoveCard {...MOVES[0]} />
+            <MoveCard {...MOVES[1]} />
+          </div>}
+          doCaption="Each body says WHY, in terms of the mandate. “Small cap is 31% against a 25% ceiling” is a sentence an advisor can repeat to a client without looking anything up."
+          dontNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+            <MoveCard n={1} title="Rebalance equity" body="Optimises the portfolio." />
+            <MoveCard n={2} title="Adjust debt allocation" body="Improves the risk profile." />
+          </div>}
+          dontCaption="Never a body that could be written before the data was read. “Optimises the portfolio” names no amount, no fund and no rule — and an advisor asked “why this one?” has nothing to say." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="None of its own. The card inherits whatever the thread gives it, which is the same entrance every card in the stack takes.">
+        <Motion rows={[
+          { name: 'Enter', property: 'none in the component; the thread applies ds-rise with a 60ms stagger', duration: '240 ms (--dur-enter)', reduced: 'Fade only; no rise.' },
+          { name: 'Press', property: 'none — the card is not interactive', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

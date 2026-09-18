@@ -471,6 +471,67 @@ no `#root` at all, and the rule asked for exactly one rather than at most one. R
 the same mistake one level up: a check written from what the five broken pages looked like rather than
 from what every page in the system looks like.
 
+### F-24 · Four tokens written FOR a component, which that component then ignored — *fixed*
+F-20 found `AllocationCard` hardcoding `42` beside `--h-row: 42px`, whose own comment names
+`AllocationCard`. That looked like one slip. It is a pattern, and a scan of every token whose comment
+names a component found three more:
+
+| Token | Its own comment | The component |
+|---|---|---|
+| `--display-24` | *"MoveCard numeral"* | `MoveCard` set `font-display / weight-medium / 24 / 1` by hand |
+| `--display-40` | *"AttributionChart total"* | `AttributionChart` did the same at 40 |
+| `--h-row` | *"SuggestionRow, AllocationCard rows"* | `SuggestionRow` set `height: 42` |
+| `--h-topbar` | — (44px) | `TopBar` set `height: 44` |
+
+Each has an in-system precedent doing it right: `HeroNumberCard` takes `--type-display-font`,
+`GreetingDivider` takes `--type-greeting-font`, `InfoCard` and `StatTile` take `--type-figure-font`.
+The two display cases are not even about the size — the whole four-property block is already a **type
+role**, so the fix is `font: var(--type-figure-font)` rather than swapping one number for one token.
+
+**Proven a no-op, not assumed.** The four boards that render these components — `cards.card.html`,
+`data.card.html`, `actions.card.html`, `shell.card.html` — plus `ui_kits/sentinel-app` were screenshotted
+before and after and compared by hash. **All five byte-identical.**
+
+Two cases were left alone on purpose:
+
+- `Pressable` hardcodes `44` inside `Math.max(0, (44 - box.height) / 2)`. That is JavaScript
+  arithmetic on a measured box, not a style value; reading `--h-touch` out of the computed style to
+  feed it would cost a layout read per instance to remove one literal.
+- `ListRow` hardcodes `56` beside `--h-row-md: 56px`, but in the same expression as the `72` that has
+  no token at all. Substituting one and not the other would make the line read as though 72 were the
+  deliberate exception. It waits on **F-21**.
+
+### F-25 · The bottom sheet was not a dialog, and a keyboard could barely leave it — *fixed, one part open*
+Measured in a browser while writing the spec page, because none of it is visible:
+
+| | Before |
+|---|---|
+| `role` on the sheet | `null` — an anonymous `<div>` |
+| `aria-modal`, `aria-label` | `null`, `null` |
+| Focus when it opens | stays on the control that opened it, **outside the scrim** |
+| Escape | does nothing — sheet count 7 before, 7 after |
+| The scrim | a `<div onClick>`, so not a keyboard exit either |
+
+The only way out with a keyboard was to Tab forward until "Got it" came round. It survived twelve
+versions because every one of those facts is invisible in a screenshot.
+
+Now: `role="dialog"`, `aria-modal="true"`, `aria-label={title}`, Escape closes, focus moves into the
+sheet on open and **returns to whatever opened it** on close — all four verified in the browser after
+the change, including the focus restore.
+
+Two details that were decisions rather than defaults:
+
+- Focus moves on the `false → true` **transition** only, never on mounting already-open. The spec page
+  renders six open specimens; each grabbing focus on mount would fight the others and scroll the page.
+- **No `outline: none` on the dialog root.** A programmatic `.focus()` on `tabIndex={-1}` does not
+  satisfy `:focus-visible`, so no ring is painted anyway — verified rendered — and switching the
+  browser's indicator off with nothing in its place is the exact mistake `Pressable` was corrected for
+  in v11.
+
+**Open:** Tab is not trapped, so focus can still walk out of the sheet into the content behind the
+scrim. Left out because a trap needs a decision about what happens at the boundary, and this sheet
+holds exactly one control. Recorded rather than quietly skipped.
+
 ---
 
 ## Considered and rejected

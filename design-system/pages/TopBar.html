@@ -1,0 +1,106 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="TopBar" subtitle="Drawer, name, new thread — no back button, no screen title, no fill" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>TopBar — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { TopBar, ScreenBackdrop, StatusSpacer, HomeIndicator, SentinelBlock, SentinelText, UserBubble, Composer, Dock, GreetingDivider } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-line','--color-ink','--radius-full','--h-topbar','--h-touch','--space-16','--shadow-card','--dur-press','--ease'];
+
+/* The bar over the real backdrop, at real width — it is transparent, so on any other background it is
+   not the component the product ships. */
+const OnCanvas = ({ children }) => (
+  <div style={{ position: 'relative', width: 375, borderRadius: 24, overflow: 'hidden', boxShadow: '0 0 0 1px var(--ring-frame)' }}>
+    <ScreenBackdrop />
+    <div style={{ position: 'relative' }}>{children}</div>
+  </div>
+);
+
+function App() {
+  return (
+    <PageShell
+      name="TopBar" group="Shell" status="shipped"
+      requires={['TopBar','ScreenBackdrop','StatusSpacer','HomeIndicator','GreetingDivider']}
+      summary="Three things and nothing else: the drawer, the name, a new thread. It has no background of its own — the canvas shows through — so the thread scrolls under it rather than into a bar, and there is no back button anywhere in this product.">
+
+      <Block n={1} title="Specimen" sub="On the product backdrop, at 375. The bar is transparent; on a white page it would look like a different component.">
+        <div style={{ display: 'flex', justifyContent: 'center', borderRadius: 16, background: 'var(--color-desk)', padding: '28px 24px' }}>
+          <OnCanvas><StatusSpacer /><TopBar onMenu={() => {}} onNew={() => {}} /><div style={{ height: 28 }} /></OnCanvas>
+        </div>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The centre pill is the only thing in this product that carries the name, and it is a label — not a button, not a menu, not a title that changes with the screen.">
+        <Anatomy width={343}
+          top="--h-topbar (44pt) tall, 16pt side padding. No fill and no border: the canvas is the background"
+          left="Menu disc renders at 40pt. Pressable measures the rendered box and extends anything under 44 with a transparent ::before, so it answers to a 44pt touch"
+          right="New-thread disc is 44pt. Both are --radius-full and both press to 0.94"
+          bottom="Centre pill: surface, full radius, card shadow plus a 1px line, 14pt semibold ink. It never says the screen's name">
+          <div style={{ background: 'var(--color-canvas)' }}><TopBar onMenu={() => {}} onNew={() => {}} /></div>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="One prop that changes what you see, and it is the pill's label. Changing it is rare and it is not a page title.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Default — “Sentinel”', node: <div style={{ background: 'var(--color-canvas)' }}><TopBar onMenu={() => {}} onNew={() => {}} /></div>, note: 'What every screen in the app renders. The advisor always knows which product they are in and never which screen.' },
+          { label: 'A bound client', node: <div style={{ background: 'var(--color-canvas)' }}><TopBar title="Ravi Menon" onMenu={() => {}} onNew={() => {}} /></div>, note: 'Legitimate when a whole thread is bound to one client. Note it still is not navigation — tapping it does nothing.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="No states. Both discs are Pressable, so the only thing that changes is the press, and neither disc has a disabled form.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'A long title', node: <div style={{ background: 'var(--color-canvas)' }}><TopBar title="Anil Sharma & family" onMenu={() => {}} onNew={() => {}} /></div>, note: 'The pill grows and the discs hold the edges. There is no truncation — a name cut in half is worse than a wide pill.' },
+          { label: 'Handlers omitted', node: <div style={{ background: 'var(--color-canvas)' }}><TopBar /></div>, note: 'Both discs still render and still press. They are specimens here; in the product, shipping this would give the advisor two controls that do nothing.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Status spacer, bar, then the thread — and the thread scrolls UNDER the bar, which is why the bar has no fill.">
+        <div style={{ display: 'flex', justifyContent: 'center', borderRadius: 16, background: 'var(--color-desk)', padding: '28px 24px' }}>
+          <OnCanvas>
+            <StatusSpacer />
+            <TopBar onMenu={() => {}} onNew={() => {}} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '12px 16px 16px' }}>
+              <GreetingDivider>Good morning</GreetingDivider>
+              <UserBubble text="Why did Sharma's portfolio drift this quarter?" />
+              <SentinelBlock><SentinelText text="Two-thirds of it is the small-cap rally. You did not cause it." /></SentinelBlock>
+            </div>
+            <div style={{ padding: '0 16px 8px' }}><Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} /></div>
+            <HomeIndicator />
+          </OnCanvas>
+        </div>
+      </Block>
+
+      <Block n={6} title="Tokens" sub="--h-topbar existed at 44px while this component hardcoded 44 beside it, one of four cases of a token written for a component the component then ignored (F-24).">
+        <Tokens names={TOK} />
+      </Block>
+
+      <Block n={7} title="Props"><Props src="../components/shell/TopBar.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ background: 'var(--color-canvas)' }}><TopBar onMenu={() => {}} onNew={() => {}} /></div>}
+          doCaption="Drawer, name, new thread. Everything an advisor needs to leave this thread is here, and nothing about the thread itself is."
+          dontNode={<div style={{ display: 'flex', height: 'var(--h-topbar)', alignItems: 'center', gap: 12, background: 'var(--color-surface)', padding: '0 16px', boxShadow: '0 1px 0 var(--color-line)' }}>
+            <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 15, color: 'var(--color-bronze-deep)' }}>‹ Back</span>
+            <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 15, color: 'var(--color-ink)' }}>Rebalance</span>
+          </div>}
+          dontCaption="No back button, and no screen title. There is nowhere to go back FROM — an artifact expands in place and the thread is one surface — so a back arrow promises a history that does not exist. A filled bar also gives the thread an edge to disappear behind instead of scrolling under." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="Two presses, and both are the icon-disc value rather than the card one.">
+        <Motion rows={[
+          { name: 'Disc press', property: 'transform: scale(0.94) via Pressable', duration: '150 ms (--dur-press)', reduced: 'No scale. The press still registers.' },
+          { name: 'Focus', property: 'outline 2px --border-focus + --focus-ring halo', duration: 'immediate', reduced: 'Unchanged — the ring is the indicator.' },
+          { name: 'Bar itself', property: 'none — it never hides, shrinks or collapses on scroll', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

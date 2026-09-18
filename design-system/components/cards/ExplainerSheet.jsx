@@ -1,12 +1,41 @@
 import React from 'react';
 import { Pill } from '../actions/Pill.jsx';
-/* C20 · explainer bottom sheet — 24px top radius, 44×5 grabber, "Got it" primary chip. */
+/* C20 · explainer bottom sheet — 24px top radius, 44×5 grabber, "Got it" primary chip.
+   v12 · IT IS A DIALOG, AND IT DID NOT SAY SO. Measured in a browser, not read off the source: the
+   sheet was an anonymous <div> with no role, no aria-modal and no label; Escape did nothing; and
+   opening it left focus on the control that opened it, outside the scrim. The scrim is a <div> with
+   onClick, so it was never a keyboard exit either — the only way out was to Tab forward until "Got it"
+   came round. None of that is visible, which is why it lasted twelve versions.
+   Focus moves on the false -> true TRANSITION only, never on mounting already-open: a spec page
+   renders six open specimens, and each one grabbing focus on mount would fight the others.
+   No `outline: none` on the dialog root: a programmatic .focus() on tabIndex={-1} does not satisfy
+   :focus-visible, so no ring is painted anyway — and switching the browser's indicator off with
+   nothing in its place is the exact mistake Pressable was corrected for in v11. Verified rendered. */
 export function ExplainerSheet({ open, title, body, onClose }) {
+  const ref = React.useRef(null);
+  const wasOpen = React.useRef(open);
+  const opener = React.useRef(null);
+  React.useEffect(() => {
+    if (open && !wasOpen.current) {
+      opener.current = document.activeElement;
+      if (ref.current) ref.current.focus();
+    } else if (!open && wasOpen.current) {
+      if (opener.current && opener.current.focus) opener.current.focus();
+      opener.current = null;
+    }
+    wasOpen.current = open;
+  }, [open]);
+  React.useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); onClose && onClose(); } };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
   if (!open) return null;
   return (
     <>
-      <div onClick={onClose} style={{ position: 'absolute', inset: 0, zIndex: 20, background: 'var(--scrim)', opacity: 0.4, animation: 'ds-fade 300ms var(--ease) both' }} />
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 30, borderRadius: '24px 24px 0 0', background: 'var(--color-surface)', padding: '12px 20px 28px', animation: 'ds-sheet 300ms var(--ease) both' }}>
+      <div onClick={onClose} aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 20, background: 'var(--scrim)', opacity: 0.4, animation: 'ds-fade 300ms var(--ease) both' }} />
+      <div ref={ref} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 30, borderRadius: '24px 24px 0 0', background: 'var(--color-surface)', padding: '12px 20px 28px', animation: 'ds-sheet 300ms var(--ease) both' }}>
         <style>{'@keyframes ds-sheet{from{transform:translateY(100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-sheet{from{opacity:0;transform:none}to{opacity:1;transform:none}}}'}</style>
         <div style={{ margin: '0 auto 14px', height: 5, width: 44, borderRadius: 'var(--radius-full)', background: 'var(--color-line)' }} />
         <p style={{ margin: 0, ...{ font: 'var(--type-sheet-title-font)', color: 'var(--color-ink)' } }}>{title}</p>

@@ -1,0 +1,104 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="ConstraintCallout" subtitle="Rule 2 as a component — bad news on the peach surface, never a red fill" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ConstraintCallout — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ConstraintCallout, RejectCallout, DisclosureBlock, SentinelBlock, SentinelText, UserBubble, AnswerChip, ChipRow, Composer, Dock, MoneyComposer } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble','--color-bubble-edge','--color-bronze-deep','--color-ink-soft','--color-danger','--radius-16','--space-12','--text-13','--leading-19','--text-11','--dur-enter','--ease'];
+
+function App() {
+  return (
+    <PageShell
+      name="ConstraintCallout" group="Cards" status="shipped"
+      requires={['ConstraintCallout','DisclosureBlock','SentinelBlock','SentinelText','AnswerChip','ChipRow']}
+      summary="Rule 2, made into a component. Bad news sits on the peach bubble surface — never a red fill — because most bad news here is a nuance, a cap or a disclosure, and a red block reads as an alarm, which would be a lie about the stakes.">
+
+      <Block n={1} title="Specimen" sub="An eyebrow that names what happened, and one paragraph that says what it costs.">
+        <Specimen width={343}>
+          <ConstraintCallout eyebrow="That does not fit" body="₹60,00,000 is above the ₹50 L ceiling on Meera's mandate. I have not applied it." />
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The same peach as the advisor's own bubble, at the full column width. It is not a card and not an alert — it is the conversation surface, used to say something the advisor will not like.">
+        <Anatomy width={343}
+          top="Eyebrow 11pt uppercase in --color-bronze-deep, never --color-danger"
+          left="Full width — a callout is never inset. It applies to everything below it"
+          right="--color-bubble fill with a 1px --color-bubble-edge ring. No shadow: it sits ON the canvas, not above it"
+          bottom="Body 13/19 regular on --color-ink-soft, 4pt under the eyebrow. 12pt / 14pt padding">
+          <ConstraintCallout eyebrow="Cannot build this" body="Four funds will not fit. One of them would have to hold 34% of his money — past the 25% ceiling on any single fund." />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="None in the component. The eyebrow is the variant, and there are three in the product — each one is a different moment, not a different severity.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: '“Cannot build this” — before anything exists', node: <ConstraintCallout eyebrow="Cannot build this" body="Four funds will not fit. One of them would have to hold 34% of his money — past the 25% ceiling on any single fund." />, note: 'The request is impossible under the rules. Nothing was produced, and the callout says why instead of producing something wrong.' },
+          { label: '“That does not fit” — an input was refused', node: <ConstraintCallout eyebrow="That does not fit" body="₹60,00,000 is above the ₹50 L ceiling on Meera's mandate. I have not applied it." />, note: 'Note the last sentence. It states what was NOT done, so the advisor never has to guess whether the number went through.' },
+          { label: '“Before you approve” — it works, but know this', node: <ConstraintCallout eyebrow="Before you approve" body="Move 1 realises ₹38,000 of short-term gain. There is no exit load." />, note: 'Nothing is blocked. This is the cost of a plan that is about to be approved, put in front of the advisor while they can still stop.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="No states. What changes is whether an escape route is offered beside it — and when the answer is “this is impossible”, one must be.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'With the two ways out', node: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+              <ConstraintCallout eyebrow="That does not fit" body="₹60,00,000 is above the ₹50 L ceiling on Meera's mandate. I have not applied it." />
+              <ChipRow><AnswerChip label="Use ₹50 L" onClick={() => {}} /><AnswerChip label="Raise the mandate first" onClick={() => {}} /></ChipRow>
+            </div>
+          ), note: 'A refusal with no next step is a dead end. Both chips are real: one works inside the rule, the other changes the rule — and changing it is a decision, not a workaround.' },
+          { label: 'Beside its quieter cousin', node: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+              <ConstraintCallout eyebrow="Before you approve" body="Move 1 realises ₹38,000 of short-term gain." />
+              <DisclosureBlock />
+            </div>
+          ), note: 'Same surface, same ring, same peach. DisclosureBlock is the locked, unchanging one — a lock glyph and 12/17 text; this one is written for the moment it appears.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="It interrupts. The advisor typed an amount, and the answer is on the surface their own words live on — not in a red banner at the top of the screen.">
+        <Thread
+          before={<React.Fragment>
+            <UserBubble text="₹60,00,000" />
+            <SentinelBlock><SentinelText text="I have not applied that." /></SentinelBlock>
+          </React.Fragment>}
+          dock={<Dock
+            chips={<ChipRow><AnswerChip label="Use ₹50 L" onClick={() => {}} /><AnswerChip label="Raise the mandate first" onClick={() => {}} /></ChipRow>}
+            composer={<MoneyComposer onSend={() => {}} placeholder="or type another amount" />} />}>
+          <ConstraintCallout eyebrow="That does not fit" body="₹60,00,000 is above the ₹50 L ceiling on Meera's mandate. I have not applied it." />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens" sub="--color-danger is in this list and this component does not use it. That is the rule: danger is text and eyebrow colour elsewhere, never a fill, and never the fill here.">
+        <Tokens names={TOK} />
+      </Block>
+
+      <Block n={7} title="Props"><Props src="../components/cards/ConstraintCallout.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<ConstraintCallout eyebrow="That does not fit" body="₹60,00,000 is above the ₹50 L ceiling on Meera's mandate. I have not applied it." />}
+          doCaption="Peach, with the number, the rule and what was not done. The advisor can read this to a client as a fact about the mandate rather than as a system error."
+          dontNode={<div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-danger)', padding: '12px 14px', boxSizing: 'border-box' }}>
+            <p style={{ margin: 0, font: 'var(--type-eyebrow-font)', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-surface)' }}>Error</p>
+            <p style={{ margin: '4px 0 0', fontFamily: 'var(--font-ui)', fontWeight: 400, fontSize: 'var(--text-13)', lineHeight: 'var(--leading-19)', color: 'var(--color-surface)' }}>Amount exceeds mandate limit.</p>
+          </div>}
+          dontCaption="Never a red fill, and never “Error”. Nothing failed — a rule the advisor set is doing its job. A red block says the tool broke, which is both untrue and the one thing that makes an advisor stop trusting the number above it." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="One entrance, slightly quicker than a card's — it is an interruption and it should already be there when the eye arrives.">
+        <Motion rows={[
+          { name: 'Enter', property: 'ds-rise — opacity 0 → 1, translateY(8px) → 0', duration: '260 ms', reduced: 'Fade only; no rise.' },
+          { name: 'Dismiss', property: 'none — it does not dismiss', duration: '—', reduced: 'Unchanged. A constraint stays in the thread as the record of what was refused and why.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

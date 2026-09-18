@@ -1,0 +1,114 @@
+<!-- @dsCard group="Pages" viewport="1000x1700" name="ExplainerSheet" subtitle="The definition, on demand — a sheet that answers a word and never asks for a decision" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ExplainerSheet — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ExplainerSheet, InfoDot, SentinelBlock, SentinelText, Provenance, UserBubble, HeroNumberCard, Composer, Dock, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-line','--color-ink','--color-ink-soft','--scrim','--radius-full','--space-10','--type-sheet-title-font','--text-14','--leading-20','--dur-fast','--ease'];
+
+const BODY = [
+  'Capacity is how much loss his finances can absorb without changing how he lives. It comes from income, dependants and the emergency fund — not from how he feels about markets.',
+  'Tolerance is how much he will sit through calmly. Capacity can be high and tolerance low; the mandate is written to the lower of the two.',
+];
+
+/* The sheet is position:absolute, so it needs a positioned ancestor. Here that is the phone frame —
+   which is the only place it appears in the product too. */
+function Frame({ children, sheet }) {
+  return (
+    <div style={{ position: 'relative', width: 375, height: 420, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)', backgroundImage: 'var(--paper-texture)', backgroundSize: 'var(--paper-texture-size)', boxShadow: '0 0 0 1px var(--ring-frame)' }}>
+      <div style={{ padding: '20px 16px' }}>{children}</div>
+      {sheet}
+    </div>
+  );
+}
+
+function Live() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Frame sheet={<ExplainerSheet open={open} title="Capacity and tolerance" body={BODY} onClose={() => setOpen(false)} />}>
+        <SentinelBlock><SentinelText text="Tolerance is the binding score — 54." /></SentinelBlock>
+        <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 500, fontSize: 'var(--text-13)', color: 'var(--color-muted)' }}>What is tolerance?</span>
+          <InfoDot figure="tolerance" onOpen={() => setOpen(true)} />
+        </div>
+        <div style={{ marginTop: 16 }}><Pill label="Open the sheet" onClick={() => setOpen(true)} /></div>
+      </Frame>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="ExplainerSheet" group="Cards" status="shipped"
+      requires={['ExplainerSheet','InfoDot','SentinelBlock','SentinelText','Pill']}
+      summary="The definition, on demand. A bottom sheet that answers “what does this word mean?” without taking the advisor anywhere — the thread is still behind it, and “Got it” is the only way out besides the scrim.">
+
+      <Block n={1} title="Specimen" sub="Live. Tap the InfoDot or the pill; tap the scrim or “Got it” to close.">
+        <Live />
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="24pt top radius and a grabber that is not draggable. The grabber is a convention borrowed for recognition, and it is honest about only one thing: this came from the bottom and it will go back there.">
+        <Anatomy width={343}
+          top="Scrim: --scrim at 40% over the whole frame, fading in over 300ms"
+          left="Sheet: 24pt top radius only, surface fill, no shadow — the scrim does the separating"
+          right="Grabber 44 × 5, --color-line, centred, 14pt clear beneath it"
+          bottom="Title --type-sheet-title-font (18/24 semibold). Body paragraphs 14/20 regular ink-soft, 10pt apart. “Got it” is a primary Pill, 18pt under the last line. Padding 12 / 20 / 28">
+          <div style={{ position: 'relative', height: 300, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)' }}>
+            <ExplainerSheet open title="Capacity and tolerance" body={[BODY[0]]} onClose={() => {}} />
+          </div>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="None. Four props, and `body` is an array of paragraphs rather than one string — so a sheet cannot smuggle in a heading, a list or a link.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'One paragraph', node: <div style={{ position: 'relative', height: 230, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)' }}><ExplainerSheet open title="Exit load" body={['A charge some funds apply if you sell within a set period. It is deducted from what he receives, not billed separately.']} onClose={() => {}} /></div>, note: 'The common case. One term, one paragraph, gone.' },
+          { label: 'Two paragraphs', node: <div style={{ position: 'relative', height: 300, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)' }}><ExplainerSheet open title="Capacity and tolerance" body={BODY} onClose={() => {}} /></div>, note: 'Two is the working limit. A third means the answer belongs in the thread, where the advisor can ask a follow-up.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Two — open and not rendered. There is no half-open, no snap point and no drag: `open={false}` returns null, so a closed sheet costs nothing and holds no state. Open it in the live specimen with a keyboard: it is role=dialog aria-modal labelled by its title, Escape closes it, focus moves in and returns to whatever opened it. Until v12 it was an anonymous div, Escape did nothing, and focus stayed outside the scrim — measured in a browser, because none of that is visible (F-25).">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'open={false}', node: <div style={{ position: 'relative', height: 120, borderRadius: 20, background: 'var(--color-canvas)', boxShadow: 'inset 0 0 0 1px var(--color-line)' }}><ExplainerSheet open={false} title="x" body={['y']} onClose={() => {}} /></div>, note: 'Renders null. Reopening it starts the entrance again from the bottom — it does not resume.' },
+          { label: 'open', node: <div style={{ position: 'relative', height: 230, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)' }}><ExplainerSheet open title="Exit load" body={['A charge some funds apply if you sell within a set period.']} onClose={() => {}} /></div>, note: 'Scrim plus sheet. Both animate; the scrim fades and the sheet slides.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="It is opened by an InfoDot, and rule 4 is why that dot exists: any figure an advisor must defend carries one.">
+        <Live />
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="`open` is the caller's state, not the sheet's. That is deliberate — the InfoDot that opened it and the sheet do not know about each other, and the screen owns which one is showing.">
+        <Props src="../components/cards/ExplainerSheet.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ position: 'relative', height: 250, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)' }}><ExplainerSheet open title="Capacity and tolerance" body={BODY} onClose={() => {}} /></div>}
+          doCaption="A definition, in the advisor's own vocabulary, with no decision attached. They read it, tap “Got it”, and the thread is exactly where they left it."
+          dontNode={<div style={{ position: 'relative', height: 250, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)' }}><ExplainerSheet open title="Approve this rebalance?" body={['Three moves, ₹6,20,000 in total. This will be sent to Ravi for confirmation.']} onClose={() => {}} /></div>}
+          dontCaption="Never a decision in a sheet. The only way out is “Got it”, which is not a word anyone should tap to approve ₹6.2 L — and a decision belongs in the Dock's CTA, above the composer, where the advisor can still ask a question first (rule 3)." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="The scrim and the sheet move together and neither is quick. This is one of the five component-local keyframes the system allows a <style> for, and its reduced-motion override lives in the same tag.">
+        <Motion rows={[
+          { name: 'Scrim', property: 'ds-fade — opacity 0 → 1, held at 0.4', duration: '300 ms', reduced: 'Unchanged — already opacity only.' },
+          { name: 'Sheet', property: 'ds-sheet — translateY(100%) → 0', duration: '300 ms', reduced: 'Fade in place; the 100% slide is dropped, not cancelled.' },
+          { name: 'Close', property: 'the sheet is unmounted', duration: 'immediate', reduced: 'Unchanged. There is no exit animation — it is gone when it is gone.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

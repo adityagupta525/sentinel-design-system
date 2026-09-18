@@ -1,0 +1,90 @@
+<!-- @dsCard group="Pages" viewport="1000x1400" name="DisclosureBlock" subtitle="The regulatory line, locked — and the two things it is constantly confused with" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DisclosureBlock — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { DisclosureBlock, ConstraintCallout, StandingDisclosure, Provenance, SentinelBlock, SentinelText, ResultCard, Composer, Dock, DarkButton, DownloadAction } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble','--color-bubble-edge','--color-bronze-deep','--color-ink-soft','--radius-16','--space-5','--space-6','--text-12','--leading-17','--text-11'];
+
+function App() {
+  return (
+    <PageShell
+      name="DisclosureBlock" group="Cards" status="shipped"
+      requires={['DisclosureBlock','ConstraintCallout','StandingDisclosure','Provenance']}
+      summary="The regulatory line, locked. Same peach surface as a constraint, with a lock glyph and one step smaller type — because this text is not written for the moment it appears, it is the same sentence every time and it may not be edited.">
+
+      <Block n={1} title="Specimen" sub="Both props defaulted. This is what it renders with no arguments at all, and that is how it should usually be called.">
+        <Specimen width={343}><DisclosureBlock /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The lock is 12pt and it is the whole difference from a constraint at a glance. It says: this text is fixed, nobody here chose these words, and nothing you do changes them.">
+        <Anatomy width={343}
+          top="Lock glyph 12pt + eyebrow, both --color-bronze-deep, 6pt apart"
+          left="5pt between the eyebrow row and the body — tighter than ConstraintCallout's 4pt+ because the type is smaller"
+          right="Same fill, same ring, same radius as ConstraintCallout. The surface is rule 2's, shared"
+          bottom="Body 12/17 regular — one step under a constraint's 13/19. It is required reading, not the message">
+          <DisclosureBlock />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Two props, and overriding either is the exception. The default text is the AMFI line; change it only when a different disclosure is legally required, never to shorten it.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Default — the mutual fund line', node: <DisclosureBlock />, note: 'The one you want almost always. It ships as the default so a caller cannot get it subtly wrong by retyping it.' },
+          { label: 'A different required disclosure', node: <DisclosureBlock eyebrow="Required disclosure · locked" text="Returns shown are past performance of the scheme and are not indicative of future returns. The portfolio shown is a proposal and has not been executed." />, note: 'Legitimate: a proposal document carries a different obligation from a fund card. Still locked, still the same surface.' },
+          { label: 'Eyebrow changed too', node: <DisclosureBlock eyebrow="Risk factors · locked" text="Investments in securities are subject to market risk. Read all scheme-related documents carefully before investing." />, note: 'The word “locked” stays. It is not decoration — it tells the advisor the text cannot be trimmed to fit a screenshot.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="None. It cannot be dismissed, collapsed, truncated or made scrollable — every one of those is a way of showing less of it than was required.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'The only state', node: <DisclosureBlock />, note: 'No close, no “read more”, no fade at the bottom.' },
+          { label: 'At the narrowest the product gets', node: <div style={{ width: 240 }}><DisclosureBlock /></div>, note: '240pt. It grows taller rather than clipping — which is the entire point of putting it in a block that has no fixed height.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Against the two things it is constantly confused with. All three are true statements attached to a figure, and each answers a different question.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Provenance — where this number came from', node: <Provenance text="As of 30 Sep · from his Q3 statement" />, note: 'Under every figure. It changes with the data and an advisor uses it to defend the number.' },
+          { label: 'DisclosureBlock — what the law requires be said', node: <DisclosureBlock />, note: 'Attached to anything that will be shown to a client. Fixed text, locked.' },
+          { label: 'StandingDisclosure — what this product is', node: <StandingDisclosure />, note: 'Under the composer on every screen: “Sentinel assists an advisor · not investment advice”. It is about the tool, not about any number.' },
+        ]} />
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="Both optional, and both already correct. The type says `text?` and `eyebrow?` because the defaults are the answer, not a placeholder.">
+        <Props src="../components/cards/DisclosureBlock.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+            <SentinelBlock><SentinelText text="Three funds, ₹25 L, inside his mandate." /></SentinelBlock>
+            <Provenance text="As of 30 Sep · from the shelf that passed compliance" />
+            <DisclosureBlock />
+          </div>}
+          doCaption="Provenance under the figure, disclosure under the artifact. Two different obligations, both met, and the advisor can screenshot this and send it."
+          dontNode={<div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-bubble)', padding: '12px 14px', boxSizing: 'border-box', boxShadow: '0 0 0 1px var(--color-bubble-edge)' }}>
+            <p style={{ margin: 0, fontFamily: 'var(--font-ui)', fontWeight: 400, fontSize: 'var(--text-12)', lineHeight: 'var(--leading-17)', color: 'var(--color-ink-soft)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Mutual fund investments are subject to market risk. Read all scheme-related…</p>
+          </div>}
+          dontCaption="Never truncated, and never without the lock. A disclosure clipped to one line is a disclosure that was not made — and with no lock glyph the next person to touch this screen will assume the wording is theirs to shorten." />
+      </Block>
+
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          { name: 'Enter', property: 'none', duration: '—', reduced: 'Unchanged. It is not an event; it was always going to be there.' },
+          { name: 'Dismiss', property: 'none — there is no dismiss', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>
