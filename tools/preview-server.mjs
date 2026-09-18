@@ -10,6 +10,10 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', 'design-system');
+/* Second root, added when screens/ arrived. design-system is tried first, so every URL this project
+   has ever documented is unchanged; the repository root is the fallback, which is what makes
+   /screens/... reachable and lets a screen load ../design-system/styles.css by its real path. */
+const REPO = join(HERE, '..');
 const PORT = Number(process.env.PORT || 4321);
 
 /* The previews load React, ReactDOM, Babel and d3 from public CDNs. That is right for the published
@@ -50,10 +54,17 @@ createServer(async (req, res) => {
   }
   /* normalize() collapses any ../ before it is joined, so a request cannot escape ROOT. */
   let rel = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
-  let file = join(ROOT, rel);
-  try {
-    if ((await stat(file)).isDirectory()) file = join(file, 'index.html');
-  } catch {
+  let file = null;
+  for (const base of [ROOT, REPO]) {
+    let candidate = join(base, rel);
+    try {
+      if ((await stat(candidate)).isDirectory()) candidate = join(candidate, 'index.html');
+      await stat(candidate);
+      file = candidate;
+      break;
+    } catch { /* not under this root — try the next */ }
+  }
+  if (!file) {
     res.writeHead(404, { 'content-type': 'text/plain' });
     return res.end(`Not found: ${rel}`);
   }
@@ -69,5 +80,6 @@ createServer(async (req, res) => {
 }).listen(PORT, () => {
   console.log(`Sentinel design system → http://localhost:${PORT}/pages/00-Index.html`);
   console.log(`              UI kit   → http://localhost:${PORT}/ui_kits/sentinel-app/index.html`);
+  console.log(`              Screens  → http://localhost:${PORT}/screens/index.html`);
   if (offline) console.log('React / Babel / d3 served from node_modules (CDN URLs rewritten in flight).');
 });

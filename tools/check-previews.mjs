@@ -14,6 +14,9 @@ import { createServer as probe } from 'node:net';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DS = join(HERE, '..', 'design-system');
+/* screens/ is a second tree, walked the same way and served by the same server's repository-root
+   fallback. Its pages are prefixed so a screen and a spec page can never collide on a shot name. */
+const SCREENS = join(HERE, '..', 'screens');
 /* A free port, asked for rather than assumed. A fixed one meant two runs at once shared a server, and
    whichever finished first killed it out from under the other — which reports every remaining page as
    a failure that never happened. A harness that can invent failures is worse than no harness. */
@@ -41,8 +44,12 @@ async function* walk(dir) {
 
 const { readFile } = await import('node:fs/promises');
 const pages = [];
-for await (const p of walk(DS)) {
-  const rel = relative(DS, p).split(sep).join('/');
+for (const [base, prefix] of [[DS, ''], [SCREENS, 'screens/']]) {
+ let any = false;
+ try { for await (const _ of walk(base)) { any = true; break; } } catch { continue; }
+ if (!any) continue;
+ for await (const p of walk(base)) {
+  const rel = prefix + relative(base, p).split(sep).join('/');
   if (rel === 'thumbnail.html') continue;
   if (ONLY && !rel.includes(ONLY)) continue;
   const text = await readFile(p, 'utf8');
@@ -61,6 +68,7 @@ for await (const p of walk(DS)) {
   if (count(/id="root"/g) > 1) structure.push(`id="root" appears ${count(/id="root"/g)}\u00d7 — must be at most 1`);
   if (count(/page-kit\.jsx/g) > 1) structure.push(`page-kit.jsx loaded ${count(/page-kit\.jsx/g)}\u00d7 — must be at most 1`);
   pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400, structure });
+ }
 }
 pages.sort((a, b) => a.rel.localeCompare(b.rel));
 
