@@ -610,6 +610,25 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
+### F-27 · Every scrim in the product renders at 100% ink, not 40% — *found 18 Sep 2026, fix awaiting the owner*
+Found while promoting the Drawer, by measuring rather than looking — a 100% scrim and a 40% scrim are
+both "dark" in a screenshot. `ExplainerSheet.jsx:64` sets `opacity: 0.4` and
+`animation: 'ds-fade 300ms var(--ease) both'`. `ds-fade` ends at `opacity: 1`, and `animation-fill-mode:
+both` keeps the keyframe's final value after it finishes. So the declared 0.4 is overridden the moment the
+fade completes, and the scrim sits at **opacity 1**. Measured with `getComputedStyle` on the live spec page:
+`opacity: "1"`. The readme says sheets carry the scrim at 40% (`readme.md:206`), and the sheet's own page
+says *"held at 0.4"*. Neither has been true since the animation was added.
+
+The Drawer inherited the identical line and the identical result (`computed opacity 1` against a declared
+`--scrim-drawer` of 0.25), which is how it was caught.
+
+**Fixed in the Drawer, not yet in `ExplainerSheet`.** `tokens/effects.css` gains `ds-scrim` — a keyframe with
+a `from` and no `to`, so it fades to the element's *own* opacity. The Drawer uses it and now measures
+0.25. Applying the same one-line change to `ExplainerSheet` (`ds-fade` → `ds-scrim`) would make every sheet
+specimen and the product's sheets visibly lighter — it is a correction toward the documented 40%, but it is a
+change to what a shipped surface looks like, so it waits for the owner's word rather than being made in
+passing.
+
 ## Considered and rejected
 
 From the same pass. Each was measured, looked at, and deliberately left alone.

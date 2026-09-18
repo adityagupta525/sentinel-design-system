@@ -18,7 +18,7 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **78 / 78** render clean (73 design-system + 5 screens) |
+| Pages | **80 / 80** render clean (75 design-system + 5 screens) |
 | Integrity | 367 files intact |
 | Screens built | **3 of 7** in Journey B, plus the shell drawer: `screens/journey-b/01-home.html`, `02-thread-trace.html`, `screens/shell/drawer.html`, and `screens/flow.html` (the journey end to end) |
 | **Next screen** | **03 — Thread, the answer**: "Two-thirds of the drift is the small-cap rally…", the allocation bar, `ArtifactCard` at its 96px peek. Dock chips "Why is 71% a problem?" · "Show the 18 holdings", CTA "Rebalance to his mandate". Use `screens/journey-b/thread.jsx` as the shell. |
@@ -57,7 +57,7 @@ Five of this session's 25 commits are corrections of earlier commits in the same
 
 ### Are the screens aligned with the design system?
 
-Mostly, and the gaps are named. Home and the thread use only system components. The drawer's panel, scrim and header are hand-built **because the system has no Drawer** (nine components in `shell/`, none of them a drawer) — a candidate for promotion once its shape settles. The appearance control is hand-built by decision (contradiction 58). What is **not** aligned: `screens/` is outside `lint:adherence`, so its 71 px literals are unmeasured debt the system would have flagged in itself.
+Yes, by rule now. On 18 Sep evening the owner ruled that **a screen never hand-builds what it needs: it goes into the design system first, passes every audit, and the screen picks it from there.** Applied the same evening: `shell/Drawer` and `actions/SegmentedRow` were promoted from `screens/shell/drawer.html` into the system with contracts, spec pages and **0 literals**, and the screen now only composes them. Every screen — Home, the thread, the drawer — draws nothing of its own. Guards that hold this: `lint:adherence:screens` in CI, the static shared-scope check, the truncation probe, the gutter guard (`screens/README.md` rules 8–11). Still open and named: raw px values in `screens/*.jsx` are not counted the way `_index.json` counts them for components.
 
 ## 1 · What this is, in four lines
 
@@ -74,9 +74,9 @@ and moved it here to finish it.
 |---|---|
 | Branch | `claude/practical-newton-fi0pof` — the repository's **only** branch, and its default |
 | Last commit | `2cb7412` · screen 2 of Journey B (was `dcfe133` when this file was first written) |
-| Components | **84** · all exported, all with a hand-written `.d.ts` (85 until `StickyCTA` was deleted, 18 Sep) |
-| Spec pages | **41 of 84** · Tier 1 closed |
-| Preview pages | **78 / 78 render clean** (`node tools/check-previews.mjs`) — 73 design-system + 5 screens |
+| Components | **86** · all exported, all with a hand-written `.d.ts` (84 → 86 on 18 Sep: `Drawer` and `SegmentedRow` promoted from the screens) |
+| Spec pages | **43 of 86** · Tier 1 closed |
+| Preview pages | **80 / 80 render clean** (`node tools/check-previews.mjs`) — 75 design-system + 5 screens |
 | Integrity | 370 files hashed, clean |
 | Findings | F-1 … F-26 in `docs/FINDINGS.md`. **None open.** F-11, F-21 and F-25 closed 18 Sep |
 | Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — 3 of 7 built, see §0** |

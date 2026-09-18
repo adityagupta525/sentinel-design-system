@@ -30,7 +30,15 @@
    (two lines) rather than renaming -lg, because the 46 and 52 rows were still raw literals in ui_kits
    when this landed and are wired to -lg / -xl in the same commit; the name clash is contradiction 57. */
 --h-chip:36px;--h-filter-chip:32px;--h-cta:48px;--h-icon-btn:42px;
---h-chip-sm:28px;         /* v12 · ClientChip's box and ResponseFeedback's thumb targets. Both were
+--h-chip-sm:28px;
+--w-drawer:300px;         /* v12 · the menu panel. The kits and readme.md:56 always said 300; now it has a name, so a
+   screen cannot drift it to 280 without saying so. */
+/* Layers and scrims — the modal vocabulary, so a component can be written with zero raw values. Two
+   layers only: the scrim, and the modal surface above it. readme.md:206: sheets carry the scrim at 40%,
+   the drawer at 25%, and nothing else carries one. ExplainerSheet still writes 20 / 30 / 0.4 raw; it
+   re-points to these on its next touch, with the screenshot hash proving the no-op. */
+--z-scrim:20;--z-modal:30;
+--scrim-sheet:0.4;--scrim-drawer:0.25;         /* v12 · ClientChip's box and ResponseFeedback's thumb targets. Both were
    setting 28 by hand, the only box in the product outside this vocabulary. The visual box is 28; the
    TARGET is still 44 — ClientChip's own header says so and both thumbs sit inside Pressable. Naming
    it changes nothing visually and stops the value drifting when the row rhythm is next tuned. */

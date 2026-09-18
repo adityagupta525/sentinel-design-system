@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -50,6 +50,7 @@ var __ds_out = (() => {
     DisclosureBlock: () => DisclosureBlock,
     Dock: () => Dock,
     DownloadAction: () => DownloadAction,
+    Drawer: () => Drawer,
     DrawnCheck: () => DrawnCheck,
     Dumbbell: () => Dumbbell,
     ExplainerSheet: () => ExplainerSheet,
@@ -101,6 +102,7 @@ var __ds_out = (() => {
     ScreenBackdrop: () => ScreenBackdrop,
     ScrollToBottomButton: () => ScrollToBottomButton,
     SearchField: () => SearchField,
+    SegmentedRow: () => SegmentedRow,
     SelectionMark: () => SelectionMark,
     SentinelBlock: () => SentinelBlock,
     SentinelText: () => SentinelText,
@@ -347,6 +349,26 @@ var __ds_out = (() => {
         /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", letterSpacing: "var(--tracking-pill)", color: on ? "var(--color-ink)" : "var(--color-bronze-deep)", fontVariantNumeric: "tabular-nums" } }, r)
       );
     })), locked && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, lockedNote || "Ranges unavailable until the performance source is confirmed."));
+  }
+
+  // design-system/components/actions/SegmentedRow.jsx
+  function SegmentedRow({ options, value, onChange, label, locked = false, lockedNote }) {
+    const active = value ?? options[0];
+    return /* @__PURE__ */ react_global_default.createElement("div", null, /* @__PURE__ */ react_global_default.createElement("div", { role: "group", "aria-label": label, style: { display: "flex", gap: "var(--space-6)", flexWrap: "wrap" } }, options.map((o) => {
+      const on = o === active;
+      return /* @__PURE__ */ react_global_default.createElement(
+        Pressable,
+        {
+          key: o,
+          onClick: locked ? void 0 : () => onChange && onChange(o),
+          disabled: locked,
+          pressed: on,
+          label: `${label}: ${o}`,
+          style: { display: "inline-flex", height: "var(--h-filter-chip)", flexShrink: 0, alignItems: "center", justifyContent: "center", padding: "0 var(--space-12)", borderRadius: "var(--radius-full)", background: on ? "var(--color-selected)" : "var(--color-chip)", boxShadow: on ? "0 0 0 var(--border-1) var(--color-bronze)" : "0 0 0 var(--border-1) var(--color-line)" }
+        },
+        /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", letterSpacing: "var(--tracking-pill)", color: on ? "var(--color-ink)" : "var(--color-bronze-deep)" } }, o)
+      );
+    })), locked && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-6) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)" } }, lockedNote || "Not available yet."));
   }
 
   // design-system/components/icons/IconChevronRight.jsx
@@ -1494,6 +1516,105 @@ var __ds_out = (() => {
   // design-system/components/shell/Dock.jsx
   function Dock({ chips, cta, composer, disclosure = true }) {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 10, display: "flex", flexDirection: "column", gap: "var(--space-8)", padding: "6px 16px 8px" } }, chips, cta, composer, disclosure && /* @__PURE__ */ react_global_default.createElement(StandingDisclosure, null));
+  }
+
+  // design-system/components/shell/Drawer.jsx
+  var SEE_ALL = (all, cap, onSeeAll, section) => all.length > cap ? /* @__PURE__ */ react_global_default.createElement(Pill, { label: `See all ${all.length}`, size: "sm", tone: "muted", onClick: () => onSeeAll && onSeeAll(section) }) : void 0;
+  var CAP = [3, 7, 8];
+  function Drawer({ open, onClose, onNew, onSeeAll, saved = [], recent = [], clients = [], caps = { saved: CAP[0], recent: CAP[1], clients: CAP[2] }, loading = false, failed = {}, footer, label = "Menu" }) {
+    const ref = react_global_default.useRef(null);
+    const wasOpen = react_global_default.useRef(open);
+    const opener = react_global_default.useRef(null);
+    const armed = react_global_default.useRef(false);
+    react_global_default.useEffect(() => {
+      if (open && !wasOpen.current) {
+        opener.current = document.activeElement;
+        armed.current = true;
+        if (ref.current) ref.current.focus();
+      } else if (!open && wasOpen.current) {
+        if (opener.current && opener.current.focus) opener.current.focus();
+        opener.current = null;
+        armed.current = false;
+      }
+      wasOpen.current = open;
+    }, [open]);
+    react_global_default.useEffect(() => {
+      if (!open) return;
+      const onKey = (e) => {
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          onClose && onClose();
+          return;
+        }
+        if (e.key !== "Tab" || !armed.current || !ref.current) return;
+        const nodes = Array.prototype.filter.call(ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'), (n) => !n.disabled && n.getAttribute("aria-hidden") !== "true");
+        if (!nodes.length) {
+          e.preventDefault();
+          ref.current.focus();
+          return;
+        }
+        const first = nodes[0], last = nodes[nodes.length - 1], active = document.activeElement;
+        const outside = !ref.current.contains(active);
+        if (outside || (e.shiftKey ? active === first || active === ref.current : active === last)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+        }
+      };
+      document.addEventListener("keydown", onKey);
+      return () => document.removeEventListener("keydown", onKey);
+    }, [open, onClose]);
+    if (!open) return null;
+    const row = { variant: "nav", trailing: "chevron" };
+    const withPress = (items) => items.map((r) => ({ ...r, onPress: r.onPress || (() => {
+    }) }));
+    const failedNote = (what) => /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-12)", lineHeight: "var(--leading-17)", color: "var(--color-muted)" } }, "I could not load your ", what, " just now. Everything else here still works.");
+    const eyebrow = (t) => /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "0 0 var(--space-6)", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-11)", letterSpacing: "var(--tracking-eyebrow)", textTransform: "uppercase", color: "var(--color-muted)" } }, t);
+    return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { onClick: onClose, "aria-hidden": "true", style: { position: "absolute", inset: 0, zIndex: "var(--z-scrim)", background: "var(--scrim)", opacity: "var(--scrim-drawer)", animation: "ds-scrim var(--dur-screen) var(--ease) both" } }), /* @__PURE__ */ react_global_default.createElement(
+      "div",
+      {
+        ref,
+        role: "dialog",
+        "aria-modal": "true",
+        "aria-label": label,
+        tabIndex: -1,
+        "data-gutter": "edge",
+        style: { position: "absolute", insetBlock: 0, left: 0, zIndex: "var(--z-modal)", display: "flex", width: "var(--w-drawer)", flexDirection: "column", boxSizing: "border-box", background: "var(--color-canvas)", boxShadow: "var(--shadow-drawer)", animation: "ds-drawer var(--dur-screen) var(--ease) both" }
+      },
+      /* @__PURE__ */ react_global_default.createElement("style", null, "@keyframes ds-drawer{from{transform:translateX(-100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-drawer{from{opacity:0;transform:none}to{opacity:1;transform:none}}}"),
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "calc(var(--h-status) + var(--space-8)) var(--space-20) var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement(IconSparkle, null), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-16)", color: "var(--color-ink)" } }, "Sentinel")), /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onNew, label: "New chat", style: { display: "flex", width: "var(--h-chip)", height: "var(--h-chip)", alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: "var(--color-surface)", boxShadow: "0 0 0 var(--border-1) var(--color-line)" } }, /* @__PURE__ */ react_global_default.createElement(IconPlus, null))),
+      /* @__PURE__ */ react_global_default.createElement("div", { className: "noscroll", style: { flex: 1, overflowY: "auto", padding: "var(--space-8) var(--gutter) 0", display: "flex", flexDirection: "column", gap: "var(--space-14)" } }, failed.saved ? /* @__PURE__ */ react_global_default.createElement("div", null, eyebrow("Jump back in"), failedNote("saved work")) : /* @__PURE__ */ react_global_default.createElement(
+        List,
+        {
+          header: "Jump back in",
+          items: withPress(saved.slice(0, caps.saved)),
+          rowProps: row,
+          loading,
+          footer: SEE_ALL(saved, caps.saved, onSeeAll, "saved"),
+          emptyState: { title: "Nothing saved yet", body: "Work you start shows up here so you can pick it up tomorrow." }
+        }
+      ), failed.recent ? /* @__PURE__ */ react_global_default.createElement("div", null, eyebrow("Recent"), failedNote("recent threads")) : /* @__PURE__ */ react_global_default.createElement(
+        List,
+        {
+          header: "Recent",
+          items: withPress(recent.slice(0, caps.recent)),
+          rowProps: row,
+          loading,
+          footer: SEE_ALL(recent, caps.recent, onSeeAll, "recent"),
+          emptyState: { title: "No threads yet", body: "Every question you ask is kept here." }
+        }
+      ), failed.clients ? /* @__PURE__ */ react_global_default.createElement("div", null, eyebrow("Clients"), failedNote("client book")) : /* @__PURE__ */ react_global_default.createElement(
+        List,
+        {
+          header: "Clients",
+          items: withPress(clients.slice(0, caps.clients)),
+          rowProps: { variant: "nav" },
+          loading,
+          footer: SEE_ALL(clients, caps.clients, onSeeAll, "clients"),
+          emptyState: { title: "No clients on file", body: "Your book appears here once it is connected." }
+        }
+      ), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-11)", lineHeight: "var(--leading-15)", color: "var(--color-muted)" } }, "Demo data \xB7 no real client portfolios are shown")),
+      footer && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-10)", padding: "var(--space-10) var(--gutter) var(--space-20)" } }, footer)
+    ));
   }
 
   // design-system/components/shell/HomeIndicator.jsx

@@ -23,6 +23,7 @@ export { IconSpinner } from './components/icons/IconSpinner.jsx';
 /* shell */
 export { CanvasHeader } from './components/shell/CanvasHeader.jsx';
 export { Dock } from './components/shell/Dock.jsx';
+export { Drawer } from './components/shell/Drawer.jsx';
 export { HomeIndicator } from './components/shell/HomeIndicator.jsx';
 export { REDUCED_MOTION_CSS, installReducedMotion, MotionGuard } from './components/shell/MotionGuard.jsx';
 export { PhoneFrame } from './components/shell/PhoneFrame.jsx';
@@ -42,6 +43,7 @@ export { InlineActionRow } from './components/actions/InlineActionRow.jsx';
 export { Pill } from './components/actions/Pill.jsx';
 export { Pressable } from './components/actions/Pressable.jsx';
 export { RangePills } from './components/actions/RangePills.jsx';
+export { SegmentedRow } from './components/actions/SegmentedRow.jsx';
 export { SuggestionRow } from './components/actions/SuggestionRow.jsx';
 /* forms */
 export { FileUpload } from './components/forms/FileUpload.jsx';

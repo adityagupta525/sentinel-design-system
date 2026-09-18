@@ -38,7 +38,7 @@ to a file layout that is ours to change.
 
 | | |
 |---|---|
-| **84 components** | Every one with a hand-written `.d.ts` carrying the prop contract **and the reasoning**. The doc comments are the design review; read them before guessing at a prop. |
+| **86 components** | Every one with a hand-written `.d.ts` carrying the prop contract **and the reasoning**. The doc comments are the design review; read them before guessing at a prop. |
 | **One token layer** | `tokens/*.css` — colour, type, spacing, radius, motion. Roles, not values. |
 | **16 guideline pages** | Rendered specimens: colour, type, spacing, radius, shadow, motion, texture. |
 | **41 component spec pages** | Specimen, anatomy with dimensions, every variant, every state, tokens, props, do/don't, and a motion table naming each animation's reduced-motion behaviour. |
@@ -114,7 +114,7 @@ Three rules, all of them about keeping your code and this system in step:
 - the forbidden-elements list
 
 `pages/_index.json` reports the same measure back at the system itself, per component, as `literals` —
-how many raw style values each one still hardcodes. **31 of 84 are at zero.** That number is meant to
+how many raw style values each one still hardcodes. **33 of 86 are at zero.** That number is meant to
 go up, and it is the honest way to see where this system does not yet follow its own rule.
 
 ## Motion
@@ -171,7 +171,7 @@ If you have a call site from an older copy, this is the replacement:
 
 Stated plainly, because a handover that oversells is worse than one that does not.
 
-- **41 of 84 components have a full spec page.** The other 43 have source, a contract and a place on a
+- **43 of 86 components have a full spec page.** The other 43 have source, a contract and a place on a
   group board — enough to use, short of the anatomy/states/do-don't treatment. `pages/00-Index.html`
   lists which is which, generated from disk, so it cannot claim a page that is not there.
 - **`docs/FINDINGS.md`** carries every known defect and every deliberate deviation, including the ones

@@ -6,7 +6,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['List','Pressable','Composer','Dock','IconSparkle','IconPlus','PhoneFrame','StandingDisclosure'];</script>
+<script>window.__screenRequires = ['Drawer','SegmentedRow','Pressable','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/home.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
@@ -15,14 +15,12 @@
 /* home.jsx is loaded above and already declares Composer (and Dock, TopBar, …) at top level. Both
    files compile into the same scope, so re-declaring any of them here is a SyntaxError that leaves
    the page blank. Only the names this file adds are destructured. */
-const { List, Pressable, IconSparkle, IconPlus } = window.SentinelDesignSystem_0682a2;
+/* Everything the screen draws is the system's. Drawer and SegmentedRow were hand-built here on 18 Sep
+   and PROMOTED the same day on the owner's ruling that a screen never hand-builds what it needs —
+   they now live in design-system/components with contracts and spec pages, and this page only
+   composes them. home.jsx is loaded above and owns the shared destructure; only new names here. */
+const { Drawer, SegmentedRow, Pressable } = window.SentinelDesignSystem_0682a2;
 
-/* CAPPED AT 3 / 7 / 8, with a "See all" footer on each. Not a number I chose: List.jsx:8 states it —
-   "One scroll: a List never scrolls independently inside a scrolling surface. Cap it and give it a
-   footer row instead — that is why the drawer's sections are capped at 3 / 7 / 8 with See all." The
-   first cut of this screen rendered 4 / 4 / 4 uncapped, which is how the client book ended up below
-   the fold with nothing saying it was there. */
-const CAP = { saved: 3, recent: 7, clients: 8 };
 const SAVED = [
   { title: "Meera Nair's risk profile", meta: '12 questions' },
   { title: '₹25 L proposal', meta: '6 funds' },
@@ -30,150 +28,46 @@ const SAVED = [
   { title: "Sharma's rebalance", meta: '2 moves' },
   { title: "Sunita Nair's Q2 review", meta: '31 funds' },
 ];
-/* ONE line, and both facts. The single-line form this replaced put client and topic in one string —
-   "Mr. Amit Aggrawal — proposal draft" — which needs 226pt of title where a 300pt drawer gives 153, so
-   a third of it went to the ellipsis. The two-line form fixed that at 72pt a row and made the drawer
-   long. This is the third try and the one that is both: the client is the TITLE, the topic is the
-   META, and the row is back to 56 with nothing cut.
-   What was dropped, deliberately: the timestamp. Three facts do not fit 244pt and the topic is the one
-   that picks the right thread — "Sharma" and "Sharma" are two threads, "drift" and "mandate note" are
-   not. Recency is still carried by the order of the list, which is what "Recent" means. */
-const RECENT = [
-  { title: 'R. Sharma', meta: 'Portfolio drift' },
-  { title: 'Mr. Amit Aggrawal', meta: 'Proposal draft' },
-  { title: 'HDFC Diwali offer', meta: 'AMC circular' },
-  { title: 'Meera Nair', meta: 'Q3 review' },
-];
-const MORE = ['Sunita Nair — Exit load', 'Meera Nair — SIP change', 'R. Sharma — Mandate note', 'HDFC AMC — NFO circular', 'Mr. Amit Aggrawal — KYC']
-  .map((t) => ({ title: t.split(' — ')[0], meta: t.split(' — ')[1] }));
+/* One line, both facts: the client is the TITLE, the topic is the META. Measured on 18 Sep: the two in
+   one string needed 226pt where a 300pt drawer gives 153; two lines fixed that at 72pt a row and made
+   the drawer long; this is the third try and the one that is both. The timestamp was dropped on
+   purpose — three facts do not fit 244pt, and the topic is the one that picks the right thread. */
+const RECENT = [['R. Sharma','Portfolio drift'],['Mr. Amit Aggrawal','Proposal draft'],['HDFC Diwali offer','AMC circular'],['Meera Nair','Q3 review'],
+  ['Sunita Nair','Exit load'],['Meera Nair','SIP change'],['R. Sharma','Mandate note'],['HDFC AMC','NFO circular'],['Mr. Amit Aggrawal','KYC']].map(([t, m]) => ({ title: t, meta: m }));
 const initials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
 const client = (name) => ({ title: name, leading: 'avatar', leadingContent: initials(name), trailing: 'chevron' });
-const CLIENTS = ['Meera Nair', 'Mr. Amit Aggrawal', 'Sunita Nair', 'R. Sharma', 'Kavita Rao', 'Anil Menon',
-  'Priya Deshpande', 'Vikram Shah', 'Lakshmi Iyer', 'Rohan Gupta'].map(client);
+const CLIENTS = ['Meera Nair', 'Mr. Amit Aggrawal', 'Sunita Nair', 'R. Sharma', 'Kavita Rao', 'Anil Menon', 'Priya Deshpande', 'Vikram Shah', 'Lakshmi Iyer', 'Rohan Gupta'].map(client);
 const CLIENTS_LONG = ['Ramasubramanian Venkataraghavan', 'Mr. Amit Aggrawal', 'Sunita Nair'].map(client);
 
-/* The appearance control. There is ONE theme: no token in tokens/*.css carries a dark value and no
-   component reads a colour scheme. So this states the cap rather than hiding it — OverlapView's rule,
-   in its own words: "the cap is STATED when reached, never enforced by a disabled button with no
-   explanation."
-   The treatment is RangePills' documented `locked` + `lockedNote`, copied rather than invented: the
-   row renders inert, the selected option keeps --color-selected with a bronze ring, the rest keep
-   --color-chip with a line ring, and one caption underneath says why. Nothing new was designed here.
-   It lives in screens/ and not in design-system/ because the system cannot specify it yet — a spec
-   page for a two-state control that can only ever render one state is the page this repo deletes.
-   Contradiction 58 carries the trigger that promotes it. */
-function AppearanceLock({ value = 'Light', options = ['Light', 'Dark'] }) {
-  return (
-    <div>
-      <div role="group" aria-label="Appearance" style={{ display: 'flex', gap: 'var(--space-6)' }}>
-        {options.map((o) => {
-          const on = o === value;
-          return (
-            <Pressable key={o} disabled pressed={on} label={`Appearance: ${o}`}
-              style={{ display: 'inline-flex', height: 'var(--h-filter-chip)', flexShrink: 0, alignItems: 'center', justifyContent: 'center', padding: '0 var(--space-12)', borderRadius: 'var(--radius-full)', background: on ? 'var(--color-selected)' : 'var(--color-chip)', boxShadow: on ? '0 0 0 var(--border-1) var(--color-bronze)' : '0 0 0 var(--border-1) var(--color-line)' }}>
-              <span style={{ font: 'var(--type-label-font)', letterSpacing: 'var(--tracking-pill)', color: on ? 'var(--color-ink)' : 'var(--color-bronze-deep)' }}>{o}</span>
-            </Pressable>
-          );
-        })}
-      </div>
-      <p style={{ margin: 'var(--space-6) 0 0', font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
-        One theme so far. Dark arrives with its tokens.
-      </p>
-    </div>
-  );
-}
-
-function Drawer({ saved = SAVED, recent = RECENT.concat(MORE), clients = CLIENTS, loading = false, recentFailed = false, scrolled = false }) {
-  const [value, setValue] = React.useState('');
-  const row = { variant: 'nav', trailing: 'chevron' };
-  const scroller = React.useRef(null);
-  React.useEffect(() => { if (scrolled && scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight; }, [scrolled]);
-  /* The footer is the "See all" row List is built to take, and it only appears when the cap actually
-     bit — a footer under a list that is already complete is a door to nothing. */
-  const seeAll = (all, cap) => (all.length > cap
-    ? <Pressable onClick={() => {}} label={`See all ${all.length}`} style={{ display: 'flex', minHeight: 44, width: '100%', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>See all {all.length} ›</span>
-      </Pressable>
-    : undefined);
-  return (
-    <>
-      {/* The scrim. Modal layers only, and the drawer's is 25% — sheets are 40%. Full-bleed, so the
-          gutter guard exempts it by geometry. */}
-      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 20, background: 'var(--scrim)', opacity: 0.25 }} />
-      {/* data-gutter="edge": the panel is flush to the phone's left edge on purpose — that is what a
-          drawer is. The guard cannot tell that from a card that overran, so the element declares it,
-          and everything inside it is still held to both gutters. */}
-      <div role="dialog" aria-modal="true" aria-label="Menu" data-gutter="edge"
-           style={{ position: 'absolute', insetBlock: 0, left: 0, zIndex: 30, display: 'flex', width: 300, flexDirection: 'column', boxSizing: 'border-box', background: 'var(--color-canvas)', boxShadow: 'var(--shadow-drawer)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '52px 20px 8px' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-8)' }}>
-            <IconSparkle />
-            <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-16)', color: 'var(--color-ink)' }}>Sentinel</span>
-          </span>
-          <Pressable onClick={() => {}} label="New chat"
-            style={{ display: 'flex', width: 36, height: 36, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--color-surface)', boxShadow: '0 0 0 var(--border-1) var(--color-line)' }}>
-            <IconPlus />
-          </Pressable>
-        </div>
-
-        <div ref={scroller} className="noscroll" style={{ flex: 1, overflowY: 'auto', padding: '8px var(--gutter) 0', display: 'flex', flexDirection: 'column', gap: 'var(--space-14)' }}>
-          <List header="Jump back in" items={saved.slice(0, CAP.saved).map((r) => ({ ...r, onPress: () => {} }))} rowProps={row} loading={loading}
-                footer={seeAll(saved, CAP.saved)}
-                emptyState={{ title: 'Nothing saved yet', body: 'Work you start shows up here so you can pick it up tomorrow.' }} />
-
-          {recentFailed ? (
-            <div>
-              <div style={{ padding: '0 0 6px' }}><span style={{ font: 'var(--type-eyebrow-font)', letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', color: 'var(--color-muted)' }}>Recent</span></div>
-              <p style={{ margin: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-12)', lineHeight: 'var(--leading-17)', color: 'var(--color-muted)' }}>
-                I could not load your recent threads just now. Everything else here still works.
-              </p>
-            </div>
-          ) : (
-            <List header="Recent" items={recent.slice(0, CAP.recent).map((r) => ({ ...r, onPress: () => {} }))} rowProps={row} loading={loading}
-                  footer={seeAll(recent, CAP.recent)}
-                  emptyState={{ title: 'No threads yet', body: 'Every question you ask is kept here.' }} />
-          )}
-
-          <List header="Clients" items={clients.slice(0, CAP.clients).map((r) => ({ ...r, onPress: () => {} }))} rowProps={{ variant: 'nav' }} loading={loading}
-                footer={seeAll(clients, CAP.clients)}
-                emptyState={{ title: 'No clients on file', body: 'Your book appears here once it is connected.' }} />
-
-          <p style={{ margin: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-15)', color: 'var(--color-muted)' }}>
-            Demo data · no real client portfolios are shown
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)', padding: '10px var(--gutter) 20px' }}>
-          {/* A plain row, not a ringed card. The drawer is already the raised surface — readme.md:56
-              reserves depth for the composer, the scroll disc, the drawer and the phone — so a second
-              boxed surface inside it competes with the three lists for the same attention. */}
-          <Pressable onClick={() => {}} label="Back to home"
-            style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
-            <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
-          </Pressable>
-          <AppearanceLock />
-        </div>
-
-        {/* NO COMPOSER. The owner ruled it out on 18 Sep, and the reasoning is recorded rather than
-            assumed: rule 3 protects "the advisor can always just ask", and the drawer is the one
-            surface where asking was never taken away — it is a navigation overlay, the thread and its
-            composer are one tap behind the scrim, and a second composer here competes with the list
-            that is the whole point of the menu. That is the same shape as the confirm-sheet exception,
-            which readme.md calls "a third path that does not exist". readme.md:68 still names the
-            drawer among the surfaces that carry it, so the specification and this screen now disagree
-            until the owner amends it. Logged as contradiction 59; not edited into the four rules by
-            me, because their wording is the product's law and not mine to rewrite. */}
-      </div>
-    </>
-  );
-}
+const Footer = () => (
+  <React.Fragment>
+    <Pressable onClick={() => {}} label="Back to home" style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
+      <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
+    </Pressable>
+    <SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />
+  </React.Fragment>
+);
+/* For the spec page's frozen states the drawer is rendered open. The product never does this — the
+   contract says mount closed, open with an action — so the "live" state below opens it the real way. */
+const Menu = ({ scrolled, ...p }) => <Drawer open onClose={() => {}} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} {...p} />;
 
 const Scene = (props) => (
   <div style={{ position: 'relative', height: '100%', width: '100%' }}>
     <Home hour={15} time="3:04" />
-    <Drawer {...props} />
+    <Menu {...props} />
   </div>
 );
+/* The one state that opens the real way: mounted closed, the hamburger opens it. This is the state a
+   keyboard is checked against — Escape closes, Tab wraps, focus returns to the hamburger. */
+function LiveScene() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Home hour={15} time="3:04" onMenu={() => setOpen(true)} />
+      <Drawer open={open} onClose={() => setOpen(false)} onNew={() => setOpen(false)} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} />
+    </div>
+  );
+}
 
 const MOTION = [
   ['Drawer in', 'transform: translateX(−100%) → 0', '320ms', 'Fades in place at x=0 — it arrives, it does not travel'],
@@ -199,8 +93,8 @@ mountScreen(
         <State label="typical · at the top" note="Three sections, each a List, each capped with a “See all” row: 3 saved, 7 recent, 8 clients. Rows are ListRow at 56 — the height settled when this list left Home, bought with the required empty state, the skeleton, the footer row and the chevron contract.">
           <Scene />
         </State>
-        <State label="typical · scrolled" note="The same drawer, scrolled to the end. The client book lives down here, and the drawer carries ONE scroll — no List scrolls inside it, which is what the caps exist to make possible.">
-          <Scene scrolled />
+        <State label="live · opens the real way" note="Mounted CLOSED, opened by the hamburger — the way the product does it and the only way the dialog contract arms: focus moves in, Escape closes, Tab wraps, focus returns to the hamburger. Tap the menu icon. The frozen phones on this page are specimens; this one is the screen.">
+          <LiveScene />
         </State>
         <State label="first run" tone="under" note="All three empty, and each says its own sentence rather than “No data”. List requires an emptyState, which is why none of these could have been forgotten.">
           <Scene saved={[]} recent={[]} clients={[]} />
@@ -214,7 +108,7 @@ mountScreen(
           <Scene loading />
         </State>
         <State label="one section failed" tone="over" note="Recent could not load; saved work and the book still did. It fails per section and never blanks the drawer — the new-chat button, Back to home and the composer all survive, so the advisor is never trapped in a menu that has nothing in it.">
-          <Scene recentFailed />
+          <Scene failed={{ recent: true }} />
         </State>
         <State label="long client name" tone="under" note="A 300pt drawer is 268 of usable width and a row is 244 of content. ListRow truncates rather than wrapping, because the row is a fixed height. A name this long is the case where that is still the right answer — the avatar and the position in the book identify it, and the full name is one tap away.">
           <Scene clients={CLIENTS_LONG} />
@@ -225,7 +119,7 @@ mountScreen(
     <Section title="3 · Light and dark" sub="There is one theme. This is how the screen says so without lying and without a dead button.">
       <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
         <div style={{ width: 268, borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: 16, boxShadow: 'var(--shadow-card-soft)' }}>
-          <AppearanceLock />
+          <SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />
         </div>
         <Note title="Why it looks like this">
           Both options are shown, neither can be chosen, and one line says why. That is
@@ -235,12 +129,12 @@ mountScreen(
           <code> OverlapView</code>&rsquo;s rule in the system&rsquo;s own words — <em>the cap is stated when
           reached, never enforced by a disabled button with no explanation</em>.
         </Note>
-        <Note title="Why it is not a design-system component">
-          No token in <code>tokens/*.css</code> carries a dark value and no component reads a colour scheme, so the
-          system cannot specify this control today: a spec page for a two-state toggle that can only render one
-          state is the page this repository deletes. <code>StickyCTA</code> was removed ten commits ago for
-          exactly that shape of mistake. It lives in <code>screens/</code> with a dated trigger in
-          <code> contradictions.md</code> (row 58) that promotes it the day dark tokens land.
+        <Note title="What is and is not in the design system now">
+          The control IS a system component — <code>SegmentedRow</code>, with a contract and a spec page — because
+          what is generic is &ldquo;one of a set, and a locked state that says why&rdquo;, and that can be specified
+          today. What is still NOT in the system is a dark theme: no token carries a dark value, so the row is
+          <code>locked</code> and says so. Contradiction 58 records the extraction as done and keeps one trigger
+          open: re-pointing <code>RangePills</code> at the shared row, with a screenshot hash proving the no-op.
         </Note>
       </div>
     </Section>

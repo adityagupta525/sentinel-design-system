@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 41
+  "shipped": 43
  },
  "rows": [
   {
@@ -18,6 +18,49 @@
     "--leading-16",
     "--text-11",
     "--weight-regular"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
+   "name": "Drawer",
+   "group": "Foundations",
+   "status": "shipped",
+   "page": "Drawer.html",
+   "file": "components/shell/Drawer.jsx",
+   "tokens": [
+    "--border-1",
+    "--color-canvas",
+    "--color-ink",
+    "--color-line",
+    "--color-muted",
+    "--color-surface",
+    "--dur-screen",
+    "--ease",
+    "--font-ui",
+    "--gutter",
+    "--h-chip",
+    "--h-status",
+    "--leading-15",
+    "--leading-17",
+    "--radius-full",
+    "--scrim",
+    "--scrim-drawer",
+    "--shadow-drawer",
+    "--space-10",
+    "--space-14",
+    "--space-20",
+    "--space-6",
+    "--space-8",
+    "--text-11",
+    "--text-12",
+    "--text-16",
+    "--tracking-eyebrow",
+    "--w-drawer",
+    "--weight-bold",
+    "--weight-regular",
+    "--z-modal",
+    "--z-scrim"
    ],
    "locals": [],
    "literals": 0
@@ -1599,6 +1642,32 @@
    ],
    "locals": [],
    "literals": 5
+  },
+  {
+   "name": "SegmentedRow",
+   "group": "Input",
+   "status": "shipped",
+   "page": "SegmentedRow.html",
+   "file": "components/actions/SegmentedRow.jsx",
+   "tokens": [
+    "--border-1",
+    "--color-bronze",
+    "--color-bronze-deep",
+    "--color-chip",
+    "--color-ink",
+    "--color-line",
+    "--color-muted",
+    "--color-selected",
+    "--h-filter-chip",
+    "--radius-full",
+    "--space-12",
+    "--space-6",
+    "--tracking-pill",
+    "--type-caption-font",
+    "--type-label-font"
+   ],
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "SelectionMark",

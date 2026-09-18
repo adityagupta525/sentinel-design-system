@@ -1,0 +1,72 @@
+<!-- @dsCard group="Pages" viewport="1000x2200" name="Drawer" subtitle="The menu — saved work, recent, the client book — as a dialog with capped sections and no composer" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Drawer — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Drawer, SegmentedRow, Pressable, Pill, PhoneFrame, ScreenBackdrop, StatusSpacer, TopBar } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--w-drawer','--scrim','--scrim-drawer','--z-scrim','--z-modal','--shadow-drawer','--color-canvas','--gutter','--space-8','--space-14','--space-20','--h-status','--h-chip','--dur-screen','--ease'];
+const SAVED = [{ title: "Meera Nair's risk profile", meta: '12 questions' }, { title: '₹25 L proposal', meta: '6 funds' }, { title: 'What Meera holds', meta: '43 funds' }, { title: "Sharma's rebalance", meta: '2 moves' }, { title: "Sunita Nair's Q2 review", meta: '31 funds' }];
+const RECENT = [['R. Sharma','Portfolio drift'],['Mr. Amit Aggrawal','Proposal draft'],['HDFC Diwali offer','AMC circular'],['Meera Nair','Q3 review'],['Sunita Nair','Exit load'],['Meera Nair','SIP change'],['R. Sharma','Mandate note'],['HDFC AMC','NFO circular'],['Mr. Amit Aggrawal','KYC']].map(([t, m]) => ({ title: t, meta: m }));
+const initials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
+const CLIENTS = ['Meera Nair','Mr. Amit Aggrawal','Sunita Nair','R. Sharma','Kavita Rao','Anil Menon','Priya Deshpande','Vikram Shah','Lakshmi Iyer','Rohan Gupta'].map((n) => ({ title: n, leading: 'avatar', leadingContent: initials(n), trailing: 'chevron' }));
+const Footer = () => (<React.Fragment>
+  <Pressable onClick={() => {}} label="Back to home" style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
+    <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
+  </Pressable>
+  <SegmentedRow label="Appearance" options={['Light','Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />
+</React.Fragment>);
+/* A phone with a bare screen behind, so the scrim has something to dim. Mounted CLOSED, opened by the
+   button — the contract's rule, and the only way focus and the Tab trap arm. */
+function Phone({ children, behind }) {
+  return <PhoneFrame><div style={{ position: 'relative', display: 'flex', height: '100%', flexDirection: 'column' }}><ScreenBackdrop /><StatusSpacer /><TopBar title="Sentinel" onMenu={() => {}} onNew={() => {}} />{behind}{children}</div></PhoneFrame>;
+}
+function Live() {
+  const [open, setOpen] = React.useState(false);
+  return <Phone behind={<div style={{ padding: 'var(--space-20) var(--gutter)' }}><Pill label="Open the menu" onClick={() => setOpen(true)} /></div>}>
+    <Drawer open={open} onClose={() => setOpen(false)} onNew={() => setOpen(false)} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} />
+  </Phone>;
+}
+const Static = (p) => <Phone><Drawer open onClose={() => {}} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} {...p} /></Phone>;
+function App() {
+  return (
+    <PageShell name="Drawer" group="Navigation" status="shipped" requires={['Drawer','SegmentedRow','List','Pill','Pressable']}
+      summary="The menu: saved work, recent threads and the client book — history, which is why it is here and not on Home. A 300pt panel over a 25% scrim, sections capped 3 / 7 / 8 with See all, a footer for Back to home and the appearance control, and no composer. Promoted from a screen on 18 Sep 2026: nine components lived in shell/ and none of them was a drawer.">
+      <Block n={1} title="Specimen" sub="Live. Tap the pill; Escape or the scrim closes it. Mounted closed and opened by an action — the only way focus and the Tab trap arm, exactly as ExplainerSheet."><div style={{ display: 'flex', justifyContent: 'center' }}><Live /></div></Block>
+      <Block n={2} title="Anatomy" sub="Panel --w-drawer (300) flush left, --shadow-drawer, scrim at --scrim-drawer (25%). Header at --h-status + 8 top. Inside, the same --gutter the phone has — measured at 16 when this was a screen.">
+        <Anatomy width={375} top="role=dialog aria-modal, labelled Menu; Escape closes; Tab wraps" left="flush to the left edge — data-gutter=edge makes it the frame for its contents" right="75pt of scrim shows the screen behind" bottom="Footer slot: Back to home, SegmentedRow. Never a composer (contradiction 59)"><Static /></Anatomy>
+      </Block>
+      <Block n={3} title="Variants" sub="None by prop. The sections are fixed; what varies is their data and the footer the screen passes.">
+        <Grid cols={1} itemWidth={375} items={[{ label: 'with a footer', node: <Static /> }, { label: 'no footer', node: <Static footer={undefined} />, note: 'Allowed, but the product always passes one.' }]} />
+      </Block>
+      <Block n={4} title="States" sub="Capped, first run, loading, one section failed. Fail per section, never blank the drawer: the header, the other lists and the footer keep working so the advisor is never trapped in an empty menu.">
+        <Grid cols={2} itemWidth={375} items={[
+          { label: 'first run', node: <Static saved={[]} recent={[]} clients={[]} />, note: 'Each List’s required emptyState, in its own words.' },
+          { label: 'loading', node: <Static loading />, note: 'Skeleton rows. Right here and wrong on Home: the drawer IS its history.' },
+          { label: 'recent failed', node: <Static failed={{ recent: true }} />, note: 'One muted line where the list would be. Everything else works.' },
+          { label: 'capped', node: <Static />, note: '5 saved shown as 3 + See all 5; 9 recent as 7 + See all 9; 10 clients as 8 + See all 10.' },
+        ]} />
+      </Block>
+      <Block n={5} title="In context" sub="Opened from the hamburger on every screen. The layer behind is whatever the advisor was doing; the thread and its composer are one tap behind the scrim, which is why there is no composer here."><div style={{ display: 'flex', justifyContent: 'center' }}><Live /></div></Block>
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={7} title="Props" sub="Pass the FULL lists; the drawer caps them. Caps default to List.jsx:8’s 3 / 7 / 8 and changing them wants a written reason."><Props src="../components/shell/Drawer.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont doNode={<Static />} doCaption="Capped sections with See all, one scroll, no composer. History, reachable in two taps from anywhere."
+          dontNode={<Static caps={{ saved: 5, recent: 9, clients: 10 }} />} dontCaption="Uncapped, the client book falls below the fold with nothing saying it is there — which is exactly how the first cut of the screen shipped. The cap is what makes the list honest." />
+      </Block>
+      <Block n={9} title="Motion" sub="The panel and the scrim move together over --dur-screen. Component-local keyframe, redefined under reduced motion — not cancelled, so nothing is stranded off-screen.">
+        <Motion rows={[
+          { name: 'Panel', property: 'ds-drawer — translateX(-100%) → 0', duration: '320 ms (--dur-screen)', reduced: 'Fade in place; the slide is dropped.' },
+          { name: 'Scrim', property: 'ds-scrim — opacity 0 → the declared --scrim-drawer (0.25). Not ds-fade: its to{opacity:1} under fill-mode both would hold the scrim at 100% (F-27)', duration: '320 ms', reduced: 'Unchanged — already opacity only.' },
+          { name: 'Close', property: 'unmounted', duration: 'immediate', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

@@ -41,6 +41,8 @@ export type { CanvasHeaderProps } from './components/shell/CanvasHeader';
 export { CanvasHeader } from './components/shell/CanvasHeader';
 export type { DockProps } from './components/shell/Dock';
 export { Dock } from './components/shell/Dock';
+export type { DrawerSection, DrawerProps } from './components/shell/Drawer';
+export { Drawer } from './components/shell/Drawer';
 export type { HomeIndicatorProps } from './components/shell/HomeIndicator';
 export { HomeIndicator } from './components/shell/HomeIndicator';
 export type { MotionGuardProps } from './components/shell/MotionGuard';
@@ -78,6 +80,8 @@ export type { PressableProps } from './components/actions/Pressable';
 export { Pressable } from './components/actions/Pressable';
 export type { RangePillsProps } from './components/actions/RangePills';
 export { RangePills } from './components/actions/RangePills';
+export type { SegmentedRowProps } from './components/actions/SegmentedRow';
+export { SegmentedRow } from './components/actions/SegmentedRow';
 export type { SuggestionRowProps } from './components/actions/SuggestionRow';
 export { SuggestionRow } from './components/actions/SuggestionRow';
 /* forms */

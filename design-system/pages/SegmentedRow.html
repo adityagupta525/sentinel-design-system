@@ -1,0 +1,52 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="SegmentedRow" subtitle="One of a set as filter pills — and the locked state that says why a choice cannot be taken yet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SegmentedRow — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SegmentedRow, RangePills } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-selected','--color-chip','--color-bronze','--color-line','--color-ink','--color-bronze-deep','--color-muted','--h-filter-chip','--radius-full','--space-6','--space-12','--border-1','--type-label-font','--type-caption-font','--tracking-pill'];
+function Live() { const [v, setV] = React.useState('Weekly'); return <SegmentedRow label="Digest" options={['Daily','Weekly','Monthly']} value={v} onChange={setV} />; }
+function App() {
+  return (
+    <PageShell name="SegmentedRow" group="Input" status="shipped" requires={['SegmentedRow','RangePills']}
+      summary="One of a set, as 32px filter pills. RangePills carried this shape alone since v10; on 18 Sep 2026 the drawer needed a second one — Light / Dark, with Dark not yet available — and a control the system cannot name is a control every screen redraws by hand. The state that earned the component is LOCKED: the choice exists, cannot be taken yet, and the row says so instead of hiding it.">
+      <Block n={1} title="Specimen" sub="Live. Tap to select."><Specimen width={343}><Live /></Specimen></Block>
+      <Block n={2} title="Anatomy" sub="Pills at --h-filter-chip (32), --space-6 apart, wrapping rather than scrolling. Selected: --color-selected fill and a bronze ring. Rest: --color-chip and a line ring.">
+        <Anatomy width={343} top="role=group with aria-label; each pill aria-pressed" left="32px, filter tone" right="every pill answers to 44pt through Pressable" bottom="locked: one --type-caption-font line, --space-6 below">
+          <SegmentedRow label="Appearance" options={['Light','Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />
+        </Anatomy>
+      </Block>
+      <Block n={3} title="Variants" sub="Two to five options. Beyond five, the row wraps to a second line — if that happens the set is too large for a segmented row and wants a List.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'Two', node: <SegmentedRow label="View" options={['Pairs','Matrix']} value="Pairs" />, note: 'OverlapView’s own mode switch, drawn with this.' },
+          { label: 'Five', node: <SegmentedRow label="Range" options={['1M','3M','1Y','3Y','ALL']} value="ALL" />, note: 'RangePills’ set. RangePills still draws its own; re-pointing it here is logged in contradiction 58.' },
+        ]} />
+      </Block>
+      <Block n={4} title="States" sub="Selected, and locked. There is no disabled-one-option state on purpose: OverlapView’s rule is that a cap is stated when reached, never enforced by a disabled button with no explanation. If one option is unavailable, the row is locked and the caption says which and why.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'selected', node: <SegmentedRow label="Digest" options={['Daily','Weekly','Monthly']} value="Weekly" /> },
+          { label: 'locked', node: <SegmentedRow label="Appearance" options={['Light','Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." /> },
+        ]} />
+      </Block>
+      <Block n={5} title="In context" sub="Where it was born: the bottom of the drawer, under Back to home. The screen shows the theme choice exists and does not pretend Dark works."><Specimen width={268}><SegmentedRow label="Appearance" options={['Light','Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." /></Specimen></Block>
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={7} title="Props"><Props src="../components/actions/SegmentedRow.d.ts" /></Block>
+      <Block n={8} title="Do / Don't">
+        <DoDont doNode={<SegmentedRow label="Appearance" options={['Light','Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />}
+          doCaption="Both options visible, neither choosable, one line says why. The advisor learns the choice exists and when it will."
+          dontNode={<SegmentedRow label="Appearance" options={['Light']} value="Light" />}
+          dontCaption="Never hide the unavailable option. A one-pill row is a label pretending to be a control, and it tells the advisor nothing about what is coming." />
+      </Block>
+      <Block n={9} title="Motion" sub="Only the press.">
+        <Motion rows={[{ name: 'Press', property: 'transform: scale(0.98) via Pressable', duration: '150 ms (--dur-press)', reduced: 'No scale.' }, { name: 'Selection', property: 'fill and ring change', duration: 'immediate', reduced: 'Unchanged — a colour change is not motion.' }]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

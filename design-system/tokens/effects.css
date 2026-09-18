@@ -33,6 +33,13 @@
 @keyframes dot-pulse{0%,100%{opacity:.28}50%{opacity:1}}
 @keyframes ds-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes ds-fade{from{opacity:0}to{opacity:1}}
+/* ds-scrim — a fade that ends at the element's OWN opacity, not at 1. A keyframe with a `from` and no `to`
+   animates to the underlying computed value, so a scrim declared at --scrim-drawer (0.25) fades to 0.25.
+   Why it exists (F-27, 18 Sep 2026): ExplainerSheet's scrim used ds-fade with fill-mode `both`, and
+   `both` holds the keyframe's final value — 1 — forever. Measured: the sheet's scrim computes to
+   opacity 1, not the 0.4 its page states; the Drawer inherited the same line and the same result.
+   Opacity only, so reduced motion needs no redefinition. */
+@keyframes ds-scrim{from{opacity:0}}
 @keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 /* Screen transitions. readme.md has specified these since v1 — "screens slide 100% in / -30% out at
    320ms" — and no keyframe carried them: the app kit defined its own private copy and every other
