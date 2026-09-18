@@ -90,5 +90,18 @@ A box that **clips** is checked itself and then closes the question for everythi
    repository reports **zero** gutter errors, and the only pages carrying phone frames at all are the
    three UI kits (16 + 11 + 1 = 28 phones) and this folder (4). So covering the kits costs nothing
    today and catches a regression there tomorrow; covering spec pages would cover nothing at all.
-   **Do not read "75/75 pages render clean" as "the whole repository is gutter-checked".** It is not,
+   **Do not read "N/N pages render clean" as "the whole repository is gutter-checked".** It is not,
    and that is on purpose.
+9. **Nothing truncates silently.** On the same surfaces, any element with `text-overflow: ellipsis`
+   whose text is wider than its box fails the page — unless the page's `@gutter` marker says
+   `truncation="allowed"`, with a comment naming which state truncates on purpose. A label lost a third
+   of itself on 18 Sep and passed every check until a human measured it.
+10. **One Babel scope, checked before the browser.** Every `text/babel` file a page loads compiles into
+   one global scope; a second top-level `const { Dock } = …` is a `SyntaxError` and the page renders
+   nothing. `check-previews` now lists every top-level `const` / `let` / `function` / `class` across a
+   screen page's loaded `.jsx` files and inline script and fails on a duplicate — the class of failure
+   that broke Home's extraction and the drawer on first load. Shared `.jsx` files use one uniquely
+   named const (`THREAD_DS`) and read components through it.
+11. **Screens run the system's adherence lint in CI** (`npm run lint:adherence:screens`) — the raw-hex
+   and reach-into-`components/` rules the system holds itself to. It does not yet count raw px values
+   the way `_index.json` does for components; that gap is open.

@@ -130,11 +130,34 @@ for (const [base, prefix] of (SELF_TEST ? [[FIXTURES, 'tools/fixtures/']] : [[DS
      at all. Requiring exactly one failed all 17 of them the first time this check ran. */
   if (count(/id="root"/g) > 1) structure.push(`id="root" appears ${count(/id="root"/g)}\u00d7 — must be at most 1`);
   if (count(/page-kit\.jsx/g) > 1) structure.push(`page-kit.jsx loaded ${count(/page-kit\.jsx/g)}\u00d7 — must be at most 1`);
+  /* SHARED-SCOPE CHECK, static. Every text/babel script a page loads compiles into ONE global scope, so
+     a `const { Dock }` in home.jsx and another in the page is a SyntaxError and the page renders nothing —
+     which is exactly how screen 1's extraction and the drawer failed on first load (18 Sep 2026). Counted
+     before the browser sees the page: every top-level const/let/function/class name across the page's
+     loaded .jsx files and its inline script must be unique. */
+  const scope = [];
+  if (prefix === 'screens/') {
+    const dir = dirname(p);
+    const srcs = [...text.matchAll(/<script[^>]+type="text\/babel"[^>]+src="([^"]+)"/g)].map((m) => m[1]);
+    const inline = [...text.matchAll(/<script[^>]+type="text\/babel"(?![^>]*src=)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+    const sources = [];
+    for (const s of srcs) { try { sources.push([s, await readFile(join(dir, s), 'utf8')]); } catch { structure.push(`babel src not found: ${s}`); } }
+    for (const [i, s] of inline.entries()) sources.push([`<inline #${i + 1}>`, s]);
+    const seen = new Map();
+    for (const [name, src] of sources) {
+      for (const m of src.matchAll(/^(?:const|let|var|function|class)\s+(\{[^}]*\}|[A-Za-z_$][\w$]*)/gm)) {
+        const names = m[1].startsWith('{') ? m[1].slice(1, -1).split(',').map((x) => x.split(':').pop().trim()).filter(Boolean) : [m[1]];
+        for (const n of names) { if (seen.has(n) && seen.get(n) !== name) scope.push(`\`${n}\` declared in ${seen.get(n)} and again in ${name} — one Babel scope, the page will render nothing`); else seen.set(n, name); }
+      }
+    }
+  }
   const gutterMark = GUTTER.exec(text.slice(0, 900))?.[1] ?? '';
   const gutterMin = Number(ATTR(gutterMark, 'min') || 16);
   const fullBleed = ATTR(gutterMark, 'fullBleed') || '';
-  pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400, structure,
-               gutter: prefix === 'screens/' || rel.startsWith('ui_kits/') || rel.startsWith('tools/'), gutterMin, fullBleed });
+  const truncation = ATTR(gutterMark, 'truncation') || '';
+  pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400, structure: [...structure, ...scope],
+               gutter: prefix === 'screens/' || rel.startsWith('ui_kits/') || rel.startsWith('tools/'), gutterMin, fullBleed,
+               truncationAllowed: truncation === 'allowed' });
  }
 }
 pages.sort((a, b) => a.rel.localeCompare(b.rel));
@@ -175,6 +198,22 @@ for (const p of pages) {
   if (p.gutter) {
     gutter = await page.evaluate(`(${GUTTER_PROBE.toString()})(${p.gutterMin})`).catch(() => null);
     if (gutter && gutter.bad.length) for (const b of gutter.bad) errors.push(`GUTTER ${b}`);
+    /* TRUNCATION. A label that lost a third of itself to an ellipsis passed every check on 18 Sep until a
+       human measured it. Any element inside a phone whose text is wider than its box is reported; it fails
+       the page unless the page's @gutter marker says truncation="allowed" — the drawer's long-client-name
+       state truncates on purpose, and says so. */
+    const trunc = await page.evaluate(() => {
+      const phones = [...document.querySelectorAll('div')].filter((d) => { const r = d.getBoundingClientRect(), cs = getComputedStyle(d); return Math.round(r.width) === 375 && Math.round(r.height) === 812 && cs.overflow.includes('hidden'); });
+      const out = [];
+      for (const ph of phones) for (const el of ph.querySelectorAll('span,p,div,button')) {
+        const cs = getComputedStyle(el);
+        if (cs.textOverflow === 'ellipsis' && el.scrollWidth > el.clientWidth + 1 && el.clientWidth > 40)
+          out.push(`"${(el.textContent || '').trim().slice(0, 36)}" needs ${el.scrollWidth}px, has ${el.clientWidth}px`);
+      }
+      return [...new Set(out)];
+    }).catch(() => []);
+    if (gutter) gutter.truncated = trunc.length;
+    if (trunc.length && !p.truncationAllowed) for (const t of trunc) errors.push(`TRUNCATED ${t} — declare truncation="allowed" in @gutter if this is deliberate`);
   }
   if (SHOTS) await page.screenshot({ path: join(SHOTS, `${p.name}.png`), fullPage: true }).catch(() => {});
   results.push({ ...p, errors, missing, mounted, gutter });
@@ -186,7 +225,7 @@ stop();
 const bad = results.filter((r) => r.errors.length || r.missing.length || r.mounted < 200);
 for (const r of results) {
   const flag = r.errors.length || r.missing.length ? 'FAIL' : r.mounted < 200 ? 'EMPTY' : 'ok';
-  console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}${r.gutter ? `  gutter>=${r.gutterMin} on ${r.gutter.phones} phone${r.gutter.phones === 1 ? '' : 's'}${r.gutter.anchored ? `, ${r.gutter.anchored} edge-anchored` : ''}` : ''}`);
+  console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}${r.gutter ? `  gutter>=${r.gutterMin} on ${r.gutter.phones} phone${r.gutter.phones === 1 ? '' : 's'}${r.gutter.anchored ? `, ${r.gutter.anchored} edge-anchored` : ''}${r.gutter.truncated ? `, ${r.gutter.truncated} truncated${r.truncationAllowed ? ' (allowed)' : ''}` : ''}` : ''}`);
   if (r.gutter && r.fullBleed) console.log(`         full-bleed by design: ${r.fullBleed}`);
   for (const e of [...r.errors, ...r.missing].slice(0, 4)) console.log(`         ↳ ${e}`);
 }
