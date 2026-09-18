@@ -39,8 +39,8 @@ function App() {
       </Specimen>
     </Block>
 
-    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. The 96px preview is a hard clip, not a scroller — what does not fit is hidden, and the card says so by being obviously cut.">
-      <Anatomy width={343} top="eyebrow 10/700 · title 16/24" bottom="footer row 44 · hairline 0.5" left="radius 16 · padding 14" right="preview: 96 fixed">
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. 96 is a CAP, not a reserved block: a preview that measures less takes its own height and the card closes under it — corrected 18 Sep 2026, after a three-row bar chart (62 measured) left 34pt of empty card above the provenance line. What does not fit is still a hard clip, not a scroller, and the card says so by being obviously cut.">
+      <Anatomy width={343} top="eyebrow 10/700 · title 16/24" bottom="footer row 44 · hairline 0.5" left="radius 16 · padding 14" right="preview: ≤ 96, capped">
         <ArtifactCard state="peek" eyebrow="Proposal · R. Sharma" title="4 funds, ₹25 L"
           provenance="Drafted 14 Sep · fees from the scheme documents"
           onToggle={()=>{}}>
@@ -52,7 +52,7 @@ function App() {
     <Block n={3} title="Three states" sub="filling is not a spinner — it is the card's own shape, shimmering, so the advisor already knows what is arriving.">
       <Grid cols={3} itemWidth={300} items={[
         {label:'peek', node:<ArtifactCard state="peek" eyebrow="Rebalance" title="Two moves, not seven" onToggle={()=>{}}><Spark /></ArtifactCard>,
-         note:'96px, fixed. A sparkline strip, one stat row, or a table’s top three rows. Never a chart with axes.'},
+         note:'Capped at 96px, never reserved. A sparkline strip, one stat row, or a table’s top three rows. Never a chart with axes.'},
         {label:'filling', node:<ArtifactCard state="filling" eyebrow="Rebalance" title="Working on his mandate" onToggle={()=>{}}><Spark /></ArtifactCard>,
          note:'The shape arrives before the data. Shimmer on --color-track; the press is inert while it fills.'},
         {label:'expanded', node:<ArtifactCard state="expanded" eyebrow="Rebalance" title="Two moves, not seven" provenance="As of 30 Sep" onToggle={()=>{}} onMenu={()=>{}}><Table /></ArtifactCard>,

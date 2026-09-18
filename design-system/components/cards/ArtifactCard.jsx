@@ -8,7 +8,8 @@ import { Pressable } from '../actions/Pressable.jsx';
    carries the scroll. Never set overflow:auto/scroll on this card or on `children`, and never cap it
    with a maxHeight. A scroller inside the scrolling thread is the pattern the old full-bleed canvas
    existed to avoid, and re-introducing it here is the one way this component stops feeling good.
-   Peek clips its preview to 96px (hidden, not scrollable); expanded clips nothing.
+   Peek clips its preview AT 96px — a cap, not a reserved block: a shorter preview takes its own height
+   and the card closes under it (hidden, not scrollable). Expanded clips nothing.
 
    PEEK IS 96px, FIXED — recognition, not reading. What fits there is a sparkline strip (plot 72,
    one end-label row 14, no axis ticks, no gridlines, no legend), a single stat row, or a table's top
@@ -32,7 +33,7 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
   const body = (
     <React.Fragment>
       {!expanded && <React.Fragment><Eyebrow>{eyebrow}</Eyebrow><div style={{ marginTop: 'var(--space-4)' }}>{titleEl}</div></React.Fragment>}
-      <div style={expanded ? { marginTop: 'var(--space-12)' } : { height: 96, marginTop: 'var(--space-10)', overflow: 'hidden' }}>
+      <div style={expanded ? { marginTop: 'var(--space-12)' } : { maxHeight: 96, marginTop: 'var(--space-10)', overflow: 'hidden' }}>
         {filling ? <div style={{ height: 96, borderRadius: 'var(--radius-12)', background: 'var(--color-track)', animation: 'sentinel-shimmer 1200ms ease-in-out infinite' }} /> : children}
       </div>
       {provenance && <p style={{ margin: '10px 0 0', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-15)', color: 'var(--color-muted)' }}>{provenance}</p>}
@@ -73,7 +74,14 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
             <div style={{ position: 'relative', padding: '14px 14px 0', textAlign: 'left', pointerEvents: 'none' }}>
               <Eyebrow>{eyebrow}</Eyebrow>
               <div style={{ marginTop: 'var(--space-4)' }}>{titleEl}</div>
-              <div style={{ height: 96, marginTop: 'var(--space-10)', overflow: 'hidden', pointerEvents: 'auto' }}>
+              {/* 96 IS A CAP, NOT A RESERVED BLOCK — corrected 18 Sep 2026, after the owner saw the gap.
+                  `height: 96` reserved the full block whatever the preview measured, so a three-row bar
+                  chart (62 measured) left 34pt of empty card between the chart and the provenance line:
+                  a 44pt gap where 10 was declared. `maxHeight` keeps the rule exactly — the preview is
+                  still clipped at 96 and still hidden rather than scrollable — and a shorter preview now
+                  ends where it ends. The `filling` skeleton keeps a fixed 96, because there the block IS
+                  the content: a shimmer that shrinks would be a wait that lies about its size. */}
+              <div style={{ maxHeight: 96, marginTop: 'var(--space-10)', overflow: 'hidden', pointerEvents: 'auto' }}>
                 {filling ? <div style={{ height: 96, borderRadius: 'var(--radius-12)', background: 'var(--color-track)', animation: 'sentinel-shimmer 1200ms ease-in-out infinite' }} /> : children}
               </div>
               {provenance && <p style={{ margin: '10px 0 0', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-11)', lineHeight: 'var(--leading-15)', color: 'var(--color-muted)' }}>{provenance}</p>}

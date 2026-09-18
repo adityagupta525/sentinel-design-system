@@ -610,6 +610,26 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
+### F-30 · The artifact peek reserved 96px instead of capping at it, and three bars ended 4pt apart — *found by the owner, fixed 18 Sep 2026*
+The owner looked at an artifact peek and said the space between the chart and "As of 30 Sep" was being
+wasted. Measured on `screens/journey-b/03-thread-answer.html`: the preview box was `height: 96` while the
+three-row bar chart measured **62**, so **34pt of empty card** sat between them and the declared 10pt gap
+rendered as **44**. `height` → `maxHeight` in both of `ArtifactCard`'s peek paths: the rule is unchanged —
+the preview is still clipped at 96 and still hidden rather than scrollable — but a shorter preview now takes
+its own height. The card fell 243 → **209**, and the gap is **10**. The `filling` skeleton keeps a fixed 96
+on purpose: there the block *is* the content, and a shimmer that shrinks would be a wait lying about its size.
+
+In the same screenshot the three bar tracks did not share a right edge — 177 / 173 / 174, ending 4pt apart —
+because `ChartBar`'s value span sized to its own text ("+6.1" measured 19, "+2.0" 22) while the track is
+`flex: 1`. Three bars that do not share a right edge read as a drawing rather than a scale. The value column
+now carries `minWidth: '4ch'` — four tabular figures, no px literal — and all three tracks end at **334**.
+
+Both are in the system, so every screen and every board gets them. **Not fixed, and reported instead:** the
+widget the owner was looking at is `ui_kits/journey-b/b-parts.jsx`'s own `AttributionPreview`, a hand-drawn
+copy inside the imported kit that does not use `ArtifactCard` or `ChartBar` at all — it hardcodes a 108pt
+label column and draws no track. The kits are the import record and are not edited without the owner's word;
+it is the same open question as the kit's stale Home.
+
 ### F-27 · Every scrim in the product renders at 100% ink, not 40% — *found 18 Sep 2026, fixed the same day*
 Found while promoting the Drawer, by measuring rather than looking — a 100% scrim and a 40% scrim are
 both "dark" in a screenshot. `ExplainerSheet.jsx:64` sets `opacity: 0.4` and

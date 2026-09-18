@@ -49,7 +49,12 @@ export function ChartBar({ bars = [], orientation = 'horizontal', density = 'exp
             <span style={{ position: 'relative', flex: 1, minWidth: 0, height: rowH, display: 'flex', alignItems: 'center', borderRadius: 'var(--radius-full)', background: 'var(--color-track)', boxShadow: 'inset 0 0 0 var(--border-hairline) var(--color-line)' }}>
               <span style={{ position: 'absolute', left: 0, top: (rowH - barH) / 2, height: barH, width: `${((b.value - d0) / (d1 - d0)) * 100}%`, borderRadius: '0 4px 4px 0', background: markColor(b.tone || tone), transformOrigin: 'left', transform: on ? 'none' : 'scaleX(0)', transition: run ? 'transform var(--dur-bar) var(--ease)' : 'none', transitionDelay: run ? `${i * 60}ms` : '0ms' }} />
             </span>
-          <span style={{ ...tabular, flexShrink: 0, textAlign: 'right', fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 11 : 12.5, lineHeight: `${rowH}px`, color: 'var(--color-bronze-deep)' }}>{valueFormat(b.value)}</span>
+          {/* ONE RIGHT EDGE. The value span used to size to its own text, so "+6.1" and "+2.0" measured 19
+              and 22 and the three TRACKS — which are flex: 1 — ended 4pt apart. Three bars that do not
+              share a right edge read as a drawing rather than a scale, and it was visible in the artifact
+              peek before it was measured. A shared minimum in `ch` (not px) holds the column at the width
+              of four tabular figures, so every track ends at the same x and a longer value still grows. */}
+          <span style={{ ...tabular, flexShrink: 0, minWidth: '4ch', textAlign: 'right', fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 11 : 12.5, lineHeight: `${rowH}px`, color: 'var(--color-bronze-deep)' }}>{valueFormat(b.value)}</span>
         </div>
       ))}
       {caveat && <p style={{ margin: 'var(--space-2) 0 0', font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{caveat}</p>}

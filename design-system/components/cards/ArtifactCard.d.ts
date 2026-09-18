@@ -3,11 +3,12 @@ export type ArtifactState = 'peek' | 'expanded' | 'filling';
  *
  *  CONTRACT — no nested scroll. An expanded card takes its content's natural height; the thread
  *  carries the scroll. Callers must not pass `children` that scroll, and must not wrap the card in a
- *  fixed height or `overflow: auto`. Collapsed clips its preview to 96px; expanded clips nothing.
+ *  fixed height or `overflow: auto`. Peek clips its preview AT 96px — a CAP, not a reserved block, so a
+ *  preview that measures less takes its own height and the card closes under it; expanded clips nothing.
  *  The caller owns the two thread scrolls: on expand, bring the card's header just under the app bar;
  *  on collapse, return to the card's position. */
 export interface ArtifactCardProps {
-  /** `peek` (default) — 96px preview, fixed; footer reads "Expand ⌄". `expanded` — natural height, title
+  /** `peek` (default) — preview capped at 96px (a shorter one keeps its own height); footer reads "Expand ⌄". `expanded` — natural height, title
    *  and ⋯ in the card's own header row, footer reads "Collapse ⌃". `filling` — skeleton-first, actions inert.
    *  There is no `'collapsed'`: the 96px peek is recognition, not reading, and the old name invited a
    *  taller preview. A caller still passing `'collapsed'` falls to the `peek` default — it is not an alias. */
