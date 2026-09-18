@@ -130,8 +130,8 @@ The owner reviews the system as a rendered, clickable copy. To rebuild it:
 Before believing any of the numbers above:
 
 ```bash
-npm ci
-npx playwright install chromium   # ONCE per machine — see below
+npm ci                            # FIRST — see below
+npx playwright install chromium   # ONCE per machine, and only AFTER npm ci — see below
 npm run check                     # barrel, bundle, index, scale, integrity, adherence
 node tools/check-previews.mjs     # expect 73/73
 npm run preview                   # → http://localhost:4321/pages/00-Index.html
@@ -142,6 +142,22 @@ devDependency so `npm ci` installs the *library*, but not the browser binary. Wi
 `check-previews` exits with `playwright not found` and **you cannot look at the work** — which is the
 one thing this project will not let you skip. The cloud container this was built in had Chromium
 pre-installed, so the step is easy to miss.
+
+**The order of the first two lines is not cosmetic.** Each Playwright release pins its own Chromium
+build number, and `npx playwright install` fetches the build for whichever Playwright it is running.
+If `node_modules` does not exist yet, `npx` downloads the *latest* Playwright and installs *its*
+Chromium; `npm ci` then installs the locked `playwright@1.56.1`, which looks for a different build and
+fails with `Executable doesn't exist at …/chromium_headless_shell-1194/…`. The fix is the same command
+again, now that the locked Playwright is on disk. First seen 18 Sep 2026, the first time this repository
+was set up from a clean clone.
+
+**`npm ci` itself failed on that first clean clone.** `package.json` asked for `esbuild ^0.25.0` while
+`package-lock.json` had resolved `0.28.2`, and `npm ci` refuses a lockfile that is out of sync with its
+manifest. The range was a hand edit in commit `88d961e`; nothing upstream ever ran `npm ci` from an
+empty tree, so it was never caught there — and it is why every CI run before this fix failed at the
+install step, skipping every guard after it. `package.json` now says `^0.28.2`. That is the version the
+committed `_ds_bundle.js` was built with: rebuilding with it reproduces the bundle byte-for-byte, which
+`check:integrity` confirms.
 
 Pushing from a local clone needs git credentials for `adityagupta525/sentinel-design-system`
 (`gh auth login`, or an SSH key). Reading and rendering need nothing.
