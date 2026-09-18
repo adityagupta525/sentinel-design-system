@@ -140,7 +140,14 @@ npx playwright install chromium   # ONCE per machine, and only AFTER npm ci — 
 npm run check                     # barrel, bundle, index, scale, integrity, adherence
 node tools/check-previews.mjs     # expect 73/73
 npm run preview                   # → http://localhost:4321/pages/00-Index.html
+                                  #   Screens → /screens/index.html
 ```
+
+**If port 4321 is already taken, the preview server says so and stops** — it does not fall back to
+another port, because the printed URL has to be the URL that works. Whatever else is on 4321 will
+answer your browser with its own 404, which reads exactly like a broken page in this repository. Run
+`lsof -nP -iTCP:4321 -sTCP:LISTEN` to see what holds it, or `PORT=4322 npm run preview`. Hit on
+18 Sep 2026, when an unrelated `python -m http.server` had owned 4321 since August.
 
 **`npx playwright install chromium` is not optional on a local machine.** `playwright` is a
 devDependency so `npm ci` installs the *library*, but not the browser binary. Without it

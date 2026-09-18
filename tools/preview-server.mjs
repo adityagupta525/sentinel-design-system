@@ -45,7 +45,7 @@ const TYPES = {
   '.png': 'image/png', '.md': 'text/plain; charset=utf-8', '.ts': 'text/plain; charset=utf-8',
 };
 
-createServer(async (req, res) => {
+const server = createServer(async (req, res) => {
   const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (BY_ROUTE.has(path)) {
     const body = await readFile(BY_ROUTE.get(path));
@@ -77,7 +77,22 @@ createServer(async (req, res) => {
     res.writeHead(404, { 'content-type': 'text/plain' });
     res.end(`Not found: ${rel}`);
   }
-}).listen(PORT, () => {
+});
+
+/* A port that is already taken used to surface as an unhandled EADDRINUSE stack trace. The trace is
+   the least useful part: what the reader needs is that ANOTHER process owns the port, because the
+   browser then opens that process's pages instead and reports a 404 that looks like this repository's
+   fault. Found on 18 Sep 2026, when an unrelated python http.server had held 4321 since August. */
+server.on('error', (err) => {
+  if (err.code !== 'EADDRINUSE') throw err;
+  console.error(`\nPort ${PORT} is already in use by another process, so the preview server did not start.`);
+  console.error('Whatever answers on that port is NOT this repository — a page you open there will 404.');
+  console.error(`\n  Find the holder:  lsof -nP -iTCP:${PORT} -sTCP:LISTEN`);
+  console.error(`  Or use another:   PORT=${PORT + 1} npm run preview\n`);
+  process.exit(1);
+});
+
+server.listen(PORT, () => {
   console.log(`Sentinel design system → http://localhost:${PORT}/pages/00-Index.html`);
   console.log(`              UI kit   → http://localhost:${PORT}/ui_kits/sentinel-app/index.html`);
   console.log(`              Screens  → http://localhost:${PORT}/screens/index.html`);
