@@ -14,12 +14,18 @@ the advice that was already rejected. Auditing Sentinel against a generic 4/8pt 
 
 ## Look at it. Never review a screen from its source.
 
+**Work at the scope of the change — load the `sentinel-scope` skill.** A one-screen review costs a
+one-screen verification, and looking costs context:
+
 ```bash
-npm run build:bundle                                   # the pages read the bundle, not the source
-node tools/check-previews.mjs --shots /tmp/shots        # every page, at its own viewport
+npm run build:bundle                                    # the pages read the bundle, not the source
+node tools/check-previews.mjs --only <page-substring>    # one page, ~5s — not the 82-page sweep
+node tools/phone-shot.mjs <page.html> <phoneIndex> out.png   # one 375x812 phone, ~67 KB, not a 1.5 MB board
 ```
-Then **read the screenshots** and crop into anything you are unsure of. A finding you did not see did
-not happen — and a clean render is not proof the screen is right, only that it is not broken.
+Then **read the phone shots** and crop into anything you are unsure of. A finding you did not see did
+not happen — and a clean render is not proof the screen is right, only that it is not broken. Sweep the
+whole repository only when the change was in `design-system/`, and then let `grep -rl` tell you which
+pages are actually affected.
 
 ## What to look for, in this order
 
