@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./home.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
@@ -31,16 +31,16 @@ const PROVENANCE = [
 mountScreen(
   <ScreenShell
     journey="Journey B · Sharma’s drift" n="Screen 1 of 7" name="Home"
-    job="The way in, and the only screen an advisor sees before they have asked anything. Three rows built from their own book, and a composer. Nothing else."
+    job="The way in, and the only screen an advisor sees before they have asked anything. Ready prompts drawn from their own book, three starters for work with no client yet, and the composer."
     without="has no way in that shows what Sentinel can do, and no one-tap route back to the client who needs them most."
   >
-    <Section title="1 · The screen" sub="Greeting, three rows, composer. The saved-work widget moved to the menu and the quick-action chips are gone, so what is left is the shortest thing that still answers “what can I do, and for whom”.">
+    <Section title="1 · The screen" sub="Greeting, ready prompts, starters, composer. The saved-work widget moved to the menu, so what is left answers “what can I do, and for whom” in two lists that do not overlap.">
       <StateRow>
-        <State label="typical" note="The book is loaded, so every row names a client. The rows are ordered by the client lifecycle — know them, build for them, keep it right — not by recency, because recency is what the menu is for.">
+        <State label="typical" note="Two lists doing two jobs. The card is READY PROMPTS — the advisor's own book as whole sentences they can send as they stand. The chips are STARTERS — a capability with no client attached, which the thread then asks for. Rows are ordered by the client lifecycle: know them, build for them, keep it right.">
           <Home hour={15} time="3:04" />
         </State>
-        <State label="book unavailable" tone="under" note="A first day, or a book that has not arrived, or one that failed to. All three render this, and that is the point: the capability-shaped rows are the BASE CASE and the names are an enhancement that arrives. So this screen has no loading state and no error state to get wrong — it is never blank and it never promises a name it does not have.">
-          <Home hour={9} time="8:30" rows={HOME_UNNAMED} />
+        <State label="book unavailable" tone="under" note="A first day, or a book that has not arrived, or one that failed to — all three render this. The card is omitted ENTIRELY rather than falling back to capability-shaped rows, because that fallback would have been the chips again one card higher. The starters carry the first run, so the screen is never blank and never promises a name it does not have. No loading state and no error state to get wrong.">
+          <Home hour={9} time="8:30" rows={[]} />
         </State>
       </StateRow>
       <Note title="Why there is no “Jump back in” here any more">
@@ -49,12 +49,17 @@ mountScreen(
         “what can I do, and for whom”, not “what were you doing yesterday”. The empty and loading states that
         section used to carry went with it; they are the drawer&rsquo;s question now.
       </Note>
-      <Note title="Why the quick-action chips are gone">
-        Two reasons, and neither is that their destinations disappeared — they never opened a canvas at all.
-        <code> docs/screens-source/src/App.tsx:58</code> says a quick-action chip is a conversational turn, and
-        <code> handleChip</code> posts the label to the thread. They are gone because they said the same three
-        capabilities as the card above them, in the abstract, four hundred points below it; and because
-        <code> Dock.d.ts</code> calls that slot “Contextual AnswerChips”, and on Home nothing has been said yet.
+      <Note title="The starters came back, and one of my two arguments for removing them was wrong">
+        I took the chips out with two reasons. <strong>The second was a misreading:</strong> I read
+        <code>Dock.d.ts</code>&rsquo;s “Contextual AnswerChips” as meaning only follow-ups to something Sentinel
+        had just said. The slot is chips above the composer; on Home the context is an advisor who has asked
+        nothing yet, and a starter is exactly what that context calls for.
+        <br /><br />
+        <strong>The first reason was real</strong> — the chips repeated the card&rsquo;s three capabilities in
+        the abstract — and it is answered by giving the two lists different jobs rather than by deleting one.
+        The card sends <em>this</em> proposal, for Mr. Amit Aggrawal. A chip starts <em>a</em> proposal, and the
+        thread asks who for. That is also why the card is dropped entirely when the book is unavailable: a
+        capability-shaped card would have been the chips again.
       </Note>
     </Section>
 
