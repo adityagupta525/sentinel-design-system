@@ -51,7 +51,8 @@ down. Reading a stack is not looking.
 ```bash
 npm run build:bundle                              # the pages read the bundle, not the source
 npm run preview                                   # then open it
-node tools/check-previews.mjs --shots /tmp/shots  # all 63 pages, at their own @dsCard viewport
+node tools/check-previews.mjs --only <page> --quiet # the pages you touched (sentinel-scope)
+node tools/phone-shot.mjs <page.html> 0 out.png    # one 375x812 phone, not a 1.5 MB board
 ```
 
 **The bundle step is not optional.** Preview pages load `_ds_bundle.js`; a source change is invisible
@@ -66,7 +67,7 @@ Then, before the commit:
 
 ```bash
 npm run check                            # barrel, bundle, integrity, adherence
-node tools/check-previews.mjs            # 63/63, or say which one regressed and why
+node tools/check-previews.mjs            # 82/82 before a push, or say which one regressed and why
 ```
 
 **Never restyle.** Colour, type, radii, shadow and motion character are settled. Fix gaps, alignment,

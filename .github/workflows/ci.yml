@@ -53,6 +53,11 @@ jobs:
       - name: Screens are held to the same adherence rules as the system
         run: npm run lint:adherence:screens
 
+      - name: Adherence warnings may not grow
+        # 62 is today's baseline, and it moves only when a component is added or a literal is fixed.
+        # Move it in the SAME commit as the change that moved it, and say which direction and why —
+        # a baseline quietly raised to make a gate green is worse than no gate.
+        run: npm run lint:adherence:gate
       - name: A screen may not name what the system does not export
         run: node tools/check-parallel.mjs
       - name: The gutter guard can still fail

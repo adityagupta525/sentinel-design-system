@@ -4,7 +4,7 @@
    exists and the page silently shows nothing. So this fails on a console error, on a page that
    mounts nothing, and on a request that 404s — the three ways a preview lies.
 
-   Usage: node tools/check-previews.mjs [--shots <dir>] [--only <substring>] [--json <file>] */
+   Usage: node tools/check-previews.mjs [--shots <dir>] [--only <substr,substr>] [--quiet] [--json <file>] */
 import { spawn } from 'node:child_process';
 import { readdir, mkdir, writeFile } from 'node:fs/promises';
 import { join, dirname, relative, sep } from 'node:path';
@@ -32,7 +32,14 @@ const PORT = Number(process.env.PORT) || await new Promise((resolve, reject) => 
 });
 const arg = (f) => { const i = process.argv.indexOf(f); return i > -1 ? process.argv[i + 1] : null; };
 const SHOTS = arg('--shots');
+/* --only takes a COMMA-SEPARATED list (18 Sep 2026). It took one substring, and a component edit whose
+   blast radius is five pages meant five runs or one substring broad enough to sweep in pages nobody
+   changed — which is how a targeted run quietly becomes a full one. */
 const ONLY = arg('--only');
+const ONLY_LIST = ONLY ? ONLY.split(',').map((x) => x.trim()).filter(Boolean) : null;
+/* --quiet prints failures and the tally only. A clean full sweep is 82 lines that all say the same
+   thing; only the failures and the count carry information, and reading the rest costs context. */
+const QUIET = process.argv.includes('--quiet');
 const JSON_OUT = arg('--json');
 
 /* Viewport comes from the page's own @dsCard marker where it has one — the card says how wide the
@@ -114,7 +121,7 @@ for (const [base, prefix] of (SELF_TEST ? [[FIXTURES, 'tools/fixtures/']] : [[DS
  for await (const p of walk(base)) {
   const rel = prefix + relative(base, p).split(sep).join('/');
   if (rel === 'thumbnail.html') continue;
-  if (ONLY && !rel.includes(ONLY)) continue;
+  if (ONLY_LIST && !ONLY_LIST.some((o) => rel.includes(o))) continue;
   const text = await readFile(p, 'utf8');
   const card = CARD.exec(text.slice(0, 400))?.[1] ?? '';
   const [w, h] = (ATTR(card, 'viewport') || '1200x1400').split('x').map(Number);
@@ -225,6 +232,7 @@ stop();
 const bad = results.filter((r) => r.errors.length || r.missing.length || r.mounted < 200);
 for (const r of results) {
   const flag = r.errors.length || r.missing.length ? 'FAIL' : r.mounted < 200 ? 'EMPTY' : 'ok';
+  if (QUIET && flag === 'ok') continue;
   console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}${r.gutter ? `  gutter>=${r.gutterMin} on ${r.gutter.phones} phone${r.gutter.phones === 1 ? '' : 's'}${r.gutter.anchored ? `, ${r.gutter.anchored} edge-anchored` : ''}${r.gutter.truncated ? `, ${r.gutter.truncated} truncated${r.truncationAllowed ? ' (allowed)' : ''}` : ''}` : ''}`);
   if (r.gutter && r.fullBleed) console.log(`         full-bleed by design: ${r.fullBleed}`);
   for (const e of [...r.errors, ...r.missing].slice(0, 4)) console.log(`         ↳ ${e}`);

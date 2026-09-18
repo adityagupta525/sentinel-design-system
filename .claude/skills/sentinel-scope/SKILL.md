@@ -31,11 +31,15 @@ Reading 25k tokens to be told a number that has not moved is the clearest waste 
 
 **THE BASELINE IS NOT A CONSTANT — DERIVE IT, NEVER HARDCODE IT.** This skill first shipped with 169,
 which was true when it was written and false two commits later: promoting `Drawer` and `SegmentedRow`
-into the system took it to **171** (measured 18 Sep 2026 — `--max-warnings=171` exits 0, `170` exits 1).
+into the system took it to **171**, and then exempting the generated `index.d.ts` took it to **62**
+(measured 18 Sep 2026 — `--max-warnings=62` exits 0, `61` exits 1). It moved twice in one day.
 A hardcoded baseline fails the next person for a reason that is not their fault, so take it from the tree:
 
     BASE=$(npm run -s lint:adherence 2>&1 | sed -n 's/^Found \([0-9]*\) warnings.*/\1/p')
     npx oxlint --config design-system/_adherence.oxlintrc.json --max-warnings=$BASE --silent design-system
+
+The gate is now wired: **`npm run lint:adherence:gate`**, and CI runs it. Its number lives in
+`package.json` — move it in the same commit as the change that moved it, and say which direction and why.
 
 ## 1 · Route the read. Do not read the library.
 
@@ -76,9 +80,10 @@ Two greps, about 300 bytes of output:
     grep -n "^### F-25\|^### F-11\|^### F-21" docs/FINDINGS.md
 
 `FINDINGS.md` has all three closed — F-11 *deleted 18 Sep 2026*, F-21 *fixed 18 Sep 2026*, F-25
-*fixed*. **The repository's own map points three sessions at work that is already done.** Reading
-either document whole would have cost 46 KB and buried it; the grep surfaced it in seconds. Scope
-discipline is not a smaller review — it is a sharper one.
+*fixed*. **The repository's own map pointed three sessions at work that was already done.** Reading either
+document whole would have cost 46 KB and buried it; the grep surfaced it in seconds. Scope discipline is
+not a smaller review — it is a sharper one. *(That line was corrected later the same day: `CLAUDE.md:56`
+now reads "F-1 … F-30 recorded; **none open**". The example stands as the method, not as a live gap.)*
 
 **Worked example — a gap that was not one.** Home renders `3:04` in the status bar while
 `StatusSpacer` defaults to `'9:41'`. One grep of the component returned its own comment: the `time`
@@ -120,7 +125,7 @@ also tested, and exact:
 
     # once, to record today's truth
     npx oxlint --config design-system/_adherence.oxlintrc.json --format=unix design-system 2>/dev/null \
-      | sed 's/:[0-9]*:[0-9]*:/::/' | sort > .adherence.baseline    # 171 lines, 19 KB, on disk not in context
+      | sed 's/:[0-9]*:[0-9]*:/::/' | sort > .adherence.baseline    # 62 lines, on disk not in context
 
     # every run after — prints nothing when nothing changed
     npx oxlint --config design-system/_adherence.oxlintrc.json --format=unix design-system 2>/dev/null \
@@ -188,14 +193,17 @@ Scope discipline pays for these, so run them — they are seconds and they are w
 
 Honest limits, so nobody mistakes this for more than it is:
 
-- `--only` takes **one substring** (`rel.includes(ONLY)`). Five affected pages means five runs
-  (~5 s each) or one broader substring. A comma-separated `--only` would be a five-line change to
-  `tools/check-previews.mjs`; it has not been made.
-- `check-previews` prints **one line per page whether it passed or failed** — 78 lines for a clean
-  full sweep. Only failures and the tally carry information. There is no `--quiet`.
-- `lint:adherence` lints **`_ds_bundle.js`**, 190 KB of generated output, and some of the
-  warnings are its. Excluding generated files would change the baseline; that is the owner's call,
-  not a cleanup to slip in.
+- ~~`--only` takes one substring~~ — **fixed 18 Sep 2026.** It takes a comma-separated list:
+  `--only 01-home,drawer` runs exactly those two.
+- ~~No `--quiet`~~ — **fixed the same day.** `--quiet` prints failures and the tally only.
+- ~~`lint:adherence` lints `_ds_bundle.js` and some of the warnings are its~~ — **measured, and it was
+  the wrong file.** The bundle contributes **2** of the warnings. **109 of 171 came from
+  `design-system/index.d.ts`**: the override exempted `**/index.js` — the generated public entry — and
+  not its generated declaration file, so the barrel was warned for importing the components it exists to
+  export. One line in `_adherence.oxlintrc.json` (`"**/index.d.ts"` added to the same override) took the
+  count **171 → 62**, and the gate now measures consumers instead of drowning in the entry point. This was
+  not a cleanup slipped in to move a number: the file's own header says it is the public entry, which is
+  exactly what the override already exempts.
 - The onboarding read is routed here, not shrunk. The 206 KB is still on disk, still authoritative,
   and still the right thing to grep.
 
@@ -205,11 +213,14 @@ Run on `claude/practical-newton-fi0pof`, 18 Sep 2026, on this repository.
 
 | Claim | How it was checked | Result |
 | --- | --- | --- |
-| Full sweep 2 m 14 s / 5,354 B | `time node tools/check-previews.mjs` | 75/75 clean, 78 lines |
+| Full sweep 2 m 14 s / 5,354 B | `time node tools/check-previews.mjs` | 82/82 clean (75 was before screens 3–4) |
+| `--only a,b` runs exactly two | `--only 01-home,drawer --quiet` | 2/2 clean, tally only |
+| `phone-shot --reduced` | `… 01-home.html 0 p.png --reduced` | `phone 1/4 375x812 (reduced motion)`, 74,572 B |
+| Warnings after the override fix | `npm run lint:adherence` | **62**, 0 errors |
 | Targeted 5.5 s / 316 B | `time … --only journey-b` | 2/2 clean, 5 lines |
-| Lint 100,064 B, 171 warnings today | `npm run -s lint:adherence \| wc -c` | 1,474 lines, 0 errors |
-| Lint gate passes at baseline | `--max-warnings=171 --silent` | rc=0, 95 B |
-| Lint gate trips below baseline | `--max-warnings=170 --silent` | rc=1, 143 B |
+| Lint 100,064 B, 171 warnings (before the override fix) | `npm run -s lint:adherence \| wc -c` | 1,474 lines, 0 errors |
+| Lint gate passes at baseline | `--max-warnings=62 --silent` (was 171) | rc=0 |
+| Lint gate trips below baseline | `--max-warnings=61 --silent` | rc=1 |
 | Baseline diff is stable | unix format, line/col stripped, diffed against itself | 0 lines |
 | Baseline diff catches a change | one line removed from the baseline | diff reported it |
 | Blast radius ≈ 5 pages | `grep -rl` for three components | 6, 5, 6 pages |
@@ -236,3 +247,22 @@ other session's tree. Both were re-measured rather than adjusted on paper:
 The argument the skill makes is unaffected: both errors made the *scoped* numbers look better than they
 were, not worse. `--only` really does verify one page in **5.5 s**, and `tools/phone-shot.mjs` really does
 return a 67 KB phone instead of a 1.5 MB board — both re-run on this tree today.
+
+## Verified against the system, 18 Sep 2026
+
+Every claim above was re-run on this tree before it was trusted, and three things changed as a result:
+
+- **Two named limits were closed rather than documented:** `--only` now takes a comma-separated list and
+  `--quiet` exists. Both were small, both were named here as gaps, and a gap you can close in five lines
+  is not a limit.
+- **One claim was wrong in a way worth keeping a record of.** The lint was blamed on the bundle; it was
+  the generated `index.d.ts`, at 109 of 171 warnings. The skill's instinct — "the gate is drowning in
+  generated output" — was right; the file it named was not. Measuring found the right one, which is the
+  method this skill argues for, applied to itself.
+- **The gate exists now.** `npm run lint:adherence:gate` at 62, run by CI. Before this it was a number
+  nobody enforced; the skill was right that a gate never seen to fail is not a gate, and the answer was
+  to wire it, not to keep describing it.
+
+What was NOT changed, deliberately: `_ds_bundle.js` is still linted (2 warnings). Excluding generated
+output from a lint is a different argument from exempting the public entry the rule already exempts, and
+it is the owner's call.

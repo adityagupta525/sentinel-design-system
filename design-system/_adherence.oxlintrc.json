@@ -424,7 +424,8 @@
   "overrides": [
     {
       "files": [
-        "**/index.js"
+        "**/index.js",
+        "**/index.d.ts"
       ],
       "rules": {
         "no-restricted-imports": "off"

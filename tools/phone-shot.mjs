@@ -9,8 +9,10 @@ import { fileURLToPath } from 'node:url';
 import net from 'node:net';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const [rel, idxArg, outArg] = process.argv.slice(2);
-if (!rel) { console.error('usage: phone-shot.mjs <page.html> [phoneIndex] [out.png]'); process.exit(2); }
+const argv = process.argv.slice(2);
+const REDUCED = argv.includes('--reduced');
+const [rel, idxArg, outArg] = argv.filter((a) => !a.startsWith('--'));
+if (!rel) { console.error('usage: phone-shot.mjs <page.html> [phoneIndex] [out.png] [--reduced]'); process.exit(2); }
 const idx = Number(idxArg ?? 0);
 const out = outArg || 'phone.png';
 
@@ -28,19 +30,30 @@ for (const id of ['playwright', '/opt/node22/lib/node_modules/playwright/index.j
 if (!chromium) { console.error('playwright not found'); process.exit(1); }
 
 const browser = await chromium.launch({ args: ['--ignore-certificate-errors'] });
-const page = await browser.newPage({ viewport: { width: 1400, height: 2600 }, deviceScaleFactor: 1 });
+/* --reduced shoots the page as a viewer with prefers-reduced-motion set, which is the only honest way
+   to check the reduced-motion column of a screen's own motion table. */
+const page = await browser.newPage({ viewport: { width: 1400, height: 2600 }, deviceScaleFactor: 1, reducedMotion: REDUCED ? 'reduce' : 'no-preference' });
 await page.goto(`http://127.0.0.1:${PORT}/${rel}`, { waitUntil: 'networkidle' }).catch(() => {});
-await page.waitForTimeout(500);
 
-const boxes = await page.evaluate(() => [...document.querySelectorAll('div')].filter((d) => {
+/* WAIT FOR THE PHONE, DO NOT SLEEP AT IT. A fixed 500ms was a race: these pages compile JSX in the
+   browser with Babel from a CDN, and a slow fetch meant zero frames and a confusing "no phone frame"
+   on a page that is perfectly fine. Poll instead — first frame usually inside a second, and a page that
+   really has none still fails, just honestly. */
+const findBoxes = () => page.evaluate(() => [...document.querySelectorAll('div')].filter((d) => {
   const r = d.getBoundingClientRect(); const cs = getComputedStyle(d);
   return Math.round(r.width) === 375 && Math.round(r.height) === 812
       && cs.overflow !== 'visible' && parseFloat(cs.borderRadius) > 20;
 }).map((d) => { const r = d.getBoundingClientRect(); return { x: r.x + scrollX, y: r.y + scrollY, width: r.width, height: r.height }; }));
+let boxes = [];
+for (let waited = 0; waited < 20000; waited += 250) {
+  boxes = await findBoxes();
+  if (boxes.length) { await page.waitForTimeout(400); boxes = await findBoxes(); break; }
+  await page.waitForTimeout(250);
+}
 
 if (!boxes.length) { console.error(`no 375x812 phone frame on ${rel}`); await browser.close(); process.exit(1); }
 if (idx >= boxes.length) { console.error(`page has ${boxes.length} phone(s); asked for index ${idx}`); await browser.close(); process.exit(1); }
 await page.screenshot({ path: out, clip: boxes[idx] });
-console.log(`${out}  phone ${idx + 1}/${boxes.length}  ${Math.round(boxes[idx].width)}x${Math.round(boxes[idx].height)}`);
+console.log(`${out}  phone ${idx + 1}/${boxes.length}  ${Math.round(boxes[idx].width)}x${Math.round(boxes[idx].height)}${REDUCED ? '  (reduced motion)' : ''}`);
 await browser.close();
 process.exit(0);

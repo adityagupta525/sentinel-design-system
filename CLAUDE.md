@@ -29,8 +29,10 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
   Check it before reporting something as new.
 - **Every change under `design-system/` needs `npm run check:integrity -- --update` in the same
   commit.** That is the mechanism that keeps "imported verbatim" honest and every later edit visible.
-- **Look at the work.** `npm run preview`, then render it. `node tools/check-previews.mjs --shots <dir>`
-  renders all 47 preview pages at their declared `@dsCard` viewport and reports console errors, 404s
+- **Look at the work — at the scope of the change.** Load the `sentinel-scope` skill. `--only a,b` renders
+  just the affected pages and `node tools/phone-shot.mjs <page> <n> out.png` returns one 375×812 phone
+  instead of a 1.5 MB board. `npm run preview`, then render it. `node tools/check-previews.mjs --shots <dir>`
+  renders all 82 pages at their declared `@dsCard` viewport and reports console errors, 404s
   and pages that mount nothing. A finding you did not see did not happen.
 - **Never report a visual finding from source alone, or a code finding from a screenshot alone.**
   `DownloadAction` was blamed for a nested `<button>` from a stack trace; the wrapper was
