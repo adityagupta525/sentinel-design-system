@@ -1,0 +1,117 @@
+<!-- @dsCard group="Screens" viewport="1400x2400" name="Journey B · 02 Thread, the trace" subtitle="Four real ordered steps, a Stop that keeps what it had, and the failure the archive never had" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey B · 02 Thread, the trace — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AnswerChip','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="./thread.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { Composer, UserBubble, ProgressTrace, SentinelBlock, SentinelText, AnswerChip } = window.SentinelDesignSystem_0682a2;
+
+/* The advisor's question and the four steps are the product's own, from
+   docs/screens-source/src/screens/Chat.tsx:254-260. Nothing here is written for the specimen. */
+const ASK = "Why did Sharma's portfolio drift this quarter?";
+const STEPS = [
+  "Reading Sharma's holdings — 18 funds",
+  'Comparing against his mandate',
+  'Checking Q2 statements',
+  'Attributing the drift',
+];
+const REASONING = 'Equity went from 62% to 71% against a 60% target. Three things moved it, and only one of them was a decision.';
+
+/* Every specimen is FROZEN — autoplay={false} — so the page holds still for a reviewer. Frozen PAST
+   the last step is the finished state, which is the one a spec page could not reach before v12 (F-22). */
+const Scene = ({ trace, after, streaming }) => (
+  <Thread
+    composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" streaming={streaming} onStop={() => {}} onSend={() => {}} />}
+  >
+    <UserBubble text={ASK} />
+    {trace}
+    {after}
+  </Thread>
+);
+
+const MOTION = [
+  ['Step advances', <span>the circle fills, the label comes to full opacity</span>, '~900ms each', 'Unchanged — the steps still advance; only the transition between them is dropped'],
+  ['Everything but the active step', 'opacity 0.4', '—', 'Unchanged — an opacity difference is not motion'],
+  ['Answer replaces the trace', 'fade + 6px rise', '240ms', 'Fades in place, no rise'],
+  ['Stop', 'the trace freezes where it is', 'immediate', 'Unchanged — there is no animation to drop'],
+];
+
+const PROVENANCE = [
+  ['18 funds', <span>Sharma&rsquo;s holdings, counted as they are read — the step says what it is doing while it does it</span>, 'In the step label itself'],
+  ['62% → 71%, 60% target', 'His Q2 and Q3 statements against the mandate on file', 'The reasoning line, behind the hairline, once the trace is done'],
+  ['The clock', 'Real elapsed time, not a guess', '“Working · 2s”, then “Thought for 4s”'],
+];
+
+mountScreen(
+  <ScreenShell
+    journey="Journey B · Sharma&rsquo;s drift" n="Screen 2 of 7" name="Thread — the trace"
+    job="The wait, made honest. Four steps that name the work being done, a clock that is real, and a Stop that keeps what it had rather than throwing it away."
+    without="watches a spinner and has to trust it — and cannot tell a slow answer from a stuck one."
+  >
+    <Section title="1 · While it runs" sub="A trace, not a spinner, and not a thinking verb: the system's own rule is that several real ordered steps are ProgressTrace, and a verb that keeps changing is not.">
+      <StateRow>
+        <State label="running" note="Frozen at step 2 of 4. Only the active step is at full opacity; the rest sit at 0.4, so the eye lands on what is happening now. The composer shows Stop in the send slot — the advisor is never locked out while Sentinel works.">
+          <Scene streaming trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={2} seconds={2} />} />
+        </State>
+        <State label="done" note="Frozen PAST the last step, which is the finished state: the header reads “Thought for 4s”, the chevron appears and the reasoning renders behind a left hairline. Before v12 a spec page could not reach this state at all (F-22) — the most useful state to show was the one the component could not hold still.">
+          <Scene trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={4} seconds={4} />} />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="2 · When it does not finish" sub="Two ways that happens, and they are not the same thing. One the advisor chose; one happened to them.">
+      <StateRow>
+        <State label="stopped" tone="under" note="The advisor pressed Stop. The partial trace stays on screen — what was worked out is not thrown away — and Continue is offered inline, on the message that owns it, not in the Dock.">
+          <Scene
+            trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} />}
+            after={<SentinelBlock>
+              <SentinelText text="Stopped. I kept what I'd worked out so far — I was partway through attributing Sharma's drift." />
+              <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Continue" variant="primary" onClick={() => {}} /></div>
+            </SentinelBlock>} />
+        </State>
+        <State label="connection lost" tone="over" note="The state the archive never had. It is NOT the same message as Stop: the advisor did not choose this, so the copy says what happened before it says what is kept, and the chip is Try again rather than Continue. Bad news as text on the peach bubble — rule 2 — never a red fill.">
+          <Scene
+            trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} />}
+            after={<SentinelBlock>
+              <SentinelText text="I lost the connection while I was attributing the drift. What I had worked out is above it, and I have not guessed the rest." />
+              <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Try again" variant="primary" onClick={() => {}} /></div>
+            </SentinelBlock>} />
+        </State>
+      </StateRow>
+      <Note title="Why these two are worded differently">
+        Stop is a thing the advisor did, so the message opens with the outcome — &ldquo;Stopped&rdquo; — and offers to
+        carry on. A dropped connection is a thing that happened to them, so the message opens with what went wrong,
+        says plainly what survived, and adds the one sentence that matters in an advisory tool:
+        <em> I have not guessed the rest.</em> Failure disclosure over invention, which is the product&rsquo;s voice
+        everywhere else too.
+      </Note>
+    </Section>
+
+    <Section title="3 · The states this screen does not have">
+      <Note title="No empty, and no separate loading">
+        This screen IS the loading state of the journey. It is only ever reached with a question already asked, so
+        there is nothing to show before the trace and nothing to show without it.
+      </Note>
+      <Note title="No refusal">
+        The question was understood — that is why the trace is running. A refusal happens at the router, before any
+        of this, and it renders in the thread as a reply rather than as a trace.
+      </Note>
+    </Section>
+
+    <Section title="4 · Motion, and what each one does under reduced motion">
+      <MotionTable rows={MOTION} />
+    </Section>
+
+    <Section title="5 · Provenance">
+      <ProvenanceTable rows={PROVENANCE} />
+    </Section>
+  </ScreenShell>
+);
+</script></body></html>
