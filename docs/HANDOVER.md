@@ -53,9 +53,15 @@ to a file layout that is ours to change.
 These are not style preferences. A pull request that breaks one gets sent back.
 
 **1 · Colour never encodes identity.** One bronze hue carries magnitude; identity is always a direct
-label. No pies, no donuts, no multi-hue stacked bars. Three or more series is small multiples — one
-chart each, same scale. The status family (`--color-status-*`) is reserved and never used without a
-word beside it.
+label. No pies, no donuts, no multi-hue stacked bars. The status family (`--color-status-*`) is
+reserved and never used without a word beside it.
+
+> **The direct-label ladder, in full, because this is where a chart goes wrong.** One series is
+> end-labelled. **Two series are both end-labelled** — no legend, no second label row. Three or more is
+> **small multiples**: one chart each, same scale, stacked down the card. A `ChartLegend` appears
+> **only where a direct label cannot go** — `ChartShare` and the overlap bars — which is what
+> `ChartLegend.d.ts` states. Read `readme.md`'s *"a legend is required at two or more series"* in its
+> own paragraph: it is about segments inside one stacked share bar, not about two lines on one chart.
 
 > This was measured, not asserted. In this palette adjacent pie slices come out at ΔE 11.4 against a
 > floor of 15, and a muted earthy trio collapses to ΔE 3.8 under protanopia. `ChartShare` is the pie,
@@ -66,7 +72,14 @@ never a fill. Most bad news here is a nuance — a drift, a cap, a disclosure �
 an alarm, which would be a lie about the stakes.
 
 **3 · The composer is on every screen.** A CTA stacks above it in the `Dock`; nothing replaces it. The
-advisor can always just ask. A screen that takes that away has taken away the product.
+advisor can always just ask. A screen that takes that away has taken away the product. Home, the
+thread, the journey, the drawer and an expanded artifact card all carry it.
+
+> **The confirm sheet is the one documented exception, and it is the only one** (`readme.md`, *"The
+> confirm-sheet exception to the composer law"*). A confirm sheet carries **no composer**, because it is
+> a commit-or-dismiss decision: a composer there offers a third path that does not exist, and implies
+> the sheet is negotiable. **Explainer sheets keep theirs**, because a follow-up question is a real
+> thing to want. Either way the thread stays behind the sheet.
 
 **4 · Indian number grouping, always.** ₹1,85,000 · ₹25 L · ₹4.2 Cr. Day-first dates. **One decimal on
 every figure.** `tabular-nums` on anything that changes. Provenance under every figure.

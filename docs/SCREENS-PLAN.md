@@ -200,15 +200,23 @@ group board, and a page written from a guess is worth less than one written from
 
 None of these is a design problem. Each is a fact the archive does not settle, and I will not guess one.
 
-1. ~~**The single-fund ceiling: 15% or 25%?**~~ **LOCKED 18 Sep 2026: 25%.** The owner's ruling, and
-   the reason is not preference — the design system has only ever shipped 25%, in words, on two pages:
-   `pages/ConstraintCallout.html` says *"past the 25% ceiling on any single fund"* and
-   `pages/ResultCard.html` says *"no fund crosses 25%"*. **15% appears nowhere in the system** — no
-   page, no document, no token — outside the contradiction row that logged the conflict.
-   `Portfolio.tsx:86` in the archive is the single outlier and flags itself in-code as NEEDS DECISION;
-   `Reference_Review.png` in the same archive shows *single fund · held 31% · limit 25% · over by 6%*.
-   Every screen built from here uses **25%**, and the archive's review screen is corrected when it is
-   rebuilt. Logged as contradiction 32, resolved.
+1. ~~**The single-fund ceiling: 15% or 25%?**~~ **LOCKED 18 Sep 2026: the SINGLE-FUND ceiling is 25%.**
+   The owner's ruling, and the reason is not preference — the system states it in words in one
+   sentence, carried on two surfaces, `pages/ConstraintCallout.html:34` and
+   `components/cards/cards.card.html:16`: *"One of them would have to hold 34% of his money — past the
+   25% ceiling on any single fund."* **15% appears nowhere in the system** — no page, no document, no
+   token. `Portfolio.tsx:86` in the archive is the single outlier and flags itself in-code as NEEDS
+   DECISION. Logged as contradiction 32, resolved.
+
+   **⚠️ Two different rules share the number 25%, and only the first is ruled.** The other is the
+   **small-cap sleeve ceiling** — *"Small cap is 31.0% of his equity, against a 25% ceiling"* — which
+   the system carries on nine surfaces: `MoveCard`, `MessageActions`, `SentinelText`, `SentinelBlock`,
+   `ProgressTrace`, `SentinelThinking`, `UserBubble`, `ResultCard` and `guidelines/motion-screens`.
+   Same number, different rule. Change one and the other does not follow, and a grep for "25%" returns
+   both. **Correcting this plan's first draft:** it cited `ResultCard` as single-fund evidence. It is
+   not — `ResultCard`'s 25% is the sleeve line. The archive's `Reference_Review.png` also shows a **15%
+   category ceiling** for *small cap overall* beside a 25% single-fund limit, for a different client;
+   mandates are per client so those need not conflict, but no screen may mix them.
 2. **`Reference_Proposal.png` answers "₹50 lakh" and returns a proposal headed "Where ₹25 lakh would
    go".** One of the two is the real number.
 3. **`preview-drawing.png`** — your own markup on Home, a red circle around the three quick-action
