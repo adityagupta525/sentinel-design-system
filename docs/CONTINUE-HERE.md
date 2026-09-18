@@ -120,6 +120,37 @@ be overwritten. `design-system/_ds_bundle.js` still publishes onto `window.Senti
 because that is where it came from. Ask the owner before writing to it; a new project or a new page is
 almost always the right answer.
 
+## 5c · Why `/design-login` fails on Claude Code Web — stop retrying it
+
+Recorded 18 Sep 2026, after three attempts from two accounts.
+
+`/design-login` is **not** missing, misspelt, or account-gated. It is surface-gated. The `DesignSync`
+tool says so itself, verbatim, when called without authorization:
+
+> DesignSync needs design-system authorization, and /design-login cannot run in this non-interactive
+> session. Ask the user to run /design-login once from an interactive Claude Code session on this
+> machine — headless and SDK runs here then reuse that authorization. If this is claude.ai/code, ask
+> them instead to use Claude Design's "Send to Claude Code Web" (which seeds the project into the
+> workspace) or to provide the project files directly.
+
+Both of this project's sessions run on **claude.ai/code** — a remote container, non-interactive by the
+tool's definition. So the command cannot succeed there no matter how it is typed, in the terminal pane
+or the chat pane. `zsh: no such file or directory` was the shell being handed a slash command;
+"isn't a recognized command here" was Claude Code correctly reporting the same gate.
+
+There are exactly two ways in, and neither is a retry:
+
+1. **Claude Design → "Send to Claude Code Web."** Open the project at claude.ai/design and use that
+   button. It seeds the project into the workspace and carries the authorization with it. This is the
+   path for the sessions we are actually running.
+2. **The Claude Code CLI on the owner's own machine.** `npm i -g @anthropic-ai/claude-code`, `claude`
+   inside this repository, then `/design-login` once. That session is interactive, so the command
+   runs; the authorization it writes is then reused by headless and SDK runs on that machine.
+
+Until one of those happens, `DesignSync` is unavailable and no canvas can be created, read, or
+verified from a session — including whether `0682a2d3` still exists. Do not report a canvas as made,
+or a project as checked, on the strength of anything but a `DesignSync` call that returned.
+
 ## 6 · What is NOT in this repository
 
 Be honest about these with the owner rather than guessing around them.
