@@ -34,6 +34,17 @@ function Live() {
   );
 }
 
+/* Live: pick a file and the name appears. Nothing is uploaded — the page has nowhere to send it. */
+function AttachDemo() {
+  const [name, setName] = React.useState(null);
+  return (
+    <div>
+      <Composer value="" onChange={() => {}} onAttach={(f) => setName(`${f.name} · ${Math.max(1, Math.round(f.size / 1024))} KB`)} />
+      <p style={{ ...window.pageNote, fontSize: 11 }}>{name ? `Received: ${name}` : 'Tap the paperclip — the file never leaves this page.'}</p>
+    </div>
+  );
+}
+
 function App() {
   return (
     <PageShell
@@ -71,6 +82,7 @@ function App() {
           { label: 'Empty — send disabled at 0.4', node: <Composer value="" onChange={() => {}} />, note: 'Dimmed and inert. Visible, so the advisor knows where it will be.' },
           { label: 'Typed — send live', node: <Composer value="Rebalance him to his mandate" onChange={() => {}} />, note: 'Enabled on the first non-whitespace character. Enter sends.' },
           { label: 'Streaming — Stop in the send slot', node: <Composer value="" onChange={() => {}} streaming onStop={() => {}} />, note: 'Same disc, same 42pt, same place. A 13pt square, not an icon of one — an advisor stopping a wrong answer should not have to aim.' },
+          { label: 'Attach, wired', node: <AttachDemo />, note: 'Give onAttach and the paperclip becomes a real button with a hidden file input behind it — same disc, same 42pt, same ring. Leave it off and it renders exactly as it always has: an announced control that does nothing is worse than a drawing that is honest about being one. What the file becomes in the thread is FileUpload, which has carried the staged parse since v7 with no way in.' },
           { label: 'Focused', node: <div><Composer value="" onChange={() => {}} autoFocus /><p style={{ ...window.pageNote, fontSize: 11 }}>Bronze border and the --focus-ring halo, over --dur-press. The field itself carries outline:none; the CARD is the indicator.</p></div>, note: 'autoFocus is on here so the state is visible without a click.' },
         ]} />
       </Block>

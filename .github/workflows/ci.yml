@@ -53,6 +53,8 @@ jobs:
       - name: Screens are held to the same adherence rules as the system
         run: npm run lint:adherence:screens
 
+      - name: A screen may not name what the system does not export
+        run: node tools/check-parallel.mjs
       - name: The gutter guard can still fail
         # A guard that has never been seen to fail is not a guard. This runs it against a fixture
         # carrying the exact defect it was written for, and against the same markup fixed.

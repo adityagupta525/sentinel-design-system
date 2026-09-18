@@ -18,10 +18,10 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **82 / 82** render clean (75 design-system + 7 screens) |
+| Pages | **83 / 83** render clean (75 design-system + 8 screens) |
 | Integrity | 375 files intact |
-| Screens built | **4 of 7** in Journey B, plus the shell drawer and a **live prototype** of screens 1 → 3: `screens/journey-b/01-home.html`, `02-thread-trace.html`, `03-thread-answer.html`, `prototype.html`, `screens/shell/drawer.html`, and `screens/flow.html` |
-| **Next screen** | **04 — the artifact expanded in place**: `ArtifactCard state="expanded"` with `AttributionChart` (plot ≤ 208) and the 18 holdings as a `DataTableCard` top-three + “+15 more”; the two caller-owned scrolls (already wired in `prototype.html` — header under the app bar on expand, back on collapse); composer placeholder “Ask about this”. Use `answer.jsx`'s `AnswerTurn artifact="expanded"`. |
+| Screens built | **5 of 7** in Journey B, plus the shell drawer and a **live prototype**: `01-home`, `02-thread-trace`, `03-thread-answer`, `04-artifact-expanded`, `prototype`, `shell/drawer`, `flow` |
+| **Next screen** | **05 — two moves**: `MoveCard` × 2 (₹1,85,000 and the ₹30,000 SIP), the sentence "Two moves, not seven…", chip "Show the five we skipped", CTA "Approve both moves". Two copy defects in the archive to fix on the way: 71→58 vs 67→58 (`Chat.tsx:280` vs `:283`), and "**her** ₹30,000" in a journey that says *his* (`:284`, `:753`). |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
 
@@ -45,6 +45,14 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **The parallel rule, and the two components that proved it.** The owner's words: *nothing in the design
+  system that is on no screen — screen and design system 100% parallel.* `MessageActions` had offered Edit
+  since v1 with no state to go to, and `FileUpload` had carried its staged parse since v7 while the
+  composer's paperclip was a `<div>`. Both now work: `UserBubble` gained an **editing-in-place** state with
+  a `costNote` that says what sending destroys before it destroys it, and `Composer` gained `onAttach`
+  (omit it and the disc renders exactly as before). `npm run report:parallel` measures the gap
+  transitively — **44 of 86 on a screen today**, and a screen naming what the system does not export now
+  fails CI.
 - **F-30, the owner's third catch:** the artifact peek RESERVED 96pt instead of capping at it, so a 62pt
   chart left 34pt of empty card above the provenance line; and `ChartBar`'s three tracks ended 4pt apart
   because the value column sized to its text. Both fixed in the system — `maxHeight` instead of `height`

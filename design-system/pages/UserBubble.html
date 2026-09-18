@@ -12,11 +12,23 @@
 const { UserBubble, QAPair, SentinelBlock, SentinelText, MessageActions, ParseNote, Composer, Dock } = window.SentinelDesignSystem_0682a2;
 const TOK = ['--color-bubble','--color-bubble-edge','--color-ink','--text-14','--leading-19','--weight-semibold','--dur-enter','--ease','--font-ui'];
 
+/* Live, because a field that cannot be typed in is a picture of a field. */
+function EditDemo() {
+  const [v, setV] = React.useState('Why did Sharma’s portfolio drift this quarter?');
+  const [editing, setEditing] = React.useState(true);
+  return (
+    <div style={{ width: 311 }}>
+      <UserBubble text={v} editing={editing} onChange={setV} onCancel={() => setEditing(false)} onSave={() => setEditing(false)} />
+      {!editing && <div style={{ marginTop: 10 }}><MessageActions role="user" onAction={() => setEditing(true)} /></div>}
+    </div>
+  );
+}
+
 function App() {
   return (
     <PageShell
       name="UserBubble" group="Chat" status="shipped"
-      requires={['UserBubble','QAPair','SentinelBlock','SentinelText']}
+      requires={['UserBubble','QAPair','SentinelBlock','SentinelText','MessageActions']}
       summary="What the advisor said. Peach, right-aligned, capped at 280pt, with one square-ish corner where a tail would be. It is the only bubble in the thread — Sentinel does not get one, and that asymmetry is the whole reading order.">
 
       <Block n={1} title="Specimen" sub="Inside a 343pt column, so the right alignment and the 280pt cap are both visible.">
@@ -33,9 +45,10 @@ function App() {
         </Anatomy>
       </Block>
 
-      <Block n={3} title="Variants" sub="None. One prop, one appearance — deliberately, because a bubble that could be styled would start carrying meaning, and in this system meaning is carried by words.">
+      <Block n={3} title="Variants" sub="One appearance, and one state it can be IN — because the advisor is allowed to correct what they said, and that happens in the bubble rather than anywhere else.">
         <Grid cols={1} items={[
           { label: 'The only form there is', node: <UserBubble text="Start a SIP for Meera" />, note: 'If you need the advisor\'s words to read differently — quieter, collapsed, historical — that is QAPair, not a variant of this.' },
+          { label: 'Editing, in place', node: <EditDemo />, note: 'The bubble IS the field: same peach, same edge, same 14/19 semibold. The tail corner squares off and the width is released, because a field narrower than its text is a field you cannot read. Cancel and Send are words, not glyphs and not ghost pills — MessageActions\' rule, one line up. Type in it; it is live.' },
         ]} />
       </Block>
 
@@ -45,6 +58,7 @@ function App() {
           { label: 'Wraps at 280pt', node: <UserBubble text="Why did Sharma's portfolio drift this quarter, and what would it cost to fix it before the year ends?" />, note: 'Wraps inside the cap; the cap is what keeps a long question from reading as a paragraph of body copy.' },
           { label: 'An amount, echoed back', node: <UserBubble text="₹1,85,000" />, note: 'Indian grouping here too — the thread is one document and a figure is formatted once (rule 4).' },
           { label: 'One unbroken token', node: <UserBubble text="INF179K01WK5INF179K01WK5INF179K01WK5" />, note: 'No hyphen, no space, nothing to break on. Until v12 this ran straight out of the bubble\'s own background and past the cap; overflowWrap now breaks it mid-token (F-18). Prose never reaches this rule — it breaks at spaces first.' },
+          { label: 'Editing, with what it costs', node: <UserBubble editing text="Why did Sharma's portfolio drift this quarter?" onChange={() => {}} onCancel={() => {}} onSave={() => {}} costNote="Sending this replaces the answer below it." />, note: 'MessageActions has required this warning since v1 — "edit on a journey answer must warn what it costs before discarding anything" — and had nowhere to render it. costNote is that place. Silent data loss is not acceptable in an advisory tool.' },
           { label: 'A pasted scheme code', node: <UserBubble text="HDFC-LIQUID-DIRECT-GROWTH-INF179K01WK5" />, note: 'It wraps — the hyphens are break opportunities, so this stays inside the cap. A code with no hyphen and no space would not: there is no overflow-wrap here, and the bubble would run past 280pt.' },
         ]} />
       </Block>

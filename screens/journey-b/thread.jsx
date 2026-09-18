@@ -19,6 +19,10 @@ function Thread({ time = '3:04', children, chips, cta, composer, onMenu, onNew, 
                    went to the bottom, and had the same problem.
        'bottom'  — the end of the thread, for a specimen of a thread that has been read.
        a number  — that turn at the top, for a specimen of a turn re-opened in place.
+       a ref     — that ELEMENT at the top, which is what ArtifactCard's contract asks for on expand:
+                   "bring the card's header just under the app bar". Anchoring the turn is not the same
+                   thing — measured on screen 4, the card sits 291pt inside its own turn, so the turn at
+                   the top leaves the card below the fold.
      It fires only on `revision`, never on every render, so the caller's own two scrolls (ArtifactCard's
      expand / collapse contract) are not fought. */
   const own = React.useRef(null);
@@ -27,9 +31,12 @@ function Thread({ time = '3:04', children, chips, cta, composer, onMenu, onNew, 
     const e = el(); if (!e) return;
     const col = e.firstElementChild; const kids = col ? Array.from(col.children) : [];
     const pad = col ? parseFloat(getComputedStyle(col).paddingTop) || 0 : 0;
-    const target = typeof anchor === 'number' ? kids[anchor] : anchor === 'newest' ? kids[kids.length - 1] : null;
+    const target = anchor && anchor.current ? anchor.current
+      : typeof anchor === 'number' ? kids[anchor]
+      : anchor === 'newest' ? kids[kids.length - 1] : null;
     if (!target || (anchor === 'newest' && target.offsetHeight <= e.clientHeight - pad)) { e.scrollTop = e.scrollHeight; return; }
-    e.scrollTop = Math.max(0, target.offsetTop - pad);
+    /* Rect-based, not offsetTop: the target may be nested inside a turn rather than be one. */
+    e.scrollTop = Math.max(0, e.scrollTop + (target.getBoundingClientRect().top - e.getBoundingClientRect().top) - pad);
   }, [revision, anchor]);
   return (
     <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>

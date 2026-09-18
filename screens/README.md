@@ -119,3 +119,11 @@ A box that **clips** is checked itself and then closes the question for everythi
    (`answer.jsx`) and the menu's data (`shell/menu.jsx`) are each written once and loaded by every page
    that draws them, so a frozen state and the live prototype cannot disagree. New shared files use one
    uniquely named const (`ANSWER_DS`, `MENU_DS`) and export through `Object.assign(window, …)`.
+15. **Screens and the system stay parallel** — the owner's rule, 18 Sep 2026: *nothing in the design
+   system that is on no screen.* Two components proved why on the day it was made: `MessageActions` had
+   offered Edit since v1 with no state to go to, and `FileUpload` had carried its staged parse since v7
+   while the composer's paperclip was a `<div>`. Both were found by the owner looking at a screen.
+   `npm run report:parallel` prints the gap in both directions, counting **transitively** — a screen that
+   places `Drawer` is exercising `List` and `ListRow` whether it names them or not. The backlog half is a
+   report, because two journey screens are still unbuilt; the defect half — a screen naming something the
+   system does not export — fails CI.

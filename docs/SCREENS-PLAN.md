@@ -1,6 +1,6 @@
 # Screens — the plan, before anything is built
 
-**Status (18 Sep 2026, later the same day): approved and in progress — 4 of 7 Journey B screens built (Home, the trace, the answer) plus the shell drawer and a live prototype of screens 1 → 3; screen 4 (the artifact expanded) is next. Current state and this session's rulings: `docs/CONTINUE-HERE.md` §0.** This is Gate C: what
+**Status (18 Sep 2026, end of the day): approved and in progress — 5 of 7 Journey B screens built (Home, the trace, the answer, the artifact expanded) plus the shell drawer and a live prototype; screen 5 (two moves) is next. Current state and this session's rulings: `docs/CONTINUE-HERE.md` §0.** This is Gate C: what
 `docs/screens-source/` actually contains, what it is missing, what the design system will and will not
 give it, and which journey to build first.
 
@@ -162,6 +162,22 @@ Built as the matrix says, with three things the matrix did not know:
 | edge | ✓ partly | A pasted scheme code (fixed, F-18); an 18-fund table at **96px peek — fixed, recognition not reading**: top three rows plus "+40 more", never a chart with axes. |
 | refused | ✓ | The best part of the archive. Bucket 2 reject and hold, bucket 4 "I did not follow that", bucket 5 out of scope, bucket 6 action → confirm. Failure disclosure over invention, every time. |
 | error | ✗ | **The answer fails mid-stream.** The archive has `aborted` — the advisor pressing Stop — but nothing for the connection dropping. Vote: same shape as `aborted`, different copy, a "Try again" chip. `SentinelBlock` + `AnswerChip`, no new component. |
+
+### 4 · The artifact, expanded — **built, 18 Sep 2026** · `04-artifact-expanded.html`
+
+| State | What it is |
+|---|---|
+| typical | Opened in place: plot 180 + a 14pt axis band, card **475pt** measured in a 462pt thread, so the THREAD scrolls. The card's header is brought to just under the app bar — the caller's scroll, per `ArtifactCard`'s contract, wired in the live phone and in the prototype. |
+| table view | From the card's ⋯. The same three numbers as rows, each keeping the line the chart draws under its bar. `readme.md:235` — no value is ever reachable only by touching a coloured shape. |
+| from the top | The whole turn in one scroller: question, closed trace, answer, allocation, then the card. Nothing inside the card scrolls. |
+| live | Expand, collapse, and the ⋯, with the composer placeholder following the state — "Ask about this" open, "Ask Sentinel" closed. |
+
+**Gap G7, and it is a data gap, not a design one: "Show the 18 holdings" has nothing to show.** The chip
+is the archive's (`Chat.tsx:363`) and its destination was the canvas. Its real destination is a table of
+Sharma's eighteen funds, and **the archive holds no holdings for him** — the eight rows in
+`journeys.tsx:396` are **Meera's**, from the review journey, and 43 funds rather than 18. Filling a card
+with her rows under his name is exactly the figure an advisor would read to a client, so it is not drawn.
+Today the chip opens the chart's own table view. It needs his holdings, from the owner.
 
 ### 3 · Journey rail
 

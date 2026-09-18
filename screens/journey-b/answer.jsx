@@ -63,10 +63,31 @@ function DriftExpanded({ run = false }) {
   return <ANSWER_DS.AttributionChart from={62} to={71} target={60} contributions={DRIFT_CONTRIB} run={run} />;
 }
 
+/* THE TABLE VIEW EVERY CHART MUST OFFER (readme.md:235 — "no value in this product is ever reachable
+   only by touching a coloured shape"), reached from the expanded card's ⋯. Same three numbers, same
+   order, as words. The note column is what the chart draws under each bar, so nothing is lost by
+   reading this instead of looking at that. */
+const DRIFT_TABLE = {
+  columns: [{ key: 'what', header: 'What moved it' }, { key: 'pts', header: 'Points', align: 'right' }],
+  rows: DRIFT_CONTRIB.map((c) => ({
+    what: (
+      <span style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+        <span style={{ font: 'var(--type-row-font)', color: c.intentional ? 'var(--color-data-deemph)' : 'var(--color-ink)' }}>{c.label}</span>
+        <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{c.note}</span>
+      </span>
+    ),
+    pts: <span style={{ font: 'var(--type-row-strong-font)', color: c.intentional ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>+{c.value.toFixed(1)}</span>,
+  })),
+  footer: 'Target 60% · today 71% · +9.0 points in all',
+};
+function DriftTable() {
+  return <ANSWER_DS.DataTableCard title="Drift attribution · Q2 → Q3" meta="+9.0 pts" columns={DRIFT_TABLE.columns} rows={DRIFT_TABLE.rows} footer={DRIFT_TABLE.footer} />;
+}
+
 /* The turn. `artifact` is ArtifactCard's own state plus 'failed', the case where the answer arrived
    and its breakdown did not. `enter` plays the system's ds-rise the way the archive's motion.div did
    (Chat.tsx:266: opacity 0 → 1, y 6 → 0, 240ms) — the live page passes it, the frozen page does not. */
-function AnswerTurn({ artifact = 'peek', run = false, enter = false, onToggle, onWhy, onShare, onMenu, onRetry, cardRef }) {
+function AnswerTurn({ artifact = 'peek', view = 'chart', run = false, enter = false, onToggle, onWhy, onShare, onMenu, onRetry, cardRef }) {
   const filling = artifact === 'filling';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)', animation: enter ? 'ds-rise var(--dur-enter) var(--ease) both' : 'none' }}>
@@ -89,7 +110,7 @@ function AnswerTurn({ artifact = 'peek', run = false, enter = false, onToggle, o
             title={filling ? 'Working out what moved it' : '62% → 71%, mostly the market'}
             provenance={filling ? undefined : DRIFT_PROVENANCE}
             onToggle={onToggle || (() => {})} onWhy={onWhy} onShare={onShare} onMenu={onMenu}>
-            {artifact === 'expanded' ? <DriftExpanded run={run} /> : <DriftPeek run={run} />}
+            {artifact === 'expanded' ? (view === 'table' ? <DriftTable /> : <DriftExpanded run={run} />) : <DriftPeek run={run} />}
           </ANSWER_DS.ArtifactCard>
         </div>
       )}
@@ -108,4 +129,4 @@ function AnswerChips({ onWhy, onHoldings, holdings = true, animate = false }) {
   );
 }
 
-Object.assign(window, { DRIFT_ASK, DRIFT_STEPS, DRIFT_REASONING, DRIFT_ANSWER, SHARMA_ALLOC, DRIFT_CONTRIB, DRIFT_PROVENANCE, ALLOC_PROVENANCE, WHY_71, DriftPeek, DriftExpanded, AnswerTurn, AnswerChips });
+Object.assign(window, { DRIFT_TABLE, DriftTable, DRIFT_ASK, DRIFT_STEPS, DRIFT_REASONING, DRIFT_ANSWER, SHARMA_ALLOC, DRIFT_CONTRIB, DRIFT_PROVENANCE, ALLOC_PROVENANCE, WHY_71, DriftPeek, DriftExpanded, AnswerTurn, AnswerChips });

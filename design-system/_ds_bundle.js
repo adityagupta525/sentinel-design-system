@@ -1051,8 +1051,25 @@ var __ds_out = (() => {
   }
 
   // design-system/components/chat/UserBubble.jsx
-  function UserBubble({ text }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end", animation: "ds-rise var(--dur-enter) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { maxWidth: 280, borderRadius: "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "10px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-14)", lineHeight: "var(--leading-19)", color: "var(--color-ink)", overflowWrap: "anywhere" } }, text)));
+  var rowsFor = (text) => Math.min(6, String(text).split("\n").length + Math.ceil(String(text).length / 38));
+  function UserBubble({ text, editing = false, onChange, onCancel, onSave, saveLabel = "Send", cancelLabel = "Cancel", costNote, editLabel = "Edit your question" }) {
+    const bubble = { borderRadius: editing ? "var(--radius-20)" : "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "10px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)", boxSizing: "border-box" };
+    const type = { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-14)", lineHeight: "var(--leading-19)", color: "var(--color-ink)", overflowWrap: "anywhere" };
+    const action = (label, strong, onClick) => /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick, style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", minHeight: "var(--h-touch)", padding: "var(--space-12) var(--space-2)", font: "var(--type-meta-font)", color: strong ? "var(--color-bronze-deep)" : "var(--color-muted)" } }, label);
+    if (editing) {
+      return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", flexDirection: "column", alignItems: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...bubble, width: "100%" } }, /* @__PURE__ */ react_global_default.createElement(
+        "textarea",
+        {
+          value: text,
+          onChange: (e) => onChange && onChange(e.target.value),
+          rows: rowsFor(text),
+          "aria-label": editLabel,
+          autoFocus: true,
+          style: { ...type, display: "block", width: "100%", resize: "none", border: "none", outline: "none", background: "transparent", padding: 0, boxSizing: "border-box" }
+        }
+      )), costNote && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-6) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)", textAlign: "right" } }, costNote), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", gap: "var(--space-16)", margin: "calc(-1 * var(--space-8)) 0 calc(-1 * var(--space-10))" } }, action(cancelLabel, false, onCancel), action(saveLabel, true, onSave)));
+    }
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end", animation: "ds-rise var(--dur-enter) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...bubble, maxWidth: 280 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...type } }, text)));
   }
 
   // design-system/components/chat/VersionRow.jsx
@@ -1070,9 +1087,11 @@ var __ds_out = (() => {
   }
 
   // design-system/components/composer/Composer.jsx
-  function Composer({ value = "", onChange, onFocus, onSend, placeholder = "Ask Sentinel about a client, a fund, or a plan", autoFocus = false, streaming = false, onStop }) {
+  function Composer({ value = "", onChange, onFocus, onSend, placeholder = "Ask Sentinel about a client, a fund, or a plan", autoFocus = false, streaming = false, onStop, onAttach, attachLabel = "Attach a file", accept }) {
     const [focus, setFocus] = react_global_default.useState(false);
+    const fileRef = react_global_default.useRef(null);
     const canSend = value.trim().length > 0 && !streaming;
+    const disc = { display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: 22, background: "var(--color-surface)", boxShadow: "0 0 0 1px var(--color-line)" };
     const btn = { appearance: "none", border: "none", cursor: "pointer", display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: "var(--gradient-dark-cta)", padding: 0 };
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "var(--space-12)", boxSizing: "border-box", border: `1px solid ${focus ? "var(--color-bronze)" : "var(--color-line)"}`, boxShadow: focus ? "var(--focus-ring)" : "var(--shadow-composer)", transition: "box-shadow var(--dur-press), border-color var(--dur-press)" } }, /* @__PURE__ */ react_global_default.createElement(
       "input",
@@ -1090,7 +1109,20 @@ var __ds_out = (() => {
         style: { width: "100%", border: "none", background: "transparent", outline: "none", padding: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" },
         className: "ds-composer-input"
       }
-    ), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", display: "flex", alignItems: "center", justifyContent: "space-between", paddingRight: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: 22, background: "var(--color-surface)", boxShadow: "0 0 0 1px var(--color-line)" } }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null)), streaming ? /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: onStop, "aria-label": "Stop", style: btn }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { width: 13, height: 13, borderRadius: 3, background: "var(--color-surface)" } })) : /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => canSend && onSend && onSend(), disabled: !canSend, "aria-label": "Send", style: { ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default" } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
+    ), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", display: "flex", alignItems: "center", justifyContent: "space-between", paddingRight: "var(--space-2)" } }, onAttach ? /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("input", { ref: fileRef, type: "file", accept, onChange: (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (f) onAttach(f);
+      e.target.value = "";
+    }, style: { display: "none" }, tabIndex: -1, "aria-hidden": "true" }), /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: () => fileRef.current && fileRef.current.click(),
+        label: attachLabel,
+        expand: "none",
+        style: disc
+      },
+      /* @__PURE__ */ react_global_default.createElement(IconAttach, null)
+    )) : /* @__PURE__ */ react_global_default.createElement("div", { style: disc }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null)), streaming ? /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: onStop, "aria-label": "Stop", style: btn }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { width: 13, height: 13, borderRadius: 3, background: "var(--color-surface)" } })) : /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => canSend && onSend && onSend(), disabled: !canSend, "aria-label": "Send", style: { ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default" } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
   }
 
   // design-system/components/composer/MoneyComposer.jsx

@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','DarkButton','ExplainerSheet','Drawer','SegmentedRow','Pressable','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','DarkButton','ExplainerSheet','Drawer','SegmentedRow','Pressable','MessageActions','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./home.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
@@ -16,7 +16,7 @@
 <script type="text/babel" data-presets="react">
 /* home.jsx declares Composer, Dock, Pill, ChipRow and the shell parts; thread.jsx, answer.jsx and
    menu.jsx use their own namespaced consts. Only the names this file adds are destructured. */
-const { UserBubble, ProgressTrace, SentinelBlock, SentinelText, AnswerChip, DarkButton, ExplainerSheet, Drawer } = window.SentinelDesignSystem_0682a2;
+const { UserBubble, ProgressTrace, SentinelBlock, SentinelText, AnswerChip, DarkButton, ExplainerSheet, Drawer, MessageActions, FileUpload } = window.SentinelDesignSystem_0682a2;
 
 /* Durations are read from the tokens, so a timer here can never disagree with the CSS it waits for. */
 const tokenMs = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
@@ -54,6 +54,10 @@ function Proto({ onEvent }) {
   const [why, setWhy] = React.useState(false);
   const [menu, setMenu] = React.useState(false);
   const [traceKey, setTraceKey] = React.useState(0);
+  const [question, setQuestion] = React.useState(DRIFT_ASK);   // editable in place; `ask` below is the function that sends one
+  const [editing, setEditing] = React.useState(false);
+  const [file, setFile] = React.useState(null);      // what the paperclip produced
+  const [view, setView] = React.useState('chart');   // the expanded card's chart ⇄ table
   const traceStart = React.useRef(0);
   const scroller = React.useRef(null);
   const card = React.useRef(null);
@@ -101,11 +105,19 @@ function Proto({ onEvent }) {
   const thread = (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread scrollRef={scroller} revision={`${phase}-${artifact === 'filling' ? 'filling' : 'ready'}`} onMenu={() => { setMenu(true); log('Menu opens', reduced() ? 'panel fades in at x=0; scrim ds-scrim · 320ms' : 'panel translateX −100% → 0 · 320ms; scrim ds-scrim to 0.25'); }}
-        onNew={() => { setScreen('home'); setPhase('trace'); setArtifact('filling'); log('New — back to Home', 'ds-screen-in'); }}
-        chips={phase === 'answer' && artifact !== 'filling' ? <AnswerChips animate onWhy={() => { setWhy(true); log('Explainer opens', reduced() ? 'ds-sheet as a fade · 300ms' : 'ds-sheet translateY 100% → 0 · 300ms; scrim ds-fade (F-27: computes 1)'); }} onHoldings={() => { log('“Show the 18 holdings” — screen 4 will settle what expanded holds; here it opens the chart', ''); if (artifact === 'peek') toggle(); }} /> : undefined}
+        onNew={() => { setScreen('home'); setPhase('trace'); setArtifact('filling'); setQuestion(DRIFT_ASK); setEditing(false); setFile(null); setView('chart'); log('New — back to Home', 'ds-screen-in'); }}
+        chips={phase === 'answer' && artifact !== 'filling' ? <AnswerChips animate onWhy={() => { setWhy(true); log('Explainer opens', reduced() ? 'ds-sheet as a fade · 300ms' : 'ds-sheet translateY 100% → 0 · 300ms; scrim ds-fade (F-27: computes 1)'); }} onHoldings={() => { log('“Show the 18 holdings” — his holdings are not in the archive, so this opens the chart’s own table instead; screen 4 says why', ''); if (artifact === 'peek') toggle(); setView('table'); }} /> : undefined}
         cta={phase === 'answer' && artifact !== 'filling' ? <DarkButton label="Rebalance to his mandate" onClick={() => log('“Rebalance to his mandate” — screen 5 is not built yet; this is where it goes', '')} /> : undefined}
-        composer={<Composer value="" onChange={() => {}} placeholder={artifact === 'expanded' ? 'Ask about this' : 'Ask Sentinel'} streaming={phase === 'trace'} onStop={stop} onSend={() => {}} />}>
-        <UserBubble text={DRIFT_ASK} />
+        composer={<Composer value="" onChange={() => {}} placeholder={artifact === 'expanded' ? 'Ask about this' : 'Ask Sentinel'} streaming={phase === 'trace'} onStop={stop} onSend={() => {}}
+          onAttach={(f) => { setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · added just now` }); log(`Attached ${f.name}`, 'FileUpload arrives in the thread; the stages ARE the summary'); }} />}>
+        <UserBubble text={question} editing={editing} onChange={setQuestion}
+          onCancel={() => { setQuestion(DRIFT_ASK); setEditing(false); log('Edit cancelled — nothing was discarded', ''); }}
+          onSave={() => { setEditing(false); setPhase('trace'); setArtifact('filling'); setTraceKey((k) => k + 1); setResumeFrom(0); traceStart.current = performance.now(); log('Edit sent — the answer below it is replaced, as the line said it would be', 'the turn re-runs; ds-rise on the new answer'); }}
+          costNote={phase === 'answer' ? 'Sending this replaces the answer below it.' : undefined} />
+        {!editing && phase === 'answer' && <MessageActions role="user" onAction={() => { setEditing(true); log('Edit — the bubble becomes the field, in place', 'no animation, deliberately'); }} />}
+        {file && <FileUpload file={file} state="done" summary="Read his Q3 statement · 14 pages · 18 holdings"
+          stages={[{ label: 'Read the file', state: 'done', meta: '14 pages' }, { label: 'Found the holdings table', state: 'done', meta: '18 funds' }, { label: 'Matched them to the mandate', state: 'done', meta: '3 outside it' }]}
+          onRemove={() => { setFile(null); log('File removed', ''); }} />}
         {phase === 'trace' && <ProgressTrace key={traceKey} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} stepMs={STEP_MS} initialActive={resumeFrom} onDone={traceDone} />}
         {phase === 'stopped' && (
           <React.Fragment>
@@ -119,10 +131,10 @@ function Proto({ onEvent }) {
         {phase === 'answer' && (
           <React.Fragment>
             <ProgressTrace key={`done-${traceKey}`} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={DRIFT_STEPS.length} seconds={Math.round(DRIFT_STEPS.length * STEP_MS / 1000)} initialCollapsed />
-            <AnswerTurn artifact={artifact} run enter cardRef={card} onToggle={toggle}
+            <AnswerTurn artifact={artifact} view={view} run enter cardRef={card} onToggle={toggle}
               onWhy={() => { setWhy(true); log('Explainer opens from the card’s “Why?”', 'ds-sheet · 300ms'); }}
               onShare={() => log('Share — not in this build', '')}
-              onMenu={() => log('⋯ — the table view; screen 4', '')} />
+              onMenu={() => { setView((v) => (v === 'table' ? 'chart' : 'table')); log('⋯ — the table view every chart owes, in place', 'the card’s content is replaced; the height follows'); }} />
           </React.Fragment>
         )}
       </Thread>
@@ -199,14 +211,19 @@ function App() {
           ['The two thread scrolls', 'header under the app bar on expand; back to the card on collapse', 'smooth', 'Instant (scroll-behavior auto)'],
           ['Explainer sheet', <span><code>ds-sheet</code> translateY 100% → 0; scrim <code>ds-fade</code></span>, '300ms', <span>Sheet fades. <strong>F-27, open:</strong> the scrim computes to opacity 1 here, not 0.4 — the fix waits for the owner</span>],
           ['Menu', <span>panel translateX −100% → 0; scrim <code>ds-scrim</code> to 0.25</span>, '320ms', 'Panel fades at x=0; scrim unchanged'],
+          ['Edit in place', 'the bubble becomes the field', 'none', 'Unchanged — there is no animation, deliberately: a field that animates into existence is a field you type into late'],
+          ['A file arrives', <span><code>FileUpload</code> enters and its stages tick</span>, '240ms', 'Fade only'],
         ]} />
       </Section>
 
       <Section title="3 · What this prototype does not do yet, and one thing it found">
         <Note title="Where it stops">
           Screens 4 to 7 are not built. &ldquo;Rebalance to his mandate&rdquo; logs where screen 5 goes and changes
-          nothing; &ldquo;Show the 18 holdings&rdquo; opens the expanded chart, and screen 4 will settle what expanded
-          actually holds. The other two Home rows and the three starters log that their journeys are not built. The
+          nothing; &ldquo;Show the 18 holdings&rdquo; opens the chart&rsquo;s own table, because his eighteen holdings
+          are not in the archive and screen 4 says why inventing them would be the worst thing on the page.
+          <strong>Edit and the paperclip are live</strong> — Edit replaces the answer only when it is SENT, and the
+          paperclip opens the real platform picker; the file never leaves the page and what it becomes in the thread
+          is the system&rsquo;s own <code>FileUpload</code>. The other two Home rows and the three starters log that their journeys are not built. The
           composer routes one thing &mdash; a question with &ldquo;drift&rdquo; in it &mdash; because the archive&rsquo;s
           six-bucket router is not ported; anything else is logged and left in the composer, as bucket 4 does.
         </Note>

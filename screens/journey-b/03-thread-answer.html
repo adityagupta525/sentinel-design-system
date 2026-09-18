@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','ChipRow','DarkButton','ExplainerSheet','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','ChipRow','DarkButton','ExplainerSheet','MessageActions','FileUpload','StepTrace','Pill','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
 <script type="text/babel" src="./answer.jsx"></script>
@@ -14,7 +14,7 @@
 <script type="text/babel" data-presets="react">
 /* thread.jsx and answer.jsx are loaded above and compile into this same scope: Thread, AnswerTurn,
    AnswerChips and the DRIFT_* data are already globals. Only the names this file adds are destructured. */
-const { Composer, UserBubble, ProgressTrace, DarkButton, ExplainerSheet } = window.SentinelDesignSystem_0682a2;
+const { Composer, UserBubble, ProgressTrace, DarkButton, ExplainerSheet, MessageActions, FileUpload, Pill } = window.SentinelDesignSystem_0682a2;
 
 /* Every specimen is FROZEN: the trace is past its last step and collapsed to its one-line resting
    state (initialCollapsed — added to ProgressTrace for this screen, because the product shows the
@@ -45,6 +45,39 @@ function LiveScene() {
       </Thread>
       <ExplainerSheet open={why} title={WHY_71.title} body={WHY_71.body} onClose={() => setWhy(false)} />
     </div>
+  );
+}
+
+/* Live, because an edit you cannot type into is a picture of an edit. Mounted NOT editing: the state is
+   reached the way the product reaches it, by tapping Edit. */
+function EditScene() {
+  const [editing, setEditing] = React.useState(false);
+  const [text, setText] = React.useState(DRIFT_ASK);
+  return (
+    <Thread anchor="bottom" chips={<AnswerChips />} cta={<CTA />} composer={<Ask />}>
+      <UserBubble text={text} editing={editing} onChange={setText} onCancel={() => { setText(DRIFT_ASK); setEditing(false); }} onSave={() => setEditing(false)}
+        costNote="Sending this replaces the answer below it." />
+      {!editing && <MessageActions role="user" onAction={() => setEditing(true)} />}
+      <Trace />
+      <AnswerTurn artifact="peek" />
+    </Thread>
+  );
+}
+
+/* The parse stages are the ones this product actually performs on a statement, in its own words. */
+const PARSE = [
+  { label: 'Read the file', state: 'done', meta: '14 pages' },
+  { label: 'Found the holdings table', state: 'done', meta: '18 funds' },
+  { label: 'Matched them to the mandate', state: 'done', meta: '3 outside it' },
+];
+function FileScene() {
+  const [file, setFile] = React.useState({ name: 'Sharma-Q3-statement.pdf', meta: '14 pages · 1.2 MB · added just now' });
+  return (
+    <Thread anchor="bottom" composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onAttach={(f) => setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · added just now` })} onSend={() => {}} />}>
+      <UserBubble text="Here's his Q3 statement." />
+      <FileUpload file={file} stages={PARSE} state="done" summary="Read his Q3 statement · 14 pages · 18 holdings"
+        actions={<Pill label="What changed since Q2?" size="sm" tone="outline" onClick={() => {}} />} />
+    </Thread>
   );
 }
 
@@ -101,7 +134,24 @@ mountScreen(
       </StateRow>
     </Section>
 
-    <Section title="3 · What fits in 96 points" sub="Measured, and the reason the peek is a bar chart rather than the attribution chart made small.">
+    <Section title="3 · Two things the advisor can do to their own turn" sub="Both were in the system and on no screen. MessageActions has offered Edit since v1 with nowhere to go; the composer's paperclip was a <div> and FileUpload has carried its staged parse since v7 with no way in.">
+      <StateRow>
+        <State label="editing the question" note="Edit under the last user bubble turns the bubble into the field — in place, the way the advisor knows it from every other assistant. Same peach, same edge, same 14/19; the tail corner squares off and the width is released. Cancel and Send are words, not ghost pills. The line underneath says what sending will destroy BEFORE it is destroyed, which MessageActions' contract has required since v1 and had nowhere to render.">
+          <EditScene />
+        </State>
+        <State label="a file in the thread" tone="under" note="The paperclip opens the platform picker; the file lands in the thread as FileUpload and parses in stages. The stages ARE the summary arriving — not “uploaded successfully” but “read his Q3 statement · 14 pages · 18 holdings”. A failed stage keeps its place and carries its own retry, so an advisor retries the stage rather than re-uploading a 14-page statement. The journey that needs this is Meera's review; the control is live now so the two cannot drift apart again.">
+          <FileScene />
+        </State>
+      </StateRow>
+      <Note title="What Edit costs here, and why the answer is not thrown away first">
+        Nothing is discarded when Edit is tapped &mdash; the answer, the allocation and the artifact all stay on
+        screen while the question is being changed. They are replaced only when the edit is SENT, and the line under
+        the field says so first. That is the same rule as <code>VersionRow</code>&rsquo;s revert, one level up:
+        an advisory tool never destroys something the advisor might still need without saying so.
+      </Note>
+    </Section>
+
+    <Section title="4 · What fits in 96 points" sub="Measured, and the reason the peek is a bar chart rather than the attribution chart made small.">
       <Note title="Recognition, not reading">
         <code>ArtifactCard</code>&rsquo;s peek is 96px fixed and its own header says why: the thread is 463&ndash;497px
         tall, so one taller card eats half of it. What is allowed there is a sparkline strip, a single stat row, or a
@@ -124,7 +174,7 @@ mountScreen(
       </Note>
     </Section>
 
-    <Section title="4 · The states this screen does not have">
+    <Section title="5 · The states this screen does not have">
       <Note title="No empty, no separate loading">
         The screen is only ever reached with a question asked and a trace finished. Loading is screen 2; the one
         part that can still be arriving is the artifact, and that is the <em>filling</em> state above.
@@ -135,11 +185,11 @@ mountScreen(
       </Note>
     </Section>
 
-    <Section title="5 · Motion, and what each one does under reduced motion" sub="Nothing on this page moves — the phones are frozen. The live prototype plays every row below, and is where to check them.">
+    <Section title="6 · Motion, and what each one does under reduced motion" sub="Nothing on this page moves — the phones are frozen. The live prototype plays every row below, and is where to check them.">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="6 · Provenance">
+    <Section title="7 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>

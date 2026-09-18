@@ -60,8 +60,10 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
    `ResultCard` · `DataTable` · `OverlapView` · `InfoCard kind='manager'`, each with its contract and
    a spec page. `pages/_index.json` reports **0 specified**: the backlog the system carried since v9
    is empty.
-3b. **Spec pages, Tier 1** — done. **43 of 86 shipped**, 43 building, 82/82 pages render clean (75 system + 7 screens).
+3b. **Spec pages, Tier 1** — done. **43 of 86 shipped**, 43 building, 83/83 pages render clean (75 system + 8 screens).
    Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
    Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
-   researched, with every state and keyframe accounted for.
+   researched, with every state and keyframe accounted for. **5 of 7 of Journey B built**, plus the shell
+   drawer and a live prototype. The owner's standing rule since 18 Sep: **nothing in the system that is on
+   no screen** — `npm run report:parallel` measures it (44 of 86 today, counted transitively).
