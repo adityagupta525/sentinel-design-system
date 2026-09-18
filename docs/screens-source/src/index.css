@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+/* ── Imported design faces (Urbanist + Darker Grotesque, served from the
+      Google Fonts CDN under their original colon-named families) ───────── */
+@font-face {
+  font-family: 'Urbanist:Regular';
+  src: url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Urbanist:Medium';
+  src: url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Urbanist:SemiBold';
+  src: url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Urbanist:Bold';
+  src: url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Darker Grotesque:Medium';
+  src: url('https://fonts.gstatic.com/s/darkergrotesque/v10/U9MK6cuh-mLQlC4BKCtayOfARkSVgb381b-W8-QDqXwFqn7y.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+/* ── Design tokens sampled from the Figma source (Sentinel) ──────────── */
+@theme {
+  --color-ink: #251f1b;
+  --color-ink-soft: #3d3630;
+  --color-muted: #605954;
+  --color-bronze: #b69377;
+  --color-bronze-deep: #715035;
+  --color-bronze-edge: #a07d5f;
+  --color-canvas: #f6f4f1;
+  --color-line: #e1deda;
+  --color-line-soft: #e7e7e7;
+  --color-bubble: #f9eee6;
+  --color-bubble-edge: #ebd4c3;
+  --color-chip: #fbf6f1;
+  --color-alloc-equity: #b69377;
+  --color-alloc-debt: #d9bb9e;
+  --color-alloc-cash: #ebd4c3;
+  --color-alloc-track: #edebe7;
+  --color-danger: #b4552f;
+  /* §4.3 — the one approved addition: two data tokens derived from existing values */
+  --color-data-track: rgba(235, 212, 195, 0.4); /* existing sand at 40% — meter & bar tracks */
+  --color-data-deemph: #a39a91; /* warm grey at mid-bronze lightness — "this was intentional" marks */
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: #dedbd6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* dotted-paper texture reused across screens (samples the source aura wash) */
+.paper-texture {
+  background-image: radial-gradient(rgba(37, 31, 27, 0.045) 1px, transparent 1px);
+  background-size: 3px 3px;
+  background-position: top left;
+}
+
+/* thinking shimmer for the Sentinel sparkle label */
+@keyframes sentinel-shimmer {
+  0% { opacity: 0.35; }
+  50% { opacity: 1; }
+  100% { opacity: 0.35; }
+}
+.sentinel-shimmer {
+  animation: sentinel-shimmer 1200ms ease-in-out infinite;
+}
+
+@keyframes dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+/* hide scrollbars inside the phone frame while keeping scroll */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

@@ -28,7 +28,7 @@ and moved it here to finish it.
 | Preview pages | **73 / 73 render clean** (`node tools/check-previews.mjs`) |
 | Integrity | 370 files hashed, clean |
 | Findings | F-1 … F-26 in `docs/FINDINGS.md`. **None open.** F-11, F-21 and F-25 closed 18 Sep |
-| Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — not started** |
+| Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — source in `docs/screens-source/`, build not started** |
 
 **Tier 1 is defined as:** every component that carries one of the four rules, or that the chat spine is
 built from. Tier 2 is the remaining 43 — chips, buttons, marks, icons, shells: short contracts, and
@@ -65,6 +65,7 @@ These were decided in conversation. They are binding, and re-litigating them was
 | **Waiting verbs are words, not motion.** | `SentinelThinking`'s `verb` changes the label and nothing else. Six of six AI assistants surveyed pair a wait with a named verb; none ships a bare pulse. The verb must be **true and checkable** — it names the source the answer will cite. |
 | **`ui_kits/` stays inside `design-system/`.** | Moving it breaks the three prototypes' relative paths. The owner's instruction was explicit: *"kuch kharab nei karna chahta agar kuch khrab hoga to rehne do."* Screens get a **new** top-level `screens/` instead. |
 | **`StickyCTA` is deleted** (18 Sep 2026). | It was deprecated first so the removal would be a decision taken on purpose; the owner took it. `package.json` is `private: true` and nothing in the system imported it, so there was no consumer to break. See F-11 and `CHANGELOG.md` → Removed. |
+| **No screen mounts `ExplainerSheet` already open.** A sheet mounts closed and is opened by an action. | F-25's Tab trap arms on the `false → true` transition, which is also what moves focus in. That is right for a spec page rendering six specimens, but it means a sheet mounted with `open={true}` — a restored state, a reload, a deep link — gets neither focus nor a trap. The component is not wrong; this is the screens' side of the contract. Verify it on every screen that carries a sheet. |
 | **Figma export comes last.** | The owner *is* the designer and wants Figma only after the design system and the screens are both complete. |
 
 ## 5 · How the work is done here
@@ -96,7 +97,6 @@ Be honest about these with the owner rather than guessing around them.
 
 | Missing | What to do |
 |---|---|
-| **The Figma Make screen concepts** (`Mobile_App_Screen_Reproduction.zip`) — the basic app content the owner mocked up, and the input for roadmap step 4. `design-system/readme.md:7` refers to a `src/` tree that was mounted read-only during Claude Design and is not here. | **Ask the owner to re-attach it** before starting screens. |
 | **`Amicro` (micro-transitions)**, the `interfaces` skills bundle, and the `Libraries.dev` repository. | Their conclusions are already distilled into `.claude/skills/sentinel-craft/references/borrowed.md` and into the motion rulings above. You do not need the sources unless you want to re-derive something. |
 | **The review Artifact** (a rendered copy of the whole system, published at claude.ai). | **Artifacts are per-account and private — the link does not carry over.** Publish a fresh one from the new account. The staging recipe is in §8. |
 
@@ -205,9 +205,7 @@ Standing rules jo main dohra raha hoon:
 Jab tak main na kahoon, koi bada kaam shuru mat karo — pehle review karke plan do.
 ```
 
-**Two things to attach in that first message, if you have them:**
-
-1. `Mobile_App_Screen_Reproduction.zip` — the Figma Make screen concepts. **Required before screens
-   work starts**; nothing in this repository replaces it.
-2. Nothing else. The skills, the specs, the research conclusions and the decision record are all
-   committed here.
+**Nothing needs to be attached to that first message.** The screen source that used to be missing is
+now `docs/screens-source/` — read its `README.md` first, including the two warnings and the three files
+that were renamed so the archive cannot reprogram the repository. The skills, the specs, the research
+conclusions and the decision record are all committed here too.

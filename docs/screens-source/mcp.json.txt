@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "Zapier__2afacc3c": {
+      "type": "http",
+      "url": "${MCP_PROXY_BASE_URL}/proxy/2afacc3c-124a-418f-9180-cb3f92c3c297",
+      "headers": {
+        "Authorization": "Bearer ${MCP_PROXY_AUTH_TOKEN}"
+      }
+    }
+  }
+}

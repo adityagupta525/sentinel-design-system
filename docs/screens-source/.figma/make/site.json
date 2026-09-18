@@ -1,0 +1,10 @@
+{
+  "description": "Enables seamless portfolio management with interactive chat guidance, client reviews, and fund exploration for wealth advisors and investors.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
