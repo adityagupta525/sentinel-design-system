@@ -1,6 +1,6 @@
 # Screens — the plan, before anything is built
 
-**Status (18 Sep 2026, end of session): approved and in progress — 3 of 7 Journey B screens built plus the shell drawer; screen 3 is next. Current state and this session's rulings: `docs/CONTINUE-HERE.md` §0.** This is Gate C: what
+**Status (18 Sep 2026, later the same day): approved and in progress — 4 of 7 Journey B screens built (Home, the trace, the answer) plus the shell drawer and a live prototype of screens 1 → 3; screen 4 (the artifact expanded) is next. Current state and this session's rulings: `docs/CONTINUE-HERE.md` §0.** This is Gate C: what
 `docs/screens-source/` actually contains, what it is missing, what the design system will and will not
 give it, and which journey to build first.
 
@@ -139,7 +139,20 @@ name squeezes them to nothing — 47pt beside "Ashish", 12pt beside "Vishwanatha
 component stops looking like a divider. A `max-width` on the text would reserve them, at the cost of
 wrapping shorter names sooner.
 
-### 2 · Thread
+### 2 · Thread — **screens 2 and 3 built, 18 Sep 2026** · `02-thread-trace.html`, `03-thread-answer.html`, `prototype.html`
+
+Built as the matrix says, with three things the matrix did not know:
+
+- **Where a thread rests.** The answer turn is ~500pt in a 462pt thread. Sticking to the bottom (the
+  archive's `useStickyScroll`) scrolled the first sentence off while it was being read, then did it again
+  when the artifact arrived. Rule, in `screens/journey-b/thread.jsx`: the newest turn STARTS on screen, and
+  ends on screen too only if it fits. A specimen can ask for the bottom, or for a given turn at the top.
+- **The peek is `ChartBar density="peek"`**, three ranked bars, 62pt measured in the 96pt clip, no
+  truncation at 11px. `AttributionChart` is the expanded artifact and does not fit 96 — nor should it.
+- **The artifact can fail on its own.** Sentence arrived, breakdown did not: said in the same block as text
+  (rule 2), Try again inline, "Show the 18 holdings" withdrawn, "Why is 71% a problem?" kept because 71 is
+  still true. Not in the archive.
+
 
 | State | In the archive | What it must be |
 |---|---|---|

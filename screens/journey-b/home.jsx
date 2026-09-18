@@ -32,7 +32,9 @@ function greetingFor(hour) {
   return hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 }
 
-function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMenu }) {
+/* onRow / onStarter / onSend exist for the live prototype, which has to know what was tapped. The
+   frozen pages pass nothing and the rows stay inert, as before. */
+function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMenu, onRow, onStarter, onSend }) {
   const [value, setValue] = React.useState('');
   return (
     <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
@@ -48,7 +50,7 @@ function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMe
       {rows.length > 0 && (
         <div style={{ position: 'relative', zIndex: 1, padding: '24px var(--gutter) 0' }}>
           <div style={{ width: '100%', boxSizing: 'border-box', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: '0 var(--space-12)', boxShadow: 'var(--shadow-card-soft)' }}>
-            {rows.map((s, i) => <SuggestionRow key={s} label={s} last={i === rows.length - 1} onClick={() => {}} />)}
+            {rows.map((s, i) => <SuggestionRow key={s} label={s} last={i === rows.length - 1} onClick={() => onRow && onRow(s)} />)}
           </div>
         </div>
       )}
@@ -62,8 +64,8 @@ function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMe
           context calls for. The duplication objection was the real one, and the two-lists split above
           is what answers it. */}
       <Dock
-        chips={<ChipRow>{STARTERS.map((c) => <Pill key={c} label={c} onClick={() => {}} />)}</ChipRow>}
-        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel about a client, a fund, or a plan" onSend={() => {}} />} />
+        chips={<ChipRow>{STARTERS.map((c) => <Pill key={c} label={c} onClick={() => onStarter && onStarter(c)} />)}</ChipRow>}
+        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel about a client, a fund, or a plan" onSend={() => { if (onSend && value.trim()) { onSend(value.trim()); setValue(''); } }} />} />
       <HomeIndicator />
     </div>
   );

@@ -61,7 +61,11 @@ export function ExplainerSheet({ open, title, body, onClose }) {
   if (!open) return null;
   return (
     <>
-      <div onClick={onClose} aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 20, background: 'var(--scrim)', opacity: 0.4, animation: 'ds-fade 300ms var(--ease) both' }} />
+      {/* F-27 (18 Sep 2026): this was `opacity: 0.4` with `ds-fade … both`, and `both` holds the keyframe's
+          final value — 1 — so the scrim computed to opacity 1 and the phone behind every open sheet went
+          black. ds-scrim fades to the element's OWN opacity, so the declared value is the rendered one.
+          Measured after the fix: 0.4. */}
+      <div onClick={onClose} aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 'var(--z-scrim)', background: 'var(--scrim)', opacity: 'var(--scrim-sheet)', animation: 'ds-scrim var(--dur-screen) var(--ease) both' }} />
       <div ref={ref} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 30, borderRadius: '24px 24px 0 0', background: 'var(--color-surface)', padding: '12px 20px 28px', animation: 'ds-sheet 300ms var(--ease) both' }}>
         <style>{'@keyframes ds-sheet{from{transform:translateY(100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-sheet{from{opacity:0;transform:none}to{opacity:1;transform:none}}}'}</style>
         <div style={{ margin: '0 auto 14px', height: 5, width: 44, borderRadius: 'var(--radius-full)', background: 'var(--color-line)' }} />

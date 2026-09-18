@@ -62,6 +62,7 @@ function App() {
           { label: 'Pending / active / done, together', node: <ProgressTrace steps={STEPS} autoplay={false} initialActive={1} seconds={2} />, note: 'Circle filled = done · ringed = active · hairline = pending. The opacity carries it as much as the circle does.' },
           { label: 'First step, nothing done yet', node: <ProgressTrace steps={STEPS} autoplay={false} initialActive={0} seconds={1} />, note: 'No step is retroactively marked done. The trace never claims work it has not finished.' },
           { label: 'Done, expanded', node: <ProgressTrace steps={STEPS} reasoning={WHY} autoplay={false} initialActive={3} seconds={4} />, note: 'Every circle filled, header muted, chevron present, reasoning open. This is what the advisor sees after tapping "Thought for 4s".' },
+          { label: 'Done, collapsed — the resting state, frozen', node: <ProgressTrace steps={STEPS} reasoning={WHY} autoplay={false} initialActive={3} seconds={4} initialCollapsed />, note: 'One line, "Thought for 4s ›". This is what a finished trace looks like under the answer it produced, and until initialCollapsed a frozen page could not show it — the steps had to sit open above every answer specimen.' },
           { label: 'Done, collapsed — the end state', node: <Live />, note: 'Wait ~3s. This is what the thread keeps: one line the advisor can tap if they ever want the audit again.' },
         ]} />
       </Block>

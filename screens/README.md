@@ -105,3 +105,17 @@ A box that **clips** is checked itself and then closes the question for everythi
 11. **Screens run the system's adherence lint in CI** (`npm run lint:adherence:screens`) — the raw-hex
    and reach-into-`components/` rules the system holds itself to. It does not yet count raw px values
    the way `_index.json` does for components; that gap is open.
+12. **A live page plays only the system's motion.** `journey-b/prototype.html` runs screens 1 → 3 with a log
+   of what moved and which keyframe carried it. Every animation there is a `ds-*` keyframe on a `--dur-*`
+   token; the page decides only the order. The one thing it hand-builds — `ScreenStack`, two screens in one
+   slot — holds no value of its own and is named on the page with its promotion trigger: the second live
+   page that needs it moves it to `shell/ScreenStack`. Reduced motion is verified by running the same
+   probe under `reducedMotion: 'reduce'`, not by reading the CSS.
+13. **A thread rests with its newest turn's first line on screen.** If the turn also fits, it ends on
+   screen too. `thread.jsx` does this on `revision`, never on every render, so a caller's own scrolls —
+   `ArtifactCard`'s expand-to-header and collapse-back — are not fought. Measured on screen 3: a 500pt
+   turn in a 462pt thread.
+14. **Shared turns live in one file.** Home (`home.jsx`), the thread shell (`thread.jsx`), the answer turn
+   (`answer.jsx`) and the menu's data (`shell/menu.jsx`) are each written once and loaded by every page
+   that draws them, so a frozen state and the live prototype cannot disagree. New shared files use one
+   uniquely named const (`ANSWER_DS`, `MENU_DS`) and export through `Object.assign(window, …)`.

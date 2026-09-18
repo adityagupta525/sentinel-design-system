@@ -610,7 +610,7 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
-### F-27 · Every scrim in the product renders at 100% ink, not 40% — *found 18 Sep 2026, fix awaiting the owner*
+### F-27 · Every scrim in the product renders at 100% ink, not 40% — *found 18 Sep 2026, fixed the same day*
 Found while promoting the Drawer, by measuring rather than looking — a 100% scrim and a 40% scrim are
 both "dark" in a screenshot. `ExplainerSheet.jsx:64` sets `opacity: 0.4` and
 `animation: 'ds-fade 300ms var(--ease) both'`. `ds-fade` ends at `opacity: 1`, and `animation-fill-mode:
@@ -622,12 +622,27 @@ says *"held at 0.4"*. Neither has been true since the animation was added.
 The Drawer inherited the identical line and the identical result (`computed opacity 1` against a declared
 `--scrim-drawer` of 0.25), which is how it was caught.
 
-**Fixed in the Drawer, not yet in `ExplainerSheet`.** `tokens/effects.css` gains `ds-scrim` — a keyframe with
-a `from` and no `to`, so it fades to the element's *own* opacity. The Drawer uses it and now measures
-0.25. Applying the same one-line change to `ExplainerSheet` (`ds-fade` → `ds-scrim`) would make every sheet
-specimen and the product's sheets visibly lighter — it is a correction toward the documented 40%, but it is a
-change to what a shipped surface looks like, so it waits for the owner's word rather than being made in
-passing.
+**Fixed in both.** `tokens/effects.css` gains `ds-scrim` — a keyframe with a `from` and no `to`, so it fades
+to the element's *own* opacity — and two tokens name the values, `--scrim-sheet: 0.4` and
+`--scrim-drawer: 0.25`. The Drawer measured 0.25 first. `ExplainerSheet` was left for a day because the change
+is visible; then screen 3's live state rendered the sheet over a **fully black phone**, which is not a look
+anyone chose — it is the component failing to be what its own page says it is. `ExplainerSheet.jsx` now uses
+`ds-scrim` on `--scrim-sheet` and measures **0.4** (Playwright, `getComputedStyle`, on `screens/journey-b/
+03-thread-answer.html` and `prototype.html`). Every sheet specimen is lighter than yesterday; that is the
+documented value arriving, not a restyle.
+
+### F-28 · The two most important buttons on the screen had no name — *found and fixed 18 Sep 2026*
+`composer/Composer.jsx:16-18`: the send slot holds a `<button>` with an arrow glyph and, while streaming, a
+`<button>` with a 13px square. Neither had text or an `aria-label`, so a screen reader announced "button" for
+Send and for Stop. Found by a Playwright probe that could not find Stop by name. `aria-label="Send"` and
+`aria-label="Stop"`, the square marked `aria-hidden`. Nothing visible changes. The attach disc beside them is a
+`<div>`, not a control at all — it was drawn that way in the archive and is recorded here, not changed.
+
+### F-29 · The status bar's wifi glyph was drawn half — *found by the owner, fixed 18 Sep 2026*
+`shell/StatusSpacer.jsx`: the wifi path drew only the right half of each arc (`M8 2.5 → 13 4.6`, `M8 6 → 10.5 7`)
+and a chevron for the dot, so on every phone, board and spec page the icon read as cut off at its left edge.
+The owner saw it on the screens. Redrawn as two arcs symmetric about x=8 and a dot, same 16×12 box, same
+1.3 stroke, same colour — the stroke stays inside the box (1.85 … 14.15). Looked at, at 3×, after the change.
 
 ## Considered and rejected
 

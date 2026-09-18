@@ -1740,18 +1740,21 @@
     "--color-ink-soft",
     "--color-line",
     "--color-surface",
+    "--dur-screen",
     "--ease",
     "--font-ui",
     "--leading-20",
     "--radius-full",
     "--scrim",
+    "--scrim-sheet",
     "--space-10",
     "--text-14",
     "--type-sheet-title-font",
-    "--weight-regular"
+    "--weight-regular",
+    "--z-scrim"
    ],
    "locals": [],
-   "literals": 12
+   "literals": 10
   },
   {
    "name": "FollowUpRow",

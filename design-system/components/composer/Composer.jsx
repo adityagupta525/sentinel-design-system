@@ -1,7 +1,10 @@
 import React from 'react';
 import { IconAttach } from '../icons/IconAttach.jsx';
 import { IconArrow } from '../icons/IconArrow.jsx';
-/* The ask bar — present on every screen. Bronze focus ring, 150ms. streaming = Stop in the send slot. */
+/* The ask bar — present on every screen. Bronze focus ring, 150ms. streaming = Stop in the send slot.
+   F-28 (18 Sep 2026): both buttons in the send slot were a glyph with no name — a 13px square and an
+   arrow — so a screen reader announced "button" for the two most important controls on the screen.
+   aria-label "Stop" / "Send"; nothing visible changes. */
 export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 'Ask Sentinel about a client, a fund, or a plan', autoFocus = false, streaming = false, onStop }) {
   const [focus, setFocus] = React.useState(false);
   const canSend = value.trim().length > 0 && !streaming;
@@ -13,9 +16,9 @@ export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 
       <div style={{ marginTop: 'var(--space-12)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingRight: 'var(--space-2)' }}>
         <div style={{ display: 'flex', width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 22, background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)' }}><IconAttach /></div>
         {streaming ? (
-          <button type="button" onClick={onStop} style={btn}><span style={{ width: 13, height: 13, borderRadius: 3, background: 'var(--color-surface)' }} /></button>
+          <button type="button" onClick={onStop} aria-label="Stop" style={btn}><span aria-hidden="true" style={{ width: 13, height: 13, borderRadius: 3, background: 'var(--color-surface)' }} /></button>
         ) : (
-          <button type="button" onClick={() => canSend && onSend && onSend()} disabled={!canSend} style={{ ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? 'pointer' : 'default' }}><IconArrow /></button>
+          <button type="button" onClick={() => canSend && onSend && onSend()} disabled={!canSend} aria-label="Send" style={{ ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? 'pointer' : 'default' }}><IconArrow /></button>
         )}
       </div>
     </div>

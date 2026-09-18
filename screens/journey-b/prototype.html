@@ -1,0 +1,231 @@
+<!-- @dsCard group="Screens" viewport="1400x2200" name="Journey B · Live prototype" subtitle="Screens 1 → 3 running, every transition the system's own, with a log of what moved and when" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, Dock, HomeIndicator, scrim, sheet, drawer" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey B · Live prototype — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','DarkButton','ExplainerSheet','Drawer','SegmentedRow','Pressable','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="./home.jsx"></script>
+<script type="text/babel" src="./thread.jsx"></script>
+<script type="text/babel" src="./answer.jsx"></script>
+<script type="text/babel" src="../shell/menu.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+/* home.jsx declares Composer, Dock, Pill, ChipRow and the shell parts; thread.jsx, answer.jsx and
+   menu.jsx use their own namespaced consts. Only the names this file adds are destructured. */
+const { UserBubble, ProgressTrace, SentinelBlock, SentinelText, AnswerChip, DarkButton, ExplainerSheet, Drawer } = window.SentinelDesignSystem_0682a2;
+
+/* Durations are read from the tokens, so a timer here can never disagree with the CSS it waits for. */
+const tokenMs = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
+const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Simulated arrival of the breakdown after the sentence — a network wait stood in for, NOT a motion
+   value. The skeleton-first rule (ArtifactCard `filling`) is what this gap exists to show. */
+const FILL_MS = 900;
+const STEP_MS = 850;
+
+/* Two screens, one slot. The incoming screen plays ds-screen-in; the outgoing one plays ds-screen-out
+   under it for --dur-screen and is then unmounted. Both keyframes are the system's (tokens/effects.css)
+   and both are redefined to a fade under reduced motion, so nothing here decides how a screen moves.
+   Screens-only orchestration for now; if a second live page needs it, it is promoted as shell/ScreenStack. */
+function ScreenStack({ screen, render }) {
+  const [prev, setPrev] = React.useState(null);
+  const last = React.useRef(screen);
+  React.useEffect(() => {
+    if (last.current !== screen) { setPrev(last.current); last.current = screen; const t = setTimeout(() => setPrev(null), tokenMs('--dur-screen')); return () => clearTimeout(t); }
+  }, [screen]);
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%', overflow: 'hidden' }}>
+      {prev && <div key={`out-${prev}`} style={{ position: 'absolute', inset: 0, animation: 'ds-screen-out var(--dur-screen) var(--ease) both' }}>{render(prev)}</div>}
+      <div key={`in-${screen}`} style={{ position: 'absolute', inset: 0, animation: prev ? 'ds-screen-in var(--dur-screen) var(--ease) both' : 'none' }}>{render(screen)}</div>
+    </div>
+  );
+}
+
+/* The whole flow as it is built so far: Home → trace → answer → artifact, plus Stop and the menu. */
+function Proto({ onEvent }) {
+  const [screen, setScreen] = React.useState('home');
+  const [phase, setPhase] = React.useState('trace');       // trace | stopped | answer
+  const [artifact, setArtifact] = React.useState('filling'); // filling | peek | expanded
+  const [stoppedAt, setStoppedAt] = React.useState(0);
+  const [resumeFrom, setResumeFrom] = React.useState(0);
+  const [why, setWhy] = React.useState(false);
+  const [menu, setMenu] = React.useState(false);
+  const [traceKey, setTraceKey] = React.useState(0);
+  const traceStart = React.useRef(0);
+  const scroller = React.useRef(null);
+  const card = React.useRef(null);
+  const savedScroll = React.useRef(0);
+  const log = (what, motion) => onEvent && onEvent(what, motion);
+
+  const ask = (text) => {
+    log(`Tapped “${text}”`, 'Row press · 150ms');
+    traceStart.current = performance.now();
+    setScreen('thread');
+    log('Thread in, Home out', reduced() ? 'ds-screen-in as a fade · 320ms (reduced motion)' : 'ds-screen-in 100% → 0 · ds-screen-out 0 → −30% · 320ms');
+    log('Trace running — step 1 of 4', `ProgressTrace · ${STEP_MS}ms a step, clock real`);
+  };
+  const traceDone = () => {
+    log('Trace done — “Thought for Ns ›”', 'collapses immediately');
+    setPhase('answer'); setArtifact('filling');
+    log('Answer in', reduced() ? 'ds-rise as a fade · 240ms' : 'ds-rise: fade + 8px rise · 240ms');
+    log('Allocation bar grows', reduced() ? 'drawn full (ds-grow redefined)' : 'ds-grow scaleX · 480ms, 120ms stagger');
+    log('Artifact card arrives, filling', reduced() ? 'ds-artifact as a fade · 300ms' : 'ds-artifact: fade + scale 0.96 → 1 · 300ms · shimmer');
+    setTimeout(() => { setArtifact('peek'); log('Breakdown arrived — peek', reduced() ? 'bars drawn full' : 'bars scaleX · 480ms, 60ms stagger'); log('Chips and CTA in', reduced() ? 'fade · 240ms' : 'ds-rise · 240ms, 60ms stagger'); }, FILL_MS);
+  };
+  const stop = () => {
+    const idx = Math.min(Math.floor((performance.now() - traceStart.current) / STEP_MS), DRIFT_STEPS.length - 1);
+    setStoppedAt(idx); setPhase('stopped');
+    log(`Stop — frozen at step ${idx + 1} of 4`, 'immediate; the partial trace stays');
+  };
+  const resume = () => { setResumeFrom(stoppedAt); setTraceKey((k) => k + 1); traceStart.current = performance.now() - stoppedAt * STEP_MS; setPhase('trace'); log(`Continue — from step ${stoppedAt + 1}`, 'the clock restarts at 0 (ProgressTrace cannot resume it — noted)'); };
+  const toggle = () => {
+    const el = scroller.current, c = card.current;
+    if (artifact === 'peek') {
+      if (el && c) savedScroll.current = el.scrollTop;
+      setArtifact('expanded');
+      log('Artifact expands in place', reduced() ? 'height only; chevron flips' : 'natural height; chevron rotates 180° · 320ms; bars 200ms each; 62 → 71 counts up · 600ms');
+      /* Caller-owned scroll #1: the card's header just under the app bar. */
+      requestAnimationFrame(() => { if (el && c) el.scrollTo({ top: el.scrollTop + (c.getBoundingClientRect().top - el.getBoundingClientRect().top), behavior: reduced() ? 'auto' : 'smooth' }); });
+      log('Thread scrolls: card header under the app bar', 'the caller’s scroll, per ArtifactCard’s contract');
+    } else if (artifact === 'expanded') {
+      setArtifact('peek');
+      /* Caller-owned scroll #2: back to where the card was. */
+      requestAnimationFrame(() => requestAnimationFrame(() => { if (el) el.scrollTo({ top: savedScroll.current, behavior: reduced() ? 'auto' : 'smooth' }); }));
+      log('Artifact collapses to 96px', 'the peek clips; the thread scrolls back to the card');
+    }
+  };
+
+  const thread = (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Thread scrollRef={scroller} revision={`${phase}-${artifact === 'filling' ? 'filling' : 'ready'}`} onMenu={() => { setMenu(true); log('Menu opens', reduced() ? 'panel fades in at x=0; scrim ds-scrim · 320ms' : 'panel translateX −100% → 0 · 320ms; scrim ds-scrim to 0.25'); }}
+        onNew={() => { setScreen('home'); setPhase('trace'); setArtifact('filling'); log('New — back to Home', 'ds-screen-in'); }}
+        chips={phase === 'answer' && artifact !== 'filling' ? <AnswerChips animate onWhy={() => { setWhy(true); log('Explainer opens', reduced() ? 'ds-sheet as a fade · 300ms' : 'ds-sheet translateY 100% → 0 · 300ms; scrim ds-fade (F-27: computes 1)'); }} onHoldings={() => { log('“Show the 18 holdings” — screen 4 will settle what expanded holds; here it opens the chart', ''); if (artifact === 'peek') toggle(); }} /> : undefined}
+        cta={phase === 'answer' && artifact !== 'filling' ? <DarkButton label="Rebalance to his mandate" onClick={() => log('“Rebalance to his mandate” — screen 5 is not built yet; this is where it goes', '')} /> : undefined}
+        composer={<Composer value="" onChange={() => {}} placeholder={artifact === 'expanded' ? 'Ask about this' : 'Ask Sentinel'} streaming={phase === 'trace'} onStop={stop} onSend={() => {}} />}>
+        <UserBubble text={DRIFT_ASK} />
+        {phase === 'trace' && <ProgressTrace key={traceKey} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} stepMs={STEP_MS} initialActive={resumeFrom} onDone={traceDone} />}
+        {phase === 'stopped' && (
+          <React.Fragment>
+            <ProgressTrace key={`stopped-${traceKey}`} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={stoppedAt} seconds={Math.max(1, Math.round((stoppedAt + 1) * STEP_MS / 1000))} />
+            <SentinelBlock>
+              <SentinelText text="Stopped. I kept what I'd worked out so far — I was partway through attributing Sharma's drift." />
+              <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Continue" variant="primary" onClick={resume} /></div>
+            </SentinelBlock>
+          </React.Fragment>
+        )}
+        {phase === 'answer' && (
+          <React.Fragment>
+            <ProgressTrace key={`done-${traceKey}`} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={DRIFT_STEPS.length} seconds={Math.round(DRIFT_STEPS.length * STEP_MS / 1000)} initialCollapsed />
+            <AnswerTurn artifact={artifact} run enter cardRef={card} onToggle={toggle}
+              onWhy={() => { setWhy(true); log('Explainer opens from the card’s “Why?”', 'ds-sheet · 300ms'); }}
+              onShare={() => log('Share — not in this build', '')}
+              onMenu={() => log('⋯ — the table view; screen 4', '')} />
+          </React.Fragment>
+        )}
+      </Thread>
+      <ExplainerSheet open={why} title={WHY_71.title} body={WHY_71.body} onClose={() => { setWhy(false); log('Explainer closes — focus returns to the chip', 'immediate'); }} />
+    </div>
+  );
+
+  const home = <Home hour={15} time="3:04" onMenu={() => { setMenu(true); log('Menu opens', 'panel 320ms; scrim ds-scrim to 0.25'); }}
+    onRow={(label) => (/drift/i.test(label) ? ask(label) : log(`“${label}” — that journey is not built yet`, ''))}
+    onStarter={(c) => log(`“${c}” — starters are not built yet`, '')}
+    onSend={(t) => (/drift/i.test(t) ? ask(t) : log(`Typed “${t}” — the router is not ported; only the drift question runs here`, ''))} />;
+
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <ScreenStack screen={screen} render={(s) => (s === 'home' ? home : thread)} />
+      <Drawer open={menu} onClose={() => { setMenu(false); log('Menu closes', 'immediate'); }} onNew={() => { setMenu(false); setScreen('home'); setPhase('trace'); setArtifact('filling'); }}
+        saved={MENU_SAVED} recent={MENU_RECENT} clients={MENU_CLIENTS} footer={<MenuFooter onHome={() => { setMenu(false); setScreen('home'); setPhase('trace'); setArtifact('filling'); }} />} />
+    </div>
+  );
+}
+
+/* The log beside the phone: what happened, when, and which system motion carried it. */
+function EventPanel({ events, onRestart }) {
+  const row = { display: 'grid', gridTemplateColumns: '48px 1fr', gap: 'var(--space-8)', padding: '7px 0', borderBottom: '0.5px solid var(--color-line-soft)' };
+  return (
+    <div style={{ width: 375, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ ...screenMuted, fontWeight: 700, fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-bronze-deep)' }}>What moved, and when</span>
+        <span style={{ ...screenMuted, marginLeft: 'auto' }}>{reduced() ? 'Reduced motion (from the OS)' : 'Full motion'}</span>
+        <Pill label="Restart" size="sm" onClick={onRestart} />
+      </div>
+      <div style={{ borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: '4px 14px', boxShadow: 'var(--shadow-card-soft)', minHeight: 120 }}>
+        {events.length === 0 && <p style={{ ...screenMuted, padding: '10px 0' }}>Nothing yet. Tap “Why did Sharma's portfolio drift this quarter?” on the phone, or type it.</p>}
+        {events.map((e, i) => (
+          <div key={i} style={{ ...row, borderBottom: i < events.length - 1 ? row.borderBottom : 'none' }}>
+            <span style={{ ...screenMuted, fontVariantNumeric: 'tabular-nums', color: 'var(--color-muted)' }}>{e.t.toFixed(1)}s</span>
+            <span style={{ ...screenMuted, color: 'var(--color-ink)' }}>{e.what}{e.motion && <span style={{ color: 'var(--color-muted)' }}> — {e.motion}</span>}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [events, setEvents] = React.useState([]);
+  const [runId, setRunId] = React.useState(0);
+  const t0 = React.useRef(performance.now());
+  const onEvent = (what, motion) => setEvents((ev) => [...ev, { t: (performance.now() - t0.current) / 1000, what, motion }]);
+  const restart = () => { t0.current = performance.now(); setEvents([]); setRunId((r) => r + 1); };
+  return (
+    <ScreenShell
+      journey="Journey B · Sharma’s drift" n="Live" name="The prototype"
+      job="Screens 1 to 3 as built, running: tap the Sharma row on Home, watch the trace, stop it if you like, read the answer, open the explainer, expand the artifact, open the menu. Every transition is a system keyframe on a system token; this page only decides the order."
+      without="can see each screen frozen but never the motion between them — and motion is where a thread feels right or wrong."
+    >
+      <Section title="1 · Run it" sub="One phone. The log on the right names each thing that moved, the system motion that carried it, and the second it happened at. Under the OS's reduced-motion setting every row resolves to a fade or to nothing; the page says which mode it is in.">
+        <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <State label="live"><Proto key={runId} onEvent={onEvent} /></State>
+          <EventPanel events={events} onRestart={restart} />
+        </div>
+      </Section>
+
+      <Section title="2 · Every motion in it, and its reduced-motion answer">
+        <MotionTable rows={[
+          ['Screen change', <span><code>ds-screen-in</code> 100% → 0 over <code>ds-screen-out</code> 0 → −30%</span>, '320ms', 'Both redefined to a fade in place'],
+          ['Trace step', 'the circle fills, the label comes to full opacity', '850ms a step', 'Unchanged — a step is not a transform'],
+          ['Answer', <span><code>ds-rise</code> fade + 8px</span>, '240ms', 'Fade only'],
+          ['Allocation bar', <span><code>ds-grow</code> scaleX, 120ms stagger</span>, '480ms', 'Drawn at full width'],
+          ['Artifact card', <span><code>ds-artifact</code> fade + scale 0.96 → 1, then shimmer while filling</span>, '300ms', 'Fade only; the shimmer holds still'],
+          ['Peek bars', 'scaleX from the left, 60ms stagger', '480ms', 'Instant'],
+          ['Chips', <span><code>ds-rise</code>, 60ms stagger</span>, '240ms', 'Fade only'],
+          ['Expand in place', 'natural height; chevron 180°; bars 200ms each; 62 → 71 counts up', '320 · 200 · 600ms', 'Height changes; chevron flips; number lands'],
+          ['The two thread scrolls', 'header under the app bar on expand; back to the card on collapse', 'smooth', 'Instant (scroll-behavior auto)'],
+          ['Explainer sheet', <span><code>ds-sheet</code> translateY 100% → 0; scrim <code>ds-fade</code></span>, '300ms', <span>Sheet fades. <strong>F-27, open:</strong> the scrim computes to opacity 1 here, not 0.4 — the fix waits for the owner</span>],
+          ['Menu', <span>panel translateX −100% → 0; scrim <code>ds-scrim</code> to 0.25</span>, '320ms', 'Panel fades at x=0; scrim unchanged'],
+        ]} />
+      </Section>
+
+      <Section title="3 · What this prototype does not do yet, and one thing it found">
+        <Note title="Where it stops">
+          Screens 4 to 7 are not built. &ldquo;Rebalance to his mandate&rdquo; logs where screen 5 goes and changes
+          nothing; &ldquo;Show the 18 holdings&rdquo; opens the expanded chart, and screen 4 will settle what expanded
+          actually holds. The other two Home rows and the three starters log that their journeys are not built. The
+          composer routes one thing &mdash; a question with &ldquo;drift&rdquo; in it &mdash; because the archive&rsquo;s
+          six-bucket router is not ported; anything else is logged and left in the composer, as bucket 4 does.
+        </Note>
+        <Note title="Found while wiring Stop → Continue">
+          <code>ProgressTrace</code> restarts its clock at 0 when it resumes &mdash; &ldquo;Working &middot; 0s&rdquo;
+          after a stop at 2s &mdash; because the clock is internal and starts with the component. The archive did the
+          same. It is a small honesty gap in the trace and it is logged in the handoff, not fixed here: it is the
+          system&rsquo;s to change, not a screen&rsquo;s.
+        </Note>
+        <Note title="Hand-built here, and the promotion trigger">
+          <code>ScreenStack</code> &mdash; two screens in one slot, the system&rsquo;s two keyframes, the duration read
+          from <code>--dur-screen</code>. It is the only thing on this page that is not a system component, and it holds
+          no value of its own. The moment a second live page needs it, it moves to <code>shell/ScreenStack</code> with a
+          contract and a spec page, per the rule that a screen never keeps what it had to build.
+        </Note>
+      </Section>
+    </ScreenShell>
+  );
+}
+
+mountScreen(<App />);
+</script></body></html>

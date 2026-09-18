@@ -7,7 +7,7 @@ function Circle({ state }) {
   if (state === 'active') return <span style={{ width: 16, height: 16, borderRadius: 'var(--radius-full)', background: 'var(--color-canvas)', boxShadow: '0 0 0 2px var(--color-bronze)', boxSizing: 'border-box' }} />;
   return <span style={{ width: 16, height: 16, borderRadius: 'var(--radius-full)', boxShadow: '0 0 0 1px var(--color-line)' }} />;
 }
-export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay = true, initialActive = 0, seconds = 3 }) {
+export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay = true, initialActive = 0, seconds = 3, initialCollapsed = false }) {
   const [active, setActive] = React.useState(initialActive);
   /* A frozen trace whose initialActive has passed the last step IS a finished trace. Until v12 the
      only way to reach the done state was to let the clock run, so a specimen or an artboard could
@@ -15,7 +15,12 @@ export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay
      which only renders once done. No new prop: autoplay={false} with initialActive < steps.length is
      unchanged, which is what every existing frozen call site passes. */
   const [done, setDone] = React.useState(!autoplay && initialActive >= steps.length);
-  const [collapsed, setCollapsed] = React.useState(false);
+  /* initialCollapsed (18 Sep 2026): the RESTING state of a finished trace is the one line "Thought for
+     Ns ›" — that is what the advisor is looking at while they read the answer under it. A frozen
+     specimen could reach done-and-expanded since v12 (F-22) but never done-and-collapsed, so a screen
+     page showing the answer had to show the steps open above it, which the product does not do.
+     Honoured only when the trace is already done; a running trace has nothing to collapse. */
+  const [collapsed, setCollapsed] = React.useState(initialCollapsed && !autoplay && initialActive >= steps.length);
   const [secs, setSecs] = React.useState(autoplay ? 0 : seconds);
   React.useEffect(() => { if (done || !autoplay) return; const iv = setInterval(() => setSecs((s) => s + 1), 1000); return () => clearInterval(iv); }, [done, autoplay]);
   React.useEffect(() => {

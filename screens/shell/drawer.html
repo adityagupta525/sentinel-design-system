@@ -9,6 +9,7 @@
 <script>window.__screenRequires = ['Drawer','SegmentedRow','Pressable','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/home.jsx"></script>
+<script type="text/babel" src="./menu.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
@@ -21,32 +22,10 @@
    composes them. home.jsx is loaded above and owns the shared destructure; only new names here. */
 const { Drawer, SegmentedRow, Pressable } = window.SentinelDesignSystem_0682a2;
 
-const SAVED = [
-  { title: "Meera Nair's risk profile", meta: '12 questions' },
-  { title: '₹25 L proposal', meta: '6 funds' },
-  { title: 'What Meera holds', meta: '43 funds' },
-  { title: "Sharma's rebalance", meta: '2 moves' },
-  { title: "Sunita Nair's Q2 review", meta: '31 funds' },
-];
-/* One line, both facts: the client is the TITLE, the topic is the META. Measured on 18 Sep: the two in
-   one string needed 226pt where a 300pt drawer gives 153; two lines fixed that at 72pt a row and made
-   the drawer long; this is the third try and the one that is both. The timestamp was dropped on
-   purpose — three facts do not fit 244pt, and the topic is the one that picks the right thread. */
-const RECENT = [['R. Sharma','Portfolio drift'],['Mr. Amit Aggrawal','Proposal draft'],['HDFC Diwali offer','AMC circular'],['Meera Nair','Q3 review'],
-  ['Sunita Nair','Exit load'],['Meera Nair','SIP change'],['R. Sharma','Mandate note'],['HDFC AMC','NFO circular'],['Mr. Amit Aggrawal','KYC']].map(([t, m]) => ({ title: t, meta: m }));
-const initials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
-const client = (name) => ({ title: name, leading: 'avatar', leadingContent: initials(name), trailing: 'chevron' });
-const CLIENTS = ['Meera Nair', 'Mr. Amit Aggrawal', 'Sunita Nair', 'R. Sharma', 'Kavita Rao', 'Anil Menon', 'Priya Deshpande', 'Vikram Shah', 'Lakshmi Iyer', 'Rohan Gupta'].map(client);
-const CLIENTS_LONG = ['Ramasubramanian Venkataraghavan', 'Mr. Amit Aggrawal', 'Sunita Nair'].map(client);
-
-const Footer = () => (
-  <React.Fragment>
-    <Pressable onClick={() => {}} label="Back to home" style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
-      <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
-    </Pressable>
-    <SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />
-  </React.Fragment>
-);
+/* The data and the footer moved to shell/menu.jsx on 18 Sep so the live prototype draws the same menu.
+   MENU_SAVED, MENU_RECENT, MENU_CLIENTS, MENU_CLIENTS_LONG and MenuFooter are globals from that file. */
+const SAVED = MENU_SAVED, RECENT = MENU_RECENT, CLIENTS = MENU_CLIENTS, CLIENTS_LONG = MENU_CLIENTS_LONG;
+const Footer = MenuFooter;
 /* For the spec page's frozen states the drawer is rendered open. The product never does this — the
    contract says mount closed, open with an action — so the "live" state below opens it the real way. */
 const Menu = ({ scrolled, ...p }) => <Drawer open onClose={() => {}} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} {...p} />;

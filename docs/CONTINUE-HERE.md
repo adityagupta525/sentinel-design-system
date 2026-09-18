@@ -18,12 +18,43 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **80 / 80** render clean (75 design-system + 5 screens) |
-| Integrity | 367 files intact |
-| Screens built | **3 of 7** in Journey B, plus the shell drawer: `screens/journey-b/01-home.html`, `02-thread-trace.html`, `screens/shell/drawer.html`, and `screens/flow.html` (the journey end to end) |
-| **Next screen** | **03 — Thread, the answer**: "Two-thirds of the drift is the small-cap rally…", the allocation bar, `ArtifactCard` at its 96px peek. Dock chips "Why is 71% a problem?" · "Show the 18 holdings", CTA "Rebalance to his mandate". Use `screens/journey-b/thread.jsx` as the shell. |
+| Pages | **82 / 82** render clean (75 design-system + 7 screens) |
+| Integrity | 375 files intact |
+| Screens built | **4 of 7** in Journey B, plus the shell drawer and a **live prototype** of screens 1 → 3: `screens/journey-b/01-home.html`, `02-thread-trace.html`, `03-thread-answer.html`, `prototype.html`, `screens/shell/drawer.html`, and `screens/flow.html` |
+| **Next screen** | **04 — the artifact expanded in place**: `ArtifactCard state="expanded"` with `AttributionChart` (plot ≤ 208) and the 18 holdings as a `DataTableCard` top-three + “+15 more”; the two caller-owned scrolls (already wired in `prototype.html` — header under the app bar on expand, back on collapse); composer placeholder “Ask about this”. Use `answer.jsx`'s `AnswerTurn artifact="expanded"`. |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
+
+### Later the same day — screen 3, the live prototype, three fixes, and what the owner asked
+
+Commits after `0eb7778` (Drawer/SegmentedRow promotion). **Every one of these is measured, and the
+measurements are on the pages themselves.**
+
+- **Screen 3 built** (`03-thread-answer.html`, six states): the answer, the allocation with its own
+  provenance, the artifact at 96px peek (`ChartBar density="peek"`, 62pt measured in the 96 clip, no
+  truncation), filling (skeleton-first), artifact-failed (not in the archive), trace reopened, and the
+  explainer opened the real way. Shared turn in `answer.jsx`.
+- **Live prototype** (`prototype.html`): Home → tap → trace (Stop / Continue) → answer → filling → peek →
+  expand in place → collapse → explainer → menu, with a log of what moved and which `ds-*` keyframe on
+  which `--dur-*` token carried it. Probed under full and reduced motion: transforms present in one, `none`
+  in the other. The one hand-built piece, `ScreenStack`, is named with its promotion trigger (README rule 12).
+- **Where a thread rests — a ruling of mine, yours to overturn.** Newest turn's first line on screen; bottom
+  only if it fits (`thread.jsx`, README rule 13). Measured: a ~500pt answer in a 462pt thread. The archive's
+  sticky-bottom scrolled the sentence away while it was being read.
+- **System changes, all promoted-first with contract + page:** `ProgressTrace initialCollapsed` (the
+  one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
+  the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
+  accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **Owner's second ask, open:** the review artifact's *UI kits* section shows the OLD Home (“Jump back in”,
+  chips) because `design-system/ui_kits/sentinel-app/home.jsx` IS the imported kit's Home. The kit is
+  “states, not product screens” (`readme.md:258`) and the standing rule is not to touch `ui_kits/`. Two
+  honest options for the owner: (a) leave the kit as the import record and label it so on the artifact
+  cover (done in the cover copy — “imported states; Screens supersede them where they differ”), or (b) update
+  the kit's Home / Chat artboards to the built screens — a `design-system/` change with integrity, and a
+  visible one. Not done without the word.
+- **Small gaps logged, not fixed:** `ProgressTrace` restarts its clock at 0 on Continue (internal clock; the
+  archive did the same); the composer's attach disc is a `<div>`, not a control (archive too); the
+  six-bucket router is not ported, so the prototype routes only a question containing “drift”.
 
 ### Rulings made this session, not visible in code
 

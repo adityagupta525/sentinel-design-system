@@ -53,14 +53,14 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   F-1 … F-26 recorded; **open: F-11, F-21, F-25**. `_index.json` reports `literals` — how many raw
+   F-1 … F-29 recorded; **none open** (F-27 scrim, F-28 unnamed Stop/Send, F-29 half wifi glyph closed 18 Sep). `_index.json` reports `literals` — how many raw
    style values each component still hardcodes — so adherence is measurable per component:
    **33 of 86** are fully clean.
 3. **The four components the request spec named and nobody built** — done.
    `ResultCard` · `DataTable` · `OverlapView` · `InfoCard kind='manager'`, each with its contract and
    a spec page. `pages/_index.json` reports **0 specified**: the backlog the system carried since v9
    is empty.
-3b. **Spec pages, Tier 1** — done. **43 of 86 shipped**, 43 building, 80/80 pages render clean.
+3b. **Spec pages, Tier 1** — done. **43 of 86 shipped**, 43 building, 82/82 pages render clean (75 system + 7 screens).
    Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
    Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
