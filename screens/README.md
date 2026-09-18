@@ -57,10 +57,17 @@ node tools/check-previews.mjs # walks design-system/ AND screens/
    <!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, Dock, HomeIndicator" -->
    ```
 
-   Anything clipped by an `overflow` ancestor *below* the phone is skipped, because it cannot reach a
-   gutter it cannot escape — that is what exempts `ScreenBackdrop`'s two aura blobs at `left: -93` and
-   `right: -120`. The phone itself is excluded from that scan on purpose: the phone clipping something
-   **is** the bug.
+A box that **clips** is checked itself and then closes the question for everything inside it — what
+   cannot be seen outside a box cannot break a gutter. That is what exempts `ScreenBackdrop`'s two aura
+   blobs at `left: -93` and `right: -120`. The phone itself is excluded on purpose: the phone clipping
+   something **is** the bug.
+
+   An element may also declare `data-gutter="edge"` and become **the frame for its own subtree**. A
+   drawer is flush to the phone's left edge because that is what a drawer is, and geometry cannot tell
+   that apart from a card that overran. Its contents are then measured against the drawer, so they still
+   owe both gutters — measured, a 300pt drawer keeps the same 16 the phone does. The count of
+   edge-anchored elements is printed with the result, because an escape hatch nobody can see is an
+   escape hatch that gets used.
 
    This exists because it was missed. Screen 1 shipped a card 367pt wide in a 343 box, 8pt past the
    right edge and visibly cut off, and `75/75 pages render clean` was true the whole time — the harness

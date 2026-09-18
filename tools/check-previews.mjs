@@ -56,6 +56,11 @@ const GUTTER = /<!--\s*@gutter([^>]*?)-->/;
      clip. ScreenBackdrop's two aura blobs sit at left:-93 and right:-120 inside an overflow:hidden
      box; they cannot break a gutter they cannot reach. The phone itself is excluded from that scan on
      purpose — the phone clipping something IS the bug.
+   · EDGE-ANCHORED, declared per element with data-gutter="edge". A drawer slides in from the left and
+     is flush to it on purpose: left 0, right 75. Geometry cannot tell that apart from a card that
+     overran, so the element says so itself, one element at a time — and its DESCENDANTS are still
+     checked, so the content inside a drawer still owes both gutters. The count of skipped elements is
+     printed with the result, because an escape hatch nobody can see is an escape hatch that gets used.
    · Anything with no area.
    Run `node tools/check-previews.mjs --self-test` to watch it fail on tools/fixtures/gutter-broken.html
    and pass on gutter-ok.html. */
@@ -66,24 +71,29 @@ const GUTTER_PROBE = (min) => {
       && cs.overflow.includes('hidden') && parseFloat(cs.borderTopLeftRadius) > 20;
   });
   const bad = [];
-  for (const phone of phones) {
-    const pr = phone.getBoundingClientRect();
-    for (const el of phone.querySelectorAll('*')) {
-      const r = el.getBoundingClientRect();
+  let anchored = 0;
+  /* Recursive, because the gutter is measured against the FRAME an element sits in. The phone is the
+     first frame; an element that declares data-gutter="edge" becomes the frame for its own subtree.
+     That is what makes a 300pt drawer work: the panel is flush to the phone's left on purpose, and the
+     rows inside it owe their 16 to the panel, not to the phone. */
+  const walk = (el, frame) => {
+    for (const child of el.children) {
+      const r = child.getBoundingClientRect();
       if (r.width < 1 || r.height < 1) continue;
-      let clipped = false;
-      for (let a = el.parentElement; a && a !== phone; a = a.parentElement) {
-        if (/hidden|auto|scroll|clip/.test(getComputedStyle(a).overflowX)) { clipped = true; break; }
+      if (child.dataset && child.dataset.gutter === 'edge') { anchored++; walk(child, r); continue; }
+      const L = Math.round(r.left - frame.left), R = Math.round(frame.right - r.right);
+      if (!(L === 0 && R === 0) && (L < min || R < min)) {
+        bad.push(`<${child.tagName.toLowerCase()}> left ${L} right ${R} width ${Math.round(r.width)} — "${(child.textContent || '').trim().slice(0, 32)}"`);
       }
-      if (clipped) continue;
-      const L = Math.round(r.left - pr.left), R = Math.round(pr.right - r.right);
-      if (L === 0 && R === 0) continue;
-      if (L < min || R < min) {
-        bad.push(`<${el.tagName.toLowerCase()}> left ${L} right ${R} width ${Math.round(r.width)} — "${(el.textContent || '').trim().slice(0, 32)}"`);
-      }
+      /* A box that clips is checked itself and then closes the question for everything inside it:
+         whatever sits in there cannot be seen outside it, so it cannot break a gutter. That is what
+         exempts ScreenBackdrop's two aura blobs at left:-93 and right:-120. */
+      if (/hidden|auto|scroll|clip/.test(getComputedStyle(child).overflowX)) continue;
+      walk(child, frame);
     }
-  }
-  return { phones: phones.length, bad: [...new Set(bad)] };
+  };
+  for (const phone of phones) walk(phone, phone.getBoundingClientRect());
+  return { phones: phones.length, anchored, bad: [...new Set(bad)] };
 };
 
 const ATTR = (s, k) => (new RegExp(`${k}="([^"]*)"`).exec(s) || [])[1];
@@ -176,7 +186,7 @@ stop();
 const bad = results.filter((r) => r.errors.length || r.missing.length || r.mounted < 200);
 for (const r of results) {
   const flag = r.errors.length || r.missing.length ? 'FAIL' : r.mounted < 200 ? 'EMPTY' : 'ok';
-  console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}${r.gutter ? `  gutter>=${r.gutterMin} on ${r.gutter.phones} phone${r.gutter.phones === 1 ? '' : 's'}` : ''}`);
+  console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}${r.gutter ? `  gutter>=${r.gutterMin} on ${r.gutter.phones} phone${r.gutter.phones === 1 ? '' : 's'}${r.gutter.anchored ? `, ${r.gutter.anchored} edge-anchored` : ''}` : ''}`);
   if (r.gutter && r.fullBleed) console.log(`         full-bleed by design: ${r.fullBleed}`);
   for (const e of [...r.errors, ...r.missing].slice(0, 4)) console.log(`         ↳ ${e}`);
 }
