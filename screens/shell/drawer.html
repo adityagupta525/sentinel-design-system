@@ -29,19 +29,22 @@ const SAVED = [
   { title: "Sharma's rebalance", meta: '2 moves' },
   { title: "Sunita Nair's Q2 review", meta: '31 funds' },
 ];
-/* Two lines, not one. Measured first: in a 300pt drawer a row is 244pt of content, and
-   "Mr. Amit Aggrawal — proposal draft" needs 226pt for its title alone — it rendered at 153 and lost a
-   third of itself to the ellipsis. A recent thread carries two facts, who and what, and ListRow
-   already has a shape for exactly that: title, subtitle, meta. The row goes 56 to 72 and nothing is
-   cut. Shortening the copy instead would have hidden the problem at the next long name. */
+/* ONE line, and both facts. The single-line form this replaced put client and topic in one string —
+   "Mr. Amit Aggrawal — proposal draft" — which needs 226pt of title where a 300pt drawer gives 153, so
+   a third of it went to the ellipsis. The two-line form fixed that at 72pt a row and made the drawer
+   long. This is the third try and the one that is both: the client is the TITLE, the topic is the
+   META, and the row is back to 56 with nothing cut.
+   What was dropped, deliberately: the timestamp. Three facts do not fit 244pt and the topic is the one
+   that picks the right thread — "Sharma" and "Sharma" are two threads, "drift" and "mandate note" are
+   not. Recency is still carried by the order of the list, which is what "Recent" means. */
 const RECENT = [
-  { title: 'R. Sharma', subtitle: 'Portfolio drift', meta: '2h ago' },
-  { title: 'Mr. Amit Aggrawal', subtitle: 'Proposal draft', meta: 'Yesterday' },
-  { title: 'HDFC Diwali offer', subtitle: 'AMC circular', meta: '16 Sep' },
-  { title: 'Meera Nair', subtitle: 'Q3 review', meta: '15 Sep' },
+  { title: 'R. Sharma', meta: 'Portfolio drift' },
+  { title: 'Mr. Amit Aggrawal', meta: 'Proposal draft' },
+  { title: 'HDFC Diwali offer', meta: 'AMC circular' },
+  { title: 'Meera Nair', meta: 'Q3 review' },
 ];
-const MORE = ['Sunita Nair — exit load', 'Meera Nair — SIP change', 'R. Sharma — mandate note', 'HDFC — NFO circular', 'Mr. Amit Aggrawal — KYC']
-  .map((t, i) => ({ title: t.split(' — ')[0], subtitle: t.split(' — ')[1], meta: `${12 - i} Sep` }));
+const MORE = ['Sunita Nair — Exit load', 'Meera Nair — SIP change', 'R. Sharma — Mandate note', 'HDFC AMC — NFO circular', 'Mr. Amit Aggrawal — KYC']
+  .map((t) => ({ title: t.split(' — ')[0], meta: t.split(' — ')[1] }));
 const initials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
 const client = (name) => ({ title: name, leading: 'avatar', leadingContent: initials(name), trailing: 'chevron' });
 const CLIENTS = ['Meera Nair', 'Mr. Amit Aggrawal', 'Sunita Nair', 'R. Sharma', 'Kavita Rao', 'Anil Menon',
@@ -73,7 +76,7 @@ function AppearanceLock({ value = 'Light', options = ['Light', 'Dark'] }) {
         })}
       </div>
       <p style={{ margin: 'var(--space-6) 0 0', font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
-        One theme so far. Dark arrives when the token layer does.
+        One theme so far. Dark arrives with its tokens.
       </p>
     </div>
   );
@@ -139,20 +142,26 @@ function Drawer({ saved = SAVED, recent = RECENT.concat(MORE), clients = CLIENTS
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)', padding: '12px var(--gutter) 8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)', padding: '10px var(--gutter) 20px' }}>
+          {/* A plain row, not a ringed card. The drawer is already the raised surface — readme.md:56
+              reserves depth for the composer, the scroll disc, the drawer and the phone — so a second
+              boxed surface inside it competes with the three lists for the same attention. */}
           <Pressable onClick={() => {}} label="Back to home"
-            style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', gap: 'var(--space-8)', borderRadius: 'var(--radius-12)', padding: '0 var(--space-12)', boxSizing: 'border-box', background: 'var(--color-surface)', boxShadow: '0 0 0 var(--border-1) var(--color-line)' }}>
-            <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-13)', color: 'var(--color-ink)' }}>‹ Back to home</span>
+            style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
+            <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
           </Pressable>
           <AppearanceLock />
         </div>
 
-        {/* Rule 3. readme.md:68 names the drawer among the surfaces that carry the composer, and only
-            the confirm sheet is exempt. It was not on the brief for this screen; it is here because
-            the rule says so, and taking it out is a decision for the owner, not for me. */}
-        <div style={{ padding: '0 var(--gutter) 20px' }}>
-          <Composer value={value} onChange={setValue} placeholder="Ask Sentinel" onSend={() => {}} />
-        </div>
+        {/* NO COMPOSER. The owner ruled it out on 18 Sep, and the reasoning is recorded rather than
+            assumed: rule 3 protects "the advisor can always just ask", and the drawer is the one
+            surface where asking was never taken away — it is a navigation overlay, the thread and its
+            composer are one tap behind the scrim, and a second composer here competes with the list
+            that is the whole point of the menu. That is the same shape as the confirm-sheet exception,
+            which readme.md calls "a third path that does not exist". readme.md:68 still names the
+            drawer among the surfaces that carry it, so the specification and this screen now disagree
+            until the owner amends it. Logged as contradiction 59; not edited into the four rules by
+            me, because their wording is the product's law and not mine to rewrite. */}
       </div>
     </>
   );
@@ -249,21 +258,31 @@ mountScreen(
         is why the drawer&rsquo;s sections are capped at 3 / 7 / 8 with See all.&rdquo;</em> Applied, with a
         &ldquo;See all&rdquo; row that appears only when the cap actually bit.
       </Note>
-      <Note title="And one row was losing a third of its label">
-        &ldquo;Mr. Amit Aggrawal &mdash; proposal draft&rdquo; needed <strong>226pt</strong> of title and had
-        <strong>153</strong>. It rendered as an ellipsis eating the topic. The fix was not shorter copy, which
-        only moves the problem to the next long name: a recent thread carries two facts, who and what, and
-        <code> ListRow</code> already has a shape for that. Recent rows are now title, subtitle and meta at 72pt,
-        and nothing is cut.
+      <Note title="A recent row took three tries, and the third is the compact one">
+        <strong>One:</strong> client and topic in a single title — &ldquo;Mr. Amit Aggrawal &mdash; proposal
+        draft&rdquo; — needed <strong>226pt</strong> and had <strong>153</strong>, so an ellipsis ate the topic.
+        <strong>Two:</strong> title, subtitle and meta on two lines fixed the truncation and made every recent
+        row <strong>72pt</strong>; seven of those is 504pt of drawer.
+        <strong>Three:</strong> the client is the title and the topic is the meta, back to <strong>56pt</strong>,
+        nothing cut. The timestamp was dropped to make room, deliberately: three facts do not fit 244pt, and the
+        topic is the one that picks the right thread — two threads about Sharma are told apart by
+        &ldquo;drift&rdquo; and &ldquo;mandate note&rdquo;, never by the clock. Recency is carried by the order
+        of the list, which is what &ldquo;Recent&rdquo; means.
       </Note>
     </Section>
 
     <Section title="5 · Two things the brief did not say, and one it did not answer">
-      <Note title="The composer is here, and it was not on the list">
-        <code>readme.md:68</code> names the drawer among the surfaces that carry the composer, and rule 3 has
-        exactly one documented exception — the confirm sheet. The brief for this screen listed the sections and
-        the two controls at the bottom and did not mention it. It is here because the rule says so. Taking it
-        out is a decision for the owner, not for me.
+      <Note title="The composer is NOT here — the owner's ruling, and the argument for it">
+        Rule 3 protects one thing: <em>the advisor can always just ask</em>. The drawer is the one surface where
+        asking was never taken away. It is a navigation overlay; the thread and its composer sit one tap behind
+        the scrim, and a second composer here competes with the list that is the whole point of the menu. That is
+        the same shape as the confirm-sheet exception, which <code>readme.md</code> calls <em>&ldquo;a third path
+        that does not exist&rdquo;</em>.
+        <br /><br />
+        <strong>But <code>readme.md:68</code> still names the drawer among the surfaces that carry the
+        composer</strong>, so the specification and this screen disagree until that line is amended. Logged as
+        contradiction 59. The four rules are the product&rsquo;s law and their wording is the owner&rsquo;s, so
+        it is not edited here.
       </Note>
       <Note title="Still open — a 512-client book behind an eight-row list">
         The product&rsquo;s own copy says a 512-client book. This screen shows the first eight and a
