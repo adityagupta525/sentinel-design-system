@@ -32,9 +32,14 @@ function greetingFor(hour) {
   return hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 }
 
-/* onRow / onStarter / onSend exist for the live prototype, which has to know what was tapped. The
-   frozen pages pass nothing and the rows stay inert, as before. */
-function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMenu, onRow, onStarter, onSend }) {
+/* onRow / onStarter / onSend / onAttach exist for the live prototype, which has to know what was tapped.
+   The frozen pages pass nothing and the rows stay inert, as before.
+
+   The paperclip is wired here too: the owner attached a file on the landing screen and nothing happened,
+   because Composer's `onAttach` was only passed in the thread. A control that works on one screen and is
+   a drawing on the next is worse than one that is a drawing everywhere. Attaching on Home starts a thread
+   with the file in it — the caller decides what that thread is. */
+function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMenu, onRow, onStarter, onSend, onAttach }) {
   const [value, setValue] = React.useState('');
   return (
     <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
@@ -65,7 +70,9 @@ function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMe
           is what answers it. */}
       <Dock
         chips={<ChipRow>{STARTERS.map((c) => <Pill key={c} label={c} onClick={() => onStarter && onStarter(c)} />)}</ChipRow>}
-        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel about a client, a fund, or a plan" onSend={() => { if (onSend && value.trim()) { onSend(value.trim()); setValue(''); } }} />} />
+        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel about a client, a fund, or a plan"
+          onAttach={onAttach || (() => {})}
+          onSend={() => { if (onSend && value.trim()) { onSend(value.trim()); setValue(''); } }} />} />
       <HomeIndicator />
     </div>
   );

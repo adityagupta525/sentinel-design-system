@@ -18,6 +18,10 @@ export interface FileUploadProps {
   onRemove?: () => void;
   /** A follow-up row or chip under the trace — Notion's file-chip-then-follow-up shape. */
   actions?: React.ReactNode;
+  /** Whose message this is. Default 'advisor': the advisor attached it, so the card sits on their side of
+   *  the thread and is capped like their bubble — a full-width card read as Sentinel's reply, which it is
+   *  not. 'sentinel' restores the full width for a file Sentinel produced. */
+  side?: 'advisor' | 'sentinel';
 }
 /** The file as a chip in the thread, parsing in stages. A failed stage keeps its place and carries its
  *  own retry. */

@@ -17,12 +17,20 @@ import { IconFile } from '../icons/IconFile.jsx';
 
    A failed stage keeps its place and carries its own retry, so an advisor retries the stage that
    failed rather than re-uploading a 40-page statement. */
-export function FileUpload({ file, stages = [], state = 'parsing', summary, onRetry, onRemove, actions }) {
+export function FileUpload({ file, stages = [], state = 'parsing', summary, onRetry, onRemove, actions, side = 'advisor' }) {
   const failed = state === 'failed' || stages.some((s) => s.state === 'failed');
   const done = state === 'done';
   const withRetry = stages.map((s) => (s.state === 'failed' && onRetry ? { ...s, retry: <Pill label="Retry this step" size="sm" tone="tertiary" onClick={() => onRetry(s.label)} /> } : s));
+  /* WHOSE MESSAGE IS THIS (18 Sep 2026, the owner: "wo advisor ki side se lagna chahiye — abhi lag raha
+     hai sentinel ka response hai jaise"). The advisor attached the file, so the card sits on the
+     advisor's side of the thread and is capped like their bubble. The stages inside it are Sentinel's
+     work on that file, and they stay inside the card rather than becoming a separate reply, because the
+     advisor is looking at the file while it is read. `side="sentinel"` restores the full-width card for
+     a file Sentinel produced. */
+  const mine = side === 'advisor';
   return (
-    <div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
+    <div style={{ display: 'flex', width: '100%', justifyContent: mine ? 'flex-end' : 'stretch' }}>
+    <div style={{ width: '100%', maxWidth: mine ? 300 : undefined, borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-10)' }}>
         <span style={{ display: 'flex', flexShrink: 0, width: 32, height: 32, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-8)', background: 'var(--color-chip)' }}>
           <IconFile size={16} />
@@ -38,6 +46,7 @@ export function FileUpload({ file, stages = [], state = 'parsing', summary, onRe
           summary={done ? (summary || 'Read it') : failed ? 'Could not read all of it' : undefined} />
       </div>
       {actions && <div style={{ marginTop: 'var(--space-12)' }}>{actions}</div>}
+    </div>
     </div>
   );
 }

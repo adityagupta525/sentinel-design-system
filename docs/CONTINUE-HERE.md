@@ -18,9 +18,9 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **83 / 83** render clean (75 design-system + 8 screens) |
+| Pages | **82 / 82** render clean (75 design-system + 7 screens — screen 4 folded into screen 3) |
 | Integrity | 375 files intact |
-| Screens built | **5 of 7** in Journey B, plus the shell drawer and a **live prototype**: `01-home`, `02-thread-trace`, `03-thread-answer`, `04-artifact-expanded`, `prototype`, `shell/drawer`, `flow` |
+| Screens built | **5 of 7** in Journey B, plus the shell drawer and a **live prototype**: `01-home`, `02-thread-trace`, `03-thread-answer` (screens 3 AND 4 — the artifact expands in place, so it is one page), `prototype`, `shell/drawer`, `flow` |
 | **Next screen** | **05 — two moves**: `MoveCard` × 2 (₹1,85,000 and the ₹30,000 SIP), the sentence "Two moves, not seven…", chip "Show the five we skipped", CTA "Approve both moves". Two copy defects in the archive to fix on the way: 71→58 vs 67→58 (`Chat.tsx:280` vs `:283`), and "**her** ₹30,000" in a journey that says *his* (`:284`, `:753`). |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
@@ -45,6 +45,20 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **Five rulings from the owner reading the screens, all applied.** (1) **Nothing is pinned above the
+  composer** — chips and CTAs live in the conversation and scroll with the message that offered them;
+  `Dock.chips`/`cta` deprecated, contradiction 60, rule 3 untouched. (2) **One signature per turn** —
+  `SentinelBlock continued`, because the trace and the answer each signed themselves. (3) **One door per
+  thing** — the card's `Why?` is gone; the chip that asks the question in words stays. (4) **Copy in plain
+  English** an advisor can read aloud — "what moved the mix", not "drift attribution"; figures unchanged.
+  (5) **A state of a screen is not a screen** — screen 4 folded into screen 3, one page fewer to publish.
+  Also: the paperclip now works on Home, and an attached file arrives at the END of the thread on the
+  advisor's side (`FileUpload side="advisor"`), where it had been pasted above Sentinel's reply at full
+  width, reading as something Sentinel produced.
+- **The reviewer agent the owner asked for:** `.claude/agents/sentinel-interface-reviewer.md`. It renders
+  the pages, looks at them, and reports repetition, duplicate controls, placement, whose-message, controls
+  that are drawings, copy and iconography — with `path:line` and the smallest fix. Every item on its list
+  is there because the owner found it on a rendered screen and no check did.
 - **The parallel rule, and the two components that proved it.** The owner's words: *nothing in the design
   system that is on no screen — screen and design system 100% parallel.* `MessageActions` had offered Edit
   since v1 with no state to go to, and `FileUpload` had carried its staged parse since v7 while the

@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','DarkButton','ExplainerSheet','Drawer','SegmentedRow','Pressable','MessageActions','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','DarkButton','ExplainerSheet','Drawer','SegmentedRow','Pressable','MessageActions','FileUpload','StepTrace','ChipRow','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./home.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
@@ -77,7 +77,7 @@ function Proto({ onEvent }) {
     log('Answer in', reduced() ? 'ds-rise as a fade · 240ms' : 'ds-rise: fade + 8px rise · 240ms');
     log('Allocation bar grows', reduced() ? 'drawn full (ds-grow redefined)' : 'ds-grow scaleX · 480ms, 120ms stagger');
     log('Artifact card arrives, filling', reduced() ? 'ds-artifact as a fade · 300ms' : 'ds-artifact: fade + scale 0.96 → 1 · 300ms · shimmer');
-    setTimeout(() => { setArtifact('peek'); log('Breakdown arrived — peek', reduced() ? 'bars drawn full' : 'bars scaleX · 480ms, 60ms stagger'); log('Chips and CTA in', reduced() ? 'fade · 240ms' : 'ds-rise · 240ms, 60ms stagger'); }, FILL_MS);
+    setTimeout(() => { setArtifact('peek'); log('Breakdown arrived — peek', reduced() ? 'bars drawn full' : 'bars scaleX · 480ms, 60ms stagger'); log('Chips and the CTA arrive with the message', reduced() ? 'fade · 240ms' : 'ds-rise · 240ms, 60ms stagger'); }, FILL_MS);
   };
   const stop = () => {
     const idx = Math.min(Math.floor((performance.now() - traceStart.current) / STEP_MS), DRIFT_STEPS.length - 1);
@@ -106,8 +106,6 @@ function Proto({ onEvent }) {
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread scrollRef={scroller} revision={`${phase}-${artifact === 'filling' ? 'filling' : 'ready'}`} onMenu={() => { setMenu(true); log('Menu opens', reduced() ? 'panel fades in at x=0; scrim ds-scrim · 320ms' : 'panel translateX −100% → 0 · 320ms; scrim ds-scrim to 0.25'); }}
         onNew={() => { setScreen('home'); setPhase('trace'); setArtifact('filling'); setQuestion(DRIFT_ASK); setEditing(false); setFile(null); setView('chart'); log('New — back to Home', 'ds-screen-in'); }}
-        chips={phase === 'answer' && artifact !== 'filling' ? <AnswerChips animate onWhy={() => { setWhy(true); log('Explainer opens', reduced() ? 'ds-sheet as a fade · 300ms' : 'ds-sheet translateY 100% → 0 · 300ms; scrim ds-fade (F-27: computes 1)'); }} onHoldings={() => { log('“Show the 18 holdings” — his holdings are not in the archive, so this opens the chart’s own table instead; screen 4 says why', ''); if (artifact === 'peek') toggle(); setView('table'); }} /> : undefined}
-        cta={phase === 'answer' && artifact !== 'filling' ? <DarkButton label="Rebalance to his mandate" onClick={() => log('“Rebalance to his mandate” — screen 5 is not built yet; this is where it goes', '')} /> : undefined}
         composer={<Composer value="" onChange={() => {}} placeholder={artifact === 'expanded' ? 'Ask about this' : 'Ask Sentinel'} streaming={phase === 'trace'} onStop={stop} onSend={() => {}}
           onAttach={(f) => { setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · added just now` }); log(`Attached ${f.name}`, 'FileUpload arrives in the thread; the stages ARE the summary'); }} />}>
         <UserBubble text={question} editing={editing} onChange={setQuestion}
@@ -115,9 +113,6 @@ function Proto({ onEvent }) {
           onSave={() => { setEditing(false); setPhase('trace'); setArtifact('filling'); setTraceKey((k) => k + 1); setResumeFrom(0); traceStart.current = performance.now(); log('Edit sent — the answer below it is replaced, as the line said it would be', 'the turn re-runs; ds-rise on the new answer'); }}
           costNote={phase === 'answer' ? 'Sending this replaces the answer below it.' : undefined} />
         {!editing && phase === 'answer' && <MessageActions role="user" onAction={() => { setEditing(true); log('Edit — the bubble becomes the field, in place', 'no animation, deliberately'); }} />}
-        {file && <FileUpload file={file} state="done" summary="Read his Q3 statement · 14 pages · 18 holdings"
-          stages={[{ label: 'Read the file', state: 'done', meta: '14 pages' }, { label: 'Found the holdings table', state: 'done', meta: '18 funds' }, { label: 'Matched them to the mandate', state: 'done', meta: '3 outside it' }]}
-          onRemove={() => { setFile(null); log('File removed', ''); }} />}
         {phase === 'trace' && <ProgressTrace key={traceKey} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} stepMs={STEP_MS} initialActive={resumeFrom} onDone={traceDone} />}
         {phase === 'stopped' && (
           <React.Fragment>
@@ -132,17 +127,27 @@ function Proto({ onEvent }) {
           <React.Fragment>
             <ProgressTrace key={`done-${traceKey}`} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={DRIFT_STEPS.length} seconds={Math.round(DRIFT_STEPS.length * STEP_MS / 1000)} initialCollapsed />
             <AnswerTurn artifact={artifact} view={view} run enter cardRef={card} onToggle={toggle}
-              onWhy={() => { setWhy(true); log('Explainer opens from the card’s “Why?”', 'ds-sheet · 300ms'); }}
+              actions={artifact === 'filling' ? undefined : <AnswerActions animate
+                onWhy={() => { setWhy(true); log('Explainer opens', reduced() ? 'ds-sheet as a fade · 300ms' : 'ds-sheet translateY 100% → 0 · 300ms; scrim ds-scrim to 0.4'); }}
+                onHoldings={() => { log('“Show the 18 holdings” — his holdings are not in the archive, so this opens the chart’s own table; the screen says why', ''); if (artifact === 'peek') toggle(); setView('table'); }}
+                onRebalance={() => log('“Rebalance to his mandate” — screen 5 is not built yet; this is where it goes', '')} />}
               onShare={() => log('Share — not in this build', '')}
               onMenu={() => { setView((v) => (v === 'table' ? 'chart' : 'table')); log('⋯ — the table view every chart owes, in place', 'the card’s content is replaced; the height follows'); }} />
           </React.Fragment>
         )}
+        {/* A file the advisor attached is a message of theirs: it lands at the END of the thread, on their
+            side, after everything already said. It used to be pasted above Sentinel's reply, where it read
+            as something Sentinel had produced. */}
+        {file && <FileUpload file={file} state="done" summary="Read his Q3 statement · 14 pages · 18 holdings"
+          stages={[{ label: 'Read the file', state: 'done', meta: '14 pages' }, { label: 'Found the holdings', state: 'done', meta: '18 funds' }, { label: 'Checked them against his mandate', state: 'done', meta: '3 outside it' }]}
+          onRemove={() => { setFile(null); log('File removed', ''); }} />}
       </Thread>
       <ExplainerSheet open={why} title={WHY_71.title} body={WHY_71.body} onClose={() => { setWhy(false); log('Explainer closes — focus returns to the chip', 'immediate'); }} />
     </div>
   );
 
   const home = <Home hour={15} time="3:04" onMenu={() => { setMenu(true); log('Menu opens', 'panel 320ms; scrim ds-scrim to 0.25'); }}
+    onAttach={(f) => { setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · just now` }); setScreen('thread'); setPhase('answer'); setArtifact('peek'); log(`Attached ${f.name} on Home — it opens a thread with the file in it`, 'ds-screen-in · 320ms'); }}
     onRow={(label) => (/drift/i.test(label) ? ask(label) : log(`“${label}” — that journey is not built yet`, ''))}
     onStarter={(c) => log(`“${c}” — starters are not built yet`, '')}
     onSend={(t) => (/drift/i.test(t) ? ask(t) : log(`Typed “${t}” — the router is not ported; only the drift question runs here`, ''))} />;
@@ -206,7 +211,7 @@ function App() {
           ['Allocation bar', <span><code>ds-grow</code> scaleX, 120ms stagger</span>, '480ms', 'Drawn at full width'],
           ['Artifact card', <span><code>ds-artifact</code> fade + scale 0.96 → 1, then shimmer while filling</span>, '300ms', 'Fade only; the shimmer holds still'],
           ['Peek bars', 'scaleX from the left, 60ms stagger', '480ms', 'Instant'],
-          ['Chips', <span><code>ds-rise</code>, 60ms stagger</span>, '240ms', 'Fade only'],
+          ['Chips and the CTA', <span><code>ds-rise</code>, 60ms stagger — inside the turn, scrolling with it</span>, '240ms', 'Fade only'],
           ['Expand in place', 'natural height; chevron 180°; bars 200ms each; 62 → 71 counts up', '320 · 200 · 600ms', 'Height changes; chevron flips; number lands'],
           ['The two thread scrolls', 'header under the app bar on expand; back to the card on collapse', 'smooth', 'Instant (scroll-behavior auto)'],
           ['Explainer sheet', <span><code>ds-sheet</code> translateY 100% → 0; scrim <code>ds-fade</code></span>, '300ms', <span>Sheet fades. <strong>F-27, open:</strong> the scrim computes to opacity 1 here, not 0.4 — the fix waits for the owner</span>],

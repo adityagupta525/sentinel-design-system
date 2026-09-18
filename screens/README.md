@@ -127,3 +127,21 @@ A box that **clips** is checked itself and then closes the question for everythi
    places `Drawer` is exercising `List` and `ListRow` whether it names them or not. The backlog half is a
    report, because two journey screens are still unbuilt; the defect half — a screen naming something the
    system does not export — fails CI.
+16. **What the advisor is offered lives in the conversation.** Chips and CTAs sit inside the turn that
+   offered them and scroll away with it — never pinned above the composer, where they outlive their turn
+   and the screen reads as a toolbar. The composer stays docked: rule 3 is untouched. `Dock`'s `chips`
+   and `cta` slots are deprecated (contradiction 60).
+17. **One signature per turn, one door per thing.** Pass `continued` on every `SentinelBlock` after the
+   first in a turn. Two controls that open the same sheet on one screen is a defect, not a convenience —
+   keep the one that reads aloud.
+18. **Whose message is it.** The advisor's things sit on the advisor's side and are capped like their
+   bubble; Sentinel's fill the width. A file the advisor attached arrives at the END of the thread, like
+   any message of theirs (`FileUpload side="advisor"`).
+19. **Copy in plain English.** The advisor reads these sentences to a client and may not be a confident
+   English reader: short sentences, the number before the explanation, no jargon where a plain word
+   exists. Simplify the words, never the figure or the claim.
+20. **A state of a screen is not a screen.** The expanded artifact is a state of the answer screen, on the
+   same page. A new page is for a new surface.
+21. **Run the reviewer before showing work.** `.claude/agents/sentinel-interface-reviewer.md` is the lead
+   designer's pass: repetition, duplicate controls, placement, whose message, controls that are drawings,
+   copy, iconography. Every item on its list is there because the owner found it on a rendered screen.

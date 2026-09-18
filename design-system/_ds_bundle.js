@@ -902,8 +902,8 @@ var __ds_out = (() => {
   }
 
   // design-system/components/chat/SentinelBlock.jsx
-  function SentinelBlock({ children, shimmer = false, label = "Sentinel" }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-10)", display: "flex", alignItems: "center", gap: "var(--space-8)", animation: shimmer ? "sentinel-shimmer 1200ms ease-in-out infinite" : "none" } }, /* @__PURE__ */ react_global_default.createElement(IconSparkle, null), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, label)), children);
+  function SentinelBlock({ children, shimmer = false, label = "Sentinel", continued = false }) {
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, !continued && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-10)", display: "flex", alignItems: "center", gap: "var(--space-8)", animation: shimmer ? "sentinel-shimmer 1200ms ease-in-out infinite" : "none" } }, /* @__PURE__ */ react_global_default.createElement(IconSparkle, null), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, label)), children);
   }
 
   // design-system/components/chat/ProgressTrace.jsx
@@ -1413,11 +1413,12 @@ var __ds_out = (() => {
   }
 
   // design-system/components/forms/FileUpload.jsx
-  function FileUpload({ file, stages = [], state = "parsing", summary, onRetry, onRemove, actions }) {
+  function FileUpload({ file, stages = [], state = "parsing", summary, onRetry, onRemove, actions, side = "advisor" }) {
     const failed = state === "failed" || stages.some((s) => s.state === "failed");
     const done = state === "done";
     const withRetry = stages.map((s) => s.state === "failed" && onRetry ? { ...s, retry: /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Retry this step", size: "sm", tone: "tertiary", onClick: () => onRetry(s.label) }) } : s);
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexShrink: 0, width: 32, height: 32, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-8)", background: "var(--color-chip)" } }, /* @__PURE__ */ react_global_default.createElement(IconFile, { size: 16 })), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", font: "var(--type-body-strong-font)", color: "var(--color-ink)" } }, file.name), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, file.meta)), onRemove && /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Remove", size: "sm", tone: "muted", onClick: onRemove })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement(
+    const mine = side === "advisor";
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: mine ? "flex-end" : "stretch" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", maxWidth: mine ? 300 : void 0, borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexShrink: 0, width: 32, height: 32, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-8)", background: "var(--color-chip)" } }, /* @__PURE__ */ react_global_default.createElement(IconFile, { size: 16 })), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", font: "var(--type-body-strong-font)", color: "var(--color-ink)" } }, file.name), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, file.meta)), onRemove && /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Remove", size: "sm", tone: "muted", onClick: onRemove })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement(
       StepTrace,
       {
         dense: true,
@@ -1426,7 +1427,7 @@ var __ds_out = (() => {
         steps: withRetry,
         summary: done ? summary || "Read it" : failed ? "Could not read all of it" : void 0
       }
-    )), actions && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, actions));
+    )), actions && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, actions)));
   }
 
   // design-system/components/forms/SearchField.jsx

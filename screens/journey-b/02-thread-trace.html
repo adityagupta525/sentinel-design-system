@@ -71,7 +71,7 @@ mountScreen(
         <State label="stopped" tone="under" note="The advisor pressed Stop. The partial trace stays on screen — what was worked out is not thrown away — and Continue is offered inline, on the message that owns it, not in the Dock.">
           <Scene
             trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} />}
-            after={<SentinelBlock>
+            after={<SentinelBlock continued>
               <SentinelText text="Stopped. I kept what I'd worked out so far — I was partway through attributing Sharma's drift." />
               <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Continue" variant="primary" onClick={() => {}} /></div>
             </SentinelBlock>} />
@@ -79,7 +79,7 @@ mountScreen(
         <State label="connection lost" tone="over" note="The state the archive never had. It is NOT the same message as Stop: the advisor did not choose this, so the copy says what happened before it says what is kept, and the chip is Try again rather than Continue. Bad news as text on the peach bubble — rule 2 — never a red fill.">
           <Scene
             trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} />}
-            after={<SentinelBlock>
+            after={<SentinelBlock continued>
               <SentinelText text="I lost the connection while I was attributing the drift. What I had worked out is above it, and I have not guessed the rest." />
               <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Try again" variant="primary" onClick={() => {}} /></div>
             </SentinelBlock>} />

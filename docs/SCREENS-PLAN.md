@@ -1,6 +1,6 @@
 # Screens — the plan, before anything is built
 
-**Status (18 Sep 2026, end of the day): approved and in progress — 5 of 7 Journey B screens built (Home, the trace, the answer, the artifact expanded) plus the shell drawer and a live prototype; screen 5 (two moves) is next. Current state and this session's rulings: `docs/CONTINUE-HERE.md` §0.** This is Gate C: what
+**Status (18 Sep 2026, end of the day): approved and in progress — 5 of 7 Journey B screens built on 4 pages (Home, the trace, and the answer WITH the artifact expanded, which is a state of it rather than a screen) plus the shell drawer and a live prototype; screen 5 (two moves) is next. Current state and this session's rulings: `docs/CONTINUE-HERE.md` §0.** This is Gate C: what
 `docs/screens-source/` actually contains, what it is missing, what the design system will and will not
 give it, and which journey to build first.
 
@@ -163,7 +163,7 @@ Built as the matrix says, with three things the matrix did not know:
 | refused | ✓ | The best part of the archive. Bucket 2 reject and hold, bucket 4 "I did not follow that", bucket 5 out of scope, bucket 6 action → confirm. Failure disclosure over invention, every time. |
 | error | ✗ | **The answer fails mid-stream.** The archive has `aborted` — the advisor pressing Stop — but nothing for the connection dropping. Vote: same shape as `aborted`, different copy, a "Try again" chip. `SentinelBlock` + `AnswerChip`, no new component. |
 
-### 4 · The artifact, expanded — **built, 18 Sep 2026** · `04-artifact-expanded.html`
+### 4 · The artifact, expanded — **built, 18 Sep 2026, as a state of screen 3** · `03-thread-answer.html`
 
 | State | What it is |
 |---|---|
