@@ -1,6 +1,6 @@
 # Screens — the plan, before anything is built
 
-**Status: awaiting the owner's approval. Nothing under `screens/` exists yet.** This is Gate C: what
+**Status (18 Sep 2026, end of session): approved and in progress — 3 of 7 Journey B screens built plus the shell drawer; screen 3 is next. Current state and this session's rulings: `docs/CONTINUE-HERE.md` §0.** This is Gate C: what
 `docs/screens-source/` actually contains, what it is missing, what the design system will and will not
 give it, and which journey to build first.
 

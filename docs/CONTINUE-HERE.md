@@ -8,6 +8,57 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 
 ---
 
+## 0 · Where this stopped — 18 Sep 2026, end of the second account's first session
+
+**Read this section first; §1–§10 below are the standing document and are still true.**
+
+### The last drop
+
+| | |
+|---|---|
+| Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
+| CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
+| Pages | **78 / 78** render clean (73 design-system + 5 screens) |
+| Integrity | 367 files intact |
+| Screens built | **3 of 7** in Journey B, plus the shell drawer: `screens/journey-b/01-home.html`, `02-thread-trace.html`, `screens/shell/drawer.html`, and `screens/flow.html` (the journey end to end) |
+| **Next screen** | **03 — Thread, the answer**: "Two-thirds of the drift is the small-cap rally…", the allocation bar, `ArtifactCard` at its 96px peek. Dock chips "Why is 71% a problem?" · "Show the 18 holdings", CTA "Rebalance to his mandate". Use `screens/journey-b/thread.jsx` as the shell. |
+| Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
+| Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
+
+### Rulings made this session, not visible in code
+
+Beyond §4. Each was the owner's call; do not re-open.
+
+- **Single-fund ceiling is 25%** (contradiction 32). Two different rules share the number 25 — single-fund (2 sentences, 3 places) and the small-cap **sleeve** (9 surfaces). The ruling is about the first only.
+- **Home** = greeting · ready-prompt card (advisor's own book, whole sentences, named clients) · starter chips above the composer ("Build proposal · Review portfolio · Fund explorer") · composer. Saved work ("Jump back in") **moved to the drawer**. AMC offer row **removed, permanently** — reason in `SCREENS-PLAN.md` §2; it will be proposed again as "engagement" and the answer is no.
+- **Two lists, two jobs**: the card sends *this* proposal for a named client; a chip starts *a* proposal and the thread asks who for. When the book is unavailable the card is **omitted**, never faked with capability rows.
+- **Drawer** = Jump back in (cap 3) · Recent (cap 7, one line: client as title, topic as meta, no timestamp) · Clients (cap 8) · "Back to home" · Light/Dark control. **No composer** — owner's ruling, logged as contradiction 59; `readme.md:68` still names the drawer and needs the owner's wording. Row heights are `ListRow` at 56 (F-21 ruling), caps are `List.jsx:8`'s own 3/7/8.
+- **Light/Dark control lives in `screens/`, not the system** — the system has one theme and cannot specify a two-state control. `RangePills`' `locked`/`lockedNote` pattern, copied verbatim. Promotion trigger: contradiction 58.
+- **`StatusSpacer` takes `time`** (default 9:41). **`GreetingDivider` wraps** instead of truncating; its hairlines yield first (open, owner's call on a `max-width`).
+- **No screen mounts `ExplainerSheet` already open** (§4).
+- **The gutter guard** (`check-previews`) covers `screens/` and `ui_kits/`, not spec pages — deliberate, measured, documented in `screens/README.md`. `--self-test` proves it can fail. `data-gutter="edge"` makes an element the frame for its subtree (the drawer).
+- **Everything designed here is 375 wide.** Screens are 375×812 by construction; the flow, index and artifact cover were measured to fit 375 with no sideways scroll.
+
+### Two copy defects waiting in the archive (fix when screens 5 and 7 are built)
+
+`docs/screens-source/src/screens/Chat.tsx`: the rebalance sentence says **71% → 58%** while the move card says **67% → 58%** (`:280` vs `:283`); and Sharma's SIP is "**her** ₹30,000" (`:284`, `:753`) in a journey that says *his* everywhere else. Both recorded on `screens/flow.html`.
+
+### Why so many bugs — the honest audit, and the guardrails that came out of it
+
+Five of this session's 25 commits are corrections of earlier commits in the same session. The owner caught four defects from a screenshot or a crop that I had already looked at and passed. The pattern, so the next session does not repeat it:
+
+1. **Writing before measuring.** The card that ran 8pt past the edge, the label that lost a third of itself, the uncapped drawer with the client book below the fold, the greeting that would not wrap — every one was visible only after render, and my own first look missed the card. *Guardrail:* measure the geometry with Playwright **before** calling a screen done, not after; the probes in the scratchpad (`probe-gutter`, `measure-drawer`, `w375`) are the shape of it and should become `tools/`.
+2. **One shared Babel scope.** Every `text/babel` file a page loads compiles into one global scope, so a second `const { Dock } = …` is a `SyntaxError` and the page renders **nothing**. It broke Home's extraction and the drawer, both on first load. *Guardrail:* shared `.jsx` files use one uniquely named const (`THREAD_DS`) and never destructure at top level — see `thread.jsx`.
+3. **The harness checked "did it render", not "is it right".** "75/75 clean" was true while a card was cut off. The gutter guard fixes one class. **Still unchecked:** truncated text (`scrollWidth > clientWidth`), and raw style literals in `screens/` — `lint:adherence` runs on `design-system/` only, and `screens/` carries **71 raw px values** today. *Guardrail to add first next session:* a truncation probe in `check-previews`, and adherence lint on `screens/` (as a count in `_index.json`-style, then as a gate).
+4. **Not reading the system before building on it.** The 3/7/8 caps were in `List.jsx:8`; `box-sizing: border-box` was in the kit's own `card` style; the rule-3 exception was in `readme.md`. *Guardrail:* before a screen, grep the components it uses for comments that name that screen.
+5. **A patch that failed but a commit that went out anyway.** The index-link edit failed its assertion; the shell chain used `;` not `&&`, so the commit landed with a false claim in its message. *Guardrail:* every edit-then-commit chain is `&&`-joined, and the commit message is written after the check, not before.
+6. **Three review surfaces got confused** — the published Artifact, the Design-type Artifact (created by mistake and deleted), the Claude Design canvas. *Rule:* the Artifact is the review surface today; the canvas waits for the owner's project decision.
+7. **Two sessions on one branch.** Another claude.ai/code session pushed `65c03ac` mid-session. It was pulled and corrected, not clobbered. *Rule:* one writer per branch; check `git fetch` before every push.
+
+### Are the screens aligned with the design system?
+
+Mostly, and the gaps are named. Home and the thread use only system components. The drawer's panel, scrim and header are hand-built **because the system has no Drawer** (nine components in `shell/`, none of them a drawer) — a candidate for promotion once its shape settles. The appearance control is hand-built by decision (contradiction 58). What is **not** aligned: `screens/` is outside `lint:adherence`, so its 71 px literals are unmeasured debt the system would have flagged in itself.
+
 ## 1 · What this is, in four lines
 
 Sentinel is Centricity WealthTech's chat-led wealth-management assistant for advisors. Mobile only,
@@ -22,13 +73,13 @@ and moved it here to finish it.
 | | |
 |---|---|
 | Branch | `claude/practical-newton-fi0pof` — the repository's **only** branch, and its default |
-| Last commit | `dcfe133` · Tier 1 complete |
+| Last commit | `2cb7412` · screen 2 of Journey B (was `dcfe133` when this file was first written) |
 | Components | **84** · all exported, all with a hand-written `.d.ts` (85 until `StickyCTA` was deleted, 18 Sep) |
 | Spec pages | **41 of 84** · Tier 1 closed |
-| Preview pages | **73 / 73 render clean** (`node tools/check-previews.mjs`) |
+| Preview pages | **78 / 78 render clean** (`node tools/check-previews.mjs`) — 73 design-system + 5 screens |
 | Integrity | 370 files hashed, clean |
 | Findings | F-1 … F-26 in `docs/FINDINGS.md`. **None open.** F-11, F-21 and F-25 closed 18 Sep |
-| Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — source in `docs/screens-source/`, build not started** |
+| Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — 3 of 7 built, see §0** |
 
 **Tier 1 is defined as:** every component that carries one of the four rules, or that the chat spine is
 built from. Tier 2 is the remaining 43 — chips, buttons, marks, icons, shells: short contracts, and
