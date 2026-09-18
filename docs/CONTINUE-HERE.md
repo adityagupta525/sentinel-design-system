@@ -147,9 +147,33 @@ There are exactly two ways in, and neither is a retry:
    inside this repository, then `/design-login` once. That session is interactive, so the command
    runs; the authorization it writes is then reused by headless and SDK runs on that machine.
 
-Until one of those happens, `DesignSync` is unavailable and no canvas can be created, read, or
-verified from a session — including whether `0682a2d3` still exists. Do not report a canvas as made,
-or a project as checked, on the strength of anything but a `DesignSync` call that returned.
+Until one of those happens, `DesignSync` is unavailable **on that surface**. Do not report a canvas as
+made, or a project as checked, on the strength of anything but a `DesignSync` call that returned. That
+last rule is the durable one and it still stands.
+
+### 5c.1 · Path 2 worked — corrected 18 Sep 2026, from a different surface
+
+The section above was written from a **claude.ai/code** session and is correct about claude.ai/code.
+As a blanket statement it was wrong, and this is the correction rather than a quiet edit.
+
+A **Claude Code desktop app** session took path 2 — the CLI on the owner's own machine, then
+`/design-login` once in a real interactive terminal — and after that `DesignSync` returned normally
+**in the desktop session**. `/design-login` typed inside the desktop app's own Code tab still answers
+"isn't available in this environment": that pane is not the interactive terminal the tool means. The
+terminal is.
+
+So the accurate statement is: `/design-login` needs an interactive Claude Code **CLI** session on the
+owner's machine. Once it has run there, other sessions **on that machine** reuse the authorization.
+claude.ai/code, being a remote container, is never that machine, which is why §5c's Send-to-Web path
+is the right one there.
+
+What a returned call then established, and what it did not:
+
+| | |
+|---|---|
+| Checked | Six design-system projects are writable by this account: `197f7992`, `43e81071`, `9b8bd6c3`, `35f9eb34`, `4b0f24df`, `62d8af98` — dated May to July 2026. |
+| Checked | **`0682a2d3` is not among them**, and none of the six is Sentinel. The newest "Centricity Design System" (`197f7992`) is the *Quiet Wealth* system — General Sans, Satoshi and Zodiak, with Avatar / TabBar / PortfolioCard / HoldingRow. Sentinel is Urbanist and Darker Grotesque, grouped actions / cards / chat / composer / data / forms / icons / lists / shell / text. Related lineage, different system. |
+| **Not** checked | Whether `0682a2d3` still exists **anywhere**. `list_projects` returns writable projects only, and this system was built on a different Claude account (§1). Its absence here is expected and is not evidence that it is gone. |
 
 ## 6 · What is NOT in this repository
 
