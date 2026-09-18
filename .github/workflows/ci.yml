@@ -30,9 +30,12 @@ jobs:
             || { echo '::error::_ds_bundle.js is stale — run npm run build:bundle'; exit 1; }
 
       - name: The component index is current
+        # build-index stamps `generated` with today's date. On any day after the commit that line
+        # differs and nothing else does, so it is the one line this diff ignores — every row, count
+        # and literal is still compared.
         run: |
           npm run build:index
-          git diff --exit-code design-system/pages/_index.json \
+          git diff --exit-code -I '^ *"generated":' design-system/pages/_index.json \
             || { echo '::error::_index.json is stale — run npm run build:index'; exit 1; }
 
       - name: sentinel-craft's scale still matches the tokens
