@@ -71,3 +71,17 @@ node tools/check-previews.mjs # walks design-system/ AND screens/
    ```bash
    node tools/check-previews.mjs --self-test
    ```
+
+   **What the guard covers, and what it does not — decided, not assumed.** It runs on **`screens/` and
+   `design-system/ui_kits/`**: both are product-shaped surfaces, where a phone frame means a screen and
+   the screen has edges. It does **not** run on the component spec pages or the group boards, because
+   those are specimen boards — a specimen may legitimately show a component against the edge to
+   demonstrate exactly that, and failing it would teach people to add exemptions rather than fix
+   screens.
+
+   That scope was measured before it was written down. Running the guard over every page in the
+   repository reports **zero** gutter errors, and the only pages carrying phone frames at all are the
+   three UI kits (16 + 11 + 1 = 28 phones) and this folder (4). So covering the kits costs nothing
+   today and catches a regression there tomorrow; covering spec pages would cover nothing at all.
+   **Do not read "75/75 pages render clean" as "the whole repository is gutter-checked".** It is not,
+   and that is on purpose.

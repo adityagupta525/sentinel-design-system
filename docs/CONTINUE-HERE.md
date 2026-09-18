@@ -94,6 +94,32 @@ what it is.
 - **Correct yourself in public.** Several pages in this repo carry a note saying what they claimed
   before and why it was wrong. That is the standard, not an apology.
 
+## 5b · The canvas and the repository — which one is true
+
+Added 18 Sep 2026, before the first Claude Design canvas was made for this work. Read it before you
+push anything to a canvas, and before you believe anything you read on one.
+
+**The repository is the source of truth. Not the canvas.** `design-system/` is 367 files pinned by
+sha256 in `baseline/design-system.sha256`, and the whole of `check:integrity` — the mechanism that
+keeps "imported verbatim" honest — stands on that. A canvas has no such pin.
+
+**The canvas is where the work is reviewed, commented on and tweaked.** That is its job and it is a
+real one: the owner is the designer, and they need to select a thing and change it, not only look at
+a picture of it.
+
+**Every change made on the canvas comes back as a commit** — in the repository, with
+`npm run check:integrity -- --update` in the same commit when it touches `design-system/`. Never
+silently. A change that exists only on the canvas does not exist.
+
+**If the canvas and the repository disagree, the repository wins** — and the difference is reported to
+the owner, not quietly reconciled. "I pulled the canvas version" is the one move that is never
+allowed without saying so first.
+
+**The original Claude Design project (`0682a2d3`) is the origin of this entire system** and is not to
+be overwritten. `design-system/_ds_bundle.js` still publishes onto `window.SentinelDesignSystem_0682a2`
+because that is where it came from. Ask the owner before writing to it; a new project or a new page is
+almost always the right answer.
+
 ## 6 · What is NOT in this repository
 
 Be honest about these with the owner rather than guessing around them.

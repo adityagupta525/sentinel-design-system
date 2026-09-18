@@ -124,7 +124,7 @@ for (const [base, prefix] of (SELF_TEST ? [[FIXTURES, 'tools/fixtures/']] : [[DS
   const gutterMin = Number(ATTR(gutterMark, 'min') || 16);
   const fullBleed = ATTR(gutterMark, 'fullBleed') || '';
   pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400, structure,
-               gutter: prefix === 'screens/' || rel.startsWith('tools/'), gutterMin, fullBleed });
+               gutter: prefix === 'screens/' || rel.startsWith('ui_kits/') || rel.startsWith('tools/'), gutterMin, fullBleed });
  }
 }
 pages.sort((a, b) => a.rel.localeCompare(b.rel));
