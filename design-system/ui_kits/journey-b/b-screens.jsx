@@ -24,7 +24,7 @@ function B01() {
         <div style={{ margin: '0 4px 8px' }}><Eyebrow>Jump back in</Eyebrow></div>
         <div style={{ ...cardS, boxShadow: 'var(--shadow-card-soft)', padding: '0 12px' }}>
           {B.jump.map((r, i) => (
-            <div key={r.label} style={{ display: 'flex', height: 46, alignItems: 'center', justifyContent: 'space-between', borderBottom: i < 3 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
+            <div key={r.label} style={{ display: 'flex', height: 'var(--h-row-lg)', alignItems: 'center', justifyContent: 'space-between', borderBottom: i < 3 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
               <span style={f(600, 13, 18)}>{r.label}</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><span style={f(500, 11.5, 16, 'var(--color-muted)')}>{r.meta}</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3 7.5 6l-3 3" stroke="var(--color-bronze)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
             </div>
@@ -163,7 +163,7 @@ function B07() {
         <SentinelBlock><SentinelText text={B.followUpA} />
           <div style={{ marginTop: 12, ...cardS, boxShadow: '0 0 0 1px var(--color-line)', padding: '0 14px' }}>
             {[['Cost of doing nothing', '₹4,40,000'], ['Cost of fixing it now', '₹11,200']].map(([l, v], i) => (
-              <div key={l} style={{ display: 'flex', height: 52, alignItems: 'center', justifyContent: 'space-between', borderBottom: i === 0 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
+              <div key={l} style={{ display: 'flex', height: 'var(--h-row-xl)', alignItems: 'center', justifyContent: 'space-between', borderBottom: i === 0 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
                 <span style={f(500, 14, 20)}>{l}</span><span style={f(600, 16, 20, 'var(--color-bronze-deep)')}>{v}</span>
               </div>
             ))}

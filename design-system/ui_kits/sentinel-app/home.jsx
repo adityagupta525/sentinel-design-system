@@ -13,7 +13,7 @@ function HomeScreen({ onMenu, onSubmit, onGo }) {
         <div style={{ margin: '0 4px 8px' }}><Eyebrow>Jump back in</Eyebrow></div>
         <div style={{ ...card, boxShadow: 'var(--shadow-card-soft)', padding: '0 12px' }}>
           {KIT.jump.map((r, i) => (
-            <button key={r.label} type="button" onClick={() => onGo(r.go)} style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', padding: 0, display: 'flex', height: 46, width: '100%', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left', borderBottom: i < 3 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
+            <button key={r.label} type="button" onClick={() => onGo(r.go)} style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', padding: 0, display: 'flex', height: 'var(--h-row-lg)', width: '100%', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left', borderBottom: i < 3 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
               <span style={f(600, 13, 18)}>{r.label}</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><span style={f(500, 11.5, 16, 'var(--color-muted)')}>{r.meta}</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3 7.5 6l-3 3" stroke="var(--color-bronze)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
             </button>

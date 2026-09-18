@@ -10,7 +10,7 @@
 <script type="text/babel" src="./page-kit.jsx"></script>
 <script type="text/babel">
 const { ListRow, List, ClientChip, Badge, Pill } = window.SentinelDesignSystem_0682a2;
-const TOK = ['--color-surface','--color-ink','--color-muted','--color-line-soft','--color-bronze','--h-row','--h-row-md','--h-row-lg','--h-row-xl','--h-touch','--space-12','--text-14','--text-13','--leading-20','--ease'];
+const TOK = ['--color-surface','--color-ink','--color-muted','--color-line-soft','--color-bronze','--h-row','--h-row-md','--h-row-lg','--h-row-xl','--h-row-2l','--h-touch','--space-12','--text-14','--text-13','--leading-20','--ease'];
 
 const wrap = (n) => <div style={{ borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)', padding: '0 12px' }}>{n}</div>;
 
@@ -27,7 +27,7 @@ function App() {
 
       <Block n={2} title="Anatomy" sub="Two heights and nothing between them. Size is derived from the content — a subtitle makes it 'lg' — so a list cannot end up with rows that are almost the same height.">
         <Anatomy width={343}
-          top="72pt with a subtitle ('lg'), 56pt without ('md'). 56 is --h-row-md; 72 is a raw value with no token behind it"
+          top="72pt with a subtitle ('lg'), 56pt without ('md'). 56 is --h-row-md; 72 is --h-row-2l"
           left="12pt inside the card; the divider above is inset by the same 12pt"
           right="Trailing is fixed per variant — chevron for nav, radio for select, checkbox for multi, menu for action"
           bottom="Title 14/20 medium ink · subtitle and meta 11.5 muted. Meta is right-aligned and never wraps">
@@ -66,7 +66,7 @@ function App() {
         </Thread>
       </Block>
 
-      <Block n={6} title="Tokens" sub="Read the row heights together: --h-row-lg is 46px, while this component's size='lg' is 72px. Two things in this system are called a large row and they differ by 26 pixels — and 72, the most common row in the product, has no token at all. Logged as F-21, open, because every fix for it changes something that is not a gap.">
+      <Block n={6} title="Tokens" sub="Read the row heights together: --h-row-lg is 46px, while this component's size='lg' is 72px and reads --h-row-2l. Two things in this system are called a large row and they differ by 26 pixels; the token was not renamed, because its real consumers in the kits were raw 46s until F-21 wired them. The name clash is logged as contradiction 57. Until F-21, 72 — the most common row in the product — had no token at all.">
         <Tokens names={TOK} />
       </Block>
 

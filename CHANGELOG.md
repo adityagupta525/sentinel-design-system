@@ -5,6 +5,9 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
 ## Unreleased
 
 ### Added
+- **`--h-row-2l: 72px`** — the two-line `ListRow` (every client, thread and fund row), the most common row
+  in the product and until now the only one without a token (F-21). `--h-row-lg` stays 46px; the name
+  clash is contradiction 57, and the reason it was not renamed is recorded there.
 - **`ds-screen-in` / `ds-screen-out`** in `tokens/effects.css` — the screen transition `readme.md` has
   specified since v1 and no keyframe carried, with its reduced-motion redefinitions.
 - **`guidelines/motion-screens.html`** — both keyframes running live, beside the artifact that
@@ -21,6 +24,10 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
   contracts named and the token layer never defined. Aliased to the values the app already used.
 
 ### Fixed
+- **Five raw row heights in `ui_kits` now read the tokens written for them** — three `46`s on `--h-row-lg`,
+  two `52`s on `--h-row-xl` — and `ListRow` reads `--h-row-md` / `--h-row-2l` instead of `56` / `72` (F-21,
+  closing the half of F-24 that waited on it). Proven a no-op: 73 pages hashed before and after, the
+  differing ones pixel-diffed to animation phase, and the drawer's 16 rows measured at 46px in a browser.
 - **`MoneyComposer` had no focus indicator at all** (F-17). It now takes `Composer`'s treatment, on the
   box-shadow rather than a border so the card does not change size.
 - **A pasted scheme code escaped the bubble** (F-18). `overflowWrap` on `UserBubble` and `QAPair`.

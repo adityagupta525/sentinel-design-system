@@ -48,7 +48,7 @@ function ComplianceCard({ rows }) {
   return (
     <div style={{ ...cardS, boxShadow: '0 0 0 1px var(--color-line)', padding: '0 14px' }}>
       {rows.map((r, i) => (
-        <div key={r.label} style={{ display: 'flex', minHeight: 52, alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '8px 0', borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
+        <div key={r.label} style={{ display: 'flex', minHeight: 'var(--h-row-xl)', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '8px 0', borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
           <div style={{ minWidth: 0 }}>
             <p style={f(500, 13, 18)}>{r.label}</p>
             {r.note && <p style={{ ...f(400, 11, 15, 'var(--color-data-deemph)'), marginTop: 2 }}>{r.note}</p>}

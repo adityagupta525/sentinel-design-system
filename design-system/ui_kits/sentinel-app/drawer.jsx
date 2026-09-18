@@ -3,7 +3,7 @@ function DrawerPanel({ open, onClose, onNew, onGo }) {
   const [v, setV] = React.useState('');
   if (!open) return null;
   const Sec = ({ t }) => <p style={{ ...f(700, 11, null, 'var(--color-muted)'), textTransform: 'uppercase', letterSpacing: '0.06em', padding: '8px 4px 6px' }}>{t}</p>;
-  const Row = ({ children, last, onClick }) => <Pressable onClick={onClick} style={{ display: 'flex', height: 46, width: '100%', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left', borderBottom: last ? 'none' : '0.5px solid var(--color-line-soft)' }}>{children}</Pressable>;
+  const Row = ({ children, last, onClick }) => <Pressable onClick={onClick} style={{ display: 'flex', height: 'var(--h-row-lg)', width: '100%', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left', borderBottom: last ? 'none' : '0.5px solid var(--color-line-soft)' }}>{children}</Pressable>;
   return (
     <>
       <div onClick={onClose} style={{ position: 'absolute', inset: 0, zIndex: 30, background: 'var(--scrim)', opacity: 0.25, animation: 'ds-fade 250ms var(--ease) both' }} />

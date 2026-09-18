@@ -21,7 +21,8 @@ function resolveTrailing(variant, trailing) {
 export function ListRow({ variant = 'static', size, leading = 'none', leadingContent, index, title, subtitle, meta, chip, trailing, badge, selected = false, disabled = false, onPress, onMenu }) {
   const tr = resolveTrailing(variant, trailing);
   const isStatic = variant === 'static';
-  const h = (size || (subtitle ? 'lg' : 'md')) === 'lg' ? 72 : 56;
+  /* size='lg' is the 72px two-line row (--h-row-2l), not --h-row-lg (46px) — see contradiction 57. */
+  const h = (size || (subtitle ? 'lg' : 'md')) === 'lg' ? 'var(--h-row-2l)' : 'var(--h-row-md)';
   const [down, setDown] = React.useState(false);
   const lead = leading === 'none' ? null : (
     <span style={{ display: 'flex', width: leading === 'index' ? 20 : 32, height: leading === 'index' ? 20 : 32, flexShrink: 0, alignItems: 'center', justifyContent: leading === 'index' ? 'flex-start' : 'center', borderRadius: 'var(--radius-full)', background: leading === 'avatar' ? 'var(--surface-avatar)' : 'transparent' }}>

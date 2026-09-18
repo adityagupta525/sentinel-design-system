@@ -27,7 +27,7 @@ and moved it here to finish it.
 | Spec pages | **41 of 85** · Tier 1 closed |
 | Preview pages | **73 / 73 render clean** (`node tools/check-previews.mjs`) |
 | Integrity | 370 files hashed, clean |
-| Findings | F-1 … F-26 in `docs/FINDINGS.md`. **Open: F-21, F-25, and the `StickyCTA` question in F-11** |
+| Findings | F-1 … F-26 in `docs/FINDINGS.md`. **Open: F-25, and the `StickyCTA` question in F-11.** F-21 closed 18 Sep |
 | Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — not started** |
 
 **Tier 1 is defined as:** every component that carries one of the four rules, or that the chat spine is
@@ -102,9 +102,9 @@ Be honest about these with the owner rather than guessing around them.
 
 ## 7 · What is open, and waiting on the owner
 
-1. **F-21** — `--h-row-lg` is 46px while `ListRow`'s `size='lg'` is 72px, and 72 (the most common row
-   in the product) has no token at all. Recommendation in the finding: publish `--h-row-2l: 72px`,
-   point `ListRow` at it, and log the `lg` name collision in `contradictions.md` rather than renaming.
+1. ~~**F-21**~~ — closed 18 Sep 2026 as recommended: `--h-row-2l: 72px`, `ListRow` reads it, the `lg`
+   collision is contradiction 57, and the five raw `46` / `52` row heights in `ui_kits` now read
+   `--h-row-lg` / `--h-row-xl`. The owner's correction to the reasoning is recorded in the finding.
 2. **F-25** — `ExplainerSheet` is now a proper dialog, but Tab is not trapped. A trap needs a decision
    about the boundary and the sheet holds one control.
 3. **F-11** — delete `StickyCTA` before the dev handover, or keep it deprecated for a release?

@@ -30,7 +30,8 @@ Fixed dimensions that are not spacing and are never "rounded to the grid":
 | `--h-row` | `42px` | SuggestionRow, AllocationCard rows |
 | `--h-row-md` | `56px` | ListRow, one line |
 | `--h-row-lg` | `46px` | Jump-back-in / drawer rows |
-| `--h-row-xl` | `52px` | holdings, compliance rows |
+| `--h-row-xl` | `52px` | holdings, compliance, figure-comparison rows |
+| `--h-row-2l` | `72px` | ListRow with a subtitle — every client, thread and fund row. F-21: the most common row in the product had no token, and `lg` was already taken by the 46px row above. Named 2l (two lines) rather than renaming -lg, because the 46 and 52 rows were still raw literals in ui_kits when this landed and are wired to -lg / -xl in the same commit; the name clash is contradiction 57. |
 | `--h-chip` | `36px` |  |
 | `--h-filter-chip` | `32px` |  |
 | `--h-cta` | `48px` |  |

@@ -1768,6 +1768,8 @@
     "--dur-press",
     "--ease",
     "--font-ui",
+    "--h-row-2l",
+    "--h-row-md",
     "--leading-16",
     "--leading-20",
     "--radius-full",

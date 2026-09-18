@@ -403,7 +403,7 @@ hardcoded the number beside it.
 Same pixel, one fewer raw value. Found while checking a claim on the new spec page — the page first
 said "there is no --h-row token at 42", which was wrong, and checking it turned up the real defect.
 
-### F-21 · The tallest row in the product has no name — *open, the owner's call*
+### F-21 · The tallest row in the product has no name — *fixed 18 Sep 2026*
 `spacing.css` claims to publish a named height for every box, and F-10 closed the two it had missed by
 enumerating the row vocabulary as **42 / 46 / 52 / 56**. That enumeration is incomplete.
 `ListRow` is **72px** whenever a subtitle is present — the height of every client row, every thread row
@@ -428,6 +428,33 @@ Not fixed here, because both candidate fixes change something that is not a gap:
 `contradictions.md` rather than renaming. That closes the literal without breaking a consumer, and the
 naming clash becomes logged debt instead of a trap. Nothing renders differently either way — this is
 about whether the system can describe itself.
+
+**Fixed as recommended, with one correction to the reasoning above.** The owner ruled: publish
+`--h-row-2l: 72px`, point `ListRow` at it, log the `lg` collision (contradiction 57) — and do not rename.
+But the reason not to rename is **not** an external consumer: `package.json` says `"private": true`, the
+package has never been published, and there is no one outside this repository to break. The real reason
+is F-24's pattern one more time: `--h-row-lg` (46) and `--h-row-xl` (52) had **no consumers in the
+components at all** — their actual consumers were three raw `46`s (Jump-back-in rows in `journey-b`
+and `sentinel-app/home`, every row in `sentinel-app/drawer`) and two raw `52`s (`ComplianceCard` and
+the cost-comparison rows in `journey-b`) sitting in `ui_kits`. All five now read their token, in this
+commit, so the two tokens finally have the consumers their comments name. `--h-row-xl`'s comment gained
+"figure-comparison rows", because the cost rows are neither holdings nor compliance and the comment
+should not pretend otherwise. `ListRow`'s `56` went to `--h-row-md` in the same expression, which is
+what F-24 was waiting for.
+
+**Proven a no-op, not asserted.** All 73 pages were screenshotted before and after and compared by
+hash: 62 byte-identical; `pages/ListRow` and `00-Index` differ by intent (the page's own text about
+F-21, and the index's token column); the other nine were pixel-diffed. Seven of the nine
+(`cards`, `chat` and `iconography` boards, `HeroNumberCard`, `ProgressTrace`, `StepTrace`, `journey-b`)
+also differ between **two renders of the unchanged tree**, so they are animation phase, not layout;
+with each one's animation bounding box masked, `journey-b`, `cards` and `chat` are identical
+before→after. The remaining four (`List`, `SentinelBlock`, `SentinelThinking`, `motion`) were cropped
+and looked at: a skeleton shimmer and the thinking dots at a different point in their 1.2s pulse.
+`sentinel-app` and the `lists` board were byte-identical outright. Then measured rather than inferred,
+because the drawer is closed in every screenshot: with the app kit's drawer opened in Playwright, all
+16 rows bound to `--h-row-lg` render at 46px; the 4 home rows at 46; `pages/ListRow`'s 13 `--h-row-2l`
+rows at 72. `journey-b`'s `--h-row-xl` rows measure 52 and 68 — the 68s are `ComplianceCard` rows
+whose `minHeight` is 52 and whose two-line content is taller, as before.
 
 ### F-22 · A frozen trace could not be finished, and a finished one printed its clock twice — *fixed*
 Two defects in `ProgressTrace`, one hiding the other, both found by building its spec page and looking
@@ -499,7 +526,7 @@ Two cases were left alone on purpose:
   feed it would cost a layout read per instance to remove one literal.
 - `ListRow` hardcodes `56` beside `--h-row-md: 56px`, but in the same expression as the `72` that has
   no token at all. Substituting one and not the other would make the line read as though 72 were the
-  deliberate exception. It waits on **F-21**.
+  deliberate exception. It waited on **F-21**, which closed it.
 
 ### F-25 · The bottom sheet was not a dialog, and a keyboard could barely leave it — *fixed, one part open*
 Measured in a browser while writing the spec page, because none of it is visible:
