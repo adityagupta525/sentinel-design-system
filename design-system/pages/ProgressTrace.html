@@ -1,0 +1,104 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="ProgressTrace" subtitle="Showing the work — steps that name real work, and a collapse that is the end state" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ProgressTrace — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ProgressTrace, SentinelThinking, SentinelBlock, SentinelText, UserBubble, Provenance, Composer, Dock, StepTrace } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze','--color-line','--color-canvas','--color-surface','--color-ink','--color-ink-soft','--color-muted','--radius-full','--space-2','--space-6','--space-10','--space-12','--text-12','--text-13','--leading-18','--dur-fast','--ease'];
+
+const STEPS = ['Reading his Q3 statement — 18 funds', 'Checking the mandate', 'Pricing 3 moves'];
+const WHY = 'Small cap is 31.0% against a 25% ceiling. Two of the three moves are inside the equity sleeve, so the debt leg is untouched and no exit load applies.';
+
+/* Autoplay is real here: the trace runs, collapses to "Thought for Ns", and the button replays it.
+   A frozen specimen cannot show that the collapse is the end state. */
+function Live() {
+  const [k, setK] = React.useState(0);
+  return (
+    <div>
+      <ProgressTrace key={k} steps={STEPS} reasoning={WHY} />
+      <button type="button" onClick={() => setK(k + 1)} style={{ marginTop: 12, appearance: 'none', border: 'none', cursor: 'pointer', borderRadius: 'var(--radius-full)', padding: '7px 14px', background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)', fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 11.5, color: 'var(--color-ink)' }}>Run it again</button>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="ProgressTrace" group="Chat" status="shipped"
+      requires={['ProgressTrace','SentinelThinking','SentinelBlock','SentinelText','Provenance']}
+      summary="Showing the work. Three or four steps that name real work, a rail down the left, and then it folds itself away into “Thought for 4s”. The collapse is the point: the advisor can audit the answer once and never be shown the audit again.">
+
+      <Block n={1} title="Specimen" sub="Frozen mid-run — autoplay off, step 2 active — so the three step states are all visible at once.">
+        <Specimen width={343}>
+          <ProgressTrace steps={STEPS} autoplay={false} initialActive={1} seconds={4} />
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The rail stops 8pt short at both ends rather than running the full height, so it reads as connecting the steps instead of as a border.">
+        <Anatomy width={343}
+          top="Header row: “Working · Ns” while running, “Thought for Ns” once done, with a chevron only then"
+          left="16pt circles — filled bronze with a drawn check when done, 2pt bronze ring when active, 1pt line when pending"
+          right="12pt between steps; 10pt between a circle and its label; the rail is 1pt, inset 9pt from the left"
+          bottom="Only the active step is at full opacity. Everything else sits at 0.4 and crosses over --dur-fast">
+          <ProgressTrace steps={STEPS} autoplay={false} initialActive={1} seconds={4} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Autoplay decides whether this is a component or a specimen. Both are the same code; `autoplay={false}` freezes the clock too, which is why an artboard does not drift — and where it is frozen decides which state you get.">
+        <Grid cols={2} items={[
+          { label: 'Live — runs, collapses, replays', node: <Live />, note: 'The real thing. Steps advance every 850ms, then it collapses on its own.' },
+          { label: 'Frozen past the last step', node: <ProgressTrace steps={STEPS} reasoning={WHY} autoplay={false} initialActive={3} seconds={4} />, note: 'initialActive of 3 on 3 steps freezes it FINISHED — "Thought for 4s", the chevron, and the reasoning block behind its left hairline. Until v12 a frozen trace could only ever say "Working".' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Four, and the fourth is the one that matters — a trace that has finished is a single muted line, not a list.">
+        <Grid cols={2} items={[
+          { label: 'Pending / active / done, together', node: <ProgressTrace steps={STEPS} autoplay={false} initialActive={1} seconds={2} />, note: 'Circle filled = done · ringed = active · hairline = pending. The opacity carries it as much as the circle does.' },
+          { label: 'First step, nothing done yet', node: <ProgressTrace steps={STEPS} autoplay={false} initialActive={0} seconds={1} />, note: 'No step is retroactively marked done. The trace never claims work it has not finished.' },
+          { label: 'Done, expanded', node: <ProgressTrace steps={STEPS} reasoning={WHY} autoplay={false} initialActive={3} seconds={4} />, note: 'Every circle filled, header muted, chevron present, reasoning open. This is what the advisor sees after tapping "Thought for 4s".' },
+          { label: 'Done, collapsed — the end state', node: <Live />, note: 'Wait ~3s. This is what the thread keeps: one line the advisor can tap if they ever want the audit again.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Against the two neighbours it is constantly confused with. Pick by how much you can honestly name.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'SentinelThinking — nothing nameable', node: <SentinelThinking />, note: 'Under a second, or work with no step an advisor would recognise. Dots only.' },
+          { label: 'SentinelThinking with a verb — one nameable thing', node: <SentinelThinking verb="Reading his Q3 statement…" />, note: 'One source, one line, no rail. A verb that changes every 800ms is a trace pretending to be a label.' },
+          { label: 'ProgressTrace — several, in order', node: <ProgressTrace steps={STEPS} autoplay={false} initialActive={1} seconds={3} />, note: 'Three or four real steps, and an advisor who can check each one against what the answer claims.' },
+        ]} />
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="autoplay={false} is for specimens and artboards — it freezes the clock as well as the steps, so a rendered page does not show a timer that has been counting since the tab opened.">
+        <Props src="../components/chat/ProgressTrace.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<ProgressTrace steps={STEPS} autoplay={false} initialActive={1} seconds={3} />}
+          doCaption="Each step names work an advisor could check — a document, a constraint, a count. “Reading his Q3 statement — 18 funds” can be wrong, and that is what makes it worth showing."
+          dontNode={<ProgressTrace steps={['Analysing', 'Processing', 'Almost there']} autoplay={false} initialActive={1} seconds={3} />}
+          dontCaption="Steps that name nothing are a loading bar with extra height. If the work cannot be named, it is SentinelThinking — and three unfalsifiable claims are worse than three dots, because they look like evidence." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="No spinner, and the rail never animates. What moves is opacity and one drawn check.">
+        <Motion rows={[
+          { name: 'Step advance', property: 'opacity 0.4 → 1 on the active row', duration: '200 ms (--dur-fast)', reduced: 'Unchanged — it is already opacity only.' },
+          { name: 'Step cadence', property: 'stepMs, default 850ms', duration: '850 ms per step', reduced: 'Unchanged. The clock is the work, not an animation.' },
+          { name: 'Done check', property: 'the circle fills and the check is drawn', duration: 'immediate', reduced: 'Unchanged. Success is a drawn check, never confetti.' },
+          { name: 'Collapse', property: 'the trace is replaced by one line', duration: 'immediate', reduced: 'Unchanged. Nothing slides; the list is simply gone.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

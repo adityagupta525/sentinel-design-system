@@ -1,0 +1,104 @@
+<!-- @dsCard group="Pages" viewport="1000x1700" name="List" subtitle="The card around the rows — a required empty state, and a footer instead of a second scroller" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>List — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { List, ListRow, Pill, ClientChip, Composer, Dock } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-line','--color-line-soft','--color-track','--color-ink','--color-muted','--radius-16','--space-12','--border-hairline','--h-touch','--ease'];
+
+const CLIENTS = [
+  { variant: 'nav', leading: 'avatar', title: 'Ravi Menon', subtitle: '₹1,85,00,000 · 6.2% off mandate', trailing: 'chevron', onPress: () => {} },
+  { variant: 'nav', leading: 'avatar', title: 'Meera Iyer', subtitle: '₹92,40,000 · on mandate', trailing: 'chevron', onPress: () => {} },
+  { variant: 'nav', leading: 'avatar', title: 'Anil Sharma', subtitle: '₹3,10,00,000 · review due', trailing: 'chevron', onPress: () => {} },
+];
+const THREADS = [
+  { variant: 'nav', title: 'Rebalance draft', chip: <ClientChip name="Ravi Menon" />, meta: '2h ago', trailing: 'chevron', date: 'Today', onPress: () => {} },
+  { variant: 'nav', title: 'Risk journey', chip: <ClientChip name="Meera Iyer" />, meta: '5h ago', trailing: 'chevron', date: 'Today', onPress: () => {} },
+  { variant: 'nav', title: 'Fund overlap — 4 funds', meta: 'Tue', trailing: 'chevron', date: 'Earlier', onPress: () => {} },
+  { variant: 'nav', title: 'Q3 review · Sharma', meta: 'Mon', trailing: 'chevron', date: 'Earlier', onPress: () => {} },
+];
+
+function App() {
+  return (
+    <PageShell
+      name="List" group="Lists" status="shipped"
+      requires={['List','ListRow','Pill','ClientChip']}
+      summary="The card around the rows: an eyebrow, dividers, an optional footer, grouping — and an empty state the contract makes REQUIRED, because every list in this product is empty on someone's first day. It never scrolls inside a scrolling surface; it is capped and given a footer instead.">
+
+      <Block n={1} title="Specimen" sub="Header, three rows, inset dividers, a “See all” footer. This is the drawer's client section at real width.">
+        <Specimen width={343}>
+          <List header="Clients" emptyState={{ title: 'No clients yet' }} footer={<Pill label="See all 43" size="sm" />} items={CLIENTS} />
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The footer sits under a FULL-width divider while the row dividers are inset. That difference is doing work: it says the footer is not another row.">
+        <Anatomy width={343}
+          top="Eyebrow above the card, 6pt clear — outside the surface, so the card starts at its first row"
+          left="12pt inside the card. Inset dividers start at the same 12pt, so they align with the title column"
+          right="Footer row is at least 44pt and holds one small Pill — never two"
+          bottom="Hairline dividers at --border-hairline on --color-line-soft. The card ring is a 1px --color-line box-shadow, not a border">
+          <List header="Clients" emptyState={{ title: 'No clients yet' }} footer={<Pill label="See all 43" size="sm" />} items={CLIENTS} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Dividers and grouping. Grouping inserts an eyebrow per bucket and restarts the dividers inside it, so a group reads as a card within the card.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: "dividers='inset' (default)", node: <List emptyState={{ title: 'Empty' }} items={CLIENTS} />, note: 'Aligned with the title column. The avatar column stays clear, which is what makes a run of rows scannable.' },
+          { label: "dividers='full'", node: <List dividers="full" emptyState={{ title: 'Empty' }} items={CLIENTS} />, note: 'Edge to edge. For rows with no leading element, where an inset line would float.' },
+          { label: "dividers='none'", node: <List dividers="none" emptyState={{ title: 'Empty' }} items={CLIENTS} />, note: 'Rows separated by height alone. Use only when every row is 72pt — at 56pt they run together.' },
+          { label: "groupBy='date'", node: <List groupBy="date" header="Recent" emptyState={{ title: 'Nothing yet' }} items={THREADS} />, note: 'The drawer. Buckets come from each row\'s own key, in first-seen order — the list never sorts your data behind your back.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Three, and the empty one is required by the type. A list that renders nothing is a bug report waiting to be filed.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'Loading', node: <List header="Clients" loading emptyState={{ title: 'No clients yet' }} />, note: 'Three shimmer rows at staggered widths. Under reduced motion they hold still rather than stopping mid-pulse.' },
+          { label: 'Empty — in the product\'s voice', node: <List header="Drift" emptyState={{ title: "No drift to review", body: "I'll flag it here when a portfolio moves off its mandate.", action: <Pill label="Review a client anyway" size="sm" /> }} />, note: 'Never "No data". It says what will put something here, and offers at most one pill.' },
+          { label: 'Empty, bare', node: <List emptyState={{ title: 'No funds on the shelf for this mandate' }} />, note: 'Title alone is legal. Body and action are both optional.' },
+          { label: 'Capped, with a footer', node: <List emptyState={{ title: 'Empty' }} footer={<Pill label="See all 43" size="sm" />} items={CLIENTS} />, note: 'Three of 43. This is how the system refuses a nested scroller — cap the list, state the total, move on.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Inside the drawer, where the rule that produced the footer is visible: the drawer scrolls, so nothing inside it may.">
+        <Thread dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <List header="Clients" emptyState={{ title: 'No clients yet' }} footer={<Pill label="See all 43" size="sm" />} items={CLIENTS} />
+          <div style={{ height: 8 }} />
+          <List groupBy="date" header="Recent" emptyState={{ title: 'Nothing yet' }} footer={<Pill label="See all threads" size="sm" />} items={THREADS} />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="emptyState is not optional in the type. That is deliberate — it is the one prop a caller would forget and never notice until a new advisor opened the app.">
+        <Props src="../components/lists/List.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<List header="Clients" emptyState={{ title: 'No clients yet' }} footer={<Pill label="See all 43" size="sm" />} items={CLIENTS} />}
+          doCaption="Three rows and a footer that states the total. The advisor knows there are 43 and knows how to reach them, and the surface behind this list is the only thing that scrolls."
+          dontNode={<div style={{ height: 150, overflow: 'auto', borderRadius: 'var(--radius-16)', boxShadow: '0 0 0 1px var(--color-status-over-fg)' }}>
+            <List dividers="inset" emptyState={{ title: 'Empty' }} items={[...CLIENTS, ...CLIENTS]} />
+          </div>}
+          dontCaption="Never let a List scroll inside a scrolling surface. Two scrollers on one screen means the advisor's flick does one of two different things depending on where their thumb landed — the same defect the removed canvas existed to avoid." />
+      </Block>
+
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          { name: 'Loading rows', property: 'sentinel-shimmer — opacity 0.35 → 1, 120ms stagger', duration: '1200 ms, infinite', reduced: 'Holds at full opacity. The skeleton stays, still.' },
+          { name: 'Row enter', property: 'none', duration: '—', reduced: 'Unchanged. Rows appear; they do not arrive.' },
+          { name: 'Empty → filled', property: 'none', duration: '—', reduced: 'Unchanged. A list filling in is data, not an event.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

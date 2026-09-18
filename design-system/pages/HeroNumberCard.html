@@ -1,0 +1,100 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="HeroNumberCard" subtitle="The one number a journey was for — with the four meters that produced it, and the one that binds" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>HeroNumberCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { HeroNumberCard, useCountUp, SentinelBlock, SentinelText, Provenance, InfoDot, Composer, Dock, DarkButton, UserBubble } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-bronze','--color-bronze-deep','--color-ink','--color-ink-soft','--color-muted','--color-track','--color-alloc-debt','--radius-16','--space-16','--shadow-card','--dur-count','--dur-bar','--dur-screen','--ease'];
+
+const ROWS = [
+  { label: 'Capacity', value: 72 },
+  { label: 'Tolerance', value: 64 },
+  { label: 'Need', value: 41, binding: true },
+  { label: 'Knowledge', value: 58 },
+];
+const COPY = <React.Fragment>Need is the binding score. He does not have to take this much risk to reach the corpus, so the mandate is written to the <b>41</b>, not the 72.</React.Fragment>;
+
+function App() {
+  return (
+    <PageShell
+      name="HeroNumberCard" group="Cards" status="shipped"
+      requires={['HeroNumberCard','SentinelBlock','Provenance','InfoDot']}
+      summary="The one number a journey was for — a risk score, a corpus, a drift. It counts up once, names the meter that binds it, and never shows the number without the four rows that produced it.">
+
+      <Block n={1} title="Specimen" sub="Reload the page to see the count-up. It runs once, on mount, and never again.">
+        <Specimen width={343}>
+          <HeroNumberCard title="Risk score" meta="Ravi Menon · 30 Sep" value={41} badge="Moderate" copy={COPY} rows={ROWS} />
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The binding row is distinguished, not isolated: every meter is drawn at full length, so an advisor sees the three scores that were NOT binding and can say why.">
+        <Anatomy width={343}
+          top="Title and meta, then the display numeral — Darker Grotesque, counted up over 600ms"
+          left="16pt padding all round; the card takes the standard surface, radius 16 and card shadow"
+          right="Four meter rows. The binding one takes a bronze fill, bold ink label and a bronze-deep value"
+          bottom="Copy sits under the meters and names the binding score in words. The number is never left to explain itself">
+          <HeroNumberCard title="Risk score" meta="Ravi Menon · 30 Sep" value={41} badge="Moderate" copy={COPY} rows={ROWS} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="None structurally — what changes is which row binds, and the card says so without changing shape.">
+        <Grid cols={2} items={[
+          { label: 'Need binds — the common case', node: <HeroNumberCard title="Risk score" meta="Ravi Menon · 30 Sep" value={41} badge="Moderate" copy={COPY} rows={ROWS} />, note: 'The lowest score is the mandate. Capacity at 72 is drawn and ignored, visibly.' },
+          { label: 'Tolerance binds', node: <HeroNumberCard title="Risk score" meta="Meera Iyer · 30 Sep" value={38} badge="Conservative" copy={<React.Fragment>Tolerance is the binding score. She can afford more volatility than she will sit through, and a mandate she abandons in a drawdown is worth nothing.</React.Fragment>} rows={[{ label: 'Capacity', value: 81 }, { label: 'Tolerance', value: 38, binding: true }, { label: 'Need', value: 55 }, { label: 'Knowledge', value: 62 }]} />, note: 'Same card, different binding row. The copy changes because the reason changes.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="One. This card is an end state — it does not load, it does not error, and it is never shown while a figure is still being computed.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'The only state there is', node: <HeroNumberCard title="Corpus at 60" meta="Meera Iyer · 7-year horizon" value={82} badge="On track" copy={<React.Fragment>Knowledge is the binding score here, and it is the one that moves with a conversation rather than with money.</React.Fragment>} rows={[{ label: 'Capacity', value: 91 }, { label: 'Tolerance', value: 88 }, { label: 'Need', value: 85 }, { label: 'Knowledge', value: 82, binding: true }]} />, note: 'If the number is not ready, the thread shows ProgressTrace and this card is not mounted yet. A hero number with a skeleton in it is a promise about a figure nobody has computed.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="The card carries the number; the thread carries where it came from. Provenance is never inside the card, because the card is what gets exported.">
+        <Thread
+          before={<UserBubble text="What risk score does Ravi come out at?" />}
+          dock={<Dock cta={<DarkButton label="Build a proposal to the 41" arrow full />} composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <SentinelBlock>
+            <SentinelText text="41 — moderate. Need is what binds him, not capacity." />
+          </SentinelBlock>
+          <HeroNumberCard title="Risk score" meta="Ravi Menon · 30 Sep" value={41} badge="Moderate" copy={COPY} rows={ROWS} />
+          <Provenance text="As of 30 Sep · from the risk journey, 6 questions" />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="useCountUp is exported beside the card. Use it for any figure that should land rather than appear — and never for one that changes while the advisor is reading it.">
+        <Props src="../components/cards/HeroNumberCard.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<HeroNumberCard title="Risk score" meta="Ravi Menon · 30 Sep" value={41} badge="Moderate" copy={COPY} rows={ROWS} />}
+          doCaption="Four rows drawn, one distinguished, and copy that says which one binds and why. An advisor can defend the 41 to a client from this card alone."
+          dontNode={<div style={{ borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-16)' }}>
+            <p style={{ margin: 0, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>Risk score</p>
+            <p style={{ margin: '4px 0 0', fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 44, lineHeight: 1, color: 'var(--color-ink)' }}>41</p>
+          </div>}
+          dontCaption="Never the number alone. A score with no meters is a verdict an advisor cannot explain when the client asks why it is not 72 — and the four rows are the only reason this figure is defensible." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="Three, and they are staged: the card rises, the number counts, the bars fill. Nothing loops.">
+        <Motion rows={[
+          { name: 'Card enter', property: 'ds-rise — opacity 0 → 1, translateY(8px) → 0', duration: '320 ms (--dur-screen)', reduced: 'Fade only; no rise.' },
+          { name: 'Count-up', property: 'the value climbs to its target', duration: '600 ms (--dur-count)', reduced: 'Jumps straight to the figure.' },
+          { name: 'Meter fill', property: 'scaleX from the left, never width', duration: '480 ms (--dur-bar)', reduced: 'Holds full. ds-grow is redefined, not cancelled.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

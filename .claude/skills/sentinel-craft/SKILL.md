@@ -42,11 +42,16 @@ down. Reading a stack is not looking.
 - Never report a **visual** finding from source alone. Render it.
 - Never report a **code** finding from a screenshot alone. Open the file and cite `path:line`.
 - A predicted failure is not a finding. A finding is something that happened.
+- **A clean render is not proof the document is well formed.** Five spec pages shipped with a
+  duplicated `<body>` and a second `<div id="root">`; Chrome tolerated it here and the published
+  copies came up blank. `check-previews` now counts `<body>`, `#root` and the page-kit script
+  statically, before the browser sees the page — a new page must not be written by hand-splicing a
+  head fragment without that check.
 
 ```bash
 npm run build:bundle                              # the pages read the bundle, not the source
 npm run preview                                   # then open it
-node tools/check-previews.mjs --shots /tmp/shots  # all 58 pages, at their own @dsCard viewport
+node tools/check-previews.mjs --shots /tmp/shots  # all 63 pages, at their own @dsCard viewport
 ```
 
 **The bundle step is not optional.** Preview pages load `_ds_bundle.js`; a source change is invisible
@@ -61,7 +66,7 @@ Then, before the commit:
 
 ```bash
 npm run check                            # barrel, bundle, integrity, adherence
-node tools/check-previews.mjs            # 58/58, or say which one regressed and why
+node tools/check-previews.mjs            # 63/63, or say which one regressed and why
 ```
 
 **Never restyle.** Colour, type, radii, shadow and motion character are settled. Fix gaps, alignment,

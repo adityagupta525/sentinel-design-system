@@ -2,8 +2,8 @@
  "generated": "2026-09-17",
  "generator": "scripts/build-index.js",
  "counts": {
-  "building": 59,
-  "shipped": 26
+  "building": 54,
+  "shipped": 31
  },
  "rows": [
   {
@@ -593,8 +593,8 @@
   {
    "name": "ProgressTrace",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ProgressTrace.html",
    "file": "components/chat/ProgressTrace.jsx",
    "tokens": [
     "--color-bronze",
@@ -864,8 +864,8 @@
   {
    "name": "AllocationCard",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "AllocationCard.html",
    "file": "components/cards/AllocationCard.jsx",
    "tokens": [
     "--color-ink",
@@ -874,6 +874,7 @@
     "--color-track",
     "--dur-bar",
     "--font-ui",
+    "--h-row",
     "--leading-20",
     "--radius-16",
     "--radius-full",
@@ -881,7 +882,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 7
+   "literals": 6
   },
   {
    "name": "AttributionChart",
@@ -1200,8 +1201,8 @@
   {
    "name": "HeroNumberCard",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "HeroNumberCard.html",
    "file": "components/cards/HeroNumberCard.jsx",
    "tokens": [
     "--color-alloc-debt",
@@ -1727,8 +1728,8 @@
   {
    "name": "List",
    "group": "Navigation",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "List.html",
    "file": "components/lists/List.jsx",
    "tokens": [
     "--border-hairline",
@@ -1756,8 +1757,8 @@
   {
    "name": "ListRow",
    "group": "Navigation",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ListRow.html",
    "file": "components/lists/ListRow.jsx",
    "tokens": [
     "--color-bronze-deep",

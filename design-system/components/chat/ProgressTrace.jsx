@@ -9,7 +9,12 @@ function Circle({ state }) {
 }
 export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay = true, initialActive = 0, seconds = 3 }) {
   const [active, setActive] = React.useState(initialActive);
-  const [done, setDone] = React.useState(false);
+  /* A frozen trace whose initialActive has passed the last step IS a finished trace. Until v12 the
+     only way to reach the done state was to let the clock run, so a specimen or an artboard could
+     show "Working · 4s" with every circle already filled — and could never show the reasoning block,
+     which only renders once done. No new prop: autoplay={false} with initialActive < steps.length is
+     unchanged, which is what every existing frozen call site passes. */
+  const [done, setDone] = React.useState(!autoplay && initialActive >= steps.length);
   const [collapsed, setCollapsed] = React.useState(false);
   const [secs, setSecs] = React.useState(autoplay ? 0 : seconds);
   React.useEffect(() => { if (done || !autoplay) return; const iv = setInterval(() => setSecs((s) => s + 1), 1000); return () => clearInterval(iv); }, [done, autoplay]);
@@ -26,7 +31,7 @@ export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay
     <SentinelBlock>
       <div style={{ width: '100%' }}>
         <button type="button" onClick={() => done && setCollapsed(true)} style={{ appearance: 'none', border: 'none', background: 'transparent', padding: 0, cursor: done ? 'pointer' : 'default', marginBottom: 'var(--space-10)', display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', color: done ? 'var(--color-muted)' : 'var(--color-ink)' }}>{done ? `Thought for ${secs}s` : 'Working'} · {secs}s</span>
+          <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', color: done ? 'var(--color-muted)' : 'var(--color-ink)' }}>{done ? `Thought for ${secs}s` : `Working · ${secs}s`}</span>
           {done && chev(true)}
         </button>
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 'var(--space-12)', paddingLeft: 'var(--space-2)' }}>

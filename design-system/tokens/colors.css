@@ -14,6 +14,16 @@
 --color-chip:#fbf6f1;
 --color-alloc-debt:#d9bb9e;
 --color-track:#edebe7;
+/* The allocation family was one third defined. AllocationCard's contract has named
+   --color-alloc-equity / -debt / -cash since v1 and only -debt existed, so the cards board drew its
+   stacked bar with the Equity and Cash segments INVISIBLE — a card whose whole job is allocation
+   showing only the debt band (F-19). Aliased, not invented: these are the values the running app
+   already passes by hand in ui_kits/sentinel-app/data.jsx, so nothing that renders today changes.
+   -track is the same story for the meter rail, which guidelines/motion.html was painting with an
+   undefined token. Still one hue in three depths; identity is carried by each segment's own label. */
+--color-alloc-equity:var(--color-bronze);
+--color-alloc-cash:var(--color-bubble-edge);
+--color-alloc-track:var(--color-track);
 --color-selected:#ebd4c3;
 
 /* The CTA surface — the three stops of the one dark gradient (ui.tsx: DarkButton, Composer send, Stop, MoneyComposer send). */

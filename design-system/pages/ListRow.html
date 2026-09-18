@@ -1,0 +1,103 @@
+<!-- @dsCard group="Pages" viewport="1000x1600" name="ListRow" subtitle="Five variants, and the trailing each one owns — enforced in the component, not documented" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ListRow — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ListRow, List, ClientChip, Badge, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-ink','--color-muted','--color-line-soft','--color-bronze','--h-row','--h-row-md','--h-row-lg','--h-row-xl','--h-touch','--space-12','--text-14','--text-13','--leading-20','--ease'];
+
+const wrap = (n) => <div style={{ borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)', padding: '0 12px' }}>{n}</div>;
+
+function App() {
+  return (
+    <PageShell
+      name="ListRow" group="Lists" status="shipped"
+      requires={['ListRow','List','ClientChip','Badge']}
+      summary="One row, five variants, and a pairing table the component enforces rather than documents. Pass an illegal trailing and it falls back to the variant's default and warns once — the chevron belongs to nav and nowhere else.">
+
+      <Block n={1} title="Specimen" sub="A nav row at 'lg' — 72pt, because a subtitle is present.">
+        <Specimen width={343}>{wrap(<ListRow variant="nav" leading="avatar" title="Ravi Menon" subtitle="₹1,85,00,000 · 6.2% off mandate" trailing="chevron" onPress={() => {}} />)}</Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Two heights and nothing between them. Size is derived from the content — a subtitle makes it 'lg' — so a list cannot end up with rows that are almost the same height.">
+        <Anatomy width={343}
+          top="72pt with a subtitle ('lg'), 56pt without ('md'). 56 is --h-row-md; 72 is a raw value with no token behind it"
+          left="12pt inside the card; the divider above is inset by the same 12pt"
+          right="Trailing is fixed per variant — chevron for nav, radio for select, checkbox for multi, menu for action"
+          bottom="Title 14/20 medium ink · subtitle and meta 11.5 muted. Meta is right-aligned and never wraps">
+          {wrap(<ListRow variant="nav" leading="avatar" title="Ravi Menon" subtitle="₹1,85,00,000 · 6.2% off mandate" trailing="chevron" onPress={() => {}} />)}
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Five, and each one owns its trailing. That is the whole reason the constraint is in the component: a row that looks like navigation and behaves like a selection is a defect an advisor discovers by tapping.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: "nav → chevron | meta", node: wrap(<ListRow variant="nav" leading="avatar" title="Meera Iyer" subtitle="₹92,40,000 · on mandate" trailing="chevron" onPress={() => {}} />), note: 'Goes somewhere. The chevron is a promise that the screen changes.' },
+          { label: "select → radio", node: wrap(<React.Fragment><ListRow variant="select" title="Moderate" subtitle="Score 41–60" trailing="radio" selected onPress={() => {}} /><ListRow variant="select" title="Aggressive" subtitle="Score 61–80" trailing="radio" onPress={() => {}} /></React.Fragment>), note: 'One of several. The selected row carries the mark, not a highlight.' },
+          { label: "multi → checkbox", node: wrap(<React.Fragment><ListRow variant="multi" title="Parag Parikh Flexi Cap" trailing="checkbox" selected onPress={() => {}} /><ListRow variant="multi" title="Quant Small Cap" trailing="checkbox" onPress={() => {}} /></React.Fragment>), note: 'The fund picker sheet. Several at once, and the cap is stated above it.' },
+          { label: "action → menu", node: wrap(<ListRow variant="action" leading="icon" title="Q3 statement.pdf" meta="2h ago" trailing="menu" onMenu={() => {}} />), note: 'The row itself is the thing; the menu is what you do to it.' },
+          { label: "static → badge | meta | none", node: wrap(<ListRow variant="static" title="Small cap exposure" trailing="badge" badge={{ variant: 'status', tone: 'over', text: '31.0%' }} />), note: 'Not pressable, and exempt from the 44pt rule exactly like Badge — because nothing is there to hit.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Selected and disabled are states of a row; leading and meta are not — they are content.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'Selected', node: wrap(<ListRow variant="select" title="Moderate" trailing="radio" selected onPress={() => {}} />), note: 'The mark carries it. No fill, no colour change — selection is not an alarm.' },
+          { label: 'Disabled', node: wrap(<ListRow variant="nav" title="Proposal · locked" subtitle="Sent to the client on 12 Sep" trailing="chevron" disabled />), note: 'Dimmed and inert. The reason is in the subtitle, because a row that cannot be tapped and will not say why is the worst row in a list.' },
+          { label: 'leading="index"', node: wrap(<React.Fragment><ListRow variant="static" leading="index" index={1} title="Parag Parikh Flexi Cap" meta="32%" /><ListRow variant="static" leading="index" index={2} title="ICICI Corporate Bond" meta="24%" /></React.Fragment>), note: 'For a ranked list. The number is the rank, never a bullet.' },
+          { label: 'chip after the title', node: wrap(<ListRow variant="nav" leading="avatar" title="Rebalance draft" chip={<ClientChip name="Ravi Menon" />} meta="2h ago" trailing="chevron" onPress={() => {}} />), note: 'The drawer\'s bound-thread row. The chip says whose it is without a second line.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Rows are never used loose. They live inside a List, which owns the card, the dividers and the empty state.">
+        <Thread>
+          <List header="Clients" dividers="inset" emptyState={{ title: 'No clients yet' }}
+            footer={<Pill label="See all 43" size="sm" />}
+            items={[
+              { variant: 'nav', leading: 'avatar', title: 'Ravi Menon', subtitle: '₹1,85,00,000 · 6.2% off mandate', trailing: 'chevron', onPress: () => {} },
+              { variant: 'nav', leading: 'avatar', title: 'Meera Iyer', subtitle: '₹92,40,000 · on mandate', trailing: 'chevron', onPress: () => {} },
+              { variant: 'nav', leading: 'avatar', title: 'Anil Sharma', subtitle: '₹3,10,00,000 · review due', trailing: 'chevron', onPress: () => {} },
+            ]} />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens" sub="Read the row heights together: --h-row-lg is 46px, while this component's size='lg' is 72px. Two things in this system are called a large row and they differ by 26 pixels — and 72, the most common row in the product, has no token at all. Logged as F-21, open, because every fix for it changes something that is not a gap.">
+        <Tokens names={TOK} />
+      </Block>
+
+      <Block n={7} title="Props" sub="The legal pairings are in the contract, and the component enforces them at runtime. An illegal trailing does not throw — it falls back and warns once, because a console warning is cheaper than a blank row in production.">
+        <Props src="../components/lists/ListRow.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={wrap(<React.Fragment>
+            <ListRow variant="select" title="Moderate" subtitle="Score 41–60" trailing="radio" selected onPress={() => {}} />
+            <ListRow variant="select" title="Aggressive" subtitle="Score 61–80" trailing="radio" onPress={() => {}} />
+          </React.Fragment>)}
+          doCaption="Choosing between options: select + radio. The row says, before it is tapped, that tapping picks one of these and stays here."
+          dontNode={wrap(<React.Fragment>
+            <ListRow variant="nav" title="Moderate" subtitle="Score 41–60" trailing="chevron" onPress={() => {}} />
+            <ListRow variant="nav" title="Aggressive" subtitle="Score 61–80" trailing="chevron" onPress={() => {}} />
+          </React.Fragment>)}
+          dontCaption="Never a chevron on a choice. The chevron promises the screen changes; used for selection it teaches the advisor that chevrons mean nothing, and the next real navigation row pays for it." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="Almost none. A list that animates its rows is a list you cannot scan.">
+        <Motion rows={[
+          { name: 'Press', property: 'transform: scale(0.98) via Pressable', duration: '150 ms (--dur-press)', reduced: 'No scale.' },
+          { name: 'Selection', property: 'the mark appears', duration: 'immediate', reduced: 'Unchanged. Nothing to fade.' },
+          { name: 'Row enter', property: 'none', duration: '—', reduced: 'Unchanged. Rows do not stagger in; List handles loading with skeletons instead.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

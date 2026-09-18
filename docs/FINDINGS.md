@@ -372,6 +372,105 @@ line.
 
 Both the before and the after are on `pages/UserBubble.html`, block 4, as a state rather than a note.
 
+### F-19 · Two thirds of the allocation palette was never defined — *fixed*
+`AllocationCard`'s contract has said the same thing since v1:
+
+> Use `var(--color-alloc-equity)` / `-debt` / `-cash` — never a new hue.
+
+Only `--color-alloc-debt` exists in `tokens/colors.css`. So `components/cards/cards.card.html`, which
+passes exactly the three tokens the contract names, has been rendering its stacked bar with **the
+Equity and Cash segments invisible** — a card whose entire job is allocation showing only the debt
+band, 24% of a bar, on a group board in the handover.
+
+Seen, not reasoned about: it is in the rendered board, first card, top left. The running app never hit
+it because `ui_kits/sentinel-app/data.jsx` passes `--color-bronze` and `--color-bubble-edge` by hand
+instead of the tokens its own contract names — which is also why nobody noticed.
+
+`--color-alloc-track` is the same defect one page over: `guidelines/motion.html` paints its bar rail
+with it, and the rail has simply not been there.
+
+**Aliased, not invented.** `--color-alloc-equity: var(--color-bronze)`,
+`--color-alloc-cash: var(--color-bubble-edge)`, `--color-alloc-track: var(--color-track)` — the values
+the app already used. Nothing that rendered correctly before renders differently now; the things that
+were invisible are visible. Still one hue in three depths, and every band is named and printed as a
+percentage above the bar, so rule 1 is untouched.
+
+### F-20 · A token written for a component, which that component never used — *fixed*
+`spacing.css` carries `--h-row: 42px` with the comment *"SuggestionRow, AllocationCard rows"*.
+`AllocationCard` set `height: 42`. The token was written **for** this component and this component
+hardcoded the number beside it.
+
+Same pixel, one fewer raw value. Found while checking a claim on the new spec page — the page first
+said "there is no --h-row token at 42", which was wrong, and checking it turned up the real defect.
+
+### F-21 · The tallest row in the product has no name — *open, the owner's call*
+`spacing.css` claims to publish a named height for every box, and F-10 closed the two it had missed by
+enumerating the row vocabulary as **42 / 46 / 52 / 56**. That enumeration is incomplete.
+`ListRow` is **72px** whenever a subtitle is present — the height of every client row, every thread row
+in the drawer, every fund row in a picker. It is the most common row in the product and the only one
+with no token:
+
+```
+lists/ListRow.jsx:24   const h = (size || (subtitle ? 'lg' : 'md')) === 'lg' ? 72 : 56;
+```
+
+There is a second, sharper problem in the same line. `--h-row-lg` already exists and is **46px**.
+`ListRow`'s `size='lg'` is 72. Two different things in this system are called a large row, and they
+differ by 26 pixels.
+
+Not fixed here, because both candidate fixes change something that is not a gap:
+
+- Publishing `--h-row-2l: 72px` adds a fifth row height and leaves `--h-row-lg` meaning 46 while
+  `size='lg'` means 72 — the collision survives.
+- Renaming the token is an API break for anything already consuming `--h-row-lg`.
+
+**Recommendation:** publish `--h-row-2l: 72px`, point `ListRow` at it, and record the `lg` collision in
+`contradictions.md` rather than renaming. That closes the literal without breaking a consumer, and the
+naming clash becomes logged debt instead of a trap. Nothing renders differently either way — this is
+about whether the system can describe itself.
+
+### F-22 · A frozen trace could not be finished, and a finished one printed its clock twice — *fixed*
+Two defects in `ProgressTrace`, one hiding the other, both found by building its spec page and looking
+at what the page actually rendered rather than at what the props suggested.
+
+**`autoplay={false}` could not reach the done state.** `done` was only ever set by the autoplay timer,
+so a frozen trace — the form used in every specimen and artboard — showed `Working · 4s` with every
+circle already filled, and could never render `reasoning`, which only appears once done. The most
+useful state to put in front of a reviewer was the one state the component could not hold still.
+
+Fixed without a new prop: a trace frozen **past** its last step (`initialActive >= steps.length`) is a
+finished trace. Every existing frozen call site passes `initialActive={1}` against three or four steps,
+so nothing that renders today changes.
+
+**Then the header read `Thought for 4s · 4s`.** The template was
+`` {done ? `Thought for ${secs}s` : 'Working'} · {secs}s `` — the seconds are inside the done string
+*and* appended after it. This was never specimen-only: in the product the collapsed trace reads
+`Thought for 4s`, and the moment an advisor taps it open, the expanded header says it twice.
+
+It survived because the expanded-done state is only reachable by finishing a run and then reopening it,
+which no page rendered and no reviewer waited for.
+
+### F-23 · Five spec pages shipped a duplicated `<body>` and rendered blank once published — *fixed*
+`pages/MoneyComposer.html`, `SentinelThinking.html`, `UserBubble.html`, `QAPair.html` and
+`SentinelText.html` each carried the document head's `<body><div id="root">` **twice**, with the
+page-kit script loaded twice after it. The five were assembled by splicing a head fragment taken from
+an existing page, and the fragment was cut one line too long.
+
+`check-previews` passed all five. Chrome here parsed the second `<body>` away, kept both `#root`
+divs, rendered into the first, and reported `mounted=51468`. The published copies came up **blank**.
+
+That is the whole lesson: **a clean render is not evidence the document is well formed.** The harness
+asks "did something appear", and something did.
+
+Fixed in the five pages, and guarded so the class cannot return: `check-previews` now counts `<body>`,
+`id="root"` and `page-kit.jsx` statically before the browser is started. Verified against a fixture
+carrying the exact duplication, which it fails.
+
+The guard's own first run failed all 17 guideline pages — they render straight into `<body>` and have
+no `#root` at all, and the rule asked for exactly one rather than at most one. Recorded because it is
+the same mistake one level up: a check written from what the five broken pages looked like rather than
+from what every page in the system looks like.
+
 ---
 
 ## Considered and rejected

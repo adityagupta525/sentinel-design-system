@@ -45,10 +45,22 @@ for await (const p of walk(DS)) {
   const rel = relative(DS, p).split(sep).join('/');
   if (rel === 'thumbnail.html') continue;
   if (ONLY && !rel.includes(ONLY)) continue;
-  const head = (await readFile(p, 'utf8')).slice(0, 400);
-  const card = CARD.exec(head)?.[1] ?? '';
+  const text = await readFile(p, 'utf8');
+  const card = CARD.exec(text.slice(0, 400))?.[1] ?? '';
   const [w, h] = (ATTR(card, 'viewport') || '1200x1400').split('x').map(Number);
-  pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400 });
+  /* A static structure check before the browser sees it. Five spec pages shipped with a duplicated
+     <body> and a second <div id="root">, from a shared head fragment that carried one line too many.
+     Chrome tolerated it here and the published copies came up BLANK, so a clean render is not on its
+     own evidence that the document is well formed. Counted, not parsed: these three are exactly the
+     duplications that produced it. */
+  const count = (re) => (text.match(re) || []).length;
+  const structure = [];
+  if (count(/<body[\s>]/g) !== 1) structure.push(`<body> appears ${count(/<body[\s>]/g)}\u00d7 — must be exactly 1`);
+  /* At MOST one, not exactly one: the guideline pages render straight into <body> and have no #root
+     at all. Requiring exactly one failed all 17 of them the first time this check ran. */
+  if (count(/id="root"/g) > 1) structure.push(`id="root" appears ${count(/id="root"/g)}\u00d7 — must be at most 1`);
+  if (count(/page-kit\.jsx/g) > 1) structure.push(`page-kit.jsx loaded ${count(/page-kit\.jsx/g)}\u00d7 — must be at most 1`);
+  pages.push({ rel, name: rel.replace(/\.html$/, '').replace(/[/]/g, '__'), w: w || 1200, h: h || 1400, structure });
 }
 pages.sort((a, b) => a.rel.localeCompare(b.rel));
 
@@ -70,7 +82,7 @@ const results = [];
 
 for (const p of pages) {
   const page = await browser.newPage({ ignoreHTTPSErrors: true, viewport: { width: p.w, height: p.h }, deviceScaleFactor: SHOTS ? 2 : 1 });
-  const errors = [], missing = [];
+  const errors = [...p.structure], missing = [];
   page.on('pageerror', (e) => errors.push(String(e).slice(0, 300)));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text().slice(0, 300)));
   page.on('response', (r) => r.status() >= 400 && missing.push(`${r.status()} ${r.url()}`));

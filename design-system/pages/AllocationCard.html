@@ -1,0 +1,110 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="AllocationCard" subtitle="Where the money is — rows first, then one bar in three depths of the one hue" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>AllocationCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { AllocationCard, SentinelBlock, SentinelText, Provenance, UserBubble, Composer, Dock, Eyebrow } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-track','--h-row','--color-alloc-equity','--color-alloc-debt','--color-alloc-cash','--color-ink','--color-line-soft','--radius-16','--radius-full','--text-14','--leading-20','--dur-bar','--ease'];
+
+const SEG = [
+  { label: 'Equity', value: 71, color: 'var(--color-alloc-equity)' },
+  { label: 'Debt', value: 24, color: 'var(--color-alloc-debt)' },
+  { label: 'Cash', value: 5, color: 'var(--color-alloc-cash)' },
+];
+
+function Replay() {
+  const [k, setK] = React.useState(0);
+  return (
+    <div>
+      <AllocationCard key={k} segments={SEG} />
+      <button type="button" onClick={() => setK(k + 1)} style={{ marginTop: 10, appearance: 'none', border: 'none', cursor: 'pointer', borderRadius: 'var(--radius-full)', padding: '7px 14px', background: 'var(--color-surface)', boxShadow: '0 0 0 1px var(--color-line)', fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 11.5, color: 'var(--color-ink)' }}>Fill again</button>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="AllocationCard" group="Cards" status="shipped"
+      requires={['AllocationCard','SentinelBlock','Provenance']}
+      summary="Where the money is. Label/value rows at 42pt, then one 6pt stacked bar underneath. Every segment is named and printed as a percentage above the bar, so the bar is a second reading of a fact already stated in words — which is what lets it use three depths of one hue without breaking rule 1.">
+
+      <Block n={1} title="Specimen" sub="Three segments, the product's own split. Reload or press “Fill again” below to see the bars grow.">
+        <Specimen width={343}><AllocationCard segments={SEG} /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The rows come first and the bar second, not the other way round. An advisor reads “Equity 71%” and then sees 71% — never a shape they have to decode before the number arrives.">
+        <Anatomy width={343}
+          top="42pt rows — a named row height. Label left, value right, both 14/20 medium ink"
+          left="Card padding is 2pt / 12pt: the rows supply their own height, so there is no vertical padding to double up"
+          right="Hairline between rows, none after the last. The bar is not a row and takes no divider"
+          bottom="6pt bar, radius full, on --color-track. Segments are widths; the FILL is scaleX from the left, 120ms apart. The 42pt row is --h-row, a token whose comment names this component">
+          <AllocationCard segments={SEG} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="One prop beyond the data: animate. Off is for a specimen, an artboard or an export — anywhere the bar must be correct in a single frame.">
+        <Grid cols={2} items={[
+          { label: 'animate (default)', node: <Replay />, note: 'Each segment grows by scaleX, 120ms after the one before it. Never by width — a width animation reflows its neighbours.' },
+          { label: 'animate={false}', node: <AllocationCard segments={SEG} animate={false} />, note: 'Drawn at once. Use it in anything captured as an image, and in a card that was already on screen.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="No loading and no error state — this card is only mounted once the split is known. What varies is how many segments there are and how small the smallest gets.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'Two segments', node: <AllocationCard animate={false} segments={[{ label: 'Equity', value: 82, color: 'var(--color-alloc-equity)' }, { label: 'Debt', value: 18, color: 'var(--color-alloc-debt)' }]} />, note: 'Perfectly legal. The bar carries two bands and the rows carry two facts.' },
+          { label: 'A 1% sliver', node: <AllocationCard animate={false} segments={[{ label: 'Equity', value: 76, color: 'var(--color-alloc-equity)' }, { label: 'Debt', value: 23, color: 'var(--color-alloc-debt)' }, { label: 'Cash', value: 1, color: 'var(--color-alloc-cash)' }]} />, note: 'At 343pt a 1% band is about 3pt — barely a band. It does not matter, because the row above already said “Cash 1%”. This is the whole reason the rows come first.' },
+          { label: 'Values that do not total 100', node: <AllocationCard animate={false} segments={[{ label: 'Equity', value: 40, color: 'var(--color-alloc-equity)' }, { label: 'Debt', value: 20, color: 'var(--color-alloc-debt)' }]} />, note: 'The bar normalises against the sum, so it fills completely — while the rows still print 40% and 20%. Pass shares that total 100, or the bar and the rows tell different stories.' },
+          { label: 'A fourth segment', node: <AllocationCard animate={false} segments={[{ label: 'Equity', value: 61, color: 'var(--color-alloc-equity)' }, { label: 'Debt', value: 24, color: 'var(--color-alloc-debt)' }, { label: 'Gold', value: 10, color: 'var(--color-bronze-deep)' }, { label: 'Cash', value: 5, color: 'var(--color-alloc-cash)' }]} />, note: 'Possible, and the point at which to stop: a fourth depth of the same hue is not reliably separable. Four sleeves is a DataTable, not a bar.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Under prose that names the number the advisor will say out loud, and above the provenance that lets them defend it.">
+        <Thread
+          before={<UserBubble text="How is Ravi allocated right now?" />}
+          dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          <SentinelBlock>
+            <SentinelText text="71% equity — 6 points above the 65% his mandate targets." />
+          </SentinelBlock>
+          <AllocationCard segments={SEG} />
+          <Provenance text="As of 30 Sep · from his Q3 statement" />
+        </Thread>
+      </Block>
+
+      <Block n={6} title="Tokens" sub="--color-alloc-equity and -cash were named by this component's contract from v1 and never defined in the token layer, so the cards board drew this card with only the debt band visible. Defined in v12 as aliases of the values the running app already passed by hand (F-19).">
+        <Tokens names={TOK} />
+      </Block>
+
+      <Block n={7} title="Props"><Props src="../components/cards/AllocationCard.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<AllocationCard animate={false} segments={SEG} />}
+          doCaption="Three depths of the one hue, every band named and printed above the bar. The colour is a second reading of a fact the rows already state — so nothing depends on telling two browns apart."
+          dontNode={<AllocationCard animate={false} segments={[
+            { label: 'Equity', value: 71, color: 'var(--color-status-ok-fg)' },
+            { label: 'Debt', value: 24, color: 'var(--color-danger)' },
+            { label: 'Cash', value: 5, color: 'var(--color-bronze-deep)' },
+          ]} />}
+          dontCaption="Never a new hue per sleeve. Green and red here say equity is good and debt is a problem, which is not a claim this card is making — and in this palette a muted trio collapses to ΔE 3.8 under protanopia, so the colours would not even carry the identity they wrongly imply." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="One animation, and it is the system's bar fill. Contradiction 29 is open on it: this card passes CSS ease-in-out where the rest of the system passes --ease.">
+        <Motion rows={[
+          { name: 'Segment fill', property: 'ds-grow — scaleX(0) → scaleX(1) from the left', duration: '480 ms (--dur-bar), 120ms stagger', reduced: 'Holds full. ds-grow is redefined, not cancelled, so no band is stranded part-grown.' },
+          { name: 'Easing', property: 'ease-in-out, not var(--ease)', duration: '—', reduced: 'Unchanged. Logged as contradiction 29 and left alone: changing it is a motion-character change, not a gap.' },
+          { name: 'Row enter', property: 'none', duration: '—', reduced: 'Unchanged. The numbers are present before the bar moves.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script>
+</body></html>

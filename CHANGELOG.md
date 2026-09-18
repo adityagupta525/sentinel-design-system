@@ -12,8 +12,10 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
 - **`SentinelThinking` takes `verb`** — "Reading his Q3 statement…" in place of the "Sentinel" label.
   The motion is unchanged; omitting it renders exactly as before. The verb must name the source the
   answer will cite.
-- Spec pages for **MoneyComposer, SentinelThinking, UserBubble, QAPair, SentinelText** — 26 of 85
-  components now have one.
+- Spec pages for **MoneyComposer, SentinelThinking, UserBubble, QAPair, SentinelText, ProgressTrace,
+  List, ListRow, HeroNumberCard, AllocationCard** — 31 of 85 components now have one.
+- **`--color-alloc-equity` · `--color-alloc-cash` · `--color-alloc-track`** — three tokens the
+  contracts named and the token layer never defined. Aliased to the values the app already used.
 
 ### Fixed
 - **`MoneyComposer` had no focus indicator at all** (F-17). It now takes `Composer`'s treatment, on the
@@ -23,6 +25,16 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
 - `SentinelThinking.prompt.md` described dots "bouncing 3px" at half the real duration — the opposite of
   what the spec says and the component does (F-15).
 - `Composer` and `MoneyComposer` each carried the same placeholder stylesheet inside themselves (F-14).
+- **The allocation bar was drawing Equity and Cash invisibly** on the cards board, because two of the
+  three tokens its own contract names did not exist (F-19).
+- `AllocationCard` hardcoded `42` where `--h-row: 42px` exists and names it in its comment (F-20).
+- **`ProgressTrace` printed `Thought for 4s · 4s`** whenever a finished trace was reopened — live in
+  the product, not only in a specimen — and a frozen trace could not reach the done state at all, so
+  no page had ever shown that header (F-22).
+- The first five pages above shipped a **duplicated `<body>` and a second `<div id="root">`**, from a
+  shared head fragment cut one line too long. They rendered clean here and came up blank once
+  published (F-23). `check-previews` now counts `<body>`, `#root` and the page-kit script statically,
+  before the browser starts — verified against a fixture carrying the exact duplication.
 
 - Repository scaffolding around the imported design system: preview server, barrel generator, index
   runner, integrity check, CI, contribution rules.
