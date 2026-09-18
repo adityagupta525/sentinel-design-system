@@ -553,13 +553,16 @@ var __ds_out = (() => {
     const ref = react_global_default.useRef(null);
     const wasOpen = react_global_default.useRef(open);
     const opener = react_global_default.useRef(null);
+    const armed = react_global_default.useRef(false);
     react_global_default.useEffect(() => {
       if (open && !wasOpen.current) {
         opener.current = document.activeElement;
+        armed.current = true;
         if (ref.current) ref.current.focus();
       } else if (!open && wasOpen.current) {
         if (opener.current && opener.current.focus) opener.current.focus();
         opener.current = null;
+        armed.current = false;
       }
       wasOpen.current = open;
     }, [open]);
@@ -569,6 +572,23 @@ var __ds_out = (() => {
         if (e.key === "Escape") {
           e.stopPropagation();
           onClose && onClose();
+          return;
+        }
+        if (e.key !== "Tab" || !armed.current || !ref.current) return;
+        const nodes = Array.prototype.filter.call(
+          ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+          (n) => !n.disabled && n.getAttribute("aria-hidden") !== "true"
+        );
+        if (!nodes.length) {
+          e.preventDefault();
+          ref.current.focus();
+          return;
+        }
+        const first = nodes[0], last = nodes[nodes.length - 1], active = document.activeElement;
+        const outside = !ref.current.contains(active);
+        if (outside || (e.shiftKey ? active === first || active === ref.current : active === last)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
         }
       };
       document.addEventListener("keydown", onKey);

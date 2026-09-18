@@ -10,24 +10,51 @@ import { Pill } from '../actions/Pill.jsx';
    renders six open specimens, and each one grabbing focus on mount would fight the others.
    No `outline: none` on the dialog root: a programmatic .focus() on tabIndex={-1} does not satisfy
    :focus-visible, so no ring is painted anyway — and switching the browser's indicator off with
-   nothing in its place is the exact mistake Pressable was corrected for in v11. Verified rendered. */
+   nothing in its place is the exact mistake Pressable was corrected for in v11. Verified rendered.
+   F-25 (18 Sep 2026) · TAB IS TRAPPED, WRAPPING AT THE BOUNDARY. aria-modal="true" tells assistive
+   technology there is nothing outside the sheet; until this, a keyboard could still Tab out of it into
+   the thread behind the scrim — measured on the spec page, where Tab from the live sheet's "Got it"
+   landed on a static specimen's "Got it" and Shift+Tab landed on the opener. That is the contract
+   lying. Tab on the last control goes to the first, Shift+Tab on the first (or on the dialog root) goes
+   to the last; with one control, both keys keep it. If focus is somehow outside, Tab brings it back
+   in — that is what modal means. The trap is ARMED by the same false -> true transition that moves
+   focus in, and never for a sheet mounted already open: the spec page renders six of those, and a
+   specimen that trapped would swallow the page's keyboard the moment Tab reached its "Got it" (it did,
+   in the first cut of this fix — measured, then changed). A sheet that opened is a dialog; a sheet
+   that was mounted open is a picture of one, and pictures do not take the keyboard. */
 export function ExplainerSheet({ open, title, body, onClose }) {
   const ref = React.useRef(null);
   const wasOpen = React.useRef(open);
   const opener = React.useRef(null);
+  const armed = React.useRef(false);
   React.useEffect(() => {
     if (open && !wasOpen.current) {
       opener.current = document.activeElement;
+      armed.current = true;
       if (ref.current) ref.current.focus();
     } else if (!open && wasOpen.current) {
       if (opener.current && opener.current.focus) opener.current.focus();
       opener.current = null;
+      armed.current = false;
     }
     wasOpen.current = open;
   }, [open]);
   React.useEffect(() => {
     if (!open) return;
-    const onKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); onClose && onClose(); } };
+    const onKey = (e) => {
+      if (e.key === 'Escape') { e.stopPropagation(); onClose && onClose(); return; }
+      if (e.key !== 'Tab' || !armed.current || !ref.current) return;
+      const nodes = Array.prototype.filter.call(
+        ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+        (n) => !n.disabled && n.getAttribute('aria-hidden') !== 'true');
+      if (!nodes.length) { e.preventDefault(); ref.current.focus(); return; }
+      const first = nodes[0], last = nodes[nodes.length - 1], active = document.activeElement;
+      const outside = !ref.current.contains(active);
+      if (outside || (e.shiftKey ? (active === first || active === ref.current) : active === last)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      }
+    };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [open, onClose]);

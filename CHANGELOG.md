@@ -43,8 +43,9 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
   hashing five board screenshots before and after — all five byte-identical.
 - **`ExplainerSheet` was not a dialog.** No role, no `aria-modal`, no label; Escape did nothing; focus
   stayed outside the scrim, and the scrim is a `<div onClick>` so it was not a keyboard exit either.
-  Now a labelled `role="dialog"` that Escape closes, with focus moving in and back out to the opener.
-  Tab is still not trapped — logged, not skipped (F-25).
+  Now a labelled `role="dialog"` that Escape closes, with focus moving in and back out to the opener,
+  and **Tab trapped, wrapping at the boundary** — it could walk out behind the scrim while `aria-modal`
+  said there was nothing there. Measured before and after with a keyboard in Playwright (F-25).
 - **`ProgressTrace` printed `Thought for 4s · 4s`** whenever a finished trace was reopened — live in
   the product, not only in a specimen — and a frozen trace could not reach the done state at all, so
   no page had ever shown that header (F-22).

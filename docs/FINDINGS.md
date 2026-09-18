@@ -528,7 +528,7 @@ Two cases were left alone on purpose:
   no token at all. Substituting one and not the other would make the line read as though 72 were the
   deliberate exception. It waited on **F-21**, which closed it.
 
-### F-25 · The bottom sheet was not a dialog, and a keyboard could barely leave it — *fixed, one part open*
+### F-25 · The bottom sheet was not a dialog, and a keyboard could barely leave it — *fixed*
 Measured in a browser while writing the spec page, because none of it is visible:
 
 | | Before |
@@ -555,9 +555,30 @@ Two details that were decisions rather than defaults:
   browser's indicator off with nothing in its place is the exact mistake `Pressable` was corrected for
   in v11.
 
-**Open:** Tab is not trapped, so focus can still walk out of the sheet into the content behind the
-scrim. Left out because a trap needs a decision about what happens at the boundary, and this sheet
-holds exactly one control. Recorded rather than quietly skipped.
+~~**Open:** Tab is not trapped~~ — **closed 18 Sep 2026, on the owner's ruling: trap, and wrap at the
+boundary.** The argument for it was sharper than "a trap needs a decision": `aria-modal="true"` already
+told assistive technology there was nothing outside the sheet, while a keyboard could walk straight out
+of it. A contract the component announces and does not keep is worse than one it does not announce.
+
+Measured before, on the spec page, with Playwright driving the live specimen: open the sheet with
+Enter, focus lands on the dialog root; Tab → "Got it"; Tab → **"Got it" in the anatomy specimen** (a
+different sheet); Tab → **"Got it" in the "Exit load" specimen**; Shift+Tab × 3 → back out to **"Open
+the sheet"**, the opener, with the sheet still open. Focus left the modal in both directions.
+
+Now: Tab on the last control goes to the first, Shift+Tab on the first — or on the dialog root, where
+focus lands on open — goes to the last. With one control, both keys keep "Got it". Measured after, same
+script: Tab, Tab, Tab, Shift+Tab, Shift+Tab, Shift+Tab all report `"Got it" INSIDE sheet "Capacity and
+tolerance"`; Escape returns focus to the opener as before.
+
+One design decision inside the fix, because the spec page forced it — and the first cut got it wrong.
+The page renders **six** open specimens, each a `role="dialog"` with its own keydown listener. The
+first cut trapped whenever focus was inside a sheet; the same script then showed that after Escape,
+four Tabs on the page reached **one** element: focus had walked into the anatomy specimen's "Got it"
+and that specimen — a picture, mounted open, never opened — had swallowed the page's keyboard. So the
+trap is **armed by the same `false → true` transition that moves focus in**, and a sheet mounted
+already open never traps. Same rule the focus move already followed in v12, for the same reason. Re-run:
+the live sheet still holds Tab and Shift+Tab six times over, and after Escape four Tabs reach four
+distinct elements.
 
 ### F-26 · Tier 1 is complete, and `Composer` had no page — *closed*
 Worth recording because of how it was nearly missed. `pages/Dock.html` is titled **"Dock & Composer"**

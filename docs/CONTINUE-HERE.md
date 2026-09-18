@@ -27,7 +27,7 @@ and moved it here to finish it.
 | Spec pages | **41 of 85** · Tier 1 closed |
 | Preview pages | **73 / 73 render clean** (`node tools/check-previews.mjs`) |
 | Integrity | 370 files hashed, clean |
-| Findings | F-1 … F-26 in `docs/FINDINGS.md`. **Open: F-25, and the `StickyCTA` question in F-11.** F-21 closed 18 Sep |
+| Findings | F-1 … F-26 in `docs/FINDINGS.md`. **Open: the `StickyCTA` question in F-11.** F-21 and F-25 closed 18 Sep |
 | Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — not started** |
 
 **Tier 1 is defined as:** every component that carries one of the four rules, or that the chat spine is
@@ -105,8 +105,8 @@ Be honest about these with the owner rather than guessing around them.
 1. ~~**F-21**~~ — closed 18 Sep 2026 as recommended: `--h-row-2l: 72px`, `ListRow` reads it, the `lg`
    collision is contradiction 57, and the five raw `46` / `52` row heights in `ui_kits` now read
    `--h-row-lg` / `--h-row-xl`. The owner's correction to the reasoning is recorded in the finding.
-2. **F-25** — `ExplainerSheet` is now a proper dialog, but Tab is not trapped. A trap needs a decision
-   about the boundary and the sheet holds one control.
+2. ~~**F-25**~~ — closed 18 Sep 2026: Tab is trapped and wraps at the boundary, acting only while focus
+   is inside the sheet so a page of open specimens does not fight over it. Measured before and after.
 3. **F-11** — delete `StickyCTA` before the dev handover, or keep it deprecated for a release?
 4. **Next phase.** Tier 2 (44 short pages) or screens. The recommendation on record is **screens**:
    everything a screen is assembled from is now page-verified, and the Tier 2 gaps will show up as

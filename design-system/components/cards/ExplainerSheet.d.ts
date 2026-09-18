@@ -13,9 +13,12 @@ export interface ExplainerSheetProps {
 /** The definition, on demand. role="dialog" aria-modal, labelled by `title`; Escape closes it; focus
  *  moves into the sheet when it opens and returns to whatever opened it when it closes.
  *
- *  It does NOT trap Tab — focus can still walk out of the sheet into the content behind the scrim.
- *  That is logged (F-25) rather than fixed here, because a trap needs a decision about what to do at
- *  the boundary and this sheet has exactly one control in it.
+ *  Tab is trapped and wraps at the boundary: Tab on the last control goes to the first, Shift+Tab on
+ *  the first goes to the last, so with one control both keys keep "Got it". The trap is armed by the
+ *  same `false → true` transition that moves focus in, and never for a sheet mounted already open —
+ *  a spec page's static specimens are pictures of a dialog, not dialogs, and must not take the page's
+ *  keyboard. Until F-25 was closed, aria-modal said there was nothing outside while a keyboard could
+ *  still walk out behind the scrim.
  *
  *  Never put a decision in it. "Got it" is the only way out besides the scrim, and it is not a word
  *  anyone should tap to approve money — a decision belongs in the Dock's CTA (rule 3). */
