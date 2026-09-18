@@ -1,47 +1,39 @@
-<!-- @dsCard group="Screens" viewport="1400x3000" name="Journey B · 01 Home" subtitle="The way in. Six states, one component tree — and the two open questions this screen raises" -->
+<!-- @dsCard group="Screens" viewport="1400x2600" name="Journey B · 01 Home" subtitle="The way in. Greeting, three rows, composer — and the three rows are built from the advisor's own book" -->
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey B · 01 Home — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','List','Dock','Composer','Pill','ChipRow','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
-const { ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, SuggestionRow, List, Dock, Composer,
-        Pill, ChipRow, HomeIndicator } = window.SentinelDesignSystem_0682a2;
+const { ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, SuggestionRow, Dock, Composer,
+        HomeIndicator } = window.SentinelDesignSystem_0682a2;
 
-/* Content is the product's, taken from docs/screens-source/src/screens/Home.tsx and journeys.tsx.
-   Nothing here is invented: every label and every count is one the archive already carried. */
-const SUGGESTIONS = [
-  'Show me Diwali offer from HDFC AMC',
+/* The three rows are BUILT FROM THE ADVISOR'S OWN BOOK. Named when it is there, capability-shaped when
+   it is not — and the capability-shaped set is the base case, not the exception, which is why this
+   screen has no loading state and no error state. Every row routes: checked by hand against the three
+   intent patterns in docs/screens-source/src/lib/router.ts, which match on "risk profil", "propos"
+   and "drift". Each of the six labels below contains one of them. */
+const NAMED = [
+  "Start Meera Nair's risk profile",
   'Build a proposal for Mr. Amit Aggrawal',
   "Why did Sharma's portfolio drift this quarter?",
 ];
-const CHIPS = ['Review a portfolio', 'Proposal', 'Fund explorer'];
-const SAVED = [
-  { title: "Meera's risk profile", meta: '12 questions' },
-  { title: '₹25 L proposal',       meta: '6 funds' },
-  { title: 'What Meera holds',     meta: '43 funds' },
-  { title: "Sharma's rebalance",   meta: '2 moves' },
-];
-const SAVED_LONG = [
-  { title: 'Mr. Amit Aggrawal — moderate mandate proposal', meta: '6 funds' },
-  ...SAVED.slice(1),
+const UNNAMED = [
+  'Start a risk profile',
+  'Build a proposal',
+  "Explain a portfolio's drift",
 ];
 
-/* The greeting is a band, not a constant. The archive hardcodes "Good afternoon"; a screen that ships
-   that is wrong for sixteen hours of the day. */
 function greetingFor(hour) {
   return hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 }
 
-/* ONE component, six states. Each state is a different `saved` prop, never a different tree — a state
-   drawn by hand is a state that can drift from the one the product will actually render. */
-function Home({ saved = 'ready', hour = 15, time = '3:04', advisor = 'Ashish', rows = SAVED, footer }) {
+function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED }) {
   const [value, setValue] = React.useState('');
-  const card = { width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: '0 var(--space-12)', boxShadow: 'var(--shadow-card-soft)' };
   return (
     <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
       <ScreenBackdrop />
@@ -52,106 +44,101 @@ function Home({ saved = 'ready', hour = 15, time = '3:04', advisor = 'Ashish', r
         <GreetingDivider>{greetingFor(hour)}, {advisor}</GreetingDivider>
       </div>
 
-      {/* The three capability rows. These are what Sentinel can do, so they do not depend on history
-          and they are present in every state including the first run. */}
       <div style={{ position: 'relative', zIndex: 1, padding: '24px var(--gutter) 0' }}>
-        <div style={card}>
-          {SUGGESTIONS.map((s, i) => <SuggestionRow key={s} label={s} last={i === SUGGESTIONS.length - 1} onClick={() => {}} />)}
+        <div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: '0 var(--space-12)', boxShadow: 'var(--shadow-card-soft)' }}>
+          {rows.map((s, i) => <SuggestionRow key={s} label={s} last={i === rows.length - 1} onClick={() => {}} />)}
         </div>
       </div>
 
-      {/* "Jump back in" is history, so it is the part that has an empty, a loading and an error.
-          It is rendered ONLY when there is something to render: the eyebrow is a promise, and a
-          promise withdrawn 400ms later is worse than a section that was never there. */}
-      {saved === 'ready' && (
-        <div style={{ position: 'relative', zIndex: 1, padding: '20px var(--gutter) 0' }}>
-          <List
-            header="Jump back in"
-            items={rows.map((r) => ({ ...r, onPress: () => {} }))}
-            rowProps={{ variant: 'nav', trailing: 'chevron' }}
-            footer={footer}
-            emptyState={{ title: 'Nothing saved yet', body: 'Work you start shows up here so you can pick it up tomorrow.' }}
-          />
-        </div>
-      )}
-      {saved === 'error' && (
-        <div style={{ position: 'relative', zIndex: 1, padding: '20px var(--gutter) 0' }}>
-          <p style={{ margin: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-regular)', fontSize: 'var(--text-12)', lineHeight: 'var(--leading-17)', color: 'var(--color-muted)' }}>
-            I could not load your saved work just now. Everything above still works, and it will be here when I can reach it.
-          </p>
-        </div>
-      )}
-
       <div style={{ flex: 1 }} />
 
-      <Dock
-        chips={<ChipRow>{CHIPS.map((c) => <Pill key={c} label={c} onClick={() => {}} />)}</ChipRow>}
-        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel about a client, a fund, or a plan" onSend={() => {}} />}
-      />
+      {/* No chips row. Dock.d.ts calls that slot "Contextual AnswerChips"; on Home nothing has been
+          said, so there is no context for it to carry. Composer and the standing disclosure only. */}
+      <Dock composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel about a client, a fund, or a plan" onSend={() => {}} />} />
       <HomeIndicator />
     </div>
   );
 }
 
 const MOTION = [
-  ['Screen enter', <code>ds-screen-in</code>, '320ms', 'Fades in place; no 100% slide, nothing stranded off-screen'],
-  ['Section rise', 'fade + 8–12px rise, 60ms stagger', '240–320ms', 'Held at the resting position, opacity 1 — the rows are there, they just do not travel'],
+  ['Screen enter', <code>ds-screen-in</code>, '320ms', 'Fades in place; no slide, nothing stranded off-screen'],
+  ['Section rise', 'fade + 8–12px rise, 60ms stagger', '240–320ms', 'Held at the resting position, opacity 1 — the rows are there, they do not travel'],
   ['Row press', <span>background to <code>--tint-bronze-06</code></span>, '150ms', 'Unchanged — a colour change is not motion'],
-  ['Pill press', 'transform: scale(0.98)', '150ms', 'No scale'],
-  ['List skeleton', 'shimmer', 'loop', <span>Holds still — <code>List</code> does this itself</span>],
+  ['Send disc press', 'transform: scale(0.94)', '150ms', 'No scale'],
 ];
 
 const PROVENANCE = [
-  ['12 questions · 6 funds · 43 funds · 2 moves', 'The advisor’s own saved work, counted — not a client figure', 'The row’s meta, right-aligned, muted'],
-  ['Nothing else on this screen', 'Home carries no client figure at all', '—'],
+  ['The three rows', <span>The advisor&rsquo;s own book — the client whose profile is unstarted, the one with an open proposal, the one whose portfolio moved</span>, 'Named in the row itself: “Meera Nair”, “Mr. Amit Aggrawal”, “Sharma”'],
+  ['The greeting', 'The device clock and the signed-in advisor', '“Good afternoon, Ashish”, beside a status bar showing the same time'],
+  ['Everything else', 'Home carries no client figure at all', '—'],
 ];
 
 mountScreen(
   <ScreenShell
     journey="Journey B · Sharma’s drift" n="Screen 1 of 7" name="Home"
-    job="The way in, and the only screen an advisor sees before they have asked anything. Three capability rows say what Sentinel can do; four doors return them to work in progress; three chips and a composer start something new."
-    without="has no way in that shows what Sentinel can do — they would have to already know what to type."
+    job="The way in, and the only screen an advisor sees before they have asked anything. Three rows built from their own book, and a composer. Nothing else."
+    without="has no way in that shows what Sentinel can do, and no one-tap route back to the client who needs them most."
   >
-    <Section title="1 · Typical" sub="Mid-afternoon, four pieces of saved work. This is the frame the other five are measured against.">
+    <Section title="1 · The screen" sub="Greeting, three rows, composer. The saved-work widget moved to the menu and the quick-action chips are gone, so what is left is the shortest thing that still answers “what can I do, and for whom”.">
       <StateRow>
-        <State label="typical" note="The composer is the last interactive row and is present on every screen — rule 3. The Dock draws it with the chips above and the standing disclosure below, all from one component.">
-          <Home saved="ready" hour={15} />
+        <State label="typical" note="The book is loaded, so every row names a client. The rows are ordered by the client lifecycle — know them, build for them, keep it right — not by recency, because recency is what the menu is for.">
+          <Home hour={15} time="3:04" />
         </State>
-        <State label="edge" tone="under" note="A long saved-work label truncates in the row rather than wrapping the row taller, and a fifth item becomes a footer instead of a fifth row. A capped list with a footer is how this system avoids a scroller inside a scrolling surface.">
-          <Home saved="ready" hour={15} rows={SAVED_LONG} footer={<Pill label="See all 5" size="sm" tone="muted" onClick={() => {}} />} />
+        <State label="book unavailable" tone="under" note="A first day, or a book that has not arrived, or one that failed to. All three render this, and that is the point: the capability-shaped rows are the BASE CASE and the names are an enhancement that arrives. So this screen has no loading state and no error state to get wrong — it is never blank and it never promises a name it does not have.">
+          <Home hour={9} time="8:30" rows={UNNAMED} />
         </State>
       </StateRow>
+      <Note title="Why there is no “Jump back in” here any more">
+        Saved work is history, and history belongs in the menu with the rest of it — recent threads and the
+        client list. Home is what an advisor sees before they have asked anything, so it should answer
+        “what can I do, and for whom”, not “what were you doing yesterday”. The empty and loading states that
+        section used to carry went with it; they are the drawer&rsquo;s question now.
+      </Note>
+      <Note title="Why the quick-action chips are gone">
+        Two reasons, and neither is that their destinations disappeared — they never opened a canvas at all.
+        <code> docs/screens-source/src/App.tsx:58</code> says a quick-action chip is a conversational turn, and
+        <code> handleChip</code> posts the label to the thread. They are gone because they said the same three
+        capabilities as the card above them, in the abstract, four hundred points below it; and because
+        <code> Dock.d.ts</code> calls that slot “Contextual AnswerChips”, and on Home nothing has been said yet.
+      </Note>
     </Section>
 
-    <Section title="2 · First run, loading, and the failure" sub="Three states, and two of them are deliberately the same frame.">
+    <Section title="2 · A name that does not fit" sub="Measured, not assumed, at 375 with a 343 content box.">
       <StateRow>
-        <State label="empty" tone="under" note="A new advisor has no history. The section is omitted entirely rather than shown empty: List requires an emptyState and would render one, but an eyebrow reading “Jump back in” above “nothing saved yet” promises a thing that does not exist yet. The three capability rows carry the first run.">
-          <Home saved="empty" hour={9} />
+        <State label="short name" note="“Good afternoon, Ashish” — 233pt of text with 47pt of dashed rule on each side.">
+          <Home hour={15} time="3:04" advisor="Ashish" />
         </State>
-        <State label="loading" tone="under" note="Identical to the first run, on purpose. Saved work arrives from a server; a four-row skeleton for a section that may turn out to have zero rows tells a lie that lasts 400ms. The rows appear when they are real.">
-          <Home saved="loading" hour={9} />
-        </State>
-        <State label="error" tone="over" note="The section is omitted and one muted line says so, in the product's voice, under the suggestions. Not a red banner: nothing is broken for the advisor, and the first screen of the day is the wrong place to raise an alarm — rule 2.">
-          <Home saved="error" hour={19} />
+        <State label="long name" tone="under" note="“Good afternoon, Ramasubramanian” — 349pt on one line against a 343 box, so it wrapped. Two lines, 70pt tall instead of 43, and the 27pt it costs comes out of the empty middle of the screen. Nothing below it moves.">
+          <Home hour={15} time="3:04" advisor="Ramasubramanian" />
         </State>
       </StateRow>
-      <Note title="Refused — not applicable here">Home never refuses. The composer hands every input to the thread, which routes it through the six buckets and answers there. The nearest thing to a refusal on this screen is the error line above, and it is a failure to load, not a refusal to act.</Note>
+      <Note title="What was measured, and what the numbers actually were">
+        At 375 the greeting has a 343 content box. As shipped the line was <code>white-space: nowrap</code>:
+        “Ashish” 233, “Priya” 216, “Vishwanathan” 304 — all fine — then “Ramasubramanian” 349 and
+        “Lakshminarayanan” 351, which sit 3 and 4 points into each gutter. So the break is real, it starts at
+        about fifteen characters rather than twelve, and it is a few points rather than tens of them. It wraps
+        now instead of truncating: a tool whose whole job is to treat a client as a person does not cut a
+        person&rsquo;s name in half. Names that already fitted render identically, which was checked by hashing
+        all 75 pages either side of the change.
+      </Note>
+      <Note title="Open, and not fixed here — the hairlines yield before the text does">
+        The two dashed rules are <code>flex: 1</code>, so the name squeezes them: 47pt beside “Ashish”, 12pt
+        beside “Vishwanathan”, and nothing at all beyond that, where the component stops looking like a divider.
+        Wrapping does not bring them back, because the wrapped line still fills the width. A
+        <code> max-width</code> on the text would reserve them, at the cost of wrapping shorter names sooner.
+        That is a visible change to a settled component on every screen, so it is yours to call.
+      </Note>
     </Section>
 
-    <Section title="3 · The greeting is a band, not a constant" sub="The archive hardcodes “Good afternoon, Ashish”. That is wrong for sixteen hours of the day, and the advisor's name comes from the session.">
-      <StateRow>
-        <State label="morning"   note="6:12 · Good morning">  <Home saved="ready" hour={6}  time="6:12" /></State>
-        <State label="afternoon" note="3:04 · Good afternoon"><Home saved="ready" hour={15} time="3:04" /></State>
-        <State label="evening"   note="7:19 · Good evening">  <Home saved="ready" hour={19} time="7:19" /></State>
-      </StateRow>
-      <Note title="Found by building this, then fixed">
-        The first cut of this page rendered all three phones reading <strong>9:41</strong>, including the one
-        greeting the advisor good evening. <code>StatusSpacer</code> hardcoded the clock and took no props: right
-        for a component specimen, wrong the moment a screen states a time of day. It now takes an optional
-        <code> time</code>, defaulting to <code>'9:41'</code>, so every board and spec page renders exactly as
-        before — proved by hashing all 75 pages either side of the change. On a real phone the status bar is the
-        operating system's, so its 12- or 24-hour format is the platform's choice and not this system's; the
-        format here follows the specimen.
+    <Section title="3 · The states this screen does not have" sub="Named, because a matrix with a silent gap is a matrix nobody can check.">
+      <Note title="No loading, no error, no separate empty">
+        All three collapse into “book unavailable” above. The rows always render; the names are the part that
+        may not arrive. There is nothing on this screen that can half-load, so there is no skeleton to show and
+        no failure to report.
+      </Note>
+      <Note title="No refusal">
+        Home never refuses. The composer hands every input to the thread, which routes it through the six
+        buckets and answers there. A refusal is a thing Sentinel says, and Sentinel has not spoken yet.
       </Note>
     </Section>
 
@@ -159,28 +146,8 @@ mountScreen(
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="5 · Provenance" sub="Rule 4 asks for provenance under every figure. Home is the one screen in the journey that carries no client figure at all, so this table is short — and saying that is the point, rather than leaving the reader to infer it.">
+    <Section title="5 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
-    </Section>
-
-    <Section title="6 · Two things this screen needs a decision on" sub="Both change what Home looks like, so neither was decided here.">
-      <Note title="1 · The height of a “Jump back in” row">
-        The archive and the UI kits draw these rows at <strong>46px</strong>, as raw buttons — that is what
-        <code> --h-row-lg</code> is named for. The system's own answer for a list of rows is <code>List</code> +
-        <code> ListRow</code>, which is <strong>56px</strong> with no subtitle, and which brings the required
-        empty state, the loading skeleton, the footer row and the chevron contract with it. This screen uses the
-        component, so the rows are 56. Keeping 46 means keeping them as raw rows and losing all four of those.
-        Your call: 56 and the component, or 46 and hand-built rows.
-      </Note>
-      <Note title="2 · The red circle on the quick-action chips">
-        <code>docs/screens-source/src/imports/preview-drawing.png</code> is Home in the current visual language
-        with your own red circle around “Review a portfolio · Proposal · Fund explorer”, and no note beside it.
-        They are drawn here exactly as the archive has them. What did the circle mean?
-      </Note>
-      <Note title="3 · A time on StatusSpacer — settled">
-        Ruled and done: <code>StatusSpacer</code> takes an optional <code>time</code> defaulting to
-        <code> '9:41'</code>. Section 3 above renders it.
-      </Note>
     </Section>
   </ScreenShell>
 );

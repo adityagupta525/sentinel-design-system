@@ -850,7 +850,7 @@ var __ds_out = (() => {
 
   // design-system/components/chat/GreetingDivider.jsx
   function GreetingDivider({ children }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", alignItems: "center", justifyContent: "center", gap: "var(--space-8)", padding: "8px 16px", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 0, flex: 1, borderTop: "1px dashed var(--color-line)" } }), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, whiteSpace: "nowrap", textAlign: "center", font: "var(--type-greeting-font)", color: "var(--color-bronze-deep)" } }, children), /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 0, flex: 1, borderTop: "1px dashed var(--color-line)" } }));
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", alignItems: "center", justifyContent: "center", gap: "var(--space-8)", padding: "8px 16px", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 0, flex: 1, borderTop: "1px dashed var(--color-line)" } }), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, textWrap: "balance", textAlign: "center", font: "var(--type-greeting-font)", color: "var(--color-bronze-deep)" } }, children), /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 0, flex: 1, borderTop: "1px dashed var(--color-line)" } }));
   }
 
   // design-system/components/chat/MessageActions.jsx
