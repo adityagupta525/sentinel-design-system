@@ -404,10 +404,6 @@
         "message": "<TraceStep> doesn't accept that prop. Declared props: label, state, meta, detail, retry."
       },
       {
-        "selector": "JSXOpeningElement[name.name='StickyCTA'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|onClick|key|ref|className|style|children)$/]",
-        "message": "<StickyCTA> doesn't accept that prop. Declared props: label, onClick."
-      },
-      {
         "selector": "JSXOpeningElement[name.name='SuggestionRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|onClick|last|key|ref|className|style|children)$/]",
         "message": "<SuggestionRow> doesn't accept that prop. Declared props: label, onClick, last."
       },
@@ -666,9 +662,6 @@
         "replaces": []
       },
       "TraceStep": {
-        "replaces": []
-      },
-      "StickyCTA": {
         "replaces": []
       },
       "SuggestionRow": {

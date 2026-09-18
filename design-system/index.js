@@ -42,7 +42,6 @@ export { InlineActionRow } from './components/actions/InlineActionRow.jsx';
 export { Pill } from './components/actions/Pill.jsx';
 export { Pressable } from './components/actions/Pressable.jsx';
 export { RangePills } from './components/actions/RangePills.jsx';
-export { StickyCTA } from './components/actions/StickyCTA.jsx';
 export { SuggestionRow } from './components/actions/SuggestionRow.jsx';
 /* forms */
 export { FileUpload } from './components/forms/FileUpload.jsx';

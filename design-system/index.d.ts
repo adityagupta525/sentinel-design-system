@@ -78,8 +78,6 @@ export type { PressableProps } from './components/actions/Pressable';
 export { Pressable } from './components/actions/Pressable';
 export type { RangePillsProps } from './components/actions/RangePills';
 export { RangePills } from './components/actions/RangePills';
-export type { StickyCTAProps } from './components/actions/StickyCTA';
-export { StickyCTA } from './components/actions/StickyCTA';
 export type { SuggestionRowProps } from './components/actions/SuggestionRow';
 export { SuggestionRow } from './components/actions/SuggestionRow';
 /* forms */

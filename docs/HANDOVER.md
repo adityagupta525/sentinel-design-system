@@ -38,11 +38,11 @@ to a file layout that is ours to change.
 
 | | |
 |---|---|
-| **85 components** | Every one with a hand-written `.d.ts` carrying the prop contract **and the reasoning**. The doc comments are the design review; read them before guessing at a prop. |
+| **84 components** | Every one with a hand-written `.d.ts` carrying the prop contract **and the reasoning**. The doc comments are the design review; read them before guessing at a prop. |
 | **One token layer** | `tokens/*.css` — colour, type, spacing, radius, motion. Roles, not values. |
 | **16 guideline pages** | Rendered specimens: colour, type, spacing, radius, shadow, motion, texture. |
 | **41 component spec pages** | Specimen, anatomy with dimensions, every variant, every state, tokens, props, do/don't, and a motion table naming each animation's reduced-motion behaviour. |
-| **11 group boards** | Every component in a group on one board — 61 of the 85 are visible here. |
+| **11 group boards** | Every component in a group on one board — 61 of the 84 are visible here. |
 | **3 runnable prototypes** | The app, the risk journey, the proposal journey. The product, assembled. |
 | **An adherence lint config** | `_adherence.oxlintrc.json` — point your linter at it. |
 
@@ -101,7 +101,7 @@ Three rules, all of them about keeping your code and this system in step:
 - the forbidden-elements list
 
 `pages/_index.json` reports the same measure back at the system itself, per component, as `literals` —
-how many raw style values each one still hardcodes. **28 of 85 are at zero.** That number is meant to
+how many raw style values each one still hardcodes. **31 of 84 are at zero.** That number is meant to
 go up, and it is the honest way to see where this system does not yet follow its own rule.
 
 ## Motion
@@ -144,23 +144,21 @@ CI fails when any of them is stale.
 **The preview pages read `_ds_bundle.js`, not the source.** A component change is invisible in every
 page until you run `npm run build:bundle`. This catches everyone once.
 
-## Deprecated
+## Removed
 
-**`StickyCTA`** — superseded by `Dock`'s `cta` slot since v3 and still exported. It predates the dock
-law: no chips row above it, no composer below. Use:
+**`StickyCTA`** — deleted 18 Sep 2026 (F-11). It was superseded by `Dock`'s `cta` slot in v3 and
+predated the dock law: no chips row above it, no composer below, which is exactly what rule 3 forbids.
+If you have a call site from an older copy, this is the replacement:
 
 ```jsx
 <Dock chips={…} cta={<DarkButton label="Rebalance to his mandate" arrow full />} composer={…} />
 ```
 
-It is the only dead component in the system. It has not been deleted so the removal is a decision
-someone takes on purpose rather than an API that vanishes under you.
-
 ## Where the gaps are
 
 Stated plainly, because a handover that oversells is worse than one that does not.
 
-- **41 of 85 components have a full spec page.** The other 44 have source, a contract and a place on a
+- **41 of 84 components have a full spec page.** The other 43 have source, a contract and a place on a
   group board — enough to use, short of the anatomy/states/do-don't treatment. `pages/00-Index.html`
   lists which is which, generated from disk, so it cannot claim a page that is not there.
 - **`docs/FINDINGS.md`** carries every known defect and every deliberate deviation, including the ones

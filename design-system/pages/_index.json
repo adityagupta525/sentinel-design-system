@@ -2,7 +2,7 @@
  "generated": "2026-09-18",
  "generator": "scripts/build-index.js",
  "counts": {
-  "building": 44,
+  "building": 43,
   "shipped": 41
  },
  "rows": [
@@ -1617,19 +1617,6 @@
    ],
    "locals": [],
    "literals": 6
-  },
-  {
-   "name": "StickyCTA",
-   "group": "Input",
-   "status": "building",
-   "page": null,
-   "file": "components/actions/StickyCTA.jsx",
-   "tokens": [
-    "--dur-screen",
-    "--ease"
-   ],
-   "locals": [],
-   "literals": 4
   },
   {
    "name": "SuggestionRow",

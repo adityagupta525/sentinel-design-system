@@ -247,7 +247,7 @@ outside the system are now inside it.
 > One row still measures 55 against its siblings' 56. That is content-driven, not the padding, and it
 > is left recorded rather than chased.
 
-### F-11 · `StickyCTA` is dead, superseded, and still public — *deprecated, not deleted*
+### F-11 · `StickyCTA` is dead, superseded, and still public — *deleted 18 Sep 2026*
 Found by measuring where every component is actually rendered rather than by reading the list: 61 of
 85 appear on a group board, 19 on a spec page, 2 only inside a UI kit, and three nowhere at all.
 
@@ -267,8 +267,16 @@ no composer below, which is the layout rule 3 exists to prevent.
 and it should be a decision someone takes on purpose rather than something that vanishes under a
 consuming team. The `.d.ts` now carries `@deprecated` with the one-line replacement.
 
-**Open question for the owner:** delete it before the dev handover, or keep it deprecated for a
-release? Nothing depends on it either way.
+~~**Open question for the owner:** delete it before the dev handover, or keep it deprecated for a
+release?~~ **Deleted, on the owner's ruling.** The argument for keeping it — an API break under a
+consuming team — did not survive a look at `package.json`: `"private": true`, never published, so there
+is no consuming team, and nothing inside this repository imported it (0 references in components, kits,
+pages or specs). The deprecation step still earned its place: it made the removal a decision with a
+name on it instead of a file that vanished. Gone with it: the `.jsx`, `.d.ts` and `.prompt.md`, its
+adherence rule and `replaces` entry in `_adherence.oxlintrc.json`, its manifest row, and its name from
+the eight group boards' destructures. Barrel, bundle and index regenerated: **84 components**, 41
+shipped / 43 building, 108 → 107 exports. Breaking entry in `CHANGELOG.md`; the replacement is one line
+in `HANDOVER.md` → Removed.
 
 ### F-12 · The screen transition was specified for twelve versions and never named — *fixed*
 `readme.md` has carried the same sentence since v1:

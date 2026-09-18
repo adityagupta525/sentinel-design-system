@@ -23,6 +23,12 @@ Notable changes to the Sentinel design system. Dates are day-first, as everywher
 - **`--color-alloc-equity` · `--color-alloc-cash` · `--color-alloc-track`** — three tokens the
   contracts named and the token layer never defined. Aliased to the values the app already used.
 
+### Removed
+- **`StickyCTA` — BREAKING.** Deleted 18 Sep 2026 (F-11). Superseded by `Dock`'s `cta` slot since v3, it
+  sat alone with no chips row above and no composer below, which rule 3 forbids. Safe to remove because
+  the package is `private: true`, has never been published, and nothing in the system imported it.
+  Replacement: `<Dock chips={…} cta={<DarkButton … />} composer={…} />`.
+
 ### Fixed
 - **Five raw row heights in `ui_kits` now read the tokens written for them** — three `46`s on `--h-row-lg`,
   two `52`s on `--h-row-xl` — and `ListRow` reads `--h-row-md` / `--h-row-2l` instead of `56` / `72` (F-21,

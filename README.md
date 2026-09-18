@@ -63,7 +63,7 @@ oxlint --config node_modules/@centricity/sentinel-design-system/design-system/_a
 | `text` | Eyebrow, EyebrowDivider, Provenance, StandingDisclosure, DemoFooter |
 | `icons` | 10 stroke glyphs — six from the source set, four from Lucide |
 | `shell` | TopBar, Dock, Phone, CanvasHeader, StatusBar, HomeIndicator, ScrollToBottomButton, MotionGuard … |
-| `actions` | Pill, AnswerChip, ChipRow, ClientChip, DarkButton, StickyCTA, SuggestionRow, RangePills … |
+| `actions` | Pill, AnswerChip, ChipRow, ClientChip, DarkButton, SuggestionRow, RangePills … |
 | `forms` | SearchField, SelectionMark, FileUpload … |
 | `lists` | ListRow, ListCard … |
 | `cards` | ArtifactCard, HeroNumberCard, AllocationCard, DataTableCard, MoveCard, ExplainerSheet … |

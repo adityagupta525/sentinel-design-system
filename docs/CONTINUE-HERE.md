@@ -23,15 +23,15 @@ and moved it here to finish it.
 |---|---|
 | Branch | `claude/practical-newton-fi0pof` — the repository's **only** branch, and its default |
 | Last commit | `dcfe133` · Tier 1 complete |
-| Components | **85** · all exported, all with a hand-written `.d.ts` |
-| Spec pages | **41 of 85** · Tier 1 closed |
+| Components | **84** · all exported, all with a hand-written `.d.ts` (85 until `StickyCTA` was deleted, 18 Sep) |
+| Spec pages | **41 of 84** · Tier 1 closed |
 | Preview pages | **73 / 73 render clean** (`node tools/check-previews.mjs`) |
 | Integrity | 370 files hashed, clean |
-| Findings | F-1 … F-26 in `docs/FINDINGS.md`. **Open: the `StickyCTA` question in F-11.** F-21 and F-25 closed 18 Sep |
+| Findings | F-1 … F-26 in `docs/FINDINGS.md`. **None open.** F-11, F-21 and F-25 closed 18 Sep |
 | Roadmap | 1 Import ✅ · 2 Audit ✅ (ongoing) · 3 The four unbuilt components ✅ · **4 Screens — not started** |
 
 **Tier 1 is defined as:** every component that carries one of the four rules, or that the chat spine is
-built from. Tier 2 is the remaining 44 — chips, buttons, marks, icons, shells: short contracts, and
+built from. Tier 2 is the remaining 43 — chips, buttons, marks, icons, shells: short contracts, and
 behaviour already visible on a group board.
 
 ## 3 · Read these, in this order
@@ -64,7 +64,7 @@ These were decided in conversation. They are binding, and re-litigating them was
 | **No Lottie, and no motion library.** | ~250 KB of runtime in a repo with **zero** runtime dependencies; a Lottie file bakes its colours so it cannot take tokens; no `prefers-reduced-motion` path without custom wiring; and the system's own aesthetic rejects that layer — *"No photography, no illustration"*, *"Success is a drawn check, not confetti"*. Sentinel's motion is entirely predetermined, so it is CSS transitions and keyframes. |
 | **Waiting verbs are words, not motion.** | `SentinelThinking`'s `verb` changes the label and nothing else. Six of six AI assistants surveyed pair a wait with a named verb; none ships a bare pulse. The verb must be **true and checkable** — it names the source the answer will cite. |
 | **`ui_kits/` stays inside `design-system/`.** | Moving it breaks the three prototypes' relative paths. The owner's instruction was explicit: *"kuch kharab nei karna chahta agar kuch khrab hoga to rehne do."* Screens get a **new** top-level `screens/` instead. |
-| **`StickyCTA` is deprecated, not deleted.** | Removing an export is an API break. It should be a decision someone takes on purpose. **Still open** — see F-11. |
+| **`StickyCTA` is deleted** (18 Sep 2026). | It was deprecated first so the removal would be a decision taken on purpose; the owner took it. `package.json` is `private: true` and nothing in the system imported it, so there was no consumer to break. See F-11 and `CHANGELOG.md` → Removed. |
 | **Figma export comes last.** | The owner *is* the designer and wants Figma only after the design system and the screens are both complete. |
 
 ## 5 · How the work is done here
@@ -107,7 +107,7 @@ Be honest about these with the owner rather than guessing around them.
    `--h-row-lg` / `--h-row-xl`. The owner's correction to the reasoning is recorded in the finding.
 2. ~~**F-25**~~ — closed 18 Sep 2026: Tab is trapped and wraps at the boundary, acting only while focus
    is inside the sheet so a page of open specimens does not fight over it. Measured before and after.
-3. **F-11** — delete `StickyCTA` before the dev handover, or keep it deprecated for a release?
+3. ~~**F-11**~~ — `StickyCTA` deleted 18 Sep 2026, on the owner's ruling. 84 components remain.
 4. **Next phase.** Tier 2 (44 short pages) or screens. The recommendation on record is **screens**:
    everything a screen is assembled from is now page-verified, and the Tier 2 gaps will show up as
    real gaps while building rather than as guesses on a page.
