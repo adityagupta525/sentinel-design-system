@@ -1204,6 +1204,7 @@
     "--color-bronze",
     "--color-muted",
     "--color-track",
+    "--dur-bar",
     "--ease",
     "--font-ui",
     "--radius-full",

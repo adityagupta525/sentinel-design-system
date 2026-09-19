@@ -166,3 +166,9 @@ A box that **clips** is checked itself and then closes the question for everythi
    31 on another. Load it before any other `.jsx` on the page. `docs/DNA.md` says what each field means,
    what the product calls it, and what is known, unknown or not applicable — the three states a field can
    be in, and the three different ways they render.
+25. **The build order before a commit that touches `design-system/` is fixed, and getting it wrong fails
+   CI twice.** `build:barrel` → `build:bundle` → **`build:index`** → `build:scale` → **`check:integrity
+   -- --update` LAST**. The index records each component's tokens and literals, so a component edit makes
+   it stale; updating the integrity baseline before rebuilding the index bakes in the stale file and CI
+   reports "_index.json is stale" (run 71) or "1 file differs" (run 58). `npm run check` does all of it in
+   order — use it rather than remembering.
