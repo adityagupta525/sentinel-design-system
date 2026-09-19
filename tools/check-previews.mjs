@@ -239,6 +239,18 @@ for (const r of results) {
 }
 if (JSON_OUT) await writeFile(JSON_OUT, JSON.stringify(results, null, 1));
 
+/* WHEN CI FAILS, SAY WHY WHERE IT CAN BE READ (19 Sep 2026). Run 63 failed on this step and the log is
+   admin-only, so nobody without admin on the repository — including the agent that wrote the commit —
+   could find out which page broke or how. GitHub's `::error::` lines become check-run annotations, and
+   annotations ARE readable through the public API. So every failing page now names itself there.
+   A gate whose failure cannot be read is a gate that gets ignored or, worse, guessed at. */
+if (process.env.GITHUB_ACTIONS) {
+  for (const r of bad) {
+    const why = [...r.errors, ...r.missing].slice(0, 3).join(' · ') || `mounted only ${r.mounted} characters`;
+    console.log(`::error file=${r.rel},title=${r.rel} did not render clean::${why.replace(/\n/g, ' ')}`);
+  }
+}
+
 if (SELF_TEST) {
   const broken = results.find((r) => r.rel.includes('gutter-broken'));
   const ok = results.find((r) => r.rel.includes('gutter-ok'));
