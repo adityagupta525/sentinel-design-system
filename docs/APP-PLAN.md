@@ -155,8 +155,8 @@ Each row is one commit, built on the system, every state rendered, and reviewed 
 | 3 ✅ | **The going-back layer** — built 19 Sep as `screens/thread/going-back.html` | The weakest axis, and all four components existed unused | `ResponseFeedback`, `VersionRow`, `DetourBanner`, `FollowUpRow` |
 | 4 ✅ | **Journey A — Meera's risk profile** — built 19 Sep as `screens/journey-a/risk-profile.html` | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `SentinelThinking`, `QAPair`, `HeroNumberCard`, `ParseNote` |
 | 5 ✅ | **The fund surfaces** — built 19 Sep as `screens/journey-c/funds.html` | The third router bucket, and the one that found what the product does not know | `InfoCard`, `OverlapView`, `DataTable`, `Badge`, `InfoDot` |
-| 6 | **The refusals and the capabilities reply** — next | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |
-| 7 | **The prototype, end to end** | Every journey clickable in one page, with the motion log | — |
+| 6 ✅ | **The refusals and the capabilities reply** — built 19 Sep as `screens/thread/refusals.html` | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |
+| 7 | **The prototype, end to end** — next | Every journey clickable in one page, with the motion log | — |
 
 `report:parallel` is the finish line: when it reads 86 of 86, the app has exercised the system and the
 system has nothing in it nobody uses.
@@ -188,10 +188,10 @@ cannot do) and **four it opens**, in order of how much trust they carry:
 
 | # | What | Why it matters | Where it goes |
 | --- | --- | --- | --- |
-| R1 | **Completeness, not just provenance** — say what a total is a sum OF, and what has not reported yet | The top theme, sev 4: *"total AUM shown is less"* because one AMC was missing. Our provenance says where a figure came from, never how complete it is | A line on any total drawn from more than one source; `book.jsx` gains a `reporting` field |
+| R1 ✅ | **Completeness, not just provenance** — done 19 Sep: the allocation says "all 18 funds reported" and `book.jsx` carries a `reporting` field. — say what a total is a sum OF, and what has not reported yet | The top theme, sev 4: *"total AUM shown is less"* because one AMC was missing. Our provenance says where a figure came from, never how complete it is | A line on any total drawn from more than one source; `book.jsx` gains a `reporting` field |
 | R2 | **The in-flight state of an instruction** | Between "Approve" and "placed" there is a state we have not designed, and it is the one an advisor meets on a bad day. Second theme, sev 4 | `ConfirmSheet.busy` exists; the thread has no "placing…" turn and no "we do not know yet" |
 | R3 | **A money ledger and an export** | Third-party advisors ask for it in almost every app. `DownloadAction` and `DataTable` exist and no screen uses them for this. The drawer is history of CONVERSATIONS; this is history of MONEY | A new surface, after the refusals |
-| R4 | **The allocation is one level too coarse** | An MFD's own words: *"it says equity no mention of mid large or small"*. Our own ceilings are written against caps the allocation card never shows | `AllocationCard` on the built drift screens |
+| R4 ✅ | **The allocation is one level too coarse** — done 19 Sep: the cap split is in the book and the breached small-cap sleeve is drawn with `ConcentrationBar`. | An MFD's own words: *"it says equity no mention of mid large or small"*. Our own ceilings are written against caps the allocation card never shows | `AllocationCard` on the built drift screens |
 
 ## 6 · What research this is built on, honestly
 

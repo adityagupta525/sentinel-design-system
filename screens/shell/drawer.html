@@ -6,7 +6,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['Drawer','SegmentedRow','Pressable','PhoneFrame'];</script>
+<script>window.__screenRequires = ['Drawer','SegmentedRow','Pressable','SearchField','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/home.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
@@ -21,7 +21,7 @@
    and PROMOTED the same day on the owner's ruling that a screen never hand-builds what it needs —
    they now live in design-system/components with contracts and spec pages, and this page only
    composes them. home.jsx is loaded above and owns the shared destructure; only new names here. */
-const { Drawer, SegmentedRow, Pressable } = window.SentinelDesignSystem_0682a2;
+const { Drawer, SegmentedRow, Pressable, SearchField } = window.SentinelDesignSystem_0682a2;
 
 /* The data and the footer moved to shell/menu.jsx on 18 Sep so the live prototype draws the same menu.
    MENU_SAVED, MENU_RECENT, MENU_CLIENTS, MENU_CLIENTS_LONG and MenuFooter are globals from that file. */
@@ -43,6 +43,10 @@ const Scene = (props) => (
    keyboard is checked against — Escape closes, Tab wraps, focus returns to the hamburger. */
 function LiveScene() {
   const [open, setOpen] = React.useState(false);
+  /* G6 closed: the book is 512 names, the list shows eight, and until now the other 504 were reachable
+     only by typing a name into the thread's composer. The drawer gives SearchField a place; the
+     filtering is this screen's, because the drawer does not own the book. */
+  const [q, setQ] = React.useState('');
   /* "See all" raises the section's cap in place — the panel already carries one scroll, so there is no
      second surface to invent. The caps are Drawer's own prop. Until 19 Sep this page called itself
      "the screen" while Back to home and all three See all rows did nothing when tapped: controls that
@@ -53,7 +57,9 @@ function LiveScene() {
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Home hour={15} time="3:04" onMenu={() => setOpen(true)} />
       <Drawer open={open} onClose={() => setOpen(false)} onNew={() => setOpen(false)} onSeeAll={seeAll} caps={caps}
-        saved={SAVED} recent={RECENT} clients={MENU_ROWS} footer={<Footer onHome={() => setOpen(false)} />} />
+        saved={SAVED} recent={RECENT} footer={<Footer onHome={() => setOpen(false)} />}
+        search={<SearchField value={q} onChange={setQ} onClear={() => setQ('')} placeholder={`Search ${ADVISOR.clients} clients`} />}
+        clients={MENU_ROWS.filter((c) => c.title.toLowerCase().includes(q.toLowerCase()))} />
     </div>
   );
 }
@@ -168,7 +174,15 @@ mountScreen(
         contradiction 59. The four rules are the product&rsquo;s law and their wording is the owner&rsquo;s, so
         it is not edited here.
       </Note>
-      <Note title="Still open — a 512-client book behind an eight-row list">
+      <Note title="G6 closed — the 512-client book has a way in">
+        The client list shows eight of 512 and the other 504 were reachable only by typing a name into the
+        thread&rsquo;s composer. <code>SearchField</code> was in the system, specified as <em>&ldquo;the
+        composer&rsquo;s visual style at one row and 44px, so it reads as a filter rather than a second
+        composer&rdquo;</em>, and on no screen. The drawer now has a <code>search</code> slot directly above the
+        client list and the live phone filters as you type. The drawer does not own the book, so the filtering is
+        the screen&rsquo;s &mdash; which is also why the placeholder states the real count rather than a guess.
+      </Note>
+      <Note title="The old note, kept because the reasoning still holds">
         The product&rsquo;s own copy says a 512-client book. This screen shows the first eight and a
         &ldquo;See all&rdquo; row, and it has no search. <code>SearchField</code> is in the system and unused.
         That is gap G6 in <code>SCREENS-PLAN.md</code>, and it is not fixed here because the brief did not ask

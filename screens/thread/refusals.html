@@ -1,0 +1,164 @@
+<!-- @dsCard group="Screens" viewport="1400x3400" name="Thread · when Sentinel says no" subtitle="The six buckets a sentence lands in, and the standing answer to “what can I do here?” — every refusal naming what it can do in the same breath" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Thread · when Sentinel says no — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','MoneyComposer','UserBubble','MessageActions','SentinelBlock','SentinelText','RejectCallout','ConstraintCallout','ConfirmSheet','FollowUpRow','ParseNote','ChipRow','AnswerChip','Pill','ExplainerSheet','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="../data/book.jsx"></script>
+<script type="text/babel" src="./refusals.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+/* thread.jsx gives the shell, AskTurn and the real paperclip; book.jsx the clients; refusals.jsx the
+   buckets. Only names this file adds are destructured. */
+const { Composer, MoneyComposer, RejectCallout, ConstraintCallout, ConfirmSheet, AnswerChip, ChipRow, SentinelBlock, SentinelText, ParseNote } = window.SentinelDesignSystem_0682a2;
+
+const Ask = ({ onAttach, money }) => (money
+  ? <MoneyComposer onSend={() => {}} placeholder="or type the amount" />
+  : <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />);
+
+function Scene({ ask, children, money, editable = true }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor="bottom" revision={!!att.file} composer={<Ask money={money} onAttach={att.onAttach} />}>
+      <AskTurn text={ask} editable={editable} costNote="Sending this replaces the reply below it." />
+      {children}
+      <AttachedTurn file={att.file} onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+/* Live: miss twice and the standing answer appears — the way an advisor actually reaches it. */
+function LiveScene() {
+  const [turns, setTurns] = React.useState([]);
+  const [confirm, setConfirm] = React.useState(false);
+  const att = useAttachment();
+  const misses = turns.filter((t) => t.kind === 'miss').length;
+  const say = (kind) => setTurns((t) => [...t, { kind }]);
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Thread anchor="bottom" revision={`${turns.length}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+        <AskTurn text={BUCKET_4.ask} costNote="Sending this replaces the reply below it." />
+        <RefusalTurn body={BUCKET_4.body} chips={[...BUCKET_4.chips, ...(misses >= 1 ? [BUCKET_4.repeatChip] : [])]}
+          onChip={(c) => (c === BUCKET_4.repeatChip ? say('caps') : say('miss'))} />
+        {turns.map((t, i) => (
+          <React.Fragment key={i}>
+            {t.kind === 'miss' && <React.Fragment>
+              <UserBubble text="the thing for sharma na" />
+              <RefusalTurn body={BUCKET_4.body} chips={[...BUCKET_4.chips, BUCKET_4.repeatChip]} onChip={(c) => (c === BUCKET_4.repeatChip ? say('caps') : say('miss'))} />
+            </React.Fragment>}
+            {t.kind === 'caps' && <CapabilitiesTurn onAsk={() => say('ok')} />}
+            {t.kind === 'ok' && <SentinelBlock><SentinelText text="Good — that one I can do. Ask it and I will start." /></SentinelBlock>}
+          </React.Fragment>
+        ))}
+        <AttachedTurn file={att.file} onRemove={att.clear} />
+      </Thread>
+      <ConfirmSheet open={confirm} title="Approve · R. Sharma" rows={[{ label: 'Compliance shelf', value: 'Passed' }, { label: 'Client consent', value: 'Required', tone: 'required' }]}
+        disclosure="This redemption runs under your ARN and cannot be pulled back once it is placed."
+        commitLabel="Redeem the full holding" onCommit={() => setConfirm(false)} onClose={() => setConfirm(false)} />
+    </div>
+  );
+}
+
+const MOTION = [
+  ['A refusal arrives', <span><code>ds-rise</code>: fade + 8px</span>, '240ms', 'Fades in place'],
+  ['The peach callout', <span><code>ds-rise</code> at 260ms — ConstraintCallout carries its own</span>, '260ms', 'Fade only'],
+  ['Chips', <span><code>ds-rise</code>, 60ms stagger</span>, '240ms', 'Fade only'],
+  ['The standing answer', 'rows arrive with the message that offered them', '240ms', 'Fade only'],
+];
+
+const PROVENANCE = [
+  ['₹25 L, and ₹60,00,000', <span>The ceiling on Mr. Amit Aggrawal’s mandate, and the amount typed — both from <code>book.jsx</code></span>, 'The peach callout, with “I have not applied it”'],
+  ['₹4,41,130 · folio 9142/28', "Sharma's Quant Small Cap holding, from the book", 'The preview of what the instruction would do, before any confirm'],
+  ['The five things Sentinel can do', 'The router’s own buckets — what is actually built, not a wish list', 'Rows, because every one of them runs past a line'],
+];
+
+mountScreen(
+  <ScreenShell
+    journey="Every journey" n="Thread · saying no" name="The six buckets, and what I can do instead"
+    job="Where a sentence lands when it is not a question Sentinel can answer — out of bounds, not understood, out of scope, or an instruction that would move money. And the standing answer to “what can I do here?”, which had no home until now."
+    without="meets a dead end in the one surface that is supposed to answer — and cannot find out what the product does without being told by a person."
+  >
+    <Section title="1 · Out of bounds — and Sentinel says it did not act" sub="Bucket 2. The advisor asked for something that breaks a limit they themselves set.">
+      <StateRow>
+        <State label="above the mandate ceiling" note="The amount, the ceiling, whose mandate — and then the clause that matters: “I have not applied it.” Sentinel states what it did NOT do, because an advisor who types a figure and gets a peach card has to know whether it went in. Bad news on the peach bubble, never a red fill (rule 2). Two chips: take the ceiling, or change it — the second is a real path, not a brush-off.">
+          <Scene ask={BUCKET_2.ask} money>
+            <RejectCallout eyebrow={BUCKET_2.eyebrow} body={BUCKET_2.body} chips={BUCKET_2.chips} onChip={() => {}} />
+          </Scene>
+        </State>
+        <State label="an instruction that would act" tone="under" note="Bucket 6. Sentinel does not act on a typed sentence, and it does not just refuse either — it reads the instruction back as exactly what it WOULD do, down to the folio and the NAV basis, so a misread is visible before it runs. Then one chip into the confirm sheet, which is the same Suggest → Confirm → Execute path the CTA takes.">
+          <Scene ask={BUCKET_6.ask}>
+            <SentinelBlock>
+              <SentinelText text={BUCKET_6.body} />
+              <div style={{ marginTop: 'var(--space-12)' }}><ConstraintCallout eyebrow="Would run" body={BUCKET_6.preview} /></div>
+              <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label={BUCKET_6.chip} variant="primary" onClick={() => {}} /></div>
+            </SentinelBlock>
+          </Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="2 · Not understood, and out of scope — two different failures" sub="Bucket 4 is “I did not follow that”. Bucket 5 is “I followed it, and I do not do that.” Conflating them is how a product becomes vague.">
+      <StateRow>
+        <State label="not understood" note="Three things it can do, offered as the question the advisor would have asked. The full list is NOT offered on a first miss — that reads as a lecture — and the archive gates it the same way. Nothing is guessed at: Sentinel does not pick the closest journey and start it.">
+          <Scene ask={BUCKET_4.ask}>
+            <RefusalTurn body={BUCKET_4.body} chips={BUCKET_4.chips} />
+          </Scene>
+        </State>
+        <State label="out of scope" tone="under" note="The bucket the archive DECLARED and never returned — router.ts:36 defines it and nothing produces it — so this copy is written here for the first time. Three rules in it: name the thing asked for, say plainly that Sentinel does not do it AND why, then hand back the nearest real thing. Never “I can't help with that.”">
+          <Scene ask={BUCKET_5.ask}>
+            <RefusalTurn body={BUCKET_5.body} chips={BUCKET_5.chips} />
+          </Scene>
+        </State>
+        <State label="a name with no intent" tone="under" note="Not a refusal at all — a question back. And the three options are HERS, drawn from her own record: the profile she has not finished, what she holds, the SIP on the 5th. A generic menu here would be the product admitting it did not look her up.">
+          <Scene ask={DISAMBIGUATE.ask}>
+            <RefusalTurn body={DISAMBIGUATE.body} chips={DISAMBIGUATE.chips} />
+          </Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="3 · “What can I do here?” — the answer that had no home" sub="An advisor who has never used the product has no way to ask it, and the router's buckets are invisible. It is a turn in the thread, not a settings page.">
+      <StateRow>
+        <State label="the standing answer" note="Five rows, because every one of them runs past a line — FollowUpRow's own rule, and the reason it is not a chip row. Each says what it does AND what it costs the advisor to start it. The closing line is the promise the rest of this screen keeps: anything outside these, Sentinel says it cannot do rather than guessing.">
+          <Scene ask="What can you do?"><CapabilitiesTurn /></Scene>
+        </State>
+        <State label="live · miss twice and it offers itself" note="Tap a chip that is not what you meant and the miss repeats; on the second one, “Show me what I can ask” appears and opens the standing answer. That is how an advisor actually reaches it — not from a menu they would have to know exists.">
+          <LiveScene />
+        </State>
+      </StateRow>
+      <Note title="Why every refusal on this screen names what it CAN do">
+        From <code>docs/RESEARCH.md</code>: the highest-rated advisor app in the sample is praised for a named human
+        who answers, and its 1★ reviews are that same axis inverted — <em>“support tickets open for months.”</em>
+        In a market that rates a product on whether something answers, a refusal that only says no is the most
+        expensive sentence the product can write. So each of these carries the nearest real thing as a chip, and the
+        out-of-scope one hands back the numbers a tax return needs rather than the return itself.
+      </Note>
+    </Section>
+
+    <Section title="4 · What this screen does not do">
+      <Note title="The router is not ported, and these are its outputs rather than its logic">
+        <code>docs/screens-source/src/lib/router.ts</code> sorts free text into six buckets; this screen renders what
+        each one produces. Wiring the parser itself is not a design question and it is not here — which also means the
+        live phone above simulates a miss rather than parsing one.
+      </Note>
+      <Note title="Bucket 3 — a detour — is on another screen">
+        A question asked mid-journey is not a refusal: it is answered in the thread while the rail waits, and that is
+        <code> screens/thread/going-back.html</code>, where the banner names the journey and the question.
+      </Note>
+    </Section>
+
+    <Section title="5 · Motion, and what each one does under reduced motion">
+      <MotionTable rows={MOTION} />
+    </Section>
+
+    <Section title="6 · Provenance">
+      <ProvenanceTable rows={PROVENANCE} />
+    </Section>
+  </ScreenShell>
+);
+</script></body></html>

@@ -25,6 +25,10 @@ export interface DrawerProps {
   /** Below the lists: "Back to home", the appearance control. NEVER a composer — the owner's ruling,
    *  contradiction 59: the thread and its composer are one tap behind the scrim. */
   footer?: React.ReactNode;
+  /** A `SearchField`, rendered directly above the client list. The book is 512 names and the list shows
+   *  eight; without this the other 504 are reachable only by typing a name into the thread's composer.
+   *  The drawer gives it a place — the filtering is the caller's, because the drawer does not own the book. */
+  search?: React.ReactNode;
   /** The dialog's accessible name. Default "Menu". */
   label?: string;
 }

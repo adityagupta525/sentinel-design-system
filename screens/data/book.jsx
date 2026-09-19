@@ -106,6 +106,19 @@ const CLIENTS = [
        with it or screen 5 starts lying. */
     portfolio: { valueRs: 1423000, funds: 18, asOf: '30 Sep 2026' },
     allocation: { equity: 71, debt: 24, cash: 5 },                    // today, from his Q3 statement
+    /* R4, from the research: "only a part of asset allocation shown that too it says equity no mention of
+       mid large or small" — an MFD's own words. Equity / Debt / Cash is one level too coarse to act on,
+       and BOTH of this product's 25% ceilings are written against caps the three-row card never showed.
+       Split from his holdings: small 31 + flexi 14 + large 11 + 15 across the thirteen funds under 5%. */
+    allocationByCap: [
+      { label: 'Small cap', pct: 31, over: 'smallCapSleeve' },
+      { label: 'Other equity', pct: 15 },
+      { label: 'Flexi cap', pct: 14 },
+      { label: 'Large cap', pct: 11 },
+    ],
+    /* R1, from the research: the top theme was a total that was silently short because one AMC had not
+       reported. Provenance says WHERE a figure came from; this says HOW COMPLETE it is. */
+    reporting: { funds: 18, reported: 18, asOf: '30 Sep 2026' },
     allocationPrior: { equity: 62 },                                  // Q2 — the drift is 62 → 71
     /* Quant Small Cap at 31% breaches the single-fund ceiling of 25%: 31% of ₹14.2 L is ₹4,41,130, and
        taking ₹1,85,000 out leaves ₹2,56,130 — 18% — which is why the confirm sheet can state "No fund
@@ -118,6 +131,7 @@ const CLIENTS = [
       { fundId: 'hdfc-stdebt', pct: 8,  valueRs: 113840, folio: '7761/05' },
     ],
     holdingsShown: 5,                                                 // of 18 — the rest are under 5% each
+    holdingsTailNote: '13 more, each under 5%',
     sips: [{ fundId: 'quant-small', amountRs: 30000, day: 7, mandate: 'NACH', note: 'the redirect in move 2' }],
     /* The rebalance the built screens decide on. The cost is stated on the simulation and again on the
        sheet, and it is a switch — a redemption plus a purchase — so it is taxable by definition. */

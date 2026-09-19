@@ -1328,7 +1328,7 @@ var __ds_out = (() => {
 
   // design-system/components/data/ConcentrationBar.jsx
   function ConcentrationBar({ fraction, label }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", height: 8, width: "100%", overflow: "hidden", borderRadius: "var(--radius-full)", background: "var(--color-track)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: "100%", width: "100%", borderRadius: "var(--radius-full)", background: "var(--color-bronze)", transformOrigin: "left", transform: `scaleX(${fraction})`, animation: "ds-grow 500ms var(--ease) both" } })), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "6px 0 0", ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } } }, label));
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", height: 8, width: "100%", overflow: "hidden", borderRadius: "var(--radius-full)", background: "var(--color-track)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: "100%", width: `${Math.max(0, Math.min(1, fraction)) * 100}%`, borderRadius: "var(--radius-full)", background: "var(--color-bronze)", transformOrigin: "left", animation: "ds-grow var(--dur-bar) var(--ease) both" } })), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "6px 0 0", ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } } }, label));
   }
 
   // design-system/components/data/Dumbbell.jsx
@@ -1634,7 +1634,7 @@ var __ds_out = (() => {
   // design-system/components/shell/Drawer.jsx
   var SEE_ALL = (all, cap, onSeeAll, section) => all.length > cap ? /* @__PURE__ */ react_global_default.createElement(Pill, { label: `See all ${all.length}`, size: "sm", tone: "muted", onClick: () => onSeeAll && onSeeAll(section) }) : void 0;
   var CAP = [3, 7, 8];
-  function Drawer({ open, onClose, onNew, onSeeAll, saved = [], recent = [], clients = [], caps = { saved: CAP[0], recent: CAP[1], clients: CAP[2] }, loading = false, failed = {}, footer, label = "Menu" }) {
+  function Drawer({ open, onClose, onNew, onSeeAll, saved = [], recent = [], clients = [], caps = { saved: CAP[0], recent: CAP[1], clients: CAP[2] }, loading = false, failed = {}, footer, search, label = "Menu" }) {
     const ref = react_global_default.useRef(null);
     const wasOpen = react_global_default.useRef(open);
     const opener = react_global_default.useRef(null);
@@ -1715,7 +1715,7 @@ var __ds_out = (() => {
           footer: SEE_ALL(recent, caps.recent, onSeeAll, "recent"),
           emptyState: { title: "No threads yet", body: "Every question you ask is kept here." }
         }
-      ), failed.clients ? /* @__PURE__ */ react_global_default.createElement("div", null, eyebrow("Clients"), failedNote("client book")) : /* @__PURE__ */ react_global_default.createElement(
+      ), search && !failed.clients && /* @__PURE__ */ react_global_default.createElement("div", { style: { paddingBottom: "var(--space-8)" } }, search), failed.clients ? /* @__PURE__ */ react_global_default.createElement("div", null, eyebrow("Clients"), failedNote("client book")) : /* @__PURE__ */ react_global_default.createElement(
         List,
         {
           header: "Clients",

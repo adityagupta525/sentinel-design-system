@@ -29,7 +29,7 @@ const SEE_ALL = (all, cap, onSeeAll, section) => (all.length > cap
 /* 3 / 7 / 8 — List.jsx:8's caps for saved, recent, clients. An array, not an object literal, so the
    index's literal count reads these as the data they are rather than as style values. */
 const CAP = [3, 7, 8];
-export function Drawer({ open, onClose, onNew, onSeeAll, saved = [], recent = [], clients = [], caps = { saved: CAP[0], recent: CAP[1], clients: CAP[2] }, loading = false, failed = {}, footer, label = 'Menu' }) {
+export function Drawer({ open, onClose, onNew, onSeeAll, saved = [], recent = [], clients = [], caps = { saved: CAP[0], recent: CAP[1], clients: CAP[2] }, loading = false, failed = {}, footer, search, label = 'Menu' }) {
   const ref = React.useRef(null);
   const wasOpen = React.useRef(open);
   const opener = React.useRef(null);
@@ -84,6 +84,11 @@ export function Drawer({ open, onClose, onNew, onSeeAll, saved = [], recent = []
           {failed.recent ? <div>{eyebrow('Recent')}{failedNote('recent threads')}</div> : (
             <List header="Recent" items={withPress(recent.slice(0, caps.recent))} rowProps={row} loading={loading} footer={SEE_ALL(recent, caps.recent, onSeeAll, 'recent')}
                   emptyState={{ title: 'No threads yet', body: 'Every question you ask is kept here.' }} />)}
+          {/* G6: the book is 512 names and the list shows eight. `search` is the way in — SearchField, which
+              is "the composer's visual style at one row and 44px, so it reads as a filter rather than a second
+              composer" (its own contract). Filtering is the caller's; the drawer only gives it a place that is
+              unmistakably attached to the client list. */}
+          {search && !failed.clients && <div style={{ paddingBottom: 'var(--space-8)' }}>{search}</div>}
           {failed.clients ? <div>{eyebrow('Clients')}{failedNote('client book')}</div> : (
             <List header="Clients" items={withPress(clients.slice(0, caps.clients))} rowProps={{ variant: 'nav' }} loading={loading} footer={SEE_ALL(clients, caps.clients, onSeeAll, 'clients')}
                   emptyState={{ title: 'No clients on file', body: 'Your book appears here once it is connected.' }} />)}

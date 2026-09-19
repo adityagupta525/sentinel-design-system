@@ -610,6 +610,20 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
+### F-38 · The concentration bar showed 100% for every fraction — *found by looking, fixed 19 Sep 2026*
+`ConcentrationBar`'s fill carried an inline `transform: scaleX(fraction)` **and**
+`animation: ds-grow … both`. `ds-grow` ends at `scaleX(1)` and `animation-fill-mode: both` holds a
+keyframe's final value forever, so the moment the animation finished every bar was full — whatever it was
+told. The component whose entire job is to show a fraction showed all of it, and had since it was written.
+Found the first time a screen used it: Sharma's small-cap sleeve at 31% drew a full bar.
+
+**This is the third time the same CSS fact has cost a figure.** F-27 was `ds-fade … both` holding a scrim
+at opacity 1 over a declared 0.4; this is the transform half of it. The rule, now in the component's own
+header where it will be read: **an animation with `both` owns the property it animates — do not also set
+that property inline.** Every sibling already did it correctly (`AllocationCard`, `HeroNumberCard`,
+`InfoCard`, `Dumbbell` all set the WIDTH and let `ds-grow` scale 0 → 1 of it), so this one now does too.
+Measured after: 31% of its track, on the screen that found it.
+
 ### F-37 · A table's in-row detail was cut off by the table's own sideways scroll — *found by looking, fixed 19 Sep 2026*
 `DataTable`'s expanded detail renders inside the horizontal scroller, so it inherited the table's
 `max-content` width: on the fund screen a fund's page lost its sentence mid-word at the right edge

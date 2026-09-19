@@ -41,7 +41,10 @@ const DRIFT_CONTRIB = [
   { label: 'The funds moved', value: 0.9, note: 'their managers went to large caps, not you' },
 ];
 const DRIFT_PROVENANCE = 'As of 30 Sep · from his Q3 statement and the mandate on file';
-const ALLOC_PROVENANCE = 'As of 30 Sep · from his Q3 statement';
+/* COMPLETENESS, NOT JUST PROVENANCE (R1, docs/RESEARCH.md). The top theme in the study was a total that
+   was quietly short because one AMC had not reported — "total AUM shown is less". Saying where a figure
+   came from does not say whether it is all of it, so the allocation now states both. */
+const ALLOC_PROVENANCE = 'As of 30 Sep · from his Q3 statement · all 18 funds reported';
 const WHY_71 = {
   title: 'Why is 71% a problem?',
   body: [
@@ -118,6 +121,12 @@ function AnswerTurn({ artifact = 'peek', view = 'chart', run = false, enter = fa
       <ANSWER_DS.SentinelBlock continued={continued}>
         <ANSWER_DS.SentinelText text={DRIFT_ANSWER} />
         <div style={{ marginTop: 'var(--space-12)' }}><ANSWER_DS.AllocationCard segments={SHARMA_ALLOC} animate={run} /></div>
+        {/* R4: the cap split, because Equity 71 is not actionable and both 25% ceilings are written against
+            caps. ConcentrationBar states the one that is breached — the small-cap sleeve — as a bar with its
+            number and its limit in the label, so the figure is never carried by the bar alone. */}
+        <div style={{ marginTop: 'var(--space-8)', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
+          <ANSWER_DS.ConcentrationBar fraction={0.31} label="Small cap 31% — the sleeve ceiling is 25%" />
+        </div>
         <div style={{ marginTop: 'var(--space-8)' }}><ANSWER_DS.Provenance text={ALLOC_PROVENANCE} /></div>
         {artifact === 'failed' && (
           <>

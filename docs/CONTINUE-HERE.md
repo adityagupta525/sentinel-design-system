@@ -18,10 +18,10 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **87 / 87** render clean (76 design-system + 11 screens) |
+| Pages | **88 / 88** render clean (76 design-system + 12 screens) |
 | Integrity | 375 files intact |
 | Screens built | **Journey B is complete — all 7 steps, on 5 pages**: `01-home`, `02-thread-trace` (Thread · while it works), `03-thread-answer` (Thread · the answer, steps 3 and 4), `05-decide` (Thread · deciding — steps 5, 6 and 7), `prototype`, plus `shell/drawer` and `flow` |
-| **Next** | `APP-PLAN.md` build order #6 — **the refusals and the capabilities reply**: buckets 4, 5 and "what else can you do?", with `RejectCallout`, `ConstraintCallout`, `ParseNote` and `SearchField`. Then #7, the end-to-end prototype. |
+| **Next** | `APP-PLAN.md` #7 — **the end-to-end prototype**, every journey clickable in one page. And R2 (the in-flight state of an instruction) and R3 (a money ledger and export), the two the research opened that are still unbuilt. |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
 
@@ -45,6 +45,25 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **Build order #6 is done: `screens/thread/refusals.html`**, six states. The six buckets a sentence
+  lands in — out of bounds (with the clause that matters, "I have not applied it"), an instruction that
+  would act (read back as exactly what it would do, down to the folio, before any confirm), not
+  understood, out of scope, and a name with no intent — plus **the standing answer to "what can I do
+  here?"**, which had no home in the product at all.
+  **Bucket 5's copy is written for the first time here:** `router.ts:36` declares the out-of-scope bucket
+  and nothing ever returned it. Three rules went into it — name the thing asked for, say plainly that
+  Sentinel does not do it and why, hand back the nearest real thing. Never "I can't help with that".
+  **Every refusal names what it CAN do in the same breath**, and that is the research's doing: the
+  highest-rated advisor app in the sample is praised for a named human who answers, and its 1★ reviews
+  are that axis inverted.
+- **Four of the research's own findings are closed in the same pass.** R1: the allocation now says "all
+  18 funds reported" — completeness is not provenance. R4: the cap split is in the book and the breached
+  **small-cap sleeve (31% against 25%)** is drawn, because both of this product's 25% ceilings were
+  written against caps the three-row card never showed. G6: the drawer has a `search` slot and the live
+  phone filters 512 names. And **F-38** — `ConcentrationBar` drew 100% for every fraction, since it was
+  written, because `ds-grow … both` overrode its inline `scaleX`. That is the THIRD time this one CSS
+  fact has cost a figure (F-27 was the opacity half), so the rule is now in the component's own header:
+  an animation with `both` owns the property it animates.
 - **There is evidence now, and it is honest about being thin: `docs/RESEARCH.md`.** 60 real, linked
   verbatims from Google Play — KFinKart Distributor (advisor-facing, 3.2★), AssetPlus Partner
   (advisor-facing, 4.7★) and Groww (investor, 4.8★) — coded and ranked by frequency × severity. It is
