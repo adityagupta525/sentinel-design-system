@@ -129,6 +129,8 @@ export type { RejectCalloutProps } from './components/cards/RejectCallout';
 export { RejectCallout } from './components/cards/RejectCallout';
 export type { ResultJourney, ResultState, ResultCardProps, ResultActionsProps, ResultPrimaryProps } from './components/cards/ResultCard';
 export { ResultCard, ResultActions, ResultPrimary } from './components/cards/ResultCard';
+export type { SurfaceElevation, SurfaceTone, SurfaceProps } from './components/cards/Surface';
+export { Surface } from './components/cards/Surface';
 /* chat */
 export type { DetourBannerProps } from './components/chat/DetourBanner';
 export { DetourBanner } from './components/chat/DetourBanner';

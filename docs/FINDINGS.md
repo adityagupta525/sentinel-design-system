@@ -1202,3 +1202,39 @@ Three things it found on its first run that I had not:
   not a defect. The first count was 38 and wrong, because the sweep did not read `tokens/` itself and
   `--display-24` lives inside `--type-figure-font` and nowhere else. A debt list that over-reports is a
   debt list nobody reads.
+
+### F-53 · Fourteen cards and not one of them was simply a card — *`Surface` added 20 Sep 2026*
+
+`components/cards/` held fourteen components and every one of them **meant** something: `ArtifactCard`
+carries peek/expand and provenance, `InfoCard` is the fund's page, `ResultCard` is the end of a journey.
+None of them was just a box. So nine screens and six system components hand-wrote one.
+
+**Measured across the repository:** **38 hand-written surfaces**. And one intent — a hairline ring —
+written **three ways**: `inset 0 0 0 var(--border-1) var(--color-line)`, `0 0 0 1px var(--color-line)`,
+and the same without `inset`. Two inset and one not; one carrying a raw `1px` where the system has
+`--border-1`. `screens/journey-b/moves.jsx:62` was **byte-for-byte** `InfoCard.jsx:69`.
+
+**Every default is the repository's own most-used value, not a preference**, so `<Surface>` with no
+props draws the box this system already draws most often:
+
+| | most used | of 38 |
+|---|---|---|
+| radius | **16** | 18 |
+| padding | **14** | 8 of the 28 that set one |
+| ground | **surface** | 31 |
+
+**Four elevations, because those are the four things a box means here** — `raised` the card the thread
+scrolls past (10) · `soft` a quieter card inside a panel (3) · `ring` a block inset into a card (9,
+written three ways) · `flat` a box that groups without lifting (11). A fifth would be a new visual
+decision and belongs to the owner, not to a caller.
+
+The ring is **inset** and at `--border-1`. The hand-written versions disagreed on both: an outset ring
+sits *outside* the box and eats the gap to its neighbour, and `--border-hairline` is for row dividers
+and card edges, never for a ring that has to read as an edge of its own (`spacing.css:56`).
+
+**It adds no visual decision.** It names the four that were already being made, and stops the fifth
+being made by accident. It is **not** a replacement for the cards that mean something — reach for it
+when the box is only a box.
+
+Migrated first: the byte-identical one. Rendered before and after — same radius, same shadow, same
+padding, nothing moved.

@@ -1,0 +1,104 @@
+<!-- @dsCard group="Pages" viewport="1100x1900" name="Surface" subtitle="The plain card — four elevations, and every default measured from the 38 the repository had already hand-written" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Surface — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Surface, InfoDot, Badge, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface','--color-canvas','--color-bubble','--shadow-card','--shadow-card-soft','--color-line','--border-1','--radius-16','--radius-12','--space-14','--space-10'];
+
+/* Real content, because a box with lorem in it tells you nothing about whether the box is right. */
+const Row = ({ k, v }) => (
+  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--space-8)' }}>
+    <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)' }}>{k}</span>
+    <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>{v}</span>
+  </div>
+);
+const Stat = ({ label, value }) => (
+  <Surface elevation="ring" tone="canvas" radius={12} padding={10}>
+    <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+      <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{label}</span>
+      <InfoDot figure={label} onOpen={() => {}} />
+    </span>
+    <p style={{ margin: 'var(--space-4) 0 0', font: 'var(--type-row-strong-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>{value}</p>
+  </Surface>
+);
+
+function App() {
+  return (
+    <PageShell name="Surface" group="Chat" status="shipped" requires={['Surface','InfoDot','Badge','Pill']}
+      summary="components/cards/ held fourteen cards and not one of them was simply a card, so nine screens and six system components hand-wrote the same box. Measured 19 Sep 2026: 38 hand-written surfaces, and one intent — a hairline ring — written THREE ways, two inset and one not, one carrying a raw 1px where the system has --border-1. moves.jsx:62 was byte-for-byte InfoCard.jsx:69. Every default here is the repository's own most-used value rather than a preference, so <Surface> with no props draws the box this system already draws most often. It adds no visual decision — it names the four that were already being made.">
+
+      <Block n={1} title="Specimen" sub="No props. raised · surface · radius 16 · padding 14 — which is what 18 of the 38 already were.">
+        <Specimen width={343}>
+          <Surface>
+            <p style={{ margin: 0, font: 'var(--type-title-font)', color: 'var(--color-ink)' }}>Two moves</p>
+            <div style={{ marginTop: 'var(--space-10)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+              <Row k="What it costs him" v="₹11,200" />
+              <Row k="Equity after" v="58%" />
+            </div>
+          </Surface>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="A box and nothing else: radius, ground, elevation, padding. It draws no border, no header and no divider — a Surface that needed those would be one of the cards that mean something.">
+        <Anatomy width={343} top="radius 16 — the load-bearing card radius" left="padding 14 on all four sides" right="background --color-surface" bottom="elevation: one of four, and only four">
+          <Surface><Row k="Small cap" v="31%" /></Surface>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="The four elevations" sub="Four, because those are the four things a box means in this product. A fifth is a new visual decision and belongs to the owner, not to a caller.">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'raised — 10 of 38', node:<Surface><Row k="The card the thread scrolls past" v="—" /></Surface>, note:'--shadow-card. The default, and the one an artifact sits on.'},
+          {label:'soft — 3 of 38', node:<Surface elevation="soft"><Row k="A quieter card inside a panel" v="—" /></Surface>, note:'--shadow-card-soft. One notch down, for a card that is already inside something raised.'},
+          {label:'ring — 9 of 38, written three ways', node:<Surface elevation="ring" tone="canvas"><Row k="A block inset into a card" v="—" /></Surface>, note:'INSET, at --border-1. An outset ring sits OUTSIDE the box and eats the gap to its neighbour; --border-hairline is for row dividers and card edges, never for a ring that has to read as an edge of its own (spacing.css:56).'},
+          {label:'flat — 11 of 38', node:<Surface elevation="flat" tone="canvas"><Row k="Groups without lifting" v="—" /></Surface>, note:'No elevation at all. A box that exists to hold things together, not to separate them from the page.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="Tones" sub="Three grounds, and the third is a rule. Bad news sits on the peach bubble as TEXT — the tone never carries the meaning on its own (rule 2).">
+        <Grid cols={3} itemWidth={200} items={[
+          {label:'surface — 31 of 38', node:<Surface><Row k="Card ground" v="—" /></Surface>},
+          {label:'canvas — 5 of 38', node:<Surface elevation="ring" tone="canvas"><Row k="Inset into a card" v="—" /></Surface>},
+          {label:'bubble', node:<Surface elevation="flat" tone="bubble"><p style={{margin:0, font:'var(--type-row-font)', color:'var(--color-status-over-fg)'}}>The RTA rejected this — the NACH mandate is registered for the old amount.</p></Surface>, note:'The ground is peach and the DANGER is in the words. Never a red fill.'},
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="The stat pair InfoCard draws, built from Surface — this exact block is the one that was written by hand in six places.">
+        <Specimen width={343}>
+          <Surface>
+            <p style={{ margin: 0, font: 'var(--type-title-font)', color: 'var(--color-ink)' }}>Quant Small Cap</p>
+            <div style={{ marginTop: 'var(--space-12)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-8)' }}>
+              <Stat label="Riskometer" value="Very high" />
+              <Stat label="Expense ratio" value="0.71%" />
+            </div>
+          </Surface>
+        </Specimen>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={7} title="Props"><Props src="../components/cards/Surface.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<Surface><div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'var(--space-8)'}}><Stat label="Expense ratio" value="0.71%" /><Stat label="Exit load" value="1%" /></div></Surface>}
+          doCaption="A ring block inside a raised card. Two elevations, and the inner one reads as part of the outer — which is what inset means."
+          dontNode={<Surface><div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'var(--space-8)'}}><Surface radius={12} padding={10}><Row k="Expense ratio" v="0.71%" /></Surface><Surface radius={12} padding={10}><Row k="Exit load" v="1%" /></Surface></div></Surface>}
+          dontCaption="Never a raised card inside a raised card. Two shadows say two separate objects, and these are two facts about one fund." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="None of its own.">
+        <Motion rows={[
+          { name: 'Entrance', property: 'none — the card that contains it decides', duration: '—', reduced: 'Unchanged.' },
+          { name: 'Elevation change', property: 'none. A Surface does not lift on press; a control inside it does', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

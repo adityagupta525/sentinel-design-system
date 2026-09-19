@@ -58,8 +58,10 @@ const CLIENT_NOTE = 'Mr. Sharma, your equity had drifted to 71% against the 60% 
    card already carries a provenance line, and two near-identical lines stacked is the repeated data the
    owner has objected to more than once. The figure is the same either way; only who states it moves. */
 function MovesSimulation({ provenance = true }) {
+  /* Surface, not a hand-written box. This div was byte-for-byte InfoCard.jsx:69 — one of the 38 the
+     system had no name for until 19 Sep 2026. */
   return (
-    <div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
+    <MOVES_DS.Surface>
       <MOVES_DS.Eyebrow>If you approve both</MOVES_DS.Eyebrow>
       <div style={{ marginTop: 'var(--space-12)', display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
         <MOVES_DS.Dumbbell label="Equity today" target={60} actual={71} targetLabel="He agreed to" actualLabel="He is at" />
@@ -70,7 +72,7 @@ function MovesSimulation({ provenance = true }) {
         <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>₹11,200</span>
       </div>
       {provenance && <div style={{ marginTop: 'var(--space-8)' }}><MOVES_DS.Provenance text={MOVES_PROVENANCE} /></div>}
-    </div>
+    </MOVES_DS.Surface>
   );
 }
 

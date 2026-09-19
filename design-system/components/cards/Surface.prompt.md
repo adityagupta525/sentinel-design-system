@@ -1,0 +1,7 @@
+Surface — the plain card. `components/cards/` had fourteen cards and not one of them was simply a card, so nine screens and six system components hand-wrote the same box: **38 of them**, with one intent — a hairline ring — written **three ways**. Every default is the repository's own most-used value, so `<Surface>` with no props draws the box this system already draws most often.
+```jsx
+<Surface>{children}</Surface>                                  {/* raised · surface · radius 16 · padding 14 */}
+<Surface elevation="ring" tone="canvas" radius={12} padding={10}>…</Surface>   {/* a block INSET into a card */}
+<Surface elevation="flat" padding={0}>…</Surface>              {/* groups without lifting */}
+```
+Four elevations, because those are the four things a box means here: **raised** the card the thread scrolls past · **soft** a quieter card inside a panel · **ring** a block inset into a card · **flat** a box that groups without lifting. A fifth is a new visual decision and belongs to the owner. The ring is `inset` and at `--border-1` — an outset ring sits outside the box and eats the gap to its neighbour, and `--border-hairline` is for row dividers, never for a ring that must read as an edge of its own. **Not a replacement for the cards that mean something:** `ArtifactCard` carries peek/expand and provenance, `InfoCard` is the fund's page, `ResultCard` is the end of a journey. Reach for `Surface` when the box is only a box.
