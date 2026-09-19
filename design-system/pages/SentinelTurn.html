@@ -1,0 +1,105 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="SentinelTurn" subtitle="One thing Sentinel said — and the spacing grammar thirteen hand-built turns were already following" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SentinelTurn — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SentinelTurn, ChipRow, AnswerChip, AllocationCard, DarkButton, Surface, StepTrace, ConstraintCallout } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--stack','--space-12','--space-10','--dur-enter','--ease','--text-14','--leading-20','--color-ink-soft','--text-11','--color-muted'];
+
+const ALLOC = [
+  { label: 'Equity', value: 71, tone: 'bronze' },
+  { label: 'Debt', value: 22, tone: 'sand' },
+  { label: 'Cash', value: 7, tone: 'line' },
+];
+const PROV = 'As of 30 Sep · from his September statement · his 18 holdings are mapped to categories';
+
+/* A ruler between two parts, so the page states the gap it is claiming rather than asking you to
+   trust the prose. */
+const Gap = ({ px, what }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-8)', margin: 'var(--space-4) 0' }}>
+    <span style={{ height: px, width: 28, background: 'var(--color-selected)', boxShadow: '0 0 0 var(--border-1) var(--color-bronze)' }} />
+    <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)', fontVariantNumeric: 'tabular-nums' }}>{px}px · {what}</span>
+  </div>
+);
+
+function App() {
+  return (
+    <PageShell name="SentinelTurn" group="Chat" status="shipped"
+      requires={['SentinelTurn','SentinelBlock','SentinelText','SentinelThinking','Provenance','ChipRow','AnswerChip']}
+      summary="Thirteen turns were hand-built across nine screen modules, and between their parts sat 35 spacer divs. Measured 20 Sep 2026, the values spell a grammar the screens were already following without anyone writing it down: a sentence after a sentence is 10, anything after something that is not a sentence is 12, provenance is 10. This component draws that grammar, so the gap is decided once — and a fourteenth turn cannot quietly introduce a fifth value for 'the next sentence'. It adds no visual decision.">
+
+      <Block n={1} title="Specimen" sub="The drift answer, as Journey B draws it: one sentence, the allocation, where the figures came from, then the chips and the move.">
+        <Specimen width={375}>
+          <SentinelTurn
+            say="Equity is 71% of Mr Sharma's portfolio. His mandate says 60%, and small cap alone is 31% against a 25% ceiling."
+            body={<AllocationCard segments={ALLOC} />}
+            provenance={PROV}
+            chips={<ChipRow><AnswerChip label="Why did it move?" variant="tertiary" onClick={() => {}} /><AnswerChip label="Show the 18 holdings" onClick={() => {}} /></ChipRow>}
+            actions={<DarkButton full arrow label="Rebalance to his mandate" onClick={() => {}} />} />
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Five gaps, and not one of them is new. Each is the value the repository already used most often for that pair.">
+        <Anatomy width={343}
+          top="✦ Sentinel — once per turn, dropped by `continued`"
+          left="say · body · then · tail · provenance, in that order"
+          right="chips and actions sit BELOW the block, at --stack"
+          bottom="the whole turn rises together: ds-rise, --dur-enter">
+          <SentinelTurn say={['Two moves.', 'Together they take equity from 71% to 58%.']} provenance={PROV} />
+        </Anatomy>
+        <div style={{ marginTop: 'var(--space-12)' }}>
+          <Gap px={10} what="a sentence after a sentence — 5 of the 6 hand-built cases" />
+          <Gap px={12} what="the body after the lead sentence — 7 of 8" />
+          <Gap px={12} what="a sentence after the body — 5 of 5, unanimous" />
+          <Gap px={10} what="provenance — InfoCard.jsx:119 and OverlapView.jsx:201 both" />
+          <Gap px={12} what="--stack, between the block, the chips and the actions — all 8 turn wrappers" />
+        </div>
+      </Block>
+
+      <Block n={3} title="The four shapes a turn takes" sub="Thirteen hand-built turns, and every one of them is one of these.">
+        <Grid cols={2} itemWidth={343} items={[
+          {label:'say → chips', node:<SentinelTurn say={['There is nobody on your book yet.','Add a client and everything here works on them — the risk profile, the proposal, the review.']} chips={<ChipRow><AnswerChip label="Add a client" variant="primary" onClick={()=>{}} /><AnswerChip label="Import from my ARN" onClick={()=>{}} /></ChipRow>} />, note:'The refusal, the empty book, the uncosted rebalance. 10 between the sentences, 12 before the chips.'},
+          {label:'say → body → provenance', node:<SentinelTurn say="Equity is 71%. His mandate says 60%." body={<AllocationCard segments={ALLOC} />} provenance={PROV} />, note:'The answer. The body is the one thing the turn carries.'},
+          {label:'bodyFirst → then', node:<SentinelTurn bodyFirst body={<Surface><p style={{margin:0, font:'var(--type-title-font)', color:'var(--color-ink)'}}>Both moves placed</p><p style={{margin:'var(--space-2) 0 0', font:'var(--type-caption-font)', color:'var(--color-muted)', fontVariantNumeric:'tabular-nums'}}>19 Sep, 3:04 pm · settles T+2</p></Surface>} then="The two switches have gone to the exchange under your ARN — those cannot be pulled back from here." />, note:'The answer IS the artifact and the sentence reads it out: the risk result, the execution trace, the receipt. 12, not 10 — a sentence after something that is not a sentence takes the part gap.'},
+          {label:'thinking', node:<SentinelTurn thinking="Reading his Q3 statement…" />, note:'And nothing else. Chips and actions are dropped on purpose: offering an answer’s chips beside the dots lets an advisor answer a question Sentinel has not finished asking.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="Where the numbers came from" sub="Counted across screens/*.jsx on 20 Sep 2026. Not a preference — a vote.">
+        <Grid cols={1} itemWidth={700} items={[
+          {label:'a sentence after a sentence → 10', node:<div style={{font:'var(--type-row-font)', color:'var(--color-ink-soft)'}}>rail.jsx:154 · rebalance.jsx:86 · rebalance.jsx:89 · review.jsx:96 · who.jsx:92 &nbsp;—&nbsp; <span style={{color:'var(--color-status-over-fg)'}}>proposal.jsx:141 is 8</span></div>},
+          {label:'the body after the lead sentence → 12', node:<div style={{font:'var(--type-row-font)', color:'var(--color-ink-soft)'}}>rail.jsx:155 · answer.jsx:123 · moves.jsx:102 · moves.jsx:219 · review.jsx:100 · who.jsx:71 · refusals.jsx:94 &nbsp;—&nbsp; <span style={{color:'var(--color-status-over-fg)'}}>answer.jsx:127 is 8</span></div>},
+          {label:'a sentence after the body → 12 (unanimous)', node:<div style={{font:'var(--type-row-font)', color:'var(--color-ink-soft)'}}>rail.jsx:173 · answer.jsx:133 · moves.jsx:179 · moves.jsx:215 · refusals.jsx:97</div>},
+          {label:'the chips → 12 (unanimous)', node:<div style={{font:'var(--type-row-font)', color:'var(--color-ink-soft)'}}>answer.jsx:136 · moves.jsx:181 · moves.jsx:187 · rebalance.jsx:90 · review.jsx:101 · who.jsx:95 · refusals.jsx:80 — and the 8 turn wrappers that put chips outside the block spell the same 12px as --stack</div>},
+          {label:'provenance → 10', node:<div style={{font:'var(--type-row-font)', color:'var(--color-ink-soft)'}}>The two screens disagreed — rail.jsx:156 is 10, <span style={{color:'var(--color-status-over-fg)'}}>answer.jsx:130 is 8</span> — so the system’s own placements break the tie: InfoCard.jsx:119 and OverlapView.jsx:201 are both 10.</div>},
+        ]} />
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/chat/SentinelTurn.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<SentinelTurn say="I can size it and I cannot cost it." body={<ConstraintCallout eyebrow="What is missing" body="Folio 9142/28 has no purchase dates on file, so the tax on a switch cannot be worked out." />} chips={<ChipRow><AnswerChip label="Size it anyway" onClick={()=>{}} /><AnswerChip label="Ask for the dates" onClick={()=>{}} /></ChipRow>} />}
+          doCaption="One turn, one thing said, one body, one row of chips. The gaps are the component's, so this turn cannot drift from the twelve beside it."
+          dontNode={<div style={{display:'flex', flexDirection:'column', gap:'var(--stack)'}}><SentinelTurn say="I can size it and I cannot cost it." /><SentinelTurn say="Folio 9142/28 has no purchase dates on file." chips={<ChipRow><AnswerChip label="Ask for the dates" onClick={()=>{}} /></ChipRow>} /></div>}
+          dontCaption="Two turns for ONE thing Sentinel said — so the name is signed twice, eleven points apart. A turn that continues another passes `continued`. One signature per turn is a standing ruling (18 Sep 2026)." />
+      </Block>
+
+      <Block n={8} title="Motion">
+        <Motion rows={[
+          { name: 'Turn entrance', property: 'ds-rise on the whole turn — block, chips and actions rise together', duration: '--dur-enter, --ease', reduced: 'Opacity only; no travel.' },
+          { name: 'Each sentence', property: 'ds-fade, owned by SentinelText', duration: '300ms', reduced: 'Opacity only.' },
+          { name: 'Waiting', property: 'SentinelThinking — shimmer on the label, staggered dot-pulse', duration: '1200ms, looping', reduced: 'Both hold at full opacity.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

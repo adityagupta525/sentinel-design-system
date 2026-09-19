@@ -91,19 +91,13 @@ function ReviewEnding({ audience = 'record', onChip, continued = true }) {
   const e = REV_ENDINGS[audience];
   const blocked = audience === 'invest';
   return (
-    <REV_DS.SentinelBlock continued={continued}>
-      {e.lines.map((l, i) => (
-        <div key={i} style={i ? { marginTop: 'var(--space-10)' } : undefined}>
-          <REV_DS.SentinelText text={l} weight={i ? 'Regular' : 'Medium'} />
-        </div>
-      ))}
-      {blocked && <div style={{ marginTop: 'var(--space-12)' }}><REV_DS.ConstraintCallout eyebrow="What is missing" body={REV_MISSING} /></div>}
-      <div style={{ marginTop: 'var(--space-12)' }}>
+    <REV_DS.SentinelTurn continued={continued} say={e.lines}
+      body={blocked ? <REV_DS.ConstraintCallout eyebrow="What is missing" body={REV_MISSING} /> : null}
+      chips={
         <REV_DS.ChipRow>
           {e.chips.map((l) => <REV_DS.AnswerChip key={l} label={l} onClick={() => onChip && onChip(l)} />)}
         </REV_DS.ChipRow>
-      </div>
-    </REV_DS.SentinelBlock>
+      } />
   );
 }
 

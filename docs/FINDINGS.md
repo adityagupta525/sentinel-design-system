@@ -1238,3 +1238,52 @@ when the box is only a box.
 
 Migrated first: the byte-identical one. Rendered before and after — same radius, same shadow, same
 padding, nothing moved.
+
+### F-54 · Thirteen turns, 35 spacers, and a grammar nobody had written down — *`SentinelTurn` added 20 Sep 2026*
+
+Nine screen modules hand-built **thirteen Sentinel turns**, and between their parts sat **35 spacer
+divs**. The values were never arbitrary — measured across `screens/*.jsx` they spell a rule the
+screens were already following:
+
+| between | value | vote |
+|---|---|---|
+| a sentence and the next sentence | `--space-10` | 5 of 6 |
+| the lead sentence and the body | `--space-12` | 7 of 8 |
+| the body and a sentence after it | `--space-12` | **5 of 5** |
+| the block and its chips | `--space-12` | **7 of 7** |
+| anything and its provenance | `--space-10` | the system's own two placements |
+
+The provenance gap is the one the screens split on — `rail.jsx:156` at 10, `answer.jsx:130` at 8 — so
+the tie is broken by `InfoCard.jsx:119` and `OverlapView.jsx:201`, which are both 10, rather than by a
+preference. And `--stack` (12px) between the turn's own parts is what all eight hand-built turn
+wrappers already used; the seven turns that instead nested their chips *inside* the block at
+`--space-12` spell the same 12px, so the two idioms draw the same picture.
+
+**Ten of the thirteen turns migrated with zero pixels moving**, proved by rendering each affected page
+before and after and differencing the shots: `refusals` · `who` · `rebalance` · `review` ·
+`05-decide` · `journey-b/prototype` · `prototype` all came back **byte-identical**, and
+`risk-profile` differs only in the phase of `SentinelThinking`'s pulse (max channel delta **15** of
+255 — a geometric shift of that text measured 237).
+
+**Two regressions the render caught and source alone would not have.**
+
+1. A bare `AnswerChip` handed to the turn's flex column became a flex item, and `align-items: stretch`
+   pulled the pill across the full 343. Measured on `05-decide`, the partial-execution turn. Every
+   hand-built turn wrapped its chips in a plain `<div>` — block layout, intrinsic width — so that div
+   is kept.
+2. Dropping the first part's wrapper `<div>` for a Fragment left `scrollTop` **1px short of the
+   bottom** on `risk-profile`. Every child height measured identical and `scrollHeight` was 1039 both
+   ways: nothing in the layout moved, but the shot did. A component that replaces hand-written markup
+   has to produce the same **tree**, not merely the same box.
+
+**Three sites dissent and were NOT migrated**, because each is a visible 2–4px and therefore the
+owner's call:
+
+| site | gap | what the other sites do |
+|---|---|---|
+| `screens/journey-d/proposal.jsx:141` | 8 between two sentences | 10 (5 sites) |
+| `screens/journey-b/answer.jsx:127` | 8 before the concentration card | 12 (7 sites) |
+| `screens/journey-b/answer.jsx:130` | 8 before provenance | 10 (`InfoCard`, `OverlapView`, `rail`) |
+
+`WhoPicker` (`who.jsx:75`, the client list 10 after the search field) is the one thing-after-thing gap
+in the repository with no second instance to vote against it; it stays hand-written until there is.

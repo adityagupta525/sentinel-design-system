@@ -81,18 +81,15 @@ const REB_UNCOSTED = {
    rather than written per option, so a fourth target could never arrive with softer wording. */
 function UncostedTurn({ target, onChip, continued = true }) {
   return (
-    <REB_DS.SentinelBlock continued={continued}>
-      <REB_DS.SentinelText text={`${target.label} moves ${inr(target.amountRs)} and lands him at equity ${target.equityAfter}%.`} />
-      <div style={{ marginTop: 'var(--space-10)' }}>
-        <REB_DS.SentinelText weight="Regular" text={`I can size it and I cannot cost it. A switch is a redemption plus a purchase, so it is taxable, and the tax depends on when each lot was bought — folio ${SHARMA.holdings[0].folio} has no purchase dates on file.`} />
-      </div>
-      <div style={{ marginTop: 'var(--space-10)' }}><REB_DS.SentinelText weight="Regular" text={REB_UNCOSTED.tail} /></div>
-      <div style={{ marginTop: 'var(--space-12)' }}>
+    <REB_DS.SentinelTurn continued={continued}
+      say={[`${target.label} moves ${inr(target.amountRs)} and lands him at equity ${target.equityAfter}%.`,
+        `I can size it and I cannot cost it. A switch is a redemption plus a purchase, so it is taxable, and the tax depends on when each lot was bought — folio ${SHARMA.holdings[0].folio} has no purchase dates on file.`,
+        REB_UNCOSTED.tail]}
+      chips={
         <REB_DS.ChipRow>
           {REB_UNCOSTED.chips.map((l) => <REB_DS.AnswerChip key={l} label={l} onClick={() => onChip && onChip(l)} />)}
         </REB_DS.ChipRow>
-      </div>
-    </REB_DS.SentinelBlock>
+      } />
   );
 }
 

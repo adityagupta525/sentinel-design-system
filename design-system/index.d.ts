@@ -152,6 +152,8 @@ export type { SentinelTextProps } from './components/chat/SentinelText';
 export { SentinelText } from './components/chat/SentinelText';
 export type { SentinelThinkingProps } from './components/chat/SentinelThinking';
 export { SentinelThinking } from './components/chat/SentinelThinking';
+export type { SentinelTurnProps } from './components/chat/SentinelTurn';
+export { SentinelTurn } from './components/chat/SentinelTurn';
 export type { StepState, TraceStep, StepTraceProps } from './components/chat/StepTrace';
 export { StepTrace } from './components/chat/StepTrace';
 export type { UserBubbleProps } from './components/chat/UserBubble';

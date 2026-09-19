@@ -1,0 +1,8 @@
+SentinelTurn — one thing Sentinel said, and everything that belongs to it. Nine screen modules hand-built **thirteen turns** with **35 spacer divs** between their parts, and the values spell a grammar nobody had written down: a sentence after a sentence is **10**, anything after something that is not a sentence is **12**, provenance is **10**. This component draws that grammar, so the gap is decided once.
+```jsx
+<SentinelTurn say="Equity is 71%." body={<AllocationCard …/>} provenance="As of 30 Sep · his September statement" />
+<SentinelTurn say={['Two moves.', 'Together they take equity to 58%.']} chips={<ChipRow>…</ChipRow>} />
+<SentinelTurn bodyFirst body={<StepTrace …/>} then="Move 2 did not go." continued enter />
+<SentinelTurn thinking="Reading her account record…" />          {/* chips and actions are dropped */}
+```
+`say` is the sentence or sentences — the first Medium, the rest Regular. `body` is the one thing the turn carries; `bodyFirst` puts it above the sentences, for a turn whose answer IS the artifact. `then` is a sentence after the body and takes the **part** gap, not the sentence gap. `chips` and `actions` sit below the block at `--stack`, which is the same 12px the seven turns that nested chips inside the block already drew. `thinking` renders `SentinelThinking` and nothing else, because offering an answer's chips beside the dots lets an advisor answer a question Sentinel has not finished asking. **Three sites dissent and are not what this draws** — `proposal.jsx:141` (8 between two sentences), `answer.jsx:127` (8 before a card), `answer.jsx:130` (8 before provenance); each is a visible 2–4px and so the owner's call.

@@ -87,18 +87,15 @@ function WhoPicker({ journey, clients = CLIENTS, onPick, onEvent }) {
    place the first day is answered, and it does not pretend: it says what is missing and what to do. */
 function WhoEmpty({ journey, onAdd }) {
   return (
-    <WHO_DS.SentinelBlock>
-      <WHO_DS.SentinelText text={`${whoAsk(journey)} There is nobody on your book yet.`} />
-      <div style={{ marginTop: 'var(--space-10)' }}>
-        <WHO_DS.SentinelText weight="Regular" text="Add a client and everything here works on them — the risk profile, the proposal, the review. Nothing is lost by starting with one." />
-      </div>
-      <div style={{ marginTop: 'var(--space-12)' }}>
+    <WHO_DS.SentinelTurn
+      say={[`${whoAsk(journey)} There is nobody on your book yet.`,
+        'Add a client and everything here works on them — the risk profile, the proposal, the review. Nothing is lost by starting with one.']}
+      chips={
         <WHO_DS.ChipRow>
           <WHO_DS.AnswerChip label="Add a client" variant="primary" onClick={onAdd || (() => {})} />
           <WHO_DS.AnswerChip label="Import from my ARN" onClick={() => {}} />
         </WHO_DS.ChipRow>
-      </div>
-    </WHO_DS.SentinelBlock>
+      } />
   );
 }
 

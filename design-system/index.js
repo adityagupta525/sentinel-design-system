@@ -81,6 +81,7 @@ export { ResponseFeedback } from './components/chat/ResponseFeedback.jsx';
 export { SentinelBlock } from './components/chat/SentinelBlock.jsx';
 export { SentinelText } from './components/chat/SentinelText.jsx';
 export { SentinelThinking } from './components/chat/SentinelThinking.jsx';
+export { SentinelTurn } from './components/chat/SentinelTurn.jsx';
 export { StepTrace } from './components/chat/StepTrace.jsx';
 export { UserBubble } from './components/chat/UserBubble.jsx';
 export { VersionRow } from './components/chat/VersionRow.jsx';

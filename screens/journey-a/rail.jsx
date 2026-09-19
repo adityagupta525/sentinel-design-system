@@ -148,37 +148,27 @@ function StepTurn({ step, onChip, thinking, extra }) {
   if (!step) return null;
   const lines = Array.isArray(step.sentinel) ? step.sentinel : [step.sentinel];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
-      {thinking ? <RAIL_DS.SentinelThinking verb="Reading her account record…" /> : (
-        <RAIL_DS.SentinelBlock>
-          {lines.map((l, i) => <div key={i} style={i ? { marginTop: 'var(--space-10)' } : undefined}><RAIL_DS.SentinelText text={l} weight={i ? 'Regular' : 'Medium'} /></div>)}
-          {extra && <div style={{ marginTop: 'var(--space-12)' }}>{extra}</div>}
-          {step.provenance && <div style={{ marginTop: 'var(--space-10)' }}><RAIL_DS.Provenance text={step.provenance} /></div>}
-        </RAIL_DS.SentinelBlock>
-      )}
-      {!thinking && step.chips && (
+    <RAIL_DS.SentinelTurn
+      thinking={thinking ? 'Reading her account record…' : false}
+      say={lines} body={extra} provenance={step.provenance}
+      chips={step.chips && (
         <RAIL_DS.ChipRow>
           {step.chips.map((ch) => <RAIL_DS.AnswerChip key={ch.label} label={ch.label} variant={ch.tone || 'outline'} onClick={() => onChip && onChip(ch)} />)}
         </RAIL_DS.ChipRow>
-      )}
-    </div>
+      )} />
   );
 }
 
 function RiskResult({ onChip, chips, cta }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
-      <RAIL_DS.SentinelBlock>
-        <RAIL_DS.HeroNumberCard {...RISK_RESULT} />
-        <div style={{ marginTop: 'var(--space-12)' }}><RAIL_DS.SentinelText weight="Regular" text={RISK_RESULT.trailing} /></div>
-      </RAIL_DS.SentinelBlock>
-      {chips && (
+    <RAIL_DS.SentinelTurn
+      bodyFirst body={<RAIL_DS.HeroNumberCard {...RISK_RESULT} />} then={RISK_RESULT.trailing}
+      chips={chips && (
         <RAIL_DS.ChipRow>
           {chips.map((ch) => <RAIL_DS.AnswerChip key={ch.label} label={ch.label} variant={ch.tone || 'outline'} onClick={() => onChip && onChip(ch)} />)}
         </RAIL_DS.ChipRow>
       )}
-      {cta && <RAIL_DS.DarkButton full arrow label={cta} onClick={() => {}} />}
-    </div>
+      actions={cta ? <RAIL_DS.DarkButton full arrow label={cta} onClick={() => {}} /> : null} />
   );
 }
 

@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 46
+  "shipped": 47
  },
  "rows": [
   {
@@ -872,6 +872,22 @@
    ],
    "locals": [],
    "literals": 2
+  },
+  {
+   "name": "SentinelTurn",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "SentinelTurn.html",
+   "file": "components/chat/SentinelTurn.jsx",
+   "tokens": [
+    "--dur-enter",
+    "--ease",
+    "--space-10",
+    "--space-12",
+    "--stack"
+   ],
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "StepTrace",

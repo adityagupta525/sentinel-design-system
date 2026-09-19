@@ -74,30 +74,20 @@ const CAPABILITIES_CLOSER = 'Anything outside these I will say I cannot do, rath
 
 function RefusalTurn({ body, chips = [], onChip, continued = false }) {
   return (
-    <REF_DS.SentinelBlock continued={continued}>
-      <REF_DS.SentinelText text={body} />
-      {chips.length > 0 && (
-        <div style={{ marginTop: 'var(--space-12)' }}>
-          <REF_DS.ChipRow>
-            {chips.map((c) => <REF_DS.AnswerChip key={c} label={c} onClick={() => onChip && onChip(c)} />)}
-          </REF_DS.ChipRow>
-        </div>
-      )}
-    </REF_DS.SentinelBlock>
+    <REF_DS.SentinelTurn continued={continued} say={body}
+      chips={chips.length > 0 && (
+        <REF_DS.ChipRow>
+          {chips.map((c) => <REF_DS.AnswerChip key={c} label={c} onClick={() => onChip && onChip(c)} />)}
+        </REF_DS.ChipRow>
+      )} />
   );
 }
 
 function CapabilitiesTurn({ onAsk }) {
   return (
-    <REF_DS.SentinelBlock>
-      <REF_DS.SentinelText text="Here is everything I can do." />
-      <div style={{ marginTop: 'var(--space-12)' }}>
-        <REF_DS.FollowUpRow items={CAPABILITIES} label="" onAsk={onAsk} />
-      </div>
-      <div style={{ marginTop: 'var(--space-12)' }}>
-        <REF_DS.SentinelText weight="Regular" text={CAPABILITIES_CLOSER} />
-      </div>
-    </REF_DS.SentinelBlock>
+    <REF_DS.SentinelTurn say="Here is everything I can do."
+      body={<REF_DS.FollowUpRow items={CAPABILITIES} label="" onAsk={onAsk} />}
+      then={CAPABILITIES_CLOSER} />
   );
 }
 

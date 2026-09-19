@@ -96,13 +96,7 @@ function MovesBody({ provenance = true }) {
 
 function MovesTurn({ enter = false, actions }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)', animation: enter ? 'ds-rise var(--dur-enter) var(--ease) both' : 'none' }}>
-      <MOVES_DS.SentinelBlock>
-        <MOVES_DS.SentinelText text={MOVES_ANSWER} />
-        <div style={{ marginTop: 'var(--space-12)' }}><MovesBody /></div>
-      </MOVES_DS.SentinelBlock>
-      {actions}
-    </div>
+    <MOVES_DS.SentinelTurn enter={enter} say={MOVES_ANSWER} body={<MovesBody />} actions={actions} />
   );
 }
 
@@ -173,26 +167,19 @@ const EXEC_SUMMARY = {
 function ExecutionTurn({ state = 'flight', enter = false, onRetry, onCheck }) {
   const copy = EXEC_COPY[state];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)', animation: enter ? 'ds-rise var(--dur-enter) var(--ease) both' : 'none' }}>
-      <MOVES_DS.SentinelBlock>
-        <MOVES_DS.StepTrace id={`exec-${state}`} defaultOpen steps={EXEC_STEPS[state]} summary={EXEC_SUMMARY[state]} />
-        {copy && <div style={{ marginTop: 'var(--space-12)' }}><MOVES_DS.SentinelText weight="Regular" text={copy} /></div>}
-        {state === 'partial' && (
-          <div style={{ marginTop: 'var(--space-12)' }}>
-            <MOVES_DS.AnswerChip label="Fix the mandate and retry move 2" variant="primary" onClick={onRetry || (() => {})} />
-          </div>
-        )}
-        {/* The unknown state offers CHECKING, never sending again. */}
-        {state === 'unknown' && (
-          <div style={{ marginTop: 'var(--space-12)' }}>
-            <MOVES_DS.ChipRow>
-              <MOVES_DS.AnswerChip label="Check with the RTA" variant="primary" onClick={onCheck || (() => {})} />
-              <MOVES_DS.AnswerChip label="What do I tell Sharma?" onClick={() => {}} />
-            </MOVES_DS.ChipRow>
-          </div>
-        )}
-      </MOVES_DS.SentinelBlock>
-    </div>
+    <MOVES_DS.SentinelTurn enter={enter} bodyFirst
+      body={<MOVES_DS.StepTrace id={`exec-${state}`} defaultOpen steps={EXEC_STEPS[state]} summary={EXEC_SUMMARY[state]} />}
+      then={copy}
+      chips={
+        state === 'partial' ? <MOVES_DS.AnswerChip label="Fix the mandate and retry move 2" variant="primary" onClick={onRetry || (() => {})} />
+        /* The unknown state offers CHECKING, never sending again. */
+        : state === 'unknown' ? (
+          <MOVES_DS.ChipRow>
+            <MOVES_DS.AnswerChip label="Check with the RTA" variant="primary" onClick={onCheck || (() => {})} />
+            <MOVES_DS.AnswerChip label="What do I tell Sharma?" onClick={() => {}} />
+          </MOVES_DS.ChipRow>
+        ) : null
+      } />
   );
 }
 
@@ -203,33 +190,32 @@ function ExecutionTurn({ state = 'flight', enter = false, onRetry, onCheck }) {
    in the product where a comfortable word costs real money. */
 function SuccessTurn({ enter = false, onRead, onBack, note = false, onDrop }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)', animation: enter ? 'ds-rise var(--dur-enter) var(--ease) both' : 'none' }}>
-      <MOVES_DS.SentinelBlock>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
+    <MOVES_DS.SentinelTurn enter={enter} bodyFirst
+      body={
+        <MOVES_DS.Surface style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
           <MOVES_DS.DrawnCheck />
           <span style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             <span style={{ font: 'var(--type-body-strong-font)', color: 'var(--color-ink)' }}>Both moves placed</span>
             <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)', fontVariantNumeric: 'tabular-nums' }}>19 Sep, 3:04 pm · settles T+2</span>
           </span>
-        </div>
-        <div style={{ marginTop: 'var(--space-12)' }}>
-          <MOVES_DS.SentinelText weight="Regular" text="The two switches have gone to the exchange under your ARN — those cannot be pulled back from here. Sharma has not been told yet: his note is written and waiting for you." />
-        </div>
-        {note && (
-          <div style={{ marginTop: 'var(--space-12)', borderRadius: 'var(--radius-16)', background: 'var(--color-bubble)', boxShadow: '0 0 0 var(--border-1) var(--color-bubble-edge)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
-            <MOVES_DS.Eyebrow>Drafted for Sharma · not sent</MOVES_DS.Eyebrow>
-            <p style={{ margin: 'var(--space-8) 0 0', font: 'var(--type-body-font)', color: 'var(--color-ink-soft)' }}>{CLIENT_NOTE}</p>
-            <div style={{ marginTop: 'var(--space-12)' }}>
-              <MOVES_DS.StandingDisclosure text="Nothing leaves Sentinel until you pick a channel and send it there." />
-            </div>
+        </MOVES_DS.Surface>
+      }
+      then="The two switches have gone to the exchange under your ARN — those cannot be pulled back from here. Sharma has not been told yet: his note is written and waiting for you."
+      tail={note ? (
+        <div style={{ borderRadius: 'var(--radius-16)', background: 'var(--color-bubble)', boxShadow: '0 0 0 var(--border-1) var(--color-bubble-edge)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
+          <MOVES_DS.Eyebrow>Drafted for Sharma · not sent</MOVES_DS.Eyebrow>
+          <p style={{ margin: 'var(--space-8) 0 0', font: 'var(--type-body-font)', color: 'var(--color-ink-soft)' }}>{CLIENT_NOTE}</p>
+          <div style={{ marginTop: 'var(--space-12)' }}>
+            <MOVES_DS.StandingDisclosure text="Nothing leaves Sentinel until you pick a channel and send it there." />
           </div>
-        )}
-      </MOVES_DS.SentinelBlock>
-      <MOVES_DS.ChipRow animate={enter}>
-        <MOVES_DS.AnswerChip label={note ? 'Drop the draft' : 'Read the note to Sharma'} variant={note ? 'muted' : 'primary'} onClick={(note ? onDrop : onRead) || (() => {})} />
-        <MOVES_DS.AnswerChip label="Back to his portfolio" onClick={onBack || (() => {})} />
-      </MOVES_DS.ChipRow>
-    </div>
+        </div>
+      ) : null}
+      chips={
+        <MOVES_DS.ChipRow animate={enter}>
+          <MOVES_DS.AnswerChip label={note ? 'Drop the draft' : 'Read the note to Sharma'} variant={note ? 'muted' : 'primary'} onClick={(note ? onDrop : onRead) || (() => {})} />
+          <MOVES_DS.AnswerChip label="Back to his portfolio" onClick={onBack || (() => {})} />
+        </MOVES_DS.ChipRow>
+      } />
   );
 }
 
