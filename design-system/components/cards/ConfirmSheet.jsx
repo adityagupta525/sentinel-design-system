@@ -58,9 +58,12 @@ export function ConfirmSheet({ open, title, disclosure, disclosureEyebrow = 'Bef
     const onKey = (e) => {
       if (e.key === 'Escape') { e.stopPropagation(); onClose && onClose(); return; }
       if (e.key !== 'Tab' || !armed.current || !ref.current) return;
+      /* A `button` WITH tabindex="-1" IS NOT TABBABLE (F-47). The selector lists `button` bare, so a
+         button deliberately taken out of the tab order still counted as a stop — `active === last`
+         never fired and focus walked out of an aria-modal dialog. Same one line in all three traps. */
       const nodes = Array.prototype.filter.call(
         ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
-        (n) => !n.disabled && n.getAttribute('aria-hidden') !== 'true');
+        (n) => !n.disabled && n.tabIndex >= 0 && n.getAttribute('aria-hidden') !== 'true');
       if (!nodes.length) { e.preventDefault(); ref.current.focus(); return; }
       const first = nodes[0], last = nodes[nodes.length - 1], active = document.activeElement;
       const outside = !ref.current.contains(active);

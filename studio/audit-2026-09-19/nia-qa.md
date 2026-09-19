@@ -113,7 +113,7 @@ type designs, at different weights and widths, in a product whose entire subject
 `design-system/tokens/fonts.css:4-8`. Two engineering constraints, both of which have cost a cycle
 elsewhere: **Chromium resolves family and weight before applying `unicode-range`**, so declare the
 donor at **one weight only** or it becomes the best match for every run at that weight and drops
-whole runs to a system face; and **re-measure platform fonts after adding it**. Show the donor's `₹`
+whole runs to a system face; and **re-measure platform fonts after adding it**. Show the donor's `U+20B9`
 beside Urbanist digits at 11, 13, 14, 16 and 24px before accepting it. Today the faces are fetched
 from `fonts.gstatic.com` and **nothing is vendored** — `find design-system -name "*.woff*" -o -name
 "*.ttf"` returns nothing — so a CDN failure silently drops the whole product to `sans-serif` with no

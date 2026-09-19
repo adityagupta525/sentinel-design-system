@@ -105,12 +105,20 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
       {hasFooter && (
         <React.Fragment>
           <div style={{ margin: '12px 14px 0', height: 'var(--border-hairline)', background: 'var(--color-line-soft)' }} />
+          {/* EACH SLOT IS A BUTTON ONLY IF IT HAS A HANDLER (F-47, 19 Sep 2026). F-42 made the whole
+              footer conditional and stopped there, so a card given ONE handler still rendered three
+              Pressables — two of them enabled, unnamed, 105×44 and reachable by keyboard. Nia measured
+              45 of them across the product. That is the FIFTH time this system has shipped a nameless
+              Pressable (F-28, F-39, F-42, F-43), and the fourth was mine.
+              An empty slot is now a plain div of the same width, so the row's layout does not move. */}
           <div style={{ display: 'flex', padding: '0 14px' }}>
-            <Pressable onClick={filling ? undefined : toggle} style={slot}>
-              {toggle && !filling ? <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)' }}>{label(expanded ? collapseLabel : expandLabel, true)}<Chevron up={expanded} /></span> : null}
-            </Pressable>
-            <Pressable onClick={onWhy} style={slot}>{onWhy ? label('Why?') : null}</Pressable>
-            <Pressable onClick={onShare} style={slot}>{onShare ? label('Share') : null}</Pressable>
+            {toggle
+              ? <Pressable onClick={filling ? undefined : toggle} style={slot}>
+                  {!filling ? <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)' }}>{label(expanded ? collapseLabel : expandLabel, true)}<Chevron up={expanded} /></span> : null}
+                </Pressable>
+              : <div style={slot} />}
+            {onWhy ? <Pressable onClick={onWhy} style={slot}>{label('Why?')}</Pressable> : <div style={slot} />}
+            {onShare ? <Pressable onClick={onShare} style={slot}>{label('Share')}</Pressable> : <div style={slot} />}
           </div>
         </React.Fragment>
       )}

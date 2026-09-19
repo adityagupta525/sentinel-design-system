@@ -434,7 +434,7 @@ var __ds_out = (() => {
         tabIndex: -1,
         style: { position: "absolute", inset: 0, width: "100%", display: "block" }
       }
-    )), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", padding: `14px 14px ${padBottom}px`, textAlign: "left", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, eyebrow), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-4)" } }, titleEl), /* @__PURE__ */ react_global_default.createElement("div", { style: { maxHeight: 96, marginTop: "var(--space-10)", overflow: "hidden", pointerEvents: "auto" } }, filling ? /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 96, borderRadius: "var(--radius-12)", background: "var(--color-track)", animation: "sentinel-shimmer 1200ms ease-in-out infinite" } }) : children), provenance && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "10px 0 0", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-11)", lineHeight: "var(--leading-15)", color: "var(--color-muted)" } }, provenance))), hasFooter && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "12px 14px 0", height: "var(--border-hairline)", background: "var(--color-line-soft)" } }), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", padding: "0 14px" } }, /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: filling ? void 0 : toggle, style: slot }, toggle && !filling ? /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-5)" } }, label(expanded ? collapseLabel : expandLabel, true), /* @__PURE__ */ react_global_default.createElement(Chevron, { up: expanded })) : null), /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onWhy, style: slot }, onWhy ? label("Why?") : null), /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onShare, style: slot }, onShare ? label("Share") : null))));
+    )), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", padding: `14px 14px ${padBottom}px`, textAlign: "left", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, eyebrow), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-4)" } }, titleEl), /* @__PURE__ */ react_global_default.createElement("div", { style: { maxHeight: 96, marginTop: "var(--space-10)", overflow: "hidden", pointerEvents: "auto" } }, filling ? /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 96, borderRadius: "var(--radius-12)", background: "var(--color-track)", animation: "sentinel-shimmer 1200ms ease-in-out infinite" } }) : children), provenance && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "10px 0 0", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-11)", lineHeight: "var(--leading-15)", color: "var(--color-muted)" } }, provenance))), hasFooter && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "12px 14px 0", height: "var(--border-hairline)", background: "var(--color-line-soft)" } }), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", padding: "0 14px" } }, toggle ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: filling ? void 0 : toggle, style: slot }, !filling ? /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-5)" } }, label(expanded ? collapseLabel : expandLabel, true), /* @__PURE__ */ react_global_default.createElement(Chevron, { up: expanded })) : null) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }), onWhy ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onWhy, style: slot }, label("Why?")) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }), onShare ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onShare, style: slot }, label("Share")) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }))));
   }
 
   // design-system/components/cards/Badge.jsx
@@ -482,7 +482,7 @@ var __ds_out = (() => {
         if (e.key !== "Tab" || !armed.current || !ref.current) return;
         const nodes = Array.prototype.filter.call(
           ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
-          (n) => !n.disabled && n.getAttribute("aria-hidden") !== "true"
+          (n) => !n.disabled && n.tabIndex >= 0 && n.getAttribute("aria-hidden") !== "true"
         );
         if (!nodes.length) {
           e.preventDefault();
@@ -686,7 +686,7 @@ var __ds_out = (() => {
         if (e.key !== "Tab" || !armed.current || !ref.current) return;
         const nodes = Array.prototype.filter.call(
           ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
-          (n) => !n.disabled && n.getAttribute("aria-hidden") !== "true"
+          (n) => !n.disabled && n.tabIndex >= 0 && n.getAttribute("aria-hidden") !== "true"
         );
         if (!nodes.length) {
           e.preventDefault();
@@ -1671,7 +1671,7 @@ var __ds_out = (() => {
           return;
         }
         if (e.key !== "Tab" || !armed.current || !ref.current) return;
-        const nodes = Array.prototype.filter.call(ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'), (n) => !n.disabled && n.getAttribute("aria-hidden") !== "true");
+        const nodes = Array.prototype.filter.call(ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'), (n) => !n.disabled && n.tabIndex >= 0 && n.getAttribute("aria-hidden") !== "true");
         if (!nodes.length) {
           e.preventDefault();
           ref.current.focus();

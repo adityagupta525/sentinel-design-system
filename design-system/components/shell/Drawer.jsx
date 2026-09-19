@@ -44,7 +44,12 @@ export function Drawer({ open, onClose, onNew, onSeeAll, saved = [], recent = []
     const onKey = (e) => {
       if (e.key === 'Escape') { e.stopPropagation(); onClose && onClose(); return; }
       if (e.key !== 'Tab' || !armed.current || !ref.current) return;
-      const nodes = Array.prototype.filter.call(ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'), (n) => !n.disabled && n.getAttribute('aria-hidden') !== 'true');
+      /* A `button` WITH tabindex="-1" IS NOT TABBABLE (F-47). The selector listed `button` bare, so a
+         button deliberately taken out of the tab order still counted — `active === last` never fired and
+         focus walked out of an aria-modal dialog. Proven live on the drawer: the trap thought the last
+         stop was "Appearance: Dark" (tabindex -1) while the browser's last was "Back to home".
+         Exposed by F-46's own fix, which gave locked RangePills tabIndex -1. */
+      const nodes = Array.prototype.filter.call(ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'), (n) => !n.disabled && n.tabIndex >= 0 && n.getAttribute('aria-hidden') !== 'true');
       if (!nodes.length) { e.preventDefault(); ref.current.focus(); return; }
       const first = nodes[0], last = nodes[nodes.length - 1], active = document.activeElement;
       const outside = !ref.current.contains(active);

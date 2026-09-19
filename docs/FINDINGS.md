@@ -1019,3 +1019,48 @@ Quant Small Cap" fell through to bucket 4** — the ordinary phrasing, missed by
 stated purpose is to catch an instruction before the fund search reads it as a browse. And `drift`
 matched a bare `sharma`, so **"Review Sharma" and "Review Sharma's portfolio" both opened a drift
 trace** and a bare name never reached disambiguation. Both fixed and verified across eight sentences.
+
+### F-47 · The rupee sign is not in either of our typefaces — *found by Nia, 19 Sep 2026* · **OPEN, needs a ruling**
+
+`U+20B9` **falls back to Helvetica in both shipped faces**. Measured with CDP's
+`getPlatformFontsForNode`, which reports the font the renderer actually used per text run — not the
+declared stack:
+
+```
+"₹89,400 cr"  →  Helvetica x1 · Urbanist x9
+```
+
+Nia counted **230 occurrences inside phones, on all 13 surfaces**, including the 24px display figure.
+Neither Urbanist nor Darker Grotesque contains the glyph; both come from `fonts.gstatic.com` and
+nothing is vendored. Also `U+22EF` (the ⋯ menu) → PingFang SC ×24 and `U+2713` (✓) → Lucida Grande ×2.
+
+**Rule A4 is "Indian grouping and provenance", and the mark that makes a number Indian is the one
+neither face has.** Every screen in this product shows money.
+
+**I checked this by eye earlier the same day and passed it.** Zoomed to 3× the ₹ sits correctly on the
+baseline, so I reported it as fine and deliberately did not "fix" it. It looks fine because Helvetica's
+₹ is a competent glyph — it is simply a different typeface, at a different weight and width, inside
+every rupee figure we draw. `document.fonts.check('16px Urbanist', '₹')` also returns **true**, because
+that API tests the declared `unicode-range` (`U+0-10FFFF`) and whether a matching face is loaded, not
+whether the file contains the glyph. **Two instruments said yes and the renderer said no.**
+
+**Not fixed, because it is not mine to decide.** The options are a vendored donor face scoped by
+`unicode-range` at one weight in `tokens/fonts.css`, or accepting the fallback and recording it. Either
+way it changes what every number in the product looks like, and the visual language is the owner's.
+
+### F-48 · The fifth nameless `Pressable`, and a focus trap that counted it — *19 Sep 2026, fixed*
+
+**(a) `ArtifactCard`'s footer slots.** F-42 made the *whole footer* conditional and stopped there, so a
+card given **one** handler still rendered **three** `Pressable`s — two of them enabled, unnamed, 105×44
+and reachable by keyboard. Nia measured **45 across the product**. That is the **fifth** time this
+system has shipped a nameless `Pressable` (F-28, F-39, F-42, F-43), and F-42 was mine. An empty slot is
+now a plain `div` of the same width, so the row's layout does not move. Verified: 0 on every page.
+
+**(b) The focus trap counted a `tabindex="-1"` button.** All three traps selected `button` bare, so a
+button deliberately taken out of the tab order still counted as a stop — `active === last` never fired
+and **focus walked out of an `aria-modal` dialog**. Proven live on the drawer: the trap believed the
+last stop was "Appearance: Dark" (`tabindex -1`) while the browser's was "Back to home". One line in
+`Drawer.jsx:47`, `ConfirmSheet.jsx:62`, `ExplainerSheet.jsx:48`.
+
+**It was exposed by F-46's own fix** — giving locked `RangePills` `tabIndex={-1}` is what made the trap
+miscount. A correct fix in one component found a latent defect in three others.
