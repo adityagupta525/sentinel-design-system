@@ -230,9 +230,74 @@ for (const p of pages) {
   /* The gutter guard, on screens only: a spec page is a specimen board and has no screen edges. */
   let gutter = null;
   let tight = [];
+  let threeSided = [];
   if (p.gutter) {
     gutter = await page.evaluate(`(${GUTTER_PROBE.toString()})(${p.gutterMin})`).catch(() => null);
     if (gutter && gutter.bad.length) for (const b of gutter.bad) errors.push(`GUTTER ${b}`);
+    /* PADDED ON THREE SIDES (19 Sep 2026). The owner: "dono side se padding hai waise hi bottom me bhi
+       de sakte hai" — a card whose last line sits flush against its bottom edge while its sides are
+       padded. Two of them shipped: ArtifactCard's body ended in `14px 0` and relied on a footer that
+       F-42 had just stopped rendering, and the Home row card did the same.
+       MEASURED, not read: for every boxed element (a radius or a shadow) the space above its first
+       child is compared with the space below its last child. A card is allowed to be tighter at the
+       bottom by a hair — 2px covers a line box's descender — and anything past that is the defect. It
+       is a WARNING, not a failure, because a deliberately bottom-anchored box exists (the dock) and a
+       gate that fails those teaches people to silence it. */
+    threeSided = await page.evaluate(() => {
+      const bad = [];
+      const px = (v) => Math.round(parseFloat(v) || 0);
+      /* INK, NOT BOXES. Two rewrites got here. Box-to-box called a correct confirm sheet a defect,
+         because its 20px sits inside the commit row; counting the child's padding then called a correct
+         artifact card a defect, because its last child is a 44pt footer whose label is centred. What
+         the owner is actually looking at is the last LINE OF TEXT and how far it sits from the edge.
+         So the measure is the first and last text a person can see, against the container's own edges. */
+      const inkRect = (root, last) => {
+        const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+          acceptNode: (n) => {
+            if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+            const p = n.parentElement;
+            if (!p || p.tagName === 'STYLE' || p.tagName === 'SCRIPT') return NodeFilter.FILTER_REJECT;
+            const cs = getComputedStyle(p);
+            if (cs.visibility === 'hidden' || cs.display === 'none' || px(cs.opacity * 100) === 0) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          },
+        });
+        let found = null;
+        while (w.nextNode()) {
+          const r = document.createRange(); r.selectNodeContents(w.currentNode);
+          const b = r.getBoundingClientRect();
+          if (b.height === 0) continue;
+          found = b;
+          if (!last) break;
+        }
+        return found;
+      };
+      for (const el of document.querySelectorAll('div,section,article')) {
+        const r = el.getBoundingClientRect();
+        if (r.width < 140 || r.height < 56) continue;
+        /* NOT WHOLE PANELS. A drawer's ink starts 61px down because a status bar and an app bar are
+           above it, which is structure and not a padding choice; measuring it reported a panel whose
+           sides and bottom are in fact balanced at 16 and 17. Everything in this product is 375x812, so
+           600 is the line: taller than that and it is a surface, not a card. `innerHeight` cannot be
+           used — on a spec board the window is the BOARD, and an 812 panel inside a 1400 board passed. */
+        if (r.height > 600) continue;
+        const cs = getComputedStyle(el);
+        const boxed = (cs.boxShadow !== 'none' || px(cs.borderTopLeftRadius) >= 12) && cs.backgroundColor !== 'rgba(0, 0, 0, 0)';
+        if (!boxed || cs.overflowY === 'auto' || cs.overflowY === 'scroll' || cs.overflow === 'hidden') continue;
+        const a = inkRect(el, false), z = inkRect(el, true);
+        if (!a || !z) continue;
+        const top = Math.round(a.top - r.top);
+        const bottom = Math.round(r.bottom - z.bottom);
+        /* 4 covers a descender and a half-pixel line box. Anything past that is the defect. */
+        if (top >= 10 && bottom < top - 4) {
+          const words = [...el.childNodes].map((n) => (n.nodeType === 3 ? n.nodeValue
+            : (n.tagName === 'STYLE' || n.tagName === 'SCRIPT') ? '' : n.textContent)).join(' ');
+          bad.push(`top ${top}, bottom ${bottom} — ${words.trim().slice(0, 40).replace(/\s+/g, ' ')}`);
+        }
+      }
+      return [...new Set(bad)].slice(0, 6);
+    }).catch(() => []);
+
     /* TRUNCATION. A label that lost a third of itself to an ellipsis passed every check on 18 Sep until a
        human measured it. Any element inside a phone whose text is wider than its box is reported; it fails
        the page unless the page's @gutter marker says truncation="allowed" — the drawer's long-client-name
@@ -286,7 +351,7 @@ for (const p of pages) {
     if (dead && p.rel.startsWith('screens/')) errors.push(`DEAD PAPERCLIP on ${dead} phone${dead === 1 ? '' : 's'} — a Composer on a screen must be given onAttach; a picker that drops the file is a drawing of a control`);
   }
   if (SHOTS) await page.screenshot({ path: join(SHOTS, `${p.name}.png`), fullPage: true }).catch(() => {});
-  results.push({ ...p, errors, missing, mounted, gutter, tight });
+  results.push({ ...p, errors, missing, mounted, gutter, tight, threeSided });
   await page.close();
 }
 await browser.close();
@@ -300,6 +365,7 @@ for (const r of results) {
   if (r.gutter && r.fullBleed) console.log(`         full-bleed by design: ${r.fullBleed}`);
   for (const e of [...r.errors, ...r.missing].slice(0, 4)) console.log(`         ↳ ${e}`);
   for (const t of (r.tight || []).slice(0, 3)) console.log(`         ⚠ TIGHT ${t} — CI's Linux metrics run wider; shorten it`);
+  for (const t of (r.threeSided || []).slice(0, 3)) console.log(`         ⚠ THREE-SIDED ${t} — padded on the sides, open at the bottom`);
 }
 if (JSON_OUT) await writeFile(JSON_OUT, JSON.stringify(results, null, 1));
 

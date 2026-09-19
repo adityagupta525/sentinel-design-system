@@ -912,3 +912,48 @@ control inside a control is the defect this repository shipped once already (`Do
 chip's whole job.
 
 Found while making the fund explorer chat-led, by reading the source of a screen I was about to change.
+
+### F-44 · Padded on three sides, and a hit area worn as spacing — *found by the owner, 19 Sep 2026*
+
+The owner sent two crops and one sentence: *"prompt and edit ke bich me jaada spacing hai"*, and
+*"jaise dono side se padding hai waise hi bottom me bhi de sakte hai"* — then said it is not this screen,
+it is everywhere.
+
+**Both were real, and they are the same mistake twice: a 44pt target treated as if it were its ink.**
+
+**(a) `MessageActions` — measured 19px, should be ~8.** The target is 44 and the visible line is
+`--leading-16`, so each button overhangs its own text by `(44 − 16) / 2 = 14` top and bottom. The row
+pulled back `-8px 0 -10px` — two numbers that were never the subtraction. The word *Edit* therefore sat
+19px under the bubble on **every turn in the product**. It is now written as the arithmetic
+(`OVERHANG = (TARGET − LINE) / 2`), so changing the target or the type moves it. Measured after:
+**19 → 13**, target still 44.
+
+**(b) `ArtifactCard` — bottom padding 0.** Both bodies ended in `14px 0` and relied on the footer for
+the bottom space. **F-42 stopped rendering the footer** when a card has no handlers — so on the same
+day, every `ResultCard` began ending flush against its own edge with 14 either side: padded on three
+sides, open on the fourth. Now `padBottom = hasFooter ? 0 : 14`, so a card that had a footer does not
+move by a pixel.
+
+**The gate: `THREE-SIDED`, a warning in `check-previews`.** It measures **ink, not boxes** — the first
+and last text a person can actually see, against the container's edges — and it took three rewrites to
+be worth trusting:
+
+1. box-to-box called a correct **confirm sheet** a defect, because its 20px lives inside the commit row;
+2. counting the child's padding then called a correct **artifact card** a defect, because its last child
+   is a 44pt footer with a centred label;
+3. using `innerHeight` to skip whole panels failed on spec boards, where the window is the *board* — an
+   812 panel inside a 1400 board passed the test and the **drawer** was reported. Measured by hand, the
+   drawer's sides and bottom are 16 and 17: balanced. The threshold is now a flat 600, because
+   everything in this product is 375×812.
+
+It is a **warning, not a failure**. A gate that cries wolf is a gate someone silences.
+
+**Three it still reports, measured and NOT changed — they alter built screens, which is the owner's
+call:**
+
+- **The drawer's `See all`** — the owner named this one. The pill's visible box is 32 and its target is
+  44, so **6px of target hangs below the section's edge** and its ink sits 14 from the bottom. The same
+  mistake as (a), in a different component.
+- **The client list** — ink 21 from the top, 15 from the bottom.
+- **The concentration card** (*"Small cap 31% — the sleeve ceiling is 25%"*) — ink 28 from the top,
+  14 from the bottom.

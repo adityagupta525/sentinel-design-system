@@ -28,6 +28,14 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
   const filling = state === 'filling';
   const toggle = onToggle;
   const slot = { flex: 1, display: 'flex', alignItems: 'center', height: 44 };
+  /* THE CARD'S BOTTOM MATCHES ITS SIDES WHEN NOTHING FOLLOWS (F-44, 19 Sep 2026). Both bodies ended in
+     `14px 0` and relied on the footer to supply the bottom space — which was fine while the footer
+     always rendered. F-42 stopped rendering it when a card has no handlers, and the last line then sat
+     flush against the card's edge with 14 either side of it: padded on three sides, open on the fourth.
+     The owner found it on the review card. When the footer IS there it still supplies the bottom, so
+     the padding stays 0 and nothing that had a footer moves by a pixel. */
+  const hasFooter = !!(onToggle || onWhy || onShare);
+  const padBottom = hasFooter ? 0 : 14;
   const label = (t, strong) => <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-12)', color: strong ? 'var(--color-bronze-deep)' : 'var(--color-muted)' }}>{t}</span>;
   const titleEl = <p style={{ margin: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-16)', lineHeight: 'var(--leading-24)', color: 'var(--color-ink)' }}>{title}</p>;
   const body = (
@@ -64,14 +72,14 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
           It is aria-hidden and out of the tab order on purpose: the footer's `Expand ▾` is the same
           action and is the keyboard path, and two tab stops for one action is noise. */}
       {expanded
-        ? <div style={{ padding: '2px 14px 0' }}>{body}</div>
+        ? <div style={{ padding: `2px 14px ${padBottom}px` }}>{body}</div>
         : (
           <div style={{ position: 'relative' }}>
             <div aria-hidden="true" style={{ position: 'absolute', inset: 0 }}>
               <Pressable onClick={filling ? undefined : toggle} expand="none" tabIndex={-1}
                 style={{ position: 'absolute', inset: 0, width: '100%', display: 'block' }} />
             </div>
-            <div style={{ position: 'relative', padding: '14px 14px 0', textAlign: 'left', pointerEvents: 'none' }}>
+            <div style={{ position: 'relative', padding: `14px 14px ${padBottom}px`, textAlign: 'left', pointerEvents: 'none' }}>
               <Eyebrow>{eyebrow}</Eyebrow>
               <div style={{ marginTop: 'var(--space-4)' }}>{titleEl}</div>
               {/* 96 IS A CAP, NOT A RESERVED BLOCK — corrected 18 Sep 2026, after the owner saw the gap.
@@ -94,7 +102,7 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
           `screens/journey-e/rebalance.html`, where `ResultCard` supplies none of them: a keyboard user
           tabbed into three invisible buttons. The condition is on the PROPS, not on `filling`: a card
           that has a toggle keeps its footer while it fills, because the row is about to be usable. */}
-      {(onToggle || onWhy || onShare) && (
+      {hasFooter && (
         <React.Fragment>
           <div style={{ margin: '12px 14px 0', height: 'var(--border-hairline)', background: 'var(--color-line-soft)' }} />
           <div style={{ display: 'flex', padding: '0 14px' }}>
