@@ -88,6 +88,85 @@ function MovesActions({ onSkipped, onApprove, animate = false }) {
   );
 }
 
+/* ── R2 · THE STATE BETWEEN "APPROVE" AND "PLACED" ─────────────────────────────────────────────────
+   docs/RESEARCH.md's second theme, severity 4, and the one an advisor meets on a bad day. The study is
+   full of it: "money stays blocked but app says failed" · "no acknowledgements are received regarding
+   approval" · "the order does not get executed automatically". The reviews are not asking for speed.
+   They are asking to be TOLD.
+
+   Four outcomes, and they are four different sentences — collapsing them is the defect:
+     · IN FLIGHT — sent, nothing back yet. Says when it was sent, and that it will say when it hears.
+     · PLACED    — both done, with the order ids the advisor can quote to the RTA.
+     · PARTIAL   — one placed, one rejected. The most likely real failure of a two-move rebalance, and
+                   the one with a consequence worth stating: if the SIP redirect is the move that failed,
+                   the mix is fixed today and starts drifting back on the 7th.
+     · UNKNOWN   — sent, and Sentinel cannot tell whether it went. This is the ONLY state where the
+                   product must refuse to guess in either direction. It never says "failed" for
+                   something it has not confirmed failed, and it never offers to send again — a
+                   duplicate switch is real money. It says how to check instead.
+
+   StepTrace carries it: per-step state, a failed step keeps its place and offers its retry inline, and
+   the head line collapses to one row once it is done. */
+const EXEC_STEPS = {
+  flight: [
+    { label: 'Move 1 · ₹1,85,000 into ICICI Corporate Bond', state: 'running', meta: 'sent 3:04 pm' },
+    { label: 'Move 2 · redirect the ₹30,000 SIP', state: 'pending' },
+  ],
+  placed: [
+    { label: 'Move 1 · ₹1,85,000 into ICICI Corporate Bond', state: 'done', meta: 'ord 8841/22' },
+    { label: 'Move 2 · redirect the ₹30,000 SIP', state: 'done', meta: 'ord 8841/23' },
+  ],
+  partial: [
+    { label: 'Move 1 · ₹1,85,000 into ICICI Corporate Bond', state: 'done', meta: 'ord 8841/22' },
+    { label: 'Move 2 · redirect the ₹30,000 SIP', state: 'failed', meta: 'not placed',
+      detail: 'The NACH mandate on folio 9142/28 is registered for the old amount. The RTA rejected the change.' },
+  ],
+  unknown: [
+    { label: 'Move 1 · ₹1,85,000 into ICICI Corporate Bond', state: 'running', meta: 'sent 3:04 pm' },
+    { label: 'Move 2 · redirect the ₹30,000 SIP', state: 'running', meta: 'sent 3:04 pm' },
+  ],
+};
+const EXEC_COPY = {
+  flight: 'Both moves are with the exchange. I will tell you the moment either one is confirmed — you do not need to wait here.',
+  partial: 'One of the two went through. His mix is back at 58% today, but the SIP still buys small cap on the 7th, so the drift starts again next month unless the mandate is fixed.',
+  unknown: 'I sent both moves and I have not heard back. I do not know yet whether they were placed, so I am not going to tell you either way. Do not send them again — a duplicate switch is real money.',
+};
+const EXEC_SUMMARY = {
+  /* A head line is given for every state, including in flight. Left to derive, StepTrace uses the running
+     step's own label — so the card printed "Move 1 · ₹1,85,000 into ICICI Corporate Bond" twice, eleven
+     points apart, which is the repetition rule the reviewer exists to catch. */
+  flight: 'Sent · waiting for the exchange',
+  placed: 'Both moves placed · settles T+2',
+  partial: 'One placed, one rejected',
+  unknown: 'Sent · no confirmation yet',
+};
+
+function ExecutionTurn({ state = 'flight', enter = false, onRetry, onCheck }) {
+  const copy = EXEC_COPY[state];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)', animation: enter ? 'ds-rise var(--dur-enter) var(--ease) both' : 'none' }}>
+      <MOVES_DS.SentinelBlock>
+        <MOVES_DS.StepTrace id={`exec-${state}`} defaultOpen steps={EXEC_STEPS[state]} summary={EXEC_SUMMARY[state]} />
+        {copy && <div style={{ marginTop: 'var(--space-12)' }}><MOVES_DS.SentinelText weight="Regular" text={copy} /></div>}
+        {state === 'partial' && (
+          <div style={{ marginTop: 'var(--space-12)' }}>
+            <MOVES_DS.AnswerChip label="Fix the mandate and retry move 2" variant="primary" onClick={onRetry || (() => {})} />
+          </div>
+        )}
+        {/* The unknown state offers CHECKING, never sending again. */}
+        {state === 'unknown' && (
+          <div style={{ marginTop: 'var(--space-12)' }}>
+            <MOVES_DS.ChipRow>
+              <MOVES_DS.AnswerChip label="Check with the RTA" variant="primary" onClick={onCheck || (() => {})} />
+              <MOVES_DS.AnswerChip label="What do I tell Sharma?" onClick={() => {}} />
+            </MOVES_DS.ChipRow>
+          </div>
+        )}
+      </MOVES_DS.SentinelBlock>
+    </div>
+  );
+}
+
 /* Step 7. WHAT HAS LEFT SENTINEL AND WHAT HAS NOT, said plainly — and undo offered only for what has not.
    The two switches are placed under the advisor's ARN: that has left, and an "undo" on it would be a lie.
    The note to the client is drafted and sits here until the advisor picks a channel and sends it outside
@@ -125,4 +204,4 @@ function SuccessTurn({ enter = false, onRead, onBack, note = false, onDrop }) {
   );
 }
 
-Object.assign(window, { MOVES_ASK, MOVES_ANSWER, MOVES, MOVES_PROVENANCE, SKIPPED, CONFIRM_DISCLOSURE, CONFIRM_ROWS, CLIENT_NOTE, MovesSimulation, MovesTurn, MovesActions, SuccessTurn });
+Object.assign(window, { EXEC_STEPS, EXEC_COPY, EXEC_SUMMARY, ExecutionTurn, MOVES_ASK, MOVES_ANSWER, MOVES, MOVES_PROVENANCE, SKIPPED, CONFIRM_DISCLOSURE, CONFIRM_ROWS, CLIENT_NOTE, MovesSimulation, MovesTurn, MovesActions, SuccessTurn });

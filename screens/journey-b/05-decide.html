@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','FileUpload','StepTrace','ParseNote','Pill','SentinelBlock','SentinelText','MoveCard','Dumbbell','Eyebrow','Provenance','ConfirmSheet','ConstraintCallout','DrawnCheck','ExplainerSheet','AnswerChip','ChipRow','DarkButton','StandingDisclosure','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','FileUpload','StepTrace','ParseNote','Pill','SentinelBlock','SentinelText','MoveCard','Dumbbell','Eyebrow','Provenance','ConfirmSheet','ConstraintCallout','StepTrace','DrawnCheck','ExplainerSheet','AnswerChip','ChipRow','DarkButton','StandingDisclosure','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
 <script type="text/babel" src="./moves.jsx"></script>
@@ -20,10 +20,13 @@ const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder
 
 function Scene({ phase = 'moves', note = false, anchor = 'bottom' }) {
   const att = useAttachment();
+  const exec = ['flight', 'partial', 'unknown'].includes(phase);
   return (
     <Thread anchor={anchor} composer={<Ask onAttach={att.onAttach} />}>
       <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
-      {phase === 'moves' ? <MovesTurn actions={<MovesActions />} /> : <SuccessTurn note={note} />}
+      {phase === 'moves' && <MovesTurn actions={<MovesActions />} />}
+      {exec && <ExecutionTurn state={phase} />}
+      {phase === 'done' && <React.Fragment><ExecutionTurn state="placed" /><SuccessTurn note={note} /></React.Fragment>}
       <AttachedTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
@@ -42,13 +45,16 @@ function LiveScene() {
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread anchor="bottom" revision={`${phase}-${note}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
         <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
-        {phase === 'moves'
-          ? <MovesTurn actions={<MovesActions onSkipped={() => setSkipped(true)} onApprove={() => setConfirm(true)} />} />
-          : <SuccessTurn note={note} onRead={() => setNote(true)} onDrop={() => setNote(false)} />}
+        {phase === 'moves' && <MovesTurn actions={<MovesActions onSkipped={() => setSkipped(true)} onApprove={() => setConfirm(true)} />} />}
+        {phase === 'flight' && <ExecutionTurn state="flight" enter />}
+        {phase === 'done' && <React.Fragment>
+          <ExecutionTurn state="placed" />
+          <SuccessTurn note={note} onRead={() => setNote(true)} onDrop={() => setNote(false)} />
+        </React.Fragment>}
         <AttachedTurn file={att.file} onRemove={att.clear} />
       </Thread>
       <ConfirmSheet open={confirm} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
-        commitLabel="Approve both moves" onCommit={() => { setConfirm(false); setPhase('done'); }} onClose={() => setConfirm(false)}>
+        commitLabel="Approve both moves" onCommit={() => { setConfirm(false); setPhase('flight'); setTimeout(() => setPhase('done'), 1400); }} onClose={() => setConfirm(false)}>
         {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
       </ConfirmSheet>
       <ExplainerSheet open={skipped} title={SKIPPED.title} body={SKIPPED.body} onClose={() => setSkipped(false)} />
@@ -82,6 +88,8 @@ const MOTION = [
   ['Approve press', <span>scale <code>--press-scale</code></span>, '150ms', 'No scale'],
   ['Sheet out, outcome in', 'the sheet leaves, the turn arrives in the thread', '320 · 240ms', 'Both fade'],
   ['The drawn check', <span><code>ds-draw</code>: the tick draws once</span>, '400ms', 'Drawn complete'],
+  ['A step finishes', 'the circle fills; the rest stay at 40%', 'immediate', 'Unchanged — an opacity difference is not motion'],
+  ['A step fails', 'it keeps its place and its retry appears beneath it', '240ms', 'Fade only'],
 ];
 
 const PROVENANCE = [
@@ -139,7 +147,28 @@ mountScreen(
       </Note>
     </Section>
 
-    <Section title="3 · What happened, and what is still yours to change" sub="The honest half of a success screen. Two things happened and only one of them can still be undone, so the screen says which.">
+    <Section title="3 · Between “Approve” and “placed”" sub="The state the research found and this product did not have. Four outcomes, and they are four different sentences — collapsing them is the defect.">
+      <StateRow>
+        <State label="in flight" note="Sent, nothing back. It says WHEN it went and that the advisor does not have to wait here — the reviews in the study are not asking for speed, they are asking to be told. The trace is the two moves, one running and one pending, so “which one” is never a guess.">
+          <Scene phase="flight" />
+        </State>
+        <State label="one placed, one rejected" tone="over" note="The most likely real failure of a two-move rebalance, and the one with a consequence worth saying out loud: the mix is back at 58% TODAY, but the SIP still buys small cap on the 7th, so the drift starts again next month unless the mandate is fixed. The failed step keeps its place, carries the RTA's reason, and offers the retry on itself — StepTrace's own contract.">
+          <Scene phase="partial" />
+        </State>
+        <State label="sent, and no answer" tone="under" note="The only state where the product must refuse to guess in EITHER direction. It does not say “failed” for something it has not confirmed failed, and it does not offer to send again, because a duplicate switch is real money — the study's own words are “money stays blocked but app says failed”. It offers checking instead, and the second chip is the question the advisor actually has: what do I tell the client?">
+          <Scene phase="unknown" />
+        </State>
+      </StateRow>
+      <Note title="Why “I do not know” is written out rather than shown as a spinner">
+        A spinner says “wait”; this state is not a wait, it is an unknown that may last until the RTA replies
+        tomorrow. The product&rsquo;s own rule is that a wait is named (<code>SentinelThinking</code>&rsquo;s verb is a
+        provenance claim), and an instruction in flight is not a wait at all — the advisor can leave the screen. So
+        it is a sentence, with what to do next, and the one instruction that matters: <strong>do not send it
+        again.</strong>
+      </Note>
+    </Section>
+
+    <Section title="4 · What happened, and what is still yours to change" sub="The honest half of a success screen. Two things happened and only one of them can still be undone, so the screen says which.">
       <StateRow>
         <State label="approved" note="The tick is drawn, not a burst of confetti. Then the sentence that matters: the two switches have gone to the exchange under the advisor's ARN and cannot be pulled back from here — and Sharma has NOT been told yet. Nothing on this screen offers to undo a trade, because that offer would be a lie.">
           <Scene phase="done" />
@@ -157,11 +186,11 @@ mountScreen(
       </Note>
     </Section>
 
-    <Section title="4 · Motion, and what each one does under reduced motion">
+    <Section title="5 · Motion, and what each one does under reduced motion">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="5 · Provenance">
+    <Section title="6 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>

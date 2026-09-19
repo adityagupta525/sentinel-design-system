@@ -45,6 +45,16 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **R2 is built (19 Sep): the state between "Approve" and "placed"**, three new states on
+  `05-decide.html`. It was the research's second theme and the product had nothing there.
+  **In flight** — sent, nothing back; says WHEN it went and that the advisor need not wait, because the
+  reviews are not asking for speed, they are asking to be told. **One placed, one rejected** — the most
+  likely real failure of a two-move rebalance, with the consequence stated out loud: the mix is back at
+  58% today, but the SIP still buys small cap on the 7th, so the drift returns next month unless the
+  mandate is fixed. **Sent, and no answer** — the only state where the product must refuse to guess in
+  either direction: it does not say "failed" for something it has not confirmed failed, and **it does not
+  offer to send again**, because a duplicate switch is real money. It offers checking, and the question
+  the advisor actually has: what do I tell Sharma?
 - **Build order #6 is done: `screens/thread/refusals.html`**, six states. The six buckets a sentence
   lands in — out of bounds (with the clause that matters, "I have not applied it"), an instruction that
   would act (read back as exactly what it would do, down to the folio, before any confirm), not
