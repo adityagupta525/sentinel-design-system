@@ -98,22 +98,58 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
                Resolved in two passes: place them the old way, then push the SECOND series (the
                benchmark, already the muted one) clear of the first. The primary never moves, so the
                series the advisor came for keeps the slot its own line earned. */
-            const h = peek ? 16 : 30;          /* value, plus the series name when it is shown */
+            /* THE NAME MAY TAKE TWO LINES, AND THE BOX RESERVES THEM (F-51, 19 Sep 2026). `h` was 30
+               — a value plus ONE line of name — and Indian benchmark names are long: "Nifty Smallcap
+               250 TRI" wrapped to three lines, overflowed the reserved box, and the plot's own stroke
+               ran straight through the words. Measured on pages/InfoCard.html.
+               Two lines is the cap, not a suggestion: a third line is a name the caller should shorten,
+               and clamping is better than letting a chart draw over its own label. */
+            const h = peek ? 16 : 44;          /* value, plus up to two lines of series name */
             const gap = peek ? 5 : 7;
+            /* THE FREE SIDE IS FOUND OVER THE LABEL'S OWN WIDTH, NOT FROM ONE SEGMENT (F-51).
+               The old test compared the last point with the one before it. On a sixty-point monthly
+               series that rises steeply at the end, "below the endpoint" is exactly where the line just
+               came from — so the label sat on its own stroke, which is the one thing this block's
+               comment promises never happens. Measured on screens/journey-c/funds.
+               Now: take the slice of the line the label would cover, and put the label clear of that
+               slice's whole vertical extent. */
+            const cover = Math.max(2, Math.round(use[0].points.length * (labelW / w)));
             const placed = use.map((s) => {
+              const pts = s.points.slice(-cover);
+              const ys = pts.map((q) => y(q.y));
+              const lo = Math.min(...ys), hi = Math.max(...ys);   /* lo = highest on screen */
               const last = s.points[s.points.length - 1];
-              const prev = s.points[s.points.length - 2] || last;
-              const rising = y(last.y) <= y(prev.y);   /* SVG y grows downward: smaller y = higher */
-              const wanted = rising ? y(last.y) + gap : y(last.y) - gap - h;
+              const above = lo - gap - h;
+              const below = hi + gap;
+              /* Either side if it fits. When NEITHER does — a line that climbs through most of the
+                 plot over the label's width — take the side with more room rather than defaulting,
+                 which used to clamp the label to 0 and park it at the very top, on the line. */
+              const roomAbove = lo, roomBelow = plot - hi;
+              const wanted = above >= 0 ? above
+                : below + h <= plot ? below
+                : roomAbove >= roomBelow ? above : below;
               return { last, top: Math.min(Math.max(wanted, 0), plot - h) };
             });
+            /* WHEN THE TWO END CLOSE TOGETHER, BOTH LABELS GO TO ONE SIDE (F-51). Pushing only the
+               second one apart, which is what the first pass did, left the FIRST sitting on its own
+               line — the exact thing this block's own comment promises never happens. A fund and its
+               benchmark ₹184 apart on a ₹21,500 scale is the normal case for an index fund, and there
+               is no empty side between them to use. So both stack BELOW the lower endpoint, in series
+               order, and above it only when there is no room below. */
             if (placed.length === 2 && Math.abs(placed[0].top - placed[1].top) < h + 2) {
-              const below = placed[1].top >= placed[0].top;
-              const pushed = below ? placed[0].top + h + 2 : placed[0].top - h - 2;
-              /* If the push would leave the plot, go the other way instead of clamping into the clash. */
-              placed[1].top = pushed >= 0 && pushed <= plot - h ? pushed
-                : (below ? placed[0].top - h - 2 : placed[0].top + h + 2);
-              placed[1].top = Math.min(Math.max(placed[1].top, 0), plot - h);
+              const ends = placed.map((q) => y(q.last.y));
+              const lower = Math.max(ends[0], ends[1]);
+              const upper = Math.min(ends[0], ends[1]);
+              const below = lower + gap;
+              if (below + h * 2 + 2 <= plot) {
+                placed[0].top = below;
+                placed[1].top = below + h + 2;
+              } else {
+                const top0 = upper - gap - h * 2 - 2;
+                placed[0].top = Math.max(top0, 0);
+                placed[1].top = placed[0].top + h + 2;
+              }
+              placed.forEach((q) => { q.top = Math.min(Math.max(q.top, 0), plot - h); });
             }
             return use.map((s, i) => {
             const last = placed[i].last;
@@ -121,7 +157,7 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
             return (
               <div key={s.label} style={{ position: 'absolute', right: 0, top, maxWidth: labelW, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', textAlign: 'right', pointerEvents: 'none' }}>
                 <span style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 'var(--text-11-5)' : 'var(--text-12)', lineHeight: 'var(--leading-15)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)' }}>{valueFormat(last.y)}</span>
-                {!peek && <span style={{ overflowWrap: 'break-word', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-10)', lineHeight: 'var(--leading-14)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-muted)' }}>{s.label}</span>}
+                {!peek && <span style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'break-word', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-10)', lineHeight: 'var(--leading-14)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-muted)' }}>{s.label}</span>}
               </div>
             );
             });

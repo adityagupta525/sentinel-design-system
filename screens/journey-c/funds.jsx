@@ -86,6 +86,8 @@ function FundDetail({ fund, onExplain }) {
       name={fund.name} meta={`${fund.amc} · ${fund.cat}`}
       shelf={fund.onShelf ? 'on-shelf' : 'not-on-shelf'}
       figure={`${p[period].toFixed(1)}%`} figureNote={`${perfNote(period)} · against ${p.benchmark}`}
+      valueFormat={(v) => inr(Math.round(v))}
+      xFormat={(x) => (x === 0 ? `${NAV_MONTHS / 12} years ago` : x === NAV_MONTHS ? 'today' : '')}
       range={label} ranges={PERF_PERIODS.map((x) => x.label)}
       onRange={(r) => setPeriod((PERF_PERIODS.find((x) => x.label === r) || {}).key || 'r3')}
       caveat="Mutual fund investments are subject to market risks. Read all scheme related documents carefully. Past performance may or may not be sustained in future."
@@ -147,6 +149,10 @@ function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', on
 
    Every category it can add is a real `category` on the shelf, read from FUNDS rather than listed here,
    so a fund arriving in the book is searchable the same day. */
+/* The four things an advisor asks about a fund. In every reference these are four TABS behind one
+   header; in a thread each is a question and each answer is its own turn. */
+const FUND_CHIPS = ['How has it done against its category?', 'What is it holding?', 'What changed recently?', 'Who of my clients hold it?'];
+
 const REFINE_CATEGORIES = [...new Set(FUNDS.map((f) => f.category))];
 const REFINE_BUCKETS = [...new Set(FUNDS.map((f) => f.bucket))];
 const REFINE_TERMS = [...REFINE_CATEGORIES, ...REFINE_BUCKETS, 'Direct plan', 'Regular plan'];
@@ -219,91 +225,51 @@ const fundsFor = (query, shelf) => FUND_LIST.filter((f) => {
   });
 });
 
-/* ─────────────────────────────────────────────────────────────────────────────────────────────────
-   THE FUND CARD — the headline the references got right, in our language.
 
-   Across ~320 industry screens the best single idea was Groww's "If ₹10k Invested — This fund 18.33%
-   (₹92,153) · Nifty 500 13.03% (₹50,540)". It is not a CAGR. It is what ₹10,000 BECAME, which is the
-   sentence an advisor says out loud to a client; a percentage has to be translated first.
+/* THE FUND, AS THE SYSTEM ALREADY DRAWS IT.
 
-   THREE THINGS WE DO THAT THE REFERENCES DO NOT.
-     · The benchmark is named in TEXT beside its figure, not only by a line colour (rule 1).
-     · The period is spelled out — "over five years" — because "34.2%" read as last year's return is a
-       lie a layout told.
-     · The provenance says the figures are illustrative. Not one of the 320 screens says where a number
-       came from.
+   This was hand-built here on 19 Sep — a card with its own headline, its own chart call and its own 2x2
+   stat boxes — and then deleted, because `InfoCard` already does every part of it: the name and meta,
+   the shelf badge, the figure with its caption on the baseline, the caveat ABOVE the chart (Monzo's
+   rule), `series` composed straight into `ChartLine`, the range row, the provenance line, and the stat
+   pair with an InfoDot on each. Building a second one was the owner's rule broken: a thing goes into
+   the system first and the screen picks it from there.
 
-   THE CHART IS A PEEK, NOT A HERO. Their line chart is a 300pt full-bleed header. Ours is the 96pt
-   peek `ArtifactCard` already has, expanding in place — because in a thread the card has to leave room
-   for the sentence that asked for it. */
-const FUND_DS2 = window.SentinelDesignSystem_0682a2;
+   What was genuinely missing went INTO the system rather than staying here — `InfoCard.compare`, the
+   one line that names what the figure sits against. This function now only decides WHICH facts about a
+   fund belong on the card, which is a screen's job.
 
-function FundHeadline({ id }) {
-  const t = tenKAfter(id);
-  if (!t) return null;
-  const gap = t.fund - t.bench;
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-8)', flexWrap: 'wrap' }}>
-        <span style={{ font: 'var(--type-figure-font)', color: 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>{inr(t.fund)}</span>
-        <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)' }}>
-          is what {inr(t.base)} would be, over {t.years} years
-        </span>
-      </div>
-      <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)', fontVariantNumeric: 'tabular-nums' }}>
-        {t.benchmark} would be {inr(t.bench)} — {gap >= 0 ? `${inr(gap)} ahead` : `${inr(-gap)} behind`}.
-      </span>
-    </div>
-  );
-}
-
-/* The two lines. Series 2 is the benchmark and ChartLine draws it muted and dashed by contract — the
-   role is in the data, not in a colour we picked. */
-function FundChart({ id, density = 'peek', run = true }) {
-  const s = navSeries(id);
-  if (!s) return null;
-  const p = perfOf(id);
-  return (
-    <FUND_DS2.ChartLine density={density} run={run}
-      valueFormat={(v) => inr(Math.round(v))}
-      xFormat={(x) => (x === 0 ? '5 years ago' : x === NAV_MONTHS ? 'today' : `${Math.round((NAV_MONTHS - x) / 12)}y ago`)}
-      series={[{ label: 'This fund', points: s.fund }, { label: p.benchmark, points: s.bench, tone: 'muted' }]} />
-  );
-}
-
-/* The fund as an ARTIFACT in the thread — what an advisor gets when they ask about one fund. The four
-   chips under it are the reference's four TABS: in a thread each is a question, each answer is its own
-   turn, and the thread becomes the tab history. */
-const FUND_CHIPS = ['How has it done against its category?', 'What is it holding?', 'What changed recently?', 'Who of my clients hold it?'];
-function FundCard({ id, state = 'peek', run = true, onToggle, onMenu }) {
-  const f = fundById(id); const p = perfOf(id);
+   THE LABEL IN THE CHART IS THE ROLE, NOT THE NAME. The compare line above already says "Nifty Smallcap
+   250 TRI"; repeating it in 10px beside the line is the same fact twice, and it wrapped to three lines
+   and drew over the plot (F-51). */
+function FundInfo({ id, period = 'r5', onPeriod, onExplain }) {
+  const f = fundById(id); const p = perfOf(id); const t = tenKAfter(id);
   if (!f || !p) return null;
-  const expanded = state === 'expanded';
+  const s = navSeries(id);
+  const label = (PERF_PERIODS.find((x) => x.key === period) || {}).label;
+  const gap = t ? t.fund - t.bench : 0;
   return (
-    <FUND_DS2.ArtifactCard state={state} eyebrow={`${f.amc} · ${f.category}`} title={f.name}
-      provenance={perfProvenance('5Y')} onToggle={onToggle} onMenu={onMenu}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
-        {/* THE HEADLINE IS THE PEEK. The first cut put the chart in both states, and at 96pt the
-            headline plus a plot does not fit — ArtifactCard clipped the plot and left the chart's end
-            label floating alone under the sentence, a number with no picture. The peek answers the
-            question (what would ₹10,000 be); the chart is the evidence, and evidence is what expanding
-            is for. */}
-        <FundHeadline id={id} />
-        {expanded && <FundChart id={id} density="expanded" run={run} />}
-        {expanded && (
-          <>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-8)' }}>
-              <FUND_DS2.StatTile label="Riskometer" value={f.riskometer} />
-              <FUND_DS2.StatTile label="Expense ratio" value={`${p.ter.toFixed(2)}%`} note="Direct plan" />
-              <FUND_DS2.StatTile label="Fund size" value={`₹${p.aumCr.toLocaleString('en-IN')} cr`} />
-              <FUND_DS2.StatTile label="Exit load" value={f.exitLoad} />
-            </div>
-            <FUND_DS2.SentinelText weight="Regular" text="Past performance may or may not be sustained in future." />
-          </>
-        )}
-      </div>
-    </FUND_DS2.ArtifactCard>
+    <FUNDS_DS.InfoCard
+      name={f.name} meta={`${f.amc} · ${f.category}`}
+      shelf={f.onShelf ? 'on-shelf' : 'not-on-shelf'}
+      figure={period === 'r5' && t ? inr(t.fund) : `${p[period].toFixed(1)}%`}
+      figureNote={period === 'r5' && t ? `is what ${inr(t.base)} would be, over ${t.years} years` : `${perfNote(period)} · against ${p.benchmark}`}
+      compare={period === 'r5' && t ? { label: t.benchmark, value: inr(t.bench), gap: inr(Math.abs(gap)), behind: gap < 0 } : undefined}
+      caveat="Mutual fund investments are subject to market risks. Read all scheme related documents carefully. Past performance may or may not be sustained in future."
+      series={period === 'r5' && s ? [{ label: 'This fund', points: s.fund }, { label: 'Benchmark', points: s.bench, tone: 'muted' }] : undefined}
+      valueFormat={(v) => inr(Math.round(v))}
+      xFormat={(x) => (x === 0 ? `${NAV_MONTHS / 12} years ago` : x === NAV_MONTHS ? 'today' : '')}
+      range={label} ranges={PERF_PERIODS.map((x) => x.label)}
+      onRange={(r) => onPeriod && onPeriod((PERF_PERIODS.find((x) => x.label === r) || {}).key || 'r5')}
+      provenance={perfProvenance(label)}
+      stats={[
+        { label: 'Riskometer', value: f.riskometer },
+        { label: 'Expense ratio', value: `${p.ter.toFixed(2)}%` },
+        { label: 'Fund size', value: `₹${p.aumCr.toLocaleString('en-IN')} cr` },
+        { label: 'Exit load', value: f.exitLoad },
+      ]}
+      onExplain={onExplain} />
   );
 }
 
-Object.assign(window, { FundHeadline, FundChart, FundCard, FUND_CHIPS, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, FundDetail, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
+Object.assign(window, { FundInfo, FUND_CHIPS, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, FundDetail, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });

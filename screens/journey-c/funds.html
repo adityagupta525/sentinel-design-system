@@ -219,27 +219,27 @@ mountScreen(
       </Note>
     </Section>
 
-    <Section title="4 · The fund as an artifact — the headline the references got right" sub="Across ~320 industry screens the best single idea was Groww's “If ₹10k Invested”. It is not a CAGR; it is what ₹10,000 BECAME — the sentence an advisor says out loud to a client. A percentage has to be translated first.">
+    <Section title="4 · The fund card is InfoCard — not a second one built here" sub="Across ~320 industry screens the best single idea was Groww's “If ₹10k Invested” — not a CAGR, but what ₹10,000 BECAME. Getting it onto a screen meant one new prop on InfoCard, not a new card: a thing goes into the system first, and the screen picks it from there.">
       <StateRow>
-        <State label="peek" note="96pt, the card ArtifactCard already has. Their version of this chart is a 300pt full-bleed header; in a thread the card has to leave room for the sentence that asked for it. Two lines, and the benchmark is named in TEXT beside its figure — never carried by a line colour alone.">
-          <Scene anchor="bottom"><FundCard id="ppfas-flexi" state="peek" onToggle={() => {}} /></Scene>
+        <State label="the fund an advisor asked for by name" note="This is InfoCard — the system's own fund card — not a second one built here. It already carries the name, the shelf badge, the figure with its caption on the baseline, the caveat ABOVE the chart, `series` composed straight into ChartLine, the range row, the provenance and the stat pair with an InfoDot on each. The only thing that was missing went INTO the system: `compare`, the line that names what the figure sits against.">
+          <Scene anchor="bottom"><FundInfo id="ppfas-flexi" /></Scene>
         </State>
-        <State label="expanded, in place" note="₹28,268 against the Nifty 500's ₹21,738 — the gap said in words. The period is spelled out, because “23.1%” read to a client as last year's return is a lie a layout told. Then the four facts, and the caveat above them.">
-          <Scene anchor="bottom"><FundCard id="ppfas-flexi" state="expanded" onToggle={() => {}} onMenu={() => {}} /></Scene>
+        <State label="the headline, and what it sits against" note="₹28,268 against the Nifty 500's ₹21,738, and the gap said in words. The figure is not a CAGR — it is what ₹10,000 BECAME, which is the sentence an advisor reads to a client; a percentage has to be translated first. The period is spelled out because “23.1%” heard as last year's return is a lie a layout told.">
+          <Scene anchor="bottom"><FundInfo id="ppfas-flexi" /></Scene>
         </State>
-        <State label="an index fund, trailing its index" tone="under" note="UTI Nifty 50 ends BEHIND the index — by roughly its 0.17% expense ratio. That is the one relationship a reader would notice if the fixture got it wrong, and it is why every series is generated against its stated CAGR rather than drawn by hand.">
-          <Scene anchor="bottom"><FundCard id="uti-nifty" state="expanded" onToggle={() => {}} /></Scene>
+        <State label="an index fund, trailing its index" tone="under" note="UTI Nifty 50 ends BEHIND the index, by roughly its 0.17% expense ratio — and `compare` flips one word and nothing else. The card never decides that behind is bad news, because for an index fund it is the expected result. It is also the one relationship a reader would notice if the fixture were wrong, which is why every series is generated against its stated CAGR.">
+          <Scene anchor="bottom"><FundInfo id="uti-nifty" /></Scene>
         </State>
       </StateRow>
       <StateRow>
         <State label="the four chips are their four tabs" note="Overview · Holdings · Performance · Peer Analysis are four PAGES behind one header in every reference. Here each is a question, each answer is its own turn, and scrolling back through the thread IS going back through the tabs. Nothing is pinned — the chips sit in the turn that offered them.">
           <Scene anchor="bottom">
-            <FundCard id="quant-small" state="peek" onToggle={() => {}} />
+            <FundInfo id="quant-small" />
             <ChipRow>{FUND_CHIPS.map((c) => <AnswerChip key={c} label={c} onClick={() => {}} />)}</ChipRow>
           </Scene>
         </State>
         <State label="a debt fund, where the line is nearly flat" note="The chart says “debt” by being almost straight. Volatility in the fixture is by CATEGORY — small cap swings hardest, debt almost not at all — because a debt fund drawn with equity's shape would be the chart lying about the asset class.">
-          <Scene anchor="bottom"><FundCard id="icici-corp" state="expanded" onToggle={() => {}} /></Scene>
+          <Scene anchor="bottom"><FundInfo id="icici-corp" /></Scene>
         </State>
       </StateRow>
     </Section>

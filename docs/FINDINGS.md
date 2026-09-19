@@ -1130,3 +1130,38 @@ card put the chart in **both** states. At the 96pt peek the headline plus a plot
 `ArtifactCard` clipped the plot and left the chart's end label floating alone under the sentence — a
 number with no picture. **The peek is now the headline alone.** The peek answers the question (*what
 would ₹10,000 be*); the chart is the evidence, and evidence is what expanding is for.
+
+### F-51 · `ChartLine` and `InfoCard`, found the day they first carried real data — *19 Sep 2026*
+
+`ChartLine` had never been on a screen and `InfoCard` had only ever been shown `locked`. Putting a real
+five-year rupee series into them found four things in one afternoon. **Three fixed, one open.**
+
+**(a) FIXED · `InfoCard` composed `ChartLine` and passed none of its formatters.** It called
+`<ChartLine series={series} width={311} run={false} />`, so the chart's **defaults** labelled every
+card — a percentage on the value, a raw number on the x. Hand it a rupee series and the end label reads
+**"21368.0%"** over a five-year NAV curve and the axis reads **"0 … 60"** for the months. `valueFormat`
+and `xFormat` are passed through now: a card that composes a chart owns the chart's labels too.
+
+**(b) FIXED · the end label reserved one line for a name and Indian benchmark names are long.**
+`h` was 30 — a value plus **one** line. *"Nifty Smallcap 250 TRI"* wrapped to three, overflowed the
+reserved box, and the plot's own stroke ran through the words. Now two lines are reserved and clamped
+at two; a third is a name to shorten, not a layout to stretch. The contract says so, and the caller
+should pass the **role** (`"Benchmark"`) when the card has already named the benchmark in a sentence
+above — the same fact twice is the repeated data the owner has objected to more than once.
+
+**(c) FIXED · two end labels landed on each other.** Recorded as F-50.
+
+**(d) OPEN · a label can still sit on its own stroke.** The placement rule is *"a line arriving from
+below leaves the space above its end empty, so the label goes to the empty side."* That reads **one
+segment**. On a sixty-point monthly series that climbs through most of the plot over the label's own
+width, neither side is empty and the rule has nothing true to say.
+
+Three attempts today, each measured and each insufficient: look back over the label's width instead of
+one segment; stack both labels on one side when the endpoints are close; take the side with more room
+when neither fits. Measured after the third, on `screens/journey-c/funds.html`: the label box sits at
+**top 81.5, height 29, in a 180px plot** — the middle, with the stroke across it.
+
+**Left open deliberately.** This is a label-placement routine and it wants its own pass with a proper
+test — a set of series shapes (rising, falling, V, spike at the end, two lines crossing) rendered and
+checked — not a fourth guess made inside a screen task. The current state is better than the start:
+rupees instead of percentages, real axis labels, and the two labels no longer overprint each other.

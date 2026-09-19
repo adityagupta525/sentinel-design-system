@@ -601,6 +601,7 @@
     "--color-canvas",
     "--color-data-deemph",
     "--color-ink",
+    "--color-ink-soft",
     "--color-line",
     "--color-muted",
     "--color-surface",
@@ -1129,7 +1130,7 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 1
+   "literals": 2
   },
   {
    "name": "ChartReadout",

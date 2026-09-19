@@ -39,7 +39,24 @@ export interface InfoCardProps {
   /** The headline figure, in the display face. */
   figure?: string;
   figureNote?: string;
+  /** WHAT THE FIGURE SITS AGAINST — one line under it, naming the reference and the gap. A return with
+   *  nothing beside it is a claim; every reference screen that does this well quotes the benchmark in
+   *  the same breath. Set a step above the caption in weight, because an advisor reads it out loud and
+   *  it carries two numbers a client will hear.
+   *  The WORDS "ahead" and "behind" belong to this component, not to the caller — six screens must not
+   *  phrase one comparison six ways. The caller supplies the figures already formatted, because it owns
+   *  the currency; the component supplies the sentence.
+   *  `{ label: 'Nifty Smallcap 250 TRI', value: '₹29,435', gap: '₹14,092' }` renders
+   *  "Nifty Smallcap 250 TRI would be ₹29,435 — ₹14,092 ahead." */
+  compare?: { label: string; value: string; gap?: string; behind?: boolean };
   series?: ChartSeries[];
+  /** How the chart labels a VALUE. Passed to `ChartLine`, whose default is a percentage — hand this
+   *  card a rupee series without it and the end label reads "21368.0%" over a five-year NAV curve.
+   *  A card that composes a chart owns the chart's labels too. */
+  valueFormat?: (v: number) => string;
+  /** How the chart labels the x axis. Same reason: the default prints the raw number, so sixty monthly
+   *  points read "0 … 60" instead of "5 years ago … today". */
+  xFormat?: (x: number) => string;
   range?: string;
   /** Which periods this card's data actually has. Passed straight to `RangePills`, whose default is
    *  1M · 3M · 1Y · 3Y · ALL — offer that over a figure that only exists for three of them and the

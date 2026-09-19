@@ -1,5 +1,9 @@
 export interface ChartPoint { x: number; y: number }
 export interface ChartSeries {
+  /** The end label's name, drawn under its value ON the plot. **Keep it to two short lines** — it is
+   *  clamped at two and a third would be a name to shorten, not a layout to stretch. A card that has
+   *  already named the benchmark in a sentence above should pass the ROLE here ("Benchmark"), not the
+   *  full name again: "Nifty Smallcap 250 TRI" in 10px beside a line is the same fact twice. */
   label: string;
   points: ChartPoint[];
   /** Per-series override. Series 2 is drawn muted and dashed regardless — it is the benchmark role. */

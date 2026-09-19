@@ -63,7 +63,7 @@ function Tenure({ managerYears, fundYears, since }) {
     </div>
   );
 }
-export function InfoCard({ kind = 'fund', name, meta, figure, figureNote, series, range, ranges, onRange, stats = [], onExplain, caveat, locked = false, lockReason, shelf, tenure, provenance }) {
+export function InfoCard({ kind = 'fund', name, meta, figure, figureNote, compare, series, valueFormat, xFormat, range, ranges, onRange, stats = [], onExplain, caveat, locked = false, lockReason, shelf, tenure, provenance }) {
   const manager = kind === 'manager';
   return (
     <div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
@@ -89,9 +89,25 @@ export function InfoCard({ kind = 'fund', name, meta, figure, figureNote, series
             <span style={{ ...tabular, font: 'var(--type-total-font)', color: 'var(--color-bronze-deep)' }}>{figure}</span>
             {figureNote && <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{figureNote}</span>}
           </div>
+          {/* WHAT THE FIGURE SITS AGAINST (19 Sep 2026). A return with nothing beside it is a claim,
+              and every reference screen in `all-screens/` that does this well quotes the benchmark in
+              the same breath. It is one line, it belongs to the FIGURE rather than to the chart, and it
+              sits a step above the caption in weight because an advisor reads it out loud — it carries
+              two numbers a client will hear. The words "ahead" and "behind" live HERE and not in the
+              caller, so six screens cannot phrase the same comparison six ways. */}
+          {compare && (
+            <p style={{ margin: `var(--space-6) 0 0`, font: 'var(--type-row-font)', color: 'var(--color-ink-soft)', textWrap: 'pretty', fontVariantNumeric: 'tabular-nums' }}>
+              {compare.label} would be {compare.value}{compare.gap ? ` — ${compare.gap} ${compare.behind ? 'behind' : 'ahead'}` : ''}.
+            </p>
+          )}
           {/* Monzo: the past-performance line sits ABOVE the chart, not at the foot of the screen. */}
           {caveat && <p style={{ margin: `var(--space-6) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)', textWrap: 'pretty' }}>{caveat}</p>}
-          {series && <div style={{ marginTop: 'var(--space-10)' }}><ChartLine series={series} width={311} run={false} /></div>}
+          {/* THE FORMATTERS ARE PASSED THROUGH (F-51). This called ChartLine with the series alone, so
+              its DEFAULTS labelled every chart — a percentage on the value and a raw number on the x.
+              Hand a rupee series to a card that only speaks percent and it prints "21368.0%" over a
+              five-year NAV curve and "0 … 60" for the months. Measured on screens/journey-c/funds.
+              A card that composes a chart owns the chart's labels too. */}
+          {series && <div style={{ marginTop: 'var(--space-10)' }}><ChartLine series={series} width={311} run={false} valueFormat={valueFormat} xFormat={xFormat} /></div>}
           {/* `ranges` is a passthrough because THE DATA DECIDES WHICH PERIODS EXIST. This hardcoded
               RangePills with no `ranges` offered 1M · 3M · 1Y · 3Y · ALL over a fixture that holds 1Y,
               3Y and 5Y — so tapping 1M changed nothing and the card offered a period nobody had a
