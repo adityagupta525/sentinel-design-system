@@ -20,18 +20,20 @@ const { Composer, UserBubble, MessageActions, ProgressTrace, ExplainerSheet, Fil
 /* Frozen: the trace is past its last step and collapsed to its one-line resting state, which is where the
    product leaves it while the answer is read. */
 const Trace = ({ open = false }) => <ProgressTrace steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={4} seconds={4} initialCollapsed={!open} />;
-const Ask = ({ about = false }) => <Composer value="" onChange={() => {}} placeholder={about ? 'Ask about this' : 'Ask Sentinel'} onSend={() => {}} onAttach={() => {}} />;
+const Ask = ({ about = false, onAttach }) => <Composer value="" onChange={() => {}} placeholder={about ? 'Ask about this' : 'Ask Sentinel'} onSend={() => {}} onAttach={onAttach} />;
 
 /* THE DOCK CARRIES THE COMPOSER AND NOTHING ELSE. The chips and the CTA are inside the turn, so they
    scroll with the message that offered them. */
 function Scene({ artifact = 'peek', view = 'chart', traceOpen = false, holdings = true, anchor, atCard = false }) {
   const card = React.useRef(null);
+  const att = useAttachment();
   return (
-    <Thread anchor={atCard ? card : anchor} composer={<Ask about={artifact === 'expanded'} />}>
-      <UserBubble text={DRIFT_ASK} />
+    <Thread anchor={atCard ? card : anchor} composer={<Ask about={artifact === 'expanded'} onAttach={att.onAttach} />}>
+      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace open={traceOpen} />
       <AnswerTurn artifact={artifact} view={view} cardRef={card}
         actions={artifact === 'filling' ? undefined : <AnswerActions holdings={holdings} />} />
+      <AttachedTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
@@ -44,6 +46,7 @@ function LiveScene() {
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const saved = React.useRef(null);
+  const att = useAttachment();
   const toggle = () => {
     const el = scroller.current, c = card.current;
     if (state === 'peek') {
@@ -57,50 +60,45 @@ function LiveScene() {
   };
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Thread scrollRef={scroller} anchor="bottom" composer={<Ask about={state === 'expanded'} />}>
-        <UserBubble text={DRIFT_ASK} />
+      <Thread scrollRef={scroller} anchor="bottom" revision={!!att.file} composer={<Ask about={state === 'expanded'} onAttach={att.onAttach} />}>
+        <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
         <Trace />
         <AnswerTurn artifact={state} view={view} run cardRef={card} onToggle={toggle}
           onMenu={() => setView((v) => (v === 'table' ? 'chart' : 'table'))}
           actions={<AnswerActions onWhy={() => setWhy(true)} onHoldings={() => { if (state === 'peek') toggle(); setView('table'); }} />} />
+        <AttachedTurn file={att.file} onRemove={att.clear} />
       </Thread>
       <ExplainerSheet open={why} title={WHY_71.title} body={WHY_71.body} onClose={() => setWhy(false)} />
     </div>
   );
 }
 
-/* Edit is reached the way the product reaches it: by tapping Edit under the bubble. */
+/* Edit is reached the way the product reaches it: by tapping Edit under the bubble. Nothing here is
+   special-cased — it is the same AskTurn every other screen renders, which is the point. */
 function EditScene() {
-  const [editing, setEditing] = React.useState(false);
-  const [text, setText] = React.useState(DRIFT_ASK);
+  const att = useAttachment();
   return (
-    <Thread anchor="bottom" composer={<Ask />}>
-      <UserBubble text={text} editing={editing} onChange={setText} onCancel={() => { setText(DRIFT_ASK); setEditing(false); }} onSave={() => setEditing(false)}
-        costNote="Sending this replaces the answer below it." />
-      {!editing && <MessageActions role="user" onAction={() => setEditing(true)} />}
+    <Thread anchor="bottom" revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace />
       <AnswerTurn artifact="peek" actions={<AnswerActions />} />
+      <AttachedTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
 
-/* The stages are what this product actually does to a statement, in its own words. */
-const PARSE = [
-  { label: 'Read the file', state: 'done', meta: '14 pages' },
-  { label: 'Found the holdings', state: 'done', meta: '18 funds' },
-  { label: 'Checked them against his mandate', state: 'done', meta: '3 outside it' },
-];
+/* The designed specimen, and a real picker. Attach your own file and the card shows ITS name and size
+   with the stages pending, because nothing here parses a PDF and printing "18 holdings" over someone
+   else's file would be a fabricated figure. Same AttachedTurn every other screen uses. */
 function FileScene() {
-  const [file, setFile] = React.useState({ name: 'Sharma-Q3.pdf', meta: '14 pages · 1.2 MB · just now' });
+  const att = useAttachment();
+  const demo = { name: 'Sharma-Q3.pdf', meta: '14 pages · 1.2 MB · just now' };
   return (
-    <Thread anchor="bottom" composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}}
-      onAttach={(f) => setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · just now` })} />}>
-      <UserBubble text={DRIFT_ASK} />
+    <Thread anchor="bottom" revision={!!att.file} composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={att.onAttach} />}>
+      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace />
       <AnswerTurn artifact="peek" actions={<AnswerActions />} />
-      <UserBubble text="Here is his Q3 statement." />
-      <FileUpload file={file} stages={PARSE} state="done" summary="Read his Q3 statement · 14 pages · 18 holdings" onRemove={() => {}} />
-      
+      <AttachedTurn file={att.file || demo} onRemove={att.clear} />
     </Thread>
   );
 }
@@ -190,7 +188,7 @@ mountScreen(
         <State label="editing the question" note="Edit turns the bubble into the field, in place. Same peach, same edge, same type; the tail corner squares off and the width is released. Cancel and Send are words, not ghost pills. The line underneath says what sending will destroy before it is destroyed — and nothing is destroyed until it is sent.">
           <EditScene />
         </State>
-        <State label="a file the advisor attached" tone="under" note="It arrives at the END of the thread, like any message, and sits on the ADVISOR'S side, capped like their bubble — it is their message, not Sentinel's reply. The stages are what Sentinel did to it, kept inside the card because the advisor is looking at the file while it is read. The summary is the outcome in their world: not “uploaded successfully” but “read his Q3 statement · 14 pages · 18 holdings”.">
+        <State label="a file the advisor attached" tone="under" note="It arrives at the END of the thread, like any message, and sits on the ADVISOR'S side, capped like their bubble — it is their message, not Sentinel's reply. The stages are what Sentinel did to it, kept inside the card because the advisor is looking at the file while it is read. The summary is the outcome in their world: not “uploaded successfully” but “read his Q3 statement · 14 pages · 18 holdings”. The paperclip here is REAL — pick a file and the card shows its own name and size with the stages pending, because nothing on this page parses a PDF and printing “18 holdings” over your file would be a made-up figure.">
           <FileScene />
         </State>
       </StateRow>

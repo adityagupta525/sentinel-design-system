@@ -62,4 +62,86 @@ function Thread({ time = '3:04', children, composer, banner, onMenu, onNew, scro
   );
 }
 
-Object.assign(window, { Thread });
+/* THE ADVISOR'S LAST PROMPT IS ALWAYS EDITABLE — and it is one component so it cannot be forgotten.
+
+   The owner, 19 Sep: "jaise user jo last apna prompt edit karne ka option ho — wo missing hai,
+   consistency nei hai." It was built on the answer screen and nowhere else, because every page rendered
+   its own `UserBubble` and each one had to remember. A rule that every page has to remember is a rule
+   that half the pages break, so the rule is a component now: `AskTurn` is the only way a screen renders
+   what the advisor said.
+
+   WHERE IT IS VALID, from the advisor's side:
+     · A finished turn — yes. Edit replaces what came after it, and `costNote` says so before it happens.
+     · A turn still running — no, and not silently: Stop is right there in the send slot, and it is the
+       honest control for "I did not mean that". Edit returns the moment the turn finishes.
+     · A journey ANSWER — yes, and it costs more: MessageActions' own contract says edit there "must warn
+       what it costs (Editing this reopens question 7. The four answers after it will be asked again.)".
+       Same component, same gesture, a bigger `costNote`.
+     · A file the advisor attached — no. A file is not a sentence to re-word; it is removed and replaced,
+       which is what FileUpload's own Remove is for.
+   Home has no prompt at all, so it has no AskTurn — that is not an exception, there is simply nothing
+   there to edit yet. */
+function AskTurn({ text, editable = true, busy = false, costNote, onSave, onCancel, actions = true }) {
+  const [editing, setEditing] = React.useState(false);
+  const [draft, setDraft] = React.useState(text);
+  React.useEffect(() => { if (!editing) setDraft(text); }, [text, editing]);
+  const cancel = () => { setDraft(text); setEditing(false); onCancel && onCancel(); };
+  const save = () => { setEditing(false); onSave && onSave(draft); };
+  return (
+    <>
+      <THREAD_DS.UserBubble text={editing ? draft : text} editing={editing} onChange={setDraft}
+        onCancel={cancel} onSave={save} costNote={costNote} />
+      {actions && editable && !busy && !editing && (
+        <THREAD_DS.MessageActions role="user" onAction={(a) => a === 'edit' && setEditing(true)} />
+      )}
+    </>
+  );
+}
+
+/* THE PAPERCLIP IS REAL ON EVERY SCREEN, AND WHAT IT PRODUCES IS HONEST.
+
+   The owner, 19 Sep: "attachment demo nei real hona chahiye har screen par, and output and prompt ke
+   saath." Three of the four thread screens passed `onAttach={() => {}}` — a picker that opens and drops
+   the file on the floor, which is a demo wearing a control's clothes. `useAttachment` gives every screen
+   the same real one in one line.
+
+   THE HONEST PART. The designed specimen (Sharma's Q3 statement) has a designed output: three stages and
+   "14 pages · 18 holdings". A file the VIEWER picks has no such output — this is a rendered specimen, not
+   the product, and nothing here parses a PDF. Printing "18 holdings" over someone's own file would be a
+   fabricated figure, which is the one thing these screens never do. So a picked file shows its REAL name
+   and size, its stages sit pending, and a ParseNote says plainly that the prototype does not read it.
+   The control is real; the claim is not made. */
+function useAttachment() {
+  const [file, setFile] = React.useState(null);
+  return {
+    file,
+    clear: () => setFile(null),
+    onAttach: (f) => setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · just now`, picked: true }),
+  };
+}
+
+const PARSE_DONE = [
+  { label: 'Read the file', state: 'done', meta: '14 pages' },
+  { label: 'Found the holdings', state: 'done', meta: '18 funds' },
+  { label: 'Checked them against his mandate', state: 'done', meta: '3 outside it' },
+];
+const PARSE_PENDING = PARSE_DONE.map((x) => ({ label: x.label, state: 'pending' }));
+
+/* A file is a message from the ADVISOR: it lands at the end of the thread, on their side, capped like
+   their bubble. The caption above it is theirs too — and it is NOT editable, because a file is not a
+   sentence to re-word; it is removed and replaced, which is FileUpload's own Remove. */
+function AttachedTurn({ file, caption = 'Here is his Q3 statement.', onRemove }) {
+  if (!file) return null;
+  return (
+    <>
+      <THREAD_DS.UserBubble text={caption} />
+      <THREAD_DS.FileUpload file={file} stages={file.picked ? PARSE_PENDING : PARSE_DONE}
+        state={file.picked ? 'parsing' : 'done'}
+        summary={file.picked ? undefined : 'Read his Q3 statement · 14 pages · 18 holdings'}
+        onRemove={onRemove} />
+      {file.picked && <THREAD_DS.ParseNote text="This specimen does not read the file you picked — in the product these stages fill in and name what was found." />}
+    </>
+  );
+}
+
+Object.assign(window, { Thread, AskTurn, useAttachment, AttachedTurn, PARSE_DONE });

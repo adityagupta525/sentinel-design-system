@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','SentinelBlock','SentinelText','ResponseFeedback','FollowUpRow','VersionRow','DetourBanner','ArtifactCard','ChartBar','AnswerChip','ChipRow','Provenance','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','FileUpload','StepTrace','ParseNote','Pill','SentinelBlock','SentinelText','ResponseFeedback','FollowUpRow','VersionRow','DetourBanner','ArtifactCard','ChartBar','AnswerChip','ChipRow','Provenance','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../journey-b/answer.jsx"></script>
@@ -21,7 +21,7 @@
    globals here. Only the names this file adds are destructured. */
 const { Composer, UserBubble, SentinelBlock, SentinelText, ResponseFeedback, FollowUpRow, VersionRow, DetourBanner, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
 
-const Ask = () => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={() => {}} />;
+const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
 
 /* The follow-ups are the questions this answer actually leads to, and the first of them is the one the
    journey really asks next — it is the UserBubble that opens the deciding screen. */
@@ -41,7 +41,7 @@ const VERSIONS = [
 
 const Answer = ({ feedback, followups, children }) => (
   <React.Fragment>
-    <UserBubble text={DRIFT_ASK} />
+    <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
     <AnswerTurn artifact="peek" continued={false} />
     {feedback}
     {followups}
@@ -49,11 +49,15 @@ const Answer = ({ feedback, followups, children }) => (
   </React.Fragment>
 );
 
-const Scene = ({ feedback, followups, banner, children, anchor = 'bottom' }) => (
-  <Thread anchor={anchor} banner={banner} composer={<Ask />}>
-    <Answer feedback={feedback} followups={followups}>{children}</Answer>
-  </Thread>
-);
+function Scene({ feedback, followups, banner, children, anchor = 'bottom' }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor={anchor} banner={banner} composer={<Ask onAttach={att.onAttach} />}>
+      <Answer feedback={feedback} followups={followups}>{children}</Answer>
+      <AttachedTurn file={att.file} onRemove={att.clear} />
+    </Thread>
+  );
+}
 
 /* Live: rate it, pick a reason, ask a follow-up, revert a version, resume the journey. */
 function LiveScene() {
@@ -63,6 +67,7 @@ function LiveScene() {
   const [versions, setVersions] = React.useState(VERSIONS);
   const [current, setCurrent] = React.useState('v3');
   const [paused, setPaused] = React.useState(true);
+  const att = useAttachment();
   /* Revert APPENDS the restored version as a new revision — the trail only ever grows. VersionRow's own
      contract, and the same reasoning as the edit warning one level up: nothing is destroyed quietly. */
   const revert = (id) => {
@@ -71,16 +76,17 @@ function LiveScene() {
     setVersions([...versions, next]); setCurrent(next.id);
   };
   return (
-    <Thread anchor="bottom" revision={`${rated}-${asked}-${versions.length}-${paused}`}
+    <Thread anchor="bottom" revision={`${rated}-${asked}-${versions.length}-${paused}-${!!att.file}`}
       banner={paused ? <DetourBanner label="Meera's risk profile · paused at question 7" onResume={() => setPaused(false)} /> : undefined}
-      composer={<Ask />}>
-      <UserBubble text={DRIFT_ASK} />
+      composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <AnswerTurn artifact="peek" continued={false} />
       <ResponseFeedback value={rated} onRate={setRated} onReason={setReason} note="Your reason goes to the team that builds Sentinel." />
       {reason && <SentinelBlock><SentinelText text={`Noted — “${reason}”. I have not changed the answer; you can ask it again and I will work it out from scratch.`} /></SentinelBlock>}
       <FollowUpRow items={FOLLOWUPS} onAsk={setAsked} />
       {asked && <UserBubble text={asked} />}
       <VersionRow label="Mr. Amit Aggrawal · ₹25 L proposal" versions={versions} currentId={current} onRevert={revert} onSelect={() => {}} />
+      <AttachedTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }

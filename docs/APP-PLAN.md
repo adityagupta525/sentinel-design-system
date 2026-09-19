@@ -93,6 +93,15 @@ part that has to be designed rather than inherited, and most of it already has c
   pill — with the first row being the question this journey really asks next. After an answer, the advisor should be offered the two or three things that answer usually
   leads to — drawn from the router's buckets, not invented per screen.
 
+### The two that must be on EVERY surface, not most of them
+The owner's rule of 19 Sep, after finding Edit on one screen out of five: **an affordance that is valid
+from the advisor's side must be present everywhere it is valid, and absent only where it is not — for a
+stated reason.** Two are settled:
+- **Edit the last prompt** — `AskTurn`. Present on every finished turn; absent while one is running (Stop
+  is the control), on a file (removed, not re-worded), and on Home (no prompt yet).
+- **The paperclip** — `useAttachment` + `AttachedTurn`. Real on every screen with a composer, gated by
+  `check-previews`, and honest about what it can say over a file it has not read.
+
 ### "How do I go back?"
 This is the weakest axis in the product today, and the most important one in a tool that moves money.
 

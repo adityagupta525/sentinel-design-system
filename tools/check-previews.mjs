@@ -234,6 +234,31 @@ for (const p of pages) {
     if (gutter) gutter.truncated = trunc.length;
     if (trunc.length && !p.truncationAllowed) for (const t of trunc) errors.push(`TRUNCATED ${t} — declare truncation="allowed" in @gutter if this is deliberate`);
     tight = await page.evaluate(() => window.__tight || []).catch(() => []);
+    /* THE PAPERCLIP IS REAL EVERYWHERE, OR IT IS NOWHERE (19 Sep 2026, the owner: "attachment demo nei
+       real hona chahiye har screen par"). Three screens passed `onAttach={() => {}}` — a picker that opens
+       and drops the file on the floor. A control that is announced and does nothing is the defect class
+       this repository keeps rediscovering (MessageActions' Edit, FileUpload's parse, the drawer's See all),
+       so it is a gate now: every phone that carries a Composer must carry a real file input behind its
+       attach button. The inert disc is still allowed — Composer renders it when no `onAttach` is given —
+       but not on a screen, where the advisor can tap it. */
+    const dead = await page.evaluate(() => {
+      /* A PhoneFrame and its own inner flex column are BOTH 375x812, so a naive filter counts every phone
+         twice — the first cut of this gate reported 8 phones on a page that has 4. Keep only the outermost. */
+      const all = [...document.querySelectorAll('div')].filter((d) => { const r = d.getBoundingClientRect(); return Math.round(r.width) === 375 && Math.round(r.height) === 812; });
+      const phones = all.filter((d) => !all.some((o) => o !== d && o.contains(d)));
+      let n = 0;
+      for (const ph of phones) {
+        const composer = ph.querySelector('input.ds-composer-input');
+        if (!composer) continue;
+        const real = ph.querySelector('input[type=file]') && [...ph.querySelectorAll('button')].some((b) => (b.getAttribute('aria-label') || '').toLowerCase().includes('attach'));
+        if (!real) n += 1;
+      }
+      return n;
+    }).catch(() => 0);
+    /* screens/ only. `ui_kits/` is the imported record — artboards of STATES, not screens an advisor taps,
+       and the standing rule is not to edit them. A gate that fails the record for not behaving like the
+       product would be a gate that gets switched off. */
+    if (dead && p.rel.startsWith('screens/')) errors.push(`DEAD PAPERCLIP on ${dead} phone${dead === 1 ? '' : 's'} — a Composer on a screen must be given onAttach; a picker that drops the file is a drawing of a control`);
   }
   if (SHOTS) await page.screenshot({ path: join(SHOTS, `${p.name}.png`), fullPage: true }).catch(() => {});
   results.push({ ...p, errors, missing, mounted, gutter, tight });

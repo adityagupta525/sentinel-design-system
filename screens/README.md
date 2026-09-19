@@ -149,3 +149,15 @@ A box that **clips** is checked itself and then closes the question for everythi
 21. **Run the reviewer before showing work.** `.claude/agents/sentinel-interface-reviewer.md` is the lead
    designer's pass: repetition, duplicate controls, placement, whose message, controls that are drawings,
    copy, iconography. Every item on its list is there because the owner found it on a rendered screen.
+22. **The advisor's last prompt is always editable, and one component does it.** `AskTurn` in
+   `journey-b/thread.jsx` is the only way a screen renders what the advisor said: it owns the bubble, the
+   Edit affordance and the `costNote` that says what sending will replace. Every page rendering its own
+   `UserBubble` is how the affordance ended up on one screen out of five. Where it is NOT offered, and why:
+   a turn still running (Stop is the control, and it is in the send slot), a file (it is removed and
+   replaced, not re-worded), and Home (there is no prompt yet).
+23. **The paperclip is real on every screen.** `useAttachment()` + `<AttachedTurn>` give a screen the real
+   picker, the file on the advisor's side at the END of the thread, and an honest output: the designed
+   specimen shows its designed parse, and a file the VIEWER picks shows its own name and size with the
+   stages pending and a `ParseNote` saying this specimen does not read it — because printing "18 holdings"
+   over someone's own file would be a fabricated figure. `check-previews` fails any `screens/` phone whose
+   Composer has no real file input behind its attach button.

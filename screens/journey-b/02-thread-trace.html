@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AnswerChip','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','DataTableCard','ChipRow','DarkButton','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AnswerChip','MessageActions','FileUpload','StepTrace','ParseNote','Pill','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','DataTableCard','ChipRow','DarkButton','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
 <script type="text/babel" src="./answer.jsx"></script>
@@ -24,15 +24,21 @@ const ASK = DRIFT_ASK, STEPS = DRIFT_STEPS, REASONING = DRIFT_REASONING;
 
 /* Every specimen is FROZEN — autoplay={false} — so the page holds still for a reviewer. Frozen PAST
    the last step is the finished state, which is the one a spec page could not reach before v12 (F-22). */
-const Scene = ({ trace, after, streaming }) => (
+function Scene({ trace, after, streaming }) {
+  const att = useAttachment();
+  return (
   <Thread
-    composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" streaming={streaming} onStop={() => {}} onSend={() => {}} />}
+    composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" streaming={streaming} onStop={() => {}} onSend={() => {}} onAttach={att.onAttach} />}
   >
-    <UserBubble text={ASK} />
+    {/* Mid-run the prompt is NOT editable: Stop is the honest control for “I did not mean that”, and
+        it is already in the send slot. Edit returns the moment the turn finishes — AskTurn's own rule. */}
+    <AskTurn text={ASK} busy={streaming} costNote="Sending this replaces the answer below it." />
     {trace}
     {after}
+    <AttachedTurn file={att.file} onRemove={att.clear} />
   </Thread>
-);
+  );
+}
 
 const MOTION = [
   ['Step advances', <span>the circle fills, the label comes to full opacity</span>, '~900ms each', 'Unchanged — the steps still advance; only the transition between them is dropped'],

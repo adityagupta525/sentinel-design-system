@@ -55,7 +55,6 @@ function Proto({ onEvent }) {
   const [menu, setMenu] = React.useState(false);
   const [traceKey, setTraceKey] = React.useState(0);
   const [question, setQuestion] = React.useState(DRIFT_ASK);   // editable in place; `ask` below is the function that sends one
-  const [editing, setEditing] = React.useState(false);
   const [file, setFile] = React.useState(null);      // what the paperclip produced
   const [view, setView] = React.useState('chart');   // the expanded card's chart ⇄ table
   const traceStart = React.useRef(0);
@@ -105,14 +104,14 @@ function Proto({ onEvent }) {
   const thread = (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread scrollRef={scroller} revision={`${phase}-${artifact === 'filling' ? 'filling' : 'ready'}`} onMenu={() => { setMenu(true); log('Menu opens', reduced() ? 'panel fades in at x=0; scrim ds-scrim · 320ms' : 'panel translateX −100% → 0 · 320ms; scrim ds-scrim to 0.25'); }}
-        onNew={() => { setScreen('home'); setPhase('trace'); setArtifact('filling'); setQuestion(DRIFT_ASK); setEditing(false); setFile(null); setView('chart'); log('New — back to Home', 'ds-screen-in'); }}
+        onNew={() => { setScreen('home'); setPhase('trace'); setArtifact('filling'); setQuestion(DRIFT_ASK); setFile(null); setView('chart'); log('New — back to Home', 'ds-screen-in'); }}
         composer={<Composer value="" onChange={() => {}} placeholder={artifact === 'expanded' ? 'Ask about this' : 'Ask Sentinel'} streaming={phase === 'trace'} onStop={stop} onSend={() => {}}
           onAttach={(f) => { setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · added just now` }); log(`Attached ${f.name}`, 'FileUpload arrives in the thread; the stages ARE the summary'); }} />}>
-        <UserBubble text={question} editing={editing} onChange={setQuestion}
-          onCancel={() => { setQuestion(DRIFT_ASK); setEditing(false); log('Edit cancelled — nothing was discarded', ''); }}
-          onSave={() => { setEditing(false); setPhase('trace'); setArtifact('filling'); setTraceKey((k) => k + 1); setResumeFrom(0); traceStart.current = performance.now(); log('Edit sent — the answer below it is replaced, as the line said it would be', 'the turn re-runs; ds-rise on the new answer'); }}
-          costNote={phase === 'answer' ? 'Sending this replaces the answer below it.' : undefined} />
-        {!editing && phase === 'answer' && <MessageActions role="user" onAction={() => { setEditing(true); log('Edit — the bubble becomes the field, in place', 'no animation, deliberately'); }} />}
+        {/* One component, every screen: AskTurn owns the bubble, the Edit affordance and the cost line.
+            It is not offered while the trace runs — Stop is the control for that, and it is in the slot. */}
+        <AskTurn text={question} busy={phase === 'trace'} costNote={phase === 'answer' ? 'Sending this replaces the answer below it.' : undefined}
+          onCancel={() => log('Edit cancelled — nothing was discarded', '')}
+          onSave={(next) => { setQuestion(next); setPhase('trace'); setArtifact('filling'); setTraceKey((k) => k + 1); setResumeFrom(0); traceStart.current = performance.now(); log('Edit sent — the answer below it is replaced, as the line said it would be', 'the turn re-runs; ds-rise on the new answer'); }} />
         {phase === 'trace' && <ProgressTrace key={traceKey} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} stepMs={STEP_MS} initialActive={resumeFrom} onDone={traceDone} />}
         {phase === 'stopped' && (
           <React.Fragment>
