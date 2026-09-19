@@ -162,7 +162,7 @@ const PROVENANCE = [
   ['The seven funds, their houses and categories', 'The scheme record', 'The table, and the fund page when a row is opened'],
   ['On shelf / off shelf', "Your firm's compliance shelf", 'A Badge with the word in it — colour never signals alone'],
   ['“Meera Nair · Sunita Nair”', "Your own book — which of your clients already hold this fund", 'The Held by column, and the count on the fund page'],
-  ['Performance, TER, AUM', <span><strong>Nothing.</strong> There is no confirmed source for these, so none is drawn — <code>InfoCard locked</code> says it in the card rather than leaving a blank</span>, 'The locked card, with the reason in words'],
+  ['Return, TER, fund size', <span><code>book.jsx</code>&rsquo;s <code>PERF</code> fixture, which says in its own header that the returns are <strong>invented</strong> and the TER and AUM bands are plausible rather than sourced</span>, 'The figure at display size, the period named in words, and a provenance line that says “illustrative figures for design, not a scheme record”'],
   ['The overlap between two funds', <span><strong>Nothing.</strong> No holdings feed, so the cell is an em dash and the footnote says why — never a 0, because a zero and a missing value are different facts</span>, 'The overlap view'],
 ];
 
@@ -188,7 +188,7 @@ mountScreen(
         <State label="the table" note="Fund, category, shelf and — the most useful column this product actually has — who of your clients already holds it. The Fund column is sticky so the table stays readable when it scrolls sideways; that is also why a long name truncates there, and why opening the row shows it in full.">
           <Scene><FundResults funds={FUND_LIST.filter((f) => f.bucket === 'Equity')} /></Scene>
         </State>
-        <State label="a fund, opened in its row" tone="under" note="Name, house, category, the compliance shelf as a badge with its word, how many of your clients hold it — and then the honest part: no performance line, because there is no confirmed source for one. The card renders LOCKED and says why, which is what InfoCard's locked state was built for and what it has been waiting for a screen to use.">
+        <State label="a fund, opened in its row" note="Name, house, category, the compliance shelf as a badge with its word, and now the figure: 21.4% at display size with THREE-YEAR CAGR spelled out beside it, because “27.6%” read to a client as last year&rsquo;s return is a lie a layout told. The ranges are 1Y · 3Y · 5Y and no more — RangePills&rsquo; default offers 1M · 3M · ALL, and a period nobody has a figure for is the one thing this card was locked to avoid. The provenance says what the numbers are: illustrative, for design, not a scheme record.">
           <Scene><FundResults funds={FUND_LIST.filter((f) => f.cat === 'Flexi cap')} openRow={0} /></Scene>
         </State>
         <State label="nothing matches" tone="under" note="Every table in this product is empty on someone's first day or one filter away, so DataTable REQUIRES an emptyState. It names what to do — drop a filter — rather than saying “No data”.">

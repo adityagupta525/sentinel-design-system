@@ -173,8 +173,7 @@ system has nothing in it nobody uses.
   that left the building. My recommendation: the success screen states plainly what has and has not left
   Sentinel, and offers an undo only for what has not.
 - **The fund data, which is three decisions and not a design gap.** Journey C is built and honest about
-  what it cannot say: there is no confirmed source for fund **performance** (so `InfoCard` renders locked
-  and `RangePills` never offers a range over a number nobody owns), none for **TER or AUM**, and no
+  what it cannot say. **Resolved 19 Sep:** the owner asked for the data and `book.jsx` now carries a `PERF` fixture — returns **invented**, TER and AUM plausible, every row flagged `fixture: true`, and `perfProvenance()` writing the only line the data may carry. `InfoCard` is unlocked and gained a `ranges` passthrough so the DATA decides which periods exist. Still open: no
   **holdings feed** (so an overlap between two funds is an em dash with a footnote, never a 0 — "a zero
   and a missing value are different facts"). The components for all three exist and are correct; supplying
   the sources fills the cards in rather than redesigning them.

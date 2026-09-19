@@ -41,6 +41,10 @@ export interface InfoCardProps {
   figureNote?: string;
   series?: ChartSeries[];
   range?: string;
+  /** Which periods this card's data actually has. Passed straight to `RangePills`, whose default is
+   *  1M · 3M · 1Y · 3Y · ALL — offer that over a figure that only exists for three of them and the
+   *  card is lying in the place it was `locked` to protect. */
+  ranges?: string[];
   onRange?: (range: string) => void;
   /** A stat pair, each carrying its own InfoDot. Two per row. */
   stats?: InfoCardStat[];

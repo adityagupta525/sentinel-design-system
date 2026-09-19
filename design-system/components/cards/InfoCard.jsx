@@ -63,7 +63,7 @@ function Tenure({ managerYears, fundYears, since }) {
     </div>
   );
 }
-export function InfoCard({ kind = 'fund', name, meta, figure, figureNote, series, range, onRange, stats = [], onExplain, caveat, locked = false, lockReason, shelf, tenure, provenance }) {
+export function InfoCard({ kind = 'fund', name, meta, figure, figureNote, series, range, ranges, onRange, stats = [], onExplain, caveat, locked = false, lockReason, shelf, tenure, provenance }) {
   const manager = kind === 'manager';
   return (
     <div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
@@ -92,7 +92,12 @@ export function InfoCard({ kind = 'fund', name, meta, figure, figureNote, series
           {/* Monzo: the past-performance line sits ABOVE the chart, not at the foot of the screen. */}
           {caveat && <p style={{ margin: `var(--space-6) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)', textWrap: 'pretty' }}>{caveat}</p>}
           {series && <div style={{ marginTop: 'var(--space-10)' }}><ChartLine series={series} width={311} run={false} /></div>}
-          <div style={{ marginTop: 'var(--space-10)' }}><RangePills value={range} onChange={onRange} /></div>
+          {/* `ranges` is a passthrough because THE DATA DECIDES WHICH PERIODS EXIST. This hardcoded
+              RangePills with no `ranges` offered 1M · 3M · 1Y · 3Y · ALL over a fixture that holds 1Y,
+              3Y and 5Y — so tapping 1M changed nothing and the card offered a period nobody had a
+              figure for, which is the one thing it was `locked` to avoid. RangePills' own contract had
+              said "add '5Y' where the data supports them" since v10; nothing could. */}
+          <div style={{ marginTop: 'var(--space-10)' }}><RangePills ranges={ranges} value={range} onChange={onRange} /></div>
         </React.Fragment>
       )}
       {provenance && <div style={{ marginTop: 'var(--space-10)' }}><Provenance text={provenance} /></div>}

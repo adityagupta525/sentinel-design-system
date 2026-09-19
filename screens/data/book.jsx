@@ -50,6 +50,49 @@ const FUNDS = [
 ];
 const fundById = (id) => FUNDS.find((f) => f.id === id);
 
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   PERFORMANCE, TER AND AUM — A DESIGN FIXTURE, AND THE BOOK SAYS SO.
+
+   Journeys C and F have been shipping `InfoCard locked` and an em-dash where a return should be,
+   because this repository had no confirmed source for any of it. The owner has now asked for the data
+   so the screens can be finished. It is INVENTED, and that fact lives here rather than in a footnote
+   nobody reads:
+
+     · The RETURNS are made up. They are not any real scheme's record and must not be read as one.
+     · The TERs and AUMs are plausible rather than invented at random — direct-plan equity TERs sit
+       roughly 0.3–1.2%, debt 0.2–0.6%, index 0.1–0.3%, and a large AMC's flagship runs to tens of
+       thousands of crore. Those bands are public and general; the exact figures here are still ours.
+     · `fixture: true` is on every row. A screen may use these numbers; it may NOT print a provenance
+       line claiming they came from a scheme record. `perfProvenance()` below writes the only line this
+       data is allowed to carry, and it says what it is.
+
+   INTERNAL CONSISTENCY IS THE POINT, because that is what a design has to survive. Small cap beats
+   flexi beats large over three years and swings hardest over one; debt is flat and boring; the index
+   fund's TER is the lowest on the shelf and its return tracks the large-cap band. A designer who sorts
+   this table must get an order that looks like a real one. */
+const PERF_AS_OF = '30 Sep 2026';
+const PERF = {
+  'ppfas-flexi':  { nav: 82.14,  ter: 0.63, aumCr: 89400, r1: 18.2, r3: 21.4, r5: 23.1, benchmark: 'Nifty 500 TRI', fixture: true },
+  'hdfc-flexi':   { nav: 1842.60, ter: 0.74, aumCr: 71230, r1: 16.9, r3: 22.8, r5: 21.6, benchmark: 'Nifty 500 TRI', fixture: true },
+  'quant-small':  { nav: 271.38, ter: 0.71, aumCr: 26840, r1: 9.4,  r3: 27.6, r5: 34.2, benchmark: 'Nifty Smallcap 250 TRI', fixture: true },
+  'icici-corp':   { nav: 29.86,  ter: 0.34, aumCr: 31570, r1: 7.8,  r3: 6.9,  r5: 7.2,  benchmark: 'CRISIL Corporate Bond A-II', fixture: true },
+  'sbi-corp':     { nav: 15.42,  ter: 0.31, aumCr: 24110, r1: 7.6,  r3: 6.7,  r5: 7.0,  benchmark: 'CRISIL Corporate Bond A-II', fixture: true },
+  'icici-baf':    { nav: 74.93,  ter: 0.86, aumCr: 62480, r1: 12.1, r3: 13.8, r5: 13.2, benchmark: 'CRISIL Hybrid 50+50', fixture: true },
+  'uti-nifty':    { nav: 168.27, ter: 0.17, aumCr: 22960, r1: 13.7, r3: 15.9, r5: 16.4, benchmark: 'Nifty 50 TRI', fixture: true },
+  'hdfc-large':   { nav: 1094.55, ter: 0.98, aumCr: 38720, r1: 14.3, r3: 16.2, r5: 16.8, benchmark: 'Nifty 100 TRI', fixture: true },
+  'motilal-mid':  { nav: 108.71, ter: 0.66, aumCr: 29340, r1: 21.8, r3: 29.1, r5: 28.4, benchmark: 'Nifty Midcap 150 TRI', fixture: true },
+  'hdfc-stdebt':  { nav: 31.05,  ter: 0.29, aumCr: 15680, r1: 7.4,  r3: 6.5,  r5: 6.8,  benchmark: 'CRISIL Short Duration A-II', fixture: true },
+};
+const perfOf = (id) => PERF[id] || null;
+/* THE ONLY PROVENANCE LINE THIS DATA MAY CARRY. A screen that prints anything else about where these
+   numbers came from is lying, and the lie would be in the one place this product promises never to. */
+const perfProvenance = (period) => `${period ? period + ' returns · ' : ''}illustrative figures for design, not a scheme record · as of ${PERF_AS_OF}`;
+const PERF_PERIODS = [{ key: 'r1', label: '1Y' }, { key: 'r3', label: '3Y' }, { key: 'r5', label: '5Y' }];
+/* Returns are annualised past 1Y, and saying so is not optional — SEBI's own presentation rule, and the
+   difference between 27.6 meaning "a year like that" and "every year for three". */
+const perfNote = (key) => (key === 'r1' ? 'Last 12 months' : `${key === 'r3' ? 'Three' : 'Five'}-year CAGR`);
+
+
 /* THE RULES THIS BOOK IS CHECKED AGAINST. Two of them carry the number 25 and they are NOT the same rule
    (contradiction 32): one caps a single fund, the other caps the small-cap sleeve. */
 const LIMITS = {
@@ -328,6 +371,6 @@ const driftPoints = (c) => (c.allocation && c.mandate ? c.allocation.equity - c.
 const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.singleFund);
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
-Object.assign(window, { ADVISOR, FUNDS, fundById, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
+Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
   REVIEW_TOP_RS, REVIEW_TAIL_RS, REVIEW_TAIL_AVG_RS, REVIEW_TINY_CAP_RS, REVIEW_AUDIENCES, REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
   driftPoints, overSingleFund, inr });

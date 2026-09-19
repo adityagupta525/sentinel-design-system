@@ -53,14 +53,45 @@ const fundRows = (funds) => funds.map((f) => ({
 /* The fund's own page, expanded IN PLACE inside the table row — DataTable's own rule: "the row becomes
    expandable in place — never a modal". The plan had called this a bottom sheet; the system had already
    ruled otherwise, and the row detail is also where an advisor is looking. */
+/* THE FUND'S PAGE, now that there are figures for it. It was `locked` from the day it was built
+   because nothing in this repository could source a return; `book.jsx`'s PERF fixture supplies them
+   now and says in its own header that they are invented.
+
+   THE RANGE CHANGES THE FIGURE, NOT A CHART. The anatomy is figure → chart → range → stats, and there
+   is no chart here: a NAV series is a different dataset and we have point returns, not a curve. A
+   drawn line would be the one thing this card was locked to avoid. The range still earns its place
+   because 1Y and 3Y are different answers to the same question.
+
+   THE PERIOD IS NAMED IN WORDS under the figure. "27.6%" over three years means a CAGR, and an advisor
+   reading it to a client as "it made 27.6% last year" has been misled by a layout. SEBI's own
+   presentation rule; `perfNote` writes it. */
 function FundDetail({ fund, onExplain }) {
+  const [period, setPeriod] = React.useState('r3');
+  const p = perfOf(fund.id);
+  const label = (PERF_PERIODS.find((x) => x.key === period) || {}).label;
+  if (!p) {
+    return (
+      <FUNDS_DS.InfoCard
+        name={fund.name} meta={`${fund.amc} · ${fund.cat}`}
+        shelf={fund.onShelf ? 'on-shelf' : 'not-on-shelf'}
+        locked lockReason="No figures on file for this fund yet, so nothing is drawn."
+        provenance="As of 30 Sep · from the scheme record and your own book"
+        stats={[{ label: 'Held by your clients', value: String(fund.heldBy.length) }, { label: 'Exit load', value: fund.exitLoad }]}
+        onExplain={onExplain} />
+    );
+  }
   return (
     <FUNDS_DS.InfoCard
       name={fund.name} meta={`${fund.amc} · ${fund.cat}`}
       shelf={fund.onShelf ? 'on-shelf' : 'not-on-shelf'}
-      locked lockReason="No confirmed source for this fund's performance yet, so nothing is drawn. Everything above comes from the scheme record."
-      provenance="As of 30 Sep · from the scheme record and your own book"
+      figure={`${p[period].toFixed(1)}%`} figureNote={`${perfNote(period)} · against ${p.benchmark}`}
+      range={label} ranges={PERF_PERIODS.map((x) => x.label)}
+      onRange={(r) => setPeriod((PERF_PERIODS.find((x) => x.label === r) || {}).key || 'r3')}
+      caveat="Past performance may or may not be sustained in future."
+      provenance={perfProvenance(label)}
       stats={[
+        { label: 'Expense ratio', value: `${p.ter.toFixed(2)}%` },
+        { label: 'Fund size', value: `₹${p.aumCr.toLocaleString('en-IN')} cr` },
         { label: 'Held by your clients', value: String(fund.heldBy.length) },
         { label: 'Exit load', value: fund.exitLoad },
       ]}

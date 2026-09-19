@@ -48,14 +48,26 @@ provenance line. *"Equity 62% → 71%. Mostly the market."* is a good sentence �
 whole screen exists to deliver is set at body size inside it, then again inside a chart. **Nothing is
 ever bigger than anything else.** Read four of our screens in a row and they have one volume.
 
-This is not a missing component. **`HeroNumberCard` is in the system**, it is on exactly one screen
-(Journey A's risk result, where 54 lands properly), and the four screens that most want it — the drift
-answer, the rebalance simulation, the ledger total, the review — all set their headline figure in a
-sentence instead.
+This is not a missing component — but it is **not `HeroNumberCard` either, and my first draft of this
+document was wrong about that.**
 
-**This is the owner's call, because it changes what four built screens look like.** I have not applied
-it. The proposal, in one line: *the answer turn leads with its figure at display size, and the sentence
-becomes the line under it* — same words, same numbers, same provenance, different order.
+**Correction, 19 Sep 2026.** I wrote that `HeroNumberCard` is the instrument and that four screens
+should adopt it. Reading its contract properly: it takes `value`, `badge` and **`rows: MeterRow[]` with
+a binding row**. That is the risk result's own anatomy — three scores and the lowest one wins — not a
+general headline figure. Forcing the drift answer into it would have been a component worn as a
+costume.
+
+**The instrument that does exist is `InfoCard`'s `figure` + `figureNote`** — the number in the display
+face with its qualifier on the line beside it. The fund page now uses exactly that, and it is the first
+place in this product where a figure lands: **21.4%**, and next to it *"Three-year CAGR · against Nifty
+500 TRI"*. Compare it with the drift answer, where 71% is set at body size inside a sentence.
+
+So the open question for the owner is narrower and more answerable than the first draft made it:
+**should an answer turn be allowed to lead with its figure, and if so, with what?** The three candidates
+are (a) `ArtifactCard` taking a display-size figure beside its title, (b) extending `InfoCard`'s
+figure/figureNote pattern into a small shared block, or (c) leaving it alone because a thread is a
+conversation and a conversation does not shout. **Nothing has been applied**, and it is the kind of
+question the studio's design crit should settle rather than a note in a file.
 
 ## What I changed today, which needed no ruling
 
