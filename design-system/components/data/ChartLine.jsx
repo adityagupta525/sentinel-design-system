@@ -89,21 +89,43 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
               below leaves the space above its end empty, and vice versa — so the label goes to the
               empty side and never lies across the stroke it is labelling. Right-aligned to the plot
               edge, where the last point already is. */}
-          {use.map((s, i) => {
-            const last = s.points[s.points.length - 1];
-            const prev = s.points[s.points.length - 2] || last;
+          {(() => {
+            /* TWO LABELS THAT LAND ON EACH OTHER (F-50, 19 Sep 2026). Each label used to be placed from
+               its OWN line's direction, independently. When both series rise and end close together —
+               a fund and its benchmark ending ₹184 apart on a ₹21,500 scale, which is the normal case
+               for an index fund — both wanted the same slot and OVERPRINTED: "₹21,368" over "₹21,552",
+               "Nifty 50 TRI" over "This fund", neither readable. Measured on screens/journey-c/funds.
+               Resolved in two passes: place them the old way, then push the SECOND series (the
+               benchmark, already the muted one) clear of the first. The primary never moves, so the
+               series the advisor came for keeps the slot its own line earned. */
             const h = peek ? 16 : 30;          /* value, plus the series name when it is shown */
             const gap = peek ? 5 : 7;
-            const rising = y(last.y) <= y(prev.y);   /* SVG y grows downward: smaller y = higher */
-            const wanted = rising ? y(last.y) + gap : y(last.y) - gap - h;
-            const top = Math.min(Math.max(wanted, 0), plot - h);
+            const placed = use.map((s) => {
+              const last = s.points[s.points.length - 1];
+              const prev = s.points[s.points.length - 2] || last;
+              const rising = y(last.y) <= y(prev.y);   /* SVG y grows downward: smaller y = higher */
+              const wanted = rising ? y(last.y) + gap : y(last.y) - gap - h;
+              return { last, top: Math.min(Math.max(wanted, 0), plot - h) };
+            });
+            if (placed.length === 2 && Math.abs(placed[0].top - placed[1].top) < h + 2) {
+              const below = placed[1].top >= placed[0].top;
+              const pushed = below ? placed[0].top + h + 2 : placed[0].top - h - 2;
+              /* If the push would leave the plot, go the other way instead of clamping into the clash. */
+              placed[1].top = pushed >= 0 && pushed <= plot - h ? pushed
+                : (below ? placed[0].top - h - 2 : placed[0].top + h + 2);
+              placed[1].top = Math.min(Math.max(placed[1].top, 0), plot - h);
+            }
+            return use.map((s, i) => {
+            const last = placed[i].last;
+            const top = placed[i].top;
             return (
               <div key={s.label} style={{ position: 'absolute', right: 0, top, maxWidth: labelW, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', textAlign: 'right', pointerEvents: 'none' }}>
                 <span style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 'var(--text-11-5)' : 'var(--text-12)', lineHeight: 'var(--leading-15)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)' }}>{valueFormat(last.y)}</span>
                 {!peek && <span style={{ overflowWrap: 'break-word', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-10)', lineHeight: 'var(--leading-14)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-muted)' }}>{s.label}</span>}
               </div>
             );
-          })}
+            });
+          })()}
         </div>
       </div>
       <div style={{ display: 'flex', height: labelBand, alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-8)' }}>

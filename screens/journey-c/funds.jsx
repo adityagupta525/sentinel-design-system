@@ -219,4 +219,91 @@ const fundsFor = (query, shelf) => FUND_LIST.filter((f) => {
   });
 });
 
-Object.assign(window, { REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, FundDetail, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE FUND CARD — the headline the references got right, in our language.
+
+   Across ~320 industry screens the best single idea was Groww's "If ₹10k Invested — This fund 18.33%
+   (₹92,153) · Nifty 500 13.03% (₹50,540)". It is not a CAGR. It is what ₹10,000 BECAME, which is the
+   sentence an advisor says out loud to a client; a percentage has to be translated first.
+
+   THREE THINGS WE DO THAT THE REFERENCES DO NOT.
+     · The benchmark is named in TEXT beside its figure, not only by a line colour (rule 1).
+     · The period is spelled out — "over five years" — because "34.2%" read as last year's return is a
+       lie a layout told.
+     · The provenance says the figures are illustrative. Not one of the 320 screens says where a number
+       came from.
+
+   THE CHART IS A PEEK, NOT A HERO. Their line chart is a 300pt full-bleed header. Ours is the 96pt
+   peek `ArtifactCard` already has, expanding in place — because in a thread the card has to leave room
+   for the sentence that asked for it. */
+const FUND_DS2 = window.SentinelDesignSystem_0682a2;
+
+function FundHeadline({ id }) {
+  const t = tenKAfter(id);
+  if (!t) return null;
+  const gap = t.fund - t.bench;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-8)', flexWrap: 'wrap' }}>
+        <span style={{ font: 'var(--type-figure-font)', color: 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>{inr(t.fund)}</span>
+        <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)' }}>
+          is what {inr(t.base)} would be, over {t.years} years
+        </span>
+      </div>
+      <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)', fontVariantNumeric: 'tabular-nums' }}>
+        {t.benchmark} would be {inr(t.bench)} — {gap >= 0 ? `${inr(gap)} ahead` : `${inr(-gap)} behind`}.
+      </span>
+    </div>
+  );
+}
+
+/* The two lines. Series 2 is the benchmark and ChartLine draws it muted and dashed by contract — the
+   role is in the data, not in a colour we picked. */
+function FundChart({ id, density = 'peek', run = true }) {
+  const s = navSeries(id);
+  if (!s) return null;
+  const p = perfOf(id);
+  return (
+    <FUND_DS2.ChartLine density={density} run={run}
+      valueFormat={(v) => inr(Math.round(v))}
+      xFormat={(x) => (x === 0 ? '5 years ago' : x === NAV_MONTHS ? 'today' : `${Math.round((NAV_MONTHS - x) / 12)}y ago`)}
+      series={[{ label: 'This fund', points: s.fund }, { label: p.benchmark, points: s.bench, tone: 'muted' }]} />
+  );
+}
+
+/* The fund as an ARTIFACT in the thread — what an advisor gets when they ask about one fund. The four
+   chips under it are the reference's four TABS: in a thread each is a question, each answer is its own
+   turn, and the thread becomes the tab history. */
+const FUND_CHIPS = ['How has it done against its category?', 'What is it holding?', 'What changed recently?', 'Who of my clients hold it?'];
+function FundCard({ id, state = 'peek', run = true, onToggle, onMenu }) {
+  const f = fundById(id); const p = perfOf(id);
+  if (!f || !p) return null;
+  const expanded = state === 'expanded';
+  return (
+    <FUND_DS2.ArtifactCard state={state} eyebrow={`${f.amc} · ${f.category}`} title={f.name}
+      provenance={perfProvenance('5Y')} onToggle={onToggle} onMenu={onMenu}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
+        {/* THE HEADLINE IS THE PEEK. The first cut put the chart in both states, and at 96pt the
+            headline plus a plot does not fit — ArtifactCard clipped the plot and left the chart's end
+            label floating alone under the sentence, a number with no picture. The peek answers the
+            question (what would ₹10,000 be); the chart is the evidence, and evidence is what expanding
+            is for. */}
+        <FundHeadline id={id} />
+        {expanded && <FundChart id={id} density="expanded" run={run} />}
+        {expanded && (
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-8)' }}>
+              <FUND_DS2.StatTile label="Riskometer" value={f.riskometer} />
+              <FUND_DS2.StatTile label="Expense ratio" value={`${p.ter.toFixed(2)}%`} note="Direct plan" />
+              <FUND_DS2.StatTile label="Fund size" value={`₹${p.aumCr.toLocaleString('en-IN')} cr`} />
+              <FUND_DS2.StatTile label="Exit load" value={f.exitLoad} />
+            </div>
+            <FUND_DS2.SentinelText weight="Regular" text="Past performance may or may not be sustained in future." />
+          </>
+        )}
+      </div>
+    </FUND_DS2.ArtifactCard>
+  );
+}
+
+Object.assign(window, { FundHeadline, FundChart, FundCard, FUND_CHIPS, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, FundDetail, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });

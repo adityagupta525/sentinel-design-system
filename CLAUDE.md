@@ -68,7 +68,7 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   F-1 … F-49 recorded; **none open** (F-27 … F-30 closed 18 Sep; F-31 locked row dimming its own selection and F-32 a stopped trace still saying "Working", both found by the review agent, F-33 integrity failing on the date stamp rather than on a change, and F-39 the app bar's two icon buttons with no accessible name — found by driving the end-to-end prototype, which is the only thing that could see it — all closed 19 Sep). `_index.json` reports `literals` — how many raw
+   F-1 … F-50 recorded; **none open** (F-27 … F-30 closed 18 Sep; F-31 locked row dimming its own selection and F-32 a stopped trace still saying "Working", both found by the review agent, F-33 integrity failing on the date stamp rather than on a change, and F-39 the app bar's two icon buttons with no accessible name — found by driving the end-to-end prototype, which is the only thing that could see it — all closed 19 Sep). `_index.json` reports `literals` — how many raw
    style values each component still hardcodes — so adherence is measurable per component:
    **35 of 88** are fully clean.
 3. **The four components the request spec named and nobody built** — done.

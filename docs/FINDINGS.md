@@ -1108,3 +1108,25 @@ produces **no picker at all** and opens the rail directly.
 It also answers the audit's biggest persona hole. Every screen in this product assumes an established
 ARN holder with 512 clients; **`WhoEmpty` is the only place a new one exists**, and it says the book is
 empty, says one client is enough to make everything work, and offers the two real ways to start.
+
+### F-50 · Two end labels landed on each other — *found by looking, 19 Sep 2026, fixed*
+
+`ChartLine` places each series' end label from **its own line's direction**: a line arriving from below
+puts its label above the endpoint, and vice versa. Independently, and that is the bug. When both series
+rise and end close together — **a fund and its benchmark ending ₹184 apart on a ₹21,500 scale, which is
+the normal case for an index fund** — both wanted the same slot and **overprinted**: `₹21,368` on top of
+`₹21,552`, `Nifty 50 TRI` on top of `This fund`, neither readable.
+
+It could not appear before today, because `ChartLine` had never been on a screen: the system's own
+rule — *nothing in the system that is on no screen* — is what found it.
+
+**Fix:** two passes. Place both the old way, then push the **second** series clear of the first. The
+primary never moves, so the series the advisor came for keeps the slot its own line earned, and the
+benchmark — already the muted, dashed one — is the one that yields. If the push would leave the plot,
+it goes the other way rather than clamping back into the clash.
+
+**Also fixed in the same pass, and it is a composition finding rather than a component one:** the fund
+card put the chart in **both** states. At the 96pt peek the headline plus a plot does not fit, so
+`ArtifactCard` clipped the plot and left the chart's end label floating alone under the sentence — a
+number with no picture. **The peek is now the headline alone.** The peek answers the question (*what
+would ₹10,000 be*); the chart is the evidence, and evidence is what expanding is for.

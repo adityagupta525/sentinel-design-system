@@ -870,16 +870,28 @@ var __ds_out = (() => {
           style: !second && animate ? { animation: "ds-draw-on 600ms cubic-bezier(0.2,0.8,0.2,1) both" } : void 0
         }
       );
-    }), /* @__PURE__ */ react_global_default.createElement("line", { x1: "0", x2: w, y1: plot - 0.5, y2: plot - 0.5, stroke: "var(--color-line)", strokeWidth: "1", vectorEffect: "non-scaling-stroke" }), scrub && tip != null && active && /* @__PURE__ */ react_global_default.createElement("line", { x1: x(active.x), x2: x(active.x), y1: "0", y2: plot - 1, stroke: "var(--color-bronze-deep)", strokeWidth: "1", vectorEffect: "non-scaling-stroke" })), use.map((s, i) => {
-      const last = s.points[s.points.length - 1];
-      const prev = s.points[s.points.length - 2] || last;
+    }), /* @__PURE__ */ react_global_default.createElement("line", { x1: "0", x2: w, y1: plot - 0.5, y2: plot - 0.5, stroke: "var(--color-line)", strokeWidth: "1", vectorEffect: "non-scaling-stroke" }), scrub && tip != null && active && /* @__PURE__ */ react_global_default.createElement("line", { x1: x(active.x), x2: x(active.x), y1: "0", y2: plot - 1, stroke: "var(--color-bronze-deep)", strokeWidth: "1", vectorEffect: "non-scaling-stroke" })), (() => {
       const h = peek ? 16 : 30;
       const gap = peek ? 5 : 7;
-      const rising = y(last.y) <= y(prev.y);
-      const wanted = rising ? y(last.y) + gap : y(last.y) - gap - h;
-      const top = Math.min(Math.max(wanted, 0), plot - h);
-      return /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, style: { position: "absolute", right: 0, top, maxWidth: labelW, display: "flex", flexDirection: "column", alignItems: "flex-end", textAlign: "right", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, fontFamily: FONT, fontWeight: "var(--weight-bold)", fontSize: peek ? "var(--text-11-5)" : "var(--text-12)", lineHeight: "var(--leading-15)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-bronze-deep)" } }, valueFormat(last.y)), !peek && /* @__PURE__ */ react_global_default.createElement("span", { style: { overflowWrap: "break-word", fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-10)", lineHeight: "var(--leading-14)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-muted)" } }, s.label));
-    }))), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", height: labelBand, alignItems: "center", justifyContent: "space-between", gap: "var(--space-8)" } }, peek ? /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-11)", lineHeight: "var(--leading-14)", color: "var(--color-muted)" } }, use[0] ? xFormat(use[0].points[0].x) : ""), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-11)", lineHeight: "var(--leading-14)", color: "var(--color-muted)" } }, use[0] ? xFormat(use[0].points[use[0].points.length - 1].x) : "")) : (
+      const placed = use.map((s) => {
+        const last = s.points[s.points.length - 1];
+        const prev = s.points[s.points.length - 2] || last;
+        const rising = y(last.y) <= y(prev.y);
+        const wanted = rising ? y(last.y) + gap : y(last.y) - gap - h;
+        return { last, top: Math.min(Math.max(wanted, 0), plot - h) };
+      });
+      if (placed.length === 2 && Math.abs(placed[0].top - placed[1].top) < h + 2) {
+        const below = placed[1].top >= placed[0].top;
+        const pushed = below ? placed[0].top + h + 2 : placed[0].top - h - 2;
+        placed[1].top = pushed >= 0 && pushed <= plot - h ? pushed : below ? placed[0].top - h - 2 : placed[0].top + h + 2;
+        placed[1].top = Math.min(Math.max(placed[1].top, 0), plot - h);
+      }
+      return use.map((s, i) => {
+        const last = placed[i].last;
+        const top = placed[i].top;
+        return /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, style: { position: "absolute", right: 0, top, maxWidth: labelW, display: "flex", flexDirection: "column", alignItems: "flex-end", textAlign: "right", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, fontFamily: FONT, fontWeight: "var(--weight-bold)", fontSize: peek ? "var(--text-11-5)" : "var(--text-12)", lineHeight: "var(--leading-15)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-bronze-deep)" } }, valueFormat(last.y)), !peek && /* @__PURE__ */ react_global_default.createElement("span", { style: { overflowWrap: "break-word", fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-10)", lineHeight: "var(--leading-14)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-muted)" } }, s.label));
+      });
+    })())), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", height: labelBand, alignItems: "center", justifyContent: "space-between", gap: "var(--space-8)" } }, peek ? /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-11)", lineHeight: "var(--leading-14)", color: "var(--color-muted)" } }, use[0] ? xFormat(use[0].points[0].x) : ""), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-11)", lineHeight: "var(--leading-14)", color: "var(--color-muted)" } }, use[0] ? xFormat(use[0].points[use[0].points.length - 1].x) : "")) : (
       /* Two labels: first x and last x. This used to map over `ticks(d0, d1, 2)` — the Y domain's
          ticks — to decide how many X labels to draw, so the count of one axis was set by the other.
          When that call returned a single tick the trailing label silently vanished, which is what

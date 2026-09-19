@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','SentinelBlock','SentinelText','ArtifactCard','DataTable','InfoCard','OverlapView','RangePills','InfoDot','Badge','Pill','ChipRow','AnswerChip','DarkButton','ExplainerSheet','Provenance','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SentinelBlock','SentinelText','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
@@ -219,11 +219,36 @@ mountScreen(
       </Note>
     </Section>
 
-    <Section title="4 · Motion, and what each one does under reduced motion">
+    <Section title="4 · The fund as an artifact — the headline the references got right" sub="Across ~320 industry screens the best single idea was Groww's “If ₹10k Invested”. It is not a CAGR; it is what ₹10,000 BECAME — the sentence an advisor says out loud to a client. A percentage has to be translated first.">
+      <StateRow>
+        <State label="peek" note="96pt, the card ArtifactCard already has. Their version of this chart is a 300pt full-bleed header; in a thread the card has to leave room for the sentence that asked for it. Two lines, and the benchmark is named in TEXT beside its figure — never carried by a line colour alone.">
+          <Scene anchor="bottom"><FundCard id="ppfas-flexi" state="peek" onToggle={() => {}} /></Scene>
+        </State>
+        <State label="expanded, in place" note="₹28,268 against the Nifty 500's ₹21,738 — the gap said in words. The period is spelled out, because “23.1%” read to a client as last year's return is a lie a layout told. Then the four facts, and the caveat above them.">
+          <Scene anchor="bottom"><FundCard id="ppfas-flexi" state="expanded" onToggle={() => {}} onMenu={() => {}} /></Scene>
+        </State>
+        <State label="an index fund, trailing its index" tone="under" note="UTI Nifty 50 ends BEHIND the index — by roughly its 0.17% expense ratio. That is the one relationship a reader would notice if the fixture got it wrong, and it is why every series is generated against its stated CAGR rather than drawn by hand.">
+          <Scene anchor="bottom"><FundCard id="uti-nifty" state="expanded" onToggle={() => {}} /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="the four chips are their four tabs" note="Overview · Holdings · Performance · Peer Analysis are four PAGES behind one header in every reference. Here each is a question, each answer is its own turn, and scrolling back through the thread IS going back through the tabs. Nothing is pinned — the chips sit in the turn that offered them.">
+          <Scene anchor="bottom">
+            <FundCard id="quant-small" state="peek" onToggle={() => {}} />
+            <ChipRow>{FUND_CHIPS.map((c) => <AnswerChip key={c} label={c} onClick={() => {}} />)}</ChipRow>
+          </Scene>
+        </State>
+        <State label="a debt fund, where the line is nearly flat" note="The chart says “debt” by being almost straight. Volatility in the fixture is by CATEGORY — small cap swings hardest, debt almost not at all — because a debt fund drawn with equity's shape would be the chart lying about the asset class.">
+          <Scene anchor="bottom"><FundCard id="icici-corp" state="expanded" onToggle={() => {}} /></Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="5 · Motion, and what each one does under reduced motion">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="5 · Provenance">
+    <Section title="6 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>
