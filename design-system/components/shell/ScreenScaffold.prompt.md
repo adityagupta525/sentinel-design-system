@@ -1,0 +1,7 @@
+ScreenScaffold — the phone, with the composer guaranteed. Rule 3 says the composer is on every screen; until now that was kept by **three hand-built shells that happened to agree** — `thread.jsx`, `rail.jsx`, `home.jsx`, across **16 pages and 37 instances**. Normalise the DS prefix away and the thread's and the rail's shells are the **same nineteen lines**.
+```jsx
+<ScreenScaffold onMenu={openDrawer} onNew={newThread} composer={<Composer …/>}>{turns}</ScreenScaffold>
+<ScreenScaffold time="10:12" progress={{ n: 3, total: 12 }} anchor="newest" revision={cursor} composer={<MoneyComposer …/>}>…</ScreenScaffold>
+<ScreenScaffold body="page" chips={<ChipRow>…</ChipRow>} composer={<Composer …/>}><GreetingDivider …/>…</ScreenScaffold>
+```
+`body="thread"` (default) scrolls, is bottom-anchored, and owns the gutter and the `--stack` gap between turns; `body="page"` does not scroll — Home is the only one. `progress` renders `ProgressRail` in the gutter; `banner` pins a `DetourBanner` under the bar, outside the scroller. `anchor` decides where the thread rests on `revision`: `'newest'` (the newest turn **starts** on screen), `'bottom'`, a turn index, or a ref to an element. **It fixed a bug by existing:** `rail.jsx:85` scrolled to the bottom — the exact behaviour `thread.jsx:17-45` exists to reject — so the rebalance rail opened on the middle of a list with Sentinel's question scrolled off. **The Dock is not the caller's to place**, which is what turns rule 3 from a convention into a structure.

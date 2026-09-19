@@ -80,32 +80,19 @@ const RISK_RESULT = {
 
    RULE 3 HOLDS HERE TOO: the composer is present on every question. An advisor can always type instead
    of tapping, and on a money question it is the MoneyComposer. */
-function Rail({ n, total = RAIL_TOTAL, dim, banner, children, composer, onMenu, onNew, scrollRef, revision = 0 }) {
-  const own = React.useRef(null);
-  const el = () => (scrollRef ? scrollRef.current : own.current);
-  React.useLayoutEffect(() => { const e = el(); if (e) e.scrollTop = e.scrollHeight; }, [revision]);
+/* The shell is ScreenScaffold's now (20 Sep 2026). This file's copy was the thread's nineteen lines
+   with two additions — the progress rail and a hardcoded clock — and ONE SUBTRACTION that was a bug:
+   `e.scrollTop = e.scrollHeight`, the scroll-to-the-bottom that thread.jsx:17-45 exists to reject.
+   Looked at on screens/journey-e/rebalance: the rail opened on the middle of a list of targets with
+   Sentinel's question scrolled off the top. What stays here is what is the RAIL's rather than the
+   phone's: the morning clock this journey is set at, and `n`/`total`/`dim` as the rail's own words. */
+function Rail({ n, total = RAIL_TOTAL, dim, banner, children, composer, onMenu, onNew, scrollRef, revision = 0, anchor = 'newest' }) {
   return (
-    <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
-      <RAIL_DS.ScreenBackdrop />
-      <RAIL_DS.StatusSpacer time="10:12" />
-      {/* The rail has no back button, because this product has none: the way out of any surface is the
-          menu’s "Back to home" or a new thread. onNew was hardcoded to a no-op until the prototype had to
-          leave the rail — and inventing a back arrow here would have been a second door to one thing. */}
-      <RAIL_DS.TopBar title="Sentinel" onMenu={onMenu || (() => {})} onNew={onNew || (() => {})} />
-      {n != null && (
-        <div style={{ position: 'relative', zIndex: 1, padding: '0 var(--gutter) var(--space-8)' }}>
-          <RAIL_DS.ProgressRail n={n} total={total} dim={dim} />
-        </div>
-      )}
-      {banner && <div style={{ position: 'relative', zIndex: 1, paddingBottom: 'var(--space-8)' }}>{banner}</div>}
-      <div ref={scrollRef || own} style={{ position: 'relative', zIndex: 1, display: 'flex', flex: 1, flexDirection: 'column', overflowY: 'auto', minHeight: 0 }}>
-        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--stack)', padding: '16px var(--gutter) 24px' }}>
-          {children}
-        </div>
-      </div>
-      <RAIL_DS.Dock composer={composer} />
-      <RAIL_DS.HomeIndicator />
-    </div>
+    <RAIL_DS.ScreenScaffold time="10:12" banner={banner} onMenu={onMenu} onNew={onNew}
+      progress={n != null ? { n, total, dim } : undefined}
+      scrollRef={scrollRef} revision={revision} anchor={anchor} composer={composer}>
+      {children}
+    </RAIL_DS.ScreenScaffold>
   );
 }
 

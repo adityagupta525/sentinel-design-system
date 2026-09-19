@@ -1287,3 +1287,47 @@ owner's call:
 
 `WhoPicker` (`who.jsx:75`, the client list 10 after the search field) is the one thing-after-thing gap
 in the repository with no second instance to vote against it; it stays hand-written until there is.
+
+### F-55 · Three shells that happened to agree, and the bug that lived in the gap — *`ScreenScaffold` added 20 Sep 2026*
+
+Rule 3 is **"the composer is on every screen."** Until today it was kept by three hand-built shells —
+`thread.jsx:45-63`, `rail.jsx:87-105`, `home.jsx:45-83` — across **16 pages and 37 instances**
+(`<Thread>` 24 · `<Rail>` 5 · `<Home>` 8). Diffed with the design-system prefix normalised away, the
+thread's and the rail's shells are the **same nineteen lines**, and differ in exactly three:
+
+1. the rail hardcodes `StatusSpacer time="10:12"` where the thread takes a prop;
+2. the rail has a `ProgressRail` between the bar and the body;
+3. **the rail scrolls to the bottom.**
+
+The third is the finding. `rail.jsx:85` was `e.scrollTop = e.scrollHeight` — precisely the behaviour
+`thread.jsx:17-45` exists to reject, and measured there: *"the answer turn is ~500pt in a 462pt
+thread, so sticking to the bottom scrolled the sentence off while it was being read."* The rail's copy
+of the shell was written without it.
+
+**Looked at, not reasoned about.** `screens/journey-e/rebalance` opened on the middle of a list of
+targets: Sentinel's question — *"'Rebalance' is not an instruction until someone says how far"* —
+scrolled off the top, and the first target card cut in half. After: the rail opens on the question
+with the first target fully readable. Two shells agreeing by hand is how a fixed bug comes back in the
+copy.
+
+**Home is the one real variant, and naming it was the point.** It has no scroller at all: a greeting,
+a card of ready prompts, and a spacer that pushes the Dock to the floor. That is `body="page"`; every
+other screen is `body="thread"` (32 of the 37 instances).
+
+**What the render proved.** All 18 screen pages shot before and after and differenced, then each
+changed page re-shot against itself to separate a real change from render flake:
+
+| page | diff | same-code re-render | verdict |
+|---|---|---|---|
+| rebalance | 739,932 px | **0** | **the fix** |
+| risk-profile | 350,977 px | 2,918 | one frame rests 1px higher — the result turn's `✦ Sentinel` is now fully on screen |
+| refusals · review | 68,697 / 358,308 px | **68,697 / 358,308** | flake, not this change |
+| 03-thread-answer · 05-decide | max delta 3 / 4 | same | `ArtifactCard` shimmer and `SentinelThinking` dot phase |
+| drawer · ledger | 25,508 / 38 px | **25,508 / 12** | flake |
+| flow · index · 01-home · 02-thread-trace · journey-b/prototype · funds · proposal · prototype · who · going-back | — | — | **identical** |
+
+Re-shooting a changed page against its own output is the only way to tell a 1px regression from the
+renderer's own noise, and on this change it moved four pages out of the "changed" column.
+
+**The Dock is not the caller's to place.** That is what turns rule 3 from a convention into a
+structure: a fourth screen written tomorrow cannot omit it.

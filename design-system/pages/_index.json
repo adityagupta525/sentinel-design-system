@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 47
+  "shipped": 48
  },
  "rows": [
   {
@@ -303,6 +303,20 @@
    ],
    "locals": [],
    "literals": 8
+  },
+  {
+   "name": "ScreenScaffold",
+   "group": "Foundations",
+   "status": "shipped",
+   "page": "ScreenScaffold.html",
+   "file": "components/shell/ScreenScaffold.jsx",
+   "tokens": [
+    "--gutter",
+    "--space-8",
+    "--stack"
+   ],
+   "locals": [],
+   "literals": 2
   },
   {
    "name": "ScreenStack",

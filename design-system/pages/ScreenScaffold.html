@@ -1,0 +1,101 @@
+<!-- @dsCard group="Pages" viewport="1400x1500" name="ScreenScaffold" subtitle="The phone, with the composer guaranteed — three hand-built shells that happened to agree, and the bug that lived in the gap" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ScreenScaffold — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ScreenScaffold, Composer, MoneyComposer, SentinelTurn, ChipRow, AnswerChip, Pill,
+        GreetingDivider, SuggestionRow, DetourBanner, UserBubble, PhoneFrame } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--gutter','--stack','--space-8','--space-4','--radius-16','--shadow-card-soft','--color-surface'];
+
+const Ask = () => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={() => {}} />;
+const TURNS = [
+  <UserBubble key="u" text="Why did Sharma's portfolio drift this quarter?" />,
+  <SentinelTurn key="s" say="Equity is 71% of his portfolio. His mandate says 60%, and small cap alone is 31% against a 25% ceiling."
+    provenance="As of 30 Sep · from his September statement"
+    chips={<ChipRow><AnswerChip label="Why did it move?" variant="tertiary" onClick={() => {}} /></ChipRow>} />,
+];
+
+function App() {
+  return (
+    <PageShell name="ScreenScaffold" group="Shell" status="shipped"
+      requires={['ScreenScaffold','ScreenBackdrop','StatusSpacer','TopBar','ProgressRail','Dock','HomeIndicator']}
+      summary="Rule 3 is 'the composer is on every screen', and until 20 Sep 2026 it was kept by three hand-built shells that happened to agree: thread.jsx:45-63, rail.jsx:87-105, home.jsx:45-83, across 16 pages and 37 instances. Diffed with the design-system prefix normalised away, the thread's and the rail's shells are the SAME NINETEEN LINES. The Dock is not the caller's to place — that is what turns rule 3 from a convention into a structure.">
+
+      <Block n={1} title="Specimen" sub="A thread. The scaffold owns the frame, the gutter, the --stack between turns and the Dock; the caller owns the turns and which composer sits in it.">
+        <Specimen width={375}>
+          <PhoneFrame>
+            <ScreenScaffold onMenu={() => {}} onNew={() => {}} composer={<Ask />}>{TURNS}</ScreenScaffold>
+          </PhoneFrame>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Seven fixed parts and three slots. Nothing between the bar and the Dock is optional except what the slots hold.">
+        <Anatomy width={375}
+          top="ScreenBackdrop · StatusSpacer · TopBar — the menu and the new thread are the only two ways out"
+          left="progress, then banner: pinned, outside the scroller"
+          right="the body: scrolls, bottom-anchored, gutter and --stack are the scaffold's"
+          bottom="Dock (chips → composer) · HomeIndicator. The Dock is not the caller's to place.">
+          <PhoneFrame>
+            <ScreenScaffold progress={{ n: 3, total: 12 }} banner={<DetourBanner label="Meera's risk profile · paused at 3 of 12" onResume={() => {}} />}
+              onMenu={() => {}} onNew={() => {}} composer={<Ask />}>{TURNS}</ScreenScaffold>
+          </PhoneFrame>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="The two bodies" sub="32 of the 37 measured instances are a thread. Home is the one page, and it is a real difference rather than an oversight: it has no scroller at all.">
+        <Grid cols={2} itemWidth={375} items={[
+          {label:"body='thread' — 32 of 37", node:<PhoneFrame><ScreenScaffold onMenu={()=>{}} onNew={()=>{}} composer={<Ask />}>{TURNS}</ScreenScaffold></PhoneFrame>,
+           note:'Scrolls, bottom-anchored, 16px above the first turn and 24 below the last. A short thread sits above the Dock rather than under the bar.'},
+          {label:"body='page' — Home, and only Home", node:(
+            <PhoneFrame>
+              <ScreenScaffold body="page" onMenu={()=>{}} onNew={()=>{}}
+                chips={<ChipRow>{['Build proposal','Review portfolio','Fund explorer'].map((c) => <Pill key={c} label={c} onClick={()=>{}} />)}</ChipRow>}
+                composer={<Ask />}>
+                <div style={{ position:'relative', zIndex:1, paddingTop:'var(--space-4)' }}><GreetingDivider>Good afternoon, Ashish</GreetingDivider></div>
+                <div style={{ position:'relative', zIndex:1, padding:'24px var(--gutter) 0' }}>
+                  <div style={{ width:'100%', boxSizing:'border-box', borderRadius:'var(--radius-16)', background:'var(--color-surface)', padding:'0 var(--space-12)', boxShadow:'var(--shadow-card-soft)' }}>
+                    {["Start Meera Nair's risk profile",'Build a proposal for Mr. Amit Aggrawal'].map((s,i,a) => <SuggestionRow key={s} label={s} last={i===a.length-1} onClick={()=>{}} />)}
+                  </div>
+                </div>
+              </ScreenScaffold>
+            </PhoneFrame>
+          ), note:'No scroller. Children sit under the bar with their own padding and a spacer pushes the Dock to the floor. A page that needs to scroll is a thread.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="The bug that lived in the gap" sub="Two shells agreeing by hand is how a fixed bug comes back in the copy.">
+        <Grid cols={1} itemWidth={760} items={[
+          {label:'thread.jsx:17-45 — the rule, measured', node:<p style={{margin:0, font:'var(--type-row-font)', color:'var(--color-ink-soft)', textWrap:'pretty'}}>“The answer turn is ~500pt in a 462pt thread, so sticking to the bottom scrolled the sentence off while it was being read, and when the artifact arrived 900ms later it did it again.” So the newest turn <b>starts</b> on screen; the advisor scrolls to the card.</p>},
+          {label:'rail.jsx:85 — the copy, without it', node:<p style={{margin:0, font:'var(--type-row-font)', color:'var(--color-status-over-fg)', fontVariantNumeric:'tabular-nums'}}>e.scrollTop = e.scrollHeight — the exact behaviour above exists to reject. Looked at on screens/journey-e/rebalance: the rail opened on the middle of a list of targets, Sentinel's question scrolled off the top and the first card cut in half.</p>},
+          {label:'Now', node:<p style={{margin:0, font:'var(--type-row-font)', color:'var(--color-ink-soft)'}}>One anchor, in one place, for both. The rebalance rail opens on the question. Every other page re-rendered and differenced: unchanged.</p>},
+        ]} />
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/shell/ScreenScaffold.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<PhoneFrame><ScreenScaffold progress={{ n: 3, total: 12 }} onMenu={()=>{}} onNew={()=>{}} composer={<MoneyComposer onSend={()=>{}} placeholder="or type the amount" />}>{TURNS}</ScreenScaffold></PhoneFrame>}
+          doCaption="WHICH composer is the caller's decision — a rail step about money wants MoneyComposer. THAT there is one is not."
+          dontNode={<PhoneFrame><ScreenScaffold onMenu={()=>{}} onNew={()=>{}} composer={null}>{TURNS}</ScreenScaffold></PhoneFrame>}
+          dontCaption="A screen with no composer. `composer` is required by the contract for exactly this reason: rule 3 says nothing replaces it, and the only exception in the product is the confirm sheet, which is not a screen." />
+      </Block>
+
+      <Block n={8} title="Motion" sub="None of its own. The screen it holds animates; the frame does not.">
+        <Motion rows={[
+          { name: 'Screen change', property: 'ds-screen-in / ds-screen-out, owned by whatever swaps screens', duration: '--dur-screen', reduced: 'Opacity only.' },
+          { name: 'Resting scroll', property: 'scrollTop, set in a layout effect on `revision` — not animated, because a thread that scrolls itself while you read is the defect this replaces', duration: 'instant', reduced: 'Unchanged.' },
+          { name: 'Turn entrance', property: 'ds-rise, owned by SentinelTurn', duration: '--dur-enter', reduced: 'Opacity only.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

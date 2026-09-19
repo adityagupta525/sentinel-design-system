@@ -1,8 +1,8 @@
 /* The Home screen itself, so that every page which needs to draw Home draws the SAME Home — the
    drawer opens over it, and a hand-copied Home behind a scrim would drift from the real one within a
    week. Loaded by 01-home.html and by shell/drawer.html. */
-const { ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, SuggestionRow, Dock, Composer,
-        Pill, ChipRow, HomeIndicator } = window.SentinelDesignSystem_0682a2;
+const { ScreenScaffold, GreetingDivider, SuggestionRow, Composer,
+        Pill, ChipRow } = window.SentinelDesignSystem_0682a2;
 
 /* TWO LISTS, TWO JOBS — and the difference is what stops them being the same list twice.
 
@@ -41,11 +41,16 @@ function greetingFor(hour) {
    with the file in it — the caller decides what that thread is. */
 function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMenu, onRow, onStarter, onSend, onAttach }) {
   const [value, setValue] = React.useState('');
+  /* HOME IS THE ONE `body="page"` IN THE PRODUCT (20 Sep 2026). Every other screen is a thread: it
+     scrolls and it is bottom-anchored. Home has no scroller at all — a greeting, a card of ready
+     prompts, and a spacer that pushes the Dock to the floor — and that is a real difference rather
+     than an oversight, so ScreenScaffold names it instead of pretending Home is a short thread. */
   return (
-    <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
-      <ScreenBackdrop />
-      <StatusSpacer time={time} />
-      <TopBar title="Sentinel" onMenu={onMenu || (() => {})} onNew={() => setValue('')} />
+    <ScreenScaffold body="page" time={time} onMenu={onMenu} onNew={() => setValue('')}
+      chips={<ChipRow>{STARTERS.map((c) => <Pill key={c} label={c} onClick={() => onStarter && onStarter(c)} />)}</ChipRow>}
+      composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel"
+        onAttach={onAttach || (() => {})}
+        onSend={() => { if (onSend && value.trim()) { onSend(value.trim()); setValue(''); } }} />}>
 
       <div style={{ position: 'relative', zIndex: 1, paddingTop: 'var(--space-4)' }}>
         <GreetingDivider>{greetingFor(hour)}, {advisor}</GreetingDivider>
@@ -60,8 +65,6 @@ function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMe
         </div>
       )}
 
-      <div style={{ flex: 1 }} />
-
       {/* The placeholder is the short one. It read "Ask Sentinel about a client, a fund, or a plan" — three
       examples, 55pt under three starter chips that are the same three examples with names on them. The
       chips carry them concretely; the placeholder repeating them in the abstract is the duplication the
@@ -73,14 +76,9 @@ function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMe
           only follow-ups to something Sentinel had just said. The slot is chips above the composer;
           on Home the context is the advisor having asked nothing yet, and a starter is what that
           context calls for. The duplication objection was the real one, and the two-lists split above
-          is what answers it. */}
-      <Dock
-        chips={<ChipRow>{STARTERS.map((c) => <Pill key={c} label={c} onClick={() => onStarter && onStarter(c)} />)}</ChipRow>}
-        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel"
-          onAttach={onAttach || (() => {})}
-          onSend={() => { if (onSend && value.trim()) { onSend(value.trim()); setValue(''); } }} />} />
-      <HomeIndicator />
-    </div>
+          is what answers it. The chips and the composer are passed to ScreenScaffold above, because
+          the Dock is not this screen's to place — that is what makes rule 3 structural. */}
+    </ScreenScaffold>
   );
 }
 
