@@ -54,6 +54,30 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
   const idx = tip == null ? (use[0] ? use[0].points.length - 1 : 0) : tip;
   const active = use[0] ? use[0].points[idx] : null;
   const svgRef = React.useRef(null);
+  /* F-51(d), CLOSED 20 Sep 2026 — BY MEASURING THE LABEL INSTEAD OF ASSUMING IT.
+     Three earlier attempts each guessed at the free side and each left a label on its own stroke;
+     measured on screens/journey-c/funds, EIGHT of twelve labels sat across the line they named. The
+     cause was not the side-finding — it was the height. Placement reserved `h` = 44 (a value plus TWO
+     wrapped lines of name) while the real box, for a short name like "Benchmark", measures 29. Two
+     stacked labels were asked to find a 90px clear band in a 180px plot when they needed 60, so the
+     search failed and the clamp parked them on the line.
+     So: render, measure, place. `hs` is null on the first pass and the reserved estimate is used, which
+     is exactly what shipped before; the layout effect then measures each box and re-places with the
+     real numbers. A label-placement routine that does not know how tall its label is cannot work for
+     every series shape, and that is what the three guesses were really discovering. */
+  const labelRefs = React.useRef([]);
+  const [hs, setHs] = React.useState(null);
+  React.useLayoutEffect(() => {
+    const els = labelRefs.current.slice(0, use.length);
+    const got = els.map((el) => (el ? Math.round(el.getBoundingClientRect().height) : 0));
+    /* The WIDEST label is the column the ink has to clear. Reserving `labelW` instead measures a band
+       half again as wide as the label actually is — 62 against a real 41 on the index card — and a
+       wider window means a taller ink band and a placement pushed further than it needed to be. */
+    const wid = Math.max(0, ...els.map((el) => (el ? Math.round(el.getBoundingClientRect().width) : 0)));
+    const next = { h: got, w: wid };
+    if (got.length && got.every((n) => n > 0)
+      && (!hs || hs.w !== wid || hs.h.length !== got.length || got.some((n, i) => n !== hs.h[i]))) setHs(next);
+  });
   const onMove = (e) => {
     if (!scrub || !use[0]) return;
     const el = svgRef.current;
@@ -104,7 +128,9 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
                ran straight through the words. Measured on pages/InfoCard.html.
                Two lines is the cap, not a suggestion: a third line is a name the caller should shorten,
                and clamping is better than letting a chart draw over its own label. */
-            const h = peek ? 16 : 44;          /* value, plus up to two lines of series name */
+            /* The RESERVE, used only until the boxes have been measured once. */
+            const hEst = peek ? 16 : 44;       /* value, plus up to two lines of series name */
+            const hOf = (i) => (hs && hs.h[i] ? hs.h[i] : hEst);
             const gap = peek ? 5 : 7;
             /* THE FREE SIDE IS FOUND OVER THE LABEL'S OWN WIDTH, NOT FROM ONE SEGMENT (F-51).
                The old test compared the last point with the one before it. On a sixty-point monthly
@@ -113,49 +139,70 @@ export function ChartLine({ series = [], density = 'expanded', tone = 'ramp', ta
                comment promises never happens. Measured on screens/journey-c/funds.
                Now: take the slice of the line the label would cover, and put the label clear of that
                slice's whole vertical extent. */
-            const cover = Math.max(2, Math.round(use[0].points.length * (labelW / w)));
-            const placed = use.map((s) => {
-              const pts = s.points.slice(-cover);
-              const ys = pts.map((q) => y(q.y));
-              const lo = Math.min(...ys), hi = Math.max(...ys);   /* lo = highest on screen */
-              const last = s.points[s.points.length - 1];
-              const above = lo - gap - h;
-              const below = hi + gap;
-              /* Either side if it fits. When NEITHER does — a line that climbs through most of the
-                 plot over the label's width — take the side with more room rather than defaulting,
-                 which used to clamp the label to 0 and park it at the very top, on the line. */
-              const roomAbove = lo, roomBelow = plot - hi;
-              const wanted = above >= 0 ? above
-                : below + h <= plot ? below
-                : roomAbove >= roomBelow ? above : below;
-              return { last, top: Math.min(Math.max(wanted, 0), plot - h) };
+            /* THE LARGEST EMPTY BAND — and this is what F-51(d) was asking for.
+               Every earlier attempt, mine included, treated the ink under the label as ONE band from
+               the highest point to the lowest, and then looked for room above it or below it. On two
+               lines that run far apart that band is the whole plot and neither side has room — which
+               is exactly the case that kept failing. But the ink is TWO STROKES, and the space between
+               them is empty. Measured on pages/ChartLine: strokes at 16–40 and 155–164 in a 180px
+               plot, and 115px of nothing in between that three passes threw away.
+
+               So: take each series' vertical extent over the label's own column, merge the ones that
+               overlap, and put the stack in the largest gap — above the top stroke, below the bottom
+               one, or between them. That is one rule for every shape (rising, falling, V, spike,
+               crossing) instead of a side-preference plus two special cases, and a label sits on ink
+               only when no gap in the plot is tall enough to hold it.
+
+               `cover` uses the MEASURED label width, and the stack uses the MEASURED heights — the
+               routine cannot place a box whose size it is guessing at, which is what the three earlier
+               attempts were really discovering. */
+            const cover = Math.max(2, Math.round(use[0].points.length * ((hs && hs.w ? hs.w : labelW) / w)));
+            const spans = use.map((s) => {
+              const ys = s.points.slice(-cover).map((q) => y(q.y));
+              return [Math.min(...ys), Math.max(...ys)];
+            }).sort((a, b) => a[0] - b[0]);
+            const merged = spans.reduce((acc, sp) => {
+              const last = acc[acc.length - 1];
+              if (last && sp[0] <= last[1] + gap) last[1] = Math.max(last[1], sp[1]);
+              else acc.push([sp[0], sp[1]]);
+              return acc;
+            }, []);
+            const heights = use.map((s, i) => hOf(i));
+            const total = heights.reduce((a, n) => a + n, 0) + (heights.length - 1) * 2;
+            /* Every gap in the plot, in order: above the first stroke, between each pair, below the
+               last. A gap is usable from `gap` past the ink above it to `gap` before the ink below. */
+            const gaps = [];
+            gaps.push([0, Math.max(0, merged[0][0] - gap)]);
+            for (let i = 1; i < merged.length; i++) gaps.push([merged[i - 1][1] + gap, Math.max(0, merged[i][0] - gap)]);
+            gaps.push([merged[merged.length - 1][1] + gap, plot]);
+            const room = (g) => g[1] - g[0];
+            const fits = gaps.filter((g) => room(g) >= total);
+            /* THE NEAREST GAP THAT FITS, NOT THE LARGEST. Taking the largest is clear of the ink and
+               puts the label a long way from the line it names — on the five-year fund card it parked
+               "This fund" 110px below the end of the fund's own line, and the whole point of an end
+               label is that identity and value sit AT the end of the line. So among the gaps that
+               hold the stack, take the one whose middle is closest to where the lines actually end.
+               Failing all of them, the largest gap, clamped — deterministic either way, and the spec
+               page documents the case where no gap is tall enough. */
+            const ends = use.map((sr) => y(sr.points[sr.points.length - 1].y));
+            const aim = ends.reduce((a, n) => a + n, 0) / ends.length;
+            const mid = (g) => (g[0] + g[1]) / 2;
+            const pick = fits.length
+              ? fits.reduce((a, g) => (Math.abs(mid(g) - aim) < Math.abs(mid(a) - aim) ? g : a))
+              : gaps.reduce((a, g) => (room(g) > room(a) ? g : a));
+            /* Inside the chosen gap, sit as close to the endpoints as the gap allows. */
+            const want = Math.min(Math.max(aim - total / 2, pick[0]), Math.max(pick[1] - total, pick[0]));
+            let run = Math.min(Math.max(want, 0), Math.max(plot - total, 0));
+            const placed = use.map((s, i) => {
+              const top = run;
+              run += heights[i] + 2;
+              return { last: s.points[s.points.length - 1], h: heights[i], top };
             });
-            /* WHEN THE TWO END CLOSE TOGETHER, BOTH LABELS GO TO ONE SIDE (F-51). Pushing only the
-               second one apart, which is what the first pass did, left the FIRST sitting on its own
-               line — the exact thing this block's own comment promises never happens. A fund and its
-               benchmark ₹184 apart on a ₹21,500 scale is the normal case for an index fund, and there
-               is no empty side between them to use. So both stack BELOW the lower endpoint, in series
-               order, and above it only when there is no room below. */
-            if (placed.length === 2 && Math.abs(placed[0].top - placed[1].top) < h + 2) {
-              const ends = placed.map((q) => y(q.last.y));
-              const lower = Math.max(ends[0], ends[1]);
-              const upper = Math.min(ends[0], ends[1]);
-              const below = lower + gap;
-              if (below + h * 2 + 2 <= plot) {
-                placed[0].top = below;
-                placed[1].top = below + h + 2;
-              } else {
-                const top0 = upper - gap - h * 2 - 2;
-                placed[0].top = Math.max(top0, 0);
-                placed[1].top = placed[0].top + h + 2;
-              }
-              placed.forEach((q) => { q.top = Math.min(Math.max(q.top, 0), plot - h); });
-            }
             return use.map((s, i) => {
             const last = placed[i].last;
             const top = placed[i].top;
             return (
-              <div key={s.label} style={{ position: 'absolute', right: 0, top, maxWidth: labelW, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', textAlign: 'right', pointerEvents: 'none' }}>
+              <div key={s.label} ref={(el) => { labelRefs.current[i] = el; }} style={{ position: 'absolute', right: 0, top, maxWidth: labelW, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', textAlign: 'right', pointerEvents: 'none' }}>
                 <span style={{ ...tabular, fontFamily: FONT, fontWeight: 'var(--weight-bold)', fontSize: peek ? 'var(--text-11-5)' : 'var(--text-12)', lineHeight: 'var(--leading-15)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)' }}>{valueFormat(last.y)}</span>
                 {!peek && <span style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'break-word', fontFamily: FONT, fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-10)', lineHeight: 'var(--leading-14)', color: i === 1 ? 'var(--color-data-deemph)' : 'var(--color-muted)' }}>{s.label}</span>}
               </div>

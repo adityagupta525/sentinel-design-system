@@ -847,6 +847,15 @@ var __ds_out = (() => {
     const idx = tip == null ? use[0] ? use[0].points.length - 1 : 0 : tip;
     const active = use[0] ? use[0].points[idx] : null;
     const svgRef = react_global_default.useRef(null);
+    const labelRefs = react_global_default.useRef([]);
+    const [hs, setHs] = react_global_default.useState(null);
+    react_global_default.useLayoutEffect(() => {
+      const els = labelRefs.current.slice(0, use.length);
+      const got = els.map((el) => el ? Math.round(el.getBoundingClientRect().height) : 0);
+      const wid = Math.max(0, ...els.map((el) => el ? Math.round(el.getBoundingClientRect().width) : 0));
+      const next = { h: got, w: wid };
+      if (got.length && got.every((n) => n > 0) && (!hs || hs.w !== wid || hs.h.length !== got.length || got.some((n, i) => n !== hs.h[i]))) setHs(next);
+    });
     const onMove = (e) => {
       if (!scrub || !use[0]) return;
       const el = svgRef.current;
@@ -876,41 +885,45 @@ var __ds_out = (() => {
         }
       );
     }), /* @__PURE__ */ react_global_default.createElement("line", { x1: "0", x2: w, y1: plot - 0.5, y2: plot - 0.5, stroke: "var(--color-line)", strokeWidth: "1", vectorEffect: "non-scaling-stroke" }), scrub && tip != null && active && /* @__PURE__ */ react_global_default.createElement("line", { x1: x(active.x), x2: x(active.x), y1: "0", y2: plot - 1, stroke: "var(--color-bronze-deep)", strokeWidth: "1", vectorEffect: "non-scaling-stroke" })), (() => {
-      const h = peek ? 16 : 44;
+      const hEst = peek ? 16 : 44;
+      const hOf = (i) => hs && hs.h[i] ? hs.h[i] : hEst;
       const gap = peek ? 5 : 7;
-      const cover = Math.max(2, Math.round(use[0].points.length * (labelW / w)));
-      const placed = use.map((s) => {
-        const pts2 = s.points.slice(-cover);
-        const ys = pts2.map((q) => y(q.y));
-        const lo = Math.min(...ys), hi = Math.max(...ys);
-        const last = s.points[s.points.length - 1];
-        const above = lo - gap - h;
-        const below = hi + gap;
-        const roomAbove = lo, roomBelow = plot - hi;
-        const wanted = above >= 0 ? above : below + h <= plot ? below : roomAbove >= roomBelow ? above : below;
-        return { last, top: Math.min(Math.max(wanted, 0), plot - h) };
+      const cover = Math.max(2, Math.round(use[0].points.length * ((hs && hs.w ? hs.w : labelW) / w)));
+      const spans = use.map((s) => {
+        const ys = s.points.slice(-cover).map((q) => y(q.y));
+        return [Math.min(...ys), Math.max(...ys)];
+      }).sort((a, b) => a[0] - b[0]);
+      const merged = spans.reduce((acc, sp) => {
+        const last = acc[acc.length - 1];
+        if (last && sp[0] <= last[1] + gap) last[1] = Math.max(last[1], sp[1]);
+        else acc.push([sp[0], sp[1]]);
+        return acc;
+      }, []);
+      const heights = use.map((s, i) => hOf(i));
+      const total = heights.reduce((a, n) => a + n, 0) + (heights.length - 1) * 2;
+      const gaps = [];
+      gaps.push([0, Math.max(0, merged[0][0] - gap)]);
+      for (let i = 1; i < merged.length; i++) gaps.push([merged[i - 1][1] + gap, Math.max(0, merged[i][0] - gap)]);
+      gaps.push([merged[merged.length - 1][1] + gap, plot]);
+      const room = (g) => g[1] - g[0];
+      const fits = gaps.filter((g) => room(g) >= total);
+      const ends = use.map((sr) => y(sr.points[sr.points.length - 1].y));
+      const aim = ends.reduce((a, n) => a + n, 0) / ends.length;
+      const mid = (g) => (g[0] + g[1]) / 2;
+      const pick = fits.length ? fits.reduce((a, g) => Math.abs(mid(g) - aim) < Math.abs(mid(a) - aim) ? g : a) : gaps.reduce((a, g) => room(g) > room(a) ? g : a);
+      const want = Math.min(Math.max(aim - total / 2, pick[0]), Math.max(pick[1] - total, pick[0]));
+      let run2 = Math.min(Math.max(want, 0), Math.max(plot - total, 0));
+      const placed = use.map((s, i) => {
+        const top = run2;
+        run2 += heights[i] + 2;
+        return { last: s.points[s.points.length - 1], h: heights[i], top };
       });
-      if (placed.length === 2 && Math.abs(placed[0].top - placed[1].top) < h + 2) {
-        const ends = placed.map((q) => y(q.last.y));
-        const lower = Math.max(ends[0], ends[1]);
-        const upper = Math.min(ends[0], ends[1]);
-        const below = lower + gap;
-        if (below + h * 2 + 2 <= plot) {
-          placed[0].top = below;
-          placed[1].top = below + h + 2;
-        } else {
-          const top0 = upper - gap - h * 2 - 2;
-          placed[0].top = Math.max(top0, 0);
-          placed[1].top = placed[0].top + h + 2;
-        }
-        placed.forEach((q) => {
-          q.top = Math.min(Math.max(q.top, 0), plot - h);
-        });
-      }
       return use.map((s, i) => {
         const last = placed[i].last;
         const top = placed[i].top;
-        return /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, style: { position: "absolute", right: 0, top, maxWidth: labelW, display: "flex", flexDirection: "column", alignItems: "flex-end", textAlign: "right", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, fontFamily: FONT, fontWeight: "var(--weight-bold)", fontSize: peek ? "var(--text-11-5)" : "var(--text-12)", lineHeight: "var(--leading-15)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-bronze-deep)" } }, valueFormat(last.y)), !peek && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "break-word", fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-10)", lineHeight: "var(--leading-14)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-muted)" } }, s.label));
+        return /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, ref: (el) => {
+          labelRefs.current[i] = el;
+        }, style: { position: "absolute", right: 0, top, maxWidth: labelW, display: "flex", flexDirection: "column", alignItems: "flex-end", textAlign: "right", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, fontFamily: FONT, fontWeight: "var(--weight-bold)", fontSize: peek ? "var(--text-11-5)" : "var(--text-12)", lineHeight: "var(--leading-15)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-bronze-deep)" } }, valueFormat(last.y)), !peek && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "break-word", fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-10)", lineHeight: "var(--leading-14)", color: i === 1 ? "var(--color-data-deemph)" : "var(--color-muted)" } }, s.label));
       });
     })())), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", height: labelBand, alignItems: "center", justifyContent: "space-between", gap: "var(--space-8)" } }, peek ? /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-11)", lineHeight: "var(--leading-14)", color: "var(--color-muted)" } }, use[0] ? xFormat(use[0].points[0].x) : ""), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: FONT, fontWeight: "var(--weight-medium)", fontSize: "var(--text-11)", lineHeight: "var(--leading-14)", color: "var(--color-muted)" } }, use[0] ? xFormat(use[0].points[use[0].points.length - 1].x) : "")) : (
       /* Two labels: first x and last x. This used to map over `ticks(d0, d1, 2)` — the Y domain's

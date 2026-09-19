@@ -1161,10 +1161,53 @@ one segment; stack both labels on one side when the endpoints are close; take th
 when neither fits. Measured after the third, on `screens/journey-c/funds.html`: the label box sits at
 **top 81.5, height 29, in a 180px plot** — the middle, with the stroke across it.
 
-**Left open deliberately.** This is a label-placement routine and it wants its own pass with a proper
-test — a set of series shapes (rising, falling, V, spike at the end, two lines crossing) rendered and
-checked — not a fourth guess made inside a screen task. The current state is better than the start:
-rupees instead of percentages, real axis labels, and the two labels no longer overprint each other.
+**Left open deliberately** on 19 Sep — *"a label-placement routine wants its own pass with a proper
+test, not a fourth guess made inside a screen task."*
+
+**CLOSED 20 Sep 2026, and the fourth guess is not what closed it — an instrument did.** Written first:
+a probe that samples every stroke path with `getPointAtLength` over each label's own x column and
+reports whether any ink falls inside the label's box. It found **10 of 47 labels across the product**
+sitting on the line they name — and it found my first version of itself was wrong twice, which is the
+point of writing it first: it read only `<polyline>` when the charts draw `<path>`, and it compared
+CSS pixels against viewBox units on any chart whose SVG is scaled. Both corrected before a number was
+believed.
+
+Three things were wrong, and the third is the one all four guesses had missed:
+
+1. **The routine did not know how tall its label was.** It reserved `h = 44` — a value plus two
+   wrapped lines of name — while the real box, for a short name like "Benchmark", measures **29**. Two
+   stacked labels were asked to find a 90px clear band in a 180px plot when they needed 60, so the
+   search failed and the clamp parked them on the line. Now: render, measure in a layout effect, place.
+   The reserve is still the first-pass value, so nothing flashes.
+2. **Each label cleared only its own stroke.** On the index card, whose two lines run ₹184 apart, the
+   benchmark's label placed itself clear of the benchmark and straight across the fund — measured at
+   64–93 with the fund's ink at 32–90. A label across *any* line is a label across data.
+3. **The ink was treated as one band from the highest point to the lowest.** On two lines that run far
+   apart that band is the whole plot and neither side has room — which is exactly the case that kept
+   failing. But the ink is *two strokes*, and the space between them is empty: measured on
+   `pages/ChartLine`, strokes at 16–40 and 155–164 in a 180px plot, and **115px of nothing in between
+   that three passes threw away.**
+
+**The rule now is one rule for every shape:** take each series' vertical extent over the label's own
+column, merge the ones that overlap, and put the stack in the **nearest gap that fits** — above the top
+stroke, below the bottom one, or between them. Nearest and not largest, because the largest is clear of
+the ink and a long way from the line it names: it parked "This fund" 110px below the end of its own
+line, and the whole point of an end label is that identity and value sit *at* the end.
+
+**Measured with the same instrument, before and after:**
+
+| | before | after |
+|---|---|---|
+| `screens/journey-c/funds` | 7 of 12 | **0 of 12** |
+| `pages/ChartLine` | 3 of 19 | **0 of 19** |
+| `pages/InfoCard` | 0 of 13 | 0 of 13 |
+| `pages/ChartReadout` | 0 of 3 | 0 of 3 |
+
+**What it costs, said plainly.** On a chart whose two lines fill the plot, the only gap that holds both
+labels is below both line-ends, so the labels sit further from their lines than they used to. That is
+the price of clearance and it is the right trade: the value and the name are both printed on every
+label, so identity was never carried by proximity alone (rule 1). When no gap is tall enough the
+routine takes the largest and clamps — deterministic, and the one case a label still crosses ink.
 
 ### F-52 · A token seven files used was never defined — *found by the hand-built audit, 19 Sep 2026, fixed*
 
