@@ -1020,7 +1020,7 @@ stated purpose is to catch an instruction before the fund search reads it as a b
 matched a bare `sharma`, so **"Review Sharma" and "Review Sharma's portfolio" both opened a drift
 trace** and a bare name never reached disambiguation. Both fixed and verified across eight sentences.
 
-### F-47 · The rupee sign is not in either of our typefaces — *found by Nia, 19 Sep 2026* · **OPEN, needs a ruling**
+### F-47 · The rupee sign is not in either of our typefaces — *found by Nia, 19 Sep 2026* · **RULED, 19 Sep: keep the fallback**
 
 `U+20B9` **falls back to Helvetica in both shipped faces**. Measured with CDP's
 `getPlatformFontsForNode`, which reports the font the renderer actually used per text run — not the
@@ -1044,9 +1044,23 @@ every rupee figure we draw. `document.fonts.check('16px Urbanist', '₹')` also 
 that API tests the declared `unicode-range` (`U+0-10FFFF`) and whether a matching face is loaded, not
 whether the file contains the glyph. **Two instruments said yes and the renderer said no.**
 
-**Not fixed, because it is not mine to decide.** The options are a vendored donor face scoped by
-`unicode-range` at one weight in `tokens/fonts.css`, or accepting the fallback and recording it. Either
-way it changes what every number in the product looks like, and the visual language is the owner's.
+**THE OWNER'S RULING, 19 Sep 2026: keep Helvetica.** *"sab helvetica hi rehne do, ab bahut bada change
+karna ho jayega."* Vendoring a donor face would change the width and weight of every rupee figure on
+every screen at a point where the visual language is settled and six journeys are built on it — a
+larger change than the defect. **This is now a deliberate, documented choice, not a gap.**
+
+What that means in practice, written down so nobody "fixes" it later:
+
+- `U+20B9` renders in **Helvetica**, `U+22EF` in **PingFang SC**, `U+2713` in **Lucida Grande**. All
+  three are system faces present on every target device; none is a download and none can fail to load.
+- The fallback is **only ever one glyph inside a run** — the digits beside it stay in Urbanist, so
+  grouping, tabular alignment and the type ramp are untouched. Rule A4 is about the grouping and the
+  provenance, and both hold.
+- **If a donor face is ever revisited**, it is `tokens/fonts.css`, scoped by `unicode-range` to
+  `U+20B9` at one weight, and it is a visual change that needs its own ruling.
+
+Recorded rather than closed silently, because the next audit will measure it again and should find the
+decision instead of the finding.
 
 ### F-48 · The fifth nameless `Pressable`, and a focus trap that counted it — *19 Sep 2026, fixed*
 
