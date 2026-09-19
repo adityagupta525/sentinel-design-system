@@ -21,7 +21,7 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 | Pages | **88 / 88** render clean (76 design-system + 12 screens) |
 | Integrity | 375 files intact |
 | Screens built | **Journey B is complete — all 7 steps, on 5 pages**: `01-home`, `02-thread-trace` (Thread · while it works), `03-thread-answer` (Thread · the answer, steps 3 and 4), `05-decide` (Thread · deciding — steps 5, 6 and 7), `prototype`, plus `shell/drawer` and `flow` |
-| **Next** | `APP-PLAN.md` #7 — **the end-to-end prototype**, every journey clickable in one page. And R2 (the in-flight state of an instruction) and R3 (a money ledger and export), the two the research opened that are still unbuilt. |
+| **Next** | `APP-PLAN.md` #7 — **the end-to-end prototype**, every journey clickable in one page. R1–R4 are all closed except R4 (the fee and commission question), which needs figures the repository does not have. |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
 
@@ -55,6 +55,19 @@ measurements are on the pages themselves.**
   either direction: it does not say "failed" for something it has not confirmed failed, and **it does not
   offer to send again**, because a duplicate switch is real money. It offers checking, and the question
   the advisor actually has: what do I tell Sharma?
+- **R3 is built (19 Sep): the money ledger**, `screens/thread/ledger.html`, three states. It answers the
+  third thing third-party advisors ask for in every app, and it is NOT the drawer: the drawer is the
+  history of conversations, this is the history of MONEY. Five instructions from `book.jsx`'s new `LEDGER`,
+  each with a status that is a **word** — Placed, Settled, Rejected, and **"Sent · no answer"**, which is
+  its own state and not a failure (rule 2: the colour never signals alone). Three columns, not four:
+  `DataTable` turns on a horizontal scroller at four non-sticky columns, and the first cut put Status off
+  the right edge — the one question the table exists to answer needed a sideways scroll to reach. The
+  client moved into the row's detail instead, where it reads as a sentence. A **rejected row opens in
+  place** and carries the RTA's own reason — "the NACH mandate is registered for the old amount" — which
+  is the difference between an advisor who can fix it and one who rings support. The period pills say what
+  the table is a record OF, and the provenance line says **4 of 5 confirmed** (R1: a count of rows is not
+  a count of outcomes). `DownloadAction` holds its own loading state on itself, because this product has
+  no toasts; **nothing writes a real file** — the export is designed, not implemented.
 - **Build order #6 is done: `screens/thread/refusals.html`**, six states. The six buckets a sentence
   lands in — out of bounds (with the clause that matters, "I have not applied it"), an instruction that
   would act (read back as exactly what it would do, down to the folio, before any confirm), not

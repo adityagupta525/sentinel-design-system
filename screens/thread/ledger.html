@@ -1,0 +1,172 @@
+<!-- @dsCard group="Screens" viewport="1400x2800" name="Thread · the ledger" subtitle="What actually happened, with its status — the history of money, which is not the history of conversations" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator" truncation="allowed" -->
+<!-- truncation="allowed" for one thing: a switch's detail line is longer than any column. The row expands in place to show it whole — the same contract the fund screen relies on. THREE columns, not four, and overflow="fold" rather than "scroll": DataTable turns on its horizontal scroller at four non-sticky columns, and the first cut of this table had four, so the Amount ran off the right edge and Status off the screen entirely. Three fit the 375 without a scroller at all. -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Thread · the ledger — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','SentinelBlock','SentinelText','ArtifactCard','DataTable','Badge','DownloadAction','RangePills','Provenance','AnswerChip','ChipRow','Pill','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="../data/book.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { Composer, SentinelBlock, SentinelText, ArtifactCard, DataTable, Badge, DownloadAction, RangePills, Provenance, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
+
+const LEDGER_ASK = 'What have I placed this month?';
+const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
+
+/* THE STATUS IS A WORD, AND IT IS THE SAME SET THE IN-FLIGHT STATES USE (R2). A row never says "done"
+   for something the RTA has not confirmed — "sent" is its own status and it reads differently, which is
+   the whole reason this table is worth building. Rule 2: the tone colours the WORD, never a fill. */
+const TONE = { placed: 'ok', settled: 'ok', rejected: 'over', sent: 'under' };
+const WORD = { placed: 'Placed', settled: 'Settled', rejected: 'Rejected', sent: 'Sent · no answer' };
+/* COLUMN ORDER IS THE ANSWER'S ORDER. The first cut ran What · Client · Amount · Status, and at 375 the
+   Status column sat off the right edge — so the one question this table exists to answer, "did it go
+   through", needed a sideways scroll to reach. Status now sits immediately after the sticky column and
+   the client moves into the row's detail, where it reads as a sentence rather than a cell. */
+const COLUMNS = [
+  { key: 'what', label: 'What', kind: 'text', sticky: true, sortable: true, width: 104 },
+  { key: 'status', label: 'Status', kind: 'badge' },
+  { key: 'amount', label: 'Amount', kind: 'currency', align: 'end', sortable: true },
+];
+const rows = (items) => items.map((l) => ({
+  id: l.id,
+  what: l.kind,
+  amount: inr(l.amountRs),
+  status: <Badge tone={TONE[l.status]}>{WORD[l.status]}</Badge>,
+}));
+/* The row's detail is the sentence the table cannot hold: what moved where, its reference, and — when
+   the RTA said no — its reason in the RTA's own words. */
+const Detail = ({ l }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', padding: `0 var(--space-2)` }}>
+    <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)' }}>{(clientById(l.client) || {}).name || l.client}</span>
+    <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)' }}>{l.detail}</span>
+    <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)', fontVariantNumeric: 'tabular-nums' }}>
+      {l.date} · {l.ref}{l.settles ? ` · settles ${l.settles}` : ''}
+    </span>
+    {l.note && <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-status-over-fg)' }}>{l.note}</span>}
+  </div>
+);
+
+function LedgerArtifact({ items = LEDGER, openRow = null, state = 'expanded', onDownload }) {
+  const unsettled = items.filter((l) => l.status === 'sent').length;
+  return (
+    <ArtifactCard state={state} eyebrow={`Placed · ${LEDGER_PERIOD}`} title={`${items.length} instructions`}
+      provenance={`As of 30 Sep · from the RTA, ${items.length - unsettled} of ${items.length} confirmed`}
+      onToggle={() => {}} onMenu={() => {}}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
+        <DataTable columns={COLUMNS} rows={rows(items)} emptyState={{ title: 'Nothing placed in this period.', body: 'Change the period, or place something and it appears here.' }}
+          overflow="fold" defaultOpen={openRow} expandable={(r) => <Detail l={items.find((l) => l.id === r.id)} />} />
+        {state === 'expanded' && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-8)', flexWrap: 'wrap' }}>
+            <RangePills ranges={['Sep', 'Q2', 'FY 26-27']} value="Sep" onChange={() => {}} label="Period" />
+            <DownloadAction format="CSV" onDownload={onDownload} size="sm" />
+          </div>
+        )}
+      </div>
+    </ArtifactCard>
+  );
+}
+
+function Scene({ children, ask = LEDGER_ASK }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor="bottom" revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={ask} costNote="Sending this replaces the ledger below it." />
+      {children}
+      <AttachedTurn file={att.file} onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+/* Live: open a row, change the period, and take the file. The download confirms ON the control — this
+   product has no toasts — and the file is not actually written here. */
+function LiveScene() {
+  const att = useAttachment();
+  return (
+    <Thread anchor="bottom" revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={LEDGER_ASK} costNote="Sending this replaces the ledger below it." />
+      <SentinelBlock>
+        <SentinelText text="Five instructions this month. Four are confirmed; one is still out with the RTA, so I have not counted it as done." />
+        <div style={{ marginTop: 'var(--space-12)' }}><LedgerArtifact onDownload={() => new Promise((r) => setTimeout(r, 900))} /></div>
+      </SentinelBlock>
+      <AttachedTurn file={att.file} onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+const MOTION = [
+  ['The ledger arrives', <span><code>ds-artifact</code>: fade + scale 0.96 → 1</span>, '300ms', 'Fade only'],
+  ['A row opens', 'the detail opens in place; rows below move down', '240ms', 'Height changes with no transition'],
+  ['The table nudges once', <span><code>ds-table-nudge</code>, only when a column is off-screen</span>, '640ms', 'The fade carries the same fact'],
+  ['Download', 'the control holds its own loading state, then says “Saved to Files” for 2s', 'until it settles', 'Unchanged — the confirmation is a word, not a motion'],
+];
+
+const PROVENANCE = [
+  ['The five instructions', 'The RTA, and this book’s own record of what was sent', 'One row each, with its reference'],
+  ['“4 of 5 confirmed”', 'The count of rows the RTA has answered for', <span>The card’s provenance line — <strong>completeness, not just source</strong> (R1)</span>],
+  ['“Sent · no answer”', 'An instruction with no reply yet — NOT a failure, and not a success', 'Its own status word, in the under tone'],
+  ['₹1,85,000 · ₹30,000 · ₹15,000', 'The instructions themselves, Indian-grouped', 'The Amount column, tabular so it can be compared down'],
+];
+
+mountScreen(
+  <ScreenShell
+    journey="Every journey" n="Thread · the ledger" name="What actually happened"
+    job="The history of money, which is not the history of conversations. Every instruction with its status in a word, its reference to quote to the RTA, and a file the advisor can take away."
+    without="can see what they discussed but not what they placed — and cannot answer “did that go through?” without ringing someone."
+  >
+    <Section title="1 · Every instruction, and what became of it" sub="Asked for in almost every app in the study: “no option check all transactions day wise & type wise” · “Could not download statement” · “monthly sip Reports not available”.">
+      <StateRow>
+        <State label="the ledger" note="Five instructions, each with a status that is a WORD — Placed, Settled, Rejected, and “Sent · no answer”, which is its own state and not a failure. Status sits immediately after the sticky column, because “did it go through” is the question this table exists to answer and it must not need a sideways scroll. The colour never signals alone (rule 2). The provenance line says 4 of 5 confirmed: a count of rows is not a count of outcomes.">
+          <Scene><SentinelBlock><SentinelText text="Five instructions this month. Four are confirmed; one is still out with the RTA, so I have not counted it as done." /><div style={{ marginTop: 'var(--space-12)' }}><LedgerArtifact /></div></SentinelBlock></Scene>
+        </State>
+        <State label="a rejected row, opened" tone="over" note="The row opens in place and carries what the table cannot hold: what moved where, the reference, and the RTA's own reason — “the NACH mandate is registered for the old amount”. That sentence is the difference between an advisor who can fix it and one who rings support.">
+          <Scene><SentinelBlock><SentinelText text="Five instructions this month. Four are confirmed; one is still out with the RTA, so I have not counted it as done." /><div style={{ marginTop: 'var(--space-12)' }}><LedgerArtifact openRow={1} /></div></SentinelBlock></Scene>
+        </State>
+        <State label="live · open a row, take the file" note="Tap a row to open it; tap Download and the control holds its own loading state and then says so on itself, because this product has no toasts. The period pills change what the table is a record OF — a ledger with no period attached is not a record an advisor can file.">
+          <LiveScene />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="2 · Why this is not the drawer" sub="They look like the same thing and they are not.">
+      <Note title="The drawer is the history of conversations; this is the history of money">
+        The drawer answers <em>“what was I doing yesterday?”</em> — saved work, recent threads, the client book. It
+        is organised by the question the advisor asked. The ledger answers <em>“what did I actually place, and did
+        it go through?”</em> — organised by the instruction and its outcome, which is what a client rings about and
+        what a compliance check asks for. A thread can be deleted without anything being lost; an instruction
+        cannot. That is why this is an artifact in the thread rather than a section of the menu: it is produced by
+        a question, and it is a document.
+      </Note>
+      <Note title="“Sent · no answer” is carried through from R2, deliberately">
+        The in-flight states and this table use the SAME status set. A ledger that quietly resolved an unconfirmed
+        instruction to “placed” would undo the one thing the execution states exist to protect — and it is exactly
+        the failure the research names: <em>“money stays blocked but app says failed”</em>, the same lie in the
+        other direction.
+      </Note>
+    </Section>
+
+    <Section title="3 · What the file holds, and what it does not">
+      <Note title="The export is named, not implied">
+        `DownloadAction` was in the system and on no screen. It carries one decision in one place, holds its own
+        loading state, and confirms ON the control. What the CSV holds is written down in <code>book.jsx</code> —
+        date, client, type, detail, amount, status, reference — so a screen never implies the file carries more than
+        it does. <strong>Nothing here writes a real file:</strong> these are rendered specimens, and the live phone's
+        download settles after 900ms without producing anything.
+      </Note>
+    </Section>
+
+    <Section title="4 · Motion, and what each one does under reduced motion">
+      <MotionTable rows={MOTION} />
+    </Section>
+
+    <Section title="5 · Provenance">
+      <ProvenanceTable rows={PROVENANCE} />
+    </Section>
+  </ScreenShell>
+);
+</script></body></html>

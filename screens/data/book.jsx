@@ -191,9 +191,29 @@ const CLIENTS = [
 ];
 const clientById = (id) => CLIENTS.find((x) => x.id === id);
 
+/* ── R3 · WHAT ACTUALLY HAPPENED ───────────────────────────────────────────────────────────────────
+   The research asked for this in almost every app: "There is no option check all transactions day wise
+   & type wise" · "Could not download statement" · "monthly sip Reports not available". The drawer is the
+   history of CONVERSATIONS; this is the history of MONEY, and they are not the same thing.
+
+   Every row is one instruction and its outcome. `status` is the honest set, and it is the same set the
+   in-flight states use (R2) — placed · settled · rejected · sent (no confirmation yet). A row never says
+   "done" for something the RTA has not confirmed. Illustrative figures, consistent with the journeys:
+   the two Sharma moves are the ones screens 5 to 7 decide on. */
+const LEDGER = [
+  { id: 'l1', date: '19 Sep 2026', client: 'sharma', kind: 'Switch', detail: '₹1,85,000 · Quant Small Cap → ICICI Corporate Bond', amountRs: 185000, status: 'placed', ref: 'ord 8841/22', settles: '23 Sep' },
+  { id: 'l2', date: '19 Sep 2026', client: 'sharma', kind: 'SIP change', detail: 'Redirect ₹30,000 SIP → HDFC Large Cap', amountRs: 30000, status: 'rejected', ref: '—', note: 'NACH mandate registered for the old amount' },
+  { id: 'l3', date: '12 Sep 2026', client: 'meera', kind: 'SIP', detail: '₹15,000 · Parag Parikh Flexi Cap', amountRs: 15000, status: 'settled', ref: 'ord 8712/09', settles: '16 Sep' },
+  { id: 'l4', date: '10 Sep 2026', client: 'sunita', kind: 'Purchase', detail: '₹50,000 · ICICI Balanced Advantage', amountRs: 50000, status: 'settled', ref: 'ord 8698/41', settles: '12 Sep' },
+  { id: 'l5', date: '5 Sep 2026', client: 'meera', kind: 'Redemption', detail: '₹1,20,000 · UTI Nifty 50 Index', amountRs: 120000, status: 'sent', ref: '—', note: 'No confirmation from the RTA yet' },
+];
+const LEDGER_PERIOD = 'Sep 2026';
+/* What an export would carry, named so a screen never implies more than the file holds. */
+const LEDGER_EXPORT = { formats: ['CSV', 'PDF'], columns: ['Date', 'Client', 'Type', 'Detail', 'Amount', 'Status', 'Reference'] };
+
 /* Derived, so a screen never hand-computes a figure the book can answer. */
 const driftPoints = (c) => (c.allocation && c.mandate ? c.allocation.equity - c.mandate.equity : null);
 const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.singleFund);
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
-Object.assign(window, { ADVISOR, FUNDS, fundById, LIMITS, TAX, CLIENTS, clientById, driftPoints, overSingleFund, inr });
+Object.assign(window, { ADVISOR, FUNDS, fundById, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT, driftPoints, overSingleFund, inr });
