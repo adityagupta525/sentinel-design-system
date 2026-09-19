@@ -17,7 +17,9 @@ const MOVES_ASK = 'What would fixing it cost?';
 const MOVES_ANSWER = 'Two moves, not seven. Together they bring equity from 71% back to 58%, and they cost ₹11,200.';
 const MOVES = [
   { n: 1, title: 'Move ₹1,85,000 out of Quant Small Cap', body: 'Into ICICI Corporate Bond.' },
-  { n: 2, title: 'Redirect his ₹30,000 monthly SIP', body: 'No exit load, no tax, and it stops the drift coming back.' },
+  /* Scoped to THIS move, and said so: a redirect changes a future instruction and sells nothing, so
+     it genuinely costs nothing — but sitting under move 1 it read as a claim about the pair. */
+  { n: 2, title: 'Redirect his ₹30,000 monthly SIP', body: 'Nothing is sold here, so this one costs nothing — and it stops the drift coming back.' },
 ];
 const MOVES_PROVENANCE = 'Costed 30 Sep · exit loads and tax from the scheme documents';
 const SKIPPED = {
@@ -27,14 +29,22 @@ const SKIPPED = {
     'The other trades are not costed in this build. I will not list a move I cannot cost, so there is nothing real to show here yet.',
   ],
 };
-const CONFIRM_DISCLOSURE = 'These two switches run under your ARN. Sharma gets a note explaining both moves and what they cost. Nothing else in his book changes.';
+/* NOT "two switches" (F-46). One is a switch and one is a SIP redirect, and they are different acts:
+   the switch sells units and is taxable, the redirect changes a future instruction and is not. Calling
+   both a switch is the kind of small wrongness an advisor gets corrected on in front of a client. */
+const CONFIRM_DISCLOSURE = 'One switch and one SIP change, both under your ARN. Nothing else in his book changes.';
 const CONFIRM_ROWS = [
   { label: 'Compliance shelf', value: 'Passed' },
   { label: 'Single-fund ceiling', value: 'No fund over 25%' },
   { label: 'Client consent', value: 'Required', tone: 'required' },
 ];
 /* The note this build DRAFTS and does not send. */
-const CLIENT_NOTE = 'Mr. Sharma, your equity had drifted to 71% against the 60% we agreed. I am moving ₹1,85,000 from Quant Small Cap into ICICI Corporate Bond and redirecting your ₹30,000 SIP. No exit load and no tax. This brings you back to 58%.';
+/* THE ONLY COPY IN THIS PRODUCT THAT REACHES A CLIENT — and until 19 Sep it told him a comfortable
+   lie. It said "No exit load and no tax" about a pair the same screen costs at ₹11,200. That is true of
+   the SIP redirect and false of the switch, and the note attributed it to both. A note the advisor sends
+   under their own ARN saying the client paid nothing, when he paid ₹11,200, is the worst sentence this
+   repository could ship. The figure now leads, as it does everywhere else. */
+const CLIENT_NOTE = 'Mr. Sharma, your equity had drifted to 71% against the 60% we agreed. I am moving ₹1,85,000 from Quant Small Cap into ICICI Corporate Bond, and redirecting your ₹30,000 monthly SIP. The switch costs ₹11,200 in exit load and tax; the SIP change costs nothing. Together they bring you to 58%.';
 
 /* THE SIMULATION — "what if", answered before the decision rather than inside it.
    One scale, two rows: where he is, and where these two moves put him. `Dumbbell` is the system's own

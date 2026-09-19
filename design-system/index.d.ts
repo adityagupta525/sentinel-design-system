@@ -46,7 +46,7 @@ export { Drawer } from './components/shell/Drawer';
 export type { HomeIndicatorProps } from './components/shell/HomeIndicator';
 export { HomeIndicator } from './components/shell/HomeIndicator';
 export type { MotionGuardProps } from './components/shell/MotionGuard';
-export { REDUCED_MOTION_CSS, installReducedMotion, MotionGuard } from './components/shell/MotionGuard';
+export { MOTION_CSS, REDUCED_MOTION_CSS, installReducedMotion, MotionGuard } from './components/shell/MotionGuard';
 export type { PhoneFrameProps } from './components/shell/PhoneFrame';
 export { PhoneFrame } from './components/shell/PhoneFrame';
 export type { ScreenBackdropProps } from './components/shell/ScreenBackdrop';

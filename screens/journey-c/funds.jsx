@@ -69,6 +69,7 @@ function FundDetail({ fund, onExplain }) {
   const [period, setPeriod] = React.useState('r3');
   const p = perfOf(fund.id);
   const label = (PERF_PERIODS.find((x) => x.key === period) || {}).label;
+  const p_risk = (fundById(fund.id) || {}).riskometer || '—';
   if (!p) {
     return (
       <FUNDS_DS.InfoCard
@@ -87,13 +88,17 @@ function FundDetail({ fund, onExplain }) {
       figure={`${p[period].toFixed(1)}%`} figureNote={`${perfNote(period)} · against ${p.benchmark}`}
       range={label} ranges={PERF_PERIODS.map((x) => x.label)}
       onRange={(r) => setPeriod((PERF_PERIODS.find((x) => x.label === r) || {}).key || 'r3')}
-      caveat="Past performance may or may not be sustained in future."
+      caveat="Mutual fund investments are subject to market risks. Read all scheme related documents carefully. Past performance may or may not be sustained in future."
       provenance={perfProvenance(label)}
       stats={[
+        /* THE RISKOMETER SITS BESIDE THE RETURN (F-46). `riskometer` has been on every row of FUNDS
+           since the book was written and appeared on no screen; a return shown without it is the
+           number an advisor is least allowed to show alone. SEBI's own pairing. */
+        { label: 'Riskometer', value: p_risk },
         { label: 'Expense ratio', value: `${p.ter.toFixed(2)}%` },
         { label: 'Fund size', value: `₹${p.aumCr.toLocaleString('en-IN')} cr` },
-        { label: 'Held by your clients', value: String(fund.heldBy.length) },
         { label: 'Exit load', value: fund.exitLoad },
+        { label: 'Held by your clients', value: String(fund.heldBy.length) },
       ]}
       onExplain={onExplain} />
   );

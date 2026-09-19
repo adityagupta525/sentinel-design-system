@@ -6,7 +6,7 @@ import { Pressable } from '../actions/Pressable.jsx';
    F-28 (18 Sep 2026): both buttons in the send slot were a glyph with no name — a 13px square and an
    arrow — so a screen reader announced "button" for the two most important controls on the screen.
    aria-label "Stop" / "Send"; nothing visible changes. */
-export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 'Ask Sentinel about a client, a fund, or a plan', autoFocus = false, streaming = false, onStop, onAttach, attachLabel = 'Attach a file', accept }) {
+export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 'Ask Sentinel', autoFocus = false, streaming = false, onStop, onAttach, attachLabel = 'Attach a file', accept }) {
   const [focus, setFocus] = React.useState(false);
   const fileRef = React.useRef(null);
   const canSend = value.trim().length > 0 && !streaming;

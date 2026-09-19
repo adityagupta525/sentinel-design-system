@@ -964,3 +964,58 @@ at the top and 14 at the bottom. Nothing was "fixed" on a hunch.
 - **The client list** — ink 21 from the top, 15 from the bottom.
 - **The concentration card** (*"Small cap 31% — the sleeve ceiling is 25%"*) — ink 28 from the top,
   14 from the bottom.
+
+### F-45 · The rail's composer was a drawing of a composer — *found by Aarav, 19 Sep 2026*
+
+Every step of the journey rail places a composer that says **"or type your answer"**. It was
+`value=""` with a no-op `onChange` and a no-op `onSend` (`rail.jsx:190`) — **inert on journeys A, D, E
+and F**, four of the six. An advisor could tap it, and nothing they typed appeared.
+
+This is the `DEAD PAPERCLIP` rule applied to the composer, and the gate only knew to look at the
+paperclip. **It is also the second time:** the thread's composer had exactly this and was fixed on the
+same day for `screens/prototype.html` — and the rail was not looked at.
+
+**Fix:** `RailAsk` is a component with its own state, and `LiveRail` treats what is typed as the answer
+to that step, through the same `advance()` a chip takes. Typing is not a second-class answer.
+`MoneyComposer` keeps only `onSend`, because it owns its own value and hands back a formatted rupee
+string — passing it `value`/`onChange` would have invented a contract it does not have.
+Verified in a browser: the field held `"38 years"`; before the fix it was permanently empty.
+
+### F-46 · Four found by the studio audit, each measured — *19 Sep 2026*
+
+**(a) The client note told a comfortable lie.** `CLIENT_NOTE` — the only copy in this product that
+reaches a client — said *"No exit load and no tax"* about a pair the same screen costs at **₹11,200**.
+True of the SIP redirect, false of the switch, and the note attributed it to both. A note sent under
+the advisor's own ARN saying the client paid nothing when he paid ₹11,200 is the worst sentence this
+repository could ship. The figure now leads. *(Meher M-1 / Anaya A-3, blocker.)*
+
+**(b) The confirm sheet called a SIP change a switch.** *"These two switches run under your ARN"* — one
+is a switch and one is a SIP redirect, and they are different acts: the switch sells units and is
+taxable, the redirect changes a future instruction and is not. *(A-10.)*
+
+**(c) `ds-spin` was defined inside a component and cancelled globally.** The keyframe lived only in
+`IconSpinner.jsx`'s local `<style>`, while `MotionGuard` ships the *cancelling* rule for every page. So
+on any page without an IconSpinner mounted — which is all of them, it is on no screen — `Pill loading`
+carried an animation name with **no keyframe** and stood still. Measured by Rhea on `pages/Pill.html`
+and `screens/thread/ledger.html`: keyframe defined 0 times, `getAnimations().length === 0`,
+`transform: none`. The system's own rule is that a global rule does not live inside a component; the
+cancelling half obeyed it and the defining half did not. Now both ship from `MotionGuard`.
+
+**(d) F-31, one component over.** `RangePills.jsx:25` still passed `disabled={locked}`, which dims to
+0.4 and composites the selected pill's `--color-selected` away — so an advisor cannot see which range is
+locked in. That is F-31 exactly, found and fixed on `SegmentedRow` on 19 Sep and left live here, while
+`RangePills.d.ts` promised *"renders inert"*. Now `aria-disabled` + `tabIndex={-1}`, which is what
+`Pressable` forwards for precisely this.
+
+**Also fixed in the same pass:** `Composer.jsx` still defaulted to the placeholder its own `.d.ts`
+records deleting on 19 Sep (contradiction 37, logged as a duplication and since become a disagreement);
+the **riskometer** is now beside the return on the fund page — it has been on every row of `FUNDS` since
+the book was written and appeared on no screen, and a return shown without it is the number an advisor
+is least allowed to show alone; and the **AMFI line** joins the past-performance caveat.
+
+**The router, corrected twice in one pass.** `act` read `sell|redeem|switch|buy` followed by
+`all|everything|full`, so *"Sell all of Sharma's Quant Small Cap"* was caught and **"Sell 2 lakh of
+Quant Small Cap" fell through to bucket 4** — the ordinary phrasing, missed by the rule whose whole
+stated purpose is to catch an instruction before the fund search reads it as a browse. And `drift`
+matched a bare `sharma`, so **"Review Sharma" and "Review Sharma's portfolio" both opened a drift
+trace** and a bare name never reached disambiguation. Both fixed and verified across eight sentences.

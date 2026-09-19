@@ -1,0 +1,46 @@
+<!-- @dsCard group="Probe" viewport="1400x900" name="Nia probe — PASSING fixture" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Nia probe — ok</title>
+<link rel="stylesheet" href="/design-system/styles.css">
+<style>
+  body { margin: 0; background: var(--color-desk); }
+  .phone { width: 375px; height: 812px; overflow: hidden; border-radius: 44px; background: var(--color-canvas); position: relative; margin: 20px; }
+  .pad { padding: 24px; }
+  .row { display: flex; gap: 16px; align-items: center; margin-bottom: 24px; }
+</style></head>
+<body>
+<div id="root">
+<div class="phone"><div class="pad">
+
+  <!-- D1 · the same icon button, named — and D3 · a 42px disc carrying the system's own ::before
+       floor, so this fixture also proves the probe CREDITS the extension rather than reading the box. -->
+  <button id="named" aria-label="Collapse" class="ds-pressable" data-hit
+          style="position:relative;width:42px;height:42px;border-radius:50%;background:#eee;border:none;--hit-x:1px;--hit-y:1px">
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12" stroke="#251F1B" stroke-width="1.5"/></svg>
+  </button>
+
+  <!-- D2 · the press target is a SIBLING BEHIND the content, never an ancestor of it. -->
+  <div style="position:relative;width:300px;padding:12px;margin-top:12px">
+    <button aria-label="Open the card" style="position:absolute;inset:0;border:none;background:transparent"></button>
+    <span style="position:relative">Card body</span>
+    <button aria-label="Download" style="position:relative;height:44px">Download</button>
+  </div>
+
+  <!-- D3 · a 28px box with the ::before floor and nothing painted over it. -->
+  <div class="row">
+    <button id="ok28" aria-label="Extended target" class="ds-pressable" data-hit
+            style="position:relative;width:60px;height:28px;--hit-x:0px;--hit-y:8px;border:none;background:#ddd">ok</button>
+  </div>
+
+  <!-- contrast · the system's own body pair: --color-ink on --color-canvas. -->
+  <p style="background:var(--color-canvas);color:var(--color-ink);font:400 14px/20px var(--font-ui);padding:8px">
+    This 14px line uses the system's own ink on its own canvas.
+  </p>
+
+  <!-- contrast · a label on the same gradient, in ink rather than white. -->
+  <div style="background:linear-gradient(180deg, rgb(230,220,210) 0%, rgb(180,150,120) 100%);padding:12px;border-radius:16px">
+    <span style="color:#251F1B;font:500 14px/20px var(--font-ui)">Ink on a gradient — worst stop still passes</span>
+  </div>
+
+</div></div>
+</div>
+</body></html>

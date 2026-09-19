@@ -1,0 +1,491 @@
+{
+ "base": "http://localhost:58838",
+ "when": "2026-09-19T16:10:25.456Z",
+ "pages": {
+  "studio/audit-2026-09-19/probes/fixture-broken.html": {
+   "errors": [],
+   "dims": {
+    "w": 1400,
+    "h": 2600,
+    "vw": 1400,
+    "vh": 2600
+   },
+   "dom": {
+    "unnamed": [
+     {
+      "tag": "button",
+      "name": "",
+      "enabled": true,
+      "phone": 0,
+      "phoneLabel": "Nia probe — broken\n\n\n  body { margin: 0; background: var(--c",
+      "path": "div > div.phone > div.pad > button",
+      "rect": {
+       "w": 42,
+       "h": 42,
+       "x": 44,
+       "y": 44
+      }
+     }
+    ],
+    "nested": [
+     {
+      "inner": {
+       "tag": "button",
+       "name": "Download",
+       "enabled": true,
+       "phone": 0,
+       "phoneLabel": "Nia probe — broken\n\n\n  body { margin: 0; background: var(--c",
+       "path": "div.pad > div > button > button"
+      },
+      "outer": {
+       "tag": "button",
+       "name": "Open the card",
+       "path": "div.phone > div.pad > div > button"
+      }
+     }
+    ],
+    "targets": [],
+    "counts": {
+     "controlsVisible": 5,
+     "phones": 1
+    }
+   },
+   "targets": {
+    "targets": [
+     {
+      "name": "",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 42,
+       "h": 42
+      },
+      "dataHit": false,
+      "hitVars": {
+       "x": "",
+       "y": ""
+      },
+      "cls": "",
+      "hit": {
+       "w": 42.9,
+       "h": 42.9,
+       "up": 22,
+       "down": 21,
+       "left": 22,
+       "right": 21
+      },
+      "anchoredAtCentre": true,
+      "ok": false
+     },
+     {
+      "name": "Open the card",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 300,
+       "h": 72
+      },
+      "dataHit": false,
+      "hitVars": {
+       "x": "",
+       "y": ""
+      },
+      "cls": "",
+      "hit": {
+       "w": 128,
+       "h": 71.9,
+       "up": 36.9,
+       "down": 35,
+       "left": 64,
+       "right": 64
+      },
+      "anchoredAtCentre": true,
+      "ok": true
+     },
+     {
+      "name": "Download",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 75.3,
+       "h": 44
+      },
+      "dataHit": false,
+      "hitVars": {
+       "x": "",
+       "y": ""
+      },
+      "cls": "",
+      "hit": {
+       "w": 76.3,
+       "h": 44.9,
+       "up": 23,
+       "down": 22,
+       "left": 38.6,
+       "right": 37.6
+      },
+      "anchoredAtCentre": true,
+      "ok": true
+     },
+     {
+      "name": "Tiny target",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 20,
+       "h": 20
+      },
+      "dataHit": false,
+      "hitVars": {
+       "x": "",
+       "y": ""
+      },
+      "cls": "",
+      "hit": {
+       "w": 21,
+       "h": 21,
+       "up": 11,
+       "down": 10,
+       "left": 11,
+       "right": 10
+      },
+      "anchoredAtCentre": true,
+      "ok": false
+     },
+     {
+      "name": "Eaten target",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 60,
+       "h": 28
+      },
+      "dataHit": true,
+      "hitVars": {
+       "x": "0px",
+       "y": "8px"
+      },
+      "cls": "ds-pressable",
+      "hit": {
+       "w": 60.9,
+       "h": 27,
+       "up": 14,
+       "down": 13,
+       "left": 31,
+       "right": 30
+      },
+      "anchoredAtCentre": true,
+      "ok": false
+     }
+    ],
+    "checked": 5,
+    "offscreen": 0,
+    "coveredAtCentre": 0,
+    "unreachable": 0,
+    "viewport": {
+     "VW": 1400,
+     "VH": 2600
+    }
+   },
+   "contrast": [
+    {
+     "key": "#000000|#efefef|13.3333|400",
+     "fg": "#000000",
+     "bg": "#efefef",
+     "size": 13.3333,
+     "weight": 400,
+     "large": false,
+     "ratio": 18.26,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "Card body",
+     "tag": "button",
+     "cls": ""
+    },
+    {
+     "key": "#000000|#efefef|13.3333|400",
+     "fg": "#000000",
+     "bg": "#efefef",
+     "size": 13.3333,
+     "weight": 400,
+     "large": false,
+     "ratio": 18.26,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "Download",
+     "tag": "button",
+     "cls": ""
+    },
+    {
+     "key": "#000000|#cccccc|13.3333|400",
+     "fg": "#000000",
+     "bg": "#cccccc",
+     "size": 13.3333,
+     "weight": 400,
+     "large": false,
+     "ratio": 13.08,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "x",
+     "tag": "button",
+     "cls": ""
+    },
+    {
+     "key": "#000000|#dddddd|13.3333|400",
+     "fg": "#000000",
+     "bg": "#dddddd",
+     "size": 13.3333,
+     "weight": 400,
+     "large": false,
+     "ratio": 15.46,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "eat",
+     "tag": "button",
+     "cls": "ds-pressable"
+    },
+    {
+     "key": "#c9b9a8|#ffffff|14|400",
+     "fg": "#c9b9a8",
+     "bg": "#ffffff",
+     "size": 14,
+     "weight": 400,
+     "large": false,
+     "ratio": 1.91,
+     "need": 4.5,
+     "pass": false,
+     "alpha": 1,
+     "sample": "This 14px line is well under 4.5:1 and m",
+     "tag": "p",
+     "cls": ""
+    },
+    {
+     "key": "#ffffff|#e6dcd2|14|500",
+     "fg": "#ffffff",
+     "bg": "#e6dcd2",
+     "size": 14,
+     "weight": 500,
+     "large": false,
+     "ratio": 1.35,
+     "need": 4.5,
+     "pass": false,
+     "alpha": 1,
+     "sample": "White on a gradient — worst stop",
+     "tag": "span",
+     "cls": ""
+    }
+   ]
+  },
+  "studio/audit-2026-09-19/probes/fixture-ok.html": {
+   "errors": [],
+   "dims": {
+    "w": 1400,
+    "h": 2600,
+    "vw": 1400,
+    "vh": 2600
+   },
+   "dom": {
+    "unnamed": [],
+    "nested": [],
+    "targets": [],
+    "counts": {
+     "controlsVisible": 4,
+     "phones": 1
+    }
+   },
+   "targets": {
+    "targets": [
+     {
+      "name": "Collapse",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 42,
+       "h": 42
+      },
+      "dataHit": true,
+      "hitVars": {
+       "x": "1px",
+       "y": "1px"
+      },
+      "cls": "ds-pressable",
+      "hit": {
+       "w": 44.9,
+       "h": 44.9,
+       "up": 23,
+       "down": 22,
+       "left": 23,
+       "right": 22
+      },
+      "anchoredAtCentre": true,
+      "ok": true
+     },
+     {
+      "name": "Open the card",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 324,
+       "h": 68
+      },
+      "dataHit": false,
+      "hitVars": {
+       "x": "",
+       "y": ""
+      },
+      "cls": "",
+      "hit": {
+       "w": 102.9,
+       "h": 68.9,
+       "up": 34.9,
+       "down": 33.9,
+       "left": 64,
+       "right": 38.9
+      },
+      "anchoredAtCentre": false,
+      "ok": true
+     },
+     {
+      "name": "Download",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 75.3,
+       "h": 44
+      },
+      "dataHit": false,
+      "hitVars": {
+       "x": "",
+       "y": ""
+      },
+      "cls": "",
+      "hit": {
+       "w": 76.3,
+       "h": 44.9,
+       "up": 23,
+       "down": 22,
+       "left": 38.6,
+       "right": 37.6
+      },
+      "anchoredAtCentre": true,
+      "ok": true
+     },
+     {
+      "name": "Extended target",
+      "tag": "button",
+      "phone": 0,
+      "box": {
+       "w": 60,
+       "h": 28
+      },
+      "dataHit": true,
+      "hitVars": {
+       "x": "0px",
+       "y": "8px"
+      },
+      "cls": "ds-pressable",
+      "hit": {
+       "w": 60.9,
+       "h": 44.9,
+       "up": 23,
+       "down": 22,
+       "left": 31,
+       "right": 30
+      },
+      "anchoredAtCentre": true,
+      "ok": true
+     }
+    ],
+    "checked": 4,
+    "offscreen": 0,
+    "coveredAtCentre": 1,
+    "unreachable": 0,
+    "viewport": {
+     "VW": 1400,
+     "VH": 2600
+    }
+   },
+   "contrast": [
+    {
+     "key": "#251f1b|#f6f4f1|16|400",
+     "fg": "#251f1b",
+     "bg": "#f6f4f1",
+     "size": 16,
+     "weight": 400,
+     "large": false,
+     "ratio": 14.82,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "Card body",
+     "tag": "span",
+     "cls": ""
+    },
+    {
+     "key": "#000000|#efefef|13.3333|400",
+     "fg": "#000000",
+     "bg": "#efefef",
+     "size": 13.3333,
+     "weight": 400,
+     "large": false,
+     "ratio": 18.26,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "Download",
+     "tag": "button",
+     "cls": ""
+    },
+    {
+     "key": "#000000|#dddddd|13.3333|400",
+     "fg": "#000000",
+     "bg": "#dddddd",
+     "size": 13.3333,
+     "weight": 400,
+     "large": false,
+     "ratio": 15.46,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "ok",
+     "tag": "button",
+     "cls": "ds-pressable"
+    },
+    {
+     "key": "#251f1b|#f6f4f1|14|400",
+     "fg": "#251f1b",
+     "bg": "#f6f4f1",
+     "size": 14,
+     "weight": 400,
+     "large": false,
+     "ratio": 14.82,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "This 14px line uses the system's own ink",
+     "tag": "p",
+     "cls": ""
+    },
+    {
+     "key": "#251f1b|#b49678|14|500",
+     "fg": "#251f1b",
+     "bg": "#b49678",
+     "size": 14,
+     "weight": 500,
+     "large": false,
+     "ratio": 5.87,
+     "need": 4.5,
+     "pass": true,
+     "alpha": 1,
+     "sample": "Ink on a gradient — worst stop still pas",
+     "tag": "span",
+     "cls": ""
+    }
+   ]
+  }
+ }
+}

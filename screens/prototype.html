@@ -43,17 +43,25 @@ const FILL_MS = 900;
    follow that", is last and is the default: nothing here guesses at the closest journey. */
 const ROUTES = [
   { id: 'caps',     re: /what can i (ask|do)|help|capabilit/i,                      why: 'asks what the product can do' },
-  { id: 'act',      re: /\b(sell|redeem|switch|buy)\b.*\b(all|everything|full)\b/i,  why: 'an instruction that would ACT' },
+  /* AN INSTRUCTION IS AN INSTRUCTION AT ANY SIZE (F-45). This read `sell|redeem|switch|buy` followed
+     by `all|everything|full`, so "Sell all of Sharma's Quant Small Cap" was caught and
+     "Sell 2 lakh of Quant Small Cap" fell through to bucket 4 — the ordinary phrasing, missed by the
+     rule whose whole stated purpose is to catch an instruction before the fund search reads it as a
+     browse. A verb plus an amount, a holding, or a totality is the instruction. */
+  { id: 'act',      re: /\b(sell|redeem|switch|buy|exit|book)\b[^.?!]*?(\b(all|everything|full|everything)\b|\u20b9\s?[\d,]+|\b\d[\d,.]*\s?(lakh|lac|l|cr|crore|k)\b|\bunits?\b|\bout of\b)/i, why: 'an instruction that would ACT' },
   { id: 'over',     re: /₹\s?[6-9]\d,?\d{2},?\d{3}|₹\s?[1-9]\d*\s?(cr|crore)/i,      why: 'an amount above a mandate ceiling' },
   { id: 'outside',  re: /\b(itr|file .*return|tax return|gst)\b/i,                   why: 'in the domain, outside what this product does' },
   { id: 'rebal',    re: /\brebalanc|bring .*back|fix (his|her|the) (mix|drift)/i,        why: 'a rebalance, asked for cold' },
-  { id: 'drift',    re: /\bdrift|why .*\b(mix|allocation)|sharma/i,                  why: 'a drift question' },
+  { id: 'who',      re: /^\s*(meera|sharma|amit|sunita)\s*$/i,                       why: 'a name with no intent' },
+  /* REVIEW BEFORE DRIFT. Both can name a client's portfolio, and drift's pattern matches
+     "sharma's portfolio" — so "Review Sharma's portfolio" opened a drift trace. The word `review` is
+     unambiguous and `drift` carries its own word, so testing review first costs drift nothing. */
   { id: 'review',   re: /\breview\b|what does (she|he) hold|holdings of/i,          why: 'a client review' },
+  { id: 'drift',    re: /\bdrift\b|why .*\b(mix|allocation)|sharma(?:'|\u2019)s (portfolio|mix|book)/i, why: 'a drift question' },
   { id: 'propose',  re: /\bproposal\b|\bpropose\b|build .*(for|to) (mr|ms|mrs)?\.? ?\w*ag+ra?wal/i, why: 'a proposal' },
   { id: 'risk',     re: /\brisk\b|\bprofile\b/i,                                     why: 'a risk profile' },
   { id: 'ledger',   re: /placed|ledger|this month|what did i (do|send)/i,            why: 'a question about money already sent' },
   { id: 'funds',    re: /\bfund|flexi|small cap|large cap|shelf|search\b/i,          why: 'a fund search' },
-  { id: 'who',      re: /^\s*(meera|sharma|amit|sunita)\s*$/i,                       why: 'a name with no intent' },
   { id: 'miss',     re: /.*/,                                                        why: 'nothing matched — and nothing is guessed at' },
 ];
 const route = (text) => ROUTES.find((r) => r.re.test(text || ''));

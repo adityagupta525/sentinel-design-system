@@ -78,6 +78,7 @@ var __ds_out = (() => {
     InlineActionRow: () => InlineActionRow,
     List: () => List,
     ListRow: () => ListRow,
+    MOTION_CSS: () => MOTION_CSS,
     MessageActions: () => MessageActions,
     MoneyComposer: () => MoneyComposer,
     MotionGuard: () => MotionGuard,
@@ -347,7 +348,8 @@ var __ds_out = (() => {
         {
           key: r,
           onClick: locked ? void 0 : () => onChange && onChange(r),
-          disabled: locked,
+          "aria-disabled": locked || void 0,
+          tabIndex: locked ? -1 : void 0,
           pressed: on,
           label: `${label}: ${r}`,
           style: { display: "inline-flex", height: "var(--h-filter-chip)", flexShrink: 0, alignItems: "center", justifyContent: "center", padding: `0 var(--space-12)`, borderRadius: "var(--radius-full)", background: on ? "var(--color-selected)" : "var(--color-chip)", boxShadow: on ? `0 0 0 var(--border-1) var(--color-bronze)` : `0 0 0 var(--border-1) var(--color-line)` }
@@ -1181,7 +1183,7 @@ var __ds_out = (() => {
   }
 
   // design-system/components/composer/Composer.jsx
-  function Composer({ value = "", onChange, onFocus, onSend, placeholder = "Ask Sentinel about a client, a fund, or a plan", autoFocus = false, streaming = false, onStop, onAttach, attachLabel = "Attach a file", accept }) {
+  function Composer({ value = "", onChange, onFocus, onSend, placeholder = "Ask Sentinel", autoFocus = false, streaming = false, onStop, onAttach, attachLabel = "Attach a file", accept }) {
     const [focus, setFocus] = react_global_default.useState(false);
     const fileRef = react_global_default.useRef(null);
     const canSend = value.trim().length > 0 && !streaming;
@@ -1745,7 +1747,8 @@ var __ds_out = (() => {
   }
 
   // design-system/components/shell/MotionGuard.jsx
-  var REDUCED_MOTION_CSS = `@media (prefers-reduced-motion:reduce){
+  var MOTION_CSS = `@keyframes ds-spin{to{transform:rotate(360deg)}}`;
+  var REDUCED_MOTION_CSS = MOTION_CSS + `@media (prefers-reduced-motion:reduce){
 @keyframes sentinel-shimmer{0%,100%{opacity:1}}
 @keyframes dot-pulse{0%,100%{opacity:1}}
 @keyframes ds-rise{from{opacity:0}to{opacity:1}}

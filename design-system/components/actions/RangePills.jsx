@@ -19,10 +19,14 @@ export function RangePills({ ranges = DEFAULT, value, onChange, label = 'Time ra
   return (
     <div>
       <div role="group" aria-label={label} className="noscroll" style={{ display: 'flex', gap: 'var(--space-6)', width: '100%', overflowX: 'auto', paddingBottom: 'var(--space-2)' }}>
+        {/* INERT, NOT DISABLED (F-46). `disabled` dims to 0.4, which composites the selected pill's
+            --color-selected away, so the advisor cannot see WHICH range is locked in. That is F-31
+            exactly — found and fixed on SegmentedRow on 19 Sep and left live here, while this
+            component's own .d.ts promised "renders inert". Pressable forwards aria-disabled for this. */}
         {ranges.map((r) => {
           const on = r === active;
           return (
-            <Pressable key={r} onClick={locked ? undefined : () => onChange && onChange(r)} disabled={locked} pressed={on} label={`${label}: ${r}`}
+            <Pressable key={r} onClick={locked ? undefined : () => onChange && onChange(r)} aria-disabled={locked || undefined} tabIndex={locked ? -1 : undefined} pressed={on} label={`${label}: ${r}`}
               style={{ display: 'inline-flex', height: 'var(--h-filter-chip)', flexShrink: 0, alignItems: 'center', justifyContent: 'center', padding: `0 var(--space-12)`, borderRadius: 'var(--radius-full)', background: on ? 'var(--color-selected)' : 'var(--color-chip)', boxShadow: on ? `0 0 0 var(--border-1) var(--color-bronze)` : `0 0 0 var(--border-1) var(--color-line)` }}>
               <span style={{ font: 'var(--type-label-font)', letterSpacing: 'var(--tracking-pill)', color: on ? 'var(--color-ink)' : 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>{r}</span>
             </Pressable>

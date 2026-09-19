@@ -25,7 +25,7 @@ export { CanvasHeader } from './components/shell/CanvasHeader.jsx';
 export { Dock } from './components/shell/Dock.jsx';
 export { Drawer } from './components/shell/Drawer.jsx';
 export { HomeIndicator } from './components/shell/HomeIndicator.jsx';
-export { REDUCED_MOTION_CSS, installReducedMotion, MotionGuard } from './components/shell/MotionGuard.jsx';
+export { MOTION_CSS, REDUCED_MOTION_CSS, installReducedMotion, MotionGuard } from './components/shell/MotionGuard.jsx';
 export { PhoneFrame } from './components/shell/PhoneFrame.jsx';
 export { ScreenBackdrop } from './components/shell/ScreenBackdrop.jsx';
 export { ScreenStack } from './components/shell/ScreenStack.jsx';

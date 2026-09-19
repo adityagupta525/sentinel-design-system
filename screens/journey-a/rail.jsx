@@ -187,9 +187,23 @@ function RiskResult({ onChip, chips, cta }) {
    own composer, because which composer a step wants is a property of the step (`money`), not of the page.
    `onMenu` / `onNew` are the prototype's only addition: a rail reached from the thread has to be
    leavable, and it leaves by the same two doors every other surface uses. */
-const RailAsk = ({ step, onAttach }) => (step && step.money
-  ? <RAIL_DS.MoneyComposer onSend={() => {}} placeholder="or type the amount" />
-  : <RAIL_DS.Composer value="" onChange={() => {}} placeholder={(step && step.composer) || 'or type your answer'} onSend={() => {}} onAttach={onAttach} />);
+/* A REAL COMPOSER, NOT A DRAWING OF ONE (F-45). Every rail step says "or type your answer" and this
+   was `value=""` with a no-op onChange and a no-op onSend — inert on journeys A, D, E and F, four of
+   the six. The same defect was found and fixed on the thread's composer for the prototype and left
+   here. A control that invites typing and drops it is the DEAD PAPERCLIP rule applied to the composer,
+   and the gate only knew to look at the paperclip.
+   The state lives HERE rather than in every caller: what an advisor types into a rail step is an
+   answer to that step, and nothing else on the page needs it. */
+function RailAsk({ step, onAttach, onSend }) {
+  const [value, setValue] = React.useState('');
+  const send = () => { const t = value.trim(); if (!t) return; setValue(''); if (onSend) onSend(t); };
+  /* MoneyComposer owns its own value and hands back a formatted rupee string, so it takes only onSend
+     — passing it value/onChange would be inventing a contract it does not have. */
+  return step && step.money
+    ? <RAIL_DS.MoneyComposer onSend={(v) => onSend && onSend(v)} placeholder="or type the amount" />
+    : <RAIL_DS.Composer value={value} onChange={setValue} placeholder={(step && step.composer) || 'or type your answer'}
+        onSend={send} onAttach={onAttach} />;
+}
 
 const SHARE_SHEET = {
   title: 'Share with Meera',
@@ -234,7 +248,8 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, o
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Rail n={step && step.progress ? step.progress[0] : undefined} total={total} revision={`${cursor}-${answered.length}-${!!att.file}`}
-        onMenu={onMenu} onNew={onNew} composer={<RailAsk step={step} onAttach={att.onAttach} />}>
+        onMenu={onMenu} onNew={onNew} composer={<RailAsk step={step} onAttach={att.onAttach}
+          onSend={(t) => { log(`Typed \u201c${t}\u201d`, 'the same path a chip takes \u2014 typing is never a second-class answer'); advance(t); }} />}>
         <AnsweredList items={answered} onEdit={editAt} />
         {step && step.result
           ? (result ? result({ step, onChip }) : <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />)
