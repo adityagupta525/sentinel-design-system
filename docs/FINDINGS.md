@@ -856,3 +856,22 @@ as no use at all.
 reports a number nobody can trust. This is the same shape as the pinned-chip exception matching a file
 path by its spelling rather than resolving it — both were found within an hour of each other, and both
 were fixed by comparing the thing rather than the text of the thing.
+
+### F-41 · The parallel check called two real exports "strays" and failed CI — *19 Sep 2026, fixed*
+
+`tools/check-parallel.mjs` answers "does a screen name something the system does not export?" by
+comparing `__screenRequires` against `components` — which is **one name per FILE**, taken from
+`pages/_index.json`. Several files ship more than one export: `ResultCard.jsx` also exports
+`ResultActions` and `ResultPrimary`, and `design-system/index.js` exports all three. Journey D names
+all three, so the check reported two strays and exited 1. **CI failed on a defect that did not exist.**
+
+**Fix:** the stray set is now read from `design-system/index.js`, the only public entry, which is the
+only honest answer to "does the system export this". The file list stays as the basis for the usage
+count, where one name per component is what is wanted.
+
+**Why it reached CI at all, which is the part worth keeping.** I ran the gate locally as
+`node tools/check-parallel.mjs 2>&1 | head -1`. The strays print after the summary line, so `head`
+discarded them — and piping through `head` also discards the exit code. The gate had failed on my own
+machine and I read the one line that said it had not. **A gate's output is not a summary line, and a
+gate run through `head` is a gate not run.** F-40 was the same class the same hour: a check that reads
+the shape of a thing rather than the thing.

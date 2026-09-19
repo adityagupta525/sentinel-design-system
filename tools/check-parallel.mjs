@@ -92,8 +92,20 @@ const unused = components.filter((c) => !used.has(c)).sort();
 const shipped = new Set(index.rows.filter((r) => r.status === 'shipped').map((r) => r.name));
 const unusedShipped = unused.filter((c) => shipped.has(c));
 
-/* The other direction: a screen naming something the system does not export. */
+/* The other direction: a screen naming something the system does not export.
+   READ FROM THE BARREL, not from the component list. `components` is one name per FILE, and several
+   files ship more than one export — ResultCard.jsx also exports ResultActions and ResultPrimary, and
+   Journey D names all three. Checking against the file names called two real exports strays and failed
+   CI on 19 Sep for a defect that did not exist. `design-system/index.js` is the only public entry, so
+   it is the only honest answer to "does the system export this". */
+const barrel = await readFile(join(REPO, 'design-system', 'index.js'), 'utf8');
 const exported = new Set(components);
+for (const m of barrel.matchAll(/export\s*\{([^}]*)\}/g)) {
+  for (const raw of m[1].split(',')) {
+    const name = raw.split(/\s+as\s+/).pop().trim();
+    if (name) exported.add(name);
+  }
+}
 const strays = [];
 for (const [rel, src] of sources) {
   const req = src.match(/__screenRequires\s*=\s*\[([^\]]*)\]/);
