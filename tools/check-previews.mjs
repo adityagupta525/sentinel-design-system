@@ -202,6 +202,7 @@ for (const p of pages) {
   const mounted = await page.evaluate(() => (document.getElementById('root') || document.body).innerHTML.length).catch(() => 0);
   /* The gutter guard, on screens only: a spec page is a specimen board and has no screen edges. */
   let gutter = null;
+  let tight = [];
   if (p.gutter) {
     gutter = await page.evaluate(`(${GUTTER_PROBE.toString()})(${p.gutterMin})`).catch(() => null);
     if (gutter && gutter.bad.length) for (const b of gutter.bad) errors.push(`GUTTER ${b}`);
@@ -212,18 +213,30 @@ for (const p of pages) {
     const trunc = await page.evaluate(() => {
       const phones = [...document.querySelectorAll('div')].filter((d) => { const r = d.getBoundingClientRect(), cs = getComputedStyle(d); return Math.round(r.width) === 375 && Math.round(r.height) === 812 && cs.overflow.includes('hidden'); });
       const out = [];
+      /* TIGHT, not yet truncated. CI renders on Linux, where this face measures wider than on macOS: a
+         string with two pixels to spare here fails there, and run 64 is exactly that — 220px of text in a
+         218px box that fitted locally. So anything inside 8px of its box is reported as a WARNING, with the
+         real text width measured by a Range (scrollWidth is never less than clientWidth, so it cannot tell
+         you how much room is left). It does not fail the page; it is the thing to fix before CI does. */
+      const tight = [];
       for (const ph of phones) for (const el of ph.querySelectorAll('span,p,div,button')) {
         const cs = getComputedStyle(el);
-        if (cs.textOverflow === 'ellipsis' && el.scrollWidth > el.clientWidth + 1 && el.clientWidth > 40)
-          out.push(`"${(el.textContent || '').trim().slice(0, 36)}" needs ${el.scrollWidth}px, has ${el.clientWidth}px`);
+        if (cs.textOverflow !== 'ellipsis' || el.clientWidth <= 40) continue;
+        if (el.scrollWidth > el.clientWidth + 1) { out.push(`"${(el.textContent || '').trim().slice(0, 36)}" needs ${el.scrollWidth}px, has ${el.clientWidth}px`); continue; }
+        const r = document.createRange(); r.selectNodeContents(el);
+        const w = Math.ceil(r.getBoundingClientRect().width);
+        const slack = el.clientWidth - w;
+        if (slack >= 0 && slack < 8) tight.push(`"${(el.textContent || '').trim().slice(0, 36)}" has ${slack}px to spare (${w} in ${el.clientWidth})`);
       }
+      window.__tight = [...new Set(tight)];
       return [...new Set(out)];
     }).catch(() => []);
     if (gutter) gutter.truncated = trunc.length;
     if (trunc.length && !p.truncationAllowed) for (const t of trunc) errors.push(`TRUNCATED ${t} — declare truncation="allowed" in @gutter if this is deliberate`);
+    tight = await page.evaluate(() => window.__tight || []).catch(() => []);
   }
   if (SHOTS) await page.screenshot({ path: join(SHOTS, `${p.name}.png`), fullPage: true }).catch(() => {});
-  results.push({ ...p, errors, missing, mounted, gutter });
+  results.push({ ...p, errors, missing, mounted, gutter, tight });
   await page.close();
 }
 await browser.close();
@@ -236,6 +249,7 @@ for (const r of results) {
   console.log(`${flag.padEnd(6)} ${r.rel.padEnd(44)} mounted=${String(r.mounted).padStart(7)}${r.gutter ? `  gutter>=${r.gutterMin} on ${r.gutter.phones} phone${r.gutter.phones === 1 ? '' : 's'}${r.gutter.anchored ? `, ${r.gutter.anchored} edge-anchored` : ''}${r.gutter.truncated ? `, ${r.gutter.truncated} truncated${r.truncationAllowed ? ' (allowed)' : ''}` : ''}` : ''}`);
   if (r.gutter && r.fullBleed) console.log(`         full-bleed by design: ${r.fullBleed}`);
   for (const e of [...r.errors, ...r.missing].slice(0, 4)) console.log(`         ↳ ${e}`);
+  for (const t of (r.tight || []).slice(0, 3)) console.log(`         ⚠ TIGHT ${t} — CI's Linux metrics run wider; shorten it`);
 }
 if (JSON_OUT) await writeFile(JSON_OUT, JSON.stringify(results, null, 1));
 

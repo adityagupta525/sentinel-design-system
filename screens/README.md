@@ -92,7 +92,11 @@ A box that **clips** is checked itself and then closes the question for everythi
    today and catches a regression there tomorrow; covering spec pages would cover nothing at all.
    **Do not read "N/N pages render clean" as "the whole repository is gutter-checked".** It is not,
    and that is on purpose.
-9. **Nothing truncates silently.** On the same surfaces, any element with `text-overflow: ellipsis`
+9. **Nothing truncates silently — and write copy that fits with ROOM.**
+   CI renders on Linux, where this face measures wider than it does on macOS: a version summary that fitted
+   locally needed 220px in a 218px box on the runner and failed the gate (run 64). Two pixels is not a
+   margin. If a string is close to its box, shorten it rather than declaring the truncation allowed.
+   The original rule: On the same surfaces, any element with `text-overflow: ellipsis`
    whose text is wider than its box fails the page — unless the page's `@gutter` marker says
    `truncation="allowed"`, with a comment naming which state truncates on purpose. A label lost a third
    of itself on 18 Sep and passed every check until a human measured it.

@@ -1,5 +1,9 @@
 <!-- @dsCard group="Screens" viewport="1400x3200" name="Thread · going back" subtitle="The four ways an advisor undoes something — say it was wrong, ask what comes next, return to the version the client saw, and resume a journey they left" -->
 <!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, DetourBanner" -->
+<!-- VersionRow's summary is one fixed-height line and truncates, like every ListRow. These summaries are
+     written SHORT so nothing is cut at 375 — and short with room to spare, because CI renders on Linux where
+     this face measures wider than it does on macOS: run 64 failed on "Swapped the mid-cap for a flexi-cap"
+     needing 220px in a 218px box, two pixels nobody could see locally. The guard was right. -->
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>Thread · going back — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -30,9 +34,9 @@ const FOLLOWUPS = [
 /* The proposal for Mr. Amit Aggrawal — the drawer's second saved row, which is where an advisor meets
    this. V2 is the one the client actually received, and that is the whole reason the trail is kept. */
 const VERSIONS = [
-  { id: 'v1', name: 'V1', summary: 'First draft — 6 funds, 65 / 35', meta: '14 Sep, 4:12 pm' },
-  { id: 'v2', name: 'V2', summary: 'Swapped the mid-cap for a flexi-cap', meta: '15 Sep, 11:20 am', sent: true },
-  { id: 'v3', name: 'V3', summary: 'Cut the small-cap sleeve to 12%', meta: 'Yesterday, 6:40 pm' },
+  { id: 'v1', name: 'V1', summary: 'First draft, 6 funds', meta: '14 Sep, 4:12 pm' },
+  { id: 'v2', name: 'V2', summary: 'Mid-cap → flexi-cap', meta: '15 Sep, 11:20 am', sent: true },
+  { id: 'v3', name: 'V3', summary: 'Small-cap cut to 12%', meta: 'Yesterday, 6:40 pm' },
 ];
 
 const Answer = ({ feedback, followups, children }) => (
@@ -63,7 +67,7 @@ function LiveScene() {
      contract, and the same reasoning as the edit warning one level up: nothing is destroyed quietly. */
   const revert = (id) => {
     const from = versions.find((v) => v.id === id);
-    const next = { id: `v${versions.length + 1}`, name: `V${versions.length + 1}`, summary: `Restored ${from.name} — ${from.summary.toLowerCase()}`, meta: 'Just now' };
+    const next = { id: `v${versions.length + 1}`, name: `V${versions.length + 1}`, summary: `Restored ${from.name}`, meta: 'Just now' };
     setVersions([...versions, next]); setCurrent(next.id);
   };
   return (
