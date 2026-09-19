@@ -18,7 +18,6 @@
 /* thread.jsx gives the shell, AskTurn and the real paperclip; funds.jsx owns the data. */
 const { Composer, SentinelBlock, SentinelText, ArtifactCard, DataTable, OverlapView, Pill, ChipRow, AnswerChip, ExplainerSheet, InfoDot } = window.SentinelDesignSystem_0682a2;
 
-const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
 /* A REAL controlled composer for the live scene. A frozen specimen can pass value="" with a no-op
    onChange; a screen that claims you can refine a search by typing cannot. */
 const LiveAsk = ({ value, onChange, onSend, onAttach }) =>
@@ -86,7 +85,7 @@ function QueryTurn({ query, onToggle, shelf, onShelf, onOpen, results, continued
 function Scene({ children, anchor = 'bottom' }) {
   const att = useAttachment();
   return (
-    <Thread anchor={anchor} revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+    <Thread anchor={anchor} revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <AskTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
       {children}
       <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />

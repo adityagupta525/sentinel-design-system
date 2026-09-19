@@ -15,12 +15,11 @@
 <script type="text/babel" data-presets="react">
 /* thread.jsx and answer.jsx compile into this same scope — Thread, AnswerTurn, AnswerActions and the
    DRIFT_* data are already globals here. Only the names this file adds are destructured. */
-const { Composer, UserBubble, MessageActions, ProgressTrace, ExplainerSheet, FileUpload, Pill } = window.SentinelDesignSystem_0682a2;
+const { UserBubble, MessageActions, ProgressTrace, ExplainerSheet, FileUpload, Pill } = window.SentinelDesignSystem_0682a2;
 
 /* Frozen: the trace is past its last step and collapsed to its one-line resting state, which is where the
    product leaves it while the answer is read. */
 const Trace = ({ open = false }) => <ProgressTrace steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={4} seconds={4} initialCollapsed={!open} />;
-const Ask = ({ about = false, onAttach }) => <Composer value="" onChange={() => {}} placeholder={about ? 'Ask about this' : 'Ask Sentinel'} onSend={() => {}} onAttach={onAttach} />;
 
 /* THE DOCK CARRIES THE COMPOSER AND NOTHING ELSE. The chips and the CTA are inside the turn, so they
    scroll with the message that offered them. */
@@ -28,7 +27,7 @@ function Scene({ artifact = 'peek', view = 'chart', traceOpen = false, holdings 
   const card = React.useRef(null);
   const att = useAttachment();
   return (
-    <Thread anchor={atCard ? card : anchor} composer={<Ask about={artifact === 'expanded'} onAttach={att.onAttach} />}>
+    <Thread anchor={atCard ? card : anchor} composer={<FrozenAsk about={artifact === 'expanded'} onAttach={att.onAttach} />}>
       <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace open={traceOpen} />
       <AnswerTurn artifact={artifact} view={view} cardRef={card}
@@ -60,7 +59,7 @@ function LiveScene() {
   };
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Thread scrollRef={scroller} anchor="bottom" revision={!!att.file} composer={<Ask about={state === 'expanded'} onAttach={att.onAttach} />}>
+      <Thread scrollRef={scroller} anchor="bottom" revision={!!att.file} composer={<FrozenAsk about={state === 'expanded'} onAttach={att.onAttach} />}>
         <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
         <Trace />
         <AnswerTurn artifact={state} view={view} run cardRef={card} onToggle={toggle}
@@ -78,7 +77,7 @@ function LiveScene() {
 function EditScene() {
   const att = useAttachment();
   return (
-    <Thread anchor="bottom" revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+    <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace />
       <AnswerTurn artifact="peek" actions={<AnswerActions />} />
@@ -94,7 +93,7 @@ function FileScene() {
   const att = useAttachment();
   const demo = { name: 'Sharma-Q3.pdf', meta: '14 pages · 1.2 MB · just now' };
   return (
-    <Thread anchor="bottom" revision={!!att.file} composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={att.onAttach} />}>
+    <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace />
       <AnswerTurn artifact="peek" actions={<AnswerActions />} />

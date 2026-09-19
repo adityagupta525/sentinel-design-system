@@ -85,6 +85,30 @@ function Table({ head, rows }) {
   );
 }
 
+/* THE INERT COMPOSER A FROZEN SPECIMEN DRAWS — written once (20 Sep 2026).
+
+   `const Ask = …` was declared TEN times across ten screen pages, seven of them byte-for-byte:
+   05-decide:19 · funds:21 · rebalance:20 · proposal:19 · review:19 · ledger:22 · going-back:24, with
+   03-thread-answer:23 differing by a placeholder and risk-profile:20 / refusals:20 branching to
+   MoneyComposer. Ten copies of one decision, and the decision is rule 3 — every screen has a
+   composer — drawn rather than wired, because a frozen specimen has nothing to send to.
+
+   IT BELONGS HERE AND NOT IN design-system/. The system already ships `Composer`; a "pretend
+   composer" beside it would be a one-off component in a system that has a rule against those. This
+   is the screens' own shared layer, which exists for exactly this.
+
+   Read through a namespaced const, never destructured: every .jsx and inline script a page loads
+   compiles into ONE Babel scope, and ten of these pages already declare `const { Composer, … }` at
+   their top level. A second declaration of that name here renders the page blank. */
+const KIT_DS = window.SentinelDesignSystem_0682a2 || {};
+function FrozenAsk({ about = false, money = false, placeholder, onAttach }) {
+  /* Money is a different control, not a different placeholder: MoneyComposer owns its own value and
+     hands back a formatted rupee string, which is why it takes no value/onChange even when wired. */
+  if (money) return <KIT_DS.MoneyComposer onSend={() => {}} placeholder="or type the amount" />;
+  return <KIT_DS.Composer value="" onChange={() => {}} onSend={() => {}} onAttach={onAttach}
+    placeholder={placeholder || (about ? 'Ask about this' : 'Ask Sentinel')} />;
+}
+
 const MotionTable = ({ rows }) => <Table head={['Motion', 'Property', 'Duration', 'Under reduced motion']} rows={rows} />;
 const ProvenanceTable = ({ rows }) => <Table head={['Figure on screen', 'Where it comes from', 'Shown to the advisor as']} rows={rows} />;
 
@@ -93,4 +117,4 @@ function mountScreen(node) {
   if (el) ReactDOM.createRoot(el).render(node);
 }
 
-Object.assign(window, { ScreenShell, Section, State, StateRow, Note, Table, MotionTable, ProvenanceTable, mountScreen, screenMuted: muted });
+Object.assign(window, { ScreenShell, Section, State, StateRow, Note, Table, MotionTable, ProvenanceTable, FrozenAsk, mountScreen, screenMuted: muted });

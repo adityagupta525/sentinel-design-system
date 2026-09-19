@@ -14,15 +14,14 @@
 <script type="text/babel" data-presets="react">
 /* thread.jsx and moves.jsx compile into this scope — Thread, MovesTurn, MovesActions, SuccessTurn and the
    MOVES_* data are globals here. Only the names this file adds are destructured. */
-const { Composer, UserBubble, ConfirmSheet, ExplainerSheet, MoveCard } = window.SentinelDesignSystem_0682a2;
+const { UserBubble, ConfirmSheet, ExplainerSheet, MoveCard } = window.SentinelDesignSystem_0682a2;
 
-const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
 
 function Scene({ phase = 'moves', note = false, anchor = 'bottom' }) {
   const att = useAttachment();
   const exec = ['flight', 'partial', 'unknown'].includes(phase);
   return (
-    <Thread anchor={anchor} composer={<Ask onAttach={att.onAttach} />}>
+    <Thread anchor={anchor} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
       {phase === 'moves' && <MovesTurn actions={<MovesActions />} />}
       {exec && <ExecutionTurn state={phase} />}
@@ -43,7 +42,7 @@ function LiveScene() {
   const att = useAttachment();
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Thread anchor="bottom" revision={`${phase}-${note}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+      <Thread anchor="bottom" revision={`${phase}-${note}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
         <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
         {phase === 'moves' && <MovesTurn actions={<MovesActions onSkipped={() => setSkipped(true)} onApprove={() => setConfirm(true)} />} />}
         {phase === 'flight' && <ExecutionTurn state="flight" enter />}
@@ -67,7 +66,7 @@ function SheetScene({ busy = false }) {
   const att = useAttachment();
   return (
   <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-    <Thread anchor="bottom" revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+    <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
       <MovesTurn actions={<MovesActions />} />
       <AttachedTurn file={att.file} onRemove={att.clear} />

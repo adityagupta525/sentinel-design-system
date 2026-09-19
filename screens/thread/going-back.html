@@ -19,9 +19,8 @@
 <script type="text/babel" data-presets="react">
 /* thread.jsx and answer.jsx compile into this scope — Thread, AnswerTurn and the DRIFT_* data are
    globals here. Only the names this file adds are destructured. */
-const { Composer, UserBubble, SentinelBlock, SentinelText, ResponseFeedback, FollowUpRow, VersionRow, DetourBanner, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
+const { UserBubble, SentinelBlock, SentinelText, ResponseFeedback, FollowUpRow, VersionRow, DetourBanner, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
 
-const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
 
 /* The follow-ups are the questions this answer actually leads to, and the first of them is the one the
    journey really asks next — it is the UserBubble that opens the deciding screen. */
@@ -52,7 +51,7 @@ const Answer = ({ feedback, followups, children }) => (
 function Scene({ feedback, followups, banner, children, anchor = 'bottom' }) {
   const att = useAttachment();
   return (
-    <Thread anchor={anchor} banner={banner} composer={<Ask onAttach={att.onAttach} />}>
+    <Thread anchor={anchor} banner={banner} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <Answer feedback={feedback} followups={followups}>{children}</Answer>
       <AttachedTurn file={att.file} onRemove={att.clear} />
     </Thread>
@@ -78,7 +77,7 @@ function LiveScene() {
   return (
     <Thread anchor="bottom" revision={`${rated}-${asked}-${versions.length}-${paused}-${!!att.file}`}
       banner={paused ? <DetourBanner label="Meera's risk profile · paused at question 7" onResume={() => setPaused(false)} /> : undefined}
-      composer={<Ask onAttach={att.onAttach} />}>
+      composer={<FrozenAsk onAttach={att.onAttach} />}>
       <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <AnswerTurn artifact="peek" continued={false} />
       <ResponseFeedback value={rated} onRate={setRated} onReason={setReason} note="Your reason goes to the team that builds Sentinel." />

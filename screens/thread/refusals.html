@@ -15,16 +15,13 @@
 <script type="text/babel" data-presets="react">
 /* thread.jsx gives the shell, AskTurn and the real paperclip; book.jsx the clients; refusals.jsx the
    buckets. Only names this file adds are destructured. */
-const { Composer, MoneyComposer, RejectCallout, ConstraintCallout, ConfirmSheet, AnswerChip, ChipRow, SentinelBlock, SentinelText, ParseNote } = window.SentinelDesignSystem_0682a2;
+const { RejectCallout, ConstraintCallout, ConfirmSheet, AnswerChip, ChipRow, SentinelBlock, SentinelText, ParseNote } = window.SentinelDesignSystem_0682a2;
 
-const Ask = ({ onAttach, money }) => (money
-  ? <MoneyComposer onSend={() => {}} placeholder="or type the amount" />
-  : <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />);
 
 function Scene({ ask, children, money, editable = true }) {
   const att = useAttachment();
   return (
-    <Thread anchor="bottom" revision={!!att.file} composer={<Ask money={money} onAttach={att.onAttach} />}>
+    <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk money={money} onAttach={att.onAttach} />}>
       <AskTurn text={ask} editable={editable} costNote="Sending this replaces the reply below it." />
       {children}
       <AttachedTurn file={att.file} onRemove={att.clear} />
@@ -41,7 +38,7 @@ function LiveScene() {
   const say = (kind) => setTurns((t) => [...t, { kind }]);
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Thread anchor="bottom" revision={`${turns.length}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+      <Thread anchor="bottom" revision={`${turns.length}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
         <AskTurn text={BUCKET_4.ask} costNote="Sending this replaces the reply below it." />
         <RefusalTurn body={BUCKET_4.body} chips={[...BUCKET_4.chips, ...(misses >= 1 ? [BUCKET_4.repeatChip] : [])]}
           onChip={(c) => (c === BUCKET_4.repeatChip ? say('caps') : say('miss'))} />

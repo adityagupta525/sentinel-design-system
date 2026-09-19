@@ -1331,3 +1331,46 @@ renderer's own noise, and on this change it moved four pages out of the "changed
 
 **The Dock is not the caller's to place.** That is what turns rule 3 from a convention into a
 structure: a fourth screen written tomorrow cannot omit it.
+
+### F-56 · Three duplicates, and a dead control the merge found — *20 Sep 2026, fixed*
+
+The three remaining items on the hand-built audit's A-list. Each is one decision written more than
+once; none of them changed a pixel, and one of them turned out to be hiding a defect.
+
+**A-2 · the menu drew its one theme control twice.** `menu.jsx:32` declares `MenuFooterTheme`, whose
+whole body is one `SegmentedRow`. `MenuFooter` at `:40` then inlined **the same `SegmentedRow` with
+the same five props again** rather than rendering it. The comment two lines above says the drawer's
+page used to draw a second copy of exactly this row and that "two copies of a caption drift" — the fix
+that comment describes was never finished; the second copy had moved from the page into the module.
+`MenuFooter` renders `<MenuFooterTheme />`. One line.
+
+**A-3 · `Ask` existed eleven times, not ten.** The audit counted ten `const Ask = …` declarations;
+there is an eleventh, written inline at `03-thread-answer.html:96` rather than named, byte-identical
+in behaviour to the seven. Seven were byte-for-byte identical, three branch (`about` →
+"Ask about this"; `money` → `MoneyComposer` twice). All eleven are one decision — **rule 3 drawn but
+not wired**, because a frozen specimen has nothing to send to.
+
+It went to `screens/screen-kit.jsx`, the screens' own shared layer, and **not** to `design-system/`:
+the system already ships `Composer`, and a "pretend composer" beside it would be a one-off component
+in a system that has a rule against those. `FrozenAsk({ about, money, placeholder, onAttach })`, 19
+call sites. It reads the namespace through a uniquely-named const rather than destructuring, because
+ten of those pages already declare `const { Composer, … }` at their own top level and every page
+compiles into **one** Babel scope — a second declaration of that name renders the page blank.
+
+**A-1 · two fund cards, and the second one's range row was dead.** `FundDetail` (`funds.jsx:68`) was
+`FundInfo` with the series and the ₹10,000 framing removed, `Held by your clients` added, and a
+`locked` branch for a fund with no figures: nine of the same props from the same three book lookups,
+one branch apart. All three differences are props `InfoCard` already takes, so they are props now.
+
+The merge found this: **the period was controlled or it was not, and the two callers wanted the other
+one.** The table's row detail cannot hold state — `expandable` is a render callback — so it needs the
+card to own it. The thread's five call sites passed neither `period` nor `onPeriod`, which made
+`onRange` a no-op. **Driven, not read:** on `funds.html`, clicking `1Y` on the last fund card gave
+`₹14,157 → ₹14,157` before and `₹14,157 → 7.8%` after. Five fund cards carried a range row that did
+nothing, which is F-45's rule — a control that invites a tap and drops it — applied to `RangePills`.
+
+**Nothing moved.** All 13 touched pages shot before and after and differenced: `funds` · `prototype` ·
+`05-decide` · `proposal` · `rebalance` · `going-back` came back **identical**, and the five that
+differed matched their own same-code re-render signature to the pixel (`review` 358,308 · `refusals`
+68,697 · `drawer` 25,508 · `03-thread-answer` 120,498 · `risk-profile` ~2,900), which is the
+renderer's noise and not this change.

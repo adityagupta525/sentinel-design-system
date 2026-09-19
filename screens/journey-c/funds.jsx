@@ -65,47 +65,6 @@ const fundRows = (funds) => funds.map((f) => ({
    THE PERIOD IS NAMED IN WORDS under the figure. "27.6%" over three years means a CAGR, and an advisor
    reading it to a client as "it made 27.6% last year" has been misled by a layout. SEBI's own
    presentation rule; `perfNote` writes it. */
-function FundDetail({ fund, onExplain }) {
-  const [period, setPeriod] = React.useState('r3');
-  const p = perfOf(fund.id);
-  const label = (PERF_PERIODS.find((x) => x.key === period) || {}).label;
-  const p_risk = (fundById(fund.id) || {}).riskometer || '—';
-  if (!p) {
-    return (
-      <FUNDS_DS.InfoCard
-        name={fund.name} meta={`${fund.amc} · ${fund.cat}`}
-        shelf={fund.onShelf ? 'on-shelf' : 'not-on-shelf'}
-        locked lockReason="No figures on file for this fund yet, so nothing is drawn."
-        provenance="As of 30 Sep · from the scheme record and your own book"
-        stats={[{ label: 'Held by your clients', value: String(fund.heldBy.length) }, { label: 'Exit load', value: fund.exitLoad }]}
-        onExplain={onExplain} />
-    );
-  }
-  return (
-    <FUNDS_DS.InfoCard
-      name={fund.name} meta={`${fund.amc} · ${fund.cat}`}
-      shelf={fund.onShelf ? 'on-shelf' : 'not-on-shelf'}
-      figure={`${p[period].toFixed(1)}%`} figureNote={`${perfNote(period)} · against ${p.benchmark}`}
-      valueFormat={(v) => inr(Math.round(v))}
-      xFormat={(x) => (x === 0 ? `${NAV_MONTHS / 12} years ago` : x === NAV_MONTHS ? 'today' : '')}
-      range={label} ranges={PERF_PERIODS.map((x) => x.label)}
-      onRange={(r) => setPeriod((PERF_PERIODS.find((x) => x.label === r) || {}).key || 'r3')}
-      caveat="Mutual fund investments are subject to market risks. Read all scheme related documents carefully. Past performance may or may not be sustained in future."
-      provenance={perfProvenance(label)}
-      stats={[
-        /* THE RISKOMETER SITS BESIDE THE RETURN (F-46). `riskometer` has been on every row of FUNDS
-           since the book was written and appeared on no screen; a return shown without it is the
-           number an advisor is least allowed to show alone. SEBI's own pairing. */
-        { label: 'Riskometer', value: p_risk },
-        { label: 'Expense ratio', value: `${p.ter.toFixed(2)}%` },
-        { label: 'Fund size', value: `₹${p.aumCr.toLocaleString('en-IN')} cr` },
-        { label: 'Exit load', value: fund.exitLoad },
-        { label: 'Held by your clients', value: String(fund.heldBy.length) },
-      ]}
-      onExplain={onExplain} />
-  );
-}
-
 /* Two flexi caps, and the question an advisor is actually asked: are these the same fund? THIS PRODUCT
    CANNOT ANSWER IT YET, and OverlapView was built to say so — a null cell is an em dash with a footnote,
    never a 0. The screen shows the real shape of the answer and names what is missing to fill it. */
@@ -131,7 +90,7 @@ function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', on
     <FUNDS_DS.ArtifactCard state={state} eyebrow="Fund search · your shelf" title={`${funds.length} funds match`}
       provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => {}} onMenu={() => {}}>
       <FUNDS_DS.DataTable columns={FUND_COLUMNS} rows={fundRows(funds)} emptyState={FUND_EMPTY} overflow="scroll" defaultOpen={openRow}
-        expandable={(row) => <FundDetail fund={FUND_LIST.find((x) => x.id === row.id)} onExplain={onExplain || (() => {})} />} />
+        expandable={(row) => <FundInfo id={row.id} defaultPeriod="r3" heldBy onExplain={onExplain || (() => {})} />} />
     </FUNDS_DS.ArtifactCard>
   );
 }
@@ -242,34 +201,64 @@ const fundsFor = (query, shelf) => FUND_LIST.filter((f) => {
    THE LABEL IN THE CHART IS THE ROLE, NOT THE NAME. The compare line above already says "Nifty Smallcap
    250 TRI"; repeating it in 10px beside the line is the same fact twice, and it wrapped to three lines
    and drew over the plot (F-51). */
-function FundInfo({ id, period = 'r5', onPeriod, onExplain }) {
+/* ONE FUND CARD, NOT TWO (20 Sep 2026). A second wrapper lived at :68 and was this function with the
+   series and the ₹10,000 framing removed, `Held by your clients` added, and a `locked` branch for a
+   fund with no figures — nine of the same props from the same three book lookups, one branch apart.
+   All three differences are props `InfoCard` already takes, so they are props here now.
+
+   THE PERIOD IS CONTROLLED OR IT IS NOT, and the two callers wanted the other one. The table's row
+   detail cannot hold state — `expandable` is a render callback — so it needs the card to own it;
+   the thread's five call sites passed neither `period` nor `onPeriod`, which made `onRange` a no-op
+   and left the range row on every fund card DEAD. A control that invites a tap and drops it is F-45's
+   rule, and the merge fixes it by giving the card the state the table already proved it needs. */
+function FundInfo({ id, period, onPeriod, onExplain, heldBy = false, defaultPeriod = 'r5' }) {
+  const [ownPeriod, setOwnPeriod] = React.useState(defaultPeriod);
+  const per = period || ownPeriod;
+  const pick = onPeriod || setOwnPeriod;
   const f = fundById(id); const p = perfOf(id); const t = tenKAfter(id);
-  if (!f || !p) return null;
+  if (!f) return null;
+  const held = { label: 'Held by your clients', value: String(holdersOf(id).length) };
+  /* NO FIGURES ON FILE IS A STATE, NOT A BLANK CARD. `InfoCard.locked` was built for exactly this and
+     says so where the figure would be; the two facts that come from the advisor's own book are still
+     true and still shown — hiding something known because something else is unknown is the opposite
+     of this system's stance (InfoCard.jsx:12-18). */
+  if (!p) {
+    return (
+      <FUNDS_DS.InfoCard
+        name={f.name} meta={`${f.amc} · ${f.category}`}
+        shelf={f.onShelf ? 'on-shelf' : 'not-on-shelf'}
+        locked lockReason="No figures on file for this fund yet, so nothing is drawn."
+        provenance="As of 30 Sep · from the scheme record and your own book"
+        stats={[...(heldBy ? [held] : []), { label: 'Exit load', value: f.exitLoad }]}
+        onExplain={onExplain} />
+    );
+  }
   const s = navSeries(id);
-  const label = (PERF_PERIODS.find((x) => x.key === period) || {}).label;
+  const label = (PERF_PERIODS.find((x) => x.key === per) || {}).label;
   const gap = t ? t.fund - t.bench : 0;
   return (
     <FUNDS_DS.InfoCard
       name={f.name} meta={`${f.amc} · ${f.category}`}
       shelf={f.onShelf ? 'on-shelf' : 'not-on-shelf'}
-      figure={period === 'r5' && t ? inr(t.fund) : `${p[period].toFixed(1)}%`}
-      figureNote={period === 'r5' && t ? `is what ${inr(t.base)} would be, over ${t.years} years` : `${perfNote(period)} · against ${p.benchmark}`}
-      compare={period === 'r5' && t ? { label: t.benchmark, value: inr(t.bench), gap: inr(Math.abs(gap)), behind: gap < 0 } : undefined}
+      figure={per === 'r5' && t ? inr(t.fund) : `${p[per].toFixed(1)}%`}
+      figureNote={per === 'r5' && t ? `is what ${inr(t.base)} would be, over ${t.years} years` : `${perfNote(per)} · against ${p.benchmark}`}
+      compare={per === 'r5' && t ? { label: t.benchmark, value: inr(t.bench), gap: inr(Math.abs(gap)), behind: gap < 0 } : undefined}
       caveat="Mutual fund investments are subject to market risks. Read all scheme related documents carefully. Past performance may or may not be sustained in future."
-      series={period === 'r5' && s ? [{ label: 'This fund', points: s.fund }, { label: 'Benchmark', points: s.bench, tone: 'muted' }] : undefined}
+      series={per === 'r5' && s ? [{ label: 'This fund', points: s.fund }, { label: 'Benchmark', points: s.bench, tone: 'muted' }] : undefined}
       valueFormat={(v) => inr(Math.round(v))}
       xFormat={(x) => (x === 0 ? `${NAV_MONTHS / 12} years ago` : x === NAV_MONTHS ? 'today' : '')}
       range={label} ranges={PERF_PERIODS.map((x) => x.label)}
-      onRange={(r) => onPeriod && onPeriod((PERF_PERIODS.find((x) => x.label === r) || {}).key || 'r5')}
+      onRange={(r) => pick((PERF_PERIODS.find((x) => x.label === r) || {}).key || defaultPeriod)}
       provenance={perfProvenance(label)}
       stats={[
         { label: 'Riskometer', value: f.riskometer },
         { label: 'Expense ratio', value: `${p.ter.toFixed(2)}%` },
         { label: 'Fund size', value: `₹${p.aumCr.toLocaleString('en-IN')} cr` },
         { label: 'Exit load', value: f.exitLoad },
+        ...(heldBy ? [held] : []),
       ]}
       onExplain={onExplain} />
   );
 }
 
-Object.assign(window, { FundInfo, FUND_CHIPS, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, FundDetail, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
+Object.assign(window, { FundInfo, FUND_CHIPS, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });

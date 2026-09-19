@@ -14,12 +14,9 @@
 <script type="text/babel" data-presets="react">
 /* thread.jsx is loaded for useAttachment / AttachedTurn — the paperclip is real on every screen, and a
    journey is a screen. rail.jsx owns the steps and the shell. Only new names are destructured here. */
-const { Composer, MoneyComposer, ExplainerSheet, DetourBanner, RejectCallout, SentinelBlock, SentinelText, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
+const { ExplainerSheet, DetourBanner, RejectCallout, SentinelBlock, SentinelText, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
 
 const S = (name) => RAIL_STEPS.find((x) => x.name === name);
-const Ask = ({ step, onAttach }) => (step && step.money
-  ? <MoneyComposer onSend={() => {}} placeholder="or type the amount" />
-  : <Composer value="" onChange={() => {}} placeholder={(step && step.composer) || 'or type your answer'} onSend={() => {}} onAttach={onAttach} />);
 
 const ANSWERED = [
   { a: "Start Meera's risk profile" },
@@ -32,7 +29,7 @@ function Scene({ step, answered = ANSWERED, dim, banner, editable = true, after,
   const att = useAttachment();
   return (
     <Rail n={step && step.progress ? step.progress[0] : undefined} dim={dim} banner={banner}
-      revision={!!att.file} composer={<Ask step={step} onAttach={att.onAttach} />}>
+      revision={!!att.file} composer={<FrozenAsk money={step && step.money} placeholder={(step && step.composer) || 'or type your answer'} onAttach={att.onAttach} />}>
       <AnsweredList items={answered} editable={editable} onEdit={() => {}} />
       <StepTurn step={step} thinking={thinking} />
       {after}

@@ -37,7 +37,11 @@ const MenuFooter = ({ onHome }) => (
     <MENU_DS.Pressable onClick={onHome || (() => {})} label="Back to home" style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
       <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
     </MENU_DS.Pressable>
-    <MENU_DS.SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark is coming." />
+    {/* THE SAME ROW, NOT A SECOND COPY OF IT (20 Sep 2026). This inlined SegmentedRow with the same
+        five props as MenuFooterTheme above — which is exactly what the comment above it says the
+        drawer's page used to do, moved one file inwards. drawer.html:117 renders MenuFooterTheme;
+        this rendered its twin. Two copies of a caption drift. */}
+    <MenuFooterTheme />
   </>
 );
 

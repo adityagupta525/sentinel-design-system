@@ -14,9 +14,8 @@
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
-const { ConfirmSheet, SentinelBlock, SentinelText, AnswerChip, ChipRow, VersionRow, Composer } = window.SentinelDesignSystem_0682a2;
+const { ConfirmSheet, SentinelBlock, SentinelText, AnswerChip, ChipRow, VersionRow } = window.SentinelDesignSystem_0682a2;
 
-const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
 
 /* A frozen step of the rail, for the states that are about one moment rather than the whole run. */
 function Step({ i, answered = [] }) {
@@ -35,7 +34,7 @@ function Step({ i, answered = [] }) {
 function ResultScene({ state = 'draft', savedAt, sentAt, openRow = null, blockers = false, children, anchor = 'bottom' }) {
   const att = useAttachment();
   return (
-    <Thread anchor={anchor} revision={`${state}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+    <Thread anchor={anchor} revision={`${state}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <AskTurn text={PROP_ASK} costNote="Sending this replaces the proposal below it." />
       <ProposalResult state={state} savedAt={savedAt} sentAt={sentAt} openRow={openRow} blockers={blockers}
         onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onPrimary={() => {}} />
