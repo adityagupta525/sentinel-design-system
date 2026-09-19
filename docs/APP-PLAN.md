@@ -89,8 +89,8 @@ part that has to be designed rather than inherited, and most of it already has c
 - **The archive's own pattern, not yet rebuilt:** *the journey card.* Sentinel says what it is about to
   open and offers the door — *"I'll take Meera through the twelve-question risk profile. Each answer is
   hers — I won't assume any of them."* (`Chat.tsx:434`). **A journey never opens silently under the user.**
-- **Missing:** the end of a turn. `FollowUpRow` exists for a follow-up too long for a chip, and nothing
-  uses it. After an answer, the advisor should be offered the two or three things that answer usually
+- **Built 19 Sep:** the end of a turn. `FollowUpRow` — a follow-up that exceeds one line is a row, not a
+  pill — with the first row being the question this journey really asks next. After an answer, the advisor should be offered the two or three things that answer usually
   leads to — drawn from the router's buckets, not invented per screen.
 
 ### "How do I go back?"
@@ -100,9 +100,9 @@ This is the weakest axis in the product today, and the most important one in a t
 | --- | --- | --- |
 | The question | Edit it in place; the answer is replaced only on send | **Built 18 Sep** (`UserBubble editing`, `costNote`) |
 | The work | Stop a running trace, keep the partial, Continue | Built |
-| The answer | Say it was wrong (`ResponseFeedback`), ask again | **To build** |
-| The artifact | Revert to the version the client saw (`VersionRow`) | **To build** |
-| The journey | Leave it, ask something else, resume (`DetourBanner`) | **To build** |
+| The answer | Say it was wrong, with a reason; the answer is not deleted or silently re-run | **Built 19 Sep** |
+| The artifact | Revert to the version the client saw; revert APPENDS, never destroys | **Built 19 Sep** |
+| The journey | Leave it, ask something else, resume — the banner names the journey AND the question | **Built 19 Sep** (the rail itself is #4) |
 | The decision | Undo an approved action | **Open question — see §5** |
 
 ### "What if?"
@@ -143,8 +143,8 @@ Each row is one commit, built on the system, every state rendered, and reviewed 
 | --- | --- | --- | --- |
 | 1 ✅ | **Journey B, steps 5–7** — built 19 Sep as `05-decide.html` | Finished the one flow that was half-built; all four rules in one screen | `MoveCard`, `DrawnCheck`, `ConstraintCallout`, `StandingDisclosure`, and a new `ConfirmSheet` |
 | 2 ✅ | **The simulation** — built into step 5 rather than after it, because it changes what the confirm sheet decides about | The missing "what if" | `Dumbbell` × 2 on one scale |
-| 3 | **The going-back layer** (next) — feedback on an answer, versions on an artifact, detour and resume | The weakest axis, and all three components exist unused | `ResponseFeedback`, `VersionRow`, `DetourBanner`, `FollowUpRow` |
-| 4 | **Journey A — Meera's risk profile** (16 steps) | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `DecisionsStrip`, `SentinelThinking`, `QAPair` |
+| 3 ✅ | **The going-back layer** — built 19 Sep as `screens/thread/going-back.html` | The weakest axis, and all four components existed unused | `ResponseFeedback`, `VersionRow`, `DetourBanner`, `FollowUpRow` |
+| 4 | **Journey A — Meera's risk profile** (16 steps) — next | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `DecisionsStrip`, `SentinelThinking`, `QAPair` |
 | 5 | **The fund surfaces** | The third router bucket, entirely undesigned | `InfoCard`, `OverlapView`, `DataTable`, `RangePills`, `ChartLine`, `ChartReadout`, `InfoDot` |
 | 6 | **The refusals and the capabilities reply** | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |
 | 7 | **The prototype, end to end** | Every journey clickable in one page, with the motion log | — |

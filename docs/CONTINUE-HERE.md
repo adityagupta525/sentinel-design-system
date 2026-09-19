@@ -18,10 +18,10 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **84 / 84** render clean (76 design-system + 8 screens) |
+| Pages | **85 / 85** render clean (76 design-system + 9 screens) |
 | Integrity | 375 files intact |
 | Screens built | **Journey B is complete — all 7 steps, on 5 pages**: `01-home`, `02-thread-trace` (Thread · while it works), `03-thread-answer` (Thread · the answer, steps 3 and 4), `05-decide` (Thread · deciding — steps 5, 6 and 7), `prototype`, plus `shell/drawer` and `flow` |
-| **Next** | `APP-PLAN.md` build order #3 — **the going-back layer**: `ResponseFeedback` on an answer, `VersionRow` on an artifact, `DetourBanner` + resume on a journey, `FollowUpRow` after a turn. All four exist and are on no screen. |
+| **Next** | `APP-PLAN.md` build order #4 — **Journey A, Meera's risk profile**: the rail, 16 steps, the interjections and the locked risk number. It brings in `ProgressRail`, `MoneyComposer`, `DecisionsStrip`, `SentinelThinking`, `QAPair` — and it is what the paused-journey banner built today actually resumes into. |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
 
@@ -45,6 +45,16 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **The going-back layer is built (19 Sep):** `screens/thread/going-back.html`, seven states. Four
+  affordances the system had specified and no screen had ever placed — mark an answer wrong **with a
+  reason** (down is deliberately not symmetrical with up), ask a follow-up too long for a chip
+  (`FollowUpRow`, whose own contract already said rows belong in the thread and not the dock — written
+  before the 18 Sep ruling), **revert to the version the client actually saw** (revert APPENDS, so the
+  trail only grows), and **resume a journey left at question 7** (the banner names the journey and the
+  question, and is pinned under the app bar because it is a state the whole thread is in). The thread
+  shell gained one `banner` slot for exactly that and nothing else.
+  Marking an answer wrong does NOT delete it or silently re-run it, and the screen says so: an affordance
+  that quietly replaced what it was rating would be unsafe to use in front of a client.
 - **Journey B is finished (19 Sep).** `05-decide.html` carries steps 5, 6 and 7: the two moves with a
   **simulation** of what they would do (two `Dumbbell`s on one scale — he is at 71%, he would be at 58%,
   against the 60% he agreed to, with ₹11,200 under it), the **confirm sheet**, and a success that says

@@ -1,0 +1,176 @@
+<!-- @dsCard group="Screens" viewport="1400x3200" name="Thread · going back" subtitle="The four ways an advisor undoes something — say it was wrong, ask what comes next, return to the version the client saw, and resume a journey they left" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, DetourBanner" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Thread · going back — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','SentinelBlock','SentinelText','ResponseFeedback','FollowUpRow','VersionRow','DetourBanner','ArtifactCard','ChartBar','AnswerChip','ChipRow','Provenance','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="../journey-b/answer.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+/* thread.jsx and answer.jsx compile into this scope — Thread, AnswerTurn and the DRIFT_* data are
+   globals here. Only the names this file adds are destructured. */
+const { Composer, UserBubble, SentinelBlock, SentinelText, ResponseFeedback, FollowUpRow, VersionRow, DetourBanner, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
+
+const Ask = () => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={() => {}} />;
+
+/* The follow-ups are the questions this answer actually leads to, and the first of them is the one the
+   journey really asks next — it is the UserBubble that opens the deciding screen. */
+const FOLLOWUPS = [
+  { question: 'What would fixing it cost?', note: 'Two moves, costed, before anything runs' },
+  { question: 'Has his mix drifted like this before?', note: 'Compares this quarter with the last four' },
+  { question: 'Which of my other clients have drifted past their mandate?', note: 'Runs the same check across your book' },
+];
+
+/* The proposal for Mr. Amit Aggrawal — the drawer's second saved row, which is where an advisor meets
+   this. V2 is the one the client actually received, and that is the whole reason the trail is kept. */
+const VERSIONS = [
+  { id: 'v1', name: 'V1', summary: 'First draft — 6 funds, 65 / 35', meta: '14 Sep, 4:12 pm' },
+  { id: 'v2', name: 'V2', summary: 'Swapped the mid-cap for a flexi-cap', meta: '15 Sep, 11:20 am', sent: true },
+  { id: 'v3', name: 'V3', summary: 'Cut the small-cap sleeve to 12%', meta: 'Yesterday, 6:40 pm' },
+];
+
+const Answer = ({ feedback, followups, children }) => (
+  <React.Fragment>
+    <UserBubble text={DRIFT_ASK} />
+    <AnswerTurn artifact="peek" continued={false} />
+    {feedback}
+    {followups}
+    {children}
+  </React.Fragment>
+);
+
+const Scene = ({ feedback, followups, banner, children, anchor = 'bottom' }) => (
+  <Thread anchor={anchor} banner={banner} composer={<Ask />}>
+    <Answer feedback={feedback} followups={followups}>{children}</Answer>
+  </Thread>
+);
+
+/* Live: rate it, pick a reason, ask a follow-up, revert a version, resume the journey. */
+function LiveScene() {
+  const [rated, setRated] = React.useState(null);
+  const [reason, setReason] = React.useState(null);
+  const [asked, setAsked] = React.useState(null);
+  const [versions, setVersions] = React.useState(VERSIONS);
+  const [current, setCurrent] = React.useState('v3');
+  const [paused, setPaused] = React.useState(true);
+  /* Revert APPENDS the restored version as a new revision — the trail only ever grows. VersionRow's own
+     contract, and the same reasoning as the edit warning one level up: nothing is destroyed quietly. */
+  const revert = (id) => {
+    const from = versions.find((v) => v.id === id);
+    const next = { id: `v${versions.length + 1}`, name: `V${versions.length + 1}`, summary: `Restored ${from.name} — ${from.summary.toLowerCase()}`, meta: 'Just now' };
+    setVersions([...versions, next]); setCurrent(next.id);
+  };
+  return (
+    <Thread anchor="bottom" revision={`${rated}-${asked}-${versions.length}-${paused}`}
+      banner={paused ? <DetourBanner label="Meera's risk profile · paused at question 7" onResume={() => setPaused(false)} /> : undefined}
+      composer={<Ask />}>
+      <UserBubble text={DRIFT_ASK} />
+      <AnswerTurn artifact="peek" continued={false} />
+      <ResponseFeedback value={rated} onRate={setRated} onReason={setReason} note="Your reason goes to the team that builds Sentinel." />
+      {reason && <SentinelBlock><SentinelText text={`Noted — “${reason}”. I have not changed the answer; you can ask it again and I will work it out from scratch.`} /></SentinelBlock>}
+      <FollowUpRow items={FOLLOWUPS} onAsk={setAsked} />
+      {asked && <UserBubble text={asked} />}
+      <VersionRow label="Mr. Amit Aggrawal · ₹25 L proposal" versions={versions} currentId={current} onRevert={revert} onSelect={() => {}} />
+    </Thread>
+  );
+}
+
+const MOTION = [
+  ['Thumb press', <span>the pressed thumb fills <code>--color-selected</code>; the row says “Noted”, in place</span>, '150ms', 'Unchanged — a colour change is not motion'],
+  ['Reason chips appear', <span><code>ds-rise</code>, 60ms stagger</span>, '240ms', 'Fade only'],
+  ['Follow-up rows arrive', <span><code>ds-rise</code> with the message that produced them</span>, '240ms', 'Fade only'],
+  ['Detour banner in', <span><code>ds-rise</code> — it arrives under the app bar and stays there</span>, '240ms', 'Fade only'],
+  ['Revert', 'the restored version is appended as a new row', 'immediate', 'Unchanged — no animation to drop'],
+];
+
+const PROVENANCE = [
+  ['V1 · V2 · V3', 'The advisor’s own revisions of that proposal, in order', 'A row each, with when it was made — and “sent to the client” on the one that was'],
+  ['“question 7”', 'Where the risk profile was left', 'The banner, which names the journey and the question rather than saying “in progress”'],
+  ['The four reasons', 'The four things that are actually wrong with an answer in this product — a wrong number, a misread question, a missing holding, too much text', 'Chips, not a text field: a field asks for an essay between meetings'],
+];
+
+mountScreen(
+  <ScreenShell
+    journey="Every journey" n="Thread · going back" name="The four ways back"
+    job="What an advisor does when something is wrong, unfinished, or better the way it was. Four affordances that were designed, specified and on no screen until now — and one of them, the version trail, is the difference between “I revised it” and “here is what the client actually saw”."
+    without="can only go forward: an answer they cannot mark wrong, a proposal whose earlier version is gone, and a journey they cannot leave without losing it."
+  >
+    <Section title="1 · Say it was wrong" sub="The affordance Sentinel had nowhere — for a product whose whole value is the quality of its answers, and whose answers an advisor has to defend to a client.">
+      <StateRow>
+        <State label="not rated" note="Two drawn thumbs at the icon set's 24pt grid — no emoji, the system's rule — sitting under the answer they belong to. They are quiet: this is the least visible thing on the screen, and it should be.">
+          <Scene feedback={<ResponseFeedback note="Your reason goes to the team that builds Sentinel." />} />
+        </State>
+        <State label="marked wrong" tone="under" note="Down is deliberately NOT symmetrical with up. Up is one tap and done; down opens four reason chips, because an advisor who marks an answer wrong has a reason and the reason is the whole value of the signal. Chips, not a text field — a field asks for an essay between meetings. Confirmation lands ON the control that was pressed, because this product has no toasts.">
+          <Scene feedback={<ResponseFeedback value="down" note="Your reason goes to the team that builds Sentinel." />} />
+        </State>
+      </StateRow>
+      <Note title="What marking it wrong does NOT do">
+        It does not delete the answer, and it does not silently re-run it. The answer stays where it is, the
+        advisor can ask again, and Sentinel says so. An affordance that quietly replaced the thing it was rating
+        would make the rating unsafe to use in front of a client.
+      </Note>
+    </Section>
+
+    <Section title="2 · Ask what comes next" sub="A follow-up that exceeds one line becomes a ROW, not a pill — FollowUpRow's own rule. The chips keep the short ones.">
+      <StateRow>
+        <State label="follow-ups under the answer" note="Three questions as an advisor would actually ask them, each with one line of why it is worth asking. The first is the question this journey really asks next — it is the one that opens the deciding screen. Rows sit in the thread and scroll away with the message that produced them; the component's own contract says so, and it was written before the 18 Sep ruling that moved chips out of the dock.">
+          <Scene followups={<FollowUpRow items={FOLLOWUPS} />} />
+        </State>
+        <State label="both, together" tone="under" note="Rate it, then ask the next thing. The order on screen is the order of the decision: judge the answer, then use it. Two affordances, no collision — one is about the answer, the other is about what to do with it.">
+          <Scene feedback={<ResponseFeedback />} followups={<FollowUpRow items={FOLLOWUPS} />} />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="3 · Go back to the version the client saw" sub="An advisor who has revised a proposal twice has no way back to the version that matters — and the version that matters is the one the client actually received, because that is the one they ring about.">
+      <StateRow>
+        <State label="three revisions, one of them sent" note="V1, V2, V3 with what changed in each and when. V2 carries “sent to the client”, which is the whole reason the trail is kept. Revert is a WORD, not a glyph alone. The current version keeps the sand selected fill rather than a dot.">
+          <Scene><VersionRow label="Mr. Amit Aggrawal · ₹25 L proposal" versions={VERSIONS} currentId="v3" onRevert={() => {}} onSelect={() => {}} /></Scene>
+        </State>
+        <State label="live · revert one" tone="under" note="Tap Revert on V2 and the restored version is APPENDED as V4 — the trail only ever grows and nothing is destroyed. That is the same reasoning as the edit warning one level up: in an advisory tool, going back must not throw away what you were on.">
+          <LiveScene />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="4 · Leave a journey, and come back to it" sub="A sequence the advisor is partway through does not have to be finished in one sitting. The banner is pinned under the app bar — it is a state the whole thread is in, not something a message offered.">
+      <StateRow>
+        <State label="a journey, paused behind the conversation" note="“Meera's risk profile · paused at question 7”, with Resume. It names the journey AND the question, because “in progress” tells an advisor nothing about how much is left. It is the one thing in this shell that sits between the app bar and the thread and does not scroll — everything a message offered scrolls with that message.">
+          <Scene banner={<DetourBanner label="Meera's risk profile · paused at question 7" onResume={() => {}} />} followups={<FollowUpRow items={FOLLOWUPS} />} />
+        </State>
+      </StateRow>
+      <Note title="The rail itself is not built yet, and this screen does not pretend otherwise">
+        `ProgressRail`, the sixteen questions and their result frame are build #4 in <code>APP-PLAN.md</code>.
+        What is designed here is the THREAD's side of the detour: what an advisor sees while a journey is parked
+        behind the conversation they are having. Resume leads to a surface that does not exist yet, and the live
+        phone simply drops the banner rather than drawing a rail nobody has designed.
+      </Note>
+    </Section>
+
+    <Section title="5 · Why these four, and what is still only forward">
+      <Note title="The whole going-back layer, in one table">
+        The question &mdash; <em>how do I go back?</em> &mdash; is answered at five levels, and only the last one is
+        not answerable. <strong>The question:</strong> edit it in place, and the answer is replaced only on send.
+        <strong> The work:</strong> Stop the trace and keep the partial. <strong>The answer:</strong> mark it wrong,
+        with a reason. <strong>The artifact:</strong> revert to the version the client saw. <strong>The journey:</strong>
+        leave it and resume. <strong>The decision:</strong> nothing &mdash; and the deciding screen says so plainly
+        rather than offering an undo that would be a lie.
+      </Note>
+    </Section>
+
+    <Section title="6 · Motion, and what each one does under reduced motion">
+      <MotionTable rows={MOTION} />
+    </Section>
+
+    <Section title="7 · Provenance">
+      <ProvenanceTable rows={PROVENANCE} />
+    </Section>
+  </ScreenShell>
+);
+</script></body></html>

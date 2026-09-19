@@ -41,6 +41,13 @@ const browser = await chromium.launch({ args: ['--ignore-certificate-errors'] })
    to check the reduced-motion column of a screen's own motion table. */
 const page = await browser.newPage({ viewport: { width: 1400, height: 2600 }, deviceScaleFactor: 1, reducedMotion: REDUCED ? 'reduce' : 'no-preference' });
 await page.goto(`http://127.0.0.1:${PORT}/${rel}`, { waitUntil: 'networkidle' }).catch(() => {});
+/* GROW THE VIEWPORT TO THE PAGE (19 Sep 2026). The viewport was a fixed 1400x2600 and a screen page is
+   3200 tall, so a clip computed for a phone below the fold fell outside the viewport and Chrome returned
+   a rotated, stretched frame — a picture of a defect that is not in the screen. Measured on
+   screens/thread/going-back.html, phone 5 of 7. Resize to the document's own height (capped, so a runaway
+   page cannot ask for a gigapixel), then let the layout settle before measuring anything. */
+const docH = await page.evaluate(() => Math.ceil(document.documentElement.scrollHeight));
+if (docH > 2600) { await page.setViewportSize({ width: 1400, height: Math.min(docH + 40, 12000) }); await page.waitForTimeout(400); }
 
 /* WAIT FOR THE PHONE, DO NOT SLEEP AT IT. A fixed 500ms was a race: these pages compile JSX in the
    browser with Babel from a CDN, and a slow fetch meant zero frames and a confusing "no phone frame"
