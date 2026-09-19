@@ -835,3 +835,24 @@ Nothing moved a pixel — `Pressable` puts the label on `aria-label`, not on scr
 **Still open, deliberately:** no automated check looks for an icon-only control without a name. The
 honest position is that `check-previews` renders the FIRST state of a page, so it cannot see most of
 what a prototype does; this finding came from a person driving the thing, and that is what found it.
+
+### F-40 · `report:parallel` under-reported because it read the quote style — *found 19 Sep 2026, fixed*
+
+`tools/check-parallel.mjs` decided a component was on a screen if the page contained `<Name`, a
+destructure off `window.SentinelDesignSystem`, or the literal `'Name'` — **single quotes only**. Every
+page written by hand uses single quotes, so nothing caught it until two pages were generated with
+`JSON.stringify` and came out double-quoted. Both under-reported: `parallel` printed **71 of 88** when
+the true count was **73**, and `ResultCard` and `VersionRow` were listed as "on no screen" while an
+advisor could see them on `screens/journey-d/proposal.html`.
+
+The stray check on the other side had the same regex, so a page could also have named a component the
+system does not export and been read as naming nothing — a defect the report exists to fail on.
+
+**Fix:** both matchers accept either quote. The usage matcher also now recognises `<NAMESPACE.Name`,
+which is how every screen module calls the system (`PROP_DS.ResultCard`), and which the old regex read
+as no use at all.
+
+**The lesson, and it is the second time this week:** a check that depends on how a literal is spelled
+reports a number nobody can trust. This is the same shape as the pinned-chip exception matching a file
+path by its spelling rather than resolving it — both were found within an hour of each other, and both
+were fixed by comparing the thing rather than the text of the thing.

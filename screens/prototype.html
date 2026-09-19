@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ["AllocationCard", "AnswerChip", "ArtifactCard", "AttributionChart", "Badge", "ChartBar", "ChipRow", "Composer", "ConcentrationBar", "ConfirmSheet", "ConstraintCallout", "DarkButton", "DataTable", "DetourBanner", "Dock", "DownloadAction", "Drawer", "DrawnCheck", "Dumbbell", "ExplainerSheet", "Eyebrow", "FileUpload", "FollowUpRow", "GreetingDivider", "HeroNumberCard", "HomeIndicator", "InfoCard", "InfoDot", "MessageActions", "MoneyComposer", "MoveCard", "OverlapView", "ParseNote", "PhoneFrame", "Pill", "Pressable", "ProgressRail", "ProgressTrace", "Provenance", "QAPair", "RangePills", "RejectCallout", "ResponseFeedback", "ScreenBackdrop", "ScreenStack", "SegmentedRow", "SentinelBlock", "SentinelText", "SentinelThinking", "StandingDisclosure", "StatusSpacer", "StepTrace", "SuggestionRow", "TopBar", "UserBubble", "VersionRow"];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatusSpacer','StepTrace','SuggestionRow','TopBar','UserBubble','VersionRow'];</script>
 <script type="text/babel" src="./screen-kit.jsx"></script>
 <script type="text/babel" src="./data/book.jsx"></script>
 <script type="text/babel" src="./journey-b/home.jsx"></script>
@@ -14,6 +14,7 @@
 <script type="text/babel" src="./journey-b/moves.jsx"></script>
 <script type="text/babel" src="./journey-a/rail.jsx"></script>
 <script type="text/babel" src="./journey-c/funds.jsx"></script>
+<script type="text/babel" src="./journey-d/proposal.jsx"></script>
 <script type="text/babel" src="./thread/refusals.jsx"></script>
 <script type="text/babel" src="./thread/ledger.jsx"></script>
 <script type="text/babel" src="./shell/menu.jsx"></script>
@@ -44,6 +45,7 @@ const ROUTES = [
   { id: 'over',     re: /₹\s?[6-9]\d,?\d{2},?\d{3}|₹\s?[1-9]\d*\s?(cr|crore)/i,      why: 'an amount above a mandate ceiling' },
   { id: 'outside',  re: /\b(itr|file .*return|tax return|gst)\b/i,                   why: 'in the domain, outside what this product does' },
   { id: 'drift',    re: /\bdrift|why .*\b(mix|allocation)|sharma/i,                  why: 'a drift question' },
+  { id: 'propose',  re: /\bproposal\b|\bpropose\b|build .*(for|to) (mr|ms|mrs)?\.? ?\w*ag+ra?wal/i, why: 'a proposal' },
   { id: 'risk',     re: /\brisk\b|\bprofile\b/i,                                     why: 'a risk profile' },
   { id: 'ledger',   re: /placed|ledger|this month|what did i (do|send)/i,            why: 'a question about money already sent' },
   { id: 'funds',    re: /\bfund|flexi|small cap|large cap|shelf|search\b/i,          why: 'a fund search' },
@@ -65,9 +67,12 @@ function affordances(s) {
     return { next, back, where: 'Home', journey: '—', step: 'at rest' };
   }
   if (s.screen === 'rail') {
-    next.push('Answer the question', 'Ask why this question exists', 'Skip to the result', 'Type an answer instead');
-    back.push('Edit any answer above — the journey reopens there', 'Leave the rail (the app bar) — back to the thread');
-    return { next, back, where: 'Journey rail', journey: 'A · Meera’s risk profile', step: 'a question at a time' };
+    const isProp = s.railJourney === 'propose';
+    next.push('Answer the question', 'Ask why this question exists', isProp ? 'Take the ceiling, or raise it first' : 'Skip to the result', 'Type an answer instead');
+    back.push('Edit any answer above — the journey reopens there', 'Leave by the menu or a new thread — this product has no back arrow');
+    return { next, back, where: 'Journey rail',
+      journey: isProp ? 'D · Amit’s proposal' : 'A · Meera’s risk profile',
+      step: isProp ? 'one of four' : 'a question at a time' };
   }
   const J = { drift: 'B · Sharma’s drift', funds: 'C · the funds', ledger: 'The ledger', caps: 'What I can do',
     act: 'Refusal · would act', over: 'Refusal · over a ceiling', outside: 'Refusal · out of scope', miss: 'Refusal · not understood', who: 'A name, no intent' }[s.journey] || '—';
@@ -102,13 +107,18 @@ function Proto({ onEvent }) {
   const [stoppedAt, setStoppedAt] = React.useState(0);
   const [resumeFrom, setResumeFrom] = React.useState(0);
   const [traceKey, setTraceKey] = React.useState(0);
-  const [confirm, setConfirm] = React.useState(false);
+  /* WHICH confirm is open, not whether one is: two journeys reach a confirm sheet and they commit to
+     completely different things — one places money, the other sends a document that places nothing. */
+  const [confirm, setConfirm] = React.useState(null);
   const [why, setWhy] = React.useState(null);
   const [menu, setMenu] = React.useState(false);
   /* The composer is a REAL controlled field here, not a frozen specimen. Screens that only had to show
      a composer passed value="" with a no-op onChange; this page claims the router reads what you type,
      and a claim you cannot test by typing is a claim the page does not keep. Found by typing into it. */
   const [draft, setDraft] = React.useState('');
+  /* WHICH journey the rail is running. The rail is one surface with two journeys on it, per
+     SCREENS-PLAN's count of 22 steps across it. */
+  const [railJourney, setRailJourney] = React.useState('risk');
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const savedScroll = React.useRef(0);
@@ -123,9 +133,10 @@ function Proto({ onEvent }) {
     const r = route(text);
     setAsk(text); setJourney(r.id);
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
-    if (r.id === 'risk') {
+    if (r.id === 'risk' || r.id === 'propose') {
+      setRailJourney(r.id === 'propose' ? 'propose' : 'risk');
       setDir('forward'); setScreen('rail');
-      log('The rail opens — a journey is its own surface', reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+      log(`The rail opens — ${r.id === 'propose' ? 'four steps for a proposal' : 'sixteen for a risk profile'}; a journey is its own surface`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
       return;
     }
     if (screen !== 'thread') { setDir('forward'); setScreen('thread'); log('Thread in, Home out', reduced() ? 'a fade · 320ms' : 'ScreenStack forward: ds-screen-in over ds-screen-out · 320ms'); }
@@ -192,7 +203,7 @@ function Proto({ onEvent }) {
         )}
         {phase === 'moves' && <MovesTurn enter actions={<MovesActions animate
           onSkipped={() => { setWhy({ title: 'Why was the third move skipped?', body: [SKIPPED] }); log('Why one was skipped', 'ds-sheet 300ms'); }}
-          onApprove={() => { setConfirm(true); log('Confirm sheet opens — the one screen with no composer', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }} />} />}
+          onApprove={() => { setConfirm('moves'); log('Confirm sheet opens — the one screen with no composer', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }} />} />}
         {phase === 'flight' && <ExecutionTurn state="flight" enter onCheck={() => log('Check with the RTA — this build has no RTA', '')} />}
         {phase === 'done' && <SuccessTurn enter onRead={() => log('Read it back to the client', '')} onBack={() => log('Back to his portfolio — not built', '')} onDrop={() => log('Note dropped on the file', '')} />}
       </React.Fragment>
@@ -208,7 +219,7 @@ function Proto({ onEvent }) {
       <SentinelBlock>
         <SentinelText text={BUCKET_6.body} />
         <div style={{ marginTop: 'var(--space-12)' }}><ConstraintCallout eyebrow="Would run" body={BUCKET_6.preview} /></div>
-        <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label={BUCKET_6.chip} variant="primary" onClick={() => { setConfirm(true); log('Even a typed instruction goes through the confirm sheet', 'ds-sheet 300ms'); }} /></div>
+        <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label={BUCKET_6.chip} variant="primary" onClick={() => { setConfirm('moves'); log('Even a typed instruction goes through the confirm sheet', 'ds-sheet 300ms'); }} /></div>
       </SentinelBlock>
     );
     return null;
@@ -231,10 +242,10 @@ function Proto({ onEvent }) {
         {body()}
         <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
       </Thread>
-      <ConfirmSheet open={confirm} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
+      <ConfirmSheet open={confirm === 'moves'} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
         commitLabel="Approve both moves"
-        onCommit={() => { setConfirm(false); setPhase('flight'); log('Approved — in flight', 'the sheet closes; the thread takes over'); setTimeout(() => { setPhase('done'); log('Placed — both moves, with their references', reduced() ? 'the check is drawn' : 'DrawnCheck · ds-draw'); }, 1400); }}
-        onClose={() => { setConfirm(false); log('Dismissed — nothing was placed', 'the sheet closes'); }}>
+        onCommit={() => { setConfirm(null); setPhase('flight'); log('Approved — in flight', 'the sheet closes; the thread takes over'); setTimeout(() => { setPhase('done'); log('Placed — both moves, with their references', reduced() ? 'the check is drawn' : 'DrawnCheck · ds-draw'); }, 1400); }}
+        onClose={() => { setConfirm(null); log('Dismissed — nothing was placed', 'the sheet closes'); }}>
         {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
       </ConfirmSheet>
     </div>
@@ -247,18 +258,35 @@ function Proto({ onEvent }) {
 
   /* The rail leaves by the same two doors as everything else — the menu's "Back to home", or a new
      thread. There is no back arrow in this product and the prototype does not invent one. */
-  const rail = <LiveRail onEvent={log} onNew={goHome}
-    onMenu={() => { setMenu(true); log('Menu opens from the rail — the way out is the same door as everywhere else', 'panel 320ms; scrim to 0.25'); }} />;
+  /* ONE RAIL, TWO JOURNEYS. The steps and the result are arguments, so the loop that decides what
+     "edit answer 3" does exists once. The way out is the same two doors as every other surface. */
+  const railMenu = () => { setMenu(true); log('Menu opens from the rail — the way out is the same door as everywhere else', 'panel 320ms; scrim to 0.25'); };
+  const rail = railJourney === 'propose'
+    ? <LiveRail steps={PROP_STEPS} total={PROP_TOTAL} attachCaption="Here is the mandate he signed."
+        onEvent={log} onNew={goHome} onMenu={railMenu}
+        result={() => <ProposalResult state="draft"
+          onSave={() => log('Saved — version 4 exists; nobody has seen it', 'the badge becomes a date')}
+          onDownload={() => { log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }}
+          onPrimary={() => { setConfirm('propose'); log('Send opens the confirm — and the disclosure is the whole journey: it places nothing', 'ds-sheet 300ms'); }} />} />
+    : <LiveRail onEvent={log} onNew={goHome} onMenu={railMenu} />;
 
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <ScreenStack screen={screen} direction={dir} render={(s) => (s === 'home' ? home : s === 'rail' ? rail : thread)}
         onSettle={(to, from) => log(`Settled on ${to}`, `${from} unmounted after --dur-screen`)} />
       <ExplainerSheet open={!!why} title={(why || {}).title || ''} body={(why || {}).body || []} onClose={() => { setWhy(null); log('Explainer closes — focus returns to the chip', 'immediate'); }} />
+      {/* The proposal's confirm belongs to the RAIL, which is a sibling screen of the thread — so it
+          mounts here rather than inside the thread's tree. Same component, opposite disclosure. */}
+      <ConfirmSheet open={confirm === 'propose'} title="Send · Mr. Amit Aggrawal" disclosureEyebrow="Before you send"
+        disclosure={PROP_DISCLOSURE} rows={PROP_CONFIRM_ROWS} commitLabel="Send the proposal"
+        onCommit={() => { setConfirm(null); log('Sent — the document has gone and nothing has been placed', 'the sheet closes; a drawn check in the turn'); }}
+        onClose={() => { setConfirm(null); log('Dismissed — nothing was sent', 'the sheet closes'); }}>
+        <SentinelText weight="Regular" text="He has seen version 2. This is version 3, with the mid-cap trimmed." />
+      </ConfirmSheet>
       <Drawer open={menu} onClose={() => { setMenu(false); log('Menu closes', 'immediate'); }} onNew={() => { setMenu(false); goHome(); }}
         saved={MENU_SAVED} recent={MENU_RECENT} clients={MENU_CLIENTS}
         footer={<MenuFooter onHome={() => { setMenu(false); goHome(); }} />} />
-      <Bridge state={{ screen, journey, phase, artifact }} />
+      <Bridge state={{ screen, journey, phase, artifact, railJourney }} />
     </div>
   );
 }
@@ -267,7 +295,7 @@ function Proto({ onEvent }) {
 const StateBus = React.createContext(null);
 function Bridge({ state }) {
   const set = React.useContext(StateBus);
-  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact]);
+  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney]);
   return null;
 }
 
@@ -332,7 +360,8 @@ function EventPanel({ events, onRestart }) {
 
 const TRY = [
   ['Why did Sharma’s portfolio drift this quarter?', 'Journey B, all the way to placed'],
-  ['Start Meera’s risk profile', 'Journey A — the rail, its own surface'],
+  ['Start Meera’s risk profile', 'Journey A — the rail, sixteen steps'],
+  ['Build a proposal for Mr. Amit Aggrawal', 'Journey D — the rail again, four steps, and a document'],
   ['Flexi cap funds on my shelf', 'Journey C — the shortlist'],
   ['What have I placed this month?', 'The ledger'],
   ['Sell all of Sharma’s Quant Small Cap', 'An instruction that would act — previewed, never run'],

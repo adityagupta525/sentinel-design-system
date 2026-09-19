@@ -154,7 +154,12 @@ const CLIENTS = [
     spendMonthly: 180000, emergencyFund: 2500000,
     goal: { label: 'Wealth', amountRs: 50000000, byYear: 2045 },
     risk: { score: null, band: null, lockedOn: null, note: 'Not profiled — the proposal is built against the mandate he stated' },
-    mandate: { equity: 65, debt: 30, cash: 5 },
+    /* ceilingRs is the most he has agreed to commit, and it is part of the mandate he STATED rather
+       than a number anyone scored. It is what the refusal in thread/refusals.jsx holds the line at
+       (₹60,00,000 is above it), and it is why the proposal is headed "Where ₹25 lakh would go"
+       when the advisor answered ₹50,00,000 — which is SCREENS-PLAN open question 2, answered:
+       both numbers are real, one is the ask and the other is the ceiling. */
+    mandate: { equity: 65, debt: 30, cash: 5, ceilingRs: 2500000 },
     portfolio: { valueRs: 0, funds: 0, asOf: '30 Sep 2026' },
     proposal: { amountRs: 2500000, funds: 6, drafted: '14 Sep 2026', versions: 3, sentVersion: 2 },
     sips: [],
@@ -211,9 +216,52 @@ const LEDGER_PERIOD = 'Sep 2026';
 /* What an export would carry, named so a screen never implies more than the file holds. */
 const LEDGER_EXPORT = { formats: ['CSV', 'PDF'], columns: ['Date', 'Client', 'Type', 'Detail', 'Amount', 'Status', 'Reference'] };
 
+/* THE PROPOSAL FOR AMIT — ₹25,00,000 split six ways, and every line of it is checked against something
+   in this file rather than chosen. The mandate he stated is equity 65 / debt 30 / cash 5, so the sleeves
+   are ₹16,25,000 / ₹7,50,000 / ₹1,25,000 and they add to the whole. Cash is not a fund and is not given
+   one: it is the 5% he asked to keep liquid, and a proposal that quietly invested it would be answering
+   a question he did not ask. Six funds, which is what his record already said (`proposal.funds: 6`).
+
+   THE CEILING IS LIVE, NOT DECORATIVE. LIMITS.singleFund is 25%, and the largest line here is 24% —
+   deliberately just under, so the card can state the headroom instead of claiming there is none. Every
+   fund is on the shelf; Quant Small Cap is not, and does not appear. */
+const PROPOSAL_AMOUNT = 2500000;
+const PROPOSAL_ASKED  = 5000000;   /* what the advisor typed before the ceiling was stated */
+const PROPOSAL_SPLIT = [
+  { fund: 'ppfas-flexi', amountRs: 600000, pct: 24.0, why: 'The core. Flexi cap, so the manager moves between sizes rather than you doing it.' },
+  { fund: 'hdfc-large',  amountRs: 500000, pct: 20.0, why: 'Large cap ballast — the part of the equity he is least likely to flinch at.' },
+  { fund: 'motilal-mid', amountRs: 300000, pct: 12.0, why: 'The only mid-cap line. Small cap is absent on purpose: he has no risk profile yet.' },
+  { fund: 'hdfc-flexi',  amountRs: 225000, pct:  9.0, why: 'A second flexi cap under a different house, so one AMC does not hold the whole core.' },
+  { fund: 'icici-corp',  amountRs: 450000, pct: 18.0, why: 'Corporate bond, nil exit load — the debt he can reach without a penalty.' },
+  { fund: 'hdfc-stdebt', amountRs: 300000, pct: 12.0, why: 'Short duration, to keep the debt sleeve from taking a rate view.' },
+];
+const PROPOSAL_CASH = { amountRs: 125000, pct: 5.0, why: 'Left in cash, because that is the 5% he asked to keep liquid.' };
+/* Three versions, and version 2 is the one the client has seen. The going-back layer is not a demo here:
+   an advisor who sends a proposal and then edits it has two documents in the world, and only one of them
+   is the one being discussed on the phone. */
+/* The summaries are SHORT because VersionRow's column is 235px and the preview gate measures it: the
+   first cut said "Mid-cap trimmed from ₹4,00,000 to ₹3,00,000" and needed 269. What changed goes here in
+   the advisor's words; the rupees are in the table the version produced. */
+const PROPOSAL_VERSIONS = [
+  { v: 3, at: '19 Sep 2026, 11:20 am', note: 'Mid-cap trimmed by ₹1,00,000', state: 'draft' },
+  { v: 2, at: '16 Sep 2026, 4:05 pm',  note: 'Sent to Mr. Aggrawal', state: 'sent' },
+  { v: 1, at: '14 Sep 2026, 6:40 pm',  note: 'Draft, before the ceiling', state: 'superseded' },
+];
+/* WHAT STOPS THIS BEING PLACED, and it is not a design state — it is his record. KYC is in process and he
+   has no nominee, so the proposal can be built, saved and SENT, and nothing in it can be executed. Every
+   row is a fact from CLIENTS, so a screen cannot show a green tick the book does not support. */
+const PROPOSAL_BLOCKERS = [
+  { label: 'KYC', value: 'In process · CKYC', blocking: true,  note: 'PAN–Aadhaar seeding pending. Nothing can be placed until it clears.' },
+  { label: 'Nominee', value: 'Not on file', blocking: true, note: 'An AMC will not accept a folio without a nominee or a signed opt-out.' },
+  { label: 'Risk profile', value: 'Not done', blocking: false, note: 'Built against the mandate he stated, not against a score. Say so when you send it.' },
+  { label: 'Mandate', value: 'Equity 65 / Debt 30 / Cash 5', blocking: false, note: 'Stated by him on 14 Sep. The split matches it to the rupee.' },
+];
+
 /* Derived, so a screen never hand-computes a figure the book can answer. */
 const driftPoints = (c) => (c.allocation && c.mandate ? c.allocation.equity - c.mandate.equity : null);
 const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.singleFund);
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
-Object.assign(window, { ADVISOR, FUNDS, fundById, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT, driftPoints, overSingleFund, inr });
+Object.assign(window, { ADVISOR, FUNDS, fundById, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
+  PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
+  driftPoints, overSingleFund, inr });

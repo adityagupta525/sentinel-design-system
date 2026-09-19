@@ -1,0 +1,164 @@
+<!-- @dsCard group="Screens" viewport="1500x2600" name="Journey D · the proposal" subtitle="Four rail steps, a ceiling Sentinel will not quietly exceed, and a document that can be sent and cannot be placed" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, Dock, HomeIndicator, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey D · the proposal — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConfirmSheet','DarkButton','DataTable','Dock','DownloadAction','DrawnCheck','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoneyComposer','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatusSpacer','StepTrace','TopBar','UserBubble','VersionRow'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../data/book.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="../journey-a/rail.jsx"></script>
+<script type="text/babel" src="./proposal.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { ConfirmSheet, SentinelBlock, SentinelText, AnswerChip, ChipRow, VersionRow, Composer } = window.SentinelDesignSystem_0682a2;
+
+const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
+
+/* A frozen step of the rail, for the states that are about one moment rather than the whole run. */
+function Step({ i, answered = [] }) {
+  const step = PROP_STEPS[i];
+  return (
+    <Rail n={step.progress ? step.progress[0] : undefined} total={PROP_TOTAL} revision={i}
+      composer={<RailAsk step={step} onAttach={() => {}} />}>
+      <AnsweredList items={answered} onEdit={() => {}} />
+      <StepTurn step={step} onChip={() => {}} />
+    </Rail>
+  );
+}
+
+/* The result lives in the THREAD, not on the rail: the rail asks questions, and the proposal is an
+   answer. It arrives in the thread the advisor was already in, with the ask above it, editable. */
+function ResultScene({ state = 'draft', savedAt, sentAt, openRow = null, blockers = false, children, anchor = 'bottom' }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor={anchor} revision={`${state}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={PROP_ASK} costNote="Sending this replaces the proposal below it." />
+      <ProposalResult state={state} savedAt={savedAt} sentAt={sentAt} openRow={openRow} blockers={blockers}
+        onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onPrimary={() => {}} />
+      {children}
+      <AttachedTurn file={att.file} caption="Here is the mandate he signed." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+function LiveProposal() {
+  const [sheet, setSheet] = React.useState(false);
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <LiveRail steps={PROP_STEPS} total={PROP_TOTAL} attachCaption="Here is the mandate he signed."
+        result={() => <ProposalResult state="draft" onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onPrimary={() => setSheet(true)} />} />
+      <ConfirmSheet open={sheet} title="Send · Mr. Amit Aggrawal" disclosureEyebrow="Before you send" disclosure={PROP_DISCLOSURE} rows={PROP_CONFIRM_ROWS}
+        commitLabel="Send the proposal" onCommit={() => setSheet(false)} onClose={() => setSheet(false)}>
+        <SentinelText weight="Regular" text="He has seen version 2. This is version 3, with the mid-cap trimmed." />
+      </ConfirmSheet>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ScreenShell
+      journey="Journey D · Amit's proposal" n="6" name="The proposal"
+      job="Four rail steps and a document. The advisor asks for ₹50,00,000, his mandate caps at ₹25,00,000, and Sentinel says so rather than quietly building the smaller one. The proposal that comes out can be saved, downloaded and SENT — and not one rupee of it can be placed, because his KYC is still in process."
+      without="can produce the document the client actually signs — and cannot tell the difference between a proposal that has been sent and money that has moved."
+    >
+      <Section title="1 · The four steps" sub="A proposal does not interrogate the client. It asks the four things the document cannot be written without — and the second one is not a question.">
+        <StateRow>
+          <State label="the amount" note="His record leads: 52, Delhi, client since 2026, nothing on file yet — this would be his first money. The smart chip is ₹25,00,000, which is what his mandate allows; the other two are there because an advisor types a number rather than picking one, and the money composer is open.">
+            <Step i={0} />
+          </State>
+          <State label="the ceiling, stated" tone="over" note="₹50,00,000 was asked for. Sentinel names the ceiling, says PLAINLY that it has not applied the larger number, and offers both real paths — build ₹25 L now, or raise the mandate with him first. It does not quietly build the smaller one, which is the failure this step exists to prevent. Same sentence and same number as the router's bucket 2, from the same field in the book.">
+            <Step i={1} answered={[{ q: PROP_STEPS[0].short, a: '₹50,00,000' }]} />
+          </State>
+          <State label="the mix, and what is missing" note="He has no risk profile. Sentinel does not refuse over it and does not hide it: the mix is his instruction rather than a recommendation, and the caveat goes on the document. The explainer is the sentence the advisor reads to him.">
+            <Step i={3} answered={[{ q: PROP_STEPS[0].short, a: '₹50,00,000' }, { q: PROP_STEPS[1].short, a: 'Use ₹25,00,000' }, { q: PROP_STEPS[2].short, a: 'Wealth, by 2045' }]} />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="2 · The document" sub="ResultCard's first screen. It was built in v9, specified, shipped — and on no screen until now, because the three journeys it exists for were unbuilt.">
+        <StateRow>
+          <State label="draft" note="Six funds and a CASH ROW. The cash is 5% of the money deliberately not invested, and a proposal that hid it in a footnote would be answering a question he did not ask. Every figure is checked against the book: equity 65.0, debt 30.0, cash 5.0, and the largest single fund 24% under the 25% ceiling.">
+            <ResultScene />
+          </State>
+          <State label="a fund, opened" note="The row opens in place and carries why that fund is there, plus its category, plan, riskometer and exit load from the shelf. Small cap is absent on purpose and the mid-cap line says so.">
+            <ResultScene openRow={2} anchor={1} />
+          </State>
+          <State label="saved" note="draft → saved on Save. The badge is a meta badge with a date, not a tick: saved means this version exists, not that anyone has seen it.">
+            <ResultScene state="saved" savedAt="19 Sep" />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="3 · What stops it being placed" sub="Every other journey here ends in something moving. This one ends in a document, and the screen says the difference rather than letting a green tick imply otherwise.">
+        <StateRow>
+          <State label="the four rows" tone="over" note="Two block and two caveat, and they do not look alike. KYC in process and no nominee stop anything being placed; no risk profile and the stated mandate are things to say out loud when sending. Rule 2 holds — the blocking rows are TEXT in the danger colour, never a fill.">
+            <ResultScene blockers anchor="bottom" />
+          </State>
+          <State label="the confirm" note="The disclosure is the whole journey in one sentence: sending emails the document, and places nothing, opens no folio and moves no money. The confirm sheet is the one surface in this product with no composer.">
+            <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+              <ResultScene state="saved" savedAt="19 Sep" />
+              <ConfirmSheet open title="Send · Mr. Amit Aggrawal" disclosureEyebrow="Before you send" disclosure={PROP_DISCLOSURE} rows={PROP_CONFIRM_ROWS}
+                commitLabel="Send the proposal" onCommit={() => {}} onClose={() => {}}>
+                <SentinelText weight="Regular" text="He has seen version 2. This is version 3, with the mid-cap trimmed." />
+              </ConfirmSheet>
+            </div>
+          </State>
+          <State label="sent" note="A drawn check and a timestamp — never confetti. And the line that matters: the document has gone, nothing has been placed, and here is what has to clear first. Compare it with Journey B's success turn, which says the opposite because there the money really did leave.">
+            <ResultScene state="sent" sentAt="19 Sep, 11:24 am" savedAt="19 Sep" blockers />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="4 · Three versions, and one of them is the one he has read" sub="An advisor who sends a proposal and then edits it has two documents in the world. Only one is the one being discussed on the phone.">
+        <StateRow>
+          <State label="the versions" note="Version 2 is what Mr. Aggrawal has. Version 3 trimmed the mid-cap and has not been sent. The going-back layer is not a demo here — returning to version 2 is how the advisor reads back what the client is actually looking at.">
+            <ResultScene state="saved" savedAt="19 Sep">
+              <SentinelBlock continued>
+                <SentinelText text="Three versions. He has read version 2." />
+                <div style={{ marginTop: 'var(--space-12)' }}>
+                  <VersionRow versions={PROP_VERSION_LIST} currentId="v3" label="Versions" onSelect={() => {}} onRevert={() => {}} />
+                </div>
+              </SentinelBlock>
+            </ResultScene>
+          </State>
+          <State label="live · run the four steps" note="Answer the amount, take the ceiling, pick the purpose and the mix, and the proposal arrives. Send opens the confirm; the sheet states what sending does and does not do. Nothing leaves this page — no email is sent and the PDF writes no file.">
+            <LiveProposal />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="5 · Where the numbers come from">
+        <ProvenanceTable rows={[
+          ['₹25,00,000', <span><code>CLIENTS.amit.mandate.ceilingRs</code> — stated by him on 14 Sep</span>, 'The ceiling, named in the refusal and in the heading'],
+          ['₹50,00,000', 'What the advisor typed', 'Quoted back, and NOT applied'],
+          ['Equity 65 / Debt 30 / Cash 5', <span><code>CLIENTS.amit.mandate</code></span>, 'The mix the split matches to the rupee'],
+          ['24%', <span>the largest line in <code>PROPOSAL_SPLIT</code>, against <code>LIMITS.singleFund</code> 25</span>, 'Headroom stated, not silence'],
+          ['Six funds', <span><code>CLIENTS.amit.proposal.funds</code></span>, 'Six rows, plus a cash row that is not a fund'],
+          ['KYC · In process', <span><code>CLIENTS.amit.kyc</code></span>, 'A blocking row, in text on the peach bubble'],
+          ['Versions 1–3', <span><code>PROPOSAL_VERSIONS</code>; v2 matches <code>proposal.sentVersion</code></span>, 'Three VersionRows, one marked current'],
+        ]} />
+        <Note title="SCREENS-PLAN open question 2, answered">
+          The archive&rsquo;s <code>Reference_Proposal.png</code> answers &ldquo;₹50 lakh&rdquo; and returns a document
+          headed &ldquo;Where ₹25 lakh would go&rdquo;, and the plan recorded that <em>one of the two must be the real
+          number</em>. <strong>Both are real.</strong> ₹50,00,000 is what the advisor asked for and ₹25,00,000 is the
+          ceiling on the mandate Amit stated — the gap between them is not a bug in the reference, it is the journey.
+        </Note>
+        <Note title="What this screen does not do">
+          <strong>Nothing is sent.</strong> No email leaves the page, the PDF writes no file, and the confirm sheet
+          commits to nothing. There is no fund <em>performance</em>, TER or AUM anywhere in the table, because this
+          repository has no confirmed source for any of the three — a proposal that showed a return nobody owns would
+          be the worst number on the page. The six funds are chosen from your own shelf and the reasoning for each is
+          written down; a real build would have a research view behind that choice, and this one says so instead.
+        </Note>
+      </Section>
+    </ScreenShell>
+  );
+}
+
+mountScreen(<App />);
+</script></body></html>

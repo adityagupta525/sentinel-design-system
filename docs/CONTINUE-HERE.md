@@ -55,6 +55,25 @@ measurements are on the pages themselves.**
   either direction: it does not say "failed" for something it has not confirmed failed, and **it does not
   offer to send again**, because a duplicate switch is real money. It offers checking, and the question
   the advisor actually has: what do I tell Sharma?
+- **Journey D is built (19 Sep): Amit's proposal**, `screens/journey-d/proposal.html`, nine states, and it
+  is **`ResultCard`'s first screen** — the component shipped in v9 and sat on no screen for months because
+  the three journeys it exists for were unbuilt. Four rail steps, which is SCREENS-PLAN's own count (22
+  across the rail: Risk 16, Proposal 4, Review 1, Rebalance 1), so `LiveRail` now takes its steps and its
+  result as arguments and there is still ONE loop deciding what "edit answer 3" does.
+  **Step 2 is not a question.** The advisor asks for ₹50,00,000; his mandate caps at ₹25,00,000; Sentinel
+  names the ceiling, says plainly that it has not applied the larger number, and offers both real paths.
+  Same sentence and same field as the router's bucket 2. That also **answers SCREENS-PLAN open question 2**:
+  the archive's reference answers "₹50 lakh" and is headed "Where ₹25 lakh would go", and both numbers are
+  real — one is the ask, the other is the ceiling.
+  **The journey ends in a document, not in money.** His KYC is in process and he has no nominee, so the
+  proposal can be saved, downloaded and SENT and not one rupee can be placed. `ResultPrimary`'s success
+  line says the client has it and cannot say more, because a rebalance and a proposal need opposite
+  sentences — so the consequence is written in the turn beneath, and it says the opposite of Journey B's.
+  **Found while building it:** `ResultCard.d.ts` still told its consumers to put the actions in "the Dock's
+  `chips` slot" and the CTA in `cta` — the pre-ruling dock, eleven months after the ruling. Corrected.
+  `savedAt` takes a DATE, not "Saved · date" (the badge adds the word), and `VersionRow` takes the whole
+  list rather than one row each; both were my errors, both caught by looking at the render.
+
 - **Build order #7 is done: `screens/prototype.html`** — the app end to end, and the last row of the
   plan. One phone, one composer, and the **router** decides which journey a sentence enters: the six
   buckets are regular expressions over the sentence, said out loud on the page because every screen in

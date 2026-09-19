@@ -287,8 +287,11 @@ None of these is a design problem. Each is a fact the archive does not settle, a
    not — `ResultCard`'s 25% is the sleeve line. The archive's `Reference_Review.png` also shows a **15%
    category ceiling** for *small cap overall* beside a 25% single-fund limit, for a different client;
    mandates are per client so those need not conflict, but no screen may mix them.
-2. **`Reference_Proposal.png` answers "₹50 lakh" and returns a proposal headed "Where ₹25 lakh would
-   go".** One of the two is the real number.
+2. ✅ **ANSWERED, 19 Sep 2026 — both numbers are real.** `Reference_Proposal.png` answers "₹50 lakh" and
+   returns a document headed "Where ₹25 lakh would go". ₹50,00,000 is what the advisor asked for;
+   ₹25,00,000 is the ceiling on the mandate Amit stated (`CLIENTS.amit.mandate.ceilingRs`), which the
+   router already refuses ₹60,00,000 against. The gap between them is not a bug in the reference — it is
+   step 2 of the journey, where Sentinel names the ceiling and says it has not applied the larger number.
 3. **`preview-drawing.png`** — your own markup on Home, a red circle around the three quick-action
    chips, with no note. **Deferred by you until you have seen the review artifact**, so the answer comes
    from looking at the current Home rather than from memory.

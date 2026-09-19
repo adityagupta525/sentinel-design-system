@@ -191,13 +191,17 @@ const SHARE_SHEET = {
     'Nothing leaves Sentinel until you pick a channel and send it there.'],
 };
 
-function LiveRail({ onEvent, onMenu, onNew }) {
+/* STEPS AND THE RESULT ARE ARGUMENTS, not this file's own. The rail is shared: SCREENS-PLAN counts 22
+   steps across it — Risk 16, Proposal 4, Review 1, Rebalance 1 — so a second journey on a second copy of
+   this loop would be two places for "what happens when you edit answer 3" to drift apart. The defaults
+   are the risk journey, so every existing caller is unchanged. */
+function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, attachCaption = 'Here is her last ITR.', onEvent, onMenu, onNew }) {
   const [cursor, setCursor] = React.useState(0);
   const [answered, setAnswered] = React.useState([]);
   const [sheet, setSheet] = React.useState(null);
   const [thinking, setThinking] = React.useState(false);
   const att = useAttachment();
-  const step = RAIL_STEPS[cursor];
+  const step = steps[cursor];
   const log = (what, motion) => onEvent && onEvent(what, motion);
   const advance = (label, goto) => {
     setAnswered((a) => [...a, { q: step.short, a: label }]);
@@ -215,17 +219,17 @@ function LiveRail({ onEvent, onMenu, onNew }) {
   const editAt = (i) => {
     log(`Edited answer ${i + 1} — everything after it is asked again`, 'the list truncates; the rail steps back');
     setAnswered((a) => a.slice(0, i));
-    setCursor(RAIL_STEPS.findIndex((s) => s.short === answered[i].q) || 0);
+    setCursor(steps.findIndex((s) => s.short === answered[i].q) || 0);
   };
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Rail n={step && step.progress ? step.progress[0] : undefined} revision={`${cursor}-${answered.length}-${!!att.file}`}
+      <Rail n={step && step.progress ? step.progress[0] : undefined} total={total} revision={`${cursor}-${answered.length}-${!!att.file}`}
         onMenu={onMenu} onNew={onNew} composer={<RailAsk step={step} onAttach={att.onAttach} />}>
         <AnsweredList items={answered} onEdit={editAt} />
         {step && step.result
-          ? <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />
+          ? (result ? result({ step, onChip }) : <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />)
           : <StepTurn step={step} thinking={thinking} onChip={onChip} />}
-        <AttachedTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
+        <AttachedTurn file={att.file} caption={attachCaption} onRemove={att.clear} />
       </Rail>
       <RAIL_DS.ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []}
         onClose={() => { setSheet(null); log('Explainer closes — the rail comes back to full', 'immediate'); }} />

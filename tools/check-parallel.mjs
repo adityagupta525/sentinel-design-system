@@ -59,7 +59,11 @@ for (const [rel, src] of sources) {
     .replace(/sub="[^"]*"/g, '')
     .replace(/<!--[\s\S]*?-->/g, '');
   for (const c of components) {
-    const re = new RegExp(`(<${c}[\\s/>])|(\\b${c}\\b\\s*[,}].*?=\\s*window\\.SentinelDesignSystem)|('${c}')`, 's');
+    /* EITHER QUOTE STYLE. The requires list is hand-written on most pages with single quotes and was
+       generated with double quotes on two of them (19 Sep) — and this matcher only read single, so both
+       pages under-reported their components and `parallel` printed 71 when it was 73. A checker that
+       depends on how a literal is spelled is a checker that reports a number nobody can trust. */
+    const re = new RegExp(`(<${c}[\\s/>])|(<[A-Z][A-Za-z0-9_]*\\.${c}[\\s/>])|(\\b${c}\\b\\s*[,}].*?=\\s*window\\.SentinelDesignSystem)|(['"]${c}['"])`, 's');
     if (re.test(stripped)) { if (!used.has(c)) used.set(c, []); used.get(c).push(rel); }
   }
 }
@@ -93,7 +97,7 @@ const exported = new Set(components);
 const strays = [];
 for (const [rel, src] of sources) {
   const req = src.match(/__screenRequires\s*=\s*\[([^\]]*)\]/);
-  if (req) for (const m of req[1].matchAll(/'([^']+)'/g)) if (!exported.has(m[1])) strays.push(`${rel}: ${m[1]}`);
+  if (req) for (const m of req[1].matchAll(/['"]([^'"]+)['"]/g)) if (!exported.has(m[1])) strays.push(`${rel}: ${m[1]}`);
 }
 
 console.log(`parallel: ${components.length - unused.length} of ${components.length} components appear on a screen; ${unused.length} do not (${unusedShipped.length} of them have a spec page).`);
