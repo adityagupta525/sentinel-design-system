@@ -158,6 +158,33 @@ for (const [base, prefix] of (SELF_TEST ? [[FIXTURES, 'tools/fixtures/']] : [[DS
       }
     }
   }
+  /* THE PINNED-CHIP GATE (19 Sep 2026). The owner's ruling of 18 Sep: chips and the CTA live IN the turn
+     that offered them and scroll away with it. `Dock.chips` / `Dock.cta` were deprecated in the contract
+     and nothing enforced it, so the next screen could pin a chip again and no check would notice.
+     They could not simply be DELETED: `design-system/ui_kits/` is the imported record, it passes both in
+     several artboards, and it is not edited. So the ruling is enforced where it applies — screens/ — and
+     the props survive only for the frozen kit. Home is the one exception and it is in the contract: a
+     screen with no conversation has no message for its starters to sit under, and no scroll for them to
+     outlive. The exception is the FILE, not the prop, so nothing else can claim it. */
+  if (prefix === 'screens/') {
+    const HOME_EXCEPTION = 'journey-b/home.jsx';
+    const dir2 = dirname(p);
+    const srcs2 = [...text.matchAll(/<script[^>]+type="text\/babel"[^>]+src="([^"]+)"/g)].map((m) => m[1]);
+    /* The src is matched on its RESOLVED path, not on the string the page wrote. Both `./home.jsx` and
+       `../journey-b/home.jsx` are the same file, and an exception that reads the spelling is an exception
+       any page can claim by spelling it differently. */
+    const files = [[rel, rel, text]];
+    for (const s of srcs2) { try { files.push([s, join(dir2, s), await readFile(join(dir2, s), 'utf8')]); } catch { /* reported above */ } }
+    const seenFile = new Set();
+    for (const [name, abs, src] of files) {
+      if (seenFile.has(abs)) continue; seenFile.add(abs);
+      for (const m of src.matchAll(/<Dock\b[\s\S]{0,600}?\/?>/g)) {
+        const tag = m[0];
+        if (/\bcta=/.test(tag)) structure.push(`PINNED CTA — <Dock cta=…> in ${name}. A decision belongs under the thing it decides about (ruling, 18 Sep). Put a DarkButton full inside the turn.`);
+        if (/\bchips=/.test(tag) && !abs.replace(/\\/g, '/').endsWith(HOME_EXCEPTION)) structure.push(`PINNED CHIPS — <Dock chips=…> in ${name}. Chips live in the turn that offered them and scroll with it (ruling, 18 Sep). Only ${HOME_EXCEPTION} may pin them, because Home has no conversation and no scroller.`);
+      }
+    }
+  }
   const gutterMark = GUTTER.exec(text.slice(0, 900))?.[1] ?? '';
   const gutterMin = Number(ATTR(gutterMark, 'min') || 16);
   const fullBleed = ATTR(gutterMark, 'fullBleed') || '';
