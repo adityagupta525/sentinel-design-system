@@ -216,6 +216,39 @@ const LEDGER_PERIOD = 'Sep 2026';
 /* What an export would carry, named so a screen never implies more than the file holds. */
 const LEDGER_EXPORT = { formats: ['CSV', 'PDF'], columns: ['Date', 'Client', 'Type', 'Detail', 'Amount', 'Status', 'Reference'] };
 
+/* HOW FAR TO TAKE A REBALANCE — the one question the rail asks, and the three answers are three
+   different RULES rather than three appetites.
+
+     · to the mandate   equity 71 → 60. The number he agreed to. 11 points of ₹14,23,000 = ₹1,56,530.
+     · inside the band  equity 71 → 65. LIMITS.driftBand is 5 either side, so 65 is the edge at which a
+                        review stops being raised. 6 points = ₹85,380. The cheapest thing that ends the
+                        breach, and it leaves him at the edge rather than at the middle.
+     · clear the fund   equity 71 → 58. NOT an appetite: Quant Small Cap is 31% of the book and is the
+                        WHOLE small-cap sleeve, so one holding breaches the single-fund ceiling and the
+                        sleeve ceiling at once, both 25 and both different rules (contradiction 32).
+                        Taking ₹1,85,000 out leaves it at 18%, and the equity lands at 58 — past the
+                        mandate — because the ceiling sized the move, not the drift did.
+
+   COST IS WHERE THIS STOPS BEING A MENU. Only the third is costed, because `sharma.rebalance.costRs` is
+   a figure the book carries and `costParts` is an honest placeholder: the split between exit load and
+   tax needs the purchase dates on folio 9142/28, which nobody has supplied. So the other two can be
+   SIZED and cannot be COSTED, and the screen says so rather than printing a zero or a guess.
+
+   The first two amounts are exactly points × ₹14,23,000. The third is ₹1,85,000 and NOT ₹1,84,990,
+   because ₹1,85,000 is the anchor the whole drift story is derived from and 13 points is the figure
+   derived from it — see the portfolio comment above. Do not "correct" it. */
+const REBALANCE_TARGETS = [
+  { id: 'mandate', label: 'To the mandate', equityAfter: 60, points: 11, amountRs: 156530,
+    why: 'The mix he agreed to. The furthest of the three, and the one you can read to him in his own words.',
+    rule: 'His mandate', costRs: null },
+  { id: 'band', label: 'Inside the band', equityAfter: 65, points: 6, amountRs: 85380,
+    why: 'The cheapest thing that ends the breach. It leaves him at the edge of the band, so a small move next quarter puts him back outside it.',
+    rule: `The ±${LIMITS.driftBand}-point drift band`, costRs: null },
+  { id: 'ceiling', label: 'Clear the fund ceiling', equityAfter: 58, points: 13, amountRs: 185000,
+    why: 'Sized by the ceiling rather than by the drift: it takes Quant Small Cap from 31% to 18%. Equity lands past the mandate as a consequence, not as a choice.',
+    rule: `The ${LIMITS.singleFund}% single-fund ceiling`, costRs: 11200 },
+];
+
 /* THE PROPOSAL FOR AMIT — ₹25,00,000 split six ways, and every line of it is checked against something
    in this file rather than chosen. The mandate he stated is equity 65 / debt 30 / cash 5, so the sleeves
    are ₹16,25,000 / ₹7,50,000 / ₹1,25,000 and they add to the whole. Cash is not a fund and is not given
@@ -263,5 +296,5 @@ const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.si
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
 Object.assign(window, { ADVISOR, FUNDS, fundById, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
-  PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
+  REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
   driftPoints, overSingleFund, inr });

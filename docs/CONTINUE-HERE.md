@@ -55,6 +55,31 @@ measurements are on the pages themselves.**
   either direction: it does not say "failed" for something it has not confirmed failed, and **it does not
   offer to send again**, because a duplicate switch is real money. It offers checking, and the question
   the advisor actually has: what do I tell Sharma?
+- **Journey E is built (19 Sep): Sharma's rebalance, reached COLD**, `screens/journey-e/rebalance.html`,
+  nine states. Journey B rebalances him at the end of a drift explanation; an advisor who types
+  "rebalance Sharma" with nothing in front of them had no answer at all — and **"rebalance" is not an
+  instruction until someone says how far.** That is the one rail step SCREENS-PLAN counts for it.
+  **The three answers are three RULES, not three appetites:** his mandate (equity 60, moves ₹1,56,530),
+  the ±5 drift band (equity 65, ₹85,380), and the 25% single-fund ceiling (equity 58, ₹1,85,000 — past
+  the mandate, because the ceiling sized the move and not the drift). Quant Small Cap is 31% of his book
+  AND the whole of his small-cap sleeve, so one holding is over two different ceilings that are both 25.
+  **Only one of the three is costed, and that is the point.** `rebalance.costParts` is an honest
+  placeholder: the split between exit load and tax needs the purchase dates on folio 9142/28, which
+  nobody has supplied. So Sentinel sizes all three, costs one, says which figure is missing and what
+  would produce it — and **there is no path from an uncosted target to a confirm sheet at all.** A
+  product that lets an advisor approve an uncosted switch has made the number optional.
+  **One body, two frames:** `MovesBody` in `moves.jsx` draws the simulation and the two move cards once.
+  Journey B wraps it in a `SentinelBlock` because there it is the next sentence in a conversation;
+  Journey E wraps it in `ResultCard journey='rebalance'` because here it is an artifact asked for cold.
+  Exactly one approve on either, never both. `MovesSimulation` gained a `provenance` prop so the card
+  does not stack two near-identical provenance lines — the repeated data the owner has objected to twice.
+  **F-42, found by driving it:** `ArtifactCard` rendered its rule and three-slot footer unconditionally,
+  so every `ResultCard` in the product ended in 44pt of dead space and **three enabled, unnamed buttons
+  in the tab order**. Measured on the live DOM: 677px → 621px, three unnamed buttons → zero.
+  Also fixed in the prototype: the moves confirm sheet was mounted inside the thread's tree, so reaching
+  it from the RAIL set the state and opened nothing. Both sheets now mount above the `ScreenStack`,
+  because a confirm is a surface and not part of the screen that opened it.
+
 - **Journey D is built (19 Sep): Amit's proposal**, `screens/journey-d/proposal.html`, nine states, and it
   is **`ResultCard`'s first screen** — the component shipped in v9 and sat on no screen for months because
   the three journeys it exists for were unbuilt. Four rail steps, which is SCREENS-PLAN's own count (22

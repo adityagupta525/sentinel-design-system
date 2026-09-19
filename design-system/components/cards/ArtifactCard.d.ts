@@ -33,4 +33,8 @@ export interface ArtifactCardProps {
   expandLabel?: string;
   collapseLabel?: string;
 }
+/** THE FOOTER IS OPTIONAL AND IT IS DRIVEN BY THE HANDLERS. Supply none of `onToggle`, `onWhy` or
+ *  `onShare` and the card ends after its content: no rule, no 44pt row, and no empty buttons. Until
+ *  F-42 (19 Sep 2026) it rendered regardless, so every `ResultCard` ended in three unnamed `<button>`s
+ *  that a keyboard could reach — 56px of dead space was the lesser half of it. */
 export function ArtifactCard(props: ArtifactCardProps): JSX.Element;

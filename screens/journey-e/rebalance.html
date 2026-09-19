@@ -1,0 +1,177 @@
+<!-- @dsCard group="Screens" viewport="1500x2400" name="Journey E · the rebalance, cold" subtitle="One question — how far — three rules, and a confirm sheet that will not open on a move nobody can cost" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, Dock, HomeIndicator, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey E · the rebalance — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConfirmSheet','DarkButton','DataTable','Dock','DownloadAction','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoveCard','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../data/book.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="../journey-b/moves.jsx"></script>
+<script type="text/babel" src="../journey-a/rail.jsx"></script>
+<script type="text/babel" src="./rebalance.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { ConfirmSheet, SentinelText, MoveCard, Composer } = window.SentinelDesignSystem_0682a2;
+
+const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
+const Targets = ({ onPick, onAskCost }) => (
+  <div>{REBALANCE_TARGETS.map((t) => <TargetRow key={t.id} t={t} onPick={onPick} onAskCost={onAskCost} />)}</div>
+);
+
+/* The one step, frozen. */
+function Step({ extra }) {
+  return (
+    <Rail n={1} total={REB_TOTAL} revision={0} composer={<RailAsk step={REB_STEPS[0]} onAttach={() => {}} />}>
+      <StepTurn step={REB_STEPS[0]} onChip={() => {}} extra={extra !== undefined ? extra : <Targets />} />
+    </Rail>
+  );
+}
+
+function ResultScene({ state = 'draft', savedAt, sentAt, children, anchor = 'bottom' }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor={anchor} revision={`${state}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={REB_ASK} costNote="Sending this replaces the plan below it." />
+      <RebalanceResult state={state} savedAt={savedAt} sentAt={sentAt}
+        onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onPrimary={() => {}} />
+      {children}
+      <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+/* The paperclip is real on every screen in this product, including the ones that are here to show what
+   happened after a confirm. A Composer without onAttach is a drawing of a control, and the preview gate
+   fails a screen that ships one. */
+function AfterScene({ children }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor="bottom" revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={REB_ASK} />
+      {children}
+      <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+function LiveRebalance() {
+  const [sheet, setSheet] = React.useState(false);
+  const [picked, setPicked] = React.useState(null);
+  const [uncosted, setUncosted] = React.useState(null);
+  /* A real picker, not a prop that satisfies the gate. onAttach={() => {}} passes the DEAD PAPERCLIP
+     check and drops the file, which is the same lie the check was written to catch. */
+  const att = useAttachment();
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      {picked
+        ? <Thread anchor="bottom" revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+            <AskTurn text={REB_ASK} costNote="Sending this replaces the plan below it." />
+            <RebalanceResult onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onPrimary={() => setSheet(true)} />
+            <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+          </Thread>
+        : <LiveRail steps={REB_STEPS} total={REB_TOTAL} attachCaption="Here is his Q3 statement."
+            stepExtra={() => (
+              <React.Fragment>
+                <Targets onPick={(t) => setPicked(t)} onAskCost={(t) => setUncosted(t)} />
+                {uncosted && <div style={{ marginTop: 'var(--space-12)' }}><UncostedTurn target={uncosted} continued={false} onChip={(l) => { if (/can cost/.test(l)) setPicked(REBALANCE_TARGETS.find((x) => x.costRs != null)); }} /></div>}
+              </React.Fragment>
+            )}
+            result={() => null} />}
+      <ConfirmSheet open={sheet} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
+        commitLabel="Approve both moves" onCommit={() => setSheet(false)} onClose={() => setSheet(false)}>
+        {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
+      </ConfirmSheet>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ScreenShell
+      journey="Journey E · Sharma's rebalance, cold" n="9" name="The rebalance"
+      job="Journey B rebalances Sharma after explaining why he drifted. This one starts with the advisor typing “rebalance Sharma” and nothing in front of them — so Sentinel asks the one question that makes it an instruction: how far. Three answers, three different rules, and only one of them has a cost."
+      without="has a rebalance that only exists as the end of a drift explanation — and no answer at all when an advisor asks for one directly."
+    >
+      <Section title="1 · “Rebalance” is not an instruction yet" sub="One rail step, and the three answers are three different RULES rather than three appetites. Each is sized against his ₹14,23,000, and each says which rule produced it.">
+        <StateRow>
+          <State label="how far?" note="His mandate is 60 and he is at 71. To the mandate moves ₹1,56,530; inside the ±5 band moves ₹85,380 and leaves him at the edge; clearing the fund ceiling moves ₹1,85,000 and lands him at 58 — past the mandate, because the ceiling sized the move and not the drift.">
+            <Step />
+          </State>
+          <State label="only one has a cost" tone="over" note="A switch is a redemption plus a purchase, so it is taxable, and the tax depends on when each lot was bought. Folio 9142/28 has no purchase dates on file, so two of the three can be SIZED and not COSTED. The line says which figure is missing and what would produce it — it does not print a zero and it does not guess.">
+            <Step extra={<div>{REBALANCE_TARGETS.filter((t) => t.costRs == null).map((t) => <TargetRow key={t.id} t={t} />)}</div>} />
+          </State>
+          <State label="asking for the uncosted one" tone="under" note="Not a refusal and not an error — a missing input with a name. Sentinel sizes it, says plainly it will not put a figure on it, says it will not let the advisor approve it without one, and offers the nearest real thing in the same breath. That is the shape every refusal in this product keeps.">
+            <Step extra={<React.Fragment><Targets /><div style={{ marginTop: 'var(--space-12)' }}><UncostedTurn target={REBALANCE_TARGETS[0]} continued={false} /></div></React.Fragment>} />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="2 · The plan, as an artifact" sub="The same two moves and the same simulation Journey B shows — ONE body, drawn in moves.jsx. There it is a message in a conversation; here it is an artifact the advisor asked for cold and may save.">
+        <StateRow>
+          <State label="draft" note="ResultCard journey='rebalance', so the plan carries its provenance, a Save and a Download — and exactly ONE approve, which is ResultPrimary reading “Approve both moves” from the count. Journey B's MovesActions is the other frame's single approve. Never both on one screen.">
+            <ResultScene />
+          </State>
+          <State label="saved" note="draft → saved on Save. The badge is a date, not a tick: saved means the plan exists, not that anything has been placed.">
+            <ResultScene state="saved" savedAt="19 Sep" />
+          </State>
+          <State label="the confirm" note="The same sheet, the same disclosure and the same three compliance rows as Journey B, because it is the same money. Reaching it from a different door must not change what the advisor is asked to take responsibility for.">
+            <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+              <ResultScene state="saved" savedAt="19 Sep" />
+              <ConfirmSheet open title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
+                commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>
+                {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
+              </ConfirmSheet>
+            </div>
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="3 · After the confirm, it is Journey B" sub="In flight, placed, partial and sent-with-no-answer are R2's four states and they are not rebuilt here. A second copy of “what happened” is a second place for the honest wording to rot.">
+        <StateRow>
+          <State label="in flight" note="Sent, nothing back. It says WHEN it went and that the advisor need not wait — the research asked to be told, not to be fast.">
+            <AfterScene><ExecutionTurn state="flight" /></AfterScene>
+          </State>
+          <State label="placed" note="A drawn check, the references, and what has and has not left Sentinel. Compare Journey D's, which says the opposite because a proposal places nothing.">
+            <AfterScene><SuccessTurn /></AfterScene>
+          </State>
+          <State label="live · run it" note="Pick a target. The costed one opens the plan; either uncosted one gets sized, refused a figure, and offered the two real ways forward. The confirm sheet cannot be reached from an uncosted move at all — that is the point of the journey, not a state of it.">
+            <LiveRebalance />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="4 · Where the numbers come from">
+        <ProvenanceTable rows={[
+          ['Equity 71% vs 60%', <span><code>sharma.allocation</code> and <code>sharma.mandate</code></span>, '11 points over, stated in the first sentence'],
+          ['₹1,56,530', <span>11 points of <code>portfolio.valueRs</code> ₹14,23,000</span>, '“To the mandate” — moves this much'],
+          ['₹85,380', <span>6 points; 65 is the edge of <code>LIMITS.driftBand</code> ±5</span>, '“Inside the band”'],
+          ['₹1,85,000 → equity 58', <span><code>sharma.rebalance</code>, the move Journey B already costs</span>, '“Clear the fund ceiling”'],
+          ['31% → 18%', <span><code>holdings[0]</code> ₹4,41,130 less ₹1,85,000, of ₹14,23,000</span>, 'Why the ceiling sized the move'],
+          ['₹11,200', <span><code>sharma.rebalance.costRs</code></span>, 'The one cost the book carries'],
+          ['No cost for the other two', <span><code>rebalance.costParts</code> is a placeholder — the split needs purchase dates on folio 9142/28</span>, 'Stated as missing, with the folio named'],
+        ]} />
+        <Note title="Two ceilings, both 25, and they are not the same rule">
+          <code>LIMITS.singleFund</code> caps one scheme at 25% of the book. <code>LIMITS.smallCapSleeve</code> caps
+          small cap overall at 25%. Quant Small Cap is 31% and it is <em>the whole of his small-cap sleeve</em>, so
+          that single holding is over both at once. The book records the pair as contradiction 32 precisely so nobody
+          collapses them into one rule; this screen is the first place a client&rsquo;s numbers make them look
+          identical, and the explainer says why they are not.
+        </Note>
+        <Note title="What this screen does not do">
+          <strong>Nothing is placed.</strong> No order leaves the page and the PDF writes no file. The two uncosted
+          targets are sized and never costed, on purpose: this repository has no purchase dates for folio 9142/28 and
+          <strong> the confirm sheet cannot be opened from either of them</strong>. That is the design, not a gap to
+          fill later &mdash; a product that lets an advisor approve an uncosted switch has made the number optional,
+          and the number is the whole job.
+        </Note>
+      </Section>
+    </ScreenShell>
+  );
+}
+
+mountScreen(<App />);
+</script></body></html>

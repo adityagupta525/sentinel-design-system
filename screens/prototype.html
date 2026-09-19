@@ -15,6 +15,7 @@
 <script type="text/babel" src="./journey-a/rail.jsx"></script>
 <script type="text/babel" src="./journey-c/funds.jsx"></script>
 <script type="text/babel" src="./journey-d/proposal.jsx"></script>
+<script type="text/babel" src="./journey-e/rebalance.jsx"></script>
 <script type="text/babel" src="./thread/refusals.jsx"></script>
 <script type="text/babel" src="./thread/ledger.jsx"></script>
 <script type="text/babel" src="./shell/menu.jsx"></script>
@@ -44,6 +45,7 @@ const ROUTES = [
   { id: 'act',      re: /\b(sell|redeem|switch|buy)\b.*\b(all|everything|full)\b/i,  why: 'an instruction that would ACT' },
   { id: 'over',     re: /₹\s?[6-9]\d,?\d{2},?\d{3}|₹\s?[1-9]\d*\s?(cr|crore)/i,      why: 'an amount above a mandate ceiling' },
   { id: 'outside',  re: /\b(itr|file .*return|tax return|gst)\b/i,                   why: 'in the domain, outside what this product does' },
+  { id: 'rebal',    re: /\brebalanc|bring .*back|fix (his|her|the) (mix|drift)/i,        why: 'a rebalance, asked for cold' },
   { id: 'drift',    re: /\bdrift|why .*\b(mix|allocation)|sharma/i,                  why: 'a drift question' },
   { id: 'propose',  re: /\bproposal\b|\bpropose\b|build .*(for|to) (mr|ms|mrs)?\.? ?\w*ag+ra?wal/i, why: 'a proposal' },
   { id: 'risk',     re: /\brisk\b|\bprofile\b/i,                                     why: 'a risk profile' },
@@ -67,12 +69,21 @@ function affordances(s) {
     return { next, back, where: 'Home', journey: '—', step: 'at rest' };
   }
   if (s.screen === 'rail') {
+    const J = { propose: 'D · Amit’s proposal', rebal: 'E · Sharma’s rebalance', risk: 'A · Meera’s risk profile' }[s.railJourney] || 'A · Meera’s risk profile';
+    if (s.railJourney === 'rebal' && s.rebalPicked) {
+      /* The plan is a thread turn, not a rail step — so it goes back the way a thread does. */
+      next.push('Save the plan, or take the PDF', 'Approve both moves');
+      back.push('Edit the prompt above — sending it replaces the plan', 'New thread (the app bar)', 'Open the menu for saved work');
+      return { next, back, where: 'Thread', journey: J, step: 'a plan, costed' };
+    }
+    back.push('Edit any answer above — the journey reopens there', 'Leave by the menu or a new thread — this product has no back arrow');
+    if (s.railJourney === 'rebal') {
+      next.push('Take the target that has a cost', 'Ask for the purchase dates on the two that have none', 'Ask why there are three');
+      return { next, back, where: 'Journey rail', journey: J, step: 'one question: how far' };
+    }
     const isProp = s.railJourney === 'propose';
     next.push('Answer the question', 'Ask why this question exists', isProp ? 'Take the ceiling, or raise it first' : 'Skip to the result', 'Type an answer instead');
-    back.push('Edit any answer above — the journey reopens there', 'Leave by the menu or a new thread — this product has no back arrow');
-    return { next, back, where: 'Journey rail',
-      journey: isProp ? 'D · Amit’s proposal' : 'A · Meera’s risk profile',
-      step: isProp ? 'one of four' : 'a question at a time' };
+    return { next, back, where: 'Journey rail', journey: J, step: isProp ? 'one of four' : 'a question at a time' };
   }
   const J = { drift: 'B · Sharma’s drift', funds: 'C · the funds', ledger: 'The ledger', caps: 'What I can do',
     act: 'Refusal · would act', over: 'Refusal · over a ceiling', outside: 'Refusal · out of scope', miss: 'Refusal · not understood', who: 'A name, no intent' }[s.journey] || '—';
@@ -119,6 +130,8 @@ function Proto({ onEvent }) {
   /* WHICH journey the rail is running. The rail is one surface with two journeys on it, per
      SCREENS-PLAN's count of 22 steps across it. */
   const [railJourney, setRailJourney] = React.useState('risk');
+  const [uncosted, setUncosted] = React.useState(null);
+  const [rebalPicked, setRebalPicked] = React.useState(false);
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const savedScroll = React.useRef(0);
@@ -133,10 +146,10 @@ function Proto({ onEvent }) {
     const r = route(text);
     setAsk(text); setJourney(r.id);
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
-    if (r.id === 'risk' || r.id === 'propose') {
-      setRailJourney(r.id === 'propose' ? 'propose' : 'risk');
+    if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal') {
+      setRailJourney(r.id);
       setDir('forward'); setScreen('rail');
-      log(`The rail opens — ${r.id === 'propose' ? 'four steps for a proposal' : 'sixteen for a risk profile'}; a journey is its own surface`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+      log(`The rail opens — ${({ propose: 'four steps for a proposal', rebal: 'one question: how far', risk: 'sixteen for a risk profile' })[r.id]}; a journey is its own surface`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
       return;
     }
     if (screen !== 'thread') { setDir('forward'); setScreen('thread'); log('Thread in, Home out', reduced() ? 'a fade · 320ms' : 'ScreenStack forward: ds-screen-in over ds-screen-out · 320ms'); }
@@ -242,12 +255,6 @@ function Proto({ onEvent }) {
         {body()}
         <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
       </Thread>
-      <ConfirmSheet open={confirm === 'moves'} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
-        commitLabel="Approve both moves"
-        onCommit={() => { setConfirm(null); setPhase('flight'); log('Approved — in flight', 'the sheet closes; the thread takes over'); setTimeout(() => { setPhase('done'); log('Placed — both moves, with their references', reduced() ? 'the check is drawn' : 'DrawnCheck · ds-draw'); }, 1400); }}
-        onClose={() => { setConfirm(null); log('Dismissed — nothing was placed', 'the sheet closes'); }}>
-        {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
-      </ConfirmSheet>
     </div>
   );
 
@@ -261,7 +268,38 @@ function Proto({ onEvent }) {
   /* ONE RAIL, TWO JOURNEYS. The steps and the result are arguments, so the loop that decides what
      "edit answer 3" does exists once. The way out is the same two doors as every other surface. */
   const railMenu = () => { setMenu(true); log('Menu opens from the rail — the way out is the same door as everywhere else', 'panel 320ms; scrim to 0.25'); };
-  const rail = railJourney === 'propose'
+  const rail = railJourney === 'rebal'
+    ? (rebalPicked
+        /* The costed target opens the plan as an ARTIFACT in the thread, which is where a rebalance the
+           advisor asked for cold belongs. The uncosted ones never get here: there is no path from them
+           to a confirm sheet, which is the journey's whole argument rather than a state of it. */
+        ? <Thread anchor="bottom" revision={`rebal-${!!att.file}`} onMenu={railMenu} onNew={goHome}
+            composer={<Composer value={draft} onChange={setDraft} placeholder="Ask Sentinel" onSend={(t) => { setDraft(''); send(t || draft); }} onAttach={att.onAttach} />}>
+            <AskTurn text={ask} costNote="Sending this replaces the plan below it."
+              onCancel={() => log('Edit cancelled — nothing was discarded', '')}
+              onSave={(next) => { log('Edit sent — the plan below it is replaced', 'the turn re-runs'); send(next); }} />
+            <RebalanceResult
+              onSave={() => log('Saved the plan — it exists; nothing is placed', 'the badge becomes a date')}
+              onDownload={() => { log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }}
+              onPrimary={() => { setConfirm('moves'); log('Approve — the same sheet, the same disclosure and the same three rows as Journey B, because it is the same money', 'ds-sheet 300ms'); }} />
+            <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+          </Thread>
+        : <LiveRail steps={REB_STEPS} total={REB_TOTAL} attachCaption="Here is his Q3 statement."
+            onEvent={log} onNew={goHome} onMenu={railMenu}
+            stepExtra={() => (
+              <React.Fragment>
+                <div>{REBALANCE_TARGETS.map((t) => (
+                  <TargetRow key={t.id} t={t}
+                    onPick={(x) => { setRebalPicked(true); log(`Took “${x.label}” — the one the book can cost`, 'the plan arrives as an artifact'); }}
+                    onAskCost={(x) => { setUncosted(x); log(`“${x.label}” is sized and not costed — and there is no path from it to a confirm`, 'the turn names the missing input'); }} />))}</div>
+                {uncosted && <div style={{ marginTop: 'var(--space-12)' }}>
+                  <UncostedTurn target={uncosted} continued={false}
+                    onChip={(l) => { if (/can cost/.test(l)) { setUncosted(null); setRebalPicked(true); log('Took the one with a cost instead', 'the plan arrives'); } else { log('Asked the RTA for the dates — this build has no RTA', ''); } }} />
+                </div>}
+              </React.Fragment>
+            )}
+            result={() => null} />)
+    : railJourney === 'propose'
     ? <LiveRail steps={PROP_STEPS} total={PROP_TOTAL} attachCaption="Here is the mandate he signed."
         onEvent={log} onNew={goHome} onMenu={railMenu}
         result={() => <ProposalResult state="draft"
@@ -275,8 +313,18 @@ function Proto({ onEvent }) {
       <ScreenStack screen={screen} direction={dir} render={(s) => (s === 'home' ? home : s === 'rail' ? rail : thread)}
         onSettle={(to, from) => log(`Settled on ${to}`, `${from} unmounted after --dur-screen`)} />
       <ExplainerSheet open={!!why} title={(why || {}).title || ''} body={(why || {}).body || []} onClose={() => { setWhy(null); log('Explainer closes — focus returns to the chip', 'immediate'); }} />
-      {/* The proposal's confirm belongs to the RAIL, which is a sibling screen of the thread — so it
-          mounts here rather than inside the thread's tree. Same component, opposite disclosure. */}
+      {/* BOTH CONFIRM SHEETS MOUNT HERE, above the ScreenStack, because a confirm is a SURFACE and not
+          part of the screen that opened it. The moves sheet lived inside the thread's tree until Journey
+          E reached it from the RAIL and nothing happened — the state changed and the sheet was not
+          mounted on that screen. A sheet that only exists on one of the two screens that can open it is
+          a sheet that works by luck. Same component, opposite disclosures: one places money, one sends a
+          document that places nothing. */}
+      <ConfirmSheet open={confirm === 'moves'} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
+        commitLabel="Approve both moves"
+        onCommit={() => { setConfirm(null); setPhase('flight'); setRebalPicked(false); if (railJourney === 'rebal') { setDir('back'); setScreen('thread'); setJourney('drift'); } log('Approved — in flight', 'the sheet closes; the thread takes over'); setTimeout(() => { setPhase('done'); log('Placed — both moves, with their references', reduced() ? 'the check is drawn' : 'DrawnCheck · ds-draw'); }, 1400); }}
+        onClose={() => { setConfirm(null); log('Dismissed — nothing was placed', 'the sheet closes'); }}>
+        {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
+      </ConfirmSheet>
       <ConfirmSheet open={confirm === 'propose'} title="Send · Mr. Amit Aggrawal" disclosureEyebrow="Before you send"
         disclosure={PROP_DISCLOSURE} rows={PROP_CONFIRM_ROWS} commitLabel="Send the proposal"
         onCommit={() => { setConfirm(null); log('Sent — the document has gone and nothing has been placed', 'the sheet closes; a drawn check in the turn'); }}
@@ -286,7 +334,7 @@ function Proto({ onEvent }) {
       <Drawer open={menu} onClose={() => { setMenu(false); log('Menu closes', 'immediate'); }} onNew={() => { setMenu(false); goHome(); }}
         saved={MENU_SAVED} recent={MENU_RECENT} clients={MENU_CLIENTS}
         footer={<MenuFooter onHome={() => { setMenu(false); goHome(); }} />} />
-      <Bridge state={{ screen, journey, phase, artifact, railJourney }} />
+      <Bridge state={{ screen, journey, phase, artifact, railJourney, rebalPicked }} />
     </div>
   );
 }
@@ -295,7 +343,7 @@ function Proto({ onEvent }) {
 const StateBus = React.createContext(null);
 function Bridge({ state }) {
   const set = React.useContext(StateBus);
-  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney]);
+  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney, state.rebalPicked]);
   return null;
 }
 
@@ -362,6 +410,7 @@ const TRY = [
   ['Why did Sharma’s portfolio drift this quarter?', 'Journey B, all the way to placed'],
   ['Start Meera’s risk profile', 'Journey A — the rail, sixteen steps'],
   ['Build a proposal for Mr. Amit Aggrawal', 'Journey D — the rail again, four steps, and a document'],
+  ['Rebalance Sharma', 'Journey E — one question, three rules, and only one of them costed'],
   ['Flexi cap funds on my shelf', 'Journey C — the shortlist'],
   ['What have I placed this month?', 'The ledger'],
   ['Sell all of Sharma’s Quant Small Cap', 'An instruction that would act — previewed, never run'],

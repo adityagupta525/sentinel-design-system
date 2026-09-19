@@ -875,3 +875,25 @@ discarded them — and piping through `head` also discards the exit code. The ga
 machine and I read the one line that said it had not. **A gate's output is not a summary line, and a
 gate run through `head` is a gate not run.** F-40 was the same class the same hour: a check that reads
 the shape of a thing rather than the thing.
+
+### F-42 · Every `ResultCard` ended in three invisible buttons — *found by driving Journey E, fixed 19 Sep 2026*
+
+`ArtifactCard` rendered its hairline rule and its three-slot footer **unconditionally**
+(`ArtifactCard.jsx:91`). A card given none of `onToggle`, `onWhy` or `onShare` therefore ended in a
+divider, **44pt of dead space**, and three `<button>`s that were enabled, in the tab order, and had no
+name, no text and nothing to do. `ResultCard` supplies none of the three — it is an end state the
+advisor arrived at to read — so this was on **every proposal, review and rebalance card in the product**.
+
+**Measured, not guessed.** On the live DOM of `screens/journey-e/rebalance.html`: card height 677px,
+last child a 44px row, three `BUTTON` elements with `aria-label: null`, `textContent: ""`,
+`disabled: false`. After the fix: 621px, zero unnamed buttons. The 56px is the row plus its rule and
+the gap above it.
+
+The dead space is the lesser half. A keyboard user tabbed into three invisible controls — the same
+class as **F-28** (Stop and Send unnamed) and **F-39** (the app bar's two discs), and the third time
+this system has shipped a `Pressable` nobody could see or name.
+
+**Fix:** the rule and the footer render only when at least one handler is supplied. The condition is on
+the **props**, not on `filling`, so a card that has a toggle keeps its footer while it loads — the row
+is about to be usable and removing it would make the card jump. Cards that use the footer are byte-for-byte
+unchanged; verified on the drift artifact, which still shows its rule and `Expand ⌄`.

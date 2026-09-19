@@ -88,14 +88,24 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
             </div>
           </div>
         )}
-      <div style={{ margin: '12px 14px 0', height: 'var(--border-hairline)', background: 'var(--color-line-soft)' }} />
-      <div style={{ display: 'flex', padding: '0 14px' }}>
-        <Pressable onClick={filling ? undefined : toggle} style={slot}>
-          {toggle && !filling ? <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)' }}>{label(expanded ? collapseLabel : expandLabel, true)}<Chevron up={expanded} /></span> : null}
-        </Pressable>
-        <Pressable onClick={onWhy} style={slot}>{onWhy ? label('Why?') : null}</Pressable>
-        <Pressable onClick={onShare} style={slot}>{onShare ? label('Share') : null}</Pressable>
-      </div>
+      {/* F-42 (19 Sep 2026). The rule and the footer were rendered unconditionally, so a card given none
+          of the three handlers ended in a hairline, 44pt of dead space and THREE enabled <button>s with
+          no name, no text and nothing to do — all of them in the tab order. Measured on the live DOM of
+          `screens/journey-e/rebalance.html`, where `ResultCard` supplies none of them: a keyboard user
+          tabbed into three invisible buttons. The condition is on the PROPS, not on `filling`: a card
+          that has a toggle keeps its footer while it fills, because the row is about to be usable. */}
+      {(onToggle || onWhy || onShare) && (
+        <React.Fragment>
+          <div style={{ margin: '12px 14px 0', height: 'var(--border-hairline)', background: 'var(--color-line-soft)' }} />
+          <div style={{ display: 'flex', padding: '0 14px' }}>
+            <Pressable onClick={filling ? undefined : toggle} style={slot}>
+              {toggle && !filling ? <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)' }}>{label(expanded ? collapseLabel : expandLabel, true)}<Chevron up={expanded} /></span> : null}
+            </Pressable>
+            <Pressable onClick={onWhy} style={slot}>{onWhy ? label('Why?') : null}</Pressable>
+            <Pressable onClick={onShare} style={slot}>{onShare ? label('Share') : null}</Pressable>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 }

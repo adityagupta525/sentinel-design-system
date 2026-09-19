@@ -139,7 +139,12 @@ function AnsweredList({ items, onEdit, editable = true }) {
 
 /* The question being asked, and its answers as chips INSIDE the turn — the 18 Sep ruling, applied to the
    rail rather than left as the one surface still answering from the Dock (contradiction 60). */
-function StepTurn({ step, onChip, thinking }) {
+/* `extra` is a slot, not a feature. A step in the risk rail is a question and some chips; a step in the
+   rebalance rail has to lay three sized options side by side before a chip means anything. Rather than
+   teach this shared file about journey E, the caller renders what its own step needs and the rail keeps
+   deciding only where things sit — inside the SentinelBlock, under the sentence, above the chips, so it
+   reads as part of what Sentinel said rather than as a widget parked beside it. */
+function StepTurn({ step, onChip, thinking, extra }) {
   if (!step) return null;
   const lines = Array.isArray(step.sentinel) ? step.sentinel : [step.sentinel];
   return (
@@ -147,6 +152,7 @@ function StepTurn({ step, onChip, thinking }) {
       {thinking ? <RAIL_DS.SentinelThinking verb="Reading her account record…" /> : (
         <RAIL_DS.SentinelBlock>
           {lines.map((l, i) => <div key={i} style={i ? { marginTop: 'var(--space-10)' } : undefined}><RAIL_DS.SentinelText text={l} weight={i ? 'Regular' : 'Medium'} /></div>)}
+          {extra && <div style={{ marginTop: 'var(--space-12)' }}>{extra}</div>}
           {step.provenance && <div style={{ marginTop: 'var(--space-10)' }}><RAIL_DS.Provenance text={step.provenance} /></div>}
         </RAIL_DS.SentinelBlock>
       )}
@@ -195,7 +201,7 @@ const SHARE_SHEET = {
    steps across it — Risk 16, Proposal 4, Review 1, Rebalance 1 — so a second journey on a second copy of
    this loop would be two places for "what happens when you edit answer 3" to drift apart. The defaults
    are the risk journey, so every existing caller is unchanged. */
-function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, attachCaption = 'Here is her last ITR.', onEvent, onMenu, onNew }) {
+function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, attachCaption = 'Here is her last ITR.', onEvent, onMenu, onNew }) {
   const [cursor, setCursor] = React.useState(0);
   const [answered, setAnswered] = React.useState([]);
   const [sheet, setSheet] = React.useState(null);
@@ -228,7 +234,7 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, attachCaptio
         <AnsweredList items={answered} onEdit={editAt} />
         {step && step.result
           ? (result ? result({ step, onChip }) : <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />)
-          : <StepTurn step={step} thinking={thinking} onChip={onChip} />}
+          : <StepTurn step={step} thinking={thinking} onChip={onChip} extra={stepExtra ? stepExtra({ step, advance, onChip }) : undefined} />}
         <AttachedTurn file={att.file} caption={attachCaption} onRemove={att.clear} />
       </Rail>
       <RAIL_DS.ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []}

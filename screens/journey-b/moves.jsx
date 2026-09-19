@@ -43,7 +43,11 @@ const CLIENT_NOTE = 'Mr. Sharma, your equity had drifted to 71% against the 60% 
    figure an advisor must defend never appears first on the surface where they approve it. */
 /* No `run` prop: Dumbbell animates its own connector with ds-grow and takes no switch, so there is
    nothing here for a caller to freeze. A prop that does nothing is a prop that lies. */
-function MovesSimulation() {
+/* `provenance` is a prop because the simulation is shown in two frames. Inside a SentinelBlock it is the
+   only thing on screen that can say where the cost came from, so it says it. Inside a ResultCard the
+   card already carries a provenance line, and two near-identical lines stacked is the repeated data the
+   owner has objected to more than once. The figure is the same either way; only who states it moves. */
+function MovesSimulation({ provenance = true }) {
   return (
     <div style={{ width: '100%', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
       <MOVES_DS.Eyebrow>If you approve both</MOVES_DS.Eyebrow>
@@ -55,22 +59,35 @@ function MovesSimulation() {
         <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink)' }}>What it costs him</span>
         <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>₹11,200</span>
       </div>
-      <div style={{ marginTop: 'var(--space-8)' }}><MOVES_DS.Provenance text={MOVES_PROVENANCE} /></div>
+      {provenance && <div style={{ marginTop: 'var(--space-8)' }}><MOVES_DS.Provenance text={MOVES_PROVENANCE} /></div>}
     </div>
   );
 }
 
 /* Step 5's turn: the sentence, the simulation, the two moves, then what the advisor is offered — all of
    it inside the turn, scrolling with it (contradiction 60). */
+/* THE BODY OF A REBALANCE — the simulation and the moves, and nothing about the surface it sits on.
+   Journey B reaches this from a drift answer, where it is a MESSAGE in a conversation; Journey E reaches
+   it from the rail, where it is an ARTIFACT the advisor may save and download. Two surfaces, two frames,
+   ONE body: the simulation and the two move cards are drawn here once so the figure on the card and the
+   figure on the sheet can never disagree. */
+function MovesBody({ provenance = true }) {
+  return (
+    <>
+      <MovesSimulation provenance={provenance} />
+      <div style={{ marginTop: 'var(--space-12)', display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+        {MOVES.map((m) => <MOVES_DS.MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
+      </div>
+    </>
+  );
+}
+
 function MovesTurn({ enter = false, actions }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)', animation: enter ? 'ds-rise var(--dur-enter) var(--ease) both' : 'none' }}>
       <MOVES_DS.SentinelBlock>
         <MOVES_DS.SentinelText text={MOVES_ANSWER} />
-        <div style={{ marginTop: 'var(--space-12)' }}><MovesSimulation /></div>
-        <div style={{ marginTop: 'var(--space-12)', display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
-          {MOVES.map((m) => <MOVES_DS.MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
-        </div>
+        <div style={{ marginTop: 'var(--space-12)' }}><MovesBody /></div>
       </MOVES_DS.SentinelBlock>
       {actions}
     </div>
@@ -204,4 +221,4 @@ function SuccessTurn({ enter = false, onRead, onBack, note = false, onDrop }) {
   );
 }
 
-Object.assign(window, { EXEC_STEPS, EXEC_COPY, EXEC_SUMMARY, ExecutionTurn, MOVES_ASK, MOVES_ANSWER, MOVES, MOVES_PROVENANCE, SKIPPED, CONFIRM_DISCLOSURE, CONFIRM_ROWS, CLIENT_NOTE, MovesSimulation, MovesTurn, MovesActions, SuccessTurn });
+Object.assign(window, { MovesBody, EXEC_STEPS, EXEC_COPY, EXEC_SUMMARY, ExecutionTurn, MOVES_ASK, MOVES_ANSWER, MOVES, MOVES_PROVENANCE, SKIPPED, CONFIRM_DISCLOSURE, CONFIRM_ROWS, CLIENT_NOTE, MovesSimulation, MovesTurn, MovesActions, SuccessTurn });
