@@ -11,8 +11,15 @@ import net from 'node:net';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const argv = process.argv.slice(2);
 const REDUCED = argv.includes('--reduced');
+/* PAD THE CROP, ALWAYS (19 Sep 2026, the owner: "screen ka radius match nei ho raha … pehle wala frame
+   jaada clean tha"). A clip taken exactly at the frame's bounding box cuts through its own 44px corners,
+   so the phone renders with its corners sliced off and reads as a square-cornered screen — a defect in
+   the picture, not in the screen. Measured on 01-home: the frame is radius 44, overflow hidden, one
+   shadow, and correct. Leaving 24pt of the board around it puts the corners and the shadow back where
+   the eye expects them. `--tight` restores the old exact-bounds crop for measuring an edge. */
+const PAD = argv.includes('--tight') ? 0 : 24;
 const [rel, idxArg, outArg] = argv.filter((a) => !a.startsWith('--'));
-if (!rel) { console.error('usage: phone-shot.mjs <page.html> [phoneIndex] [out.png] [--reduced]'); process.exit(2); }
+if (!rel) { console.error('usage: phone-shot.mjs <page.html> [phoneIndex] [out.png] [--reduced] [--tight]'); process.exit(2); }
 const idx = Number(idxArg ?? 0);
 const out = outArg || 'phone.png';
 
@@ -53,7 +60,9 @@ for (let waited = 0; waited < 20000; waited += 250) {
 
 if (!boxes.length) { console.error(`no 375x812 phone frame on ${rel}`); await browser.close(); process.exit(1); }
 if (idx >= boxes.length) { console.error(`page has ${boxes.length} phone(s); asked for index ${idx}`); await browser.close(); process.exit(1); }
-await page.screenshot({ path: out, clip: boxes[idx] });
-console.log(`${out}  phone ${idx + 1}/${boxes.length}  ${Math.round(boxes[idx].width)}x${Math.round(boxes[idx].height)}${REDUCED ? '  (reduced motion)' : ''}`);
+const b = boxes[idx];
+const clip = { x: Math.max(0, b.x - PAD), y: Math.max(0, b.y - PAD), width: b.width + PAD * 2, height: b.height + PAD * 2 };
+await page.screenshot({ path: out, clip });
+console.log(`${out}  phone ${idx + 1}/${boxes.length}  ${Math.round(b.width)}x${Math.round(b.height)}${PAD ? ` +${PAD}pt board` : '  tight'}${REDUCED ? '  (reduced motion)' : ''}`);
 await browser.close();
 process.exit(0);
