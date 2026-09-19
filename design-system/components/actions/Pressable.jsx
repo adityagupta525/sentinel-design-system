@@ -29,7 +29,11 @@ import React from 'react';
    Why solid and not just the halo: the halo is bronze at 24% alpha, which composites to #e7ddd4 and
    measures 1.22:1 against canvas — it fails WCAG 2.4.13's 3.0 floor on its own. The solid outline is
    --color-bronze-deep at 6.59 / 7.24. Both tokens already existed; only their use is new. */
-export function Pressable({ children, onClick, style, disabled = false, pressScale = 0.98, label, role, expand = 'auto', pressed, expanded, controls, tabIndex }) {
+/* `aria-disabled` is accepted and forwarded (19 Sep 2026) so a caller can render a control INERT —
+   unclickable, out of the tab order, announced as unavailable — WITHOUT the 0.4 dimming that `disabled`
+   carries. SegmentedRow's locked row needs exactly that: the cap is stated, and the current selection
+   still has to be visible while it cannot be changed. */
+export function Pressable({ children, onClick, style, disabled = false, pressScale = 0.98, label, role, expand = 'auto', pressed, expanded, controls, tabIndex, 'aria-disabled': ariaDisabled }) {
   const [down, setDown] = React.useState(false);
   const ref = React.useRef(null);
   const [pad, setPad] = React.useState({ y: 0, x: 0 });
@@ -41,7 +45,7 @@ export function Pressable({ children, onClick, style, disabled = false, pressSca
   }, [expand, children]);
   const needsPad = pad.y > 0 || pad.x > 0;
   return (
-    <button ref={ref} type="button" onClick={onClick} disabled={disabled} className="ds-pressable" data-hit={needsPad ? '' : undefined}
+    <button ref={ref} type="button" onClick={onClick} disabled={disabled} aria-disabled={ariaDisabled} className="ds-pressable" data-hit={needsPad ? '' : undefined}
       aria-label={label} role={role} aria-pressed={pressed} aria-expanded={expanded} aria-controls={controls} tabIndex={tabIndex}
       onPointerDown={() => !disabled && setDown(true)} onPointerUp={() => setDown(false)} onPointerLeave={() => setDown(false)}
       style={{ position: 'relative', appearance: 'none', border: 'none', background: 'transparent', padding: 0, margin: 0, cursor: disabled ? 'default' : 'pointer', color: 'inherit', font: 'inherit', textAlign: 'inherit', opacity: disabled ? 0.4 : 1, transform: down ? `scale(${pressScale})` : 'none', transition: 'transform var(--dur-press) var(--ease), background-color var(--dur-press) var(--ease)', '--hit-y': `${pad.y}px`, '--hit-x': `${pad.x}px`, ...style }}>

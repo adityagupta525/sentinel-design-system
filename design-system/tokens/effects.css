@@ -75,7 +75,7 @@
 /* Reduced motion — the law, implemented, not asserted. Every looping or entrance animation in the
    system resolves to its final state with an opacity fade and nothing else: no translate, no scale,
    no rotation, no pulse. Keyframes are redefined rather than cancelled, so nothing is left mid-way
-   through a transform. Component-local keyframes (ds-artifact, ds-sheet, ds-tip-*, ds-draw, ds-spin)
+   through a transform. Component-local keyframes (ds-artifact, ds-sheet, ds-tip-*, ds-draw, ds-spin, ds-drawer)
    carry the same override inside their own <style>, because those sheets are appended after this one. */
 @media (prefers-reduced-motion:reduce){
 @keyframes sentinel-shimmer{0%,100%{opacity:1}}

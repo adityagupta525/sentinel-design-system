@@ -55,6 +55,27 @@ measurements are on the pages themselves.**
   Also: the paperclip now works on Home, and an attached file arrives at the END of the thread on the
   advisor's side (`FileUpload side="advisor"`), where it had been pasted above Sentinel's reply at full
   width, reading as something Sentinel produced.
+- **The reviewer agent found thirteen things on the three screens built before the rulings, and eleven are
+  fixed.** The two HIGH ones: screen 2 was telling a different story from screen 3 in exactly the words
+  ruling 4 named (its own copy of the question, steps and reasoning had drifted — now it draws the shared
+  `answer.jsx` ones, no figure moved); and on the drawer phone the page calls *"the screen"*, **four
+  controls were drawings** — Back to home and all three "See all" rows did nothing when tapped. Both wired
+  and driven with Playwright: See all raises that section's cap in place (rows 48 → 51, Sunita's row
+  appears), Back to home closes. Also fixed: `thread.jsx` no longer pipes the two deprecated Dock slots no
+  screen passes; the drawer page claimed a composer the drawer deliberately does not have; the theme
+  caption said "Dark arrives with its tokens" (jargon in a menu — now "Dark is coming") and was drawn from
+  two copies; `ds-drawer` was a sixth component-local keyframe that two lists still called five.
+  **Still the owner's call: Home's placeholder** repeats the chip row 55pt below it ("Ask Sentinel about a
+  client, a fund, or a plan" vs "Build proposal · Review portfolio · Fund explorer"). Shortening it to
+  "Ask Sentinel" would de-duplicate, but `Composer.d.ts` documents the home placeholder as the long one, so
+  it is a documented system behaviour, not a screen's choice.
+  **And one question the agent put well:** by ruling 5's own test, is screen 2 (the trace) a state of screen
+  3 rather than a screen? Same thread, same turn, same question. The argument against folding is that it
+  changes the CONTROLS — the send slot becomes Stop, and it carries Continue and Try again — which is a
+  different interaction contract, not a different moment. Worth deciding out loud.
+- **Home keeps its starters in the Dock, and now the contract says why.** The ruling moves what a *message*
+  offered into that message; Home has no message and no scroller (measured: zero scrolling elements). The
+  carve-out is written into `Dock.d.ts` and contradiction 60 rather than living in a screen's comment.
 - **The reviewer agent the owner asked for:** `.claude/agents/sentinel-interface-reviewer.md`. It renders
   the pages, looks at them, and reports repetition, duplicate controls, placement, whose-message, controls
   that are drawings, copy and iconography — with `path:line` and the smallest fix. Every item on its list

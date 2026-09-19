@@ -610,6 +610,33 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
+### F-31 · A locked `SegmentedRow` dimmed its selection away — *found by the review agent, fixed 19 Sep 2026*
+`SegmentedRow`'s locked row passed `disabled` to `Pressable`, which renders at `opacity: 0.4`. Measured on
+the drawer: **both** pills at 0.4, and Light's `--color-selected` composited through it matched the
+unselected pill — so the row stopped showing which theme is on. That is the opposite of the component's own
+header (*"a locked row renders inert, keeps its selection visible"*), of the drawer page's stated treatment
+(*"selected keeps `--color-selected` and a bronze ring"*), and of `OverlapView`'s rule it was built from:
+*the cap is stated when reached, never enforced by a disabled button with no explanation.* Same class as
+F-27 — a page saying one number over a render doing another.
+
+Fixed by making locked **inert rather than disabled**: no handler, `tabIndex={-1}`, and `aria-disabled` for
+the announcement. `Pressable` now accepts and forwards `aria-disabled`, which is the difference between
+"announced as unavailable" and "dimmed to 40%". Measured after: Light `opacity 1`, background
+`rgb(235,212,195)` = `--color-selected`; Dark `opacity 1`, `--color-chip`. The selection is visible again
+and neither pill can be tapped or tabbed to.
+
+### F-32 · A stopped trace kept saying "Working" — *found by the review agent, fixed 19 Sep 2026*
+`ProgressTrace` had two header states, `Working · Ns` and `Thought for Ns`. A trace frozen mid-run is
+neither, so `screens/journey-b/02-thread-trace.html` shipped two phones reading **"Working · 3s"** fourteen
+points above **"Stopped. I kept what I'd worked out so far"** and **"I lost the connection…"**. Two
+contradictory claims about one moment, on a product whose register is honesty — and the screen could not
+fix it without hand-building a header, which the promotion rule forbids.
+
+A third state, `stopped`, renders **"Stopped at Ns"**. Additive: every existing call site is unchanged, and
+the two screen-2 phones now measure "Stopped at 3s". The same pass moved screen 2 onto the shared
+`answer.jsx` copy, so its step 4 reads "Working out what moved" like screen 3's rather than "Attributing
+the drift" — no figure changed, only the words (screens/README rule 14).
+
 ### F-30 · The artifact peek reserved 96px instead of capping at it, and three bars ended 4pt apart — *found by the owner, fixed 18 Sep 2026*
 The owner looked at an artifact peek and said the space between the chart and "As of 30 Sep" was being
 wasted. Measured on `screens/journey-b/03-thread-answer.html`: the preview box was `height: 96` while the

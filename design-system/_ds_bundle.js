@@ -272,7 +272,7 @@ var __ds_out = (() => {
   }
 
   // design-system/components/actions/Pressable.jsx
-  function Pressable({ children, onClick, style, disabled = false, pressScale = 0.98, label, role, expand = "auto", pressed, expanded, controls, tabIndex }) {
+  function Pressable({ children, onClick, style, disabled = false, pressScale = 0.98, label, role, expand = "auto", pressed, expanded, controls, tabIndex, "aria-disabled": ariaDisabled }) {
     const [down, setDown] = react_global_default.useState(false);
     const ref = react_global_default.useRef(null);
     const [pad, setPad] = react_global_default.useState({ y: 0, x: 0 });
@@ -290,6 +290,7 @@ var __ds_out = (() => {
         type: "button",
         onClick,
         disabled,
+        "aria-disabled": ariaDisabled,
         className: "ds-pressable",
         "data-hit": needsPad ? "" : void 0,
         "aria-label": label,
@@ -361,9 +362,10 @@ var __ds_out = (() => {
         {
           key: o,
           onClick: locked ? void 0 : () => onChange && onChange(o),
-          disabled: locked,
+          tabIndex: locked ? -1 : void 0,
           pressed: on,
           label: `${label}: ${o}`,
+          "aria-disabled": locked || void 0,
           style: { display: "inline-flex", height: "var(--h-filter-chip)", flexShrink: 0, alignItems: "center", justifyContent: "center", padding: "0 var(--space-12)", borderRadius: "var(--radius-full)", background: on ? "var(--color-selected)" : "var(--color-chip)", boxShadow: on ? "0 0 0 var(--border-1) var(--color-bronze)" : "0 0 0 var(--border-1) var(--color-line)" }
         },
         /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", letterSpacing: "var(--tracking-pill)", color: on ? "var(--color-ink)" : "var(--color-bronze-deep)" } }, o)
@@ -912,7 +914,7 @@ var __ds_out = (() => {
     if (state === "active") return /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 16, height: 16, borderRadius: "var(--radius-full)", background: "var(--color-canvas)", boxShadow: "0 0 0 2px var(--color-bronze)", boxSizing: "border-box" } });
     return /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 16, height: 16, borderRadius: "var(--radius-full)", boxShadow: "0 0 0 1px var(--color-line)" } });
   }
-  function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay = true, initialActive = 0, seconds = 3, initialCollapsed = false }) {
+  function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay = true, initialActive = 0, seconds = 3, initialCollapsed = false, stopped = false }) {
     const [active, setActive] = react_global_default.useState(initialActive);
     const [done, setDone] = react_global_default.useState(!autoplay && initialActive >= steps.length);
     const [collapsed, setCollapsed] = react_global_default.useState(initialCollapsed && !autoplay && initialActive >= steps.length);
@@ -942,7 +944,7 @@ var __ds_out = (() => {
     }, []);
     const chev = (rot) => /* @__PURE__ */ react_global_default.createElement("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", style: { transform: rot ? "rotate(-90deg)" : "none" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M4.5 3 7.5 6l-3 3", stroke: "var(--color-muted)", strokeWidth: "1.3", strokeLinecap: "round", strokeLinejoin: "round" }));
     if (done && collapsed) return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, null, /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => setCollapsed(false), style: { display: "flex", alignItems: "center", gap: "var(--space-6)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-13)", color: "var(--color-muted)" } }, "Thought for ", secs, "s"), chev(false)));
-    return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => done && setCollapsed(true), style: { appearance: "none", border: "none", background: "transparent", padding: 0, cursor: done ? "pointer" : "default", marginBottom: "var(--space-10)", display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: done ? "var(--color-muted)" : "var(--color-ink)" } }, done ? `Thought for ${secs}s` : `Working \xB7 ${secs}s`), done && chev(true)), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", gap: "var(--space-12)", paddingLeft: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "absolute", bottom: 8, left: 9, top: 8, width: 1, background: "var(--color-line)" } }), steps.map((s, i) => {
+    return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => done && setCollapsed(true), style: { appearance: "none", border: "none", background: "transparent", padding: 0, cursor: done ? "pointer" : "default", marginBottom: "var(--space-10)", display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: done ? "var(--color-muted)" : "var(--color-ink)" } }, stopped ? `Stopped at ${secs}s` : done ? `Thought for ${secs}s` : `Working \xB7 ${secs}s`), done && chev(true)), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", gap: "var(--space-12)", paddingLeft: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "absolute", bottom: 8, left: 9, top: 8, width: 1, background: "var(--color-line)" } }), steps.map((s, i) => {
       const state = i < active ? "done" : i === active && !done ? "active" : done ? "done" : "pending";
       return /* @__PURE__ */ react_global_default.createElement("div", { key: s, style: { position: "relative", zIndex: 10, display: "flex", alignItems: "center", gap: "var(--space-10)", opacity: i === active && !done ? 1 : 0.4, transition: "opacity var(--dur-fast) var(--ease)" } }, /* @__PURE__ */ react_global_default.createElement(Circle, { state }), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-13)", lineHeight: "var(--leading-18)", color: "var(--color-ink-soft)" } }, s));
     })), done && reasoning && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", borderLeft: "1px solid var(--color-line)", paddingLeft: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-13)", lineHeight: "var(--leading-19)", color: "var(--color-muted)" } }, reasoning))));

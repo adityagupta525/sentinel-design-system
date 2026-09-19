@@ -9,7 +9,7 @@ const THREAD_DS = window.SentinelDesignSystem_0682a2;
 /* The thread carries the scroll — never a card inside it, and never a second scroller. */
 /* scrollRef: the live prototype owns the two thread scrolls ArtifactCard's contract assigns to the
    caller — header under the app bar on expand, back to the card on collapse — and needs the scroller. */
-function Thread({ time = '3:04', children, chips, cta, composer, onMenu, onNew, scrollRef, revision = 0, anchor = 'newest' }) {
+function Thread({ time = '3:04', children, composer, onMenu, onNew, scrollRef, revision = 0, anchor = 'newest' }) {
   /* WHERE A THREAD RESTS. On mount, and whenever the caller says the turns changed (`revision`):
        'newest'  — the newest turn STARTS on screen; if it also fits, it ends on screen too (scroll to
                    the bottom). Measured on screen 3: the answer turn is ~500pt in a 462pt thread, so
@@ -48,7 +48,10 @@ function Thread({ time = '3:04', children, chips, cta, composer, onMenu, onNew, 
           {children}
         </div>
       </div>
-      <THREAD_DS.Dock chips={chips} cta={cta} composer={composer} />
+      {/* The Dock carries the composer and nothing else: `chips` and `cta` are deprecated (contradiction
+          60) and no screen passes them, so the shell does not offer them either — a prop with nothing
+          behind it is how a deprecated pattern quietly returns. */}
+      <THREAD_DS.Dock composer={composer} />
       <THREAD_DS.HomeIndicator />
     </div>
   );

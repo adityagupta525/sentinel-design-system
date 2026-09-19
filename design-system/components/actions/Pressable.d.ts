@@ -16,6 +16,10 @@ export interface PressableProps {
   /** id of the region this control expands. */
   controls?: string;
   tabIndex?: number;
+  /** Renders INERT rather than disabled: announced as unavailable, but WITHOUT the 0.4 dimming `disabled`
+   *  carries. For a control whose current value must stay readable while it cannot be changed —
+   *  SegmentedRow's locked row. Pair it with `onClick={undefined}` and `tabIndex={-1}`. */
+  'aria-disabled'?: boolean;
   /** 'auto' (default) measures the rendered box and extends the tap target to 44pt.
    *  'none' opts out — only for a control already ≥44 in both axes, or one nested inside a larger target. */
   expand?: 'auto' | 'none';

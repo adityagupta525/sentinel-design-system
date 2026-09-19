@@ -1,13 +1,19 @@
 import React from 'react';
 import { SentinelBlock } from './SentinelBlock.jsx';
 import { Pressable } from '../actions/Pressable.jsx';
-/* Step 5 · the real progress trace — steps name real work, then collapse to "Thought for Ns". */
+/* Step 5 · the real progress trace — steps name real work, then collapse to "Thought for Ns".
+
+   THREE HEADER STATES, NOT TWO (19 Sep 2026). It had "Working · Ns" and "Thought for Ns", and a trace
+   that was stopped had to keep saying "Working" — so screen 2 shipped a phone reading "Working · 3s"
+   directly above "Stopped. I kept what I'd worked out so far." Two contradictory claims about one moment,
+   fourteen points apart, on a product whose register is honesty. `stopped` gives the third: "Stopped at
+   Ns". It is additive — every existing call site renders exactly as before. */
 function Circle({ state }) {
   if (state === 'done') return <span style={{ display: 'flex', width: 16, height: 16, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--color-bronze)' }}><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.8 4.6 3.6 6.4 7.2 2.6" stroke="var(--color-surface)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg></span>;
   if (state === 'active') return <span style={{ width: 16, height: 16, borderRadius: 'var(--radius-full)', background: 'var(--color-canvas)', boxShadow: '0 0 0 2px var(--color-bronze)', boxSizing: 'border-box' }} />;
   return <span style={{ width: 16, height: 16, borderRadius: 'var(--radius-full)', boxShadow: '0 0 0 1px var(--color-line)' }} />;
 }
-export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay = true, initialActive = 0, seconds = 3, initialCollapsed = false }) {
+export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay = true, initialActive = 0, seconds = 3, initialCollapsed = false, stopped = false }) {
   const [active, setActive] = React.useState(initialActive);
   /* A frozen trace whose initialActive has passed the last step IS a finished trace. Until v12 the
      only way to reach the done state was to let the clock run, so a specimen or an artboard could
@@ -36,7 +42,7 @@ export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay
     <SentinelBlock>
       <div style={{ width: '100%' }}>
         <button type="button" onClick={() => done && setCollapsed(true)} style={{ appearance: 'none', border: 'none', background: 'transparent', padding: 0, cursor: done ? 'pointer' : 'default', marginBottom: 'var(--space-10)', display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', color: done ? 'var(--color-muted)' : 'var(--color-ink)' }}>{done ? `Thought for ${secs}s` : `Working · ${secs}s`}</span>
+          <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', color: done ? 'var(--color-muted)' : 'var(--color-ink)' }}>{stopped ? `Stopped at ${secs}s` : done ? `Thought for ${secs}s` : `Working · ${secs}s`}</span>
           {done && chev(true)}
         </button>
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 'var(--space-12)', paddingLeft: 'var(--space-2)' }}>

@@ -9,7 +9,13 @@ import { Pressable } from './Pressable.jsx';
    LOCKED is the state that earned the component. OverlapView's rule, in the system's words: the cap
    is STATED when reached, never enforced by a disabled button with no explanation. So a locked row
    renders inert, keeps its selection visible, and says why underneath in one caption. It never hides
-   the option that is not available. */
+   the option that is not available.
+
+   INERT, NOT DISABLED (19 Sep 2026). The first cut passed `disabled` to Pressable, which dims to 0.4 —
+   so BOTH pills dimmed equally and the selected one stopped reading as selected. Measured on the
+   drawer: Light's --color-selected composited through 0.4 and matched the unselected pill, which is the
+   opposite of "keeps its selection visible" two lines up, and of what the drawer's own page states.
+   Inert is: no handler, out of the tab order, `aria-disabled` for the announcement, full opacity. */
 export function SegmentedRow({ options, value, onChange, label, locked = false, lockedNote }) {
   const active = value ?? options[0];
   return (
@@ -18,7 +24,8 @@ export function SegmentedRow({ options, value, onChange, label, locked = false, 
         {options.map((o) => {
           const on = o === active;
           return (
-            <Pressable key={o} onClick={locked ? undefined : () => onChange && onChange(o)} disabled={locked} pressed={on} label={`${label}: ${o}`}
+            <Pressable key={o} onClick={locked ? undefined : () => onChange && onChange(o)} tabIndex={locked ? -1 : undefined} pressed={on} label={`${label}: ${o}`}
+              aria-disabled={locked || undefined}
               style={{ display: 'inline-flex', height: 'var(--h-filter-chip)', flexShrink: 0, alignItems: 'center', justifyContent: 'center', padding: '0 var(--space-12)', borderRadius: 'var(--radius-full)', background: on ? 'var(--color-selected)' : 'var(--color-chip)', boxShadow: on ? '0 0 0 var(--border-1) var(--color-bronze)' : '0 0 0 var(--border-1) var(--color-line)' }}>
               <span style={{ font: 'var(--type-label-font)', letterSpacing: 'var(--tracking-pill)', color: on ? 'var(--color-ink)' : 'var(--color-bronze-deep)' }}>{o}</span>
             </Pressable>

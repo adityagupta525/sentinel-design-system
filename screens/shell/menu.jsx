@@ -26,13 +26,18 @@ const MENU_CLIENTS_LONG = ['Ramasubramanian Venkataraghavan', 'Mr. Amit Aggrawal
 
 /* "Back to home" and the one-theme control. SegmentedRow is the system's; the row is locked because no
    token carries a dark value yet, and the caption says so rather than a dead button. */
+/* One string, one control — the drawer's page used to draw a second copy of this row for its "light and
+   dark" section, and two copies of a caption drift. */
+const MenuFooterTheme = () => (
+  <MENU_DS.SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark is coming." />
+);
 const MenuFooter = ({ onHome }) => (
   <>
     <MENU_DS.Pressable onClick={onHome || (() => {})} label="Back to home" style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
       <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
     </MENU_DS.Pressable>
-    <MENU_DS.SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />
+    <MENU_DS.SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark is coming." />
   </>
 );
 
-Object.assign(window, { MENU_SAVED, MENU_RECENT, MENU_CLIENTS, MENU_CLIENTS_LONG, MenuFooter });
+Object.assign(window, { MENU_SAVED, MENU_RECENT, MENU_CLIENTS, MENU_CLIENTS_LONG, MenuFooter, MenuFooterTheme });

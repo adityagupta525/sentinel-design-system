@@ -4,7 +4,13 @@ export interface DockProps {
    *  offered belongs beside the message that offered it; pinned, it outlives the turn it came from and
    *  the screen reads as a toolbar. Use `InlineActionRow` (or AnswerChips placed in the thread) and a
    *  `DarkButton full` under the message instead. The slot stays so the journey rail, which asks one
-   *  question at a time and answers it in place, can be migrated deliberately rather than broken. */
+   *  question at a time and answers it in place, can be migrated deliberately rather than broken.
+   *
+   *  THE ONE EXCEPTION IS A SCREEN WITH NO CONVERSATION ON IT — Home. The ruling moves what a MESSAGE
+   *  offered into that message, so a screen that has no message has nothing for its chips to sit under,
+   *  and no scroll for them to outlive (Home has no scroller at all — measured). Starters above the
+   *  composer there are `readme.md:187`'s "Dock pills act on the current state of the conversation, and
+   *  they persist" in its only remaining case: the current state is "nothing asked yet". */
   chips?: React.ReactNode;
   /** DEPRECATED BY THE SAME RULING. A decision belongs under the thing it decides about. */
   cta?: React.ReactNode;

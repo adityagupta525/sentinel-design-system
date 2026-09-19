@@ -6,5 +6,10 @@ export interface ProgressTraceProps { /** Real work, named: "Reading Sharma's ho
   /** Start in the one-line "Thought for Ns ›" resting state. Honoured only for a trace frozen PAST its last
    *  step (autoplay=false, initialActive >= steps.length) — a running trace has nothing to collapse. This is
    *  what a finished trace looks like under a real answer, and the state a screen page needs most. */
-  initialCollapsed?: boolean; }
+  initialCollapsed?: boolean;
+  /** The third header state: "Stopped at Ns" instead of "Working · Ns". A stopped trace is neither
+   *  working nor finished, and without this a screen showing the abort had to print "Working" directly
+   *  above the message saying it had stopped. Use it on any frozen trace whose turn says it did not
+   *  finish; pair it with `autoplay={false}` and the step it stopped at. */
+  stopped?: boolean; }
 export function ProgressTrace(props: ProgressTraceProps): JSX.Element;

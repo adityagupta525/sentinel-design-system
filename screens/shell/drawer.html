@@ -28,7 +28,7 @@ const SAVED = MENU_SAVED, RECENT = MENU_RECENT, CLIENTS = MENU_CLIENTS, CLIENTS_
 const Footer = MenuFooter;
 /* For the spec page's frozen states the drawer is rendered open. The product never does this — the
    contract says mount closed, open with an action — so the "live" state below opens it the real way. */
-const Menu = ({ scrolled, ...p }) => <Drawer open onClose={() => {}} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} {...p} />;
+const Menu = (p) => <Drawer open onClose={() => {}} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} {...p} />;
 
 const Scene = (props) => (
   <div style={{ position: 'relative', height: '100%', width: '100%' }}>
@@ -40,10 +40,17 @@ const Scene = (props) => (
    keyboard is checked against — Escape closes, Tab wraps, focus returns to the hamburger. */
 function LiveScene() {
   const [open, setOpen] = React.useState(false);
+  /* "See all" raises the section's cap in place — the panel already carries one scroll, so there is no
+     second surface to invent. The caps are Drawer's own prop. Until 19 Sep this page called itself
+     "the screen" while Back to home and all three See all rows did nothing when tapped: controls that
+     are drawings, on the one phone that claims not to be a specimen. */
+  const [caps, setCaps] = React.useState({ saved: 3, recent: 7, clients: 8 });
+  const seeAll = (section) => setCaps((c) => ({ ...c, [section]: 99 }));
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Home hour={15} time="3:04" onMenu={() => setOpen(true)} />
-      <Drawer open={open} onClose={() => setOpen(false)} onNew={() => setOpen(false)} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} />
+      <Drawer open={open} onClose={() => setOpen(false)} onNew={() => setOpen(false)} onSeeAll={seeAll} caps={caps}
+        saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer onHome={() => setOpen(false)} />} />
     </div>
   );
 }
@@ -56,7 +63,7 @@ const MOTION = [
 ];
 
 const PROVENANCE = [
-  ['12 questions · 6 funds · 43 funds · 2 moves', 'The advisor’s own saved work, counted', 'The row’s meta, right-aligned, muted'],
+  ['12 questions · 6 funds · 43 funds', 'The advisor’s own saved work, counted. Three of five — the cap is 3 and “See all 5” carries the rest', 'The row’s meta, right-aligned, muted'],
   ['2h ago · Yesterday · 16 Sep · 15 Sep', 'When each thread was last touched. Day-first, short month, per rule 4', 'The row’s meta'],
   ['The client rows', 'The advisor’s book. Initials are derived from the name, never a photograph', 'A bronze-20% disc — the system ships no avatars'],
 ];
@@ -86,7 +93,7 @@ mountScreen(
         <State label="loading" tone="under" note="Three lists, three arrival times. The skeleton is right here and wrong on Home: on Home the section is additive and may turn out empty; here it is the content, and the drawer is never anything else.">
           <Scene loading />
         </State>
-        <State label="one section failed" tone="over" note="Recent could not load; saved work and the book still did. It fails per section and never blanks the drawer — the new-chat button, Back to home and the composer all survive, so the advisor is never trapped in a menu that has nothing in it.">
+        <State label="one section failed" tone="over" note="Recent could not load; saved work and the book still did. It fails per section and never blanks the drawer — the new-chat button and Back to home both survive, so the advisor is never trapped in a menu that has nothing in it.">
           <Scene failed={{ recent: true }} />
         </State>
         <State label="long client name" tone="under" note="A 300pt drawer is 268 of usable width and a row is 244 of content. ListRow truncates rather than wrapping, because the row is a fixed height. A name this long is the case where that is still the right answer — the avatar and the position in the book identify it, and the full name is one tap away.">
@@ -98,7 +105,7 @@ mountScreen(
     <Section title="3 · Light and dark" sub="There is one theme. This is how the screen says so without lying and without a dead button.">
       <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
         <div style={{ width: 268, borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: 16, boxShadow: 'var(--shadow-card-soft)' }}>
-          <SegmentedRow label="Appearance" options={['Light', 'Dark']} value="Light" locked lockedNote="One theme so far. Dark arrives with its tokens." />
+          <MenuFooterTheme />
         </div>
         <Note title="Why it looks like this">
           Both options are shown, neither can be chosen, and one line says why. That is

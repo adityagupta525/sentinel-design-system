@@ -5,24 +5,22 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AnswerChip','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AnswerChip','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','DataTableCard','ChipRow','DarkButton','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
+<script type="text/babel" src="./answer.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
 const { Composer, UserBubble, ProgressTrace, SentinelBlock, SentinelText, AnswerChip } = window.SentinelDesignSystem_0682a2;
 
-/* The advisor's question and the four steps are the product's own, from
-   docs/screens-source/src/screens/Chat.tsx:254-260. Nothing here is written for the specimen. */
-const ASK = "Why did Sharma's portfolio drift this quarter?";
-const STEPS = [
-  "Reading Sharma's holdings — 18 funds",
-  'Comparing against his mandate',
-  'Checking Q2 statements',
-  'Attributing the drift',
-];
-const REASONING = 'Equity went from 62% to 71% against a 60% target. Three things moved it, and only one of them was a decision.';
+/* The question, the steps and the reasoning are the SHARED ones — answer.jsx is loaded above and owns
+   them, so this screen and screen 3 and the prototype cannot tell three different stories about one
+   question. They used to be declared here, and after the 18 Sep copy ruling they drifted: this page
+   still said "Attributing the drift" and "against a 60% target" while screen 3 said "Working out what
+   moved" and "He agreed to 60%". Same figures either way — 18 funds, 62, 71, 60 — only the words moved.
+   screens/README rule 14: shared turns live in one file. */
+const ASK = DRIFT_ASK, STEPS = DRIFT_STEPS, REASONING = DRIFT_REASONING;
 
 /* Every specimen is FROZEN — autoplay={false} — so the page holds still for a reviewer. Frozen PAST
    the last step is the finished state, which is the one a spec page could not reach before v12 (F-22). */
@@ -70,17 +68,17 @@ mountScreen(
       <StateRow>
         <State label="stopped" tone="under" note="The advisor pressed Stop. The partial trace stays on screen — what was worked out is not thrown away — and Continue is offered inline, on the message that owns it, not in the Dock.">
           <Scene
-            trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} />}
+            trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} stopped />}
             after={<SentinelBlock continued>
-              <SentinelText text="Stopped. I kept what I'd worked out so far — I was partway through attributing Sharma's drift." />
+              <SentinelText text="Stopped. I kept what I'd worked out so far — I was partway through working out what moved his mix." />
               <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Continue" variant="primary" onClick={() => {}} /></div>
             </SentinelBlock>} />
         </State>
         <State label="connection lost" tone="over" note="The state the archive never had. It is NOT the same message as Stop: the advisor did not choose this, so the copy says what happened before it says what is kept, and the chip is Try again rather than Continue. Bad news as text on the peach bubble — rule 2 — never a red fill.">
           <Scene
-            trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} />}
+            trace={<ProgressTrace steps={STEPS} reasoning={REASONING} autoplay={false} initialActive={3} seconds={3} stopped />}
             after={<SentinelBlock continued>
-              <SentinelText text="I lost the connection while I was attributing the drift. What I had worked out is above it, and I have not guessed the rest." />
+              <SentinelText text="I lost the connection while I was working out what moved his mix. What I had worked out is above it, and I have not guessed the rest." />
               <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Try again" variant="primary" onClick={() => {}} /></div>
             </SentinelBlock>} />
         </State>
