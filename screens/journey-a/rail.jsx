@@ -201,7 +201,7 @@ const SHARE_SHEET = {
    steps across it — Risk 16, Proposal 4, Review 1, Rebalance 1 — so a second journey on a second copy of
    this loop would be two places for "what happens when you edit answer 3" to drift apart. The defaults
    are the risk journey, so every existing caller is unchanged. */
-function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, attachCaption = 'Here is her last ITR.', onEvent, onMenu, onNew }) {
+function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, onAnswer, attachCaption = 'Here is her last ITR.', onEvent, onMenu, onNew }) {
   const [cursor, setCursor] = React.useState(0);
   const [answered, setAnswered] = React.useState([]);
   const [sheet, setSheet] = React.useState(null);
@@ -209,7 +209,11 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, a
   const att = useAttachment();
   const step = steps[cursor];
   const log = (what, motion) => onEvent && onEvent(what, motion);
-  const advance = (label, goto) => {
+  /* `onAnswer` tells the caller WHICH chip was taken, which the answered list cannot: it stores the
+     label the advisor sees, and a journey that branches on the answer needs the chip. Journey F is the
+     first to branch — its one question picks who the review is for. */
+  const advance = (label, goto, chip) => {
+    if (onAnswer) onAnswer(step, chip || { label });
     setAnswered((a) => [...a, { q: step.short, a: label }]);
     setThinking(true);
     const next = goto != null ? goto : cursor + 1;
@@ -219,7 +223,7 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, a
   const onChip = (ch) => {
     if (ch.sheet) { log('Explainer opens — a detour, the rail dims', 'ds-sheet 300ms; ProgressRail dim to 40%'); return setSheet(ch.sheet); }
     if (ch.external) { log('Share — the OS sheet, not ours', ''); return setSheet(SHARE_SHEET); }
-    advance(ch.label, ch.goto);
+    advance(ch.label, ch.goto, ch);
   };
   /* Edit answer i: the journey reopens THERE and everything after it is asked again. */
   const editAt = (i) => {

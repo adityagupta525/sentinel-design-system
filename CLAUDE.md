@@ -75,11 +75,11 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
    `ResultCard` · `DataTable` · `OverlapView` · `InfoCard kind='manager'`, each with its contract and
    a spec page. `pages/_index.json` reports **0 specified**: the backlog the system carried since v9
    is empty.
-3b. **Spec pages, Tier 1** — done. **45 of 88 shipped**, 43 building, 93/93 pages render clean.
+3b. **Spec pages, Tier 1** — done. **45 of 88 shipped**, 43 building, 94/94 pages render clean.
    Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
    Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for. **Journeys A, B and C built** (a state of a screen is not a screen), plus the shell
-   drawer, the ledger, the refusals, the going-back layer, **Journey D (the proposal)**, **Journey E (the rebalance)** and **the end-to-end prototype** — one phone whose
+   drawer, the ledger, the refusals, the going-back layer, **Journey D (the proposal)**, **Journey E (the rebalance)**, **Journey F (the review)** and **the end-to-end prototype** — one phone whose
    router decides which journey a sentence enters. Build order #7 is the last row, and it is done. The owner's standing rule since 18 Sep: **nothing in the system that is on
-   no screen** — `npm run report:parallel` measures it (73 of 88 today, counted transitively).
+   no screen** — `npm run report:parallel` measures it (74 of 88 today, counted transitively).

@@ -1,0 +1,134 @@
+<!-- @dsCard group="Screens" viewport="1500x2300" name="Journey F · the client review" subtitle="One question — what is this for — and a review whose finding is a figure that is not on file" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, Dock, HomeIndicator, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey F · the client review — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConcentrationBar','ConstraintCallout','DarkButton','Dock','DownloadAction','FileUpload','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../data/book.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="../journey-a/rail.jsx"></script>
+<script type="text/babel" src="./review.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { Composer } = window.SentinelDesignSystem_0682a2;
+
+const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
+
+function Step() {
+  return (
+    <Rail n={1} total={REV_TOTAL} revision={0} composer={<RailAsk step={REV_STEPS[0]} onAttach={() => {}} />}>
+      <StepTurn step={REV_STEPS[0]} onChip={() => {}} />
+    </Rail>
+  );
+}
+
+function Scene({ audience, state = 'draft', savedAt, anchor = 'bottom' }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor={anchor} revision={`${audience}-${state}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={REV_ASK} costNote="Sending this replaces the review below it." />
+      <ReviewResult state={state} savedAt={savedAt} onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} />
+      {audience && <ReviewEnding audience={audience} onChip={() => {}} />}
+      <AttachedTurn file={att.file} caption="Here is her September statement." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+function LiveReview() {
+  const [audience, setAudience] = React.useState(null);
+  return (
+    <LiveRail steps={REV_STEPS} total={REV_TOTAL} attachCaption="Here is her September statement."
+      onAnswer={(step, chip) => { if (chip.audience) setAudience(chip.audience); }}
+      result={() => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
+          <ReviewResult onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} />
+          {audience && <ReviewEnding audience={audience} onChip={() => {}} />}
+        </div>
+      )} />
+  );
+}
+
+function App() {
+  return (
+    <ScreenShell
+      journey="Journey F · Meera's review" n="5" name="The client review"
+      job="Meera holds ₹18,40,000 across 43 funds, and 29 of them are under ₹27,600 each. The review describes the shape of her book exactly — and cannot say whether she is on the mix she agreed to, because her holdings have never been mapped to categories. It says so, on the document, rather than printing a plausible number."
+      without="cannot answer “what does she hold, and is it what we agreed?” — and has no way to hand a client a record that is honest about what was not known on the day."
+    >
+      <Section title="1 · The one question, and it is not about facts" sub="The book already holds every fact this review can state. What Sentinel cannot infer is what the review is FOR — and the same holdings produce a different document for a filing, for a meeting, and for a decision to invest more.">
+        <StateRow>
+          <State label="what is this for?" note="The facts do not change; what is left out and what is proposed does. Sentinel says so in the same breath and will not turn a record into a proposal on its own. Her three numbers lead — ₹18,40,000, 43 funds, risk 54 Moderate locked 15 Sep — so the advisor picks the audience knowing the client.">
+            <Step />
+          </State>
+          <State label="the review itself" note="Four tiles and a shape. 14 funds hold 80% — ₹14,72,000; the other 29 hold ₹3,68,000 between them, an average of ₹12,690 each, none reaching 1.5% of her book. The tail is ONE row and not twenty-nine, because a list an advisor cannot read to a client is a list that hides the finding.">
+            <Scene />
+          </State>
+          <State label="the finding is a missing figure" tone="under" note="Three tiles are facts and the fourth is LOCKED: what she actually holds. Her statement was loaded fund by fund and the 29 small funds have never been mapped to categories, so the most useful sentence a review could carry — is she on her mandate — cannot be written. StatTile locked has existed since v9 for exactly this and had been on no screen.">
+            <Scene anchor={1} />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="2 · Three endings, and only the ending changes" sub="Same card, same figures, same provenance. What follows it is written for whoever is going to read it.">
+        <StateRow>
+          <State label="her annual record" note="Filed as at 30 Sep, with nothing proposed and with what could not be checked written ON the document. A file that implies everything was known is worse than one that says what was not.">
+            <Scene audience="record" />
+          </State>
+          <State label="a meeting with her" note="The same tail in words she would use, and the one question worth asking: were those bought for a reason you would want kept, or did they arrive one SIP at a time? A review that ends in a recommendation nobody asked for is a sale.">
+            <Scene audience="meeting" />
+          </State>
+          <State label="before she invests more" tone="over" note="The only one Sentinel cannot finish. Headroom is her mandate minus what she already holds, and it has the first half and not the second. It says which half, why, and that ONE category mapping fixes it for every review after this — rather than printing a plausible 57%.">
+            <Scene audience="invest" />
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="3 · Saved, and what it is not" sub="A review commits to nothing, so there is no dark CTA on it at all.">
+        <StateRow>
+          <State label="saved to her file" note="draft → saved on Save. The badge is a date, not a tick.">
+            <Scene audience="record" state="saved" savedAt="19 Sep" />
+          </State>
+          <State label="live · pick an audience" note="The rail asks once. Every ending draws the same card above it; only the block underneath changes, which is the argument the screen is making.">
+            <LiveReview />
+          </State>
+        </StateRow>
+        <Note title="There is no primary button on this card, deliberately">
+          <code>ResultPrimary journey='review'</code> exists in the contract and this screen does not use it.
+          A review commits to nothing &mdash; it is a description of what is already true &mdash; and a record
+          that ends in one big dark button is a proposal wearing a record&rsquo;s title. Save and Download are
+          the whole of it. Compare Journey D, where the button sends a document, and Journey E, where it moves
+          real money: both earn theirs.
+        </Note>
+      </Section>
+
+      <Section title="4 · Where the numbers come from">
+        <ProvenanceTable rows={[
+          ['₹18,40,000 · 43 funds', <span><code>meera.portfolio</code></span>, 'The first sentence, and a tile'],
+          ['14 funds hold 80%', <span><code>meera.tail.topFunds</code> / <code>topSharePct</code></span>, 'The concentration bar'],
+          ['₹14,72,000', <span>80% of ₹18,40,000, derived in <code>book.jsx</code></span>, 'On the bar’s label'],
+          ['₹3,68,000 across 29 funds', <span>the remainder, derived</span>, 'The tail as one row'],
+          ['₹12,690 each', <span>₹3,68,000 ÷ 29, derived</span>, 'What "too small" means in rupees'],
+          ['₹27,600', <span>1.5% of her book, derived from <code>tail.tinyUnderPct</code></span>, 'The line none of the 29 reaches'],
+          ['54 · Moderate · 15 Sep', <span><code>meera.risk</code>, the number Journey A locks</span>, 'A tile — the two journeys agree because they read one record'],
+          ['55 / 30 / 15', <span><code>meera.mandate</code></span>, 'What she agreed to'],
+          ['Her actual split', <span><strong>not in the book</strong> — her 43 holdings are not mapped to categories</span>, 'A LOCKED tile with the placeholder, never a plausible figure'],
+        ]} />
+        <Note title="What this screen does not do">
+          <strong>It does not list her 43 funds</strong>, because the book does not hold them. The archive&rsquo;s
+          eight holding rows are Meera&rsquo;s and were already ruled out for Sharma&rsquo;s screen on the same
+          grounds &mdash; a card filled with rows nobody can source is the exact figure an advisor would read to a
+          client. <strong>Nothing is saved and no file is written:</strong> Save changes a badge and Download holds
+          its own loading state, and neither leaves the page. The category mapping the locked tile asks for is a
+          decision for the owner, not a screen to build.
+        </Note>
+      </Section>
+    </ScreenShell>
+  );
+}
+
+mountScreen(<App />);
+</script></body></html>

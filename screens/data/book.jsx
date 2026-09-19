@@ -216,6 +216,39 @@ const LEDGER_PERIOD = 'Sep 2026';
 /* What an export would carry, named so a screen never implies more than the file holds. */
 const LEDGER_EXPORT = { formats: ['CSV', 'PDF'], columns: ['Date', 'Client', 'Type', 'Detail', 'Amount', 'Status', 'Reference'] };
 
+/* MEERA'S REVIEW — and the shape of it is decided by what the book DOES NOT have.
+
+   Her record carries the value, the fund count, the as-of date, the long tail, her SIP, her mandate,
+   her risk number and her goal. It does NOT carry her 43 holdings, and it does not carry her actual
+   equity / debt / cash split. So a review of Meera can describe the SHAPE of her book exactly and
+   cannot say whether she is on her mandate — which is the single most useful thing a review would say.
+
+   That is not a gap to paper over with a plausible 57%. It is the finding: the statement was loaded
+   fund-wise and nobody has mapped the 29 tail funds to categories, so the split is a figure to supply.
+   `StatTile locked` exists for exactly this and had been on no screen since v9.
+
+   Every figure below is derived from `portfolio.valueRs` and `tail`, so changing either moves all of
+   them together and none of them can drift. */
+const REVIEW_TOP_RS  = Math.round(1840000 * 0.80);          // 14 funds hold 80% → ₹14,72,000
+const REVIEW_TAIL_RS = 1840000 - REVIEW_TOP_RS;             // 29 funds hold the rest → ₹3,68,000
+const REVIEW_TAIL_AVG_RS = Math.round(REVIEW_TAIL_RS / 29); // ₹12,690 each, on average
+const REVIEW_TINY_CAP_RS = Math.round(1840000 * 0.015);     // 1.5% of her book is ₹27,600
+
+/* WHAT A REVIEW IS FOR, and it is the one thing Sentinel cannot infer. The facts are identical in all
+   three; what changes is what is left out and what is proposed. A product that quietly turns a record
+   into a proposal has sold something, and the advisor is the one who signed it. */
+const REVIEW_AUDIENCES = [
+  { id: 'record', label: 'Her annual record', chip: 'Her annual record',
+    ending: 'A record, not a proposal. Dated, with what I could not check stated on it, and nothing suggested.',
+    note: 'This is the one you file.' },
+  { id: 'meeting', label: 'A meeting with her', chip: 'A meeting with her',
+    ending: 'Plain words she would use, the tail explained, and the one question worth asking her.',
+    note: 'This is the one you read aloud.' },
+  { id: 'invest', label: 'Before she invests more', chip: 'Before she invests more',
+    ending: 'Headroom against her mandate — which I cannot work out until her split is on file.',
+    note: 'This is the one I cannot finish yet.' },
+];
+
 /* HOW FAR TO TAKE A REBALANCE — the one question the rail asks, and the three answers are three
    different RULES rather than three appetites.
 
@@ -296,5 +329,5 @@ const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.si
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
 Object.assign(window, { ADVISOR, FUNDS, fundById, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
-  REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
+  REVIEW_TOP_RS, REVIEW_TAIL_RS, REVIEW_TAIL_AVG_RS, REVIEW_TINY_CAP_RS, REVIEW_AUDIENCES, REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
   driftPoints, overSingleFund, inr });

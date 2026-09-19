@@ -55,6 +55,28 @@ measurements are on the pages themselves.**
   either direction: it does not say "failed" for something it has not confirmed failed, and **it does not
   offer to send again**, because a duplicate switch is real money. It offers checking, and the question
   the advisor actually has: what do I tell Sharma?
+- **Journey F is built (19 Sep): Meera's client review**, `screens/journey-f/review.html`, eight states,
+  and the last of the three journeys `ResultCard` was built for. Its one rail step is **not a
+  fact-finding question** — the book holds every fact this review can state. What Sentinel cannot infer
+  is **what the review is FOR**, because the same holdings make a different document for a file, for a
+  meeting, and for a decision to invest more. The facts never change; what is left out and what is
+  proposed does, and **the product will not turn a record into a proposal on its own.**
+  **The review's finding is a MISSING FIGURE.** Her record has the value, the fund count, the long tail,
+  the SIP, the mandate, the risk number and the goal — and NOT her 43 holdings and NOT her actual
+  equity/debt/cash split. So the review describes the shape of her book exactly (14 funds hold 80% =
+  ₹14,72,000; the other 29 hold ₹3,68,000, ₹12,690 each, none reaching 1.5% = ₹27,600) and **cannot say
+  whether she is on her mandate**, which is the most useful sentence a review would carry. It says so on
+  the document, with the reason and with the one thing that fixes it for every review after. `StatTile
+  locked` exists for exactly this and had been on no screen since v9.
+  **The tail is ONE row, not twenty-nine** — a list an advisor cannot read to a client hides the finding.
+  **There is no primary button on the card, deliberately:** a review commits to nothing, and a record
+  that ends in one big dark button is a proposal wearing a record's title. Journey D's button sends a
+  document and Journey E's moves money; both earn theirs.
+  `LiveRail` gained `onAnswer(step, chip)` — the answered list stores the LABEL the advisor sees, and a
+  journey that branches needs the chip. Journey F is the first to branch, on `chip.audience`, so copy can
+  change without moving the branch. A duplicate door was caught and removed on the way: the record
+  ending offered "Save it to her file" beside `ResultActions`' own Save.
+
 - **Journey E is built (19 Sep): Sharma's rebalance, reached COLD**, `screens/journey-e/rebalance.html`,
   nine states. Journey B rebalances him at the end of a drift explanation; an advisor who types
   "rebalance Sharma" with nothing in front of them had no answer at all — and **"rebalance" is not an

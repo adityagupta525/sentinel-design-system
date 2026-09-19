@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatusSpacer','StepTrace','SuggestionRow','TopBar','UserBubble','VersionRow'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','TopBar','UserBubble','VersionRow'];</script>
 <script type="text/babel" src="./screen-kit.jsx"></script>
 <script type="text/babel" src="./data/book.jsx"></script>
 <script type="text/babel" src="./journey-b/home.jsx"></script>
@@ -16,6 +16,7 @@
 <script type="text/babel" src="./journey-c/funds.jsx"></script>
 <script type="text/babel" src="./journey-d/proposal.jsx"></script>
 <script type="text/babel" src="./journey-e/rebalance.jsx"></script>
+<script type="text/babel" src="./journey-f/review.jsx"></script>
 <script type="text/babel" src="./thread/refusals.jsx"></script>
 <script type="text/babel" src="./thread/ledger.jsx"></script>
 <script type="text/babel" src="./shell/menu.jsx"></script>
@@ -47,6 +48,7 @@ const ROUTES = [
   { id: 'outside',  re: /\b(itr|file .*return|tax return|gst)\b/i,                   why: 'in the domain, outside what this product does' },
   { id: 'rebal',    re: /\brebalanc|bring .*back|fix (his|her|the) (mix|drift)/i,        why: 'a rebalance, asked for cold' },
   { id: 'drift',    re: /\bdrift|why .*\b(mix|allocation)|sharma/i,                  why: 'a drift question' },
+  { id: 'review',   re: /\breview\b|what does (she|he) hold|holdings of/i,          why: 'a client review' },
   { id: 'propose',  re: /\bproposal\b|\bpropose\b|build .*(for|to) (mr|ms|mrs)?\.? ?\w*ag+ra?wal/i, why: 'a proposal' },
   { id: 'risk',     re: /\brisk\b|\bprofile\b/i,                                     why: 'a risk profile' },
   { id: 'ledger',   re: /placed|ledger|this month|what did i (do|send)/i,            why: 'a question about money already sent' },
@@ -69,7 +71,12 @@ function affordances(s) {
     return { next, back, where: 'Home', journey: '—', step: 'at rest' };
   }
   if (s.screen === 'rail') {
-    const J = { propose: 'D · Amit’s proposal', rebal: 'E · Sharma’s rebalance', risk: 'A · Meera’s risk profile' }[s.railJourney] || 'A · Meera’s risk profile';
+    const J = { propose: 'D · Amit’s proposal', rebal: 'E · Sharma’s rebalance', review: 'F · Meera’s review', risk: 'A · Meera’s risk profile' }[s.railJourney] || 'A · Meera’s risk profile';
+    if (s.railJourney === 'review') {
+      next.push(s.audience ? 'Save it, or take the PDF' : 'Say what the review is for', s.audience ? 'Take what the ending offers' : 'Three audiences, three endings');
+      back.push('Edit the answer above — the ending changes, the card does not', 'New thread (the app bar)');
+      return { next, back, where: s.audience ? 'Thread' : 'Journey rail', journey: J, step: s.audience ? 'a review, with an ending' : 'one question: what is it for' };
+    }
     if (s.railJourney === 'rebal' && s.rebalPicked) {
       /* The plan is a thread turn, not a rail step — so it goes back the way a thread does. */
       next.push('Save the plan, or take the PDF', 'Approve both moves');
@@ -132,6 +139,7 @@ function Proto({ onEvent }) {
   const [railJourney, setRailJourney] = React.useState('risk');
   const [uncosted, setUncosted] = React.useState(null);
   const [rebalPicked, setRebalPicked] = React.useState(false);
+  const [audience, setAudience] = React.useState(null);
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const savedScroll = React.useRef(0);
@@ -146,10 +154,10 @@ function Proto({ onEvent }) {
     const r = route(text);
     setAsk(text); setJourney(r.id);
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
-    if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal') {
+    if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal' || r.id === 'review') {
       setRailJourney(r.id);
       setDir('forward'); setScreen('rail');
-      log(`The rail opens — ${({ propose: 'four steps for a proposal', rebal: 'one question: how far', risk: 'sixteen for a risk profile' })[r.id]}; a journey is its own surface`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+      log(`The rail opens — ${({ propose: 'four steps for a proposal', rebal: 'one question: how far', review: 'one question: what is it for', risk: 'sixteen for a risk profile' })[r.id]}; a journey is its own surface`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
       return;
     }
     if (screen !== 'thread') { setDir('forward'); setScreen('thread'); log('Thread in, Home out', reduced() ? 'a fade · 320ms' : 'ScreenStack forward: ds-screen-in over ds-screen-out · 320ms'); }
@@ -268,7 +276,19 @@ function Proto({ onEvent }) {
   /* ONE RAIL, TWO JOURNEYS. The steps and the result are arguments, so the loop that decides what
      "edit answer 3" does exists once. The way out is the same two doors as every other surface. */
   const railMenu = () => { setMenu(true); log('Menu opens from the rail — the way out is the same door as everywhere else', 'panel 320ms; scrim to 0.25'); };
-  const rail = railJourney === 'rebal'
+  const rail = railJourney === 'review'
+    ? <LiveRail steps={REV_STEPS} total={REV_TOTAL} attachCaption="Here is her September statement."
+        onEvent={log} onNew={goHome} onMenu={railMenu}
+        onAnswer={(step, chip) => { if (chip.audience) { setAudience(chip.audience); log(`Review is for: ${chip.label}`, 'the card does not change — only what follows it'); } }}
+        result={() => (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
+            <ReviewResult
+              onSave={() => log('Saved to her file — the badge becomes a date', '')}
+              onDownload={() => { log('PDF — no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }} />
+            {audience && <ReviewEnding audience={audience} onChip={(l) => log(`“${l}” — not built`, '')} />}
+          </div>
+        )} />
+    : railJourney === 'rebal'
     ? (rebalPicked
         /* The costed target opens the plan as an ARTIFACT in the thread, which is where a rebalance the
            advisor asked for cold belongs. The uncosted ones never get here: there is no path from them
@@ -334,7 +354,7 @@ function Proto({ onEvent }) {
       <Drawer open={menu} onClose={() => { setMenu(false); log('Menu closes', 'immediate'); }} onNew={() => { setMenu(false); goHome(); }}
         saved={MENU_SAVED} recent={MENU_RECENT} clients={MENU_CLIENTS}
         footer={<MenuFooter onHome={() => { setMenu(false); goHome(); }} />} />
-      <Bridge state={{ screen, journey, phase, artifact, railJourney, rebalPicked }} />
+      <Bridge state={{ screen, journey, phase, artifact, railJourney, rebalPicked, audience }} />
     </div>
   );
 }
@@ -343,7 +363,7 @@ function Proto({ onEvent }) {
 const StateBus = React.createContext(null);
 function Bridge({ state }) {
   const set = React.useContext(StateBus);
-  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney, state.rebalPicked]);
+  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney, state.rebalPicked, state.audience]);
   return null;
 }
 
@@ -411,6 +431,7 @@ const TRY = [
   ['Start Meera’s risk profile', 'Journey A — the rail, sixteen steps'],
   ['Build a proposal for Mr. Amit Aggrawal', 'Journey D — the rail again, four steps, and a document'],
   ['Rebalance Sharma', 'Journey E — one question, three rules, and only one of them costed'],
+  ['Review portfolio', 'Journey F — one question, and a finding that is a missing figure'],
   ['Flexi cap funds on my shelf', 'Journey C — the shortlist'],
   ['What have I placed this month?', 'The ledger'],
   ['Sell all of Sharma’s Quant Small Cap', 'An instruction that would act — previewed, never run'],
