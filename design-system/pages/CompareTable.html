@@ -1,0 +1,119 @@
+<!-- @dsCard group="Pages" viewport="1100x2200" name="CompareTable" subtitle="Two or three funds, read across a row — and the row where they agree is the one that recedes" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>CompareTable — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { CompareTable, Dumbbell, SentinelTurn, ChipRow, AnswerChip } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--type-row-font','--type-row-strong-font','--type-caption-font','--color-ink','--color-muted','--color-line-soft','--radius-16','--shadow-card','--space-14','--space-10'];
+
+const PPFAS = { id: 'ppfas', name: 'Parag Parikh Flexi Cap', meta: 'PPFAS · Flexi cap' };
+const HDFC  = { id: 'hdfc',  name: 'HDFC Flexi Cap',         meta: 'HDFC · Flexi cap' };
+const UTI   = { id: 'uti',   name: 'UTI Nifty 50 Index',     meta: 'UTI · Index' };
+
+const TWO = [PPFAS, HDFC];
+const ROWS = [
+  { label: 'Category',      values: { ppfas: 'Flexi cap', hdfc: 'Flexi cap' } },
+  { label: 'Expense ratio', values: { ppfas: '0.63%', hdfc: '0.74%' }, better: 'low' },
+  { label: 'Fund size',     values: { ppfas: '₹89,400 cr', hdfc: '₹71,230 cr' } },
+  { label: 'Exit load',     values: { ppfas: '2% within 365 days', hdfc: '1% within 365 days' }, better: 'low', rank: (v) => parseFloat(v) },
+  { label: 'Riskometer',    values: { ppfas: 'Very high', hdfc: 'Very high' } },
+  { label: 'On your shelf', values: { ppfas: 'Yes', hdfc: 'Yes' } },
+  { label: 'Held by your clients', values: { ppfas: '2', hdfc: '0' } },
+];
+const FOOT = 'As of 30 Sep · illustrative figures for design, not a scheme record';
+
+function App() {
+  return (
+    <PageShell name="CompareTable" group="Data" status="shipped" requires={['CompareTable','Dumbbell','Provenance','Pill']}
+      summary="DataTable is many entities with one kind per COLUMN, sorted and expandable in place. A comparison is its transpose: few entities, one kind per ROW, and the read is sideways — an advisor asks 'what does each of these charge', not 'sort by cost'. The v2 spec asks for 'differences bolded', and taken literally that bolds almost every cell, because two funds differ on nearly everything. Inverted it is useful: a row where every fund says the same thing is MUTED, so the eye lands on the rows where they actually part.">
+
+      <Block n={1} title="Specimen" sub="Two flexi caps. Four rows differ and three agree — and the three that agree are the ones that step back.">
+        <Specimen width={343}>
+          <CompareTable entities={TWO} rows={ROWS} footnote={FOOT} onAdd={() => {}} />
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="A label column at 104 — the archive's own value — then one column per fund. 104 + 2×105 fits 375 exactly.">
+        <Anatomy width={343}
+          top="The title, and the add control — hidden once the cap is reached, never disabled"
+          left="the label column: what is being compared, in the advisor's words"
+          right="one column per fund, name at row-strong, house and category beneath"
+          bottom="Provenance. A comparison an advisor reads aloud is the last place to leave the source unsaid.">
+          <CompareTable entities={TWO} rows={ROWS.slice(0, 4)} footnote={FOOT} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="The two marks, and everything they are not" sub="One de-emphasis and one claim. Nothing else is marked, because nothing else is a fact about which fund is better.">
+        <Grid cols={2} itemWidth={343} items={[
+          {label:'Agreeing rows recede', node:<CompareTable title="Where they agree" entities={TWO} rows={[
+            { label: 'Category', values: { ppfas: 'Flexi cap', hdfc: 'Flexi cap' } },
+            { label: 'Riskometer', values: { ppfas: 'Very high', hdfc: 'Very high' } },
+            { label: 'On your shelf', values: { ppfas: 'Yes', hdfc: 'Yes' } },
+          ]} />, note:'Every fund says the same thing, so the row is muted. It is not hidden — an advisor still has to be able to say "both are on the shelf" — it just stops competing with the rows that carry a decision.'},
+          {label:'`better` marks the cheaper one', node:<CompareTable title="Where direction is a fact" entities={TWO} rows={[
+            { label: 'Expense ratio', values: { ppfas: '0.63%', hdfc: '0.74%' }, better: 'low' },
+            { label: 'Fund size', values: { ppfas: '₹89,400 cr', hdfc: '₹71,230 cr' } },
+            { label: 'Held by your clients', values: { ppfas: '2', hdfc: '0' } },
+          ]} />, note:'A lower expense ratio is cheaper — arithmetic, not an opinion. A fund’s SIZE has no better and is not marked; neither is how many clients hold it. --type-row-strong-font: the same size at one weight up, never a colour (rule 1).'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="Three funds, and the cap" sub="104 + 3×104 is 416 in a 315pt card, so a third scrolls sideways with the label column pinned — the rule DataTable states for its own sticky column. Horizontal inside vertical is orthogonal to the no-nested-scroll law.">
+        <Specimen width={343}>
+          <CompareTable entities={[PPFAS, HDFC, UTI]} cap={3}
+            capNote="Three is the most that reads on a phone. Drop one to add another."
+            onRemove={() => {}}
+            rows={[
+              { label: 'Category', values: { ppfas: 'Flexi cap', hdfc: 'Flexi cap', uti: 'Index' } },
+              { label: 'Expense ratio', values: { ppfas: '0.63%', hdfc: '0.74%', uti: '0.17%' }, better: 'low' },
+              { label: 'Fund size', values: { ppfas: '₹89,400 cr', hdfc: '₹71,230 cr', uti: '₹22,960 cr' } },
+              { label: 'On your shelf', values: { ppfas: 'Yes', hdfc: 'Yes', uti: 'Yes' } },
+            ]} footnote={FOOT} />
+        </Specimen>
+      </Block>
+
+      <Block n={5} title="What it does not do" sub="Three things a comparison needs that are deliberately somewhere else.">
+        <Grid cols={1} itemWidth={700} items={[
+          {label:'The gap against each benchmark → Dumbbell', node:(
+            <div style={{display:'flex', flexDirection:'column', gap:'var(--space-12)'}}>
+              <Dumbbell label="Parag Parikh Flexi Cap · 3Y" target={17.2} actual={21.4} max={32} targetLabel="Nifty 500 TRI" actualLabel="the fund" />
+              <Dumbbell label="HDFC Flexi Cap · 3Y" target={17.2} actual={22.8} max={32} targetLabel="Nifty 500 TRI" actualLabel="the fund" />
+            </div>
+          ), note:'A return in a table cell says how much; the gap to its own benchmark says whether that was skill or the market, and no column of numbers shows it. The spec is blunt: it "instantly shows which fund beats its benchmark by more, which no table of numbers does". So returns are NOT a row here.'},
+          {label:'The reading → a sentence in the turn', node:(
+            <SentinelTurn say="Parag Parikh is the cheaper of the two and holds ₹89,400 cr against HDFC's ₹71,230 cr. HDFC beat the same benchmark by more over three years — 22.8% against 21.4% — so the question is whether you are paying 0.11% for a house you trust or for 1.4 points."
+              chips={<ChipRow><AnswerChip label="Add a third" onClick={()=>{}} /><AnswerChip label="Which suits a 54 Moderate?" onClick={()=>{}} /></ChipRow>} />
+          ), note:'The spec, on this paragraph: "This paragraph is the product. A table anyone can build; the reading is what the advisor is paying for." It is a sentence Sentinel says, so it lives in the turn and scrolls with the question that caused it — never inside the card.'},
+          {label:'How much of them is the same fund → OverlapView', node:<p style={{margin:0, font:'var(--type-row-font)', color:'var(--color-ink-soft)'}}>Two flexi caps can agree on every row here and still hold the same 40 stocks. That is a different question with a different component, and it renders an em dash rather than a zero until the holdings are disclosed.</p>},
+        ]} />
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={7} title="Props"><Props src="../components/data/CompareTable.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<CompareTable entities={TWO} rows={[
+            { label: 'Expense ratio', values: { ppfas: '0.63%', hdfc: '0.74%' }, better: 'low' },
+            { label: 'Manager', values: { ppfas: 'Rajeev Thakkar · 13 yr', hdfc: 'Roshi Jain · 2 yr' } },
+            { label: 'Turnover', values: { ppfas: '', hdfc: '' } },
+          ]} footnote="Turnover is not on file for either fund — an em dash, not a zero." />}
+          doCaption="What is not known renders ——, and the footnote says why. A comparison that quietly drops a row an advisor asked about is the one that gets found out in front of a client." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="None of its own.">
+        <Motion rows={[
+          { name: 'Entrance', property: 'none — the turn that carries it rises', duration: '—', reduced: 'Unchanged.' },
+          { name: 'A fund joining', property: 'none. The table re-lays out; nothing slides, because a column arriving mid-read moves the figures under the eye', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

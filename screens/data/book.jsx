@@ -144,9 +144,55 @@ const tenKAfter = (id) => {
            cagr: p.r5, benchmark: p.benchmark };
 };
 
+/* THE BENCHMARK'S OWN CAGR, derived rather than stored — the series already holds both endpoints, so
+   writing the benchmark's return down separately would give it a second place to drift from the line
+   the chart draws. One decimal, because that is the product's rule for a rate. */
+const benchCagr = (id) => {
+  const t = tenKAfter(id);
+  return t ? +(((Math.pow(t.bench / t.base, 1 / t.years) - 1) * 100).toFixed(1)) : null;
+};
+
 const perfOf = (id) => PERF[id] || null;
 /* THE ONLY PROVENANCE LINE THIS DATA MAY CARRY. A screen that prints anything else about where these
    numbers came from is lying, and the lie would be in the one place this product promises never to. */
+/* WHO HAS RUN IT, AND FOR HOW LONG — a FIXTURE, on the same terms as PERF above (20 Sep 2026).
+
+   The manager is the sharpest sentence a comparison can make: "HDFC beat its benchmark by more, but it
+   changed managers in 2024, so its three-year record is not one person's work." The v2 spec names it
+   as a compare row and `InfoCard kind='manager'` was built for it and has been on no screen since v12,
+   because nothing in this repository knew who runs a fund.
+
+   The NAMES here are invented. They are not the real managers of these schemes and must not be read as
+   one; `fixture: true` is on every row and `managerProvenance()` writes the only line this data may
+   carry. `fundYears` is how long the SCHEME has run, which is what makes the tenure share mean
+   something — three years under a manager who arrived last year is not that manager's record. */
+const MANAGERS = {
+  'ppfas-flexi':  { name: 'R. Thakkar',   since: 'May 2013', years: 13.4, fundYears: 13.4, fixture: true },
+  'hdfc-flexi':   { name: 'S. Iyer',      since: 'Jul 2024', years: 2.2,  fundYears: 31.0, fixture: true },
+  'quant-small':  { name: 'A. Mohanty',   since: 'Nov 2020', years: 5.9,  fundYears: 29.0, fixture: true },
+  'icici-corp':   { name: 'R. Lakhotia',  since: 'Jan 2019', years: 7.7,  fundYears: 16.0, fixture: true },
+  'sbi-corp':     { name: 'P. Deshmukh',  since: 'Feb 2022', years: 4.6,  fundYears: 12.0, fixture: true },
+  'icici-baf':    { name: 'S. Naren',     since: 'Dec 2015', years: 10.8, fundYears: 19.0, fixture: true },
+  'uti-nifty':    { name: 'Index, not a manager', since: null, years: null, fundYears: 26.0, fixture: true },
+  'hdfc-large':   { name: 'M. Bhandari',  since: 'Mar 2024', years: 2.5,  fundYears: 30.0, fixture: true },
+  'motilal-mid':  { name: 'N. Agrawal',   since: 'Feb 2018', years: 8.6,  fundYears: 12.0, fixture: true },
+  'hdfc-stdebt':  { name: 'A. Pathak',    since: 'Jun 2017', years: 9.3,  fundYears: 15.0, fixture: true },
+};
+const managerOf = (id) => MANAGERS[id] || null;
+/* "R. Thakkar · 13.4 yr", or the honest answer for a fund that has no manager to name. */
+const managerLine = (id) => {
+  const m = MANAGERS[id];
+  if (!m) return null;
+  return m.years == null ? m.name : `${m.name} · ${m.years} yr`;
+};
+const managerProvenance = () => `manager tenure is illustrative for design, not a scheme record · as of ${PERF_AS_OF}`;
+/* ONE LINE FOR A CARD THAT CARRIES BOTH FIXTURES. Concatenating perfProvenance() and
+   managerProvenance() printed "illustrative for design, not a scheme record · as of 30 Sep 2026"
+   TWICE on the comparison, which reads as a stutter and makes the disclosure easier to skip rather
+   than harder. Named here, beside the data, because the rule this file states is that these numbers
+   may only be shown through a line this file writes. */
+const comparisonProvenance = () => `returns, cost, size and manager tenure · illustrative figures for design, not a scheme record · as of ${PERF_AS_OF}`;
+
 const perfProvenance = (period) => `${period ? period + ' returns · ' : ''}illustrative figures for design, not a scheme record · as of ${PERF_AS_OF}`;
 const PERF_PERIODS = [{ key: 'r1', label: '1Y' }, { key: 'r3', label: '3Y' }, { key: 'r5', label: '5Y' }];
 /* Returns are annualised past 1Y, and saying so is not optional — SEBI's own presentation rule, and the
@@ -432,7 +478,7 @@ const driftPoints = (c) => (c.allocation && c.mandate ? c.allocation.equity - c.
 const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.singleFund);
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
-Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
+Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, MANAGERS, managerOf, managerLine, managerProvenance, comparisonProvenance, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
   REVIEW_TOP_RS, REVIEW_TAIL_RS, REVIEW_TAIL_AVG_RS, REVIEW_TINY_CAP_RS, REVIEW_AUDIENCES, REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
-  NAV_SERIES, NAV_MONTHS, NAV_BASE, navSeries, tenKAfter,
+  NAV_SERIES, NAV_MONTHS, NAV_BASE, navSeries, tenKAfter, benchCagr,
   driftPoints, overSingleFund, inr });

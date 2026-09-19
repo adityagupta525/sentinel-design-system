@@ -97,6 +97,7 @@ export { ChartLine, ChartLineMultiples } from './components/data/ChartLine.jsx';
 export { ChartReadout } from './components/data/ChartReadout.jsx';
 export { ChartShare } from './components/data/ChartShare.jsx';
 export { ChartTooltip } from './components/data/ChartTooltip.jsx';
+export { CompareTable } from './components/data/CompareTable.jsx';
 export { ConcentrationBar } from './components/data/ConcentrationBar.jsx';
 export { DrawnCheck } from './components/data/DrawnCheck.jsx';
 export { Dumbbell } from './components/data/Dumbbell.jsx';

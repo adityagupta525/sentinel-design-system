@@ -130,7 +130,12 @@ function affordances(s) {
     if (s.phase === 'flight') { next.push('Check with the RTA', 'Nothing else — it is in flight'); return { next, back, where: 'Thread', journey: J, step: 'sent, no answer yet' }; }
     if (s.phase === 'done') { next.push('Read it back to the client', 'Back to his portfolio', 'Drop a note on the file'); return { next, back, where: 'Thread', journey: J, step: 'placed' }; }
   }
-  if (s.journey === 'funds') next.push('Open a fund — its page opens in the row', 'Drop a filter');
+  if (s.journey === 'funds') {
+    if (s.fundPhase === 'fund') next.push('Compare it with another fund', 'Add it to a proposal — asks which client first', 'Attach it to a rebalance', 'Send it for review');
+    else if (s.fundPhase === 'pick') next.push('Pick a fund, or search the shelf');
+    else if (s.fundPhase === 'compare') next.push('Add a third — the cap is three', 'Drop one', 'Which suits a 54 Moderate?');
+    else next.push('Open a fund — it arrives as a turn', 'Drop a filter');
+  }
   if (s.journey === 'ledger') next.push('Open a row for the RTA’s reason', 'Change the period', 'Take the CSV');
   if (s.journey === 'caps') next.push('Ask any of the five');
   if (['act', 'over', 'outside', 'miss', 'who'].includes(s.journey)) next.push('Take the nearest thing it offered — every refusal names one');
@@ -167,6 +172,13 @@ function Proto({ onEvent }) {
   /* The bound client, and the journey waiting on it. */
   const [client, setClient] = React.useState(null);
   const [pending, setPending] = React.useState(null);
+  /* JOURNEY C, PAST THE SHORTLIST. `list` is the four funds; `fund` is one of them with the four verbs
+     under it; `pick` is "compare it with which fund?"; `compare` is the comparison. The fund an advisor
+     is looking at is held here rather than in the table, because three of the four verbs hand it to
+     another journey and a fund held inside a table row cannot be handed anywhere. */
+  const [fundPhase, setFundPhase] = React.useState('list');
+  const [fundId, setFundId] = React.useState(null);
+  const [compareIds, setCompareIds] = React.useState([]);
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const savedScroll = React.useRef(0);
@@ -174,7 +186,7 @@ function Proto({ onEvent }) {
   const att = useAttachment();
   const log = (what, motion) => onEvent && onEvent(what, motion);
 
-  const state = { screen, journey, phase, artifact };
+  const state = { screen, journey, phase, artifact, fundPhase };
 
   /* One entry point for every sentence in the product, typed or tapped. */
   const send = (text) => {
@@ -192,6 +204,7 @@ function Proto({ onEvent }) {
       setClient(named);
     }
     setJourney(r.id);
+    if (r.id === 'funds') { setFundPhase('list'); setFundId(null); setCompareIds([]); }
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
     if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal' || r.id === 'review') {
       setRailJourney(r.id);
@@ -291,7 +304,67 @@ function Proto({ onEvent }) {
         {phase === 'done' && <SuccessTurn enter onRead={() => log('Read it back to the client', '')} onBack={() => log('Back to his portfolio — not built', '')} onDrop={() => log('Note dropped on the file', '')} />}
       </React.Fragment>
     );
-    if (journey === 'funds') return <FundResults openRow={null} onExplain={() => log('A fund’s own explainer', '')} />;
+    if (journey === 'funds') return (
+      <React.Fragment>
+        <FundResults openRow={null} onExplain={() => log('A fund’s own explainer', '')} />
+        {/* The shortlist offers the funds by NAME, because in a thread "open a fund" is a question you
+            ask, not a row you click into a page. Two, not four: the chips answer the sentence Sentinel
+            just said ("two of them clear it comfortably"). */}
+        {fundPhase === 'list' && (
+          <ChipRow>
+            {FUND_LIST.slice(0, 2).map((f) => (
+              <AnswerChip key={f.id} label={f.name} onClick={() => {
+                setFundId(f.id); setFundPhase('fund');
+                log(`Opened ${f.name} — the fund's page arrives as a turn, not as a screen`, reduced() ? 'fades in' : 'ds-rise · 240ms');
+              }} />
+            ))}
+          </ChipRow>
+        )}
+        {fundPhase === 'fund' && fundId && (
+          <React.Fragment>
+            <FundInfo id={fundId} onExplain={() => log('A figure explains itself', 'ds-sheet 300ms')} />
+            <FundVerbs animate onVerb={(v) => {
+              if (v.id === 'compare') {
+                setFundPhase('pick');
+                log('“Compare with…” — the same searchable list the WHO step uses', '');
+                return;
+              }
+              /* THE THREE HAND-OFFS GO THROUGH THE SAME QUESTION EVERY OTHER JOURNEY DOES. The fund
+                 explorer is the one surface that does not already know the client, so the verb sets
+                 the pending journey and the WHO step answers it — the verbs do not each invent a
+                 picker. `send` is not used: the advisor did not type a sentence, they tapped a verb
+                 on a fund, and routing a synthesised sentence back through the router would be the
+                 product pretending it had been asked. */
+              const named = client;
+              if (!named) {
+                setPending(v.journey); setJourney('who');
+                log(`“${v.label}” on ${fundById(fundId).name} → ${v.journey}, but no client named`, 'the WHO step');
+                return;
+              }
+              setRailJourney(v.journey); setJourney(v.journey);
+              setDir('forward'); setScreen('rail');
+              log(`“${v.label}” on ${fundById(fundId).name} → journey ${v.journey.toUpperCase()}, with ${named.name} already bound`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+            }} />
+          </React.Fragment>
+        )}
+        {fundPhase === 'pick' && (
+          <ComparePicker exclude={[fundId, ...compareIds]} onEvent={log}
+            onPick={(id) => {
+              setCompareIds((c) => (c.length ? [...c, id] : [id]));
+              setFundPhase('compare');
+            }} />
+        )}
+        {fundPhase === 'compare' && (
+          <FundCompare enter ids={[fundId, ...compareIds]}
+            onAdd={() => { setFundPhase('pick'); log('Add a third — the picker comes back, minus the two already in', ''); }}
+            onRemove={(id) => { setCompareIds((c) => c.filter((x) => x !== id)); log('Dropped one — the comparison re-lays out; nothing slides', ''); }}
+            onChip={(c) => {
+              if (c === 'Add a third') { setFundPhase('pick'); return; }
+              log(`“${c}” — not built in this prototype`, '');
+            }} />
+        )}
+      </React.Fragment>
+    );
     if (journey === 'ledger') return <LedgerArtifact onDownload={() => { log('CSV — the control holds its own loading state, because this product has no toasts', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }} />;
     if (journey === 'who') return CLIENTS.length
       ? <WhoPicker journey={pending} onPick={pick} onEvent={log} />

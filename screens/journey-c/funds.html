@@ -7,10 +7,11 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SentinelBlock','SentinelText','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','CompareTable','Dumbbell','List','ClientChip','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
+<script type="text/babel" src="../shell/who.jsx"></script>
 <script type="text/babel" src="./funds.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
@@ -243,11 +244,55 @@ mountScreen(
       </StateRow>
     </Section>
 
-    <Section title="5 · Motion, and what each one does under reduced motion">
+    <Section title="5 · The four verbs — and three of them are doors to journeys that already exist" sub="The owner, 19 Sep: a fund card must let an advisor compare it, add it to a proposal, attach it to a rebalance, or send it for review. Only Compare is new work. The other three are hand-offs, which is the point — the Fund Explorer is not a silo, it is where D, E and F are entered from with a fund already chosen.">
+      <StateRow>
+        <State label="the four verbs, under the card" note="Chips INSIDE the turn, because nothing is pinned above the composer and a chip that outlives the turn that offered it makes the screen a toolbar. They are a separate row from the four asks above: the asks are questions ABOUT this fund, the verbs DO something with it, and eight chips in one row would make an advisor read all eight to find either.">
+          <Scene anchor="bottom">
+            <FundInfo id="ppfas-flexi" />
+            <FundVerbs />
+          </Scene>
+        </State>
+        <State label="Compare it with which fund?" note="The same shape as the WHO step, and deliberately so: an advisor who picked a client from a searchable list once should not meet a second, different way of picking a thing three screens later. It is `List.search` in both places now — one amendment to List rather than a SearchableList — so the two cannot drift.">
+          <Scene anchor="bottom"><ComparePicker exclude={['ppfas-flexi']} /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="two flexi caps, compared" note="Dumbbells first, because the gap to each fund's OWN benchmark is the thing no table of numbers shows. The table beneath, where a row the two funds agree on recedes. Then the reading — which the v2 spec calls the product: “a table anyone can build; the reading is what the advisor is paying for.” Every clause of it is built from a fact, so a clause with no fact behind it does not appear.">
+          <Scene anchor={2}><FundCompare ids={['ppfas-flexi', 'hdfc-flexi']} /></Scene>
+        </State>
+        <State label="two funds that are not the same job" tone="under" note="Quant Small Cap is off the shelf, and the verdict says so FIRST, because it is the only row that is a constraint rather than a preference. Both funds changed managers recently and both are named — mentioning one would read as an endorsement of the other. And the last line says plainly that a small cap and a large cap are not alternatives, so the gap to each benchmark is the thing to read.">
+          <Scene anchor={2}><FundCompare ids={['quant-small', 'hdfc-large']} /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="a third fund — and the cap, stated" note="104 + 3×104 is 416 in a 315pt card, so the third scrolls sideways with the label column pinned; horizontal inside vertical is orthogonal to the no-nested-scroll law. The cap is a sentence, never a disabled button — OverlapView's own rule. The verdict is two funds only: a three-way reading is four sentences nobody finishes.">
+          <Scene anchor={2}><FundCompare ids={['ppfas-flexi', 'hdfc-flexi', 'uti-nifty']} onRemove={() => {}} /></Scene>
+        </State>
+        <State label="an index fund, behind its own index" tone="under" note="UTI Nifty 50 sits at −0.2 points against the Nifty 50 — roughly its 0.17% expense ratio, which is what an index fund is supposed to do. The dumbbell shows it as a gap on the wrong side and the verdict does not call it bad news, because for this fund it is the expected result.">
+          <Scene anchor={2}><FundCompare ids={['uti-nifty', 'hdfc-large']} /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="add to a proposal — the hand-off" note="A proposal, a rebalance and a review are all about SOMEBODY, and the fund explorer is the one surface in the product that does not already know who. So every hand-off goes through the same question, and it is the WHO step that answers it — the verbs do not each invent a client picker. The sentence is built from the verb rather than written three times.">
+          <Scene anchor="bottom">
+            <FundHandoff verb="propose" fundId="ppfas-flexi" />
+            <WhoPicker journey="propose" />
+          </Scene>
+        </State>
+        <State label="attach to a rebalance" note="Same shape, different consequence, and the sentence says which: a rebalance moves real money in somebody's folios. Journey E then sizes the switch against their mandate — and says plainly when it cannot cost it, which is the state that journey was built around.">
+          <Scene anchor="bottom">
+            <FundHandoff verb="rebal" fundId="quant-small" />
+            <WhoPicker journey="rebal" />
+          </Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="6 · Motion, and what each one does under reduced motion">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="6 · Provenance">
+    <Section title="7 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>

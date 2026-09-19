@@ -1374,3 +1374,49 @@ nothing, which is F-45's rule — a control that invites a tap and drops it — 
 differed matched their own same-code re-render signature to the pixel (`review` 358,308 · `refusals`
 68,697 · `drawer` 25,508 · `03-thread-answer` 120,498 · `risk-profile` ~2,900), which is the
 renderer's noise and not this change.
+
+### F-57 · The four verbs, and Compare — *20 Sep 2026*
+
+The owner, 19 Sep: a fund card must let an advisor *"compare kar paaye / rebalance me attach kar paaye
+/ review ke liye bhej paaye / proposal me add kar paaye."* Three of the four are **hand-offs** to
+journeys that already exist, which is the point — the Fund Explorer is not a silo, it is where D, E
+and F are entered from with a fund already chosen. Only Compare is new work.
+
+**`CompareTable` — the transpose of `DataTable`, and it is a different read.** `DataTable` is many
+entities with one kind per *column*, sorted and expandable in place. A comparison is few entities with
+one kind per *row*, read sideways — an advisor asks "what does each of these charge", not "sort by
+cost". Forcing a comparison through `DataTable` makes every fund column `text`, which throws away the
+tabular figures and the row's own meaning.
+
+**The v2 spec says "differences bolded", and taken literally that bolds almost every cell** — two
+funds differ on nearly everything. Inverted it is useful: a row where every fund says the same thing
+is **muted**, so the eye lands where they actually part. A de-emphasis, not a claim. `better` is the
+one claim and only where direction is a fact: a lower expense ratio is cheaper, which is arithmetic; a
+fund's *size* has no better and is never marked. A tie marks nothing.
+
+**Three amendments rather than three new components.**
+
+| wanted | built | why not a new component |
+|---|---|---|
+| a searchable picker for funds | **`List.search`** | `SearchField`'s own header has said since v9 that it is "the search field a `searchable` List renders", and the prop never existed — so `who.jsx` did it by hand and the fund picker was about to do it a second time. `who.html` re-rendered **byte-identical** after the migration. |
+| a comparable gap on the dumbbell | **`Dumbbell.min`** | Two flexi caps at 23.1% and 21.6% against a 16.8% benchmark put both dumbbells in the right quarter of a 0–25 track, and the 1.5-point difference between the gaps — the whole reason the chart is there — came out at **19px of 315**. `chartMath.niceDomain` is already "never a raw data min/max" and `ChartLine` already scales to its data, so a baseline is this system's existing practice rather than a new decision. Default 0, so every caller before this is unchanged. |
+| manager tenure in the comparison | **a `MANAGERS` fixture** | `InfoCard kind='manager'` was built in v12 for exactly this and has been on no screen, because nothing here knew who runs a fund. Invented on PERF's terms, with its own provenance line. |
+
+**Two bugs the render caught.** `CompareTable`'s cells had no `boxSizing: 'border-box'`, so
+`minWidth: 104` was the *content* width and each cell became 125 — two funds needed 354 in a 315pt
+card and the second column clipped mid-word. And `Dumbbell`'s connector width ran through the position
+function, so once `min` existed the bar was drawn shorter than the two dots it joins: **a position and
+a length are not the same conversion.**
+
+**The reading is the product.** The v2 spec: *"a table anyone can build; the reading is what the
+advisor is paying for."* `compareVerdict()` builds it from the data — shelf first (the only row that
+is a constraint rather than a preference), then cost, then the gap to each fund's own benchmark, then
+the manager, then whether the two are even the same job. A clause with no fact behind it does not
+appear, and when **both** managers are recent both are named, because naming one would read as an
+endorsement of the other.
+
+**Driven, not described.** On `screens/prototype.html`: type a fund search → open Parag Parikh →
+Compare with… → pick HDFC → the comparison, the gap labels and the reading → Add a third → the cap
+stated. And "Add to a proposal" with no client bound lands on the WHO step — *"Who is the proposal
+for? Here are the four you worked on most recently — or search the other 508."* — because the fund
+explorer is the one surface that does not already know who, and the verbs do not each invent a picker.

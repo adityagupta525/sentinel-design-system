@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 48
+  "shipped": 49
  },
  "rows": [
   {
@@ -1259,6 +1259,33 @@
    "literals": 9
   },
   {
+   "name": "CompareTable",
+   "group": "Data",
+   "status": "shipped",
+   "page": "CompareTable.html",
+   "file": "components/data/CompareTable.jsx",
+   "tokens": [
+    "--color-ink",
+    "--color-line-soft",
+    "--color-muted",
+    "--color-surface",
+    "--radius-16",
+    "--shadow-card",
+    "--space-10",
+    "--space-12",
+    "--space-14",
+    "--space-2",
+    "--space-6",
+    "--space-8",
+    "--type-caption-font",
+    "--type-row-font",
+    "--type-row-strong-font",
+    "--type-title-font"
+   ],
+   "locals": [],
+   "literals": 1
+  },
+  {
    "name": "ConcentrationBar",
    "group": "Data",
    "status": "building",
@@ -1924,6 +1951,7 @@
     "--leading-20",
     "--radius-16",
     "--radius-6",
+    "--space-10",
     "--space-12",
     "--text-12",
     "--text-14",

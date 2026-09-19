@@ -182,6 +182,8 @@ export type { ChartShareSegment, ChartShareProps } from './components/data/Chart
 export { ChartShare } from './components/data/ChartShare';
 export type { ChartTooltipProps } from './components/data/ChartTooltip';
 export { ChartTooltip } from './components/data/ChartTooltip';
+export type { CompareEntity, CompareRow, CompareTableProps } from './components/data/CompareTable';
+export { CompareTable } from './components/data/CompareTable';
 export type { ConcentrationBarProps } from './components/data/ConcentrationBar';
 export { ConcentrationBar } from './components/data/ConcentrationBar';
 export type { DrawnCheckProps } from './components/data/DrawnCheck';

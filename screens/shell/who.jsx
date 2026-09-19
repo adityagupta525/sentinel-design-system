@@ -62,21 +62,25 @@ function WhoPicker({ journey, clients = CLIENTS, onPick, onEvent }) {
   const [q, setQ] = React.useState('');
   const term = q.trim().toLowerCase();
   const recent = WHO_RECENT.map((id) => clients.find((c) => c.id === id)).filter(Boolean);
-  const pool = term ? clients.filter((c) => c.name.toLowerCase().includes(term)) : recent.slice(0, WHO_CAP);
+  /* THE POOL, not the filter — that is List's now. Typing widens the pool from the four most recent
+     to the whole book, which is a decision about this screen and not about how a list searches. */
+  const pool = term ? clients : recent.slice(0, WHO_CAP);
   const total = ADVISOR.clients || clients.length;
 
   return (
     <WHO_DS.SentinelBlock>
       <WHO_DS.SentinelText text={WHO_LEAD(journey, total)} />
+      {/* THE FIELD IS THE LIST'S NOW (20 Sep 2026). This held the query, filtered by hand and drew the
+          SearchField itself — and `SearchField`'s own header had said since v9 that it is "the search
+          field a `searchable` List renders". `List.search` is that prop; the pool below is still ours,
+          because "the four most recent" is this screen's decision and not the list's. */}
       <div style={{ marginTop: 'var(--space-12)' }}>
-        <WHO_DS.SearchField value={q} onChange={setQ} onClear={() => setQ('')}
-          placeholder={`Search ${total} clients`} />
-      </div>
-      <div style={{ marginTop: 'var(--space-10)' }}>
         <WHO_DS.List
           items={pool.map((c) => ({ ...whoRow(c), onPress: () => { if (onEvent) onEvent(`Picked ${c.name}`, 'the chip binds in the composer; the journey resumes'); onPick && onPick(c); } }))}
           rowProps={{ variant: 'select', leading: 'avatar' }}
-          emptyState={{ title: `No client called “${q}”.`, body: 'Check the spelling, or clear the search to see the four most recent.' }} />
+          search={{ value: q, onChange: setQ, onClear: () => setQ(''), placeholder: `Search ${total} clients`,
+            emptyState: { title: `No client called “${q}”.`, body: 'Check the spelling, or clear the search to see the four most recent.' } }}
+          emptyState={{ title: 'Nobody on your book yet.', body: 'Add a client and every journey here works on them.' }} />
       </div>
     </WHO_DS.SentinelBlock>
   );

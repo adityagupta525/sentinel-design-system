@@ -10,6 +10,13 @@
 <script type="text/babel" src="./page-kit.jsx"></script>
 <script type="text/babel">
 const { List, ListRow, Pill, ClientChip, Composer, Dock } = window.SentinelDesignSystem_0682a2;
+function SearchDemo() {
+  const [q, setQ] = React.useState('');
+  return <List items={CLIENTS} rowProps={{ variant: 'select' }}
+    search={{ value: q, onChange: setQ, onClear: () => setQ(''), placeholder: 'Search 512 clients',
+      emptyState: { title: `No client called \u201c${q}\u201d.`, body: 'Check the spelling, or clear the search.' } }}
+    emptyState={{ title: 'Nobody on your book yet.' }} />;
+}
 const TOK = ['--color-surface','--color-line','--color-line-soft','--color-track','--color-ink','--color-muted','--radius-16','--space-12','--border-hairline','--h-touch','--ease'];
 
 const CLIENTS = [
@@ -65,7 +72,20 @@ function App() {
         ]} />
       </Block>
 
-      <Block n={5} title="In context" sub="Inside the drawer, where the rule that produced the footer is visible: the drawer scrolls, so nothing inside it may.">
+      <Block n={5} title="search — an amendment, not a SearchableList" sub="SearchField's own header has said since v9 that it is “the search field a `searchable` List renders”, and this prop never existed — so who.jsx held the query in state, filtered by hand and drew the field itself, and the fund picker was about to do it a second time. Two hand-built copies is how two ways of picking a thing appear in one product.">
+        <Grid cols={2} itemWidth={311} items={[
+          { label: 'The field sits ABOVE the card', node: <SearchDemo />, note: 'It is how you narrow the list, not a row of it. Type “ra” and the rows filter by title, case-insensitively.' },
+          { label: 'A search with no matches has its own words', node: <List items={CLIENTS} rowProps={{ variant: 'select' }} search={{ value: 'zzz', onChange: () => {}, placeholder: 'Search 512 clients', emptyState: { title: 'No client called “zzz”.', body: 'Check the spelling, or clear the search to see the four most recent.' } }} emptyState={{ title: 'Nobody on your book yet.', body: 'Add a client and every journey here works on them.' }} />, note: 'A list with no rows and a query with no matches need different sentences. Omit the search\u2019s own emptyState and the list\u2019s is used for both.' },
+        ]} />
+        <p style={{ margin: 'var(--space-12) 0 0', font: 'var(--type-row-font)', color: 'var(--color-ink-soft)', maxWidth: '78ch', textWrap: 'pretty' }}>
+          <strong>The pool stays the caller&rsquo;s.</strong> <code>items</code> on the who-picker is already &ldquo;the four most
+          recent&rdquo;, and a search that silently widens to 512 clients on the first keystroke is a different surface. This
+          filters what it was given and nothing more &mdash; <code>who.jsx</code> still decides that typing widens the pool from
+          four to the whole book.
+        </p>
+      </Block>
+
+      <Block n={6} title="In context" sub="Inside the drawer, where the rule that produced the footer is visible: the drawer scrolls, so nothing inside it may.">
         <Thread dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
           <List header="Clients" emptyState={{ title: 'No clients yet' }} footer={<Pill label="See all 43" size="sm" />} items={CLIENTS} />
           <div style={{ height: 8 }} />
@@ -73,13 +93,13 @@ function App() {
         </Thread>
       </Block>
 
-      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={7} title="Tokens"><Tokens names={TOK} /></Block>
 
-      <Block n={7} title="Props" sub="emptyState is not optional in the type. That is deliberate — it is the one prop a caller would forget and never notice until a new advisor opened the app.">
+      <Block n={8} title="Props" sub="emptyState is not optional in the type. That is deliberate — it is the one prop a caller would forget and never notice until a new advisor opened the app.">
         <Props src="../components/lists/List.d.ts" />
       </Block>
 
-      <Block n={8} title="Do / Don't">
+      <Block n={9} title="Do / Don't">
         <DoDont
           doNode={<List header="Clients" emptyState={{ title: 'No clients yet' }} footer={<Pill label="See all 43" size="sm" />} items={CLIENTS} />}
           doCaption="Three rows and a footer that states the total. The advisor knows there are 43 and knows how to reach them, and the surface behind this list is the only thing that scrolls."
@@ -89,7 +109,7 @@ function App() {
           dontCaption="Never let a List scroll inside a scrolling surface. Two scrollers on one screen means the advisor's flick does one of two different things depending on where their thumb landed — the same defect the removed canvas existed to avoid." />
       </Block>
 
-      <Block n={9} title="Motion">
+      <Block n={10} title="Motion">
         <Motion rows={[
           { name: 'Loading rows', property: 'sentinel-shimmer — opacity 0.35 → 1, 120ms stagger', duration: '1200 ms, infinite', reduced: 'Holds at full opacity. The skeleton stays, still.' },
           { name: 'Row enter', property: 'none', duration: '—', reduced: 'Unchanged. Rows appear; they do not arrive.' },

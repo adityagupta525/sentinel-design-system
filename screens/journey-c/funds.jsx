@@ -65,6 +65,225 @@ const fundRows = (funds) => funds.map((f) => ({
    THE PERIOD IS NAMED IN WORDS under the figure. "27.6%" over three years means a CAGR, and an advisor
    reading it to a client as "it made 27.6% last year" has been misled by a layout. SEBI's own
    presentation rule; `perfNote` writes it. */
+/* ── THE FOUR VERBS ─────────────────────────────────────────────────────────────────────────────────
+   The owner, 19 Sep: a fund card must let an advisor "compare kar paaye / rebalance me attach kar paaye
+   / review ke liye bhej paaye / proposal me add kar paaye". Three of the four are HAND-OFFS to journeys
+   that already exist — the Fund Explorer is not a silo, it is where D, E and F are entered from with a
+   fund already chosen. Only Compare is new work.
+
+   They are chips INSIDE the turn, under the fund card, because nothing is pinned above the composer
+   (18 Sep) and a chip that outlives the turn that offered it makes the screen a toolbar.
+
+   EVERY HAND-OFF GOES THROUGH THE SAME QUESTION FIRST: which client. A proposal, a rebalance and a
+   review are all about somebody, and the fund explorer is the one surface in the product that does not
+   already know who. `who.jsx` answers it and the prototype's WHO gate routes it, so the verbs do not
+   each invent a client picker. Compare is the exception and it is the only one: a comparison is about
+   two funds and nobody. */
+const FUND_VERBS = [
+  { id: 'compare',  label: 'Compare with…',        needsClient: false },
+  { id: 'propose',  label: 'Add to a proposal',    needsClient: true,  journey: 'propose' },
+  { id: 'rebal',    label: 'Attach to a rebalance', needsClient: true, journey: 'rebal' },
+  { id: 'review',   label: 'Send for review',      needsClient: true,  journey: 'review' },
+];
+
+/* THE ROWS A COMPARISON IS ON, and every one of them comes from the book.
+   Returns are NOT here: the gap to each fund's own benchmark is the thing a table cannot show, so the
+   Dumbbells above the table own it (CompareTable's spec page says the same). Turnover and top-10
+   concentration are in the v2 spec and are NOT in this repository — they need the holdings feed, which
+   is an open decision, and a row invented to fill a table is the one thing this product never does. */
+const compareEntities = (ids) => ids.map((id) => {
+  const f = fundById(id);
+  return f ? { id, name: f.name, meta: `${f.amc} · ${f.category}` } : null;
+}).filter(Boolean);
+
+const compareRows = (ids) => {
+  const val = (fn) => Object.fromEntries(ids.map((id) => [id, fn(id)]));
+  return [
+    { label: 'Category',      values: val((id) => (fundById(id) || {}).category) },
+    { label: 'Expense ratio', values: val((id) => `${(perfOf(id) || {}).ter.toFixed(2)}%`), better: 'low' },
+    { label: 'Fund size',     values: val((id) => `₹${(perfOf(id) || {}).aumCr.toLocaleString('en-IN')} cr`) },
+    /* The sharpest row in the table, and the reason MANAGERS exists: a three-year record under a
+       manager who arrived last year is not that manager's record. */
+    { label: 'Manager',       values: val((id) => managerLine(id) || '') },
+    { label: 'Exit load',     values: val((id) => (fundById(id) || {}).exitLoad), better: 'low', rank: (v) => parseFloat(v) || 0 },
+    { label: 'Riskometer',    values: val((id) => (fundById(id) || {}).riskometer) },
+    { label: 'On your shelf', values: val((id) => ((fundById(id) || {}).onShelf ? 'Yes' : 'No')) },
+    { label: 'Held by your clients', values: val((id) => String(holdersOf(id).length)) },
+  ];
+};
+
+/* THE READING, BUILT FROM THE DATA AND NEVER WRITTEN PER PAIR.
+   The v2 spec is blunt about why this matters: "a table anyone can build; the reading is what the
+   advisor is paying for." It is also the place a comparison can most easily lie, so every clause here
+   is conditional on a fact and a clause with no fact behind it simply does not appear. Same discipline
+   as the rebalance's uncosted sentence: build it from the targets so a fourth option cannot arrive with
+   softer wording. Two funds only — a three-way verdict is four sentences nobody reads. */
+function compareVerdict(ids) {
+  if (ids.length !== 2) return null;
+  const [a, b] = ids;
+  const fa = fundById(a), fb = fundById(b);
+  const pa = perfOf(a), pb = perfOf(b);
+  if (!fa || !fb || !pa || !pb) return null;
+  const out = [];
+
+  /* THE SHELF COMES FIRST, because it is the only row that is a constraint rather than a preference. */
+  const off = [fa, fb].filter((f) => !f.onShelf);
+  if (off.length === 1) out.push(`${off[0].name} is not on your compliance shelf, so whatever the rest of this says, you cannot place it today.`);
+  else if (off.length === 2) out.push('Neither is on your compliance shelf, so neither can be placed today.');
+
+  /* COST — arithmetic, not an opinion. */
+  const cheap = pa.ter <= pb.ter ? fa : fb, dear = pa.ter <= pb.ter ? fb : fa;
+  const gapTer = Math.abs(pa.ter - pb.ter);
+  out.push(gapTer < 0.05
+    ? `They cost the same to hold — ${pa.ter.toFixed(2)}% against ${pb.ter.toFixed(2)}%.`
+    : `${cheap.name} is the cheaper of the two, ${gapTer.toFixed(2)} points a year under ${dear.name}.`);
+
+  /* THE GAP TO EACH FUND'S OWN BENCHMARK — the thing the table cannot show. */
+  const ga = pa.r5 - (benchCagr(a) || 0), gb = pb.r5 - (benchCagr(b) || 0);
+  const wide = ga >= gb ? { f: fa, g: ga, p: pa, id: a } : { f: fb, g: gb, p: pb, id: b };
+  const other = ga >= gb ? { f: fb, g: gb, p: pb, id: b } : { f: fa, g: ga, p: pa, id: a };
+  const sameBench = pa.benchmark === pb.benchmark;
+  out.push(Math.abs(ga - gb) < 0.3
+    ? `Over five years both landed about the same distance from ${sameBench ? 'the benchmark' : 'their own benchmarks'} — ${ga.toFixed(1)} points and ${gb.toFixed(1)}.`
+    : `${wide.f.name} beat ${sameBench ? 'that benchmark' : 'its own benchmark'} by more over five years — ${wide.g.toFixed(1)} points against ${other.g.toFixed(1)}.`);
+
+  /* THE MANAGER — the sentence appears only when the record is not the manager's, and it appears for
+     BOTH funds when both are recent. Naming one and staying quiet about the other would read as an
+     endorsement of the one not mentioned, which is the opposite of what the figure says. */
+  const thin = [a, b].map((id) => ({ id, m: managerOf(id) }))
+    .filter((x) => x.m && x.m.years != null && x.m.fundYears > 0 && x.m.years / x.m.fundYears < 0.34);
+  if (thin.length === 1) {
+    const m = thin[0].m, f = fundById(thin[0].id);
+    out.push(`${f.name} changed hands ${m.since ? `in ${m.since}` : 'recently'}: ${m.name} has run it ${m.years} of its ${m.fundYears} years, so the long record is the fund's rather than theirs.`);
+  } else if (thin.length === 2) {
+    out.push(`Both changed hands recently — ${thin.map((x) => `${x.m.name} ${x.m.years} of ${x.m.fundYears} years at ${fundById(x.id).name}`).join(', and ')}. Neither five-year record is one person's work.`);
+  }
+
+  /* ARE THESE EVEN THE SAME JOB? Two funds in different categories can be compared on cost and on the
+     gap to their own benchmarks and still not be alternatives to each other. Saying so is the one
+     caution a comparison screen owes an advisor, and it comes last because it qualifies everything
+     above rather than replacing it. */
+  if (fa.category !== fb.category) {
+    out.push(`They are not the same job — ${fa.name} is ${fa.category.toLowerCase()} and ${fb.name} is ${fb.category.toLowerCase()} — so read the gap to each benchmark, not the two returns against each other.`);
+  }
+  return out;
+}
+
+/* The book writes it — see comparisonProvenance()'s own note on why the two lines are not
+   concatenated here. */
+const compareProvenance = () => comparisonProvenance();
+
+/* The chips under a fund card. Four verbs and the four asks are DIFFERENT ROWS on purpose: the asks
+   (FUND_CHIPS) are questions about this fund, the verbs do something with it. Putting eight chips in
+   one row would make the advisor read all eight to find either. */
+const FundVerbs = ({ onVerb, animate = false }) => (
+  <FUNDS_DS.ChipRow animate={animate}>
+    {FUND_VERBS.map((v) => <FUNDS_DS.AnswerChip key={v.id} label={v.label} onClick={() => onVerb && onVerb(v)} />)}
+  </FUNDS_DS.ChipRow>
+);
+
+/* COMPARE IT WITH WHICH FUND — the same shape as the WHO step, and deliberately so: an advisor who has
+   picked a client from a searchable list once should not meet a second, different way of picking a
+   thing three screens later. It is `List.search` in both places now, so they cannot drift.
+   The shelf is the pool, and a fund already in the comparison is not offered again. */
+function ComparePicker({ exclude = [], funds = FUND_LIST, onPick, onEvent }) {
+  const [q, setQ] = React.useState('');
+  const pool = funds.filter((f) => !exclude.includes(f.id));
+  const lead = exclude.length > 1 ? 'Add which third fund?' : 'Compare it with which fund?';
+  return (
+    <FUNDS_DS.SentinelTurn say={lead}
+      body={
+        <FUNDS_DS.List
+          items={pool.map((f) => ({
+            id: f.id, title: f.name,
+            subtitle: `${f.amc} · ${f.cat}${f.onShelf ? '' : ' · not on your shelf'}`,
+            onPress: () => { if (onEvent) onEvent(`Picked ${f.name}`, 'the comparison replaces the picker in place'); onPick && onPick(f.id); },
+          }))}
+          rowProps={{ variant: 'select' }}
+          search={{ value: q, onChange: setQ, onClear: () => setQ(''), placeholder: `Search ${pool.length} funds on your shelf`,
+            emptyState: { title: `No fund called “${q}”.`, body: 'Check the spelling, or clear the search to see the whole shelf.' } }}
+          emptyState={{ title: 'Nothing left to compare it with.', body: 'Every fund on your shelf is already in this comparison.' }} />
+      } />
+  );
+}
+
+/* THE THREE HAND-OFFS. Each says the same two things — what it is about to do, and that it needs a
+   client first — because a proposal, a rebalance and a review are all about somebody and the fund
+   explorer is the one surface that does not already know who. The WHO step answers it (`who.jsx`), so
+   this turn does not invent a second client picker; it states the hand-off and gets out of the way.
+
+   The sentence is BUILT from the verb rather than written three times, for the same reason the
+   rebalance's uncosted sentence is: a fourth verb could not arrive with softer wording. */
+const VERB_SAYS = {
+  propose: (f) => [`${f.name} it is. A proposal is about somebody, so I need the client before I can size anything.`,
+    'Once you pick one I will check their risk number and their mandate against this fund before it goes in.'],
+  rebal:   (f) => [`${f.name} it is. A rebalance moves real money in somebody's folios, so I need the client first.`,
+    'Then I will size the switch against their mandate and tell you what it costs — or say plainly that I cannot cost it.'],
+  review:  (f) => [`${f.name} it is. A review is written for one client and one audience, so I need the client first.`,
+    'Then you pick who it is for — their file, the client, or a fresh investment case.'],
+};
+function FundHandoff({ verb, fundId }) {
+  const f = fundById(fundId);
+  const say = f && VERB_SAYS[verb] ? VERB_SAYS[verb](f) : null;
+  if (!say) return null;
+  return <FUNDS_DS.SentinelTurn say={say} />;
+}
+
+/* THE BAR IS NEVER THE ONLY PLACE THE GAP IS SAID — ConcentrationBar's rule, applied here. The row's
+   label carries the number the picture is about, so a reader who cannot judge two bar lengths still
+   gets the answer. "ahead" and "behind" are the same two words InfoCard.compare uses. */
+const gapLabel = (id) => {
+  const g = +(perfOf(id).r5 - (benchCagr(id) || 0)).toFixed(1);
+  const dir = g < 0 ? 'behind' : 'ahead';
+  return `${fundById(id).name} · ${Math.abs(g)} points ${dir} over 5 years`;
+};
+
+/* The comparison, as a turn — and it is TWO blocks with ONE signature.
+   Dumbbells first, because the gap to each fund's own benchmark is what no table shows. The table
+   beneath. Then the reading, in a `continued` block, because it is a second thing Sentinel says about
+   the same question and `SentinelTurn`'s order puts a sentence before its body, not after it. The
+   chips belong to the reading — they answer it — which is also why they are not on the first block.
+   Journey D's result turn is the same shape for the same reason. */
+function FundCompare({ ids = [], onChip, onAdd, onRemove, enter = false,
+                       chips = ['Add a third', 'Which suits a 54 Moderate?', 'Save this comparison'] }) {
+  const ents = compareEntities(ids);
+  if (ents.length < 2) return null;
+  const lines = compareVerdict(ids);
+  /* ONE SCALE ACROSS EVERY ROW, and it is not zero-based. The rows are only comparable if they share
+     a domain — each dumbbell niced to its own values would make two different gaps look the same
+     length — and a 0-based domain buries all of them in the right quarter (Dumbbell's own note on
+     `min` records the measurement). `niceDomain` is the system's, so the ends land on whole steps. */
+  const vals = ids.flatMap((id) => [perfOf(id).r5, benchCagr(id) || 0]);
+  const [lo, hi] = FUNDS_DS.niceDomain(Math.min(...vals), Math.max(...vals), 4);
+  /* `<>` rather than React.Fragment: the lint reads `React.Fragment` in a file that never imports
+     React — the bundle provides it globally — and rail.jsx:112 already recorded the same rule. */
+  return (
+    <>
+      <FUNDS_DS.SentinelTurn enter={enter}
+        say={`${ents.map((e) => e.name).join(' and ')}, side by side.`}
+        body={
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
+            {ids.map((id) => (
+              <FUNDS_DS.Dumbbell key={id} label={gapLabel(id)}
+                target={benchCagr(id)} actual={perfOf(id).r5} min={lo} max={hi}
+                targetLabel={perfOf(id).benchmark} actualLabel="the fund" />
+            ))}
+          </div>
+        }
+        tail={<FUNDS_DS.CompareTable entities={ents} rows={compareRows(ids)} cap={3}
+          onAdd={ids.length < 3 && onAdd ? onAdd : undefined}
+          capNote="Three is the most that reads on a phone. Drop one to add another."
+          onRemove={onRemove} footnote={compareProvenance()} />} />
+      {lines && (
+        <FUNDS_DS.SentinelTurn continued say={lines}
+          chips={<FUNDS_DS.ChipRow>
+            {chips.map((c) => <FUNDS_DS.AnswerChip key={c} label={c} onClick={() => onChip && onChip(c)} />)}
+          </FUNDS_DS.ChipRow>} />
+      )}
+    </>
+  );
+}
+
 /* Two flexi caps, and the question an advisor is actually asked: are these the same fund? THIS PRODUCT
    CANNOT ANSWER IT YET, and OverlapView was built to say so — a null cell is an em dash with a footnote,
    never a 0. The screen shows the real shape of the answer and names what is missing to fill it. */
@@ -261,4 +480,4 @@ function FundInfo({ id, period, onPeriod, onExplain, heldBy = false, defaultPeri
   );
 }
 
-Object.assign(window, { FundInfo, FUND_CHIPS, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
+Object.assign(window, { FundInfo, FUND_CHIPS, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
