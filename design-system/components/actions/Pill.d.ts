@@ -8,6 +8,12 @@ export interface PillProps {
   tone?: PillTone;
   /** sand fill + bronze ring + check. */
   selected?: boolean;
+  /** A filter chip that takes itself out of the query. The pill stays the ONLY control — there is no
+   *  nested ✕ button, because a control inside a control is a defect this system has shipped once
+   *  already. It draws the ✕ in a trailing slot and names itself "Remove <label>"; before this existed
+   *  the fund screen typed "  ✕" into the label, so a screen reader read the glyph as part of the name
+   *  and there was nothing to tell a remove chip from a select chip. Pairs with tone="filter". */
+  removable?: boolean;
   onClick?: () => void;
   disabled?: boolean;
   /** Working, not unavailable: the label HOLDS, the glyph slot becomes a 13px spinner, the label drops

@@ -153,13 +153,14 @@ var __ds_out = (() => {
   function Glyph({ kind }) {
     if (kind === "check") return /* @__PURE__ */ react_global_default.createElement("svg", { width: "13", height: "13", viewBox: "0 0 13 13", fill: "none" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M2.5 6.8 5 9.3l5.5-5.6", stroke: "var(--color-ink)", strokeWidth: "1.4", strokeLinecap: "round", strokeLinejoin: "round" }));
     if (kind === "tertiary") return /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-13)", lineHeight: 1, color: "var(--color-bronze-deep)" } }, "?");
+    if (kind === "remove") return /* @__PURE__ */ react_global_default.createElement("svg", { width: "11", height: "11", viewBox: "0 0 11 11", fill: "none", "aria-hidden": "true" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M2.2 2.2l6.6 6.6M8.8 2.2l-6.6 6.6", stroke: "currentColor", strokeWidth: "1.4", strokeLinecap: "round" }));
     if (kind === "smart") return /* @__PURE__ */ react_global_default.createElement("svg", { width: "13", height: "13", viewBox: "0 0 13 13", fill: "none" }, /* @__PURE__ */ react_global_default.createElement("rect", { x: "1", y: "2.5", width: "11", height: "8", rx: "1.5", stroke: "var(--color-bronze-deep)", strokeWidth: "1.1" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M3.2 5.2h2.2M3.2 7.2h4.4", stroke: "var(--color-bronze-deep)", strokeWidth: "1.1", strokeLinecap: "round" }));
     return null;
   }
   function Spinner({ fg }) {
     return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", width: 13, height: 13, flexShrink: 0, animation: "ds-spin 900ms linear infinite" } }, /* @__PURE__ */ react_global_default.createElement("svg", { width: "13", height: "13", viewBox: "0 0 24 24", fill: "none", stroke: fg, strokeWidth: "2.6", strokeLinecap: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M21 12a9 9 0 1 1-6.219-8.56" })));
   }
-  function Pill({ label, size = "md", tone = "outline", selected = false, onClick, disabled = false, loading = false }) {
+  function Pill({ label, size = "md", tone = "outline", selected = false, removable = false, onClick, disabled = false, loading = false }) {
     const [down, setDown] = react_global_default.useState(false);
     const s = SIZES[size], t = selected ? SELECTED : TONES[tone];
     const hit = Math.max(0, (44 - s.h) / 2);
@@ -172,13 +173,15 @@ var __ds_out = (() => {
         disabled: inert,
         className: "ds-pill",
         "aria-busy": loading || void 0,
+        "aria-label": removable ? `Remove ${label}` : void 0,
         onPointerDown: () => !inert && setDown(true),
         onPointerUp: () => setDown(false),
         onPointerLeave: () => setDown(false),
         style: { position: "relative", appearance: "none", border: "none", cursor: inert ? "default" : "pointer", display: "inline-flex", height: s.h, flexShrink: 0, alignItems: "center", gap: "var(--space-6)", borderRadius: "var(--radius-full)", padding: `0 ${s.px}px`, background: t.bg, boxShadow: t.ring ? `0 0 0 1px ${t.ring}` : "none", outline: t.dashed ? "1px dashed var(--tint-bronze-dashed)" : "none", outlineOffset: -1, opacity: disabled ? 0.4 : 1, transform: down ? "scale(0.98)" : "none", transition: "transform var(--dur-press) var(--ease), background-color var(--dur-press)", "--hit": `${hit}px` }
       },
-      loading ? /* @__PURE__ */ react_global_default.createElement(Spinner, { fg: t.fg }) : selected ? /* @__PURE__ */ react_global_default.createElement(Glyph, { kind: "check" }) : /* @__PURE__ */ react_global_default.createElement(Glyph, { kind: tone }),
-      /* @__PURE__ */ react_global_default.createElement("span", { style: { whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: s.font, lineHeight: `${s.lh}px`, color: t.fg, opacity: loading ? 0.6 : t.fgOpacity || 1 } }, label)
+      loading ? /* @__PURE__ */ react_global_default.createElement(Spinner, { fg: t.fg }) : selected ? /* @__PURE__ */ react_global_default.createElement(Glyph, { kind: "check" }) : removable ? null : /* @__PURE__ */ react_global_default.createElement(Glyph, { kind: tone }),
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: s.font, lineHeight: `${s.lh}px`, color: t.fg, opacity: loading ? 0.6 : t.fgOpacity || 1 } }, label),
+      removable && !loading && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", color: t.fg, opacity: 0.7 } }, /* @__PURE__ */ react_global_default.createElement(Glyph, { kind: "remove" }))
     );
   }
 

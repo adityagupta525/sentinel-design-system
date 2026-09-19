@@ -19,25 +19,65 @@
 const { Composer, SentinelBlock, SentinelText, ArtifactCard, DataTable, OverlapView, Pill, ChipRow, AnswerChip, ExplainerSheet, InfoDot } = window.SentinelDesignSystem_0682a2;
 
 const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
+/* A REAL controlled composer for the live scene. A frozen specimen can pass value="" with a no-op
+   onChange; a screen that claims you can refine a search by typing cannot. */
+const LiveAsk = ({ value, onChange, onSend, onAttach }) =>
+  <Composer value={value} onChange={onChange} placeholder="Add, drop, or say “only…”" onSend={onSend} onAttach={onAttach} />;
 /* The shortlist artifact and its empty state now live in ./funds.jsx, shared with the prototype. */
 
 /* THE PARSED QUERY, EDITABLE. Sentinel says what it read the sentence as, and every part of it is a chip
    the advisor can drop — so a wrong parse costs one tap, not a retyped question. */
-function QueryTurn({ query, onToggle, shelf, onShelf, onOpen, results }) {
+/* The answer to a TYPED refinement. It is not the first turn again: repeating "I read that as a fund
+   search" after every sentence is the repeated data this product has been pulled up on twice. It says
+   what CHANGED, shows the chips as they now are, and gives the new count. */
+function RefineTurn({ said, query, shelf, onToggle, onShelf, results }) {
+  return (
+    <SentinelBlock continued>
+      <SentinelText text={said} />
+      <div style={{ marginTop: 'var(--space-12)' }}>
+        <ChipRow>
+          {query.filter((q) => q.on).map((q) => (
+            <Pill key={q.label} label={q.label} size="sm" tone="filter" removable onClick={() => onToggle && onToggle(q.label)} />
+          ))}
+          <Pill label={shelf ? 'On your shelf ✓' : '+ On your shelf'} size="sm" tone={shelf ? 'primary' : 'outline'} onClick={onShelf} />
+        </ChipRow>
+      </div>
+      <div style={{ marginTop: 'var(--space-10)' }}>
+        <span style={{ font: 'var(--type-row-font)', color: results === 0 ? 'var(--color-status-over-fg)' : 'var(--color-ink-soft)', fontVariantNumeric: 'tabular-nums' }}>
+          {results === 0 ? 'Nothing matches all of those now. Drop one and I will widen it.' : results === 1 ? '1 fund matches now.' : `${results} funds match now.`}
+        </span>
+      </div>
+    </SentinelBlock>
+  );
+}
+
+/* THE COUNT LIVES WITH THE CHIPS, not only on the button. Reviewed against how shopping and recipe
+   apps handle a parsed query (Thrive Market, Yazio, Best Buy, Google Drive — Mobbin, 19 Sep 2026): in
+   every one of them the number of results sits beside the filters and MOVES as a filter goes, and the
+   commit button carries it too. Ours had it only on the CTA, so dropping a chip changed the shortlist
+   silently and the advisor had to read the button to find out what they had done.
+   `fundsFor` produces both this number and the table's rows, so they cannot disagree. */
+function QueryTurn({ query, onToggle, shelf, onShelf, onOpen, results, continued = false }) {
+  const n = results;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
-      <SentinelBlock>
-        <SentinelText text="I read that as a fund search. This is what I am filtering on — drop anything I got wrong." />
+      <SentinelBlock continued={continued}>
+        <SentinelText text="I read that as a fund search. This is what I am filtering on — drop anything I got wrong, or just tell me." />
         <div style={{ marginTop: 'var(--space-12)' }}>
           <ChipRow>
             {query.filter((q) => q.on).map((q) => (
-              <Pill key={q.label} label={`${q.label}  ✕`} size="sm" tone="filter" onClick={() => onToggle && onToggle(q.label)} />
+              <Pill key={q.label} label={q.label} size="sm" tone="filter" removable onClick={() => onToggle && onToggle(q.label)} />
             ))}
             <Pill label={shelf ? 'On your shelf ✓' : '+ On your shelf'} size="sm" tone={shelf ? 'primary' : 'outline'} onClick={onShelf} />
           </ChipRow>
         </div>
+        <div style={{ marginTop: 'var(--space-10)' }}>
+          <span style={{ font: 'var(--type-row-font)', color: n === 0 ? 'var(--color-status-over-fg)' : 'var(--color-ink-soft)', fontVariantNumeric: 'tabular-nums' }}>
+            {n === 0 ? 'Nothing matches all of those.' : n === 1 ? '1 fund matches.' : `${n} funds match.`}
+          </span>
+        </div>
       </SentinelBlock>
-      {onOpen && <AnswerChip label={`Show the ${results} funds`} variant="primary" onClick={onOpen} />}
+      {onOpen && n > 0 && <AnswerChip label={`Show the ${n} funds`} variant="primary" onClick={onOpen} />}
     </div>
   );
 }
@@ -60,17 +100,49 @@ function LiveScene() {
   const [shelf, setShelf] = React.useState(true);
   const [opened, setOpened] = React.useState(false);
   const [sheet, setSheet] = React.useState(null);
+  const [draft, setDraft] = React.useState('');
+  /* Every typed refinement, in order, so the thread reads as a conversation rather than as a filter
+     panel that quietly rewrote itself. Each one is a turn: what was said, and what Sentinel did. */
+  const [turns, setTurns] = React.useState([]);
   const att = useAttachment();
-  const active = query.filter((q) => q.on).map((q) => q.label);
-  const funds = FUND_LIST.filter((f) => (!active.includes('Flexi cap') || f.cat === 'Flexi cap') && (!active.includes('Equity') || f.bucket === 'Equity') && (!shelf || f.onShelf));
+  const funds = fundsFor(query, shelf);
+
+  const say = (text) => {
+    if (!text.trim()) return;
+    const r = refine(text, query);
+    setDraft('');
+    if (r.kind === 'shelf') setShelf(r.on);
+    else setQuery((q) => applyRefine(r, q));
+    setTurns((t) => [...t, { text, r }]);
+  };
+
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Thread anchor="bottom" revision={`${active.join()}-${shelf}-${opened}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+      <Thread anchor="newest" revision={`${query.map((q) => q.label + q.on).join()}-${shelf}-${opened}-${turns.length}-${!!att.file}`}
+        composer={<LiveAsk value={draft} onChange={setDraft} onSend={() => say(draft)} onAttach={att.onAttach} />}>
         <AskTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
         <QueryTurn query={query} shelf={shelf} onShelf={() => setShelf((v) => !v)}
           onToggle={(label) => setQuery((q) => q.map((x) => (x.label === label ? { ...x, on: false } : x)))}
           onOpen={opened ? undefined : () => setOpened(true)} results={funds.length} />
         {opened && <FundResults funds={funds} />}
+        {/* A typed refinement is the advisor's own turn, on their side, then Sentinel's answer —
+            never a silent rewrite of the chips above. */}
+        {turns.map((t, i) => (
+          <React.Fragment key={i}>
+            <AskTurn text={t.text} editable={false} actions={false} />
+            {t.r.kind === 'miss'
+              ? <SentinelBlock>
+                  <SentinelText text={REFINE_MISS.body} />
+                  <div style={{ marginTop: 'var(--space-12)' }}>
+                    <ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} onClick={() => say(c)} />)}</ChipRow>
+                  </div>
+                </SentinelBlock>
+              : <RefineTurn said={refineSaid(t.r)} query={query} shelf={shelf}
+                  onShelf={() => setShelf((v) => !v)}
+                  onToggle={(label) => setQuery((q) => q.map((x) => (x.label === label ? { ...x, on: false } : x)))}
+                  results={funds.length} />}
+          </React.Fragment>
+        ))}
         <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
       </Thread>
       <ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []} onClose={() => setSheet(null)} />

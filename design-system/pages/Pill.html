@@ -33,11 +33,12 @@ function App() {
           {label:'filter · sm', node:<Pill label="All 43" size="sm" tone="filter" />, note:'32px, inside a card.'},
         ]} />
       </Block>
-      <Block n={4} title="States" sub="Default, pressed, selected, loading, disabled. There is no error state — a pill does not hold a value that can be wrong.">
+      <Block n={4} title="States" sub="Default, pressed, selected, removable, loading, disabled. There is no error state — a pill does not hold a value that can be wrong.">
         <Grid cols={3} items={[
           {label:'default', node:<Pill label="Download PDF" />},
           {label:'pressed', node:<div style={{transform:'scale(0.98)',transformOrigin:'left'}}><Pill label="Download PDF" /></div>, note:'scale 0.98 over 150 ms.'},
           {label:'selected', node:<Pill label="All 43" size="sm" tone="filter" selected />, note:'Sand fill, bronze ring, check.'},
+          {label:'removable', node:<Pill label="Flexi cap" size="sm" tone="filter" removable />, note:'A parsed filter that takes itself out. ✕ in a TRAILING slot, and the accessible name is “Remove Flexi cap”. No nested button — the pill is the only control, because removing itself is the chip’s whole job (F-43).'},
           {label:'loading', node:<Pill label="Download PDF" loading />, note:'Label holds, width holds, press inert. Working — not unavailable.'},
           {label:'disabled', node:<Pill label="Download PDF" disabled />, note:'40% opacity. Unavailable.'},
           {label:'live', node:<Pill label={busy ? 'Preparing' : 'Download PDF'} loading={busy} onClick={()=>{setBusy(true);setTimeout(()=>setBusy(false),2200);}} />, note:'Tap it.'},

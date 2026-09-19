@@ -55,6 +55,26 @@ measurements are on the pages themselves.**
   either direction: it does not say "failed" for something it has not confirmed failed, and **it does not
   offer to send again**, because a duplicate switch is real money. It offers checking, and the question
   the advisor actually has: what do I tell Sharma?
+- **The fund explorer is chat-LED now (19 Sep), and there is a written answer to "is the feel missing?"
+  in `docs/FEEL.md`.** Until today the only way to change a parsed query was to tap ✕ on a chip, which
+  is a filter panel with a composer parked under it. `funds.jsx` gained a **refinement parser** —
+  patterns, like the router, and the screen says so — covering the three things an advisor types after
+  a first search: ADD a category, DROP one, or turn the shelf filter on and off. "only X" REPLACES the
+  category filters rather than adding to them, because an advisor who says "only flexi cap" after asking
+  for equity means one thing and adding it would return nothing. Anything else lands in bucket 4's
+  sentence with the three things it can do — never a silent half-application.
+  **The count now sits with the chips and moves**, from the same `fundsFor` that builds the rows, so the
+  number and the table cannot disagree; at zero it says what to do instead of showing an empty table.
+  A typed refinement is the advisor's own turn on their side, then a SMALL answer saying what changed —
+  not the first turn printed again, which is the repeated data this product has been pulled up on twice.
+  **F-43:** the query chips drew their ✕ as a character inside the label, so a screen reader read
+  "Flexi cap ✕" as the name and nothing told a remove chip from a select chip. `Pill removable` draws it
+  and names itself "Remove Flexi cap". Deliberately NOT a nested button — `Pill` is a `<button>`.
+  **`docs/FEEL.md` is the review the owner asked for**, against shipping apps on Mobbin rather than
+  award sites, and its conclusion is one sentence: the feel that is missing is that **a figure is never
+  allowed to land**. `HeroNumberCard` is in the system and on exactly one screen. That change is the
+  owner's to make because it alters four built screens, and it has NOT been applied.
+
 - **Journey F is built (19 Sep): Meera's client review**, `screens/journey-f/review.html`, eight states,
   and the last of the three journeys `ResultCard` was built for. Its one rail step is **not a
   fact-finding question** — the book holds every fact this review can state. What Sentinel cannot infer

@@ -897,3 +897,18 @@ this system has shipped a `Pressable` nobody could see or name.
 the **props**, not on `filling`, so a card that has a toggle keeps its footer while it loads — the row
 is about to be usable and removing it would make the card jump. Cards that use the footer are byte-for-byte
 unchanged; verified on the drift artifact, which still shows its rule and `Expand ⌄`.
+
+### F-43 · A filter chip's ✕ was a character in its name — *19 Sep 2026, fixed*
+
+`screens/journey-c/funds.html` drew its removable query chips as `label={`${q.label}  ✕`}`. Two things
+followed. A screen reader read the name as **"Flexi cap ✕"** — the glyph was part of the label, not an
+affordance. And nothing distinguished a chip that removes itself from a chip that selects itself: both
+were a `Pill` with an `onClick`, and the only difference was two spaces and a character.
+
+**Fix:** `Pill` gains `removable`. It draws the ✕ in a trailing slot and names itself
+**"Remove Flexi cap"**. It is deliberately **not** a nested button: `Pill` is a `<button>`, and a
+control inside a control is the defect this repository shipped once already (`DownloadAction` inside
+`ArtifactCard`). The pill stays the one target — which is correct, because removing itself is the
+chip's whole job.
+
+Found while making the fund explorer chat-led, by reading the source of a screen I was about to change.

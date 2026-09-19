@@ -14,6 +14,7 @@ const SELECTED = { bg: 'var(--color-selected)', ring: 'var(--color-bronze)', fg:
 function Glyph({ kind }) {
   if (kind === 'check') return <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.8 5 9.3l5.5-5.6" stroke="var(--color-ink)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>;
   if (kind === 'tertiary') return <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-13)', lineHeight: 1, color: 'var(--color-bronze-deep)' }}>?</span>;
+  if (kind === 'remove') return <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true"><path d="M2.2 2.2l6.6 6.6M8.8 2.2l-6.6 6.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>;
   if (kind === 'smart') return <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2.5" width="11" height="8" rx="1.5" stroke="var(--color-bronze-deep)" strokeWidth="1.1" /><path d="M3.2 5.2h2.2M3.2 7.2h4.4" stroke="var(--color-bronze-deep)" strokeWidth="1.1" strokeLinecap="round" /></svg>;
   return null;
 }
@@ -34,17 +35,26 @@ function Spinner({ fg }) {
     </span>
   );
 }
-export function Pill({ label, size = 'md', tone = 'outline', selected = false, onClick, disabled = false, loading = false }) {
+/* `removable` — a filter chip whose whole job is to take itself out of the query.
+   It is NOT a second button inside this one. Pill is a <button>, and a nested control is the defect
+   this repository has already shipped once (the DownloadAction / ArtifactCard nesting). So the pill
+   itself stays the only target and `removable` changes two things: the ✕ becomes a DRAWN glyph in a
+   trailing slot instead of a character typed into the label, and the accessible name becomes
+   "Remove <label>" instead of "Flexi cap  ✕", which is what a screen reader read before. The pill
+   looks the same and now says what pressing it does. */
+export function Pill({ label, size = 'md', tone = 'outline', selected = false, removable = false, onClick, disabled = false, loading = false }) {
   const [down, setDown] = React.useState(false);
   const s = SIZES[size], t = selected ? SELECTED : TONES[tone];
   const hit = Math.max(0, (44 - s.h) / 2);
   const inert = disabled || loading;
   return (
     <button type="button" onClick={inert ? undefined : onClick} disabled={inert} className="ds-pill" aria-busy={loading || undefined}
+      aria-label={removable ? `Remove ${label}` : undefined}
       onPointerDown={() => !inert && setDown(true)} onPointerUp={() => setDown(false)} onPointerLeave={() => setDown(false)}
       style={{ position: 'relative', appearance: 'none', border: 'none', cursor: inert ? 'default' : 'pointer', display: 'inline-flex', height: s.h, flexShrink: 0, alignItems: 'center', gap: 'var(--space-6)', borderRadius: 'var(--radius-full)', padding: `0 ${s.px}px`, background: t.bg, boxShadow: t.ring ? `0 0 0 1px ${t.ring}` : 'none', outline: t.dashed ? '1px dashed var(--tint-bronze-dashed)' : 'none', outlineOffset: -1, opacity: disabled ? 0.4 : 1, transform: down ? 'scale(0.98)' : 'none', transition: 'transform var(--dur-press) var(--ease), background-color var(--dur-press)', '--hit': `${hit}px` }}>
-      {loading ? <Spinner fg={t.fg} /> : selected ? <Glyph kind="check" /> : <Glyph kind={tone} />}
+      {loading ? <Spinner fg={t.fg} /> : selected ? <Glyph kind="check" /> : removable ? null : <Glyph kind={tone} />}
       <span style={{ whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: s.font, lineHeight: `${s.lh}px`, color: t.fg, opacity: loading ? 0.6 : t.fgOpacity || 1 }}>{label}</span>
+      {removable && !loading && <span style={{ display: 'inline-flex', color: t.fg, opacity: 0.7 }}><Glyph kind="remove" /></span>}
     </button>
   );
 }
