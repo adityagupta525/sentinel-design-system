@@ -105,6 +105,8 @@ export type { ArtifactState, ArtifactCardProps } from './components/cards/Artifa
 export { ArtifactCard } from './components/cards/ArtifactCard';
 export type { BadgeProps } from './components/cards/Badge';
 export { Badge } from './components/cards/Badge';
+export type { ComplianceRow, ConfirmSheetProps } from './components/cards/ConfirmSheet';
+export { ConfirmSheet } from './components/cards/ConfirmSheet';
 export type { ConstraintCalloutProps } from './components/cards/ConstraintCallout';
 export { ConstraintCallout } from './components/cards/ConstraintCallout';
 export type { ColumnKind, ColumnAlign, SortDir, Density, TableOverflow, DataTableColumn, DataTableRow, DataTableEmptyState, DataTableProps } from './components/cards/DataTable';

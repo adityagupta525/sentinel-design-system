@@ -1,0 +1,132 @@
+<!-- @dsCard group="Pages" viewport="1000x2000" name="ConfirmSheet" subtitle="The decision surface — disclosure above the numbers, compliance as rows, and the one surface in the product with no composer" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ConfirmSheet — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ConfirmSheet, MoveCard, SentinelBlock, SentinelText, Dumbbell, Provenance, Composer, Dock, Pill, DarkButton } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-canvas','--color-surface','--color-line-soft','--color-danger','--scrim','--scrim-sheet','--z-scrim','--z-modal','--radius-24','--radius-16','--h-row-xl','--h-touch','--type-sheet-title-font','--type-row-font','--type-row-strong-font','--dur-screen','--ease'];
+
+const DISCLOSURE = 'These two switches run under your ARN. Sharma gets a note explaining both moves and what they cost. Nothing else in his book changes.';
+const ROWS = [
+  { label: 'Compliance shelf', value: 'Passed' },
+  { label: 'Single-fund ceiling', value: 'No fund over 25%' },
+  { label: 'Client consent', value: 'Required', tone: 'required' },
+];
+const MOVES = (
+  <React.Fragment>
+    <MoveCard n={1} title="Move ₹1,85,000 out of Quant Small Cap" body="Into ICICI Corporate Bond." />
+    <MoveCard n={2} title="Redirect his ₹30,000 monthly SIP" body="No exit load, no tax, and it stops the drift coming back." />
+  </React.Fragment>
+);
+
+/* The sheet is position:absolute, so it needs a positioned ancestor — the phone frame, which is the only
+   place it appears in the product too. */
+function Frame({ children, sheet, height = 520 }) {
+  return (
+    <div style={{ position: 'relative', width: 375, height, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)', backgroundImage: 'var(--paper-texture)', backgroundSize: 'var(--paper-texture-size)', boxShadow: '0 0 0 1px var(--ring-frame)' }}>
+      <div style={{ padding: '20px 16px' }}>{children}</div>
+      {sheet}
+    </div>
+  );
+}
+
+/* Mounted CLOSED and opened by the CTA — the only way the dialog contract arms (F-25). */
+function Live() {
+  const [open, setOpen] = React.useState(false);
+  const [done, setDone] = React.useState(false);
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Frame sheet={<ConfirmSheet open={open} title="Approve · R. Sharma" disclosure={DISCLOSURE} rows={ROWS}
+        commitLabel="Approve both moves" onCommit={() => { setDone(true); setOpen(false); }} onClose={() => setOpen(false)}>{MOVES}</ConfirmSheet>}>
+        <SentinelBlock>
+          <SentinelText text={done ? 'Two moves queued. Nothing else in his book changed.' : 'Two moves, not seven. Together they bring equity from 71% back to 58%, and they cost ₹11,200.'} />
+        </SentinelBlock>
+        <div style={{ marginTop: 16 }}><DarkButton full label={done ? 'Approved' : 'Approve both moves'} onClick={() => !done && setOpen(true)} /></div>
+      </Frame>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell
+      name="ConfirmSheet" group="Cards" status="shipped"
+      requires={['ConfirmSheet','MoveCard','SentinelBlock','SentinelText','DarkButton']}
+      summary="The decision surface. Disclosure above the numbers, compliance stated as rows, then what is being approved — and it is THE ONE SURFACE IN THE PRODUCT WITH NO COMPOSER, rule 3's single documented exception (readme.md:204). It takes no composer prop, so the exception lives in the type rather than in a caller's discipline.">
+
+      <Block n={1} title="Specimen" sub="Live, and mounted closed — the way the product reaches it. Tap Approve both moves; then the scrim, Not now or Escape.">
+        <Live />
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The order is fixed and it is the whole point: what this will do, then whether it is allowed, then what it is — and only then the button that does it.">
+        <Anatomy width={343}
+          top="Scrim --scrim at --scrim-sheet, over an inert thread"
+          bottom="Commit row pinned OUTSIDE the scroller — the decision never scrolls away from what it decides"
+          left="Sheet caps at 88% of the phone; its body scrolls"
+          right="disclosure → rows → children → commit">
+          <div style={{ position: 'relative', height: 470, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)' }}>
+            <ConfirmSheet open title="Approve · R. Sharma" disclosure={DISCLOSURE} rows={ROWS} commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>{MOVES}</ConfirmSheet>
+          </div>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="None, deliberately. Every confirm step in this product has the same four parts in the same order; a variant here would be a way to leave one out.">
+        <Grid cols={1} itemWidth={343} items={[
+          { label: 'The only form there is', node: <div style={{ position: 'relative', height: 430, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)' }}><ConfirmSheet open title="Approve · R. Sharma" disclosure={DISCLOSURE} rows={ROWS} commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>{MOVES}</ConfirmSheet></div>,
+            note: '`disclosure` and `rows` are required props. A sheet whose small print sits under the numbers is one that was read after the decision; compliance not stated as a row is compliance implied by silence. Neither is optional and neither can be reordered.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Open, committing, and not rendered. There is no half-open and no drag.">
+        <Grid cols={2} itemWidth={343} items={[
+          { label: 'Open', node: <div style={{ position: 'relative', height: 400, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)' }}><ConfirmSheet open title="Approve · R. Sharma" disclosure={DISCLOSURE} rows={ROWS} commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>{MOVES}</ConfirmSheet></div>,
+            note: 'Focus is inside, Escape closes, Tab wraps. Two visible ways out: the commit and the word beside it.' },
+          { label: 'Committing', node: <div style={{ position: 'relative', height: 400, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)' }}><ConfirmSheet open busy busyLabel="Placing both moves…" title="Approve · R. Sharma" disclosure={DISCLOSURE} rows={ROWS} commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>{MOVES}</ConfirmSheet></div>,
+            note: 'The button says what it is doing and stops accepting taps. No spinner — this product names its waits rather than spinning them.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="Rule 3 and its one exception, side by side. The thread carries a composer on every screen; this sheet is the surface where it is withheld, and the reason is that a composer here would offer a third path that does not exist.">
+        <Specimen width={375}>
+          <div style={{ position: 'relative', height: 430, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)' }}>
+            <div style={{ padding: '16px' }}>
+              <SentinelBlock><SentinelText text="Two moves, not seven. Together they bring equity from 71% back to 58%, and they cost ₹11,200." /></SentinelBlock>
+            </div>
+            <ConfirmSheet open title="Approve · R. Sharma" disclosure={DISCLOSURE} rows={ROWS} commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>{MOVES}</ConfirmSheet>
+          </div>
+        </Specimen>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+
+      <Block n={7} title="Props" sub="`open` is the caller's state, not the sheet's — the control that opened it owns closing it, so a sheet can never half-close. There is no composer prop at all.">
+        <Props src="../components/cards/ConfirmSheet.d.ts" />
+      </Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{ position: 'relative', height: 330, width: 343, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)' }}><ConfirmSheet open title="Approve · R. Sharma" disclosure={DISCLOSURE} rows={ROWS} commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}} /></div>}
+          doCaption="Disclosure first, compliance as rows, then the commit — with the dismiss visible beside it."
+          dontNode={<div style={{ position: 'relative', height: 330, width: 343, borderRadius: 20, overflow: 'hidden', background: 'var(--color-canvas)', opacity: 0.55 }}><ConfirmSheet open title="Approve · R. Sharma" disclosure="Small print." rows={[]} commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>{MOVES}</ConfirmSheet></div>}
+          dontCaption="No compliance rows, and a disclosure reduced to two words. Status that is not stated is status implied by silence — and this is the surface where that costs the most." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="The same pair as every sheet in this system, and no more. The scrim fades to its own declared opacity with ds-scrim (F-27); the sheet travels up once.">
+        <Motion rows={[
+          { name: 'Sheet in', property: 'ds-sheet — translateY 100% → 0', duration: '320 ms, once', reduced: 'Fades in place; it does not travel' },
+          { name: 'Scrim in', property: 'ds-scrim — 0 → --scrim-sheet (0.4)', duration: '320 ms, once', reduced: 'Unchanged — opacity only' },
+          { name: 'Commit press', property: 'DarkButton, scale --press-scale', duration: '150 ms', reduced: 'No scale' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+
+mountPage(App);
+</script></body></html>

@@ -18,10 +18,10 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **82 / 82** render clean (75 design-system + 7 screens — screen 4 folded into screen 3) |
+| Pages | **84 / 84** render clean (76 design-system + 8 screens) |
 | Integrity | 375 files intact |
-| Screens built | **5 of 7** in Journey B, plus the shell drawer and a **live prototype**: `01-home`, `02-thread-trace`, `03-thread-answer` (screens 3 AND 4 — the artifact expands in place, so it is one page), `prototype`, `shell/drawer`, `flow` |
-| **Next screen** | **05 — two moves**: `MoveCard` × 2 (₹1,85,000 and the ₹30,000 SIP), the sentence "Two moves, not seven…", chip "Show the five we skipped", CTA "Approve both moves". Two copy defects in the archive to fix on the way: 71→58 vs 67→58 (`Chat.tsx:280` vs `:283`), and "**her** ₹30,000" in a journey that says *his* (`:284`, `:753`). |
+| Screens built | **Journey B is complete — all 7 steps, on 5 pages**: `01-home`, `02-thread-trace` (Thread · while it works), `03-thread-answer` (Thread · the answer, steps 3 and 4), `05-decide` (Thread · deciding — steps 5, 6 and 7), `prototype`, plus `shell/drawer` and `flow` |
+| **Next** | `APP-PLAN.md` build order #3 — **the going-back layer**: `ResponseFeedback` on an answer, `VersionRow` on an artifact, `DetourBanner` + resume on a journey, `FollowUpRow` after a turn. All four exist and are on no screen. |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
 
@@ -45,6 +45,26 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **Journey B is finished (19 Sep).** `05-decide.html` carries steps 5, 6 and 7: the two moves with a
+  **simulation** of what they would do (two `Dumbbell`s on one scale — he is at 71%, he would be at 58%,
+  against the 60% he agreed to, with ₹11,200 under it), the **confirm sheet**, and a success that says
+  plainly what has and has not left Sentinel. The simulation was moved *into* step 5 rather than built
+  after it, because a figure an advisor must defend should not appear first on the surface that asks them
+  to approve it.
+- **`ConfirmSheet` is new in the system** — the one surface in the product with no composer, and it takes
+  no composer prop at all, so rule 3's single exception lives in the type rather than in a caller's
+  discipline. `disclosure` and `rows` are REQUIRED: small print under the numbers is small print read
+  after the decision, and compliance not stated as a row is compliance implied by silence. It also shows a
+  visible dismiss beside the commit — the archive's sheet offered only the scrim, so the one control an
+  advisor could see said Approve.
+- **The two archive copy defects are closed**, not copied forward: 71→58 vs 67→58 (the pair's figure is
+  stated once, on the simulation, and no per-move figure was invented to replace the 67), and "her ₹30,000
+  SIP" in a journey whose client is a he.
+- **Two defects found by cropping the phone, both in the system:** F-34, a `Dumbbell` label REPLACED its
+  own number, so the rebalance simulation rendered two dots and no figures; and a `ConfirmSheet` mounted
+  already open took the page's keyboard, because I copied the F-25 focus pattern's shape and not its
+  initialisation (`useRef(open)`, not `useRef(false)`). The second never shipped — it was caught by a blue
+  focus ring in a screenshot, measured, and fixed before the commit.
 - **The app plan exists now: `docs/APP-PLAN.md`** — written on the owner's brief that the system and the
   app are one deliverable, not two. Its spine: the 42 components no screen uses are not a component
   backlog, they are the app's missing *behaviour* (leave a journey and resume, revert to the version the

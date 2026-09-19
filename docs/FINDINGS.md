@@ -610,6 +610,16 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
+### F-34 · A `Dumbbell` label replaced its own number — *found by looking, fixed 19 Sep 2026*
+`Dumbbell` rendered `actualLabel ?? \`${actual}%\`` and `targetLabel ?? \`${target}%\``, so a caller that
+named its two ends got a chart with two dots and **no figures**. Found on the rebalance simulation, which
+is the one place in the product where an advisor decides money from a picture: it read *"He is at now →
+He agreed to"* with 71, 60 and 58 nowhere on it. Rule 4 — every figure direct-labelled, in tabular figures.
+
+The labels now sit beside their values ("He is at 71%" · "→ He agreed to 60%"), and a call with no labels
+renders exactly the strings it always did, so no existing board moves. Caught by cropping the phone, not by
+any check: the chart rendered, the gutter passed, nothing truncated, and the numbers simply were not there.
+
 ### F-33 · Integrity failed on the calendar, not on a change — *found in CI, fixed 19 Sep 2026*
 `pages/_index.json` carries `"generated": "<today>"`, CI runs `build:index` before `check:integrity`, and
 the integrity check hashed the file whole. So from the day AFTER a baseline was recorded, that one line

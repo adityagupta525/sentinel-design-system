@@ -141,9 +141,9 @@ Each row is one commit, built on the system, every state rendered, and reviewed 
 
 | # | What | Why here | Brings in |
 | --- | --- | --- | --- |
-| 1 | **Journey B, steps 5–7** — two moves, confirm, success and the drafted note | Finishes the one flow that is already half-built and carries all four rules | `MoveCard`, `DisclosureBlock`, `DrawnCheck`, `DownloadAction` |
-| 2 | **The simulation** — before → after, with cost, before the confirm sheet | The missing "what if"; it changes what step 6 is deciding about | `Dumbbell`, `ConstraintCallout` |
-| 3 | **The going-back layer** — feedback on an answer, versions on an artifact, detour and resume | The weakest axis, and all three components exist unused | `ResponseFeedback`, `VersionRow`, `DetourBanner`, `FollowUpRow` |
+| 1 ✅ | **Journey B, steps 5–7** — built 19 Sep as `05-decide.html` | Finished the one flow that was half-built; all four rules in one screen | `MoveCard`, `DrawnCheck`, `ConstraintCallout`, `StandingDisclosure`, and a new `ConfirmSheet` |
+| 2 ✅ | **The simulation** — built into step 5 rather than after it, because it changes what the confirm sheet decides about | The missing "what if" | `Dumbbell` × 2 on one scale |
+| 3 | **The going-back layer** (next) — feedback on an answer, versions on an artifact, detour and resume | The weakest axis, and all three components exist unused | `ResponseFeedback`, `VersionRow`, `DetourBanner`, `FollowUpRow` |
 | 4 | **Journey A — Meera's risk profile** (16 steps) | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `DecisionsStrip`, `SentinelThinking`, `QAPair` |
 | 5 | **The fund surfaces** | The third router bucket, entirely undesigned | `InfoCard`, `OverlapView`, `DataTable`, `RangePills`, `ChartLine`, `ChartReadout`, `InfoDot` |
 | 6 | **The refusals and the capabilities reply** | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |

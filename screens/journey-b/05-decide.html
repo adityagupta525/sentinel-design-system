@@ -1,0 +1,159 @@
+<!-- @dsCard group="Screens" viewport="1400x3000" name="Journey B · 05 Deciding, and what happened" subtitle="The two moves with what they would do, the one surface in the product with no composer, and a success that says what has and has not left Sentinel" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey B · 05 Deciding — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','SentinelBlock','SentinelText','MoveCard','Dumbbell','Eyebrow','Provenance','ConfirmSheet','ConstraintCallout','DrawnCheck','ExplainerSheet','AnswerChip','ChipRow','DarkButton','StandingDisclosure','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="./thread.jsx"></script>
+<script type="text/babel" src="./moves.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+/* thread.jsx and moves.jsx compile into this scope — Thread, MovesTurn, MovesActions, SuccessTurn and the
+   MOVES_* data are globals here. Only the names this file adds are destructured. */
+const { Composer, UserBubble, ConfirmSheet, ExplainerSheet, MoveCard } = window.SentinelDesignSystem_0682a2;
+
+const Ask = () => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={() => {}} />;
+
+const Scene = ({ phase = 'moves', note = false, anchor = 'bottom' }) => (
+  <Thread anchor={anchor} composer={<Ask />}>
+    <UserBubble text={MOVES_ASK} />
+    {phase === 'moves' ? <MovesTurn actions={<MovesActions />} /> : <SuccessTurn note={note} />}
+  </Thread>
+);
+
+/* Mounted CLOSED, opened by the CTA — the only way the dialog contract arms (F-25). Approving closes the
+   sheet and the thread carries the outcome, because the outcome is a turn in the conversation and not a
+   state of the sheet that decided it. */
+function LiveScene() {
+  const [phase, setPhase] = React.useState('moves');
+  const [confirm, setConfirm] = React.useState(false);
+  const [skipped, setSkipped] = React.useState(false);
+  const [note, setNote] = React.useState(false);
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Thread anchor="bottom" revision={`${phase}-${note}`} composer={<Ask />}>
+        <UserBubble text={MOVES_ASK} />
+        {phase === 'moves'
+          ? <MovesTurn actions={<MovesActions onSkipped={() => setSkipped(true)} onApprove={() => setConfirm(true)} />} />
+          : <SuccessTurn note={note} onRead={() => setNote(true)} onDrop={() => setNote(false)} />}
+      </Thread>
+      <ConfirmSheet open={confirm} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
+        commitLabel="Approve both moves" onCommit={() => { setConfirm(false); setPhase('done'); }} onClose={() => setConfirm(false)}>
+        {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
+      </ConfirmSheet>
+      <ExplainerSheet open={skipped} title={SKIPPED.title} body={SKIPPED.body} onClose={() => setSkipped(false)} />
+    </div>
+  );
+}
+
+/* The sheet frozen open, over the turn it was opened from. */
+const SheetScene = ({ busy = false }) => (
+  <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+    <Thread anchor="bottom" composer={<Ask />}>
+      <UserBubble text={MOVES_ASK} />
+      <MovesTurn actions={<MovesActions />} />
+    </Thread>
+    <ConfirmSheet open busy={busy} busyLabel="Placing both moves…" title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
+      commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>
+      {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
+    </ConfirmSheet>
+  </div>
+);
+
+const MOTION = [
+  ['Moves turn arrives', <span><code>ds-rise</code>: fade + 8px</span>, '240ms', 'Fades in place'],
+  ['The two dumbbells draw', <span><code>ds-grow</code>: scaleX from the agreed line</span>, '480ms', 'Drawn at full length'],
+  ['Confirm sheet in', <span><code>ds-sheet</code>: translateY 100% → 0</span>, '320ms', 'Fades in place; it does not travel'],
+  ['Its scrim', <span><code>ds-scrim</code> to <code>--scrim-sheet</code> (0.4)</span>, '320ms', 'Unchanged — opacity only'],
+  ['Approve press', <span>scale <code>--press-scale</code></span>, '150ms', 'No scale'],
+  ['Sheet out, outcome in', 'the sheet leaves, the turn arrives in the thread', '320 · 240ms', 'Both fade'],
+  ['The drawn check', <span><code>ds-draw</code>: the tick draws once</span>, '400ms', 'Drawn complete'],
+];
+
+const PROVENANCE = [
+  ['71% → 58%', 'His Q3 statement, and the two moves costed against it', 'Two dumbbells on one scale, against the 60% he agreed to — stated once, not once per card'],
+  ['₹11,200', 'Exit loads and tax from the scheme documents, as of 30 Sep', 'Under the simulation, before the decision surface — never first on the sheet where it is approved'],
+  ['₹1,85,000 · ₹30,000', 'The two moves themselves', 'Indian grouping, on the move cards and again on the sheet'],
+  ['“settles T+2”', 'The exchange’s own settlement cycle', 'The success card’s meta line, with the placing time'],
+  ['Compliance shelf · ceiling · consent', 'The checks that ran before the sheet opened', 'Three rows, each with its status in words — “Required” in the danger colour as TEXT, never a fill'],
+];
+
+mountScreen(
+  <ScreenShell
+    journey="Journey B · Sharma’s drift" n="Thread · deciding" name="The moves, the decision, and what happened"
+    job="What fixing it would do, what it costs, the one surface in the product that has no composer — and afterwards, a plain account of what has left Sentinel and what has not."
+    without="approves a number they have only seen on the screen that asks them to approve it, and cannot tell afterwards what is still theirs to change."
+  >
+    <Section title="1 · What the moves would do, before anything is decided" sub="The sentence, then the simulation, then the moves themselves. The advisor is offered two things and both sit inside the turn, scrolling with it.">
+      <StateRow>
+        <State label="typical" note="Two dumbbells on one scale: where he is, and where these two moves would put him, both against the 60% he agreed to. The cost sits under them. This is the answer to “what if”, and it is deliberately HERE and not on the confirm sheet — a figure an advisor must defend should not appear for the first time on the surface that asks them to approve it.">
+          <Scene />
+        </State>
+        <State label="live · decide it" note="Tap “Approve both moves”: the sheet opens the way the product opens it — mounted closed, so focus moves in, Escape closes and Tab wraps. Approve and the sheet leaves; the outcome arrives as a turn in the thread, because an outcome is something Sentinel says, not a state of the sheet that decided it. “Show the five we skipped” opens the explainer.">
+          <LiveScene />
+        </State>
+      </StateRow>
+      <Note title="Two figures in the archive contradicted each other, and I did not invent a third">
+        <code>Chat.tsx:281</code> says the pair brings equity <em>“from 71% back to 58%”</em>; <code>:283</code> says
+        move 1 alone brings it <em>“from 67% to 58%”</em>. Both cannot be true, and 67 is a figure from the review
+        journey. The pair’s effect is what the product states twice and what the answer screen’s chart supports —
+        he is at 71, he agreed to 60 — so <strong>the pair’s figure stays, stated once on the simulation, and no
+        per-move figure was made up to replace the 67</strong>. The move cards say what each move does; the number
+        belongs to the pair, and it is shown where the pair is shown.
+      </Note>
+      <Note title="And the SIP is his">
+        <code>:284</code> and <code>:753</code> say “her ₹30,000 monthly SIP” in a journey whose client is Sharma and
+        which says <em>his</em> everywhere else. Fixed here. Both defects were recorded on <code>flow.html</code> on
+        18 Sep so they would be fixed when these screens were built rather than copied into them.
+      </Note>
+    </Section>
+
+    <Section title="2 · The one surface with no composer" sub="Rule 3 says the composer is on every screen. readme.md:204 states the single exception in the product's own words, and ConfirmSheet takes no composer prop at all — so the exception lives in the type rather than in a caller's discipline.">
+      <StateRow>
+        <State label="the sheet, open" note="Fixed order, and it is the whole point: what this will do → whether it is allowed → what it is → the button that does it. The disclosure is ABOVE the numbers, because small print under them is small print read after the decision. Compliance is three rows with their status in words; “Required” is text in the danger colour, never a fill (rule 2). Two visible ways out — the commit, and the word beside it.">
+          <SheetScene />
+        </State>
+        <State label="committing" tone="under" note="Between the tap and the outcome the button says what it is doing and stops accepting taps. No spinner: this product names its waits. The body still scrolls; the commit row is pinned outside the scroller, so the decision never scrolls away from the thing it decides.">
+          <SheetScene busy />
+        </State>
+      </StateRow>
+      <Note title="This sheet scrolls inside itself, and that is not the rule it looks like it breaks">
+        “No nested scroll” governs the thread and the artifact: an expanded card must not scroll inside a scrolling
+        thread. A modal sheet is the top layer over an inert thread, and two move cards plus the compliance rows can
+        be taller than the phone — so it caps at 88% and scrolls its own body. The commit row sits outside that
+        scroller. Written into <code>ConfirmSheet.d.ts</code> so the next reader does not “fix” it.
+      </Note>
+    </Section>
+
+    <Section title="3 · What happened, and what is still yours to change" sub="The honest half of a success screen. Two things happened and only one of them can still be undone, so the screen says which.">
+      <StateRow>
+        <State label="approved" note="The tick is drawn, not a burst of confetti. Then the sentence that matters: the two switches have gone to the exchange under the advisor's ARN and cannot be pulled back from here — and Sharma has NOT been told yet. Nothing on this screen offers to undo a trade, because that offer would be a lie.">
+          <Scene phase="done" />
+        </State>
+        <State label="the note, drafted" tone="under" note="The note is written and waiting. It sits on the peach bubble — the advisor's side of the thread — with one line under it: nothing leaves Sentinel until you pick a channel and send it there. Because it has not been sent, it is the one thing here that CAN be dropped, and the chip says exactly that.">
+          <Scene phase="done" note />
+        </State>
+      </StateRow>
+      <Note title="Undo, where it is honest and nowhere else">
+        Everything before the sheet is reversible: edit the question, stop the trace, dismiss the sheet. Nothing after
+        it is, for the trades. So the success turn draws the line where it actually falls — <strong>placed</strong>
+        for what left under the ARN, <strong>drafted</strong> for what did not — and offers a way back only for the
+        second. A screen that said “undo” over both would be comfortable and false, and this is the one place in the
+        product where a comfortable word costs real money. <code>APP-PLAN.md</code> §5.
+      </Note>
+    </Section>
+
+    <Section title="4 · Motion, and what each one does under reduced motion">
+      <MotionTable rows={MOTION} />
+    </Section>
+
+    <Section title="5 · Provenance">
+      <ProvenanceTable rows={PROVENANCE} />
+    </Section>
+  </ScreenShell>
+);
+</script></body></html>

@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 43
+  "shipped": 44
  },
  "rows": [
   {
@@ -401,6 +401,48 @@
    ],
    "locals": [],
    "literals": 10
+  },
+  {
+   "name": "ConfirmSheet",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "ConfirmSheet.html",
+   "file": "components/cards/ConfirmSheet.jsx",
+   "tokens": [
+    "--border-hairline",
+    "--color-canvas",
+    "--color-danger",
+    "--color-ink",
+    "--color-line",
+    "--color-line-soft",
+    "--color-muted",
+    "--color-surface",
+    "--dur-screen",
+    "--ease",
+    "--h-row-xl",
+    "--h-touch",
+    "--radius-16",
+    "--radius-24",
+    "--radius-full",
+    "--scrim",
+    "--scrim-sheet",
+    "--space-10",
+    "--space-12",
+    "--space-14",
+    "--space-20",
+    "--space-5",
+    "--space-6",
+    "--space-8",
+    "--type-meta-font",
+    "--type-row-font",
+    "--type-sheet-title-font",
+    "--z-modal",
+    "--z-scrim"
+   ],
+   "locals": [
+    "--type-row-strong-font"
+   ],
+   "literals": 0
   },
   {
    "name": "ConstraintCallout",

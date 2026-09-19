@@ -57,6 +57,7 @@ export { ListRow } from './components/lists/ListRow.jsx';
 export { AllocationCard } from './components/cards/AllocationCard.jsx';
 export { ArtifactCard } from './components/cards/ArtifactCard.jsx';
 export { Badge } from './components/cards/Badge.jsx';
+export { ConfirmSheet } from './components/cards/ConfirmSheet.jsx';
 export { ConstraintCallout } from './components/cards/ConstraintCallout.jsx';
 export { DataTable } from './components/cards/DataTable.jsx';
 export { DataTableCard } from './components/cards/DataTableCard.jsx';
