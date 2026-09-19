@@ -45,6 +45,20 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **There is evidence now, and it is honest about being thin: `docs/RESEARCH.md`.** 60 real, linked
+  verbatims from Google Play — KFinKart Distributor (advisor-facing, 3.2★), AssetPlus Partner
+  (advisor-facing, 4.7★) and Groww (investor, 4.8★) — coded and ranked by frequency × severity. It is
+  not a usability test and the report says so in its own second paragraph.
+  **What it confirms we already do:** provenance under every figure, the placed/drafted line on the
+  success screen, never restyle, and saying what we cannot do instead of guessing.
+  **What it opens (now APP-PLAN §5b, R1–R4):** completeness as distinct from provenance — *"total AUM
+  shown is less"* because one AMC had not reported; the **in-flight state** of an instruction, which we
+  have not designed and which appears on a bad day; a **money ledger and export** (`DownloadAction` and
+  `DataTable` exist and no screen uses them for it); and the **allocation being one level too coarse** —
+  an MFD's own words, *"it says equity no mention of mid large or small"*, against ceilings we write in
+  terms of caps the card never shows.
+  **What the highest-rated advisor app is actually praised for:** speed of onboarding, and a named human
+  who answers. Not analysis.
 - **There is one book now: `screens/data/book.jsx`**, and `docs/DNA.md` explains it. Every client, fund,
   holding, limit and tax rate in one file, with the line between REAL (SEBI's scheme categories and the
   large/mid/small definitions, equity taxation at 20% / 12.5% above ₹1.25 L, the shape of a KYC record, a

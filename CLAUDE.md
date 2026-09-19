@@ -8,6 +8,10 @@ scaffolding around it.
 
 ## Start here
 
+**What real advisors complain about: `docs/RESEARCH.md`** — 60 linked verbatims from two advisor-facing
+apps and one investor app, coded and ranked, with what each theme means for this product. The raw file is
+`studio/research/verbatims.csv`.
+
 **The data, the fields, the words and the visual DNA: `docs/DNA.md`.** What a screen may render, what
 the product calls it, and the copy rules — extracted from the repository rather than proposed. The data
 itself is one file, `screens/data/book.jsx`.

@@ -180,10 +180,25 @@ system has nothing in it nobody uses.
   table.
 - **The UI kits.** `ui_kits/` still draws the pre-18-Sep product. Leave as the import record, or redraw.
 
+## 5b · What the research opened (19 Sep 2026)
+
+`docs/RESEARCH.md` — 60 linked verbatims from two advisor-facing apps and one investor app. Four things
+it evidences that we already do (provenance, the placed/drafted line, never restyle, saying what we
+cannot do) and **four it opens**, in order of how much trust they carry:
+
+| # | What | Why it matters | Where it goes |
+| --- | --- | --- | --- |
+| R1 | **Completeness, not just provenance** — say what a total is a sum OF, and what has not reported yet | The top theme, sev 4: *"total AUM shown is less"* because one AMC was missing. Our provenance says where a figure came from, never how complete it is | A line on any total drawn from more than one source; `book.jsx` gains a `reporting` field |
+| R2 | **The in-flight state of an instruction** | Between "Approve" and "placed" there is a state we have not designed, and it is the one an advisor meets on a bad day. Second theme, sev 4 | `ConfirmSheet.busy` exists; the thread has no "placing…" turn and no "we do not know yet" |
+| R3 | **A money ledger and an export** | Third-party advisors ask for it in almost every app. `DownloadAction` and `DataTable` exist and no screen uses them for this. The drawer is history of CONVERSATIONS; this is history of MONEY | A new surface, after the refusals |
+| R4 | **The allocation is one level too coarse** | An MFD's own words: *"it says equity no mention of mid large or small"*. Our own ceilings are written against caps the allocation card never shows | `AllocationCard` on the built drift screens |
+
 ## 6 · What research this is built on, honestly
 
-There are no advisors to interview in this session, and no analytics connector is authorised, so "UX
-research" here means what can actually be sourced: the archive's own router, copy and journeys
+**Updated 19 Sep 2026: there is now real evidence, and it is thin on purpose about what it is.**
+`docs/RESEARCH.md` mines 60 public reviews — real, linked, and captured without hand-picking — from
+KFinKart Distributor, AssetPlus Partner and Groww. It is not a usability test and it is not an advisor
+interview, and it says so. Beyond that: the archive's own router, copy and journeys
 (`docs/screens-source/`), the system's 43 KB specification and its `contradictions.md`, the four rules, and
 the record of every ruling in `CONTINUE-HERE.md`. Where a pattern comes from outside — a staged parse
 checklist, a version trail in the conversation — the component that carries it names its source in its own
