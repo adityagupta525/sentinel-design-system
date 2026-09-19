@@ -80,10 +80,28 @@ function Cell({ col, row, max }) {
 
 export function DataTable({
   columns = [], rows = [], density = 'default', overflow = 'fold', sort, onSort,
-  filters, expandable, maxRows = 5, emptyState, loading = false, loadingLabel, title, onShowAll,
+  filters, expandable, maxRows = 5, emptyState, loading = false, loadingLabel, title, onShowAll, defaultOpen = null,
 }) {
-  const [open, setOpen] = React.useState(null);
+  /* defaultOpen (19 Sep 2026): which row starts expanded. The expansion was internal state with no way
+     in, so a frozen specimen could not show the state the rule is about — a fund's page open INSIDE its
+     row. Same gap and same fix as ProgressTrace's initialCollapsed (F-22): a spec page must be able to
+     reach the state it is documenting, or it documents the one state the component can hold still in. */
+  const [open, setOpen] = React.useState(defaultOpen);
   const bodyRef = React.useRef(null);
+  /* THE IN-ROW DETAIL MUST NOT SCROLL SIDEWAYS WITH THE COLUMNS (19 Sep 2026). The detail renders inside
+     the horizontal scroller, so it inherited the table's max-content width and a card in it was cut off at
+     the right edge — measured on the fund screen, where a fund's page lost its sentence mid-word. The rule
+     this component exists to hold is "expand in place, never a modal"; a detail you cannot read is a modal
+     with extra steps. It is pinned to the left and given the VIEWPORT's width, the same trick the sticky
+     column already uses, so it stays whole wherever the columns are scrolled to. */
+  const [viewW, setViewW] = React.useState(0);
+  React.useEffect(() => {
+    const el = bodyRef.current; if (!el) return;
+    const measure = () => setViewW(el.clientWidth);
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(measure); ro.observe(el); return () => ro.disconnect();
+  }, []);
   const sticky = stickyKey(columns);
   const rest = columns.filter((c) => c.key !== sticky);
   const scrolls = overflow === 'scroll' || rest.length > 3;
@@ -163,7 +181,8 @@ export function DataTable({
                   {rest.map((c) => <div key={c.key} style={cellW(c)}><Cell col={c} row={r} max={maxima[c.key]} /></div>)}
                 </div>
                 {isOpen && detail && (
-                  <div style={{ padding: `var(--space-10) 0`, borderBottom: 'var(--border-hairline) solid var(--color-line-soft)', animation: 'ds-fade var(--dur-enter) var(--ease) both' }}>{detail}</div>
+                  <div style={{ padding: `var(--space-10) 0`, borderBottom: 'var(--border-hairline) solid var(--color-line-soft)', animation: 'ds-fade var(--dur-enter) var(--ease) both',
+                    ...(scrolls && viewW ? { position: 'sticky', left: 0, width: viewW, boxSizing: 'border-box' } : null) }}>{detail}</div>
                 )}
               </React.Fragment>
             );

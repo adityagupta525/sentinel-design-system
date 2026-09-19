@@ -154,8 +154,8 @@ Each row is one commit, built on the system, every state rendered, and reviewed 
 | 2 ✅ | **The simulation** — built into step 5 rather than after it, because it changes what the confirm sheet decides about | The missing "what if" | `Dumbbell` × 2 on one scale |
 | 3 ✅ | **The going-back layer** — built 19 Sep as `screens/thread/going-back.html` | The weakest axis, and all four components existed unused | `ResponseFeedback`, `VersionRow`, `DetourBanner`, `FollowUpRow` |
 | 4 ✅ | **Journey A — Meera's risk profile** — built 19 Sep as `screens/journey-a/risk-profile.html` | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `SentinelThinking`, `QAPair`, `HeroNumberCard`, `ParseNote` |
-| 5 | **The fund surfaces** — next | The third router bucket, entirely undesigned | `InfoCard`, `OverlapView`, `DataTable`, `RangePills`, `ChartLine`, `ChartReadout`, `InfoDot` |
-| 6 | **The refusals and the capabilities reply** | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |
+| 5 ✅ | **The fund surfaces** — built 19 Sep as `screens/journey-c/funds.html` | The third router bucket, and the one that found what the product does not know | `InfoCard`, `OverlapView`, `DataTable`, `Badge`, `InfoDot` |
+| 6 | **The refusals and the capabilities reply** — next | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |
 | 7 | **The prototype, end to end** | Every journey clickable in one page, with the motion log | — |
 
 `report:parallel` is the finish line: when it reads 86 of 86, the app has exercised the system and the
@@ -169,6 +169,12 @@ system has nothing in it nobody uses.
   it. In a build that drafts rather than sends, "undo" is honest for a draft and a lie for an instruction
   that left the building. My recommendation: the success screen states plainly what has and has not left
   Sentinel, and offers an undo only for what has not.
+- **The fund data, which is three decisions and not a design gap.** Journey C is built and honest about
+  what it cannot say: there is no confirmed source for fund **performance** (so `InfoCard` renders locked
+  and `RangePills` never offers a range over a number nobody owns), none for **TER or AUM**, and no
+  **holdings feed** (so an overlap between two funds is an em dash with a footnote, never a 0 — "a zero
+  and a missing value are different facts"). The components for all three exist and are correct; supplying
+  the sources fills the cards in rather than redesigning them.
 - **Sharma's 18 holdings.** Gap G7 — the archive has Meera's 43, not his 18, and a holdings table under
   his name would be a fabricated figure. Needed from the owner, or the chip keeps opening the chart's
   table.

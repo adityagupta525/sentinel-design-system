@@ -1,0 +1,167 @@
+<!-- @dsCard group="Screens" viewport="1400x3200" name="Journey C · the funds" subtitle="A parsed query the advisor can edit, the shortlist as a table, a fund's page in place — and the two things this product does not know yet, said out loud" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, scrim, sheet" truncation="allowed" -->
+<!-- truncation="allowed" is for ONE thing: DataTable's sticky Fund column is 148pt and a fund name is longer. That is the component's documented behaviour — a sticky column keeps the table readable sideways — and the row expands in place to show the name in full. -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey C · the funds — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','SentinelBlock','SentinelText','ArtifactCard','DataTable','InfoCard','OverlapView','RangePills','InfoDot','Badge','Pill','ChipRow','AnswerChip','DarkButton','ExplainerSheet','Provenance','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="./funds.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+/* thread.jsx gives the shell, AskTurn and the real paperclip; funds.jsx owns the data. */
+const { Composer, SentinelBlock, SentinelText, ArtifactCard, DataTable, OverlapView, Pill, ChipRow, AnswerChip, ExplainerSheet, InfoDot } = window.SentinelDesignSystem_0682a2;
+
+const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
+const EMPTY = { title: 'Nothing matches every filter.', body: 'Drop one and I will widen the search.' };
+
+/* THE PARSED QUERY, EDITABLE. Sentinel says what it read the sentence as, and every part of it is a chip
+   the advisor can drop — so a wrong parse costs one tap, not a retyped question. */
+function QueryTurn({ query, onToggle, shelf, onShelf, onOpen, results }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
+      <SentinelBlock>
+        <SentinelText text="I read that as a fund search. This is what I am filtering on — drop anything I got wrong." />
+        <div style={{ marginTop: 'var(--space-12)' }}>
+          <ChipRow>
+            {query.filter((q) => q.on).map((q) => (
+              <Pill key={q.label} label={`${q.label}  ✕`} size="sm" tone="filter" onClick={() => onToggle && onToggle(q.label)} />
+            ))}
+            <Pill label={shelf ? 'On your shelf ✓' : '+ On your shelf'} size="sm" tone={shelf ? 'primary' : 'outline'} onClick={onShelf} />
+          </ChipRow>
+        </div>
+      </SentinelBlock>
+      {onOpen && <AnswerChip label={`Show the ${results} funds`} variant="primary" onClick={onOpen} />}
+    </div>
+  );
+}
+
+function ResultsArtifact({ funds, openRow = null, state = 'expanded' }) {
+  return (
+    <ArtifactCard state={state} eyebrow="Fund search · your shelf" title={`${funds.length} funds match`}
+      provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => {}} onMenu={() => {}}>
+      <DataTable columns={FUND_COLUMNS} rows={fundRows(funds)} emptyState={EMPTY} overflow="scroll" defaultOpen={openRow}
+        expandable={(row) => <FundDetail fund={FUND_LIST.find((x) => x.id === row.id)} onExplain={() => {}} />} />
+    </ArtifactCard>
+  );
+}
+
+function Scene({ children, anchor = 'bottom' }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor={anchor} revision={!!att.file} composer={<Ask onAttach={att.onAttach} />}>
+      <AskTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
+      {children}
+      <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+/* Live: drop a filter and the table changes under it; open a fund and its page expands in the row. */
+function LiveScene() {
+  const [query, setQuery] = React.useState(FUND_QUERY);
+  const [shelf, setShelf] = React.useState(true);
+  const [opened, setOpened] = React.useState(false);
+  const [sheet, setSheet] = React.useState(null);
+  const att = useAttachment();
+  const active = query.filter((q) => q.on).map((q) => q.label);
+  const funds = FUND_LIST.filter((f) => (!active.includes('Flexi cap') || f.cat === 'Flexi cap') && (!active.includes('Equity') || f.bucket === 'Equity') && (!shelf || f.onShelf));
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Thread anchor="bottom" revision={`${active.join()}-${shelf}-${opened}-${!!att.file}`} composer={<Ask onAttach={att.onAttach} />}>
+        <AskTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
+        <QueryTurn query={query} shelf={shelf} onShelf={() => setShelf((v) => !v)}
+          onToggle={(label) => setQuery((q) => q.map((x) => (x.label === label ? { ...x, on: false } : x)))}
+          onOpen={opened ? undefined : () => setOpened(true)} results={funds.length} />
+        {opened && <ResultsArtifact funds={funds} />}
+        <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
+      </Thread>
+      <ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []} onClose={() => setSheet(null)} />
+    </div>
+  );
+}
+
+const MOTION = [
+  ['The query turn arrives', <span><code>ds-rise</code>: fade + 8px</span>, '240ms', 'Fades in place'],
+  ['A filter chip is dropped', 'the chip leaves, the table re-renders under it', 'immediate', 'Unchanged — there is no animation to drop'],
+  ['The results artifact', <span><code>ds-artifact</code>: fade + scale 0.96 → 1</span>, '300ms', 'Fade only'],
+  ['A row expands', 'the fund page opens in place; the rows below it move down', '240ms', 'Height changes with no transition'],
+  ['The table nudges once', <span><code>ds-table-nudge</code> — only when a column is off-screen</span>, '640ms', 'The fade carries the same fact'],
+];
+
+const PROVENANCE = [
+  ['The seven funds, their houses and categories', 'The scheme record', 'The table, and the fund page when a row is opened'],
+  ['On shelf / off shelf', "Your firm's compliance shelf", 'A Badge with the word in it — colour never signals alone'],
+  ['“Meera Nair · Sunita Nair”', "Your own book — which of your clients already hold this fund", 'The Held by column, and the count on the fund page'],
+  ['Performance, TER, AUM', <span><strong>Nothing.</strong> There is no confirmed source for these, so none is drawn — <code>InfoCard locked</code> says it in the card rather than leaving a blank</span>, 'The locked card, with the reason in words'],
+  ['The overlap between two funds', <span><strong>Nothing.</strong> No holdings feed, so the cell is an em dash and the footnote says why — never a 0, because a zero and a missing value are different facts</span>, 'The overlap view'],
+];
+
+mountScreen(
+  <ScreenShell
+    journey="Journey C · the funds" n="Thread · funds" name="Choosing a fund, and what we cannot yet say about one"
+    job="The third router bucket. A sentence becomes a parsed query the advisor can edit, the shortlist arrives as an artifact in the thread, and a fund's own page opens inside its row. Two of the things an advisor wants here have no source yet, and the screens say so instead of drawing them."
+    without="cannot choose a fund inside Sentinel, or tell a client why two funds they were shown are the same fund."
+  >
+    <Section title="1 · The sentence, read back as something you can edit" sub="A parsed query is only defensible if it is visible and editable. Every part of it is a chip; dropping one costs a tap instead of a retyped question.">
+      <StateRow>
+        <State label="live · drop a filter, open a fund" note="Drop “Flexi cap” and the table widens under you; turn off “On your shelf” and the off-shelf fund appears with its badge. Tap a row and the fund's page opens IN PLACE — DataTable's own rule, never a modal. The paperclip is real here too: attach a factsheet and it lands at the end of the thread on your side.">
+          <LiveScene />
+        </State>
+        <State label="the query, before the results" note="Three chips and a toggle. “On your shelf” is the advisor's own constraint rather than something Sentinel inferred, which is why it reads as a plus rather than an ✕ until it is on.">
+          <Scene><QueryTurn query={FUND_QUERY} shelf results={2} onOpen={() => {}} /></Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="2 · The shortlist, and a fund's own page" sub="The results are an artifact in the thread — there is no explorer screen, because there is no canvas. A row opens where it sits.">
+      <StateRow>
+        <State label="the table" note="Fund, category, shelf and — the most useful column this product actually has — who of your clients already holds it. The Fund column is sticky so the table stays readable when it scrolls sideways; that is also why a long name truncates there, and why opening the row shows it in full.">
+          <Scene><ResultsArtifact funds={FUND_LIST.filter((f) => f.bucket === 'Equity')} /></Scene>
+        </State>
+        <State label="a fund, opened in its row" tone="under" note="Name, house, category, the compliance shelf as a badge with its word, how many of your clients hold it — and then the honest part: no performance line, because there is no confirmed source for one. The card renders LOCKED and says why, which is what InfoCard's locked state was built for and what it has been waiting for a screen to use.">
+          <Scene><ResultsArtifact funds={FUND_LIST.filter((f) => f.cat === 'Flexi cap')} openRow={0} /></Scene>
+        </State>
+        <State label="nothing matches" tone="under" note="Every table in this product is empty on someone's first day or one filter away, so DataTable REQUIRES an emptyState. It names what to do — drop a filter — rather than saying “No data”.">
+          <Scene><ResultsArtifact funds={[]} /></Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="3 · “Are these two the same fund?” — the question this journey exists for, and the one it cannot answer yet">
+      <StateRow>
+        <State label="the overlap, unavailable" tone="over" note="Two flexi caps, the basis stated as a removable chip, and the cell is an EM DASH. OverlapView's contract is blunt about why: “never pass 0 for a pair you could not compute — a zero and a missing value are different facts, and printing 0% states something untrue about the client's money.” The footnote names what is missing: a holdings feed for either fund.">
+          <Scene><OverlapView funds={OVERLAP_FUNDS} properties={OVERLAP_PROPERTIES} cells={OVERLAP_CELLS} footnote={OVERLAP_FOOTNOTE} onToggleProperty={() => {}} onAddFund={() => {}} /></Scene>
+        </State>
+      </StateRow>
+      <Note title="What this journey needs, in one list, so it can be supplied rather than guessed">
+        Everything above is real: the funds, their houses, their categories, the compliance shelf, and which of
+        the advisor's clients hold each one. <strong>Three things have no source and none of them is drawn:</strong>
+        fund performance (so `InfoCard` renders locked and `RangePills` never offers a range over a number nobody
+        owns), TER and AUM, and a holdings feed (so the overlap is an em dash). These are not design gaps —
+        the components for all three exist and are correct. They are <strong>data decisions for the owner</strong>,
+        and the screens are built so that supplying them fills the cards in rather than redesigning them.
+      </Note>
+      <Note title="The plan said a bottom sheet; the system had already ruled otherwise">
+        <code>SCREENS-PLAN.md</code> listed the fund one-pager as "a bottom sheet". <code>DataTable</code>'s own
+        contract says a row "becomes expandable IN PLACE — never a modal. The chevron lives in the sticky column and
+        the detail pushes the rows below it down, so the row you opened does not move under your thumb." The system
+        wins, and the fund page opens in its row. Same reasoning as the canvas removal, one level down.
+      </Note>
+    </Section>
+
+    <Section title="4 · Motion, and what each one does under reduced motion">
+      <MotionTable rows={MOTION} />
+    </Section>
+
+    <Section title="5 · Provenance">
+      <ProvenanceTable rows={PROVENANCE} />
+    </Section>
+  </ScreenShell>
+);
+</script></body></html>

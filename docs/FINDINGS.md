@@ -610,6 +610,25 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
+### F-37 · A table's in-row detail was cut off by the table's own sideways scroll — *found by looking, fixed 19 Sep 2026*
+`DataTable`'s expanded detail renders inside the horizontal scroller, so it inherited the table's
+`max-content` width: on the fund screen a fund's page lost its sentence mid-word at the right edge
+("No confirmed source for this fund's performance yet, s"). The rule this component exists to hold is
+*"the row becomes expandable IN PLACE — never a modal"*, and a detail you cannot read is a modal with
+extra steps.
+
+The detail is now pinned left and given the scroller's own viewport width — the same trick the sticky
+column already uses — so it stays whole wherever the columns are scrolled to. Measured with a
+`ResizeObserver` rather than assumed, and it only applies when the table actually scrolls.
+
+### F-36 · `InfoCard locked` blanked figures it had — *found by looking, fixed 19 Sep 2026*
+Card-level `locked` means "the fund performance source is unconfirmed", and it also printed `——` over
+every stat: on the fund screen the card blanked **"Held by your clients: 1"**, a fact read from the
+advisor's own book, because something unrelated was unknown. Hiding something true because something
+else is missing is the opposite of this system's stance everywhere else — state what you know, name what
+you do not — and a stat with no owner already has its own per-stat `locked`, which is what that flag is
+for. Card-level `locked` now governs the figure, the chart and the range row only.
+
 ### F-35 · phone-shot drew a defect that was not there — *found by looking, fixed 19 Sep 2026*
 `tools/phone-shot.mjs` opened every page in a fixed 1400×2600 viewport and clipped the phone from it. A
 screen page is taller than that — `screens/thread/going-back.html` is 3200 — so a phone below the fold was

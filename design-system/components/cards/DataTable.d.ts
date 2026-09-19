@@ -55,6 +55,11 @@ export interface DataTableProps {
    *  sticky column and the detail pushes the rows below it down, so the row you opened does not move
    *  under your thumb. Return null for rows with nothing to show. */
   expandable?: (row: DataTableRow) => React.ReactNode;
+  /** Which row index starts expanded. Null (default) means all closed, which is every product call site.
+   *  It exists because the expansion was internal state with no way in, so a frozen specimen could not
+   *  show a row opened in place — the state this component's whole no-modal rule is about. Same gap and
+   *  the same fix as `ProgressTrace.initialCollapsed`. */
+  defaultOpen?: number | null;
   /** 'fold' only. Default 5. */
   maxRows?: number;
   onShowAll?: () => void;

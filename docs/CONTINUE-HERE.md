@@ -18,10 +18,10 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 |---|---|
 | Branch / HEAD | `claude/practical-newton-fi0pof` at `2cb7412` — local and remote identical, tree clean |
 | CI | 25 commits this session, **every one green** (runs 20–43). Before this session 19 of 19 were red. |
-| Pages | **86 / 86** render clean (76 design-system + 10 screens) |
+| Pages | **87 / 87** render clean (76 design-system + 11 screens) |
 | Integrity | 375 files intact |
 | Screens built | **Journey B is complete — all 7 steps, on 5 pages**: `01-home`, `02-thread-trace` (Thread · while it works), `03-thread-answer` (Thread · the answer, steps 3 and 4), `05-decide` (Thread · deciding — steps 5, 6 and 7), `prototype`, plus `shell/drawer` and `flow` |
-| **Next** | `APP-PLAN.md` build order #5 — **the fund surfaces**, the third router bucket and the last one entirely undesigned: `InfoCard`, `OverlapView`, `DataTable`, `RangePills`, `ChartLine`, `ChartReadout`, `InfoDot`. Then #6, the refusals and the capabilities reply. |
+| **Next** | `APP-PLAN.md` build order #6 — **the refusals and the capabilities reply**: buckets 4, 5 and "what else can you do?", with `RejectCallout`, `ConstraintCallout`, `ParseNote` and `SearchField`. Then #7, the end-to-end prototype. |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
 
@@ -45,6 +45,19 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **Journey C is built (19 Sep): `screens/journey-c/funds.html`**, six states. A sentence becomes a parsed
+  query whose every part is a removable chip; the shortlist arrives as an artifact in the thread (there is
+  no explorer screen, because there is no canvas); and a fund's page opens INSIDE its row — `DataTable`'s
+  own rule, which overruled the plan's "bottom sheet" line.
+  **It is the journey that found what the product does not know.** No confirmed source for fund
+  performance, TER or AUM, and no holdings feed — so the fund card renders locked with the reason in
+  words, and the overlap between two flexi caps is an em dash with a footnote rather than a 0. The most
+  useful column it does have is the reverse lookup: which of the advisor's own clients already hold each fund.
+- **Two more system defects, both found by cropping the phone:** F-36, `InfoCard`'s card-level `locked`
+  blanked stats it HAD (it printed —— over "Held by your clients: 1"); F-37, a `DataTable` row's detail was
+  cut off by the table's own sideways scroll, so a fund's page lost its sentence mid-word. Also `DataTable`
+  gained `defaultOpen`, because the expansion was internal state and a frozen specimen could not show the
+  state the no-modal rule is about — the same gap and fix as `ProgressTrace.initialCollapsed`.
 - **Journey A is built (19 Sep): `screens/journey-a/risk-profile.html`**, eight states, one of them the
   whole twelve-question journey running. The rail is pinned under the app bar and does not scroll;
   answers collapse to a `QAPair` each; a smart chip names its SOURCE ("Use her KYC age — 38") so tapping

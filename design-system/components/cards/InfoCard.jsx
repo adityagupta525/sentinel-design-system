@@ -9,6 +9,14 @@ import { Provenance } from '../text/Provenance.jsx';
    where each figure carries its own ⓘ. That is Shopee's fund-detail shape, and two gaps fell out of
    reading it: we had no range control at all, and no way for a figure to explain itself.
 
+   CARD-LEVEL `locked` IS ABOUT THE PERFORMANCE SOURCE, AND NOTHING ELSE (19 Sep 2026). It used to blank
+   every stat too — `locked || s.locked ? '——' : s.value` — so a card locked for having no performance
+   feed also printed —— over "Held by your clients: 1", a fact read from the advisor's own book. Hiding
+   something true because something else is unknown is the opposite of this system's stance everywhere
+   else: state what you know, name what you do not. A stat with no owner has its OWN `locked`, which is
+   what that flag is for. Found by building the fund screen, where every stat on the card is known and
+   only the chart is not.
+
    The locked case is the one that matters here. The source of fund performance data is one of the
    three decisions that are not ours, so a performance series with no confirmed source renders
    VISUALLY LOCKED and says so — the radius-12 locked treatment the system already uses — rather than
@@ -96,7 +104,7 @@ export function InfoCard({ kind = 'fund', name, meta, figure, figureNote, series
                 <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{s.label}</span>
                 <InfoDot figure={s.label} onOpen={() => onExplain && onExplain(s.label)} />
               </span>
-              <p style={{ ...tabular, margin: `var(--space-2) 0 0`, font: 'var(--type-row-font)', fontWeight: 'var(--weight-bold)', color: locked || s.locked ? 'var(--color-data-deemph)' : 'var(--color-ink)' }}>{locked || s.locked ? '——' : s.value}</p>
+              <p style={{ ...tabular, margin: `var(--space-2) 0 0`, font: 'var(--type-row-font)', fontWeight: 'var(--weight-bold)', color: s.locked ? 'var(--color-data-deemph)' : 'var(--color-ink)' }}>{s.locked ? '——' : s.value}</p>
             </div>
           ))}
         </div>

@@ -60,7 +60,7 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   F-1 … F-35 recorded; **none open** (F-27 … F-30 closed 18 Sep; F-31 locked row dimming its own selection and F-32 a stopped trace still saying "Working", both found by the review agent, and F-33 integrity failing on the date stamp rather than on a change, all closed 19 Sep). `_index.json` reports `literals` — how many raw
+   F-1 … F-37 recorded; **none open** (F-27 … F-30 closed 18 Sep; F-31 locked row dimming its own selection and F-32 a stopped trace still saying "Working", both found by the review agent, and F-33 integrity failing on the date stamp rather than on a change, all closed 19 Sep). `_index.json` reports `literals` — how many raw
    style values each component still hardcodes — so adherence is measurable per component:
    **33 of 86** are fully clean.
 3. **The four components the request spec named and nobody built** — done.
@@ -71,6 +71,6 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
    Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
    Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
-   researched, with every state and keyframe accounted for. **Journey B complete (7 steps, 5 pages) and Journey A's rail built** (a state of a screen is not a screen), plus the shell
+   researched, with every state and keyframe accounted for. **Journeys A, B and C built** (a state of a screen is not a screen), plus the shell
    drawer and a live prototype. The owner's standing rule since 18 Sep: **nothing in the system that is on
    no screen** — `npm run report:parallel` measures it (44 of 86 today, counted transitively).
