@@ -610,6 +610,22 @@ placeholder outlived its name, exactly as the motion guideline outlived `--dur-c
 
 ---
 
+### F-33 · Integrity failed on the calendar, not on a change — *found in CI, fixed 19 Sep 2026*
+`pages/_index.json` carries `"generated": "<today>"`, CI runs `build:index` before `check:integrity`, and
+the integrity check hashed the file whole. So from the day AFTER a baseline was recorded, that one line
+differed and the run failed for a reason nobody caused.
+
+It is not theoretical: **run 57 was green on 18 Sep, run 58 failed on 19 Sep with an identical tree** (its
+only commit touched `tools/phone-shot.mjs`), and run 59 went green again only because the baseline had been
+re-recorded that morning. A gate that fails on the calendar teaches people to ignore it, which is the
+opposite of what this one is for — and it would have been read as "integrity is flaky" rather than as a
+defect.
+
+The index diff step in CI already masks the same line (`git diff -I '^ *"generated":'`); the fix is that
+rule applied where the file is hashed. Proven both ways: with the stamp set to 2099-12-31 the tree still
+reports intact, and with one `literals` value changed by hand it reports 1 file differing. Every row and
+every count in the index still hashes exactly.
+
 ### F-31 · A locked `SegmentedRow` dimmed its selection away — *found by the review agent, fixed 19 Sep 2026*
 `SegmentedRow`'s locked row passed `disabled` to `Pressable`, which renders at `opacity: 0.4`. Measured on
 the drawer: **both** pills at 0.4, and Light's `--color-selected` composited through it matched the

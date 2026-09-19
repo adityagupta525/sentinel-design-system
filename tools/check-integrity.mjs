@@ -17,6 +17,20 @@ const DS = join(ROOT, 'design-system');
 const BASELINE = join(ROOT, 'baseline', 'design-system.sha256');
 const GENERATED = new Set(['index.js', 'index.d.ts']);
 
+/* THE DATE STAMP IS NOT DRIFT (19 Sep 2026). `pages/_index.json` carries `"generated": "<today>"`, and CI
+   runs `build:index` before this check — so from the day after a baseline is recorded, that one line
+   differs and integrity fails on every run for a reason nobody caused. It happened: run 57 was green on
+   18 Sep, run 58 failed on 19 Sep with the identical tree, and run 59 went green again only because the
+   baseline had been re-recorded that morning. A gate that fails on the calendar teaches people to ignore
+   it, which is the opposite of what this one is for.
+   The index diff check in CI already masks the same line (`git diff -I '^ *"generated":'`); this is that
+   rule, applied where the file is hashed. Everything else in the file — every row, every literal count —
+   still hashes exactly, so a real change to the index is still caught. */
+const STAMP = /("generated":\s*)"[^"]*"/;
+const normalise = (rel, buf) => (rel === 'pages/_index.json'
+  ? Buffer.from(buf.toString('utf8').replace(STAMP, '$1"<stamp>"'), 'utf8')
+  : buf);
+
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name);
@@ -29,7 +43,7 @@ const current = new Map();
 for await (const p of walk(DS)) {
   const rel = relative(DS, p).split(sep).join('/');
   if (GENERATED.has(rel)) continue;
-  current.set(rel, createHash('sha256').update(await readFile(p)).digest('hex'));
+  current.set(rel, createHash('sha256').update(normalise(rel, await readFile(p))).digest('hex'));
 }
 
 const lines = [...current].sort(([a], [b]) => a.localeCompare(b)).map(([p, h]) => `${h}  ${p}`);
