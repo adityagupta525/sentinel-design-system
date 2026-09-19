@@ -190,6 +190,8 @@ export type { DrawnCheckProps } from './components/data/DrawnCheck';
 export { DrawnCheck } from './components/data/DrawnCheck';
 export type { DumbbellProps } from './components/data/Dumbbell';
 export { Dumbbell } from './components/data/Dumbbell';
+export type { FigureRowSub, FigureRowProps } from './components/data/FigureRow';
+export { FigureRow } from './components/data/FigureRow';
 export type { OverlapViewMode, OverlapProperty, OverlapFund, OverlapPropertyOption, OverlapCell, OverlapViewProps } from './components/data/OverlapView';
 export { OverlapView } from './components/data/OverlapView';
 export type { ProgressRailProps } from './components/data/ProgressRail';

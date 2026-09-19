@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 49
+  "shipped": 50
  },
  "rows": [
   {
@@ -1386,6 +1386,24 @@
    ],
    "locals": [],
    "literals": 8
+  },
+  {
+   "name": "FigureRow",
+   "group": "Data",
+   "status": "shipped",
+   "page": "FigureRow.html",
+   "file": "components/data/FigureRow.jsx",
+   "tokens": [
+    "--color-ink",
+    "--color-muted",
+    "--color-status-over-fg",
+    "--space-6",
+    "--space-8",
+    "--type-caption-font",
+    "--type-row-strong-font"
+   ],
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "HeroNumberCard",

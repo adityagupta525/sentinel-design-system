@@ -131,11 +131,11 @@ function AnsweredList({ items, onEdit, editable = true }) {
    teach this shared file about journey E, the caller renders what its own step needs and the rail keeps
    deciding only where things sit — inside the SentinelBlock, under the sentence, above the chips, so it
    reads as part of what Sentinel said rather than as a widget parked beside it. */
-function StepTurn({ step, onChip, thinking, extra }) {
+function StepTurn({ step, onChip, thinking, extra, continued = false }) {
   if (!step) return null;
   const lines = Array.isArray(step.sentinel) ? step.sentinel : [step.sentinel];
   return (
-    <RAIL_DS.SentinelTurn
+    <RAIL_DS.SentinelTurn continued={continued}
       thinking={thinking ? 'Reading her account record…' : false}
       say={lines} body={extra} provenance={step.provenance}
       chips={step.chips && (
@@ -155,7 +155,7 @@ function RiskResult({ onChip, chips, cta }) {
           {chips.map((ch) => <RAIL_DS.AnswerChip key={ch.label} label={ch.label} variant={ch.tone || 'outline'} onClick={() => onChip && onChip(ch)} />)}
         </RAIL_DS.ChipRow>
       )}
-      actions={cta ? <RAIL_DS.DarkButton full arrow label={cta} onClick={() => {}} /> : null} />
+      cta={cta ? { label: cta, onClick: () => {} } : undefined} />
   );
 }
 
@@ -192,7 +192,14 @@ const SHARE_SHEET = {
    steps across it — Risk 16, Proposal 4, Review 1, Rebalance 1 — so a second journey on a second copy of
    this loop would be two places for "what happens when you edit answer 3" to drift apart. The defaults
    are the risk journey, so every existing caller is unchanged. */
-function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, onAnswer, attachCaption = 'Here is her last ITR.', onEvent, onMenu, onNew }) {
+/* `lead` — WHAT THE JOURNEY WAS ENTERED WITH (20 Sep 2026). A journey reached from the fund explorer
+   arrives carrying a fund, and a door that drops what you carried through it is not a hand-off. It sits
+   ABOVE the first question rather than inside it, because it is not part of the question: it is
+   Sentinel saying what it already has and what it will do with it, and it stays visible as the advisor
+   answers. The sentence is each journey's own — proposal.jsx, rebalance.jsx and review.jsx write it —
+   because what a carried fund MEANS is different in each and a shared sentence would have to be vague
+   in all three. */
+function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, onAnswer, attachCaption = 'Here is her last ITR.', onEvent, onMenu, onNew, lead }) {
   const [cursor, setCursor] = React.useState(0);
   const [answered, setAnswered] = React.useState([]);
   const [sheet, setSheet] = React.useState(null);
@@ -227,10 +234,17 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, o
       <Rail n={step && step.progress ? step.progress[0] : undefined} total={total} revision={`${cursor}-${answered.length}-${!!att.file}`}
         onMenu={onMenu} onNew={onNew} composer={<RailAsk step={step} onAttach={att.onAttach}
           onSend={(t) => { log(`Typed \u201c${t}\u201d`, 'the same path a chip takes \u2014 typing is never a second-class answer'); advance(t); }} />}>
+        {lead}
         <AnsweredList items={answered} onEdit={editAt} />
         {step && step.result
           ? (result ? result({ step, onChip }) : <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />)
-          : <StepTurn step={step} thinking={thinking} onChip={onChip} extra={stepExtra ? stepExtra({ step, advance, onChip }) : undefined} />}
+          /* ONE SIGNATURE ON ARRIVAL. The lead and the first question are one thing Sentinel said —
+             "here is the fund you brought, and here is my first question" — so the question does not
+             sign itself again eleven points below the lead (the 18 Sep ruling). The moment an answer
+             lands, an AnsweredList sits between them and two signatures are correct again, because
+             the advisor has spoken in between. */
+          : <StepTurn step={step} thinking={thinking} onChip={onChip} continued={!!lead && answered.length === 0}
+              extra={stepExtra ? stepExtra({ step, advance, onChip }) : undefined} />}
         <AttachedTurn file={att.file} caption={attachCaption} onRemove={att.clear} />
       </Rail>
       <RAIL_DS.ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []}

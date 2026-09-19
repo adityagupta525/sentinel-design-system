@@ -35,7 +35,10 @@ const MenuFooterTheme = () => (
 const MenuFooter = ({ onHome }) => (
   <>
     <MENU_DS.Pressable onClick={onHome || (() => {})} label="Back to home" style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
-      <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
+      {/* D-5, closed 20 Sep 2026. This composed a role out of three axes — 13px semibold, which the
+          ramp did not have — and F-52 then defined exactly that role as `--type-row-strong-font`.
+          The two findings were the same missing token seen from two directions. */}
+      <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>
     </MENU_DS.Pressable>
     {/* THE SAME ROW, NOT A SECOND COPY OF IT (20 Sep 2026). This inlined SegmentedRow with the same
         five props as MenuFooterTheme above — which is exactly what the comment above it says the

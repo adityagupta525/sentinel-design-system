@@ -3,6 +3,7 @@ import { SentinelBlock } from './SentinelBlock.jsx';
 import { SentinelText } from './SentinelText.jsx';
 import { SentinelThinking } from './SentinelThinking.jsx';
 import { Provenance } from '../text/Provenance.jsx';
+import { DarkButton } from '../actions/DarkButton.jsx';
 /* THE TURN — one thing Sentinel said, and everything that belongs to it.
    Thirteen turns were hand-built across nine screen modules, and between their parts sat 35 spacer
    divs. Measured 20 Sep 2026, and the vote is not a preference — it is a GRAMMAR the screens were
@@ -34,7 +35,7 @@ const GAP_PROVENANCE = 'var(--space-10)';
 
 export function SentinelTurn({
   say, weight = 'Medium', body, bodyFirst = false, then: thenText, tail,
-  provenance, chips, actions, thinking, continued = false, enter = false, label,
+  provenance, chips, cta, actions, thinking, continued = false, enter = false, label,
 }) {
   const lines = say == null ? [] : (Array.isArray(say) ? say : [say]).filter(Boolean);
   /* Every line after the first is set Regular. Six of the six multi-line turns already did this —
@@ -85,6 +86,13 @@ export function SentinelTurn({
               chips in a plain <div>, which is block layout, which is intrinsic width. That div is
               kept here so any caller gets the old behaviour, ChipRow or single chip alike. */}
           {chips ? <div>{chips}</div> : null}
+          {/* AT MOST ONE DARK CTA PER TURN, and the type is how that survives (B-5, 20 Sep 2026).
+              Three hand-built action rows — `AnswerActions`, `MovesActions`, `RiskResult`'s tail —
+              each paired a ChipRow with a `<DarkButton full arrow>`, and three copies can only agree
+              where a type can enforce. Two dark buttons in a turn is two primary actions and the
+              advisor cannot tell which one the turn was for. `actions` stays a free slot because the
+              artifact and `MessageActions` go there; the CTA does not. */}
+          {cta ? <div><DarkButton full arrow={cta.arrow !== false} label={cta.label} onClick={cta.onClick} /></div> : null}
           {actions ? <div>{actions}</div> : null}
         </React.Fragment>
       )}

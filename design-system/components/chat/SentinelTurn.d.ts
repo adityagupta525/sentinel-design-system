@@ -28,8 +28,13 @@ export interface SentinelTurnProps {
   /** The answer chips, as a `ChipRow`. Sits BELOW the block at `--stack` (12px) — the same 12px the
    *  seven turns that nested it inside the block were already drawing. */
   chips?: React.ReactNode;
-  /** The artifact, the dark CTA, `MessageActions` — whatever belongs to this turn but not to the
-   *  sentence. Also at `--stack`. */
+  /** **At most one dark CTA**, and the type is how that survives. Three hand-built action rows paired
+   *  a `ChipRow` with a `<DarkButton full arrow>` and three copies can only agree where a type can
+   *  enforce — two dark buttons in a turn is two primary actions and the advisor cannot tell which
+   *  one the turn was for. Sits under the chips at `--stack`. */
+  cta?: { label: string; onClick: () => void; /** Default true. */ arrow?: boolean };
+  /** The artifact, `MessageActions` — whatever belongs to this turn but not to the sentence. The dark
+   *  CTA does NOT go here; it goes in `cta`, which can only hold one. Also at `--stack`. */
   actions?: React.ReactNode;
   /** The turn is still arriving: renders `SentinelThinking` and NOTHING ELSE. Pass the verb as a
    *  string and it names what is being read. Chips and actions are dropped on purpose — offering an

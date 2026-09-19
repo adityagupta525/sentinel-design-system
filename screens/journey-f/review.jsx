@@ -43,10 +43,7 @@ function ReviewShape() {
       <REV_DS.ConcentrationBar fraction={MEERA.tail.topSharePct / 100}
         label={`${MEERA.tail.topFunds} funds hold ${MEERA.tail.topSharePct}% — ${inr(REVIEW_TOP_RS)}`} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--space-8)' }}>
-          <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)' }}>The other {MEERA.tail.tinyFunds} funds</span>
-          <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>{inr(REVIEW_TAIL_RS)} · {tailPct}%</span>
-        </div>
+        <REV_DS.FigureRow label={`The other ${MEERA.tail.tinyFunds} funds`} value={`${inr(REVIEW_TAIL_RS)} · ${tailPct}%`} />
         <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)' }}>
           None of them reaches {MEERA.tail.tinyUnderPct}% of her book, which is {inr(REVIEW_TINY_CAP_RS)}. On average {inr(REVIEW_TAIL_AVG_RS)} each.
         </span>
@@ -124,5 +121,31 @@ function ReviewResult({ state = 'draft', savedAt, onSave, onDownload }) {
   );
 }
 
-Object.assign(window, { MEERA, REV_ASK, REV_STEPS, REV_TOTAL, ReviewShape, ReviewFacts, ReviewEnding,
+/* THE FUND THE JOURNEY WAS ENTERED WITH — and a review is the one journey where the answer is a
+   question back.
+
+   A review is about a CLIENT's book, not about a fund. So a fund carried in cannot change the facts of
+   the review; what it can do is answer the thing an advisor is really asking when they send a fund for
+   review — should she hold this? That is the reverse lookup, and it is the one this journey can do
+   honestly: whether she already holds it, and what it would sit beside.
+
+   It still does not skip the question. The audience decides whether this fund becomes a PROPOSAL inside
+   the review or stays a note on the record, and that is exactly the choice step 1 asks for. */
+function revCarriedLines(fundId) {
+  const f = fundById(fundId); if (!f) return null;
+  const holds = (MEERA.holdings || []).some((h) => h.fundId === fundId);
+  const first = holds
+    ? `${f.name} is already in ${MEERA.name}'s book, so a review can say how it has done and what it sits beside.`
+    : `${MEERA.name} does not hold ${f.name} today.`;
+  const second = f.onShelf
+    ? 'What the review says about it depends on who reads it — a record states the position, an investment case argues for it. That is the question below.'
+    : `It is also off your compliance shelf, so an investment case for it cannot be written whatever the audience. The record can still name it.`;
+  return [first, second];
+}
+const RevCarried = ({ fundId }) => {
+  const lines = revCarriedLines(fundId);
+  return lines ? <REV_DS.SentinelTurn say={lines} /> : null;
+};
+
+Object.assign(window, { RevCarried, revCarriedLines, MEERA, REV_ASK, REV_STEPS, REV_TOTAL, ReviewShape, ReviewFacts, ReviewEnding,
   REV_ENDINGS, REV_MISSING, REV_PROVENANCE, REV_SUMMARY, ReviewResult });

@@ -1,0 +1,72 @@
+<!-- @dsCard group="Pages" viewport="1100x1500" name="FigureRow" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>FigureRow — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { FigureRow, Surface } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--type-row-strong-font','--type-caption-font','--color-ink','--color-muted','--color-status-over-fg','--space-8','--space-6'];
+
+function App() {
+  return (
+    <PageShell name="FigureRow" group="Data" status="shipped" requires={['FigureRow','Surface']}
+      summary="Four hand-written instances across three screens — moves.jsx:70, rebalance.jsx:30 and :34, review.jsx:46 — were the same declaration (flex, align-items: baseline, space-between, --space-8), and all four set fontVariantNumeric: 'tabular-nums' on the right-hand span by hand. Rule 4 asks for tabular figures on anything that changes, and four call sites remembering it independently is four chances to forget. A component is how that stops being remembered.">
+
+      <Block n={1} title="Specimen" sub="The rebalance's target row: the headline pair, and the rule that qualifies it underneath. One component, not two rows.">
+        <Specimen width={343}>
+          <Surface>
+            <FigureRow label="To the mandate" value="Equity 60%"
+              sub={{ label: 'His mandate', value: 'Moves ₹1,56,530 · 11 points' }} />
+          </Surface>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Two spans on one baseline, pushed apart. The figure carries tabular numerals; the label does not, because a label is words and a figure is a column.">
+        <Anatomy width={343} top="align-items: baseline — not center, so the two read as one line of type"
+          left="the label, on the left" right="the figure, tabular, on the right"
+          bottom="--space-8 minimum between them; --space-6 between a pair and its sub">
+          <Surface><FigureRow label="What it costs him" value="₹11,200" /></Surface>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Two weights, and they are a pair" sub="strong carries the answer, quiet qualifies it. A card with two strong rows has not decided what it is saying — which is why `sub` is always quiet.">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'strong', node:<Surface><FigureRow label="The other 29 funds" value="₹3,68,000 · 20%" /></Surface>,
+           note:'--type-row-strong-font on both ends, ink. The row an advisor reads out.'},
+          {label:'quiet', node:<Surface><FigureRow weight="quiet" label="The ±5-point drift band" value="Moves ₹85,380 · 6 points" /></Surface>,
+           note:'--type-caption-font, muted. It qualifies the row above it and never competes with it.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="tone='over' is TEXT" sub="Rule 2. A figure the product cannot stand behind says so in the danger colour, on whatever surface it is already on. This component never paints a background.">
+        <Specimen width={343}>
+          <Surface>
+            <FigureRow label="Clear the fund ceiling" value="Equity 58%"
+              sub={{ label: 'Tax on the switch', value: 'Not costed', tone: 'over' }} />
+          </Surface>
+        </Specimen>
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/data/FigureRow.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<Surface><FigureRow label="To the mandate" value="Equity 60%" sub={{ label: 'His mandate', value: 'Moves ₹1,56,530 · 11 points' }} /></Surface>}
+          doCaption="One strong pair and one quiet pair. The card has decided which of the two lines is the answer."
+          dontNode={<Surface><div style={{display:'flex', flexDirection:'column', gap:'var(--space-6)'}}><FigureRow label="To the mandate" value="Equity 60%" /><FigureRow label="His mandate" value="Moves ₹1,56,530 · 11 points" /></div></Surface>}
+          dontCaption="Two strong rows stacked by hand. Both shout, so neither is the answer — and the second one is a `sub`, which is what the prop is for." />
+      </Block>
+
+      <Block n={8} title="Motion" sub="None. It is type.">
+        <Motion rows={[{ name: 'Value change', property: 'none — tabular figures mean the digits do not reflow, which is the point', duration: '—', reduced: 'Unchanged.' }]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

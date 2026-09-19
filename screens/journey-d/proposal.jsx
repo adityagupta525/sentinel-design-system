@@ -147,5 +147,38 @@ function ProposalResult({ state = 'draft', savedAt, openRow = null, onSave, onDo
   );
 }
 
-Object.assign(window, { AMIT, PROP_ASK, PROP_STEPS, PROP_TOTAL, PROP_VERSION_LIST, PROP_COLUMNS, propRows, PropDetail,
+/* THE FUND THE JOURNEY WAS ENTERED WITH — and the honest half of it.
+
+   A fund carried in from the explorer does NOT skip a question: the advisor said which fund, not how
+   much, not what for. So this sits above the first step and says two things — that the fund arrived,
+   and what this journey can actually do with it.
+
+   AND IT CANNOT RE-BUILD THE SPLIT. `PROPOSAL_SPLIT` is a fixture written for Amit, not an allocation
+   engine, and swapping a fund into a mix is a decision about somebody's money rather than a formatting
+   change. So when the fund is already in the mix, Sentinel names its share; when it is not, it says so
+   plainly and offers the swap as a decision rather than doing it quietly. Inventing a re-optimised
+   split here would be the one kind of lie this product never tells. */
+function propCarriedLines(fundId) {
+  const f = fundById(fundId); if (!f) return null;
+  const row = PROPOSAL_SPLIT.find((x) => x.fund === fundId);
+  if (row) {
+    return [`${f.name} is already in the mix I would build for ${AMIT.name} — ${row.pct.toFixed(1)}% of it, ${inr(row.amountRs)}.`,
+      `${row.why} I will still ask the four questions, because you told me the fund and not the amount.`];
+  }
+  if (!f.onShelf) {
+    return [`${f.name} is not on your compliance shelf, so I cannot put it in a proposal for ${AMIT.name}.`,
+      'I will build the mix without it. Take it off the shelf question with your compliance team and we can start again.'];
+  }
+  const same = PROPOSAL_SPLIT.map((x) => fundById(x.fund)).filter((x) => x && x.category === f.category);
+  return [`${f.name} is not in the mix I would build for ${AMIT.name}.`,
+    same.length
+      ? `That sleeve is already held by ${same.map((x) => x.name).join(' and ')}. Swapping ${f.name} in is a decision about his money, not a formatting one — say so and I will, and the document will name what changed.`
+      : `Nothing in the mix covers ${f.category.toLowerCase()} yet. Adding it changes what he is exposed to, so it is your call rather than mine — say so and I will put it in.`];
+}
+const PropCarried = ({ fundId }) => {
+  const lines = propCarriedLines(fundId);
+  return lines ? <PROP_DS.SentinelTurn say={lines} /> : null;
+};
+
+Object.assign(window, { AMIT, PROP_ASK, PropCarried, propCarriedLines, PROP_STEPS, PROP_TOTAL, PROP_VERSION_LIST, PROP_COLUMNS, propRows, PropDetail,
   ProposalBlockers, ProposalResult, PROP_SUMMARY, PROP_PROVENANCE, PROP_DISCLOSURE, PROP_CONFIRM_ROWS });

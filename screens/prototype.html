@@ -96,6 +96,8 @@ function affordances(s) {
   }
   if (s.screen === 'rail') {
     const J = { propose: 'D · Amit’s proposal', rebal: 'E · Sharma’s rebalance', review: 'F · Meera’s review', risk: 'A · Meera’s risk profile' }[s.railJourney] || 'A · Meera’s risk profile';
+    /* The panel is produced from the live state, so it names the carried fund only when there is one. */
+    if (s.carried) back.push('The fund came with you from the explorer — a new sentence drops it');
     if (s.railJourney === 'review') {
       next.push(s.audience ? 'Save it, or take the PDF' : 'Say what the review is for', s.audience ? 'Take what the ending offers' : 'Three audiences, three endings');
       back.push('Edit the answer above — the ending changes, the card does not', 'New thread (the app bar)');
@@ -179,6 +181,11 @@ function Proto({ onEvent }) {
   const [fundPhase, setFundPhase] = React.useState('list');
   const [fundId, setFundId] = React.useState(null);
   const [compareIds, setCompareIds] = React.useState([]);
+  /* THE FUND A JOURNEY WAS ENTERED WITH. It survives the WHO step, because the advisor named the fund
+     before they named the client and a door that drops what you carried through it is not a hand-off.
+     It is cleared by a NEW sentence, never by finishing a journey — an advisor who goes back to the
+     rail is still working on the fund they came in with. */
+  const [carried, setCarried] = React.useState(null);
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const savedScroll = React.useRef(0);
@@ -186,7 +193,7 @@ function Proto({ onEvent }) {
   const att = useAttachment();
   const log = (what, motion) => onEvent && onEvent(what, motion);
 
-  const state = { screen, journey, phase, artifact, fundPhase };
+  const state = { screen, journey, phase, artifact, fundPhase, carried };
 
   /* One entry point for every sentence in the product, typed or tapped. */
   const send = (text) => {
@@ -205,6 +212,8 @@ function Proto({ onEvent }) {
     }
     setJourney(r.id);
     if (r.id === 'funds') { setFundPhase('list'); setFundId(null); setCompareIds([]); }
+    /* A sentence is a new question. The fund only rides along when a VERB carried it. */
+    setCarried(null);
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
     if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal' || r.id === 'review') {
       setRailJourney(r.id);
@@ -335,10 +344,11 @@ function Proto({ onEvent }) {
                  picker. `send` is not used: the advisor did not type a sentence, they tapped a verb
                  on a fund, and routing a synthesised sentence back through the router would be the
                  product pretending it had been asked. */
+              setCarried(fundId);
               const named = client;
               if (!named) {
                 setPending(v.journey); setJourney('who');
-                log(`“${v.label}” on ${fundById(fundId).name} → ${v.journey}, but no client named`, 'the WHO step');
+                log(`“${v.label}” on ${fundById(fundId).name} → ${v.journey}, but no client named — the fund is held and comes with you`, 'the WHO step');
                 return;
               }
               setRailJourney(v.journey); setJourney(v.journey);
@@ -430,6 +440,7 @@ function Proto({ onEvent }) {
   const railMenu = () => { setMenu(true); log('Menu opens from the rail — the way out is the same door as everywhere else', 'panel 320ms; scrim to 0.25'); };
   const rail = railJourney === 'review'
     ? <LiveRail steps={REV_STEPS} total={REV_TOTAL} attachCaption="Here is her September statement."
+        lead={carried ? <RevCarried fundId={carried} /> : null}
         onEvent={log} onNew={goHome} onMenu={railMenu}
         onAnswer={(step, chip) => { if (chip.audience) { setAudience(chip.audience); log(`Review is for: ${chip.label}`, 'the card does not change — only what follows it'); } }}
         result={() => (
@@ -457,6 +468,7 @@ function Proto({ onEvent }) {
             <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
           </Thread>
         : <LiveRail steps={REB_STEPS} total={REB_TOTAL} attachCaption="Here is his Q3 statement."
+            lead={carried ? <RebCarried fundId={carried} /> : null}
             onEvent={log} onNew={goHome} onMenu={railMenu}
             stepExtra={() => (
               <React.Fragment>
@@ -473,6 +485,7 @@ function Proto({ onEvent }) {
             result={() => null} />)
     : railJourney === 'propose'
     ? <LiveRail steps={PROP_STEPS} total={PROP_TOTAL} attachCaption="Here is the mandate he signed."
+        lead={carried ? <PropCarried fundId={carried} /> : null}
         onEvent={log} onNew={goHome} onMenu={railMenu}
         result={() => <ProposalResult state="draft"
           onSave={() => log('Saved — version 4 exists; nobody has seen it', 'the badge becomes a date')}

@@ -1420,3 +1420,42 @@ Compare with… → pick HDFC → the comparison, the gap labels and the reading
 stated. And "Add to a proposal" with no client bound lands on the WHO step — *"Who is the proposal
 for? Here are the four you worked on most recently — or search the other 508."* — because the fund
 explorer is the one surface that does not already know who, and the verbs do not each invent a picker.
+
+### F-58 · The three hand-offs, and the audit's A/B list closed out — *20 Sep 2026*
+
+**The three verbs were doors that dropped what you carried through them.** "Add to a proposal" opened
+Journey D and the fund was gone. Fixed by `LiveRail.lead` — a slot **above** the first question, not
+inside it, because the carried fund is not part of the question: it is Sentinel saying what it already
+has and what it will do with it, and it stays visible as the advisor answers.
+
+The sentence is each journey's own (`propCarriedLines`, `rebCarriedLines`, `revCarriedLines`), because
+what a carried fund MEANS is different in each and a shared sentence would be vague in all three:
+
+| journey | what the fund changes | and the honest half |
+|---|---|---|
+| **D · proposal** | names its share of the mix | **it cannot re-build the split.** `PROPOSAL_SPLIT` is a fixture, not an allocation engine. In the mix → its %; not in it → says so and offers the swap as a decision; off-shelf → refuses |
+| **E · rebalance** | names the **destination** — the half the three targets never carried | the shelf is a harder stop here than on a proposal, because a rebalance moves money under the advisor's own ARN. Refused in the first sentence, not at the confirm |
+| **F · review** | answers the reverse lookup — does she already hold it | a review is about a client's book; a fund cannot change its facts. Off-shelf → an investment case cannot be written whatever the audience |
+
+**One signature on arrival.** The lead and the first question are one thing Sentinel said, so the
+question does not sign itself again eleven points below (the 18 Sep ruling). The moment an answer
+lands an `AnsweredList` sits between them and two signatures are correct again — **driven and
+photographed both ways.**
+
+#### The audit's A and B lists, closed out
+
+| item | outcome |
+|---|---|
+| **B-4 `FigureRow`** | **Built.** Four hand-written rows across three screens, all the same declaration and all four remembering `tabular-nums` by hand. `rebalance.jsx`'s two rows became ONE `FigureRow` with a `sub`, which is the thing two hand-written rows could not state: the second is the quiet half. |
+| **B-5 `TurnOffer`** | **Closed by `SentinelTurn.cta`**, not by a component. The audit said to re-check after B-2 shipped; re-checked, and what was left was only "at most one dark CTA", which a typed slot enforces and three copies could only agree on. `actions` stays free for the artifact and `MessageActions`. |
+| **B-7 `BlockerRow`** | **Not built, and the measurement is why.** The two surfaces are not the same row: `ProposalBlockers` is a two-line block (label + Badge, then a consequence) and `ConfirmSheet`'s rows are single-line 48pt list rows with a coloured word, inside a divided card. One is a screen, one is internal to a system component with its own contract. **One hand-built site is not a duplicate**, and building for one caller is what this system has a rule against. |
+| **B-8 `List.search`** | Done (F-57). |
+| **D-5 · `menu.jsx:38`** | **Fixed.** It composed 13px semibold out of three axes, and F-52 then defined exactly that as `--type-row-strong-font` — *the same missing token seen from two directions.* The label sits **1px higher**, because the role carries `--leading-18` and the hand-written one inherited: the ramp being applied, photographed before and after. |
+| **D-6 · two stat-box treatments** | **Logged as contradiction 62.** A decision about the product's vocabulary, not a fix: a *figure tile* and a *footnote stat* that were never given two names. |
+| **D-7 · `InfoDot` on the review's figures** | **Logged as contradiction 63.** Not fixed because the fix is content — four explainer bodies, and they are claims about somebody's money. |
+
+**Two things the render caught in `FigureRow`.** `textAlign: 'end'` on the value (which none of the
+hand-written rows had) changed a value's width, wrapped a row and moved the rebalance rail's whole
+scroll — **262,499 px of diff from one property that `space-between` already did.** Removing it left
+2,588 px at max 55: a single text run shaping differently from the three adjacent text nodes
+`{inr(x)} · {pct}%` used to produce. That one is the string being more correct, not less.

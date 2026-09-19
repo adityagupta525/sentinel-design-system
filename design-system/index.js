@@ -101,6 +101,7 @@ export { CompareTable } from './components/data/CompareTable.jsx';
 export { ConcentrationBar } from './components/data/ConcentrationBar.jsx';
 export { DrawnCheck } from './components/data/DrawnCheck.jsx';
 export { Dumbbell } from './components/data/Dumbbell.jsx';
+export { FigureRow } from './components/data/FigureRow.jsx';
 export { OverlapView } from './components/data/OverlapView.jsx';
 export { ProgressRail } from './components/data/ProgressRail.jsx';
 export { StatTile, Sparkline } from './components/data/StatTile.jsx';

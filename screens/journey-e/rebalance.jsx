@@ -27,16 +27,10 @@ const costed = (t) => t.costRs != null;
 function TargetRow({ t, onPick, onAskCost }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', padding: 'var(--space-12) 0', borderBottom: 'var(--border-1) solid var(--color-line-soft)' }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--space-8)' }}>
-        <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)' }}>{t.label}</span>
-        <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>Equity {t.equityAfter}%</span>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--space-8)' }}>
-        <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{t.rule}</span>
-        <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)', fontVariantNumeric: 'tabular-nums' }}>
-          Moves {inr(t.amountRs)} · {t.points} points
-        </span>
-      </div>
+      {/* The headline and the rule under it are ONE FigureRow: `sub` is always the quiet half, which
+          is the thing two hand-written rows could not state. */}
+      <REB_DS.FigureRow label={t.label} value={`Equity ${t.equityAfter}%`}
+        sub={{ label: t.rule, value: `Moves ${inr(t.amountRs)} · ${t.points} points` }} />
       <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)' }}>{t.why}</span>
       {costed(t)
         ? <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>Costs him {inr(t.costRs)}</span>
@@ -113,4 +107,28 @@ function RebalanceResult({ state = 'draft', savedAt, onSave, onDownload, onPrima
   );
 }
 
-Object.assign(window, { SHARMA, REB_ASK, UncostedTurn, REB_STEPS, REB_TOTAL, REB_UNCOSTED, REB_PROVENANCE, REB_SUMMARY, TargetRow, RebalanceResult });
+/* THE FUND THE JOURNEY WAS ENTERED WITH — the destination, not the question.
+
+   A rebalance has two halves: what comes OUT, which the three targets size, and what it goes INTO,
+   which until now was implicit. A fund carried in from the explorer is the second half, and naming it
+   is the difference between a plan an advisor can place and a plan that stops at a number.
+
+   THE SHELF IS A HARD STOP HERE, and harder than on a proposal: a proposal is a document, a rebalance
+   moves money in somebody's folios under the advisor's own ARN. So an off-shelf fund is refused in the
+   first sentence rather than carried to the end and refused at the confirm. */
+function rebCarriedLines(fundId) {
+  const f = fundById(fundId); if (!f) return null;
+  if (!f.onShelf) {
+    return [`${f.name} is off your compliance shelf${f.shelfNote ? ` — ${f.shelfNote.toLowerCase()}` : ''}.`,
+      `I will not move ${SHARMA.name}'s money into it, so pick the size below and then tell me where it goes, or bring a fund that is on the shelf.`];
+  }
+  const holds = (SHARMA.holdings || []).some((h) => h.fundId === fundId);
+  return [`Moving into ${f.name}${holds ? ', which he already holds' : ''}.`,
+    `Still one question first: how far. ${f.category} at ${(perfOf(fundId) || {}).ter.toFixed(2)}% — I will size the switch against his mandate and cost it where the purchase dates are on file.`];
+}
+const RebCarried = ({ fundId }) => {
+  const lines = rebCarriedLines(fundId);
+  return lines ? <REB_DS.SentinelTurn say={lines} /> : null;
+};
+
+Object.assign(window, { RebCarried, rebCarriedLines, SHARMA, REB_ASK, UncostedTurn, REB_STEPS, REB_TOTAL, REB_UNCOSTED, REB_PROVENANCE, REB_SUMMARY, TargetRow, RebalanceResult });
