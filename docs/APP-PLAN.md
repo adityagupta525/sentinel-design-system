@@ -55,7 +55,7 @@ question the review agent raised on 19 Sep, answered here.
 | --- | --- | --- |
 | **Home** | The way in. No conversation yet | typical · book unavailable |
 | **Thread** | The spine. Every answer arrives here | waiting · answered · artifact open · stopped · failed · refused · editing |
-| **Journey rail** | One question at a time, when a sequence is needed | asking · interjected · detoured · result |
+| **Journey rail** | One question at a time, when a sequence is needed | asking · interjected · detoured · result — **all built 19 Sep** |
 | **Drawer** | Everything that is history | typical · loading · one section failed · first run |
 | **Confirm sheet** | The only surface with no composer | reviewing · approved |
 
@@ -153,8 +153,8 @@ Each row is one commit, built on the system, every state rendered, and reviewed 
 | 1 ✅ | **Journey B, steps 5–7** — built 19 Sep as `05-decide.html` | Finished the one flow that was half-built; all four rules in one screen | `MoveCard`, `DrawnCheck`, `ConstraintCallout`, `StandingDisclosure`, and a new `ConfirmSheet` |
 | 2 ✅ | **The simulation** — built into step 5 rather than after it, because it changes what the confirm sheet decides about | The missing "what if" | `Dumbbell` × 2 on one scale |
 | 3 ✅ | **The going-back layer** — built 19 Sep as `screens/thread/going-back.html` | The weakest axis, and all four components existed unused | `ResponseFeedback`, `VersionRow`, `DetourBanner`, `FollowUpRow` |
-| 4 | **Journey A — Meera's risk profile** (16 steps) — next | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `DecisionsStrip`, `SentinelThinking`, `QAPair` |
-| 5 | **The fund surfaces** | The third router bucket, entirely undesigned | `InfoCard`, `OverlapView`, `DataTable`, `RangePills`, `ChartLine`, `ChartReadout`, `InfoDot` |
+| 4 ✅ | **Journey A — Meera's risk profile** — built 19 Sep as `screens/journey-a/risk-profile.html` | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `SentinelThinking`, `QAPair`, `HeroNumberCard`, `ParseNote` |
+| 5 | **The fund surfaces** — next | The third router bucket, entirely undesigned | `InfoCard`, `OverlapView`, `DataTable`, `RangePills`, `ChartLine`, `ChartReadout`, `InfoDot` |
 | 6 | **The refusals and the capabilities reply** | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |
 | 7 | **The prototype, end to end** | Every journey clickable in one page, with the motion log | — |
 

@@ -28,11 +28,14 @@ export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 
         {onAttach ? (
           <React.Fragment>
             <input ref={fileRef} type="file" accept={accept} onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) onAttach(f); e.target.value = ''; }} style={{ display: 'none' }} tabIndex={-1} aria-hidden="true" />
-            <Pressable onClick={() => fileRef.current && fileRef.current.click()} label={attachLabel} expand="none"
-              style={disc}><IconAttach /></Pressable>
+            <span data-attach="live" style={{ display: 'flex' }}>
+              <Pressable onClick={() => fileRef.current && fileRef.current.click()} label={attachLabel} expand="none" style={disc}><IconAttach /></Pressable>
+            </span>
           </React.Fragment>
         ) : (
-          <div style={disc}><IconAttach /></div>
+          /* data-attach lets the screens harness tell a real paperclip from a drawing of one without
+             guessing at an svg. `inert` is legitimate on a board or a spec page and a defect on a screen. */
+          <div data-attach="inert" style={disc}><IconAttach /></div>
         )}
         {streaming ? (
           <button type="button" onClick={onStop} aria-label="Stop" style={btn}><span aria-hidden="true" style={{ width: 13, height: 13, borderRadius: 3, background: 'var(--color-surface)' }} /></button>

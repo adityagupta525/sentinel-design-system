@@ -247,12 +247,10 @@ for (const p of pages) {
       const all = [...document.querySelectorAll('div')].filter((d) => { const r = d.getBoundingClientRect(); return Math.round(r.width) === 375 && Math.round(r.height) === 812; });
       const phones = all.filter((d) => !all.some((o) => o !== d && o.contains(d)));
       let n = 0;
-      for (const ph of phones) {
-        const composer = ph.querySelector('input.ds-composer-input');
-        if (!composer) continue;
-        const real = ph.querySelector('input[type=file]') && [...ph.querySelectorAll('button')].some((b) => (b.getAttribute('aria-label') || '').toLowerCase().includes('attach'));
-        if (!real) n += 1;
-      }
+      /* Composer marks its own disc: `live` when it has a real file input behind it, `inert` when it is the
+         drawing the archive shipped. MoneyComposer draws no paperclip at all and is not a defect — the rule
+         is "if the affordance is drawn on a screen it must work", not "every composer must take files". */
+      for (const ph of phones) if (ph.querySelector('[data-attach="inert"]')) n += 1;
       return n;
     }).catch(() => 0);
     /* screens/ only. `ui_kits/` is the imported record — artboards of STATES, not screens an advisor taps,

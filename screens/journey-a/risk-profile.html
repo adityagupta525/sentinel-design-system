@@ -1,0 +1,181 @@
+<!-- @dsCard group="Screens" viewport="1400x3400" name="Journey rail · Meera's risk profile" subtitle="One question at a time, twelve of them, two interjections and a number that is locked — and the answer you just gave is always editable" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, Dock, HomeIndicator, DetourBanner, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey rail · Meera's risk profile — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','ProgressRail','Dock','Composer','MoneyComposer','SentinelBlock','SentinelText','SentinelThinking','QAPair','ParseNote','MessageActions','ChipRow','AnswerChip','DarkButton','HeroNumberCard','ExplainerSheet','DetourBanner','RejectCallout','Provenance','FileUpload','StepTrace','UserBubble','HomeIndicator','PhoneFrame'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="./rail.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+/* thread.jsx is loaded for useAttachment / AttachedTurn — the paperclip is real on every screen, and a
+   journey is a screen. rail.jsx owns the steps and the shell. Only new names are destructured here. */
+const { Composer, MoneyComposer, ExplainerSheet, DetourBanner, RejectCallout, SentinelBlock, SentinelText, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
+
+const S = (name) => RAIL_STEPS.find((x) => x.name === name);
+const Ask = ({ step, onAttach }) => (step && step.money
+  ? <MoneyComposer onSend={() => {}} placeholder="or type the amount" />
+  : <Composer value="" onChange={() => {}} placeholder={(step && step.composer) || 'or type your answer'} onSend={() => {}} onAttach={onAttach} />);
+
+const ANSWERED = [
+  { a: "Start Meera's risk profile" },
+  { q: 'How old is Meera?', a: '38', note: 'from her KYC' },
+  { q: 'How steady is her income?', a: 'Salary plus bonus' },
+  { q: 'What does she earn a month?', a: '₹1,80,000', note: 'understood as ₹1,80,000' },
+];
+
+function Scene({ step, answered = ANSWERED, dim, banner, editable = true, after, thinking }) {
+  const att = useAttachment();
+  return (
+    <Rail n={step && step.progress ? step.progress[0] : undefined} dim={dim} banner={banner}
+      revision={!!att.file} composer={<Ask step={step} onAttach={att.onAttach} />}>
+      <AnsweredList items={answered} editable={editable} onEdit={() => {}} />
+      <StepTurn step={step} thinking={thinking} />
+      {after}
+      <AttachedTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
+    </Rail>
+  );
+}
+
+/* The whole journey, live: twelve questions, two interjections, the result. Every answer is recorded as a
+   QAPair, the last one is editable, and editing it REOPENS the journey there — the four answers after it
+   are asked again, which is what the cost note says before anything is discarded. */
+function LiveRail() {
+  const [cursor, setCursor] = React.useState(0);
+  const [answered, setAnswered] = React.useState([]);
+  const [sheet, setSheet] = React.useState(null);
+  const [thinking, setThinking] = React.useState(false);
+  const att = useAttachment();
+  const step = RAIL_STEPS[cursor];
+  const advance = (label, goto) => {
+    setAnswered((a) => [...a, { q: step.short, a: label }]);
+    setThinking(true);
+    const next = goto != null ? goto : cursor + 1;
+    setTimeout(() => { setCursor(next); setThinking(false); }, 520);
+  };
+  const onChip = (ch) => { if (ch.sheet) return setSheet(ch.sheet); if (ch.external) return setSheet(SHARE_SHEET); advance(ch.label, ch.goto); };
+  /* Edit answer i: the journey reopens THERE and everything after it is asked again. */
+  const editAt = (i) => { setAnswered((a) => a.slice(0, i)); setCursor(RAIL_STEPS.findIndex((s) => s.short === answered[i].q) || 0); };
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Rail n={step && step.progress ? step.progress[0] : undefined} revision={`${cursor}-${answered.length}-${!!att.file}`}
+        composer={<Ask step={step} onAttach={att.onAttach} />}>
+        <AnsweredList items={answered} onEdit={editAt} />
+        {step && step.result
+          ? <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />
+          : <StepTurn step={step} thinking={thinking} onChip={onChip} />}
+        <AttachedTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
+      </Rail>
+      <ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []} onClose={() => setSheet(null)} />
+    </div>
+  );
+}
+const SHARE_SHEET = {
+  title: 'Share with Meera',
+  body: ['This build prepares the summary and hands it to your own share sheet — it does not send anything on its own.',
+    'Nothing leaves Sentinel until you pick a channel and send it there.'],
+};
+
+const MOTION = [
+  ['A question arrives', <span><code>ds-rise</code>: fade + 8px</span>, '240ms', 'Fades in place'],
+  ['The rail advances', 'the filled length grows to the new question', '240ms', 'The new length, drawn'],
+  ['Thinking', <span><code>SentinelThinking</code>: three dots on opacity, 150ms apart</span>, '1.2s loop', 'The dots hold at full opacity'],
+  ['An answer collapses to a QAPair', 'the chips leave, the line stays', 'immediate', 'Unchanged'],
+  ['Rail dims on a detour', <span><code>ProgressRail dim</code> — the rail to 40%, the label not</span>, '240ms', 'Unchanged — an opacity difference is not motion'],
+  ['The number counts up', <span><code>useCountUp</code> over <code>--dur-count</code></span>, '600ms', 'The final number, once'],
+];
+
+const PROVENANCE = [
+  ['38', 'Her KYC record', 'A smart chip that names its source — “Use her KYC age — 38” — and a ParseNote under the answer'],
+  ['₹1,80,000', 'Her last ITR', 'The same: the chip says where it came from, so tapping it is not guessing'],
+  ['71 · 54 · 62', 'Her finances, her temperament, and what her ₹2 crore goal needs', 'Three meter rows, with the lowest marked as the binding one'],
+  ['54 · Moderate', 'The lowest of the three, which is the rule', 'The hero number, with “Locked · 15 Sep 2026” beside it'],
+  ['“six months of her spending”', '₹6,00,000 against ₹95,000 a month', 'The first interjection, which does the arithmetic out loud'],
+];
+
+mountScreen(
+  <ScreenShell
+    journey="Journey A · Meera's risk profile" n="Journey rail" name="Twelve questions, and a number that is locked"
+    job="The surface for work that has an order. One question at a time with its answers as chips, the advisor's own typing always available, two moments where Sentinel says what it has understood so far, and a result that says which of three scores it is built on."
+    without="has a client whose risk was never profiled — so the proposal, the drift and the rebalance have nothing to be checked against."
+  >
+    <Section title="1 · One question at a time" sub="The rail is pinned under the app bar and does not scroll; the answers collapse to one line each so twelve of them do not bury the one being asked.">
+      <StateRow>
+        <State label="live · run the whole journey" note="Twelve questions, two interjections and the result. Tap a chip or type; the answer becomes a QAPair and the rail advances. “Skip to the result” on the intro jumps to the end, which is the archive's own affordance for an advisor who already knows the number.">
+          <LiveRail />
+        </State>
+        <State label="a question, with a smart chip" note="The first chip names its SOURCE — “Use her KYC age — 38” — so tapping it is not guessing, and a ParseNote records where the answer came from. The composer is present on every question (rule 3): an advisor can always type instead of tapping.">
+          <Scene step={S('Q1 Age')} answered={ANSWERED.slice(0, 1)} />
+        </State>
+        <State label="a money question" tone="under" note="The Dock carries the MoneyComposer instead of the text one, because the answer is an amount and Indian grouping is not something to leave to a free-text field. The chips still offer the two figures an advisor would otherwise type.">
+          <Scene step={S('Q4 Spend')} />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="2 · The answer you just gave is editable — here it costs more" sub="The same gesture as editing a prompt in the thread, which is the point: an affordance valid from the advisor's side exists everywhere it is valid.">
+      <StateRow>
+        <State label="edit the last answer" note="Edit sits under the most recent QAPair, exactly where it sits under the most recent bubble in a thread. What differs is the cost, and the line says it before anything is discarded: editing reopens the journey at that question and the answers after it are asked again. Nothing is thrown away until the new answer is given.">
+          <Scene step={S('Q5 Emergency')} after={<Note title="" />} />
+        </State>
+        <State label="a detour — she asked something else" tone="under" note="The advisor left the journey to ask a question in the thread. The rail DIMS to 40% and its label does not, which is ProgressRail's own prop rather than a parent opacity; the banner names the journey and the question so “resume” means something. This is the same banner the going-back screen shows from the thread's side.">
+          <Scene step={S('Q7 Horizon')} dim banner={<DetourBanner label="Risk profile · paused at question 7" onResume={() => {}} />} />
+        </State>
+      </StateRow>
+      <Note title="Why the chips are in the turn and not in the Dock">
+        The journey rail was the one surface the 18 Sep ruling left alone — <code>Dock.d.ts</code> kept the slot
+        <em> “so the journey rail, which asks one question at a time and answers it in place, can be migrated
+        deliberately rather than broken.”</em> It is built new here, so it is built the ruled way: the answers to a
+        question sit under that question and scroll with it. The Dock carries the composer and nothing else, on every
+        screen in the product. <strong>That leaves <code>Dock.chips</code> and <code>Dock.cta</code> with no consumer
+        anywhere</strong> — a removal, and the owner's to make.
+      </Note>
+    </Section>
+
+    <Section title="3 · Where Sentinel speaks without being asked" sub="Two interjections in twelve questions. They are not encouragement — each one does arithmetic out loud and says what it means.">
+      <StateRow>
+        <State label="an interjection" note="After the emergency-fund question: “That is about six months of her spending. Comfortable — it means a fall in the market will not force her to sell.” It states the sum (₹6,00,000 against ₹95,000 a month) and what it implies, then offers one chip. The rail does not advance: an interjection is not a question.">
+          <Scene step={S('Reflect 1')} answered={[...ANSWERED, { q: 'And what does she spend a month?', a: '₹95,000' }, { q: 'How much for emergencies?', a: '₹6,00,000' }]} />
+        </State>
+        <State label="thinking, between two questions" tone="under" note="SentinelThinking's verb is a provenance claim, not decoration: “Reading her account record…” names the source the next line cites. A waiting state that says one thing and then answers from somewhere else has lied, which is what rule 4 exists to prevent.">
+          <Scene step={S('Q6 Dependents')} thinking />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="4 · The number, and what it is built on" sub="Three scores, and the rule is the lowest of them — stated on the card rather than left for the advisor to infer.">
+      <StateRow>
+        <State label="the result" note="71 her finances, 54 her temperament, 62 her goal — and 54 is marked as the binding one, because that is what everything after this is built against. “Locked · 15 Sep 2026” is beside the number: a risk profile that quietly drifts is worse than none. The two chips are the two things an advisor actually does next — explain it, or send it.">
+          <Scene step={S('Result')} answered={ANSWERED} after={<RiskResult chips={S('Result').chips} cta={S('Result').cta} />} />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="5 · What this screen does not do yet">
+      <Note title="The refusal path is the router's, and it is not built here">
+        Typing something that is not an answer — a question, an instruction, nonsense — is bucket 4, 5 or 6 of the
+        router, and it renders in the thread rather than on the rail. <code>RejectCallout</code> and
+        <code> ConstraintCallout</code> are the components for it and they are still on no screen. That is the
+        refusals pass, build order #6.
+      </Note>
+      <Note title="Twelve questions, sixteen steps">
+        The rail says <em>n of 12</em> because twelve of the sixteen are questions: the intro, two interjections and
+        the result are not. An interjection keeps the number it follows rather than inventing a thirteenth, which is
+        why the rail does not move under it.
+      </Note>
+    </Section>
+
+    <Section title="6 · Motion, and what each one does under reduced motion">
+      <MotionTable rows={MOTION} />
+    </Section>
+
+    <Section title="7 · Provenance">
+      <ProvenanceTable rows={PROVENANCE} />
+    </Section>
+  </ScreenShell>
+);
+</script></body></html>

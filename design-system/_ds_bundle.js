@@ -1181,16 +1181,11 @@ var __ds_out = (() => {
       const f = e.target.files && e.target.files[0];
       if (f) onAttach(f);
       e.target.value = "";
-    }, style: { display: "none" }, tabIndex: -1, "aria-hidden": "true" }), /* @__PURE__ */ react_global_default.createElement(
-      Pressable,
-      {
-        onClick: () => fileRef.current && fileRef.current.click(),
-        label: attachLabel,
-        expand: "none",
-        style: disc
-      },
-      /* @__PURE__ */ react_global_default.createElement(IconAttach, null)
-    )) : /* @__PURE__ */ react_global_default.createElement("div", { style: disc }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null)), streaming ? /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: onStop, "aria-label": "Stop", style: btn }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { width: 13, height: 13, borderRadius: 3, background: "var(--color-surface)" } })) : /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => canSend && onSend && onSend(), disabled: !canSend, "aria-label": "Send", style: { ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default" } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
+    }, style: { display: "none" }, tabIndex: -1, "aria-hidden": "true" }), /* @__PURE__ */ react_global_default.createElement("span", { "data-attach": "live", style: { display: "flex" } }, /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => fileRef.current && fileRef.current.click(), label: attachLabel, expand: "none", style: disc }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null)))) : (
+      /* data-attach lets the screens harness tell a real paperclip from a drawing of one without
+         guessing at an svg. `inert` is legitimate on a board or a spec page and a defect on a screen. */
+      /* @__PURE__ */ react_global_default.createElement("div", { "data-attach": "inert", style: disc }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null))
+    ), streaming ? /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: onStop, "aria-label": "Stop", style: btn }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { width: 13, height: 13, borderRadius: 3, background: "var(--color-surface)" } })) : /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => canSend && onSend && onSend(), disabled: !canSend, "aria-label": "Send", style: { ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default" } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
   }
 
   // design-system/components/composer/MoneyComposer.jsx

@@ -71,6 +71,6 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
    Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
    Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
-   researched, with every state and keyframe accounted for. **Journey B is complete — all 7 steps on 5 pages** (a state of a screen is not a screen), plus the shell
+   researched, with every state and keyframe accounted for. **Journey B complete (7 steps, 5 pages) and Journey A's rail built** (a state of a screen is not a screen), plus the shell
    drawer and a live prototype. The owner's standing rule since 18 Sep: **nothing in the system that is on
    no screen** — `npm run report:parallel` measures it (44 of 86 today, counted transitively).
