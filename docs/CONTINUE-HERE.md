@@ -45,6 +45,19 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **The app plan exists now: `docs/APP-PLAN.md`** — written on the owner's brief that the system and the
+  app are one deliverable, not two. Its spine: the 42 components no screen uses are not a component
+  backlog, they are the app's missing *behaviour* (leave a journey and resume, revert to the version the
+  client saw, say an answer was wrong, enter an amount, compare two funds, read a fund's page). Five
+  surfaces rather than seven screens; a build order in seven commits; and `report:parallel` reading 86 of
+  86 as the finish line.
+- **Both open decisions were called (the owner asked for a vote and to proceed).** (1) Home's placeholder
+  is now "Ask Sentinel" — the long one repeated the three starter chips 55pt below it, and the map in
+  `Composer.d.ts` was written before Home had chips; the map is amended with the reason. (2) The waiting
+  phase stays its own page, because it changes the CONTROL SET (Stop in the send slot, Continue, Try
+  again) and not just a height — and the pages are now named for a surface and a phase rather than
+  "Screen N of 7", with the seven numbered steps kept on `flow.html` where a step is a moment in Sharma's
+  story. Written up on the answer page and in APP-PLAN §1.
 - **Five rulings from the owner reading the screens, all applied.** (1) **Nothing is pinned above the
   composer** — chips and CTAs live in the conversation and scroll with the message that offered them;
   `Dock.chips`/`cta` deprecated, contradiction 60, rule 3 untouched. (2) **One signature per turn** —

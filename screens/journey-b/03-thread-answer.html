@@ -129,7 +129,7 @@ const PROVENANCE = [
 
 mountScreen(
   <ScreenShell
-    journey="Journey B · Sharma’s drift" n="Screens 3 and 4 of 7" name="The answer, and the artifact"
+    journey="Journey B · Sharma’s drift" n="Thread · the answer" name="The answer, and the artifact"
     job="The answer, the position it describes, and the object it produced — then the same object opened in place. One screen, because the card expands where it is: there is no second surface to draw."
     without="gets a number with no reason, and cannot check what produced it."
   >
@@ -208,6 +208,16 @@ mountScreen(
         The screen is only reached with a question asked and a trace finished, so there is nothing to show before it.
         The one part that can still be arriving is the artifact, which is <em>filling</em> above. A refusal happens at
         the router, before the trace runs, and renders as a reply — never as an answer that takes itself back.
+      </Note>
+      <Note title="Why the waiting phase is a page of its own and this expanded card is not">
+        Ruling 5 says a state of a screen is not a screen, and the expanded artifact obeys it: same controls,
+        same dock, same turn &mdash; only a card&rsquo;s height changes. <strong>Waiting is different.</strong> It
+        changes the CONTROL SET: the send slot becomes Stop, which is the only moment in the product when the
+        composer cannot send, and the turn carries Continue and Try again, which no other phase can reach. A
+        different control set is a different thing to design and to test; a different height is not. So the pages
+        in <code>screens/</code> are named for a <strong>surface and a phase</strong> &mdash; Thread &middot; while
+        it works, Thread &middot; the answer &mdash; and the seven numbered steps stay on <code>flow.html</code>,
+        where they belong: a step is a moment in Sharma&rsquo;s story, not a screen. <code>docs/APP-PLAN.md</code> &sect;1.
       </Note>
       <Note title="No shared-element transition, and no back arrow">
         The card expands where it is. Nothing flies from a card into a page, because the page it used to fly to was

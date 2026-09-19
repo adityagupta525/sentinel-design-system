@@ -62,7 +62,13 @@ function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMe
 
       <div style={{ flex: 1 }} />
 
-      {/* The starters sit in the Dock's chips slot, directly above the composer. Correcting my own
+      {/* The placeholder is the short one. It read "Ask Sentinel about a client, a fund, or a plan" — three
+      examples, 55pt under three starter chips that are the same three examples with names on them. The
+      chips carry them concretely; the placeholder repeating them in the abstract is the duplication the
+      two-lists split was invented to answer, one row lower. The map in Composer.d.ts was written before
+      Home had chips, and is amended.
+
+      The starters sit in the Dock's chips slot, directly above the composer. Correcting my own
           earlier argument for taking them out: I read "Contextual AnswerChips" in Dock.d.ts as meaning
           only follow-ups to something Sentinel had just said. The slot is chips above the composer;
           on Home the context is the advisor having asked nothing yet, and a starter is what that
@@ -70,7 +76,7 @@ function Home({ hour = 15, time = '3:04', advisor = 'Ashish', rows = NAMED, onMe
           is what answers it. */}
       <Dock
         chips={<ChipRow>{STARTERS.map((c) => <Pill key={c} label={c} onClick={() => onStarter && onStarter(c)} />)}</ChipRow>}
-        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel about a client, a fund, or a plan"
+        composer={<Composer value={value} onChange={setValue} placeholder="Ask Sentinel"
           onAttach={onAttach || (() => {})}
           onSend={() => { if (onSend && value.trim()) { onSend(value.trim()); setValue(''); } }} />} />
       <HomeIndicator />

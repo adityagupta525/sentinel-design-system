@@ -8,6 +8,11 @@ scaffolding around it.
 
 ## Start here
 
+**Building the product? Read `docs/APP-PLAN.md`.** It is the plan for the app end to end — the five
+surfaces, the four questions an advisor asks that a chat UI answers by default (what can I do · what
+happens next · how do I go back · what if), the build order, and the honest note on what research it rests
+on. `docs/SCREENS-PLAN.md` remains the inventory of what the archive had.
+
 **New session, or a different account? Read `docs/CONTINUE-HERE.md` first.** It carries the state of
 the work, the rulings that were made in conversation and are not visible in the code, what is open, and
 what is deliberately not in this repository.
