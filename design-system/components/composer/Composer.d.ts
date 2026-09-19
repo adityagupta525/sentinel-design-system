@@ -2,7 +2,14 @@ export interface ComposerProps { value: string; onChange: (v: string) => void; o
    *  HOME SHORTENED 19 Sep 2026: it read "Ask Sentinel about a client, a fund, or a plan", which is three
    *  examples sitting 55pt under three starter chips that are the same three examples with client names on
    *  them. This map was written before Home had chips. The chips carry the examples; the placeholder names
-   *  the product once. */ placeholder?: string; autoFocus?: boolean; /** Send disabled, Stop square in the send slot. */ streaming?: boolean; onStop?: () => void;
+   *  the product once. */ placeholder?: string;
+  /** THE CLIENT THIS THREAD IS ABOUT — a `<ClientChip>`, above the field. `ClientChip` has described
+   *  itself as "composer-resident" since v9 and the composer had no slot for it, so the chip was on no
+   *  screen and its contract was a promise with nowhere to land. Selection and typing resolve to the
+   *  same state: picking from the WHO step and typing "Meera" both end here. Omit it and the composer
+   *  renders exactly as before. */
+  bound?: React.ReactNode;
+  autoFocus?: boolean; /** Send disabled, Stop square in the send slot. */ streaming?: boolean; onStop?: () => void;
   /** THE PAPERCLIP, MADE REAL (18 Sep 2026). Receives the chosen File; the disc becomes a button with a
    *  hidden file input behind it. Omit it and the disc renders exactly as it always has — a control that
    *  is announced and does nothing is worse than a drawing that is honest about being one. What the file

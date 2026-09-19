@@ -409,6 +409,7 @@
     "--shadow-composer",
     "--space-12",
     "--space-2",
+    "--space-8",
     "--text-14",
     "--weight-medium"
    ],

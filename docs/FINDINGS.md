@@ -1078,3 +1078,33 @@ last stop was "Appearance: Dark" (`tabindex -1`) while the browser's was "Back t
 
 **It was exposed by F-46's own fix** — giving locked `RangePills` `tabIndex={-1}` is what made the trap
 miscount. A correct fix in one component found a latent defect in three others.
+
+### F-49 · Two contracts described a feature nobody had built — *19 Sep 2026, built*
+
+Building the WHO step made two existing contracts true, and corrected a third that was simply wrong.
+
+**(a) `ClientChip` said it was "composer-resident" and had nowhere to live.** Its doc, since v9: *"the
+drawer's client tap and a journey's client picker produce the same chip in the same place; typing a name
+resolves to the same state, so selection and typing are one flow, not two."* `Composer` had **no slot
+for it**, so the chip was on no screen and the sentence was a promise with nowhere to land. `Composer`
+now takes `bound`; omit it and the composer renders exactly as before.
+
+**(b) `SearchField` was documented as "what a `List searchable` renders".** **`List` has no `searchable`
+prop and never did.** The doc described a feature that did not exist, and any consumer reading it would
+have gone looking for a prop. Corrected: the caller composes a `SearchField` above a `List`.
+
+**(c) The picker's subtitle was a flag.** The first cut used `flags[0]`, and Amit's is *"KYC in process
+— nothing can be executed until it clears"*: 292px of sentence in a 243px row, caught by the truncation
+gate. A row in a picker answers *is this the right person*; the shortest true answer is what they hold,
+or why they hold nothing. The full flag belongs on the journey it blocks, where there is room to say
+what to do about it.
+
+**The step itself.** Six journeys are about a client and could not start without one. `"risk profiling"`
+landed in bucket 4 — honest and useless, because the router **did** follow: it had half the sentence.
+The rule is **not** "always ask": it is **ask only for what the advisor has not already said**.
+Verified in the prototype: `"risk profiling"` produces the picker; `"Start Meera's risk profile"`
+produces **no picker at all** and opens the rail directly.
+
+It also answers the audit's biggest persona hole. Every screen in this product assumes an established
+ARN holder with 512 clients; **`WhoEmpty` is the only place a new one exists**, and it says the book is
+empty, says one client is enough to make everything work, and offers the two real ways to start.

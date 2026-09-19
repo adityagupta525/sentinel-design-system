@@ -1,0 +1,106 @@
+<!-- @dsCard group="Screens" viewport="1400x1800" name="The WHO step" subtitle="The first question of six journeys — asked only when the advisor has not already answered it" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>The WHO step — Sentinel screens</title><link rel="stylesheet" href="../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','ClientChip','Composer','Dock','FileUpload','HomeIndicator','List','ListRow','MessageActions','PhoneFrame','Pill','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','StandingDisclosure','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script type="text/babel" src="../screen-kit.jsx"></script>
+<script type="text/babel" src="../data/book.jsx"></script>
+<script type="text/babel" src="../journey-b/thread.jsx"></script>
+<script type="text/babel" src="./who.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { Composer, SentinelBlock, SentinelText, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
+
+function Scene({ ask, client, children, onAttachReal = true }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor="bottom" revision={`${ask}-${!!att.file}`}
+      composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel"
+        bound={<WhoBound client={client} onClear={() => {}} />}
+        onSend={() => {}} onAttach={att.onAttach} />}>
+      <AskTurn text={ask} costNote="Sending this replaces the answer below it." />
+      {children}
+      <AttachedTurn file={att.file} caption="Here is her statement." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+function App() {
+  return (
+    <ScreenShell
+      journey="Every journey" n="0" name="The WHO step"
+      job="An advisor who types “risk profiling” has named the WORK and not the CLIENT. Until now that landed in “I did not follow that” — honest and useless, because it did follow; it simply had half the sentence. This is the other half, and it is the first step of six journeys."
+      without="cannot start a journey without knowing the client's name in advance — and a product that makes you type a full sentence before it will do anything is a command line with a chat bubble on it."
+    >
+      <Section title="1 · Asked only when it has not been answered" sub="The rule that decides the whole thing: never ask for something the advisor has already said. Being made to pick Meera from a list after typing her name is the product telling you it was not listening.">
+        <StateRow>
+          <State label="the work named, the client not" note="“risk profiling” — the question names the WORK back (“Whose risk profile?”) rather than asking a bare “which client?”. Four rows, because an advisor works a handful of clients in a week and the one they want is nearly always one of the last few; the other 508 are behind the search, not in the list.">
+            <Scene ask="risk profiling"><WhoPicker journey="risk" /></Scene>
+          </State>
+          <State label="searching the book" note="The SearchField is the caller's, above a List — `List` has no `searchable` prop and never did, whatever SearchField's doc claimed until today. Typing filters the 512; clearing returns to the four.">
+            <Scene ask="build a proposal"><WhoPicker journey="propose" /></Scene>
+          </State>
+          <State label="the client already named — no step at all" tone="ok" note="“Start Meera's risk profile” names her, so this step does not appear and the rail opens directly. Verified in the prototype: the WHO turn does not render and the log shows the router going straight to `risk`. That is the rule working, and it is the state worth looking at hardest.">
+            <Scene ask="Start Meera's risk profile" client={clientById('meera')}>
+              <SentinelBlock>
+                <SentinelText text="Meera Nair, 38, Kochi. Your client since 2019. Starting her risk profile." />
+              </SentinelBlock>
+            </Scene>
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="2 · The two states that are not the happy path" sub="One is the persona the audit found nobody had designed for; the other is what honesty costs.">
+        <StateRow>
+          <State label="nobody on the book yet" tone="under" note="THE FIRST DAY. Every other screen in this product assumes an established ARN holder with 512 clients, a shelf and saved work. A new ARN holder has none of it, and this is the only place the product meets them. It does not pretend: it says the book is empty, says one client is enough to make everything here work, and offers the two real ways to start.">
+            <Scene ask="risk profiling"><WhoEmpty journey="risk" /></Scene>
+          </State>
+          <State label="a client we have no statement for" tone="over" note="Picking Sunita is a legitimate choice and this build has no statement for her. It says so, names exactly which clients it does carry, and offers the paperclip — rather than opening an empty journey and letting the advisor discover it three steps in.">
+            <Scene ask="review portfolio" client={clientById('sunita')}>
+              <SentinelBlock>
+                <SentinelText text="I have Sunita Nair on your book, and not the statement this needs." />
+                <div style={{ marginTop: 'var(--space-10)' }}>
+                  <SentinelText weight="Regular" text="This build carries one statement each for Sharma, Meera and Amit. Pick one of those, or attach the statement and I will read it." />
+                </div>
+                <div style={{ marginTop: 'var(--space-12)' }}>
+                  <ChipRow>{['R. Sharma', 'Meera Nair', 'Mr. Amit Aggrawal'].map((n) => <AnswerChip key={n} label={n} onClick={() => {}} />)}</ChipRow>
+                </div>
+              </SentinelBlock>
+            </Scene>
+          </State>
+          <State label="bound, and removable" note="Once a client is picked the chip lives IN the composer, above the field. ClientChip has described itself as composer-resident since v9 and the composer had no slot for it, so the chip was on no screen and its contract was a promise with nowhere to land. It is removable because binding the wrong client is the easiest mistake in this product and the hardest to notice.">
+            <Scene ask="what does she hold?" client={clientById('meera')}>
+              <SentinelBlock>
+                <SentinelText text="₹18,40,000 across 43 funds. Fourteen of them hold 80% of it." />
+              </SentinelBlock>
+            </Scene>
+          </State>
+        </StateRow>
+      </Section>
+
+      <Section title="3 · What this fixes, beyond itself">
+        <Table head={['Before', 'After']} rows={[
+          ['“risk profiling” → “I did not follow that.”', 'The work is understood; only the client is missing, and it asks for that alone'],
+          [<span><code>ClientChip</code> on no screen since v9</span>, 'In the composer, where its own contract always said it lived'],
+          [<span><code>SearchField</code> documented as “what a <code>List searchable</code> renders”</span>, <span><code>List</code> has no such prop. The doc is corrected and the caller composes the two</span>],
+          ['Six journeys each hardcoded to one client', 'One step, six journeys, and the client is a choice'],
+          ['No screen for an advisor with an empty book', 'The first day has an answer'],
+        ]} />
+        <Note title="What it does not do">
+          <strong>It does not add a client.</strong> “Add a client” and “Import from my ARN” are the right two
+          doors and neither is built — this build has four clients in a fixture. <strong>It does not persist.</strong>
+          The bound client lives for the session; a real build binds it to the thread. And the recency order is
+          <code>WHO_RECENT</code> in the module, not a real signal — a live product orders by who the advisor
+          actually opened last.
+        </Note>
+      </Section>
+    </ScreenShell>
+  );
+}
+
+mountScreen(<App />);
+</script></body></html>

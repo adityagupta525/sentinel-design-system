@@ -17,6 +17,7 @@
 <script type="text/babel" src="./journey-d/proposal.jsx"></script>
 <script type="text/babel" src="./journey-e/rebalance.jsx"></script>
 <script type="text/babel" src="./journey-f/review.jsx"></script>
+<script type="text/babel" src="./shell/who.jsx"></script>
 <script type="text/babel" src="./thread/refusals.jsx"></script>
 <script type="text/babel" src="./thread/ledger.jsx"></script>
 <script type="text/babel" src="./shell/menu.jsx"></script>
@@ -65,6 +66,21 @@ const ROUTES = [
   { id: 'miss',     re: /.*/,                                                        why: 'nothing matched — and nothing is guessed at' },
 ];
 const route = (text) => ROUTES.find((r) => r.re.test(text || ''));
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE WHO GATE. Six journeys are about a client and cannot start without one. The rule is NOT "always
+   ask" — it is "ask only for what the advisor has not already said". A sentence that names a client
+   skips this entirely, because being made to pick Meera from a list after typing her name is the
+   product telling you it was not listening.
+
+   The journey each fixture belongs to is also checked: this repository has Sharma's drift, Meera's
+   risk profile and Amit's proposal, and nothing for Sunita. Picking a client we have no data for is a
+   real state and it says so, rather than opening an empty journey. */
+const NEEDS_CLIENT = { risk: 'meera', propose: 'amit', rebal: 'sharma', review: 'meera', drift: 'sharma', ledger: null };
+const namedClient = (text) => CLIENTS.find((c) => {
+  const first = c.name.replace(/^(Mr|Ms|Mrs)\.?\s+/i, '').split(' ')[0].toLowerCase();
+  return new RegExp(`\\b${first}\\b`, 'i').test(text || '');
+});
 
 /* What the advisor can do from here, and how to get back — derived from the state rather than written
    per screen, because a list of affordances kept by hand is a list that goes stale the first time a
@@ -148,6 +164,9 @@ function Proto({ onEvent }) {
   const [uncosted, setUncosted] = React.useState(null);
   const [rebalPicked, setRebalPicked] = React.useState(false);
   const [audience, setAudience] = React.useState(null);
+  /* The bound client, and the journey waiting on it. */
+  const [client, setClient] = React.useState(null);
+  const [pending, setPending] = React.useState(null);
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const savedScroll = React.useRef(0);
@@ -160,7 +179,19 @@ function Proto({ onEvent }) {
   /* One entry point for every sentence in the product, typed or tapped. */
   const send = (text) => {
     const r = route(text);
-    setAsk(text); setJourney(r.id);
+    setAsk(text);
+    /* THE WHO GATE, before anything opens. */
+    if (r.id in NEEDS_CLIENT) {
+      const named = namedClient(text) || client;
+      if (!named) {
+        setPending(r.id); setJourney('who');
+        if (screen !== 'thread') { setDir('forward'); setScreen('thread'); }
+        log(`“${text}” → ${r.id}, but no client named`, 'the WHO step — asked once, and never for something already said');
+        return;
+      }
+      setClient(named);
+    }
+    setJourney(r.id);
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
     if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal' || r.id === 'review') {
       setRailJourney(r.id);
@@ -173,6 +204,29 @@ function Proto({ onEvent }) {
       setPhase('trace'); setArtifact('filling'); setResumeFrom(0); setTraceKey((k) => k + 1); traceStart.current = performance.now();
       log('Trace running — step 1 of 4', `ProgressTrace · ${STEP_MS}ms a step, clock real`);
     }
+  };
+
+  /* Picking resumes the journey the advisor asked for — it does not start a new one. */
+  const pick = (c) => {
+    setClient(c);
+    const j = pending;
+    const want = NEEDS_CLIENT[j];
+    if (want && c.id !== want) {
+      /* `pending` is deliberately NOT cleared: the retry chips resume the same journey, and a journey
+         the advisor asked for should survive a wrong client. */
+      setJourney('nodata');
+      log(`Picked ${c.name}, and this build has no ${j} data for them`, 'said out loud rather than opening an empty journey');
+      return;
+    }
+    setPending(null);
+    if (j === 'risk' || j === 'propose' || j === 'rebal' || j === 'review') {
+      setRailJourney(j === 'risk' ? 'risk' : j); setDir('forward'); setScreen('rail');
+      log(`${c.name} bound — the rail opens`, 'ScreenStack forward · 320ms');
+      return;
+    }
+    setJourney(j);
+    if (j === 'drift') { setPhase('trace'); setArtifact('filling'); setResumeFrom(0); setTraceKey((k) => k + 1); traceStart.current = performance.now(); }
+    log(`${c.name} bound — ${j} resumes`, 'the chip stays in the composer');
   };
 
   const traceDone = () => {
@@ -239,6 +293,22 @@ function Proto({ onEvent }) {
     );
     if (journey === 'funds') return <FundResults openRow={null} onExplain={() => log('A fund’s own explainer', '')} />;
     if (journey === 'ledger') return <LedgerArtifact onDownload={() => { log('CSV — the control holds its own loading state, because this product has no toasts', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }} />;
+    if (journey === 'who') return CLIENTS.length
+      ? <WhoPicker journey={pending} onPick={pick} onEvent={log} />
+      : <WhoEmpty journey={pending} />;
+    if (journey === 'nodata') return (
+      <SentinelBlock>
+        <SentinelText text={`I have ${client ? client.name : 'that client'} on your book, and not the statement this needs.`} />
+        <div style={{ marginTop: 'var(--space-10)' }}>
+          <SentinelText weight="Regular" text="This build carries one statement each for Sharma, Meera and Amit. Pick one of those, or attach the statement and I will read it." />
+        </div>
+        <div style={{ marginTop: 'var(--space-12)' }}>
+          <ChipRow>{['R. Sharma', 'Meera Nair', 'Mr. Amit Aggrawal'].map((n) => (
+            <AnswerChip key={n} label={n} onClick={() => pick(CLIENTS.find((x) => x.name === n))} />
+          ))}</ChipRow>
+        </div>
+      </SentinelBlock>
+    );
     if (journey === 'caps') return <CapabilitiesTurn onAsk={(q) => send(q)} />;
     if (journey === 'who') return <RefusalTurn body={DISAMBIGUATE.body} chips={DISAMBIGUATE.chips} onChip={send} />;
     if (journey === 'over') return <RefusalTurn body={BUCKET_2.body} chips={BUCKET_2.chips} onChip={send} />;
@@ -260,6 +330,7 @@ function Proto({ onEvent }) {
         onMenu={() => { setMenu(true); log('Menu opens', reduced() ? 'the panel fades in · 320ms' : 'panel translateX −100% → 0 · 320ms; scrim to 0.25'); }}
         onNew={goHome}
         composer={<Composer value={draft} onChange={setDraft} placeholder="Ask Sentinel" streaming={journey === 'drift' && phase === 'trace'}
+          bound={<WhoBound client={client} onClear={() => { setClient(null); log('Client unbound', 'the next question asks who again'); }} />}
           onStop={stop} onSend={(t) => { setDraft(''); send(t || draft); }} onAttach={att.onAttach} />}>
         {/* The same AskTurn on every screen in the product: the last prompt is editable wherever editing
             it is a real thing to do, and sending the edit replaces what is below it — which the cost line

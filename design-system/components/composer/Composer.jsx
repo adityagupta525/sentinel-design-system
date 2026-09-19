@@ -6,7 +6,13 @@ import { Pressable } from '../actions/Pressable.jsx';
    F-28 (18 Sep 2026): both buttons in the send slot were a glyph with no name — a 13px square and an
    arrow — so a screen reader announced "button" for the two most important controls on the screen.
    aria-label "Stop" / "Send"; nothing visible changes. */
-export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 'Ask Sentinel', autoFocus = false, streaming = false, onStop, onAttach, attachLabel = 'Attach a file', accept }) {
+/* `bound` — THE CLIENT THIS THREAD IS ABOUT, sitting above the field (19 Sep 2026).
+   `ClientChip`'s contract has said since v9 that it is "composer-resident" and that "the drawer's
+   client tap and a journey's client picker produce the same chip in the same place; typing a name
+   resolves to the same state, so selection and typing are one flow, not two." The composer had no slot
+   for it, so the chip was on no screen and the sentence was a promise with nowhere to land. This is
+   that slot. Leave it off and the composer renders exactly as before. */
+export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 'Ask Sentinel', autoFocus = false, streaming = false, onStop, onAttach, attachLabel = 'Attach a file', accept, bound }) {
   const [focus, setFocus] = React.useState(false);
   const fileRef = React.useRef(null);
   const canSend = value.trim().length > 0 && !streaming;
@@ -16,6 +22,7 @@ export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 
   const btn = { appearance: 'none', border: 'none', cursor: 'pointer', display: 'flex', width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--gradient-dark-cta)', padding: 0 };
   return (
     <div style={{ width: '100%', borderRadius: 'var(--radius-20)', background: 'var(--color-surface)', padding: 'var(--space-12)', boxSizing: 'border-box', border: `1px solid ${focus ? 'var(--color-bronze)' : 'var(--color-line)'}`, boxShadow: focus ? 'var(--focus-ring)' : 'var(--shadow-composer)', transition: 'box-shadow var(--dur-press), border-color var(--dur-press)' }}>
+      {bound && <div style={{ marginBottom: 'var(--space-8)', display: 'flex' }}>{bound}</div>}
       <input value={value} autoFocus={autoFocus} onChange={(e) => onChange && onChange(e.target.value)} onFocus={() => { setFocus(true); onFocus && onFocus(); }} onBlur={() => setFocus(false)} onKeyDown={(e) => e.key === 'Enter' && canSend && onSend && onSend()} placeholder={placeholder}
         style={{ width: '100%', border: 'none', background: 'transparent', outline: 'none', padding: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-14)', lineHeight: 'var(--leading-20)', color: 'var(--color-ink)' }} className="ds-composer-input" />
       <div style={{ marginTop: 'var(--space-12)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingRight: 'var(--space-2)' }}>

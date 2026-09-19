@@ -1183,13 +1183,13 @@ var __ds_out = (() => {
   }
 
   // design-system/components/composer/Composer.jsx
-  function Composer({ value = "", onChange, onFocus, onSend, placeholder = "Ask Sentinel", autoFocus = false, streaming = false, onStop, onAttach, attachLabel = "Attach a file", accept }) {
+  function Composer({ value = "", onChange, onFocus, onSend, placeholder = "Ask Sentinel", autoFocus = false, streaming = false, onStop, onAttach, attachLabel = "Attach a file", accept, bound }) {
     const [focus, setFocus] = react_global_default.useState(false);
     const fileRef = react_global_default.useRef(null);
     const canSend = value.trim().length > 0 && !streaming;
     const disc = { display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: 22, background: "var(--color-surface)", boxShadow: "0 0 0 1px var(--color-line)" };
     const btn = { appearance: "none", border: "none", cursor: "pointer", display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: "var(--gradient-dark-cta)", padding: 0 };
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "var(--space-12)", boxSizing: "border-box", border: `1px solid ${focus ? "var(--color-bronze)" : "var(--color-line)"}`, boxShadow: focus ? "var(--focus-ring)" : "var(--shadow-composer)", transition: "box-shadow var(--dur-press), border-color var(--dur-press)" } }, /* @__PURE__ */ react_global_default.createElement(
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "var(--space-12)", boxSizing: "border-box", border: `1px solid ${focus ? "var(--color-bronze)" : "var(--color-line)"}`, boxShadow: focus ? "var(--focus-ring)" : "var(--shadow-composer)", transition: "box-shadow var(--dur-press), border-color var(--dur-press)" } }, bound && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-8)", display: "flex" } }, bound), /* @__PURE__ */ react_global_default.createElement(
       "input",
       {
         value,
