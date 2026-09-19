@@ -44,6 +44,9 @@ jobs:
           git diff --exit-code .claude/skills/sentinel-craft/references/scale.md \
             || { echo '::error::scale.md is stale — run npm run build:scale'; exit 1; }
 
+      - name: Every var(--token) resolves
+        run: npm run check:tokens
+
       - name: design-system matches its recorded baseline
         run: npm run check:integrity
 

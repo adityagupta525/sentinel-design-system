@@ -72,7 +72,8 @@ A component asks for a **role**, never a number:
 | `--type-title-font` | `var(--weight-medium) var(--text-16)/var(--leading-24) var(--font-ui)` |  |
 | `--type-body-font` | `var(--weight-regular) var(--text-14)/var(--leading-20) var(--font-ui)` |  |
 | `--type-body-strong-font` | `var(--weight-medium) var(--text-14)/var(--leading-20) var(--font-ui)` |  |
-| `--type-row-font` | `var(--weight-medium) var(--text-13)/var(--leading-18) var(--font-ui)` |  |
+| `--type-row-font` | `var(--weight-medium) var(--text-13)/var(--leading-18) var(--font-ui)` | THE RAMP ALREADY BELIEVED THIS EXISTED (F-52, 19 Sep 2026). Seven files asked for it — including ConfirmSheet.jsx, a system component, and ConfirmSheet's own spec page, which listed it in its TOK array. It was never published. A `font:` shorthand with an undefined variable is an INVALID declaration, so all fourteen call sites fell back to the initial value and rendered at `400 16px/normal` — a size, weight and leading on no line of this ramp, and LARGER than the body text beside them. Measured live on screens/journey-e/rebalance.html. Defined the way the ramp already pairs strong with plain: body/body-strong differ by one weight step and nothing else, so row/row-strong do too. This is completing the ramp, not adding to it. |
+| `--type-row-strong-font` | `var(--weight-semibold) var(--text-13)/var(--leading-18) var(--font-ui)` |  |
 | `--type-label-font` | `var(--weight-bold) var(--text-12)/var(--leading-16) var(--font-ui)` |  |
 | `--type-caption-font` | `var(--weight-regular) var(--text-11)/var(--leading-15) var(--font-ui)` |  |
 | `--type-meta-font` | `var(--weight-medium) var(--text-11-5)/var(--leading-16) var(--font-ui)` |  |
@@ -135,6 +136,6 @@ Easing is one value, `cubic-bezier(0.2,0.8,0.2,1)`, everywhere.
 - 13 spacing tokens
 - 9 radius tokens
 - 13 type steps
-- 13 type roles
+- 14 type roles
 - 6 durations
 - 8 shadow tokens

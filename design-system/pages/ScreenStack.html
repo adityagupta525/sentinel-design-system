@@ -9,7 +9,7 @@
 <script type="text/babel" src="./page-kit.jsx"></script>
 <script type="text/babel">
 const { ScreenStack, Pill, DarkButton } = window.SentinelDesignSystem_0682a2;
-const TOK = ['--dur-screen','--ease','--color-canvas','--color-surface','--color-ink','--color-muted','--color-line-soft','--radius-16','--space-14','--type-h2-font','--type-caption-font'];
+const TOK = ['--dur-screen','--ease','--color-canvas','--color-surface','--color-ink','--color-muted','--color-line-soft','--radius-16','--space-14','--type-title-font','--type-caption-font'];
 
 /* Two screens with nothing in them but their own name, because the subject of this page is the motion
    between screens and not what a screen holds. Real screens are in screens/. */
@@ -23,7 +23,7 @@ const paneStyle = { height: '100%', boxSizing: 'border-box', background: 'var(--
 function Pane({ k }) {
   return (
     <div style={paneStyle}>
-      <span style={{ font: 'var(--type-h2-font)', color: 'var(--color-ink)' }}>{PANES[k].name}</span>
+      <span style={{ font: 'var(--type-title-font)', color: 'var(--color-ink)' }}>{PANES[k].name}</span>
       <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{PANES[k].sub}</span>
     </div>
   );

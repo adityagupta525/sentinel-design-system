@@ -1165,3 +1165,40 @@ when neither fits. Measured after the third, on `screens/journey-c/funds.html`: 
 test — a set of series shapes (rising, falling, V, spike at the end, two lines crossing) rendered and
 checked — not a fourth guess made inside a screen task. The current state is better than the start:
 rupees instead of percentages, real axis labels, and the two labels no longer overprint each other.
+
+### F-52 · A token seven files used was never defined — *found by the hand-built audit, 19 Sep 2026, fixed*
+
+**`--type-row-strong-font` does not exist.** Seven files ask for it, including
+`design-system/components/cards/ConfirmSheet.jsx` — a system component — and `pages/ConfirmSheet.html`,
+which lists it in its own `TOK` array. The ramp already believed it existed.
+
+**CSS does not warn.** A `font:` shorthand containing an undefined variable is an **invalid
+declaration**, so every call site silently fell back to the initial value. Measured live on
+`screens/journey-e/rebalance.html`: **14 elements at `400 16px/normal`** — a size, weight and leading on
+no line of this ramp, and **larger than the body text beside them**. Inside one card the row *label*
+rendered at 16px while *"Costs him ₹11,200"* rendered at 13px: the cost figure was the smallest text in
+its own card.
+
+**Nothing could have caught it.** The adherence lint reads JS, not CSS custom properties. The preview
+gate renders the page, and a wrong-but-present font renders perfectly well. It shipped for weeks.
+
+**Fix:** defined the way the ramp already pairs strong with plain — `--type-body-font` and
+`--type-body-strong-font` differ by one weight step and nothing else, so row and row-strong do too:
+`semibold 13/18`. This completes the ramp rather than adding to it. Verified: all 14 now render
+`600 13px/18px`.
+
+**The gate — `npm run check:tokens`, now in CI.** It collects every token `tokens/*.css` defines and
+every `var()` the components, pages, guidelines and screens reference, and fails on the difference.
+Proven both ways: it fires on an injected ghost and is silent on the fix.
+
+Three things it found on its first run that I had not:
+
+- **`--type-h2-font`** on `pages/ScreenStack.html` — **mine**, written four days ago on the spec page
+  for the component I promoted. Now `--type-title-font`.
+- **`--hit`**, read by `.ds-pill::before` in `effects.css` and set per instance by `Pill`. A legitimate
+  runtime property, now named in the script's exception list — so the exception is a list somebody
+  edits rather than a rule that quietly forgives anything.
+- **30 tokens defined and referenced nowhere.** Reported as debt, not failed on: a token nobody uses is
+  not a defect. The first count was 38 and wrong, because the sweep did not read `tokens/` itself and
+  `--display-24` lives inside `--type-figure-font` and nowhere else. A debt list that over-reports is a
+  debt list nobody reads.

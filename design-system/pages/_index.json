@@ -449,13 +449,12 @@
     "--space-8",
     "--type-meta-font",
     "--type-row-font",
+    "--type-row-strong-font",
     "--type-sheet-title-font",
     "--z-modal",
     "--z-scrim"
    ],
-   "locals": [
-    "--type-row-strong-font"
-   ],
+   "locals": [],
    "literals": 0
   },
   {
