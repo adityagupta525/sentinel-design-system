@@ -934,25 +934,32 @@ day, every `ResultCard` began ending flush against its own edge with 14 either s
 sides, open on the fourth. Now `padBottom = hasFooter ? 0 : 14`, so a card that had a footer does not
 move by a pixel.
 
-**The gate: `THREE-SIDED`, a warning in `check-previews`.** It measures **ink, not boxes** — the first
-and last text a person can actually see, against the container's edges — and it took three rewrites to
-be worth trusting:
+**The gate: `BOTTOM-FLUSH`, a warning in `check-previews`.** The rule it settled on is one sentence —
+**nothing sits within 8px of a card's bottom edge** — and it took **four rewrites** to get there,
+because every cleverer measure over-reported or went blind:
 
-1. box-to-box called a correct **confirm sheet** a defect, because its 20px lives inside the commit row;
-2. counting the child's padding then called a correct **artifact card** a defect, because its last child
-   is a 44pt footer with a centred label;
-3. using `innerHeight` to skip whole panels failed on spec boards, where the window is the *board* — an
-   812 panel inside a 1400 board passed the test and the **drawer** was reported. Measured by hand, the
-   drawer's sides and bottom are 16 and 17: balanced. The threshold is now a flat 600, because
-   everything in this product is 375×812.
+1. **box-to-box** called a correct **confirm sheet** a defect: its 20px lives inside the commit row.
+2. **counting the child's padding** then called a correct **artifact card** a defect: its last child is
+   a 44pt footer with a centred label.
+3. **top-vs-bottom ink** flagged three correct cards — the concentration card, the client list, the
+   drawer — because a container whose first child is a graphic (a bar, an avatar) has no ink at the top,
+   so the top reads as huge. All three were measured by hand and are balanced.
+4. **reading `paddingLeft`** made it **blind**. On `ArtifactCard` the shadow and radius are on the outer
+   card (`padding: 0`) and the 14 is on an inner transparent div, so the outer box was skipped for
+   having no padding and the inner one for not looking like a box. It also skipped `overflow: hidden`,
+   which `ArtifactCard` uses to clip its own radius. **The gate went silent across all 94 pages and I
+   was about to report the product clean on it** — it only surfaced because the fix was reverted to
+   watch the gate fail.
 
-It is a **warning, not a failure**. A gate that cries wolf is a gate someone silences.
+**Proven in both directions before it was trusted:** with `padBottom` forced to 0 it reports
+*"only 1px under the last line (top is 15)"*; with the fix in place it is **silent across all 94
+pages**. So the honest answer to *"yeh har jagah hai"* is: the two the owner found were the two that
+existed, and there is now a check that says so.
 
-**Three it still reports, measured and NOT changed — they alter built screens, which is the owner's
-call:**
-
-- **The drawer's `See all`** — the owner named this one. The pill's visible box is 32 and its target is
-  44, so **6px of target hangs below the section's edge** and its ink sits 14 from the bottom. The same
+**Three the earlier draft reported and I did NOT change, because measurement cleared them:** the
+drawer's `See all` (its 44pt target sits exactly inside a 44pt row), the client list, and the
+concentration card. The Home rows card also looked bottom-flush to me in a crop — measured, it is 13
+at the top and 14 at the bottom. Nothing was "fixed" on a hunch.
   mistake as (a), in a different component.
 - **The client list** — ink 21 from the top, 15 from the bottom.
 - **The concentration card** (*"Small cap 31% — the sleeve ceiling is 25%"*) — ink 28 from the top,

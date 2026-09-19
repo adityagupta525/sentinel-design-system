@@ -230,7 +230,7 @@ for (const p of pages) {
   /* The gutter guard, on screens only: a spec page is a specimen board and has no screen edges. */
   let gutter = null;
   let tight = [];
-  let threeSided = [];
+  let bottomFlush = [];
   if (p.gutter) {
     gutter = await page.evaluate(`(${GUTTER_PROBE.toString()})(${p.gutterMin})`).catch(() => null);
     if (gutter && gutter.bad.length) for (const b of gutter.bad) errors.push(`GUTTER ${b}`);
@@ -243,7 +243,7 @@ for (const p of pages) {
        bottom by a hair — 2px covers a line box's descender — and anything past that is the defect. It
        is a WARNING, not a failure, because a deliberately bottom-anchored box exists (the dock) and a
        gate that fails those teaches people to silence it. */
-    threeSided = await page.evaluate(() => {
+    bottomFlush = await page.evaluate(() => {
       const bad = [];
       const px = (v) => Math.round(parseFloat(v) || 0);
       /* INK, NOT BOXES. Two rewrites got here. Box-to-box called a correct confirm sheet a defect,
@@ -283,16 +283,28 @@ for (const p of pages) {
         if (r.height > 600) continue;
         const cs = getComputedStyle(el);
         const boxed = (cs.boxShadow !== 'none' || px(cs.borderTopLeftRadius) >= 12) && cs.backgroundColor !== 'rgba(0, 0, 0, 0)';
-        if (!boxed || cs.overflowY === 'auto' || cs.overflowY === 'scroll' || cs.overflow === 'hidden') continue;
+        /* overflow:hidden is a CLIPPING choice, not a scroller — ArtifactCard uses it so its radius cuts
+           the content, and skipping it made this gate blind to the very card it was written for.
+           Scrollers are caught by overflowY, which is the honest test. */
+        if (!boxed || cs.overflowY === 'auto' || cs.overflowY === 'scroll') continue;
+        /* THE RULE, AFTER FOUR REWRITES: NOTHING SITS WITHIN 8px OF A CARD'S BOTTOM EDGE.
+           Everything cleverer over-reported. Top-vs-bottom flagged three correct cards, because a
+           container whose first child is a graphic — a bar, an avatar — has no ink up there. Reading
+           `paddingLeft` made it BLIND: on ArtifactCard the shadow and radius are on the outer card
+           (padding 0) and the 14 is on an inner transparent div, so both were skipped, the gate went
+           quiet across 94 pages and I nearly reported the product clean on it. Measuring the side inset
+           from ink then counted a pill's own padding as the card's.
+           A flat floor is the one thing that is unambiguous, and it is what the owner is actually
+           asking for: a card is padded on four sides. The first ink must be 8 or more from the top —
+           otherwise this is a flush-bleed layout, not a padded card, and the floor does not apply. */
         const a = inkRect(el, false), z = inkRect(el, true);
         if (!a || !z) continue;
         const top = Math.round(a.top - r.top);
         const bottom = Math.round(r.bottom - z.bottom);
-        /* 4 covers a descender and a half-pixel line box. Anything past that is the defect. */
-        if (top >= 10 && bottom < top - 4) {
+        if (top >= 8 && bottom < 8) {
           const words = [...el.childNodes].map((n) => (n.nodeType === 3 ? n.nodeValue
             : (n.tagName === 'STYLE' || n.tagName === 'SCRIPT') ? '' : n.textContent)).join(' ');
-          bad.push(`top ${top}, bottom ${bottom} — ${words.trim().slice(0, 40).replace(/\s+/g, ' ')}`);
+          bad.push(`only ${bottom}px under the last line (top is ${top}) — ${words.trim().slice(0, 40).replace(/\s+/g, ' ')}`);
         }
       }
       return [...new Set(bad)].slice(0, 6);
@@ -351,7 +363,7 @@ for (const p of pages) {
     if (dead && p.rel.startsWith('screens/')) errors.push(`DEAD PAPERCLIP on ${dead} phone${dead === 1 ? '' : 's'} — a Composer on a screen must be given onAttach; a picker that drops the file is a drawing of a control`);
   }
   if (SHOTS) await page.screenshot({ path: join(SHOTS, `${p.name}.png`), fullPage: true }).catch(() => {});
-  results.push({ ...p, errors, missing, mounted, gutter, tight, threeSided });
+  results.push({ ...p, errors, missing, mounted, gutter, tight, bottomFlush });
   await page.close();
 }
 await browser.close();
@@ -365,7 +377,7 @@ for (const r of results) {
   if (r.gutter && r.fullBleed) console.log(`         full-bleed by design: ${r.fullBleed}`);
   for (const e of [...r.errors, ...r.missing].slice(0, 4)) console.log(`         ↳ ${e}`);
   for (const t of (r.tight || []).slice(0, 3)) console.log(`         ⚠ TIGHT ${t} — CI's Linux metrics run wider; shorten it`);
-  for (const t of (r.threeSided || []).slice(0, 3)) console.log(`         ⚠ THREE-SIDED ${t} — padded on the sides, open at the bottom`);
+  for (const t of (r.bottomFlush || []).slice(0, 3)) console.log(`         ⚠ BOTTOM-FLUSH ${t} — a card is padded on four sides`);
 }
 if (JSON_OUT) await writeFile(JSON_OUT, JSON.stringify(results, null, 1));
 
