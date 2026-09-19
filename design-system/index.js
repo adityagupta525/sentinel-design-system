@@ -28,6 +28,7 @@ export { HomeIndicator } from './components/shell/HomeIndicator.jsx';
 export { REDUCED_MOTION_CSS, installReducedMotion, MotionGuard } from './components/shell/MotionGuard.jsx';
 export { PhoneFrame } from './components/shell/PhoneFrame.jsx';
 export { ScreenBackdrop } from './components/shell/ScreenBackdrop.jsx';
+export { ScreenStack } from './components/shell/ScreenStack.jsx';
 export { ScrollToBottomButton } from './components/shell/ScrollToBottomButton.jsx';
 export { StatusSpacer } from './components/shell/StatusSpacer.jsx';
 export { TopBar } from './components/shell/TopBar.jsx';

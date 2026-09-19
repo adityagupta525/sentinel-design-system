@@ -1,0 +1,130 @@
+<!-- @dsCard group="Pages" viewport="1000x1700" name="ScreenStack" subtitle="Two screens in one slot for exactly --dur-screen — and going back as the same motion read backwards" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ScreenStack — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ScreenStack, Pill, DarkButton } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--dur-screen','--ease','--color-canvas','--color-surface','--color-ink','--color-muted','--color-line-soft','--radius-16','--space-14','--type-h2-font','--type-caption-font'];
+
+/* Two screens with nothing in them but their own name, because the subject of this page is the motion
+   between screens and not what a screen holds. Real screens are in screens/. */
+const PANES = {
+  thread: { name: 'Thread', sub: 'Sharma’s drift' },
+  decide: { name: 'Confirm', sub: 'Two moves, one client' },
+};
+/* The name sits at the TOP of a pane, not centred: at a partial offset two centred names sit on top of
+   each other and the still below reads as a broken layout rather than as two layers. */
+const paneStyle = { height: '100%', boxSizing: 'border-box', background: 'var(--color-canvas)', padding: 'var(--space-14)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' };
+function Pane({ k }) {
+  return (
+    <div style={paneStyle}>
+      <span style={{ font: 'var(--type-h2-font)', color: 'var(--color-ink)' }}>{PANES[k].name}</span>
+      <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{PANES[k].sub}</span>
+    </div>
+  );
+}
+function Slot({ children, h = 220 }) {
+  return <div style={{ width: 343, height: h, borderRadius: 'var(--radius-16)', overflow: 'hidden', boxShadow: 'var(--shadow-card)', background: 'var(--color-surface)' }}>{children}</div>;
+}
+
+/* Live. The two buttons are the only thing that decides direction — the component reads it once, at the
+   change, which is why tapping Back while a forward transition runs does not re-aim the one in flight. */
+function Live() {
+  const [screen, setScreen] = React.useState('thread');
+  const [dir, setDir] = React.useState('forward');
+  const [settled, setSettled] = React.useState('—');
+  const go = (next, d) => { setDir(d); setScreen(next); };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)', alignItems: 'flex-start' }}>
+      <Slot><ScreenStack screen={screen} direction={dir} render={(s) => <Pane k={s} />} onSettle={(to, from) => setSettled(`${from} → ${to}`)} /></Slot>
+      <div style={{ display: 'flex', gap: 'var(--space-6)', alignItems: 'center' }}>
+        <Pill label="Open Confirm" size="sm" onClick={() => go('decide', 'forward')} />
+        <Pill label="Back to Thread" size="sm" onClick={() => go('thread', 'back')} />
+        <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>onSettle: {settled}</span>
+      </div>
+    </div>
+  );
+}
+
+/* A STILL, drawn — not a paused animation. It is taken EARLY in the change rather than at the halfway
+   point: at the true midpoint the outgoing screen has travelled far enough that its own name is clipped
+   by the slot, and a diagram that looks broken teaches the wrong thing. The real travel is the full
+   100% → 0 and 0 → −30% in the motion table below; this is the first third of it. */
+function Midpoint({ back = false }) {
+  const outX = back ? '55%' : '-4%';
+  const inX = back ? '-4%' : '55%';
+  return (
+    <Slot h={180}>
+      <div style={{ position: 'relative', height: '100%', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, transform: `translateX(${outX})`, opacity: back ? 0.8 : 1 }}><Pane k={back ? 'decide' : 'thread'} /></div>
+        {/* The layer that is ON TOP carries the card shadow, so the still reads as two sheets rather than
+            as one pane with its text broken. Nothing in the real transition draws this edge — the two
+            screens are opaque and the boundary is simply where one ends. */}
+        <div style={{ position: 'absolute', inset: 0, transform: `translateX(${inX})`, opacity: 0.85, boxShadow: 'var(--shadow-card)' }}><Pane k={back ? 'thread' : 'decide'} /></div>
+      </div>
+    </Slot>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="ScreenStack" group="Foundations" status="shipped" requires={['ScreenStack','Pill']}
+      summary="Two screens in one slot for exactly --dur-screen, and nothing else. It owns which screen is mounted and how long the outgoing one stays; it owns no motion. It was hand-built on the Journey B prototype on 18 Sep with a note saying it would be promoted the moment a second live page needed it — the end-to-end prototype is that page, and this is that promotion. The rule behind it: a screen never keeps what it had to build.">
+
+      <Block n={1} title="Specimen" sub="Live. Open Confirm goes forward; Back to Thread plays the same transition the other way. onSettle fires when the outgoing screen has been unmounted, --dur-screen after the change.">
+        <Specimen width={343}><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="A relative box with overflow hidden and two absolutely positioned children. The outgoing one is aria-hidden, because a screen that is leaving must not be read out as if it were still there; it is removed from the tree when the timer fires.">
+        <Anatomy width={343} top="position: relative; overflow: hidden — the slot clips both screens" left="the outgoing screen, aria-hidden, unmounted after --dur-screen"  right="the incoming screen; render(key) draws it" bottom="duration read from --dur-screen at run time, never hardcoded">
+          <Midpoint />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Variants" sub="Two, and they are the same two keyframes. There is no third: `back` plays ds-screen-in and ds-screen-out swapped and reversed, so going back reads as going UP rather than deeper. A back gesture that looks like a forward one tells the advisor they went further in when they came out.">
+        <Grid cols={2} itemWidth={343} items={[
+          { label: 'forward', node: <Midpoint />, note: 'New screen in from 100%, old one out to −30%. The default.' },
+          { label: 'back', node: <Midpoint back />, note: 'The same pair, reversed and swapped: the old screen leaves at 100%, the one you return to arrives from −30%.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="States" sub="Two, and one of them lasts 320ms.">
+        <Grid cols={2} itemWidth={343} items={[
+          { label: 'at rest', node: <Slot h={180}><Pane k="thread" /></Slot>, note: 'One child. No animation is applied at all on first render — a screen that fades in on page load is a screen that arrived late.' },
+          { label: 'in transition', node: <Midpoint />, note: 'Two children for --dur-screen. The still is drawn at the first third of the change, and the shadow on the top layer is the still\u2019s own — the real screens are opaque and share no edge.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="In context" sub="screens/prototype.html — the app end to end. Every journey is a key in one ScreenStack, and going back from a journey to the thread is the only place `back` is used.">
+        <Specimen width={343}><Slot h={180}><Pane k="decide" /></Slot></Specimen>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={7} title="Props"><Props src="../components/shell/ScreenStack.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont doNode={<Midpoint back />}
+          doCaption="Use `back` when the advisor is leaving something they opened. The direction is the only thing telling them whether they went in or came out, and it costs no new motion to say it."
+          dontNode={<Slot h={180}><Pane k="decide" /></Slot>}
+          dontCaption="Never use this for a sheet, a drawer or an expanding artifact. Those have their own keyframes, they are not screens, and an artifact EXPANDS IN PLACE — there is no shared-element transition anywhere in this system." />
+      </Block>
+
+      <Block n={9} title="Motion" sub="Everything here is the system's. This component supplies the order and the timer.">
+        <Motion rows={[
+          { name: 'Screen in (forward)', property: 'ds-screen-in — translateX 100% → 0, opacity .6 → 1', duration: '320 ms (--dur-screen), --ease', reduced: 'Redefined to a fade in place; no translate.' },
+          { name: 'Screen out (forward)', property: 'ds-screen-out — translateX 0 → −30%', duration: '320 ms (--dur-screen), --ease', reduced: 'Redefined to no transform at all.' },
+          { name: 'Back', property: 'the same two, swapped and animation-direction: reverse', duration: '320 ms (--dur-screen)', reduced: 'A reversed fade is still a fade — no special case exists, and none is needed.' },
+          { name: 'Unmount', property: 'the outgoing screen is removed and onSettle fires', duration: 'at --dur-screen, read from the token at run time', reduced: 'Unchanged. The token does not change under reduced motion, so the timer does not either.' },
+          { name: 'First render', property: 'none', duration: '—', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

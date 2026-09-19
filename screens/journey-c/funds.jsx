@@ -83,4 +83,19 @@ const OVERLAP_PROPERTIES = [
 const OVERLAP_CELLS = [{ a: 'ppfas', b: 'hdfc', pct: null }];
 const OVERLAP_FOOTNOTE = 'No holdings feed for either fund yet, so the overlap cannot be computed — an em dash, not a zero.';
 
-Object.assign(window, { FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, FundDetail, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
+const FUND_EMPTY = { title: 'Nothing matches every filter.', body: 'Drop one and I will widen the search.' };
+/* The shortlist as an artifact — lifted out of funds.html when the end-to-end prototype needed it, so
+   the two render ONE table rather than two that can drift. `overflow="scroll"` here is deliberate and is
+   the opposite call from the ledger's: a fund row carries five facts an advisor compares sideways, and
+   the sticky Fund column is what keeps that readable. The ledger has three columns and needs no scroller. */
+function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', onExplain }) {
+  return (
+    <FUNDS_DS.ArtifactCard state={state} eyebrow="Fund search · your shelf" title={`${funds.length} funds match`}
+      provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => {}} onMenu={() => {}}>
+      <FUNDS_DS.DataTable columns={FUND_COLUMNS} rows={fundRows(funds)} emptyState={FUND_EMPTY} overflow="scroll" defaultOpen={openRow}
+        expandable={(row) => <FundDetail fund={FUND_LIST.find((x) => x.id === row.id)} onExplain={onExplain || (() => {})} />} />
+    </FUNDS_DS.ArtifactCard>
+  );
+}
+
+Object.assign(window, { FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, FundDetail, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });

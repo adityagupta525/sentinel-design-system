@@ -11,66 +11,16 @@
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
+<script type="text/babel" src="./ledger.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
-const { Composer, SentinelBlock, SentinelText, ArtifactCard, DataTable, Badge, DownloadAction, RangePills, Provenance, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
+const { Composer, SentinelBlock, SentinelText, Provenance, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
 
-const LEDGER_ASK = 'What have I placed this month?';
+/* The table, its status words and the artifact around them now live in ./ledger.jsx, so this page and
+   the end-to-end prototype render ONE ledger rather than two that can drift. */
 const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
 
-/* THE STATUS IS A WORD, AND IT IS THE SAME SET THE IN-FLIGHT STATES USE (R2). A row never says "done"
-   for something the RTA has not confirmed — "sent" is its own status and it reads differently, which is
-   the whole reason this table is worth building. Rule 2: the tone colours the WORD, never a fill. */
-const TONE = { placed: 'ok', settled: 'ok', rejected: 'over', sent: 'under' };
-const WORD = { placed: 'Placed', settled: 'Settled', rejected: 'Rejected', sent: 'Sent · no answer' };
-/* COLUMN ORDER IS THE ANSWER'S ORDER. The first cut ran What · Client · Amount · Status, and at 375 the
-   Status column sat off the right edge — so the one question this table exists to answer, "did it go
-   through", needed a sideways scroll to reach. Status now sits immediately after the sticky column and
-   the client moves into the row's detail, where it reads as a sentence rather than a cell. */
-const COLUMNS = [
-  { key: 'what', label: 'What', kind: 'text', sticky: true, sortable: true, width: 104 },
-  { key: 'status', label: 'Status', kind: 'badge' },
-  { key: 'amount', label: 'Amount', kind: 'currency', align: 'end', sortable: true },
-];
-const rows = (items) => items.map((l) => ({
-  id: l.id,
-  what: l.kind,
-  amount: inr(l.amountRs),
-  status: <Badge tone={TONE[l.status]}>{WORD[l.status]}</Badge>,
-}));
-/* The row's detail is the sentence the table cannot hold: what moved where, its reference, and — when
-   the RTA said no — its reason in the RTA's own words. */
-const Detail = ({ l }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', padding: `0 var(--space-2)` }}>
-    <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)' }}>{(clientById(l.client) || {}).name || l.client}</span>
-    <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink-soft)' }}>{l.detail}</span>
-    <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)', fontVariantNumeric: 'tabular-nums' }}>
-      {l.date} · {l.ref}{l.settles ? ` · settles ${l.settles}` : ''}
-    </span>
-    {l.note && <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-status-over-fg)' }}>{l.note}</span>}
-  </div>
-);
-
-function LedgerArtifact({ items = LEDGER, openRow = null, state = 'expanded', onDownload }) {
-  const unsettled = items.filter((l) => l.status === 'sent').length;
-  return (
-    <ArtifactCard state={state} eyebrow={`Placed · ${LEDGER_PERIOD}`} title={`${items.length} instructions`}
-      provenance={`As of 30 Sep · from the RTA, ${items.length - unsettled} of ${items.length} confirmed`}
-      onToggle={() => {}} onMenu={() => {}}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
-        <DataTable columns={COLUMNS} rows={rows(items)} emptyState={{ title: 'Nothing placed in this period.', body: 'Change the period, or place something and it appears here.' }}
-          overflow="fold" defaultOpen={openRow} expandable={(r) => <Detail l={items.find((l) => l.id === r.id)} />} />
-        {state === 'expanded' && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-8)', flexWrap: 'wrap' }}>
-            <RangePills ranges={['Sep', 'Q2', 'FY 26-27']} value="Sep" onChange={() => {}} label="Period" />
-            <DownloadAction format="CSV" onDownload={onDownload} size="sm" />
-          </div>
-        )}
-      </div>
-    </ArtifactCard>
-  );
-}
 
 function Scene({ children, ask = LEDGER_ASK }) {
   const att = useAttachment();

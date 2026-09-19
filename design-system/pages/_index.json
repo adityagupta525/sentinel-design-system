@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 44
+  "shipped": 45
  },
  "rows": [
   {
@@ -303,6 +303,19 @@
    ],
    "locals": [],
    "literals": 8
+  },
+  {
+   "name": "ScreenStack",
+   "group": "Foundations",
+   "status": "shipped",
+   "page": "ScreenStack.html",
+   "file": "components/shell/ScreenStack.jsx",
+   "tokens": [
+    "--dur-screen",
+    "--ease"
+   ],
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "StandingDisclosure",

@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','ConcentrationBar','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','DarkButton','ExplainerSheet','Drawer','SegmentedRow','Pressable','MessageActions','FileUpload','StepTrace','ChipRow','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','ConcentrationBar','Provenance','ArtifactCard','ChartBar','AttributionChart','AnswerChip','DarkButton','ScreenStack','ExplainerSheet','Drawer','SegmentedRow','Pressable','MessageActions','FileUpload','StepTrace','ChipRow','HomeIndicator','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./home.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
@@ -17,33 +17,17 @@
 <script type="text/babel" data-presets="react">
 /* home.jsx declares Composer, Dock, Pill, ChipRow and the shell parts; thread.jsx, answer.jsx and
    menu.jsx use their own namespaced consts. Only the names this file adds are destructured. */
-const { UserBubble, ProgressTrace, SentinelBlock, SentinelText, AnswerChip, DarkButton, ExplainerSheet, Drawer, MessageActions, FileUpload } = window.SentinelDesignSystem_0682a2;
+const { ScreenStack, UserBubble, ProgressTrace, SentinelBlock, SentinelText, AnswerChip, DarkButton, ExplainerSheet, Drawer, MessageActions, FileUpload } = window.SentinelDesignSystem_0682a2;
 
-/* Durations are read from the tokens, so a timer here can never disagree with the CSS it waits for. */
-const tokenMs = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* Simulated arrival of the breakdown after the sentence — a network wait stood in for, NOT a motion
    value. The skeleton-first rule (ArtifactCard `filling`) is what this gap exists to show. */
 const FILL_MS = 900;
 const STEP_MS = 850;
 
-/* Two screens, one slot. The incoming screen plays ds-screen-in; the outgoing one plays ds-screen-out
-   under it for --dur-screen and is then unmounted. Both keyframes are the system's (tokens/effects.css)
-   and both are redefined to a fade under reduced motion, so nothing here decides how a screen moves.
-   Screens-only orchestration for now; if a second live page needs it, it is promoted as shell/ScreenStack. */
-function ScreenStack({ screen, render }) {
-  const [prev, setPrev] = React.useState(null);
-  const last = React.useRef(screen);
-  React.useEffect(() => {
-    if (last.current !== screen) { setPrev(last.current); last.current = screen; const t = setTimeout(() => setPrev(null), tokenMs('--dur-screen')); return () => clearTimeout(t); }
-  }, [screen]);
-  return (
-    <div style={{ position: 'relative', height: '100%', width: '100%', overflow: 'hidden' }}>
-      {prev && <div key={`out-${prev}`} style={{ position: 'absolute', inset: 0, animation: 'ds-screen-out var(--dur-screen) var(--ease) both' }}>{render(prev)}</div>}
-      <div key={`in-${screen}`} style={{ position: 'absolute', inset: 0, animation: prev ? 'ds-screen-in var(--dur-screen) var(--ease) both' : 'none' }}>{render(screen)}</div>
-    </div>
-  );
-}
+/* ScreenStack was hand-built here on 18 Sep with a note that it would be promoted the moment a second
+   live page needed it. screens/prototype.html is that page, so it is now a system component with a
+   contract and a spec page, and this page draws the system's one — which is what the note promised. */
 
 /* The whole flow as it is built so far: Home → trace → answer → artifact, plus Stop and the menu. */
 function Proto({ onEvent }) {
@@ -238,11 +222,12 @@ function App() {
           same. It is a small honesty gap in the trace and it is logged in the handoff, not fixed here: it is the
           system&rsquo;s to change, not a screen&rsquo;s.
         </Note>
-        <Note title="Hand-built here, and the promotion trigger">
-          <code>ScreenStack</code> &mdash; two screens in one slot, the system&rsquo;s two keyframes, the duration read
-          from <code>--dur-screen</code>. It is the only thing on this page that is not a system component, and it holds
-          no value of its own. The moment a second live page needs it, it moves to <code>shell/ScreenStack</code> with a
-          contract and a spec page, per the rule that a screen never keeps what it had to build.
+        <Note title="The promotion happened">
+          <code>ScreenStack</code> was hand-built on this page and the note here said it would move into the system the
+          moment a second live page needed it. <code>screens/prototype.html</code> &mdash; the app end to end &mdash; is
+          that page, so on 19 Sep it became <code>shell/ScreenStack</code> with a contract and a spec page, and this page
+          now draws the system&rsquo;s one. It gained <code>direction=&quot;back&quot;</code> on the way, which invents no
+          keyframe: the two the system already has, reversed and swapped. A screen never keeps what it had to build.
         </Note>
       </Section>
     </ScreenShell>

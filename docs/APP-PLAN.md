@@ -156,9 +156,9 @@ Each row is one commit, built on the system, every state rendered, and reviewed 
 | 4 ✅ | **Journey A — Meera's risk profile** — built 19 Sep as `screens/journey-a/risk-profile.html` | The rail, the longest journey, and the one the drawer's first row points at | `ProgressRail`, `MoneyComposer`, `SentinelThinking`, `QAPair`, `HeroNumberCard`, `ParseNote` |
 | 5 ✅ | **The fund surfaces** — built 19 Sep as `screens/journey-c/funds.html` | The third router bucket, and the one that found what the product does not know | `InfoCard`, `OverlapView`, `DataTable`, `Badge`, `InfoDot` |
 | 6 ✅ | **The refusals and the capabilities reply** — built 19 Sep as `screens/thread/refusals.html` | Buckets 4, 5 and "what can I do?" — the three states that decide whether the product feels honest | `RejectCallout`, `ParseNote`, `SearchField` |
-| 7 | **The prototype, end to end** — next | Every journey clickable in one page, with the motion log | — |
+| 7 ✅ | **The prototype, end to end** — built 19 Sep as `screens/prototype.html` | Seven screens that each work are not yet one product. The router makes them one, and the panel beside the phone answers the four questions once instead of per screen | `ScreenStack` **promoted** out of the Journey B prototype, with `direction="back"` |
 
-`report:parallel` is the finish line: when it reads 86 of 86, the app has exercised the system and the
+`report:parallel` is the finish line: when it reads 88 of 88, the app has exercised the system and the
 system has nothing in it nobody uses.
 
 ---

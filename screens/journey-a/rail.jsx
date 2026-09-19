@@ -1,3 +1,6 @@
+/* global AttachedTurn, useAttachment -- thread.jsx declares both in the one Babel scope every page
+   loads it into, before this file. The lint cannot see across files; the preview gate can, and fails a
+   page that loads this one without thread.jsx. */
 /* Journey A — Meera's risk profile. The rail: one question at a time, twelve of them, two interjections
    and a locked number at the end. Shared by risk-profile.html and any prototype that runs it.
 
@@ -77,7 +80,7 @@ const RISK_RESULT = {
 
    RULE 3 HOLDS HERE TOO: the composer is present on every question. An advisor can always type instead
    of tapping, and on a money question it is the MoneyComposer. */
-function Rail({ n, total = RAIL_TOTAL, dim, banner, children, composer, onMenu, scrollRef, revision = 0 }) {
+function Rail({ n, total = RAIL_TOTAL, dim, banner, children, composer, onMenu, onNew, scrollRef, revision = 0 }) {
   const own = React.useRef(null);
   const el = () => (scrollRef ? scrollRef.current : own.current);
   React.useLayoutEffect(() => { const e = el(); if (e) e.scrollTop = e.scrollHeight; }, [revision]);
@@ -85,7 +88,10 @@ function Rail({ n, total = RAIL_TOTAL, dim, banner, children, composer, onMenu, 
     <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
       <RAIL_DS.ScreenBackdrop />
       <RAIL_DS.StatusSpacer time="10:12" />
-      <RAIL_DS.TopBar title="Sentinel" onMenu={onMenu || (() => {})} onNew={() => {}} />
+      {/* The rail has no back button, because this product has none: the way out of any surface is the
+          menu’s "Back to home" or a new thread. onNew was hardcoded to a no-op until the prototype had to
+          leave the rail — and inventing a back arrow here would have been a second door to one thing. */}
+      <RAIL_DS.TopBar title="Sentinel" onMenu={onMenu || (() => {})} onNew={onNew || (() => {})} />
       {n != null && (
         <div style={{ position: 'relative', zIndex: 1, padding: '0 var(--gutter) var(--space-8)' }}>
           <RAIL_DS.ProgressRail n={n} total={total} dim={dim} />
@@ -170,4 +176,61 @@ function RiskResult({ onChip, chips, cta }) {
   );
 }
 
-Object.assign(window, { RAIL_STEPS, RAIL_TOTAL, RISK_RESULT, Rail, AnsweredList, StepTurn, RiskResult });
+/* THE WHOLE JOURNEY, RUNNING — lifted out of risk-profile.html when the end-to-end prototype needed it,
+   so the spec page and the prototype run ONE rail rather than two that can drift apart. It carries its
+   own composer, because which composer a step wants is a property of the step (`money`), not of the page.
+   `onMenu` / `onNew` are the prototype's only addition: a rail reached from the thread has to be
+   leavable, and it leaves by the same two doors every other surface uses. */
+const RailAsk = ({ step, onAttach }) => (step && step.money
+  ? <RAIL_DS.MoneyComposer onSend={() => {}} placeholder="or type the amount" />
+  : <RAIL_DS.Composer value="" onChange={() => {}} placeholder={(step && step.composer) || 'or type your answer'} onSend={() => {}} onAttach={onAttach} />);
+
+const SHARE_SHEET = {
+  title: 'Share with Meera',
+  body: ['This build prepares the summary and hands it to your own share sheet — it does not send anything on its own.',
+    'Nothing leaves Sentinel until you pick a channel and send it there.'],
+};
+
+function LiveRail({ onEvent, onMenu, onNew }) {
+  const [cursor, setCursor] = React.useState(0);
+  const [answered, setAnswered] = React.useState([]);
+  const [sheet, setSheet] = React.useState(null);
+  const [thinking, setThinking] = React.useState(false);
+  const att = useAttachment();
+  const step = RAIL_STEPS[cursor];
+  const log = (what, motion) => onEvent && onEvent(what, motion);
+  const advance = (label, goto) => {
+    setAnswered((a) => [...a, { q: step.short, a: label }]);
+    setThinking(true);
+    const next = goto != null ? goto : cursor + 1;
+    log(`Answered “${label}”`, 'SentinelThinking for 520ms, then ds-rise on the next question');
+    setTimeout(() => { setCursor(next); setThinking(false); }, 520);
+  };
+  const onChip = (ch) => {
+    if (ch.sheet) { log('Explainer opens — a detour, the rail dims', 'ds-sheet 300ms; ProgressRail dim to 40%'); return setSheet(ch.sheet); }
+    if (ch.external) { log('Share — the OS sheet, not ours', ''); return setSheet(SHARE_SHEET); }
+    advance(ch.label, ch.goto);
+  };
+  /* Edit answer i: the journey reopens THERE and everything after it is asked again. */
+  const editAt = (i) => {
+    log(`Edited answer ${i + 1} — everything after it is asked again`, 'the list truncates; the rail steps back');
+    setAnswered((a) => a.slice(0, i));
+    setCursor(RAIL_STEPS.findIndex((s) => s.short === answered[i].q) || 0);
+  };
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Rail n={step && step.progress ? step.progress[0] : undefined} revision={`${cursor}-${answered.length}-${!!att.file}`}
+        onMenu={onMenu} onNew={onNew} composer={<RailAsk step={step} onAttach={att.onAttach} />}>
+        <AnsweredList items={answered} onEdit={editAt} />
+        {step && step.result
+          ? <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />
+          : <StepTurn step={step} thinking={thinking} onChip={onChip} />}
+        <AttachedTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
+      </Rail>
+      <RAIL_DS.ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []}
+        onClose={() => { setSheet(null); log('Explainer closes — the rail comes back to full', 'immediate'); }} />
+    </div>
+  );
+}
+
+Object.assign(window, { RailAsk, SHARE_SHEET, LiveRail, RAIL_STEPS, RAIL_TOTAL, RISK_RESULT, Rail, AnsweredList, StepTurn, RiskResult });

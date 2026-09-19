@@ -19,7 +19,7 @@
 const { Composer, SentinelBlock, SentinelText, ArtifactCard, DataTable, OverlapView, Pill, ChipRow, AnswerChip, ExplainerSheet, InfoDot } = window.SentinelDesignSystem_0682a2;
 
 const Ask = ({ onAttach }) => <Composer value="" onChange={() => {}} placeholder="Ask Sentinel" onSend={() => {}} onAttach={onAttach} />;
-const EMPTY = { title: 'Nothing matches every filter.', body: 'Drop one and I will widen the search.' };
+/* The shortlist artifact and its empty state now live in ./funds.jsx, shared with the prototype. */
 
 /* THE PARSED QUERY, EDITABLE. Sentinel says what it read the sentence as, and every part of it is a chip
    the advisor can drop — so a wrong parse costs one tap, not a retyped question. */
@@ -42,15 +42,6 @@ function QueryTurn({ query, onToggle, shelf, onShelf, onOpen, results }) {
   );
 }
 
-function ResultsArtifact({ funds, openRow = null, state = 'expanded' }) {
-  return (
-    <ArtifactCard state={state} eyebrow="Fund search · your shelf" title={`${funds.length} funds match`}
-      provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => {}} onMenu={() => {}}>
-      <DataTable columns={FUND_COLUMNS} rows={fundRows(funds)} emptyState={EMPTY} overflow="scroll" defaultOpen={openRow}
-        expandable={(row) => <FundDetail fund={FUND_LIST.find((x) => x.id === row.id)} onExplain={() => {}} />} />
-    </ArtifactCard>
-  );
-}
 
 function Scene({ children, anchor = 'bottom' }) {
   const att = useAttachment();
@@ -79,7 +70,7 @@ function LiveScene() {
         <QueryTurn query={query} shelf={shelf} onShelf={() => setShelf((v) => !v)}
           onToggle={(label) => setQuery((q) => q.map((x) => (x.label === label ? { ...x, on: false } : x)))}
           onOpen={opened ? undefined : () => setOpened(true)} results={funds.length} />
-        {opened && <ResultsArtifact funds={funds} />}
+        {opened && <FundResults funds={funds} />}
         <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
       </Thread>
       <ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []} onClose={() => setSheet(null)} />
@@ -123,13 +114,13 @@ mountScreen(
     <Section title="2 · The shortlist, and a fund's own page" sub="The results are an artifact in the thread — there is no explorer screen, because there is no canvas. A row opens where it sits.">
       <StateRow>
         <State label="the table" note="Fund, category, shelf and — the most useful column this product actually has — who of your clients already holds it. The Fund column is sticky so the table stays readable when it scrolls sideways; that is also why a long name truncates there, and why opening the row shows it in full.">
-          <Scene><ResultsArtifact funds={FUND_LIST.filter((f) => f.bucket === 'Equity')} /></Scene>
+          <Scene><FundResults funds={FUND_LIST.filter((f) => f.bucket === 'Equity')} /></Scene>
         </State>
         <State label="a fund, opened in its row" tone="under" note="Name, house, category, the compliance shelf as a badge with its word, how many of your clients hold it — and then the honest part: no performance line, because there is no confirmed source for one. The card renders LOCKED and says why, which is what InfoCard's locked state was built for and what it has been waiting for a screen to use.">
-          <Scene><ResultsArtifact funds={FUND_LIST.filter((f) => f.cat === 'Flexi cap')} openRow={0} /></Scene>
+          <Scene><FundResults funds={FUND_LIST.filter((f) => f.cat === 'Flexi cap')} openRow={0} /></Scene>
         </State>
         <State label="nothing matches" tone="under" note="Every table in this product is empty on someone's first day or one filter away, so DataTable REQUIRES an emptyState. It names what to do — drop a filter — rather than saying “No data”.">
-          <Scene><ResultsArtifact funds={[]} /></Scene>
+          <Scene><FundResults funds={[]} /></Scene>
         </State>
       </StateRow>
     </Section>

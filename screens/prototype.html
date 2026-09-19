@@ -1,0 +1,414 @@
+<!-- @dsCard group="Screens" viewport="1500x2600" name="The app, end to end" subtitle="One phone, one composer, and a router that decides which journey a sentence enters — with what you can do next and what moved, beside it" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, Dock, ProgressRail, HomeIndicator, scrim, sheet, drawer" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>The app, end to end — Sentinel screens</title><link rel="stylesheet" href="../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ["AllocationCard", "AnswerChip", "ArtifactCard", "AttributionChart", "Badge", "ChartBar", "ChipRow", "Composer", "ConcentrationBar", "ConfirmSheet", "ConstraintCallout", "DarkButton", "DataTable", "DetourBanner", "Dock", "DownloadAction", "Drawer", "DrawnCheck", "Dumbbell", "ExplainerSheet", "Eyebrow", "FileUpload", "FollowUpRow", "GreetingDivider", "HeroNumberCard", "HomeIndicator", "InfoCard", "InfoDot", "MessageActions", "MoneyComposer", "MoveCard", "OverlapView", "ParseNote", "PhoneFrame", "Pill", "Pressable", "ProgressRail", "ProgressTrace", "Provenance", "QAPair", "RangePills", "RejectCallout", "ResponseFeedback", "ScreenBackdrop", "ScreenStack", "SegmentedRow", "SentinelBlock", "SentinelText", "SentinelThinking", "StandingDisclosure", "StatusSpacer", "StepTrace", "SuggestionRow", "TopBar", "UserBubble", "VersionRow"];</script>
+<script type="text/babel" src="./screen-kit.jsx"></script>
+<script type="text/babel" src="./data/book.jsx"></script>
+<script type="text/babel" src="./journey-b/home.jsx"></script>
+<script type="text/babel" src="./journey-b/thread.jsx"></script>
+<script type="text/babel" src="./journey-b/answer.jsx"></script>
+<script type="text/babel" src="./journey-b/moves.jsx"></script>
+<script type="text/babel" src="./journey-a/rail.jsx"></script>
+<script type="text/babel" src="./journey-c/funds.jsx"></script>
+<script type="text/babel" src="./thread/refusals.jsx"></script>
+<script type="text/babel" src="./thread/ledger.jsx"></script>
+<script type="text/babel" src="./shell/menu.jsx"></script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+/* home.jsx already declares Composer, Dock, Pill and ChipRow in this one Babel scope; only the names
+   this file adds are destructured. The preview gate fails the page if both declare one. */
+const { ScreenStack, UserBubble, SentinelBlock, SentinelText, AnswerChip, ProgressTrace, ExplainerSheet, ConfirmSheet, MoveCard, ConstraintCallout, Drawer } = window.SentinelDesignSystem_0682a2;
+
+const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const STEP_MS = 850;
+const FILL_MS = 900;
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE ROUTER — and it is PATTERNS, not a model. Said plainly here because the whole product rests on
+   it: the archive's six-bucket router is a set of regular expressions over the advisor's sentence, and
+   every screen in this repository is downstream of which bucket it picked. A prototype that pretended
+   to understand language would be demonstrating something nobody has built.
+
+   The order matters and is not alphabetical. An ACT instruction ("sell all of…") is tested before the
+   fund search, because "sell all of Sharma's Quant Small Cap" contains a fund name and matching it as a
+   search would turn an instruction into a browse — the failure that costs the most. Bucket 4, "I did not
+   follow that", is last and is the default: nothing here guesses at the closest journey. */
+const ROUTES = [
+  { id: 'caps',     re: /what can i (ask|do)|help|capabilit/i,                      why: 'asks what the product can do' },
+  { id: 'act',      re: /\b(sell|redeem|switch|buy)\b.*\b(all|everything|full)\b/i,  why: 'an instruction that would ACT' },
+  { id: 'over',     re: /₹\s?[6-9]\d,?\d{2},?\d{3}|₹\s?[1-9]\d*\s?(cr|crore)/i,      why: 'an amount above a mandate ceiling' },
+  { id: 'outside',  re: /\b(itr|file .*return|tax return|gst)\b/i,                   why: 'in the domain, outside what this product does' },
+  { id: 'drift',    re: /\bdrift|why .*\b(mix|allocation)|sharma/i,                  why: 'a drift question' },
+  { id: 'risk',     re: /\brisk\b|\bprofile\b/i,                                     why: 'a risk profile' },
+  { id: 'ledger',   re: /placed|ledger|this month|what did i (do|send)/i,            why: 'a question about money already sent' },
+  { id: 'funds',    re: /\bfund|flexi|small cap|large cap|shelf|search\b/i,          why: 'a fund search' },
+  { id: 'who',      re: /^\s*(meera|sharma|amit|sunita)\s*$/i,                       why: 'a name with no intent' },
+  { id: 'miss',     re: /.*/,                                                        why: 'nothing matched — and nothing is guessed at' },
+];
+const route = (text) => ROUTES.find((r) => r.re.test(text || ''));
+
+/* What the advisor can do from here, and how to get back — derived from the state rather than written
+   per screen, because a list of affordances kept by hand is a list that goes stale the first time a
+   screen changes. This function IS the "intelligent control" the product claims to have: if a control
+   is not in here, it is not on the screen. */
+function affordances(s) {
+  const back = [];
+  const next = [];
+  if (s.screen === 'home') {
+    next.push('Tap a client row', 'Tap a starter', 'Type anything — the router decides', 'Attach a statement', 'Open the menu');
+    back.push('Nothing to go back from — this is the front door');
+    return { next, back, where: 'Home', journey: '—', step: 'at rest' };
+  }
+  if (s.screen === 'rail') {
+    next.push('Answer the question', 'Ask why this question exists', 'Skip to the result', 'Type an answer instead');
+    back.push('Edit any answer above — the journey reopens there', 'Leave the rail (the app bar) — back to the thread');
+    return { next, back, where: 'Journey rail', journey: 'A · Meera’s risk profile', step: 'a question at a time' };
+  }
+  const J = { drift: 'B · Sharma’s drift', funds: 'C · the funds', ledger: 'The ledger', caps: 'What I can do',
+    act: 'Refusal · would act', over: 'Refusal · over a ceiling', outside: 'Refusal · out of scope', miss: 'Refusal · not understood', who: 'A name, no intent' }[s.journey] || '—';
+  back.push('Edit the prompt above — sending it replaces everything below', 'New thread (the app bar)', 'Open the menu for saved work');
+  if (s.journey === 'drift') {
+    if (s.phase === 'trace') { next.push('Stop the trace — it keeps what it has'); return { next, back, where: 'Thread', journey: J, step: 'working' }; }
+    if (s.phase === 'stopped') { next.push('Continue from where it stopped'); return { next, back, where: 'Thread', journey: J, step: 'stopped' }; }
+    if (s.phase === 'answer') {
+      next.push(s.artifact === 'expanded' ? 'Collapse the breakdown' : 'Expand the breakdown in place', 'Why is 31% a problem?', 'Show the 18 holdings', 'Rebalance to his mandate');
+      return { next, back, where: 'Thread', journey: J, step: 'answered' };
+    }
+    if (s.phase === 'moves') { next.push('Run the what-if', 'Why was one skipped?', 'Approve — opens the confirm sheet'); return { next, back, where: 'Thread', journey: J, step: 'two moves proposed' }; }
+    if (s.phase === 'flight') { next.push('Check with the RTA', 'Nothing else — it is in flight'); return { next, back, where: 'Thread', journey: J, step: 'sent, no answer yet' }; }
+    if (s.phase === 'done') { next.push('Read it back to the client', 'Back to his portfolio', 'Drop a note on the file'); return { next, back, where: 'Thread', journey: J, step: 'placed' }; }
+  }
+  if (s.journey === 'funds') next.push('Open a fund — its page opens in the row', 'Drop a filter');
+  if (s.journey === 'ledger') next.push('Open a row for the RTA’s reason', 'Change the period', 'Take the CSV');
+  if (s.journey === 'caps') next.push('Ask any of the five');
+  if (['act', 'over', 'outside', 'miss', 'who'].includes(s.journey)) next.push('Take the nearest thing it offered — every refusal names one');
+  return { next, back, where: 'Thread', journey: J, step: 'answered' };
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────── */
+function Proto({ onEvent }) {
+  const [screen, setScreen] = React.useState('home');
+  const [dir, setDir] = React.useState('forward');
+  const [journey, setJourney] = React.useState(null);
+  const [ask, setAsk] = React.useState('');
+  const [phase, setPhase] = React.useState('trace');
+  const [artifact, setArtifact] = React.useState('filling');
+  const [view, setView] = React.useState('chart');
+  const [stoppedAt, setStoppedAt] = React.useState(0);
+  const [resumeFrom, setResumeFrom] = React.useState(0);
+  const [traceKey, setTraceKey] = React.useState(0);
+  const [confirm, setConfirm] = React.useState(false);
+  const [why, setWhy] = React.useState(null);
+  const [menu, setMenu] = React.useState(false);
+  /* The composer is a REAL controlled field here, not a frozen specimen. Screens that only had to show
+     a composer passed value="" with a no-op onChange; this page claims the router reads what you type,
+     and a claim you cannot test by typing is a claim the page does not keep. Found by typing into it. */
+  const [draft, setDraft] = React.useState('');
+  const scroller = React.useRef(null);
+  const card = React.useRef(null);
+  const savedScroll = React.useRef(0);
+  const traceStart = React.useRef(0);
+  const att = useAttachment();
+  const log = (what, motion) => onEvent && onEvent(what, motion);
+
+  const state = { screen, journey, phase, artifact };
+
+  /* One entry point for every sentence in the product, typed or tapped. */
+  const send = (text) => {
+    const r = route(text);
+    setAsk(text); setJourney(r.id);
+    log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
+    if (r.id === 'risk') {
+      setDir('forward'); setScreen('rail');
+      log('The rail opens — a journey is its own surface', reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+      return;
+    }
+    if (screen !== 'thread') { setDir('forward'); setScreen('thread'); log('Thread in, Home out', reduced() ? 'a fade · 320ms' : 'ScreenStack forward: ds-screen-in over ds-screen-out · 320ms'); }
+    if (r.id === 'drift') {
+      setPhase('trace'); setArtifact('filling'); setResumeFrom(0); setTraceKey((k) => k + 1); traceStart.current = performance.now();
+      log('Trace running — step 1 of 4', `ProgressTrace · ${STEP_MS}ms a step, clock real`);
+    }
+  };
+
+  const traceDone = () => {
+    setPhase('answer'); setArtifact('filling');
+    log('Answer in, artifact filling', reduced() ? 'fades · 240ms' : 'ds-rise 240ms; ds-artifact 300ms then shimmer');
+    setTimeout(() => { setArtifact('peek'); log('Breakdown arrived — peek', reduced() ? 'bars drawn full' : 'bars scaleX · 480ms, 60ms stagger'); }, FILL_MS);
+  };
+  const stop = () => {
+    const idx = Math.min(Math.floor((performance.now() - traceStart.current) / STEP_MS), DRIFT_STEPS.length - 1);
+    setStoppedAt(idx); setPhase('stopped');
+    log(`Stop — frozen at step ${idx + 1} of 4`, 'immediate; the partial trace stays');
+  };
+  const resume = () => { setResumeFrom(stoppedAt); setTraceKey((k) => k + 1); traceStart.current = performance.now() - stoppedAt * STEP_MS; setPhase('trace'); log(`Continue — from step ${stoppedAt + 1}`, 'the clock restarts at 0 — ProgressTrace cannot resume it, and that is logged, not hidden'); };
+
+  const toggleArtifact = () => {
+    const el = scroller.current, c = card.current;
+    if (artifact === 'peek') {
+      if (el && c) savedScroll.current = el.scrollTop;
+      setArtifact('expanded');
+      log('Artifact expands in place', reduced() ? 'height only' : 'natural height; chevron 180°; bars 200ms each');
+      requestAnimationFrame(() => { if (el && c) el.scrollTo({ top: el.scrollTop + (c.getBoundingClientRect().top - el.getBoundingClientRect().top), behavior: reduced() ? 'auto' : 'smooth' }); });
+    } else if (artifact === 'expanded') {
+      setArtifact('peek');
+      requestAnimationFrame(() => requestAnimationFrame(() => { if (el) el.scrollTo({ top: savedScroll.current, behavior: reduced() ? 'auto' : 'smooth' }); }));
+      log('Artifact collapses to its peek', 'the thread scrolls back to the card');
+    }
+  };
+
+  const goHome = () => { setDir('back'); setScreen('home'); setJourney(null); setAsk(''); setPhase('trace'); setArtifact('filling'); att.clear && att.clear(); log('Back to Home', reduced() ? 'a fade · 320ms' : 'ScreenStack BACK: the same two keyframes, reversed — you came out, not in'); };
+
+
+  /* The body of the thread is the journey, and nothing else changes. One surface, one composer. */
+  const body = () => {
+    if (journey === 'drift') return (
+      <React.Fragment>
+        {phase === 'trace' && <ProgressTrace key={traceKey} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} stepMs={STEP_MS} initialActive={resumeFrom} onDone={traceDone} />}
+        {phase === 'stopped' && (
+          <React.Fragment>
+            <ProgressTrace key={`s-${traceKey}`} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={stoppedAt} seconds={Math.max(1, Math.round((stoppedAt + 1) * STEP_MS / 1000))} />
+            <SentinelBlock>
+              <SentinelText text="Stopped. I kept what I had worked out — I was partway through attributing his drift." />
+              <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label="Continue" variant="primary" onClick={resume} /></div>
+            </SentinelBlock>
+          </React.Fragment>
+        )}
+        {(phase === 'answer' || phase === 'moves' || phase === 'flight' || phase === 'done') && (
+          <React.Fragment>
+            <ProgressTrace key={`d-${traceKey}`} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={DRIFT_STEPS.length} seconds={Math.round(DRIFT_STEPS.length * STEP_MS / 1000)} initialCollapsed />
+            <AnswerTurn artifact={artifact} view={view} run enter cardRef={card} onToggle={toggleArtifact}
+              onShare={() => log('Share — not in this build', '')}
+              onMenu={() => { setView((v) => (v === 'table' ? 'chart' : 'table')); log('⋯ — the table view every chart owes, in place', ''); }}
+              actions={artifact === 'filling' || phase !== 'answer' ? undefined : <AnswerActions animate
+                onWhy={() => { setWhy(WHY_71); log('Explainer opens', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }}
+                onHoldings={() => { if (artifact === 'peek') toggleArtifact(); setView('table'); log('“Show the 18 holdings” — the chart’s own table, because his holdings are not in the book', ''); }}
+                onRebalance={() => { setPhase('moves'); log('“Rebalance to his mandate” — two moves, and the what-if', reduced() ? 'fades in' : 'ds-rise · 240ms'); }} />} />
+          </React.Fragment>
+        )}
+        {phase === 'moves' && <MovesTurn enter actions={<MovesActions animate
+          onSkipped={() => { setWhy({ title: 'Why was the third move skipped?', body: [SKIPPED] }); log('Why one was skipped', 'ds-sheet 300ms'); }}
+          onApprove={() => { setConfirm(true); log('Confirm sheet opens — the one screen with no composer', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }} />} />}
+        {phase === 'flight' && <ExecutionTurn state="flight" enter onCheck={() => log('Check with the RTA — this build has no RTA', '')} />}
+        {phase === 'done' && <SuccessTurn enter onRead={() => log('Read it back to the client', '')} onBack={() => log('Back to his portfolio — not built', '')} onDrop={() => log('Note dropped on the file', '')} />}
+      </React.Fragment>
+    );
+    if (journey === 'funds') return <FundResults openRow={null} onExplain={() => log('A fund’s own explainer', '')} />;
+    if (journey === 'ledger') return <LedgerArtifact onDownload={() => { log('CSV — the control holds its own loading state, because this product has no toasts', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }} />;
+    if (journey === 'caps') return <CapabilitiesTurn onAsk={(q) => send(q)} />;
+    if (journey === 'who') return <RefusalTurn body={DISAMBIGUATE.body} chips={DISAMBIGUATE.chips} onChip={send} />;
+    if (journey === 'over') return <RefusalTurn body={BUCKET_2.body} chips={BUCKET_2.chips} onChip={send} />;
+    if (journey === 'outside') return <RefusalTurn body={BUCKET_5.body} chips={BUCKET_5.chips} onChip={send} />;
+    if (journey === 'miss') return <RefusalTurn body={BUCKET_4.body} chips={BUCKET_4.chips} onChip={send} />;
+    if (journey === 'act') return (
+      <SentinelBlock>
+        <SentinelText text={BUCKET_6.body} />
+        <div style={{ marginTop: 'var(--space-12)' }}><ConstraintCallout eyebrow="Would run" body={BUCKET_6.preview} /></div>
+        <div style={{ marginTop: 'var(--space-12)' }}><AnswerChip label={BUCKET_6.chip} variant="primary" onClick={() => { setConfirm(true); log('Even a typed instruction goes through the confirm sheet', 'ds-sheet 300ms'); }} /></div>
+      </SentinelBlock>
+    );
+    return null;
+  };
+
+  const thread = (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Thread scrollRef={scroller} revision={`${journey}-${phase}-${artifact}-${!!att.file}`}
+        onMenu={() => { setMenu(true); log('Menu opens', reduced() ? 'the panel fades in · 320ms' : 'panel translateX −100% → 0 · 320ms; scrim to 0.25'); }}
+        onNew={goHome}
+        composer={<Composer value={draft} onChange={setDraft} placeholder="Ask Sentinel" streaming={journey === 'drift' && phase === 'trace'}
+          onStop={stop} onSend={(t) => { setDraft(''); send(t || draft); }} onAttach={att.onAttach} />}>
+        {/* The same AskTurn on every screen in the product: the last prompt is editable wherever editing
+            it is a real thing to do, and sending the edit replaces what is below it — which the cost line
+            says out loud before it happens. */}
+        <AskTurn text={ask} busy={journey === 'drift' && phase === 'trace'}
+          costNote={phase === 'answer' || journey !== 'drift' ? 'Sending this replaces the answer below it.' : undefined}
+          onCancel={() => log('Edit cancelled — nothing was discarded', '')}
+          onSave={(next) => { log('Edit sent — the answer below it is replaced, as the line said', 'the turn re-runs'); send(next); }} />
+        {body()}
+        <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+      </Thread>
+      <ConfirmSheet open={confirm} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
+        commitLabel="Approve both moves"
+        onCommit={() => { setConfirm(false); setPhase('flight'); log('Approved — in flight', 'the sheet closes; the thread takes over'); setTimeout(() => { setPhase('done'); log('Placed — both moves, with their references', reduced() ? 'the check is drawn' : 'DrawnCheck · ds-draw'); }, 1400); }}
+        onClose={() => { setConfirm(false); log('Dismissed — nothing was placed', 'the sheet closes'); }}>
+        {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
+      </ConfirmSheet>
+    </div>
+  );
+
+  const home = <Home hour={15} time="3:04"
+    onMenu={() => { setMenu(true); log('Menu opens', 'panel 320ms; scrim to 0.25'); }}
+    onAttach={(f) => { att.onAttach(f); setAsk('Read this and tell me what moved.'); setJourney('drift'); setDir('forward'); setScreen('thread'); setPhase('answer'); setArtifact('peek'); log(`Attached ${f.name} on Home — it opens a thread with the file in it`, 'ScreenStack forward · 320ms'); }}
+    onRow={(label) => send(label)} onStarter={(c) => send(c)} onSend={send} />;
+
+  /* The rail leaves by the same two doors as everything else — the menu's "Back to home", or a new
+     thread. There is no back arrow in this product and the prototype does not invent one. */
+  const rail = <LiveRail onEvent={log} onNew={goHome}
+    onMenu={() => { setMenu(true); log('Menu opens from the rail — the way out is the same door as everywhere else', 'panel 320ms; scrim to 0.25'); }} />;
+
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <ScreenStack screen={screen} direction={dir} render={(s) => (s === 'home' ? home : s === 'rail' ? rail : thread)}
+        onSettle={(to, from) => log(`Settled on ${to}`, `${from} unmounted after --dur-screen`)} />
+      <ExplainerSheet open={!!why} title={(why || {}).title || ''} body={(why || {}).body || []} onClose={() => { setWhy(null); log('Explainer closes — focus returns to the chip', 'immediate'); }} />
+      <Drawer open={menu} onClose={() => { setMenu(false); log('Menu closes', 'immediate'); }} onNew={() => { setMenu(false); goHome(); }}
+        saved={MENU_SAVED} recent={MENU_RECENT} clients={MENU_CLIENTS}
+        footer={<MenuFooter onHome={() => { setMenu(false); goHome(); }} />} />
+      <Bridge state={{ screen, journey, phase, artifact }} />
+    </div>
+  );
+}
+
+/* The phone tells the panel what it knows, without the panel reaching into the phone's state. */
+const StateBus = React.createContext(null);
+function Bridge({ state }) {
+  const set = React.useContext(StateBus);
+  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact]);
+  return null;
+}
+
+/* Both panels start on the same line. The log's header carries a 32pt Restart pill and the control
+   panel's does not, so the label alone sat higher — one set of edges, per the review order. */
+const panelHead = { display: 'flex', alignItems: 'center', gap: 10, minHeight: 32 };
+const panelLabel = { font: 'var(--type-caption-font)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-bronze-deep)' };
+const panelCard = { borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: '10px 14px', boxShadow: 'var(--shadow-card-soft)' };
+
+/* THE FOUR QUESTIONS A CHAT UI HAS TO ANSWER BY DEFAULT, made visible beside the phone rather than
+   asserted in a document: where am I, what can I do, what happens next, and how do I go back. Every row
+   is produced by `affordances()` from the live state, so this panel cannot claim a control the screen
+   does not have. */
+function ControlPanel({ state }) {
+  const a = affordances(state);
+  const Row = ({ k, v }) => (
+    <div style={{ display: 'grid', gridTemplateColumns: '78px 1fr', gap: 'var(--space-8)', padding: '5px 0' }}>
+      <span style={{ ...screenMuted, color: 'var(--color-muted)' }}>{k}</span>
+      <span style={{ ...screenMuted, color: 'var(--color-ink)' }}>{v}</span>
+    </div>
+  );
+  const List = ({ items }) => (
+    <ul style={{ margin: 0, padding: '2px 0 2px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {items.map((x, i) => <li key={i} style={{ ...screenMuted, color: 'var(--color-ink)' }}>{x}</li>)}
+    </ul>
+  );
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={panelHead}><span style={panelLabel}>Where you are</span></div>
+      <div style={panelCard}>
+        <Row k="Surface" v={a.where} /><Row k="Journey" v={a.journey} /><Row k="Step" v={a.step} />
+      </div>
+      <span style={panelLabel}>What you can do next</span>
+      <div style={panelCard}><List items={a.next} /></div>
+      <span style={panelLabel}>How you go back</span>
+      <div style={panelCard}><List items={a.back} /></div>
+    </div>
+  );
+}
+
+function EventPanel({ events, onRestart }) {
+  const row = { display: 'grid', gridTemplateColumns: '44px 1fr', gap: 'var(--space-8)', padding: '7px 0', borderBottom: '0.5px solid var(--color-line-soft)' };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={panelHead}>
+        <span style={panelLabel}>What moved, and when</span>
+        <span style={{ ...screenMuted, marginLeft: 'auto' }}>{reduced() ? 'Reduced motion (from the OS)' : 'Full motion'}</span>
+        <Pill label="Restart" size="sm" onClick={onRestart} />
+      </div>
+      <div style={{ ...panelCard, padding: '4px 14px', minHeight: 120, maxHeight: 520, overflowY: 'auto' }}>
+        {events.length === 0 && <p style={{ ...screenMuted, padding: '10px 0' }}>Nothing yet. Tap a row on Home, or type a sentence — the router decides which journey it enters.</p>}
+        {events.map((e, i) => (
+          <div key={i} style={{ ...row, borderBottom: i < events.length - 1 ? row.borderBottom : 'none' }}>
+            <span style={{ ...screenMuted, fontVariantNumeric: 'tabular-nums', color: 'var(--color-muted)' }}>{e.t.toFixed(1)}s</span>
+            <span style={{ ...screenMuted, color: 'var(--color-ink)' }}>{e.what}{e.motion && <span style={{ color: 'var(--color-muted)' }}> — {e.motion}</span>}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const TRY = [
+  ['Why did Sharma’s portfolio drift this quarter?', 'Journey B, all the way to placed'],
+  ['Start Meera’s risk profile', 'Journey A — the rail, its own surface'],
+  ['Flexi cap funds on my shelf', 'Journey C — the shortlist'],
+  ['What have I placed this month?', 'The ledger'],
+  ['Sell all of Sharma’s Quant Small Cap', 'An instruction that would act — previewed, never run'],
+  ['File Meera’s ITR for this year', 'In the domain, out of scope'],
+  ['sharma ka wala thing', 'Not understood — and nothing guessed at'],
+  ['What can I ask?', 'The standing answer'],
+];
+
+function App() {
+  const [events, setEvents] = React.useState([]);
+  const [runId, setRunId] = React.useState(0);
+  const [state, setState] = React.useState({ screen: 'home', journey: null, phase: 'trace', artifact: 'filling' });
+  const t0 = React.useRef(performance.now());
+  const onEvent = (what, motion) => setEvents((ev) => [...ev, { t: (performance.now() - t0.current) / 1000, what, motion }]);
+  const restart = () => { t0.current = performance.now(); setEvents([]); setRunId((r) => r + 1); setState({ screen: 'home', journey: null, phase: 'trace', artifact: 'filling' }); };
+  return (
+    <ScreenShell
+      journey="Every journey" n="7" name="The app, end to end"
+      job="One phone and one composer. Type or tap a sentence and the router decides which of the six buckets it lands in, and therefore which journey opens — Sharma's drift all the way to placed, Meera's risk profile on its own surface, the fund shortlist, the ledger, and the four refusals. The panel on the right is not documentation: every row in it is produced from the live state by one function, so it cannot name a control the screen does not have."
+      without="has seven screens that each work and no proof that they are one product — and the questions a chat UI must answer by default (where am I, what can I do, what next, how do I go back) are answered per screen instead of once."
+    >
+      <Section title="1 · Run it" sub="Start on Home. Tap a client row, or type one of the sentences below. Every transition is a system keyframe on a system token; this page decides the order and nothing else.">
+        <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <StateBus.Provider value={setState}>
+            <State label="live"><Proto key={runId} onEvent={onEvent} /></State>
+          </StateBus.Provider>
+          <div style={{ width: 300 }}><ControlPanel state={state} /></div>
+          <div style={{ width: 420 }}><EventPanel events={events} onRestart={restart} /></div>
+        </div>
+      </Section>
+
+      <Section title="2 · The router, and what it really is" sub="Patterns over the sentence, in this order — not a model. Every screen in this repository is downstream of which bucket it picks, so it is written out rather than described.">
+        <Table head={['Type this', 'Bucket', 'Why', 'What opens']} rows={TRY.map(([t, opens]) => {
+          const r = route(t);
+          return [<span style={{ fontVariantNumeric: 'tabular-nums' }}>{t}</span>, r.id, r.why, opens];
+        })} />
+        <Note title="The order is a decision, not an accident">
+          An ACT instruction is tested before the fund search, because <em>&ldquo;sell all of Sharma&rsquo;s Quant
+          Small Cap&rdquo;</em> contains a fund name, and matching it as a search would turn an instruction into a
+          browse — the most expensive misread in the set. <strong>Bucket 4 is last and is the default:</strong> when
+          nothing matches, the product says it did not follow, offers three things it can do, and starts nothing.
+          It never picks the closest journey and runs it.
+        </Note>
+      </Section>
+
+      <Section title="3 · The four questions, answered once" sub="A chat UI has no menu bar to answer them with, so it answers them in the turn — and this page shows the answers being produced rather than claimed.">
+        <Table head={['The question', 'Where the product answers it', 'How this page proves it']} rows={[
+          ['Where am I?', 'The app bar names the thread; the rail pins its own progress', 'The Surface / Journey / Step rows, read from the live state'],
+          ['What can I do?', 'Chips inside the turn that offered them — never pinned above the composer', '“What you can do next” is generated by affordances(), so a stale row is impossible'],
+          ['What happens next?', 'The trace names the steps; the confirm sheet states what will be sent before it is', 'Approve → in flight → placed, all three visible in one run'],
+          ['How do I go back?', 'The last prompt is editable everywhere it is valid; the rail reopens at an edited answer; Home is a back transition', '“How you go back” lists them, and ScreenStack direction="back" makes leaving look like leaving'],
+        ]} />
+      </Section>
+
+      <Section title="4 · What it does not do, said plainly">
+        <Note title="Where it stops">
+          The router is <strong>regular expressions</strong>, so a sentence it has no pattern for lands in bucket 4 —
+          which is the honest outcome, but it is not language understanding and this page does not imply it is.
+          <strong>Nothing leaves the page:</strong> no order is placed, the CSV writes no file, the share sheet is
+          described rather than opened, and the RTA that the in-flight state waits on does not exist. Journey A runs
+          its sixteen steps; journeys B and C run to the end of what is built. Sharma&rsquo;s remaining thirteen
+          holdings are still not in the book, so &ldquo;Show the 18 holdings&rdquo; opens the chart&rsquo;s own table
+          and the screen says why inventing them would be worse than not having them.
+        </Note>
+        <Note title="What this page cost the system, and what it repaid">
+          <code>ScreenStack</code> was hand-built on the Journey B prototype with a note that it would be promoted the
+          moment a second live page needed it. This is that page, so it is now a system component with a contract and
+          a spec page — including <code>direction=&quot;back&quot;</code>, which invents no keyframe: the two the system
+          already has, reversed and swapped. Three renderers were lifted out of their pages for the same reason — the
+          ledger table, the fund shortlist and the whole live rail — so this prototype and their spec pages draw ONE
+          copy of each and cannot drift apart.
+        </Note>
+      </Section>
+    </ScreenShell>
+  );
+}
+
+mountScreen(<App />);
+</script></body></html>

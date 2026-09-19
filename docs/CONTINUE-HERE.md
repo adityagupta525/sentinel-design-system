@@ -21,7 +21,7 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 | Pages | **88 / 88** render clean (76 design-system + 12 screens) |
 | Integrity | 375 files intact |
 | Screens built | **Journey B is complete — all 7 steps, on 5 pages**: `01-home`, `02-thread-trace` (Thread · while it works), `03-thread-answer` (Thread · the answer, steps 3 and 4), `05-decide` (Thread · deciding — steps 5, 6 and 7), `prototype`, plus `shell/drawer` and `flow` |
-| **Next** | `APP-PLAN.md` #7 — **the end-to-end prototype**, every journey clickable in one page. R1–R4 are all closed except R4 (the fee and commission question), which needs figures the repository does not have. |
+| **Next** | The build order is **empty**. What is left is the owner's open calls in `APP-PLAN.md` §5, and R4 (the fee and commission question), which needs figures this repository does not have. R1–R4 are all closed except R4 (the fee and commission question), which needs figures the repository does not have. |
 | Review artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — version 7, owned by ashish@centricity.co.in, cover → Screens section → flow, Home, Drawer, Trace. Republish after every screen (recipe: memory + §8). |
 | Claude Design canvas | **Undecided.** DesignSync works on this machine after `/design-login` in a real terminal. `0682a2d3` is unreachable from both accounts (404 / "Project not found"). None of the six writable projects is Sentinel. Owner must pick: new project (recommended) or one of the six. Do not create one without the word. |
 
@@ -55,6 +55,29 @@ measurements are on the pages themselves.**
   either direction: it does not say "failed" for something it has not confirmed failed, and **it does not
   offer to send again**, because a duplicate switch is real money. It offers checking, and the question
   the advisor actually has: what do I tell Sharma?
+- **Build order #7 is done: `screens/prototype.html`** — the app end to end, and the last row of the
+  plan. One phone, one composer, and the **router** decides which journey a sentence enters: the six
+  buckets are regular expressions over the sentence, said out loud on the page because every screen in
+  this repository is downstream of which bucket they pick. The order is a decision — an ACT instruction
+  is tested BEFORE the fund search, because "sell all of Sharma's Quant Small Cap" carries a fund name
+  and matching it as a search would turn an instruction into a browse. Bucket 4 is last and is the
+  default: nothing is guessed at.
+  Beside the phone, **the four questions a chat UI must answer** (where am I · what can I do · what
+  happens next · how do I go back) are produced by ONE function, `affordances(state)`, from the live
+  state — so the panel cannot name a control the screen does not have. That is the "intelligent
+  controls" ask made structural rather than written down.
+  **Four things were lifted or promoted so nothing is drawn twice:** `ScreenStack` into the system with
+  a contract and a spec page (the Journey B prototype's own note said it would be, the moment a second
+  live page needed it — and that page now draws the system's one); the ledger table, the fund shortlist
+  and the whole `LiveRail` out of their pages into their modules.
+  **`ScreenStack direction="back"` invents no keyframe:** the system's two, reversed and swapped, so
+  leaving a surface looks like leaving. Under reduced motion a reversed fade is still a fade.
+  **Two defects only driving it could find:** the thread's composer was `value=""` with a no-op
+  `onChange`, copied from screens that only had to SHOW a composer — so "type anything, the router
+  decides" was a claim the page could not keep; and **F-39**, the app bar's menu and new-thread buttons
+  had no accessible name, on every screen in the product. `check-previews` renders the FIRST state of a
+  page, so neither was visible to it.
+
 - **R3 is built (19 Sep): the money ledger**, `screens/thread/ledger.html`, three states. It answers the
   third thing third-party advisors ask for in every app, and it is NOT the drawer: the drawer is the
   history of conversations, this is the history of MONEY. Five instructions from `book.jsx`'s new `LEDGER`,

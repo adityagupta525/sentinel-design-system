@@ -51,6 +51,8 @@ export type { PhoneFrameProps } from './components/shell/PhoneFrame';
 export { PhoneFrame } from './components/shell/PhoneFrame';
 export type { ScreenBackdropProps } from './components/shell/ScreenBackdrop';
 export { ScreenBackdrop } from './components/shell/ScreenBackdrop';
+export type { ScreenStackProps } from './components/shell/ScreenStack';
+export { ScreenStack } from './components/shell/ScreenStack';
 export type { ScrollToBottomButtonProps } from './components/shell/ScrollToBottomButton';
 export { ScrollToBottomButton } from './components/shell/ScrollToBottomButton';
 export type { StatusSpacerProps } from './components/shell/StatusSpacer';

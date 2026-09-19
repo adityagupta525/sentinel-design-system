@@ -44,41 +44,7 @@ function Scene({ step, answered = ANSWERED, dim, banner, editable = true, after,
 /* The whole journey, live: twelve questions, two interjections, the result. Every answer is recorded as a
    QAPair, the last one is editable, and editing it REOPENS the journey there — the four answers after it
    are asked again, which is what the cost note says before anything is discarded. */
-function LiveRail() {
-  const [cursor, setCursor] = React.useState(0);
-  const [answered, setAnswered] = React.useState([]);
-  const [sheet, setSheet] = React.useState(null);
-  const [thinking, setThinking] = React.useState(false);
-  const att = useAttachment();
-  const step = RAIL_STEPS[cursor];
-  const advance = (label, goto) => {
-    setAnswered((a) => [...a, { q: step.short, a: label }]);
-    setThinking(true);
-    const next = goto != null ? goto : cursor + 1;
-    setTimeout(() => { setCursor(next); setThinking(false); }, 520);
-  };
-  const onChip = (ch) => { if (ch.sheet) return setSheet(ch.sheet); if (ch.external) return setSheet(SHARE_SHEET); advance(ch.label, ch.goto); };
-  /* Edit answer i: the journey reopens THERE and everything after it is asked again. */
-  const editAt = (i) => { setAnswered((a) => a.slice(0, i)); setCursor(RAIL_STEPS.findIndex((s) => s.short === answered[i].q) || 0); };
-  return (
-    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Rail n={step && step.progress ? step.progress[0] : undefined} revision={`${cursor}-${answered.length}-${!!att.file}`}
-        composer={<Ask step={step} onAttach={att.onAttach} />}>
-        <AnsweredList items={answered} onEdit={editAt} />
-        {step && step.result
-          ? <RiskResult chips={step.chips} cta={step.cta} onChip={onChip} />
-          : <StepTurn step={step} thinking={thinking} onChip={onChip} />}
-        <AttachedTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
-      </Rail>
-      <ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []} onClose={() => setSheet(null)} />
-    </div>
-  );
-}
-const SHARE_SHEET = {
-  title: 'Share with Meera',
-  body: ['This build prepares the summary and hands it to your own share sheet — it does not send anything on its own.',
-    'Nothing leaves Sentinel until you pick a channel and send it there.'],
-};
+/* LiveRail and SHARE_SHEET now live in ./rail.jsx, shared with the end-to-end prototype. */
 
 const MOTION = [
   ['A question arrives', <span><code>ds-rise</code>: fade + 8px</span>, '240ms', 'Fades in place'],

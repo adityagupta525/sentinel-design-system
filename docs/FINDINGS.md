@@ -814,3 +814,24 @@ Six glyphs from the product's Figma source (grids of 17.33 / 18 / 15 / 12.37 / 1
 Already logged by the system as contradiction 38, with the reasoning: redrawing the six would change
 every screen in the product, so the debt was taken deliberately and scheduled for the next visual
 refresh. Recorded here only so it is not rediscovered as new.
+
+### F-39 · The app bar's two buttons had no accessible name — *found by driving the prototype, fixed 19 Sep 2026*
+
+`TopBar` draws an icon-only menu disc and an icon-only new-thread disc, both `Pressable` with an icon
+child and **no `label`**. A screen reader announced two unnamed buttons, and `TopBar` is on every screen
+in the product — Home, every thread, the rail — so it is the same defect repeated everywhere rather than
+one screen's mistake.
+
+**How it was found, and why nothing caught it.** Driving `screens/prototype.html` in a browser to check
+that the rail could be left, the live DOM answered with exactly two accessible names on the whole page,
+`Attach a file` and `Send`. Both come from `Composer`, which was given names when **F-28** fixed its
+Stop and Send buttons — and F-28 stopped there. The lesson is F-28's own, unlearned: a component whose
+only child is an SVG has no accessible name unless something gives it one, and no gate in this repository
+looks for that.
+
+**Fix:** `label="Menu"` and `label="New thread"` on the two `Pressable`s (`TopBar.jsx:13`, `:17`).
+Nothing moved a pixel — `Pressable` puts the label on `aria-label`, not on screen.
+
+**Still open, deliberately:** no automated check looks for an icon-only control without a name. The
+honest position is that `check-previews` renders the FIRST state of a page, so it cannot see most of
+what a prototype does; this finding came from a person driving the thing, and that is what found it.
