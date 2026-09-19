@@ -21,7 +21,8 @@ const MENU_RECENT = [['R. Sharma','Portfolio drift'],['Mr. Amit Aggrawal','Propo
   ['Sunita Nair','Exit load'],['Meera Nair','SIP change'],['R. Sharma','Mandate note'],['HDFC AMC','NFO circular'],['Mr. Amit Aggrawal','KYC']].map(([t, m]) => ({ title: t, meta: m }));
 const menuInitials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
 const menuClient = (name) => ({ title: name, leading: 'avatar', leadingContent: menuInitials(name), trailing: 'chevron' });
-const MENU_CLIENTS = ['Meera Nair', 'Mr. Amit Aggrawal', 'Sunita Nair', 'R. Sharma', 'Kavita Rao', 'Anil Menon', 'Priya Deshpande', 'Vikram Shah', 'Lakshmi Iyer', 'Rohan Gupta'].map(menuClient);
+/* The book, not a second list of names — screens/data/book.jsx is where a client is written down. */
+const MENU_CLIENTS = CLIENTS.map((c) => menuClient(c.name));
 const MENU_CLIENTS_LONG = ['Ramasubramanian Venkataraghavan', 'Mr. Amit Aggrawal', 'Sunita Nair'].map(menuClient);
 
 /* "Back to home" and the one-theme control. SegmentedRow is the system's; the row is locked because no

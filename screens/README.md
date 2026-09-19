@@ -161,3 +161,8 @@ A box that **clips** is checked itself and then closes the question for everythi
    stages pending and a `ParseNote` saying this specimen does not read it — because printing "18 holdings"
    over someone's own file would be a fabricated figure. `check-previews` fails any `screens/` phone whose
    Composer has no real file input behind its attach button.
+24. **One book, and it is `screens/data/book.jsx`.** Every client, fund, holding, limit and rate lives
+   there; a screen derives, it does not re-type. Before it, the same client held 43 funds on one page and
+   31 on another. Load it before any other `.jsx` on the page. `docs/DNA.md` says what each field means,
+   what the product calls it, and what is known, unknown or not applicable — the three states a field can
+   be in, and the three different ways they render.

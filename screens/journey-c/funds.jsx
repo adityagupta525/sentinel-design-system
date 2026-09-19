@@ -9,19 +9,24 @@
    because "a zero and a missing value are different facts, and printing 0% states something untrue
    about the client's money".
 
-   No top-level destructuring: every .jsx a page loads compiles into ONE scope. */
+   No top-level destructuring: every .jsx a page loads compiles into ONE scope. `book.jsx` is loaded
+   before this file and provides FUNDS, CLIENTS and the limits. */
 const FUNDS_DS = window.SentinelDesignSystem_0682a2;
 
 const FUND_ASK = 'Show me flexi cap funds on my shelf';
-const FUND_LIST = [
-  { id: 'ppfas', name: 'Parag Parikh Flexi Cap', amc: 'PPFAS', cat: 'Flexi cap', bucket: 'Equity', onShelf: true, heldBy: ['Meera Nair'] },
-  { id: 'hdfc', name: 'HDFC Flexi Cap', amc: 'HDFC', cat: 'Flexi cap', bucket: 'Equity', onShelf: true, heldBy: ['Meera Nair', 'Sunita Nair'] },
-  { id: 'quant', name: 'Quant Small Cap', amc: 'Quant', cat: 'Small cap', bucket: 'Equity', onShelf: false, heldBy: ['R. Sharma'] },
-  { id: 'icicib', name: 'ICICI Corporate Bond', amc: 'ICICI', cat: 'Corporate bond', bucket: 'Debt', onShelf: true, heldBy: ['R. Sharma'] },
-  { id: 'sbib', name: 'SBI Corporate Bond', amc: 'SBI', cat: 'Corporate bond', bucket: 'Debt', onShelf: true, heldBy: [] },
-  { id: 'iciciba', name: 'ICICI Balanced Advantage', amc: 'ICICI', cat: 'Balanced advantage', bucket: 'Hybrid', onShelf: true, heldBy: ['Sunita Nair'] },
-  { id: 'uti', name: 'UTI Nifty 50 Index', amc: 'UTI', cat: 'Index', bucket: 'Index', onShelf: true, heldBy: [] },
-];
+
+/* THE LIST IS DERIVED FROM THE BOOK, not kept here. `screens/data/book.jsx` is the one place a fund, a
+   client or a holding is written down; this file only decides how the fund surfaces present them. The
+   reverse lookup — which of the advisor's clients hold a fund — is COMPUTED from their holdings and
+   their SIPs rather than typed, so it cannot drift from the portfolios the other journeys render. */
+const holdersOf = (fundId) => CLIENTS.filter((c) =>
+  (c.holdings || []).some((h) => h.fundId === fundId) || (c.sips || []).some((sp) => sp.fundId === fundId)).map((c) => c.name);
+const FUND_LIST = FUNDS.map((f) => ({
+  id: f.id, name: f.name, amc: f.amc, cat: f.category, bucket: f.bucket,
+  onShelf: f.onShelf, shelfNote: f.shelfNote, riskometer: f.riskometer, exitLoad: f.exitLoad, plan: f.plan,
+  heldBy: holdersOf(f.id),
+}));
+
 /* The parsed query, as REMOVABLE chips. An advisor drops what Sentinel read wrong rather than retyping
    the sentence — the archive's own pattern (FundExplorer.tsx:55) and the one thing that makes a parsed
    query defensible: it is visible, and it is editable. */
@@ -57,7 +62,7 @@ function FundDetail({ fund, onExplain }) {
       provenance="As of 30 Sep · from the scheme record and your own book"
       stats={[
         { label: 'Held by your clients', value: String(fund.heldBy.length) },
-        { label: 'Compliance shelf', value: fund.onShelf ? 'Passed' : 'Not on shelf' },
+        { label: 'Exit load', value: fund.exitLoad },
       ]}
       onExplain={onExplain} />
   );

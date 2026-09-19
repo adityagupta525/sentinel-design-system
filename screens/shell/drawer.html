@@ -9,6 +9,7 @@
 <script>window.__screenRequires = ['Drawer','SegmentedRow','Pressable','PhoneFrame'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/home.jsx"></script>
+<script type="text/babel" src="../data/book.jsx"></script>
 <script type="text/babel" src="./menu.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
@@ -24,11 +25,13 @@ const { Drawer, SegmentedRow, Pressable } = window.SentinelDesignSystem_0682a2;
 
 /* The data and the footer moved to shell/menu.jsx on 18 Sep so the live prototype draws the same menu.
    MENU_SAVED, MENU_RECENT, MENU_CLIENTS, MENU_CLIENTS_LONG and MenuFooter are globals from that file. */
-const SAVED = MENU_SAVED, RECENT = MENU_RECENT, CLIENTS = MENU_CLIENTS, CLIENTS_LONG = MENU_CLIENTS_LONG;
+/* `CLIENTS` is the BOOK's own name now (screens/data/book.jsx), so this page reads the menu's
+   rows under a name of its own — one Babel scope, and a second `const CLIENTS` renders nothing. */
+const SAVED = MENU_SAVED, RECENT = MENU_RECENT, MENU_ROWS = MENU_CLIENTS, CLIENTS_LONG = MENU_CLIENTS_LONG;
 const Footer = MenuFooter;
 /* For the spec page's frozen states the drawer is rendered open. The product never does this — the
    contract says mount closed, open with an action — so the "live" state below opens it the real way. */
-const Menu = (p) => <Drawer open onClose={() => {}} saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer />} {...p} />;
+const Menu = (p) => <Drawer open onClose={() => {}} saved={SAVED} recent={RECENT} clients={MENU_ROWS} footer={<Footer />} {...p} />;
 
 const Scene = (props) => (
   <div style={{ position: 'relative', height: '100%', width: '100%' }}>
@@ -50,7 +53,7 @@ function LiveScene() {
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Home hour={15} time="3:04" onMenu={() => setOpen(true)} />
       <Drawer open={open} onClose={() => setOpen(false)} onNew={() => setOpen(false)} onSeeAll={seeAll} caps={caps}
-        saved={SAVED} recent={RECENT} clients={CLIENTS} footer={<Footer onHome={() => setOpen(false)} />} />
+        saved={SAVED} recent={RECENT} clients={MENU_ROWS} footer={<Footer onHome={() => setOpen(false)} />} />
     </div>
   );
 }

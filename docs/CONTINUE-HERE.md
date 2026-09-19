@@ -45,6 +45,17 @@ measurements are on the pages themselves.**
   one-line resting state a frozen page could not show); **F-27 fixed in `ExplainerSheet` too** (0.4 measured —
   the live state had rendered a black phone, which settled it); **F-28** Stop and Send buttons had no
   accessible name; **F-29** the status-bar wifi glyph was drawn half — the owner caught it — redrawn whole.
+- **There is one book now: `screens/data/book.jsx`**, and `docs/DNA.md` explains it. Every client, fund,
+  holding, limit and tax rate in one file, with the line between REAL (SEBI's scheme categories and the
+  large/mid/small definitions, equity taxation at 20% / 12.5% above ₹1.25 L, the shape of a KYC record, a
+  NACH mandate, an ARN/EUIN, a folio, a riskometer band, an exit load — all checked against the market on
+  19 Sep, not remembered) and ILLUSTRATIVE (every rupee figure) written down inside it.
+  **Sharma's ₹14.2 L is derived, not invented:** the product says a ₹1,85,000 switch moves equity thirteen
+  points, and a switch changes today's allocation while a SIP redirect does not — so the portfolio is
+  ₹1,85,000 ÷ 0.13. Change one and the other has to move, or screen 5 starts lying. The fund list and the
+  drawer's client list are now COMPUTED from the book, including the reverse lookup of who holds what.
+  `docs/DNA.md` also carries the terminology table (what the market calls it / what Sentinel says / why),
+  the copy rules with the sentences the product owns, and the visual DNA in one page.
 - **Journey C is built (19 Sep): `screens/journey-c/funds.html`**, six states. A sentence becomes a parsed
   query whose every part is a removable chip; the shortlist arrives as an artifact in the thread (there is
   no explorer screen, because there is no canvas); and a fund's page opens INSIDE its row — `DataTable`'s

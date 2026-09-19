@@ -8,6 +8,10 @@ scaffolding around it.
 
 ## Start here
 
+**The data, the fields, the words and the visual DNA: `docs/DNA.md`.** What a screen may render, what
+the product calls it, and the copy rules — extracted from the repository rather than proposed. The data
+itself is one file, `screens/data/book.jsx`.
+
 **Building the product? Read `docs/APP-PLAN.md`.** It is the plan for the app end to end — the five
 surfaces, the four questions an advisor asks that a chat UI answers by default (what can I do · what
 happens next · how do I go back · what if), the build order, and the honest note on what research it rests
