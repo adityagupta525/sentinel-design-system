@@ -8,7 +8,65 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 
 ---
 
-## 0 · Where this stopped — 18 Sep 2026, end of the second account's first session
+## 0 · Where this stopped — 20 Sep 2026, end of the long session
+
+**Read this section first.** §0b below is the 18 Sep drop, kept because its rulings still hold;
+§1–§10 are the standing document and are still true.
+
+| | |
+|---|---|
+| Branch / HEAD | `claude/practical-newton-fi0pof` — local and remote identical |
+| Pages | **144 / 144 render clean** (95 spec pages + 17 guidelines + 18 screens + boards + kits) |
+| The system | **94 components, every one with a contract, a prompt and a rendered spec page.** Tier 2 closed |
+| Integrity | 450 files pinned |
+| Adherence | system **61** (the gate ceiling, tightened from 62) · screens **0** · tokens **0 undefined** |
+| Parallel | **86 of 94** on a screen. The eight are named in contradiction 64, in three kinds |
+| Findings | **F-1 … F-72, none open** |
+| Contradictions | **9 open**, every one dated and triggered |
+| Artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — **version 29**, a grouped cover rather than a file tree, 254 files. Rebuild with `npm run build:artifact`, then republish with `url` |
+| Deployment | `vercel.json` builds the same staged site. `docs/DEPLOY.md` covers it, and answers the `.apk` question honestly |
+| Handoff | `npm run build:handoff` → one folder for a development team. `dist/` carries the two single code files the owner asked for by name |
+
+### What this session did, in the order it did it
+
+1. **The explorer's commands** — `sort by cost`, `under 0.7% TER`, `show 3Y`, `add Motilal`,
+   `compare A with B`, and an ambiguous name that binds nobody. The line it settled: **a filter
+   changes which funds match and becomes a chip; a view changes only the order or the period and
+   touches no chip.** (F-61)
+2. **The last three fund asks** — against its category, what changed, who holds it. Closed plan §2.
+   Two data defects found by measuring: the benchmark could not be read at one year, and two funds on
+   the same index drew two different indexes. (F-62)
+3. **The two scores** — Centricity Fund Score and Client Health Score, placeholders with their
+   weights printed on the card. The owner's basis, 20 Sep: *fund performance and client holding*. The
+   best part is the score that is **withheld** when too little of its inputs are on file. (F-63, F-67)
+4. **The UI kits redrawn** and **`Dock.cta` deleted** — the kits are no longer frozen. (F-64)
+5. **Contradictions 62 and 63 closed** — the two stat-box treatments named, and the review's four
+   figures given explainers. (F-65)
+6. **The breaching bar** on the rebalance takes `tone='status'`. (F-66)
+7. **The prototype driven end to end**, 24 steps, which found two defects nothing else could: a new
+   thread kept the previous thread's client, and a chip on the risk result crashed the rail. (F-68)
+8. **Four screen components promoted into the system** — `UserTurn`, `AttachmentTurn`, `RefusalTurn`,
+   `StepComposer` — and a motion pass that took `ds-rise` from three turns to every arriving one.
+   (F-70)
+9. **Three components deleted** (`CanvasHeader`, `DemoFooter`, `DecisionsStrip`), one built in
+   (`ScrollToBottomButton`, which turned out to have no accessible name), eight named. (F-71)
+10. **Tier 2 closed** — forty spec pages written, so every component in the system is specified.
+    (F-72)
+
+### What is open, and whose it is
+
+- **The Centricity Score's real methodology.** The owner's basis is settled; the weights are still
+  invented and the card says PLACEHOLDER. When the definition arrives, `FUND_SCORE_WEIGHTS` and the
+  five mappings in `book.jsx` are what change — the card, the band words, the turn and the shortlist
+  column do not.
+- **Contradiction 64(c)** — `ChartLegend`, `ChartShare`, `ChartTooltip`, `EyebrowDivider`. Rule 1
+  argues against a legend at all, which is why nothing reached for `ChartShare`. The owner's call.
+- **The remaining eight contradictions**, each dated and triggered.
+- **An `.apk`**, if the demo needs a file rather than a link. `docs/DEPLOY.md` §3 has the three routes.
+
+---
+
+## 0b · Where this stopped — 18 Sep 2026, end of the second account's first session
 
 **Read this section first; §1–§10 below are the standing document and are still true.**
 

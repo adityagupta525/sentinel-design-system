@@ -36,6 +36,10 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 - **Never restyle.** The visual language is settled. Fix gaps, spacing, correctness and consistency;
   do not change colour, type, radii, shadow or motion character. See CONTRIBUTING.md.
+- **Anything built on a screen that belongs in the system goes into the system** (the owner, 20 Sep).
+  Measured rather than guessed: a screen function that reads the book or is journey-specific stays;
+  one that is neither is a component. Four moved on 20 Sep — `UserTurn`, `AttachmentTurn`,
+  `RefusalTurn`, `StepComposer`.
 - **`design-system/ui_kits/` is no longer frozen.** It was the imported record and "do not touch" was
   the rule; on 20 Sep 2026 the owner ruled it redrawn, and it is now composed from the same components
   the screens use. Edit it like any other file under `design-system/` — integrity in the same commit.
@@ -76,15 +80,15 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
    initial in "R. Sharma"), F-61 (the prototype saying it had filtered a shortlist and not doing it),
    F-62 (the benchmark reading 42.6% over one year off a curve whose intermediate path was never
    constrained). `_index.json` reports `literals` — how many raw style values each component still
-   hardcodes — so adherence is measurable per component: **38 of 93** are fully clean, and the
-   `lint:adherence:gate` ceiling is **61**.
+   hardcodes — so adherence is measurable per component, and the `lint:adherence:gate` ceiling is
+   **61**.
 3. **The four components the request spec named and nobody built** — done.
    `ResultCard` · `DataTable` · `OverlapView` · `InfoCard kind='manager'`, each with its contract and
    a spec page. `pages/_index.json` reports **0 specified**: the backlog the system carried since v9
    is empty.
-3b. **Spec pages, Tier 1** — done. **50 of 93 shipped**, 43 building, 100/100 pages render clean.
-   Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
-   Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
+3b. **Spec pages** — **done, both tiers.** 20 Sep 2026: every one of the **94** components has a
+   rendered specification, and **144 pages render clean**. A row in `pages/_index.json` is shipped only
+   when the `.jsx`, the `.d.ts` and the page all exist on disk, so the count cannot be claimed.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for. **Journeys A, B and C built** (a state of a screen is not a screen), plus the shell
    drawer, the ledger, the refusals, the going-back layer, **Journey D (the proposal)**, **Journey E (the rebalance)**, **Journey F (the review)** and **the end-to-end prototype** — one phone whose
