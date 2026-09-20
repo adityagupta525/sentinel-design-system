@@ -1,0 +1,12 @@
+<!-- The home-screen icon: the system's own sparkle, on the system's own ink, at the system's own
+     bronze. Nothing is invented here — the path is IconSparkle's verbatim, and the two colours are
+     --color-ink and --color-bronze read from tokens/colors.css. It is a placeholder in the sense
+     that nobody has designed an app icon yet; it is not a placeholder in the sense of being off the
+     system. Replace it when there is a real one and re-run `npm run build:app`. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#251f1b"/>
+  <g transform="translate(256 256) scale(24) translate(-6.29 -6.1)">
+    <path d="M6.29 0.665L7.715 4.865L11.915 5.915L7.715 7.34L6.29 11.54L4.86501 7.34L0.665005 5.915L4.86501 4.865L6.29 0.665Z"
+          fill="none" stroke="#b69377" stroke-width="1.05" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

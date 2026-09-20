@@ -15,8 +15,17 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Sentinel">
-<meta name="theme-color" content="#f7f4ef">
+<meta name="theme-color" content="#f6f4f1">
 <meta name="color-scheme" content="light">
+<!-- HOME SCREEN. `apple-mobile-web-app-capable` alone was on the page and the owner still got Safari
+     chrome after Add to Home Screen, so the two things it was missing are here: a web app manifest,
+     which is what iOS 16.4 and later and every Android browser read, and an `apple-touch-icon`,
+     without which iOS puts a screenshot of the page on the home screen. Neither of these is what
+     makes it launch full-screen on iOS by itself — only Safari's own Add to Home Screen does that;
+     the same menu item in Chrome or Firefox on iOS makes a bookmark that opens in the browser. -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png" type="image/png">
 <link rel="stylesheet" href="../design-system/styles.css">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>

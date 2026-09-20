@@ -56,6 +56,18 @@ html = html.replace(
 );
 
 await writeFile(join(OUT, 'index.html'), html);
+
+/* The home-screen files sit beside the page rather than inside it: a manifest has to be its own
+   document for a browser to read it, and an icon has to be a real file for iOS to put on a home
+   screen. Four small files; the app is still one HTML document. */
+const { readdir, copyFile } = await import('node:fs/promises');
+const ASSETS = join(ROOT, 'screens', 'app-assets');
+let assets = 0;
+for (const f of await readdir(ASSETS)) {
+  if (f.startsWith('.') || f.endsWith('.svg')) continue; // the svg is the source the pngs come from
+  await copyFile(join(ASSETS, f), join(OUT, f));
+  assets += 1;
+}
 await writeFile(join(OUT, 'vercel.json'), JSON.stringify({
   $schema: 'https://openapi.vercel.sh/vercel.json',
   cleanUrls: false,
@@ -76,5 +88,5 @@ const left = [
 const bad = left.filter(([, present]) => present).map(([what]) => what);
 if (bad.length) { console.error(`app/index.html still carries ${bad.join(', ')}`); process.exit(1); }
 
-console.log(`app/index.html: one file, ${(html.length / 1024).toFixed(0)} KB, ${n} JSX blocks compiled in`);
+console.log(`app/index.html: ${(html.length / 1024).toFixed(0)} KB, ${n} JSX blocks compiled in, plus ${assets} home-screen files`);
 console.log('deploy it with:  cd app && npx vercel --prod');
