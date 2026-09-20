@@ -1,4 +1,18 @@
 import type { ChartSeries } from '../data/ChartLine';
+/** THE FOOTNOTE STAT — the quiet one, and contradiction 62's ruling of 20 Sep 2026 is which.
+ *
+ *  Canvas ground, INSET ring, `--space-10` padding, `--type-caption-font` label, 13px ink value, an
+ *  `InfoDot` always. It is a fact ABOUT the thing this card is already about: riskometer, expense
+ *  ratio, exit load, fund size under a fund's name. It is internal to `InfoCard` — not exported, and
+ *  it never appears alone.
+ *
+ *  Its loud counterpart is `StatTile`, THE FIGURE TILE: surface ground, outset ring, 24px display
+ *  bronze, used when the figure IS the point of the turn. Rendered side by side on
+ *  `screens/journey-f/review.html`, four StatTiles are the loudest thing on the screen and these read
+ *  as a footer — which is right in both places, and was a trap while neither had a name.
+ *
+ *  The test, in one line: **if the reader came for this number, it is a figure tile; if they came for
+ *  the thing and this number qualifies it, it is a footnote stat.** */
 export interface InfoCardStat {
   /** "CAGR 1Y", "Max drawdown 1Y" — named so the ⓘ's label reads "How is CAGR 1Y worked out?". */
   label: string;

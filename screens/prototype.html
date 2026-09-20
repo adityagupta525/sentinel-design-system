@@ -525,6 +525,7 @@ function Proto({ onEvent }) {
         result={() => (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
             <ReviewResult
+              onExplain={(x) => { setWhy(x); log(`“${x.title}” — the figure explains itself`, reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }}
               onSave={() => log('Saved to her file — the badge becomes a date', '')}
               onDownload={() => { log('PDF — no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }} />
             {audience && <ReviewEnding audience={audience} onChip={(l) => log(`“${l}” — not built`, '')} />}

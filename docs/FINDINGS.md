@@ -1782,3 +1782,47 @@ showed the card and hid the button. Bottom-anchored like the rest — the ruling
 
 System adherence falls **62 → 61**: one fewer hardcoded literal, because the hand-drawn devices went.
 The gate is tightened to 61 in the same commit.
+
+---
+
+### F-65 · Contradictions 62 and 63, closed — *20 Sep 2026*
+
+Both rows had a written trigger and the owner pulled it.
+
+**63 — the review's four figures had no door to an explanation.** `InfoDot` was shipped, specified, and
+appeared **zero times** directly across `screens/`; it arrived only through `InfoCard`'s stats, which
+always draw it. So the fund card's figures each had an ⓘ and the review's four did not — including the
+locked one, which **is** the review's finding. The row stayed open because the fix is content: four
+bodies that are claims about somebody's money.
+
+They are written, and every fact in them was already in `book.jsx`:
+
+| Figure | What the body says |
+|---|---|
+| Her book · ₹18,40,000 | A value on a date, all 43 funds in it, and **not** a return |
+| Her risk number · 54 | The lowest of three, and why the lowest rather than the average |
+| What she agreed to · 55/30/15 | A target with a ±5 band, not a rule about any one day |
+| What she actually holds · — | Explains an **absence**, and is the only one that could not be written from the figure |
+
+All four tiles pass `onExplain`, the locked one included, because an absence is the thing that most
+needs explaining. The review page and the prototype both carry a real `ExplainerSheet` — an ⓘ that
+opens nothing is worse than no ⓘ — and all four were driven open and shut before this was written.
+
+**`StatTile.onExplain` and `caveat` shipped in v11 and were never in the `.d.ts`.** That is how this
+went unnoticed for four versions: the prop existed, the component drew it, and the contract a screen
+author reads did not mention it. Both are documented now.
+
+**62 — two stat-box treatments, and nothing said which.** The ruling is a rule, not a rename: renaming
+an export churns every call site and the parallel report to buy a word. Both contracts now carry the
+identity and the test.
+
+- **`StatTile` is the FIGURE TILE.** Surface ground, outset ring, 24px display bronze. Exported, stands
+  alone, used when the figure **is** the point of the turn.
+- **`InfoCard`'s stat box is the FOOTNOTE STAT.** Canvas ground, inset ring, 13px ink. Internal, never
+  alone, used for a fact **about** the thing the card is already about.
+
+The test, in one line: *if the reader came for this number it is a figure tile; if they came for the
+thing and this number qualifies it, it is a footnote stat.* Neither treatment changed. What changed is
+that a screen author can no longer pick wrong by accident.
+
+**Open contradictions: 8.** Was 10.

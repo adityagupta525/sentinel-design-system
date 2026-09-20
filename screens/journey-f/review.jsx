@@ -55,16 +55,45 @@ function ReviewShape() {
   );
 }
 
+/* THE FOUR FIGURES EXPLAIN THEMSELVES — contradiction 63, closed 20 Sep 2026.
+   `InfoDot` was shipped, specified, and reached nothing directly on any screen; it arrived only
+   through `InfoCard`'s stats. So the review's four figures — including the locked one, which IS the
+   review's finding — had no door to an explanation, while the same class of figure on the fund card
+   had one on every stat. The row was left open because the fix is CONTENT: four bodies that are
+   claims about somebody's money, and every fact in them has to be in the book already. They are.
+
+   The voice is the product's: the number first, then what it is, then what it is not. The last one
+   explains an absence, which is the only explainer here that could not be written from the figure. */
+const REV_EXPLAINERS = {
+  book: { title: 'Her book — ₹18,40,000', body: [
+    `This is what her ${MEERA.portfolio.funds} funds were worth on ${MEERA.portfolio.asOf}. It comes from her September statement, and all ${MEERA.portfolio.funds} of them are in it — nothing is missing from the total.`,
+    'It is a value, not a return. What she put in and what she has made are two different numbers, and this review does not claim either.'] },
+  risk: { title: `Her risk number — ${MEERA.risk.score}`, body: [
+    /* Not "54 is the lowest…": a sentence that opens with a digit reads as a fragment, and shouting
+       LOWEST in capitals is not this product's voice. The word carries it. */
+    `It is the lowest of three scores, not an average — ${MEERA.risk.rows.map((r) => `${r.label.toLowerCase()} (${r.value})`).join(', ')}.`,
+    'We go with the lowest because a mix she cannot sit through is a mix she sells at the wrong moment, and that costs more than being slightly under-invested.',
+    `It was locked on ${MEERA.risk.lockedOn} and it does not move on its own. Re-running her profile is what changes it.`] },
+  mandate: { title: `What she agreed to — ${MEERA.mandate.equity}/${MEERA.mandate.debt}/${MEERA.mandate.cash}`, body: [
+    `Equity ${MEERA.mandate.equity}%, debt ${MEERA.mandate.debt}%, cash ${MEERA.mandate.cash}%. This is the mix on her file, agreed when her risk number was locked.`,
+    `It is a target, not a rule about any one day — a portfolio moves around it as markets do. ${LIMITS.driftBand} points either side is inside the band; past that a review is raised.`] },
+  actual: { title: 'What she actually holds — no figure', body: [
+    'There is no number here, and that is this review’s finding rather than a gap in the page.',
+    REV_MISSING,
+    'Until then, everything above is exact and this one line is honestly blank. A split guessed from 14 mapped funds out of 43 would look like an answer and would not be one.'] },
+};
+
 /* WHAT IS ON FILE, AND WHAT IS NOT — side by side, because a review that shows only what it knows is
    the exact failure the research's top theme describes. The locked tile is not a placeholder for a
    figure we forgot; it is the review's finding, and it names what would produce it. */
-function ReviewFacts() {
+function ReviewFacts({ onExplain }) {
+  const ex = (k) => (onExplain ? () => onExplain(REV_EXPLAINERS[k]) : undefined);
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-8)' }}>
-      <REV_DS.StatTile label="Her book" value={inr(MEERA.portfolio.valueRs)} note={`${MEERA.portfolio.funds} funds · as of ${MEERA.portfolio.asOf}`} />
-      <REV_DS.StatTile label="Her risk number" value={String(MEERA.risk.score)} note={`${MEERA.risk.band} · locked ${MEERA.risk.lockedOn}`} />
-      <REV_DS.StatTile label="What she agreed to" value={`${MEERA.mandate.equity} / ${MEERA.mandate.debt} / ${MEERA.mandate.cash}`} note="Equity / debt / cash" />
-      <REV_DS.StatTile locked label="What she actually holds" value="—" note="[PLACEHOLDER — her split, to supply]" />
+      <REV_DS.StatTile label="Her book" value={inr(MEERA.portfolio.valueRs)} note={`${MEERA.portfolio.funds} funds · as of ${MEERA.portfolio.asOf}`} onExplain={ex('book')} />
+      <REV_DS.StatTile label="Her risk number" value={String(MEERA.risk.score)} note={`${MEERA.risk.band} · locked ${MEERA.risk.lockedOn}`} onExplain={ex('risk')} />
+      <REV_DS.StatTile label="What she agreed to" value={`${MEERA.mandate.equity} / ${MEERA.mandate.debt} / ${MEERA.mandate.cash}`} note="Equity / debt / cash" onExplain={ex('mandate')} />
+      <REV_DS.StatTile locked label="What she actually holds" value="—" note="[PLACEHOLDER — her split, to supply]" onExplain={ex('actual')} />
     </div>
   );
 }
@@ -146,13 +175,13 @@ const REV_PROVENANCE = `As of ${MEERA.portfolio.asOf} · from her September stat
 const REV_SUMMARY = `${inr(MEERA.portfolio.valueRs)} across ${MEERA.portfolio.funds} funds. ${MEERA.tail.topFunds} of them hold ${MEERA.tail.topSharePct}% of it; the other ${MEERA.tail.tinyFunds} hold the rest and none reaches ${MEERA.tail.tinyUnderPct}%.`;
 
 /* No `sentAt`: a review is never sent. A prop that does nothing is a prop that lies. */
-function ReviewResult({ state = 'draft', savedAt, onSave, onDownload }) {
+function ReviewResult({ state = 'draft', savedAt, onSave, onDownload, onExplain }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
       <REV_DS.ResultCard journey="review" state={state} savedAt={savedAt}
         title="What Meera holds" provenance={REV_PROVENANCE} summary={REV_SUMMARY}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-14)' }}>
-          <ReviewFacts />
+          <ReviewFacts onExplain={onExplain} />
           <ReviewShape />
         </div>
       </REV_DS.ResultCard>
@@ -191,5 +220,5 @@ const RevCarried = ({ fundId }) => {
   return lines ? <REV_DS.SentinelTurn say={lines} /> : null;
 };
 
-Object.assign(window, { HealthTurn, RevCarried, revCarriedLines, MEERA, REV_ASK, REV_STEPS, REV_TOTAL, ReviewShape, ReviewFacts, ReviewEnding,
+Object.assign(window, { HealthTurn, REV_EXPLAINERS, RevCarried, revCarriedLines, MEERA, REV_ASK, REV_STEPS, REV_TOTAL, ReviewShape, ReviewFacts, ReviewEnding,
   REV_ENDINGS, REV_MISSING, REV_PROVENANCE, REV_SUMMARY, ReviewResult });
