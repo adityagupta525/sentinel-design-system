@@ -33,7 +33,7 @@
     "check:integrity": "node tools/check-integrity.mjs",
     "check:tokens": "node tools/check-tokens.mjs",
     "lint:adherence": "oxlint --config design-system/_adherence.oxlintrc.json design-system",
-    "lint:adherence:gate": "oxlint --config design-system/_adherence.oxlintrc.json --max-warnings=61 --silent design-system",
+    "lint:adherence:gate": "oxlint --config design-system/_adherence.oxlintrc.json --max-warnings=59 --silent design-system",
     "lint:adherence:screens": "oxlint --config design-system/_adherence.oxlintrc.json screens",
     "preview": "node tools/preview-server.mjs",
     "report:parallel": "node tools/check-parallel.mjs",

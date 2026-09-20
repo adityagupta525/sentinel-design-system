@@ -87,7 +87,12 @@ export function ScreenScaffold({
       {body === 'thread' ? (
         /* The screen carries the scroll — never a card inside it, and never a second scroller. */
         <div ref={scrollRef || own} onScroll={onScroll} style={{ position: 'relative', zIndex: 1, display: 'flex', flex: 1, flexDirection: 'column', overflowY: 'auto', minHeight: 0 }}>
-          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--stack)', padding: '16px var(--gutter) 24px' }}>
+          {/* THE BOTTOM PADDING RESERVES THE DISC'S ROW (20 Sep 2026). `ScrollToBottomButton` floats
+              8px above the Dock, and nothing had reserved space for it — so the last line of a thread
+              could rest underneath it, and on several boards that line was the provenance or the
+              standing disclaimer. 24 + 36 + 8: the disc's own height and its offset. A floating
+              control may pass over content while you scroll; it may not sit on it at rest. */}
+          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--stack)', padding: `16px var(--gutter) ${body === 'thread' ? 68 : 24}px` }}>
             {children}
           </div>
         </div>

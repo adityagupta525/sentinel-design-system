@@ -1,4 +1,5 @@
 import React from 'react';
+import { Pressable } from '../actions/Pressable.jsx';
 /* Per-message actions — the LAST message only. At 375pt, actions under every turn are noise.
    Text only at 11.5px muted, never pills: this system is text-forward and a row of ghost pills here
    would compete with the chip row directly below it.
@@ -14,12 +15,16 @@ const LINE = 16;                       /* --leading-16, the visible line box of 
 const OVERHANG = (TARGET - LINE) / 2;  /* 14 */
 const LABELS = { copy: 'Copy', edit: 'Edit', retry: 'Retry' };
 export function MessageActions({ role = 'assistant', actions, onAction }) {
+  /* 23pt WIDE, ON TWELVE SCREENS (20 Sep 2026). The vertical target was handled by `minHeight` and
+     the horizontal one by nothing, so Edit and Copy sat at 23 × 44. `Pressable` measures the rendered
+     box and expands to 44 in BOTH axes without changing a pixel of what is drawn.
+     (The note lives here because a JSX comment in a return position is a parse error — sixth time.) */
   const list = actions && actions.length ? actions : (role === 'user' ? ['edit'] : ['copy', 'retry']);
   return (
     <div style={{ display: 'flex', gap: 'var(--space-16)', justifyContent: role === 'user' ? 'flex-end' : 'flex-start', margin: `${-OVERHANG}px 0` }}>
       {list.map((a) => (
-        <button key={a} type="button" onClick={() => onAction && onAction(a)}
-          style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', minHeight: TARGET, padding: `${OVERHANG}px 2px`, font: 'var(--type-meta-font)', color: 'var(--color-muted)' }}>{LABELS[a] || a}</button>
+        <Pressable key={a} onClick={() => onAction && onAction(a)}
+          style={{ appearance: 'none', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', minHeight: TARGET, padding: `${OVERHANG}px 2px`, font: 'var(--type-meta-font)', color: 'var(--color-muted)' }}>{LABELS[a] || a}</Pressable>
       ))}
     </div>
   );

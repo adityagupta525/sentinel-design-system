@@ -61,12 +61,12 @@ export function ResultCard({ journey, state = 'draft', title, provenance, summar
 /* Save and Download, in the dock's chip row. Both are Pill size="md" tone="outline" (§4.1); Download
    is the DownloadAction wrapper so the wait, the confirmation and the failure wording are the ones
    every other download in the product uses. */
-export function ResultActions({ state = 'draft', onSave, onDownload, format = 'PDF', saveLabel = 'Save' }) {
+export function ResultActions({ state = 'draft', onSave, onDownload, format = 'PDF', saveLabel = 'Save', doneLabel }) {
   const saved = state !== 'draft';
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--chip-gap)', flexWrap: 'wrap' }}>
       <Pill label={saved ? 'Saved' : saveLabel} tone="outline" selected={saved} onClick={saved ? undefined : onSave} disabled={saved} />
-      <DownloadAction format={format} onDownload={onDownload} />
+      <DownloadAction format={format} onDownload={onDownload} doneLabel={doneLabel} />
     </div>
   );
 }

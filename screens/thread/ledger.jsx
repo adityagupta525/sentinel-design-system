@@ -73,7 +73,7 @@ function LedgerArtifact({ items = LEDGER, openRow = null, state = 'expanded', on
         {!folded && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-8)', flexWrap: 'wrap' }}>
             <LED_DS.RangePills ranges={['Sep', 'Q2', 'FY 26-27']} value="Sep" onChange={() => {}} label="Period" />
-            <LED_DS.DownloadAction format="CSV" onDownload={onDownload} size="sm" />
+            <LED_DS.DownloadAction doneLabel="Nothing written here" format="CSV" onDownload={onDownload} size="sm" />
           </div>
         )}
       </div>

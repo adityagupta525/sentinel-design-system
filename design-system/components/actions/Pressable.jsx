@@ -37,11 +37,36 @@ export function Pressable({ children, onClick, style, disabled = false, pressSca
   const [down, setDown] = React.useState(false);
   const ref = React.useRef(null);
   const [pad, setPad] = React.useState({ y: 0, x: 0 });
+  /* MEASURED ON EVERY RESIZE, NOT ONCE (20 Sep 2026). The deps were `[expand, children]`, so the pad
+     was frozen to whatever the layout happened to be when the effect first ran — and 47 RangePills
+     that all render at the same width carried three different targets, decided by nothing the caller
+     could see. A control whose hit box depends on when it mounted is not a guarantee. */
+  React.useEffect(() => {
+    if (expand === 'none' || !ref.current) return;
+    const el = ref.current;
+    const measure = () => {
+      const box = el.getBoundingClientRect();
+      if (!box.height) return;
+      setPad({ y: Math.max(0, (44 - box.height) / 2), x: Math.max(0, (44 - box.width) / 2) });
+    };
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [expand]);
   React.useEffect(() => {
     if (expand === 'none' || !ref.current) return;
     const box = ref.current.getBoundingClientRect();
     if (!box.height) return;
-    setPad({ y: Math.max(0, (44 - box.height) / 2), x: Math.max(0, Math.min(12, (44 - box.width) / 2)) });
+    /* THE 12px CAP MEANT THE 44pt GUARANTEE WAS NOT KEPT (20 Sep 2026, found by measuring rather than
+       by reading the contract). A 14px `InfoDot` expanded to 14 + 24 = **38 wide**, six points short,
+       on every figure in the product that offers an explanation. The cap was there to stop a narrow
+       control swallowing its neighbours — but neighbours are spaced by the row that holds them, and a
+       target that silently stops at 38 breaks the one promise this component exists to make. It
+       expands to 44 now, in both axes, and a caller that genuinely cannot afford it passes
+       `expand='none'` and says so. */
+    setPad({ y: Math.max(0, (44 - box.height) / 2), x: Math.max(0, (44 - box.width) / 2) });
   }, [expand, children]);
   const needsPad = pad.y > 0 || pad.x > 0;
   return (

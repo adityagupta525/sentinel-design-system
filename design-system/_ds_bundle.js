@@ -261,7 +261,7 @@ var __ds_out = (() => {
   }
 
   // design-system/components/actions/DownloadAction.jsx
-  function DownloadAction({ label, format = "PDF", onDownload, size = "md", tone = "outline", disabled = false }) {
+  function DownloadAction({ label, format = "PDF", onDownload, size = "md", tone = "outline", disabled = false, doneLabel = "Saved to Files" }) {
     const [state, setState] = react_global_default.useState("idle");
     const text = label || `Download ${format}`;
     const run = async () => {
@@ -270,11 +270,11 @@ var __ds_out = (() => {
         await (onDownload ? onDownload(format) : Promise.resolve());
         setState("done");
         setTimeout(() => setState("idle"), 2e3);
-      } catch (e) {
+      } catch {
         setState("failed");
       }
     };
-    const shown = state === "done" ? `Saved to Files` : state === "failed" ? "Try again" : text;
+    const shown = state === "done" ? doneLabel : state === "failed" ? "Try again" : text;
     return /* @__PURE__ */ react_global_default.createElement(Pill, { label: shown, size, tone: state === "done" ? "smart" : tone, loading: state === "working", disabled, onClick: state === "working" ? void 0 : run, selected: state === "done" });
   }
 
@@ -285,9 +285,23 @@ var __ds_out = (() => {
     const [pad, setPad] = react_global_default.useState({ y: 0, x: 0 });
     react_global_default.useEffect(() => {
       if (expand === "none" || !ref.current) return;
+      const el = ref.current;
+      const measure = () => {
+        const box = el.getBoundingClientRect();
+        if (!box.height) return;
+        setPad({ y: Math.max(0, (44 - box.height) / 2), x: Math.max(0, (44 - box.width) / 2) });
+      };
+      measure();
+      if (typeof ResizeObserver === "undefined") return;
+      const ro = new ResizeObserver(measure);
+      ro.observe(el);
+      return () => ro.disconnect();
+    }, [expand]);
+    react_global_default.useEffect(() => {
+      if (expand === "none" || !ref.current) return;
       const box = ref.current.getBoundingClientRect();
       if (!box.height) return;
-      setPad({ y: Math.max(0, (44 - box.height) / 2), x: Math.max(0, Math.min(12, (44 - box.width) / 2)) });
+      setPad({ y: Math.max(0, (44 - box.height) / 2), x: Math.max(0, (44 - box.width) / 2) });
     }, [expand, children]);
     const needsPad = pad.y > 0 || pad.x > 0;
     return /* @__PURE__ */ react_global_default.createElement(
@@ -388,16 +402,11 @@ var __ds_out = (() => {
 
   // design-system/components/actions/SuggestionRow.jsx
   function SuggestionRow({ label, onClick, last = false }) {
-    const [down, setDown] = react_global_default.useState(false);
     return /* @__PURE__ */ react_global_default.createElement(
-      "button",
+      Pressable,
       {
-        type: "button",
         onClick,
-        onPointerDown: () => setDown(true),
-        onPointerUp: () => setDown(false),
-        onPointerLeave: () => setDown(false),
-        style: { appearance: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", height: "var(--h-row)", width: "100%", alignItems: "center", justifyContent: "space-between", textAlign: "left", background: down ? "var(--tint-bronze-06)" : "transparent", borderBottom: last ? "none" : "0.5px solid var(--color-line-soft)", transform: down ? "scale(0.98)" : "none", transition: "transform var(--dur-press) var(--ease), background-color var(--dur-press)" }
+        style: { padding: 0, display: "flex", height: "var(--h-row)", width: "100%", alignItems: "center", justifyContent: "space-between", textAlign: "left", borderBottom: last ? "none" : "0.5px solid var(--color-line-soft)" }
       },
       /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-12)", lineHeight: "var(--leading-18)", color: "var(--color-ink)" } }, label),
       /* @__PURE__ */ react_global_default.createElement(IconChevronRight, null)
@@ -435,7 +444,7 @@ var __ds_out = (() => {
         tabIndex: -1,
         style: { position: "absolute", inset: 0, width: "100%", display: "block" }
       }
-    )), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", padding: `14px 14px ${padBottom}px`, textAlign: "left", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, eyebrow), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-4)" } }, titleEl), /* @__PURE__ */ react_global_default.createElement("div", { style: { maxHeight: 96, marginTop: "var(--space-10)", overflow: "hidden", pointerEvents: "auto" } }, filling ? /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 96, borderRadius: "var(--radius-12)", background: "var(--color-track)", animation: "sentinel-shimmer 1200ms ease-in-out infinite" } }) : children), provenance && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "10px 0 0", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-11)", lineHeight: "var(--leading-15)", color: "var(--color-muted)" } }, provenance))), hasFooter && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "12px 14px 0", height: "var(--border-hairline)", background: "var(--color-line-soft)" } }), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", padding: "0 14px" } }, toggle ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: filling ? void 0 : toggle, style: slot }, !filling ? /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-5)" } }, label(expanded ? collapseLabel : expandLabel, true), /* @__PURE__ */ react_global_default.createElement(Chevron, { up: expanded })) : null) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }), onWhy ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onWhy, style: slot }, label("Why?")) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }), onShare ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onShare, style: slot }, label("Share")) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }))));
+    )), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", padding: `14px 14px ${padBottom}px`, textAlign: "left", pointerEvents: "none" } }, /* @__PURE__ */ react_global_default.createElement(Eyebrow, null, eyebrow), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-4)" } }, titleEl), /* @__PURE__ */ react_global_default.createElement("div", { style: { maxHeight: 96, marginTop: "var(--space-10)", overflow: "hidden", pointerEvents: "auto" } }, filling ? /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 96, borderRadius: "var(--radius-12)", background: "var(--color-track)", animation: "sentinel-shimmer 1200ms ease-in-out infinite" } }) : children), provenance && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "10px 0 0", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-11)", lineHeight: "var(--leading-15)", color: "var(--color-muted)" } }, provenance))), hasFooter && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "12px 14px 0", height: "var(--border-hairline)", background: "var(--color-line-soft)" } }), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", padding: "0 14px" } }, toggle && !filling ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: toggle, style: slot }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-5)" } }, label(expanded ? collapseLabel : expandLabel, true), /* @__PURE__ */ react_global_default.createElement(Chevron, { up: expanded }))) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }), onWhy ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onWhy, style: slot }, label("Why?")) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }), onShare ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onShare, style: slot }, label("Share")) : /* @__PURE__ */ react_global_default.createElement("div", { style: slot }))));
   }
 
   // design-system/components/cards/Badge.jsx
@@ -558,7 +567,7 @@ var __ds_out = (() => {
   function Cell({ col, row, max }) {
     const v = row[col.key];
     const align = col.align || ALIGN[col.kind] || "start";
-    const base = { minWidth: 0, textAlign: align === "end" ? "right" : "left", font: "var(--type-row-font)", color: "var(--color-ink)" };
+    const base = { minWidth: 0, textAlign: align === "end" ? "right" : "left", font: "var(--type-row-font)", fontVariantNumeric: "tabular-nums", color: "var(--color-ink)" };
     if (col.kind === "bar") {
       const n = Number(row[`${col.key}Value`] ?? (parseFloat(String(v)) || 0));
       const lo = Number(col.min) || 0;
@@ -991,9 +1000,9 @@ var __ds_out = (() => {
     const eyebrow = state === "sent" ? "Sent" : state === "saved" ? "Saved work" : journey === "review" ? "Client review" : journey === "rebalance" ? "Rebalance" : "Proposal";
     return /* @__PURE__ */ react_global_default.createElement(ArtifactCard, { state: "expanded", eyebrow, title }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-12)" } }, summary && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-body-font)", color: "var(--color-ink-soft)" } }, summary), children, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement(Provenance, { text: provenance }), savedAt && state !== "draft" && /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "meta" }, `Saved \xB7 ${savedAt}`))));
   }
-  function ResultActions({ state = "draft", onSave, onDownload, format = "PDF", saveLabel = "Save" }) {
+  function ResultActions({ state = "draft", onSave, onDownload, format = "PDF", saveLabel = "Save", doneLabel }) {
     const saved = state !== "draft";
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--chip-gap)", flexWrap: "wrap" } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: saved ? "Saved" : saveLabel, tone: "outline", selected: saved, onClick: saved ? void 0 : onSave, disabled: saved }), /* @__PURE__ */ react_global_default.createElement(DownloadAction, { format, onDownload }));
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--chip-gap)", flexWrap: "wrap" } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: saved ? "Saved" : saveLabel, tone: "outline", selected: saved, onClick: saved ? void 0 : onSave, disabled: saved }), /* @__PURE__ */ react_global_default.createElement(DownloadAction, { format, onDownload, doneLabel }));
   }
   function ResultPrimary({ journey, state = "draft", client, moves, label, onPrimary, sentAt }) {
     if (state === "sent") {
@@ -1073,7 +1082,7 @@ var __ds_out = (() => {
   var NODE = 16;
   function Node({ state }) {
     const done = state === "done", failed = state === "failed", running = state === "running";
-    return /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", left: 0, top: 3, display: "flex", width: NODE, height: NODE, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: done ? "var(--color-bronze)" : failed ? "var(--color-status-over-bg)" : "var(--color-canvas)", boxShadow: done ? "none" : `inset 0 0 0 var(--border-1) ${failed ? "var(--color-status-over-fg)" : running ? "var(--color-bronze)" : "var(--color-line)"}` } }, done && /* @__PURE__ */ react_global_default.createElement("svg", { width: "9", height: "9", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "3.4", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M20 6 9 17l-5-5" })), failed && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-eyebrow-font)", color: "var(--color-status-over-fg)", lineHeight: 1 } }, "!"), running && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 6, height: 6, borderRadius: "var(--radius-full)", background: "var(--color-bronze)", animation: "dot-pulse 1200ms var(--ease) infinite" } }));
+    return /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", left: 0, top: 3, display: "flex", width: NODE, height: NODE, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: done ? "var(--color-bronze)" : failed ? "var(--color-status-over-bg)" : "var(--color-canvas)", boxShadow: done ? "none" : `inset 0 0 0 var(--border-1) ${failed ? "var(--color-status-over-fg)" : running ? "var(--color-bronze)" : "var(--color-line)"}` } }, done && /* @__PURE__ */ react_global_default.createElement("svg", { width: "9", height: "9", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "3.4", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M20 6 9 17l-5-5" })), failed && /* @__PURE__ */ react_global_default.createElement("svg", { width: "9", height: "9", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-status-over-fg)", strokeWidth: "3.4", strokeLinecap: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M12 6v7" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M12 17.5v.5" })), running && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 6, height: 6, borderRadius: "var(--radius-full)", background: "var(--color-bronze)", animation: "dot-pulse 1200ms var(--ease) infinite" } }));
   }
   function StepTrace({ steps = [], summary, open: openProp, defaultOpen = false, onToggle, id = "steptrace", dense = false }) {
     const [openState, setOpenState] = react_global_default.useState(defaultOpen);
@@ -1165,10 +1174,9 @@ var __ds_out = (() => {
   function MessageActions({ role = "assistant", actions, onAction }) {
     const list = actions && actions.length ? actions : role === "user" ? ["edit"] : ["copy", "retry"];
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", gap: "var(--space-16)", justifyContent: role === "user" ? "flex-end" : "flex-start", margin: `${-OVERHANG}px 0` } }, list.map((a) => /* @__PURE__ */ react_global_default.createElement(
-      "button",
+      Pressable,
       {
         key: a,
-        type: "button",
         onClick: () => onAction && onAction(a),
         style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", minHeight: TARGET, padding: `${OVERHANG}px 2px`, font: "var(--type-meta-font)", color: "var(--color-muted)" }
       },
@@ -1222,7 +1230,7 @@ var __ds_out = (() => {
     }, []);
     const chev = (rot) => /* @__PURE__ */ react_global_default.createElement("svg", { width: "12", height: "12", viewBox: "0 0 12 12", fill: "none", style: { transform: rot ? "rotate(-90deg)" : "none" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M4.5 3 7.5 6l-3 3", stroke: "var(--color-muted)", strokeWidth: "1.3", strokeLinecap: "round", strokeLinejoin: "round" }));
     if (done && collapsed) return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, null, /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => setCollapsed(false), style: { display: "flex", alignItems: "center", gap: "var(--space-6)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-13)", color: "var(--color-muted)" } }, "Thought for ", secs, "s"), chev(false)));
-    return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => done && setCollapsed(true), style: { appearance: "none", border: "none", background: "transparent", padding: 0, cursor: done ? "pointer" : "default", marginBottom: "var(--space-10)", display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: done ? "var(--color-muted)" : "var(--color-ink)" } }, stopped ? `Stopped at ${secs}s` : done ? `Thought for ${secs}s` : `Working \xB7 ${secs}s`), done && chev(true)), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", gap: "var(--space-12)", paddingLeft: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "absolute", bottom: 8, left: 9, top: 8, width: 1, background: "var(--color-line)" } }), steps.map((s, i) => {
+    return /* @__PURE__ */ react_global_default.createElement(SentinelBlock, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => done && setCollapsed(true), disabled: !done, label: done ? "Collapse what I did" : void 0, expanded: done ? true : void 0, style: { appearance: "none", border: "none", background: "transparent", padding: 0, cursor: done ? "pointer" : "default", marginBottom: "var(--space-10)", display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: done ? "var(--color-muted)" : "var(--color-ink)" } }, stopped ? `Stopped at ${secs}s` : done ? `Thought for ${secs}s` : `Working \xB7 ${secs}s`), done && chev(true)), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", gap: "var(--space-12)", paddingLeft: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "absolute", bottom: 8, left: 9, top: 8, width: 1, background: "var(--color-line)" } }), steps.map((s, i) => {
       const state = i < active ? "done" : i === active && !done ? "active" : done ? "done" : "pending";
       return /* @__PURE__ */ react_global_default.createElement("div", { key: s, style: { position: "relative", zIndex: 10, display: "flex", alignItems: "center", gap: "var(--space-10)", opacity: i === active && !done ? 1 : 0.4, transition: "opacity var(--dur-fast) var(--ease)" } }, /* @__PURE__ */ react_global_default.createElement(Circle, { state }), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-13)", lineHeight: "var(--leading-18)", color: "var(--color-ink-soft)" } }, s));
     })), done && reasoning && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", borderLeft: "1px solid var(--color-line)", paddingLeft: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-13)", lineHeight: "var(--leading-19)", color: "var(--color-muted)" } }, reasoning))));
@@ -1422,11 +1430,11 @@ var __ds_out = (() => {
       const f = e.target.files && e.target.files[0];
       if (f) onAttach(f);
       e.target.value = "";
-    }, style: { display: "none" }, tabIndex: -1, "aria-hidden": "true" }), /* @__PURE__ */ react_global_default.createElement("span", { "data-attach": "live", style: { display: "flex" } }, /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => fileRef.current && fileRef.current.click(), label: attachLabel, expand: "none", style: disc }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null)))) : (
+    }, style: { display: "none" }, tabIndex: -1, "aria-hidden": "true" }), /* @__PURE__ */ react_global_default.createElement("span", { "data-attach": "live", style: { display: "flex" } }, /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => fileRef.current && fileRef.current.click(), label: attachLabel, style: disc }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null)))) : (
       /* data-attach lets the screens harness tell a real paperclip from a drawing of one without
          guessing at an svg. `inert` is legitimate on a board or a spec page and a defect on a screen. */
       /* @__PURE__ */ react_global_default.createElement("div", { "data-attach": "inert", style: disc }, /* @__PURE__ */ react_global_default.createElement(IconAttach, null))
-    ), streaming ? /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: onStop, "aria-label": "Stop", style: btn }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { width: 13, height: 13, borderRadius: 3, background: "var(--color-surface)" } })) : /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick: () => canSend && onSend && onSend(), disabled: !canSend, "aria-label": "Send", style: { ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default" } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
+    ), streaming ? /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onStop, label: "Stop", pressScale: 0.94, style: btn }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { width: 13, height: 13, borderRadius: 3, background: "var(--color-surface)" } })) : /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: () => canSend && onSend && onSend(), disabled: !canSend, label: "Send", pressScale: 0.94, style: { ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default" } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
   }
 
   // design-system/components/composer/MoneyComposer.jsx
@@ -1454,7 +1462,7 @@ var __ds_out = (() => {
         className: "ds-composer-input",
         style: { width: "100%", border: "none", background: "transparent", outline: "none", padding: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-16)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" }
       }
-    )), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", display: "flex", justifyContent: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("button", { type: "button", disabled: !canSend, onClick: () => canSend && onSend && onSend("\u20B9" + formatted), style: { appearance: "none", border: "none", display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: "var(--gradient-dark-cta)", opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default", padding: 0 } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
+    )), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", display: "flex", justifyContent: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement(Pressable, { disabled: !canSend, label: "Send the amount", pressScale: 0.94, onClick: () => canSend && onSend && onSend("\u20B9" + formatted), style: { appearance: "none", border: "none", display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: "var(--gradient-dark-cta)", opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default", padding: 0 } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
   }
 
   // design-system/components/composer/StepComposer.jsx
@@ -1687,12 +1695,13 @@ var __ds_out = (() => {
       "button",
       {
         type: "button",
+        className: "ds-listrow",
         onClick: onPress,
         disabled,
         onPointerDown: () => !disabled && setDown(true),
         onPointerUp: () => setDown(false),
         onPointerLeave: () => setDown(false),
-        style: { ...shared, appearance: "none", border: "none", margin: 0, cursor: disabled ? "default" : "pointer", outline: "none", font: "inherit", background: down ? "var(--tint-bronze-06)" : "transparent", transition: "background-color var(--dur-press) var(--ease)" }
+        style: { ...shared, appearance: "none", border: "none", margin: 0, cursor: disabled ? "default" : "pointer", font: "inherit", background: down ? "var(--tint-bronze-06)" : "transparent", transition: "background-color var(--dur-press) var(--ease)" }
       },
       body
     );
@@ -2129,7 +2138,7 @@ var __ds_out = (() => {
     }), onNew: onNew || (() => {
     }) }), progress && /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 1, padding: "0 var(--gutter) var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement(ProgressRail, { n: progress.n, total: progress.total, dim: progress.dim })), banner && /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 1, paddingBottom: "var(--space-8)" } }, banner), body === "thread" ? (
       /* The screen carries the scroll — never a card inside it, and never a second scroller. */
-      /* @__PURE__ */ react_global_default.createElement("div", { ref: scrollRef || own, onScroll, style: { position: "relative", zIndex: 1, display: "flex", flex: 1, flexDirection: "column", overflowY: "auto", minHeight: 0 } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "auto", display: "flex", flexDirection: "column", gap: "var(--stack)", padding: "16px var(--gutter) 24px" } }, children))
+      /* @__PURE__ */ react_global_default.createElement("div", { ref: scrollRef || own, onScroll, style: { position: "relative", zIndex: 1, display: "flex", flex: 1, flexDirection: "column", overflowY: "auto", minHeight: 0 } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "auto", display: "flex", flexDirection: "column", gap: "var(--stack)", padding: `16px var(--gutter) ${body === "thread" ? 68 : 24}px` } }, children))
     ) : (
       /* A page does not scroll and is not bottom-anchored: its children sit under the bar with
          their own padding and a spacer pushes the Dock to the floor. Home is the only one, and a

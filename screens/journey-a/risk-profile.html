@@ -31,8 +31,11 @@ function Scene({ step, answered = ANSWERED, dim, banner, editable = true, after,
     <Rail n={step && step.progress ? step.progress[0] : undefined} dim={dim} banner={banner}
       revision={!!att.file} composer={<FrozenAsk money={step && step.money} placeholder={(step && step.composer) || 'or type your answer'} onAttach={att.onAttach} />}>
       <AnsweredList items={answered} editable={editable} onEdit={() => {}} />
-      <StepTurn step={step} thinking={thinking} />
-      {after}
+      {/* THE RESULT STEP CARRIES CHIPS AND NO SENTENCE, so rendering StepTurn beside `after` emitted
+          a signed turn that said nothing and held a second copy of the result's own two chips — two
+          ✦ Sentinel and the same chip pair twice, 500pt apart. `LiveRail` has always branched on
+          `step.result`; only this static board did not. Found 20 Sep 2026 by reading phone 8. */}
+      {step && step.result ? after : <React.Fragment><StepTurn step={step} thinking={thinking} />{after}</React.Fragment>}
       <AttachmentTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
     </Rail>
   );

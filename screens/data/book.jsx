@@ -484,7 +484,10 @@ const CLIENTS = [
         { n: 2, kind: 'sip-redirect', fromId: 'quant-small', toId: 'hdfc-large', amountRs: 30000 },
       ],
       equityAfter: 58, costRs: 11200,
-      costParts: '[PLACEHOLDER — the split between exit load and tax needs the purchase dates on folio 9142/28]',
+      /* The split is no longer a placeholder: `switchCost` produces it from SWITCH_LOTS, which
+         carries the purchase dates for this folio. ₹777 exit load + ₹5,173 short-term + ₹5,250
+         long-term = the ₹11,200 this book has stated since Journey B. */
+      costParts: 'exit load ₹777 · short-term ₹5,173 · long-term ₹5,250',
       settles: 'T+2',
     },
     flags: ['Equity 11 points over mandate', 'Quant Small Cap over the single-fund ceiling'],
@@ -750,10 +753,10 @@ const REVIEW_AUDIENCES = [
                         Taking ₹1,85,000 out leaves it at 18%, and the equity lands at 58 — past the
                         mandate — because the ceiling sized the move, not the drift did.
 
-   COST IS WHERE THIS STOPS BEING A MENU. Only the third is costed, because `sharma.rebalance.costRs` is
-   a figure the book carries and `costParts` is an honest placeholder: the split between exit load and
-   tax needs the purchase dates on folio 9142/28, which nobody has supplied. So the other two can be
-   SIZED and cannot be COSTED, and the screen says so rather than printing a zero or a guess.
+   COST IS WHERE THIS STOPS BEING A MENU. Only the third is costed. `sharma.rebalance.costRs` is a
+   figure the book carries and `switchCost` now produces its three-line split from SWITCH_LOTS, which
+   holds the purchase dates for folio 9142/28. The other two targets have no lots on file, so they can
+   be SIZED and cannot be COSTED, and the screen says so rather than printing a zero or a guess.
 
    The first two amounts are exactly points × ₹14,23,000. The third is ₹1,85,000 and NOT ₹1,84,990,
    because ₹1,85,000 is the anchor the whole drift story is derived from and 13 points is the figure

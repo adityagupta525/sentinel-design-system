@@ -38,6 +38,10 @@ export interface ResultActionsProps {
  *  This doc said "the Dock's `chips` slot" until 19 Sep, when Journey D became this component's first
  *  consumer and the contract was found still describing the pre-ruling dock. Rule 3 is untouched: the
  *  composer stays docked and nothing replaces it. */
+/** `doneLabel` is passed through to `DownloadAction`. A caller that does not write a file must say
+ *  so — this product does not write one anywhere, and a control that states a false outcome is worse
+ *  than one that states none. It belongs to `ResultActions`, which owns the download; `ResultCard`
+ *  does not render one. */
 export function ResultActions(props: ResultActionsProps): JSX.Element;
 
 export interface ResultPrimaryProps {

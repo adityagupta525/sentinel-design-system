@@ -17,10 +17,13 @@ export interface DockProps {
    *  ruling by two days only because `ui_kits/` passed it in six artboards and the kit is not edited
    *  lightly; the kits were redrawn on `SentinelTurn` the same day it went. Use `SentinelTurn cta`. */
   chips?: React.ReactNode;
+  /* `cta` WAS DECLARED HERE UNTIL 20 SEP 2026, after the slot itself was deleted — so a caller
+     passing it got silence rather than an error. The deprecation record above stays; the declaration
+     does not, because a contract that offers a prop the implementation does not read is a contract
+     that lies. `check-previews` still fails any page that passes it. */
   /** DEPRECATED BY THE SAME RULING, and it has NO exception: Home's starters are chips, and no screen
    *  in this product pins a decision. `screens/` has zero consumers and the gate keeps it that way.
    *  A decision belongs under the thing it decides about. */
-  cta?: React.ReactNode;
   /** Composer or MoneyComposer — required on every screen. RULE 3 IS UNCHANGED: the composer is docked,
    *  always present, and nothing replaces it. The ruling moved the chips and the CTA, never this. */
   composer: React.ReactNode;

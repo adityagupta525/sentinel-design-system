@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconArrow } from '../icons/IconArrow.jsx';
+import { Pressable } from '../actions/Pressable.jsx';
 export function formatINR(digits) {
   const clean = String(digits).replace(/\D/g, '');
   if (!clean) return '';
@@ -29,7 +30,11 @@ export function MoneyComposer({ onSend, placeholder = 'or type an amount' }) {
           style={{ width: '100%', border: 'none', background: 'transparent', outline: 'none', padding: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-16)', lineHeight: 'var(--leading-20)', color: 'var(--color-ink)' }} />
       </div>
       <div style={{ marginTop: 'var(--space-12)', display: 'flex', justifyContent: 'flex-end' }}>
-        <button type="button" disabled={!canSend} onClick={() => canSend && onSend && onSend('₹' + formatted)} style={{ appearance: 'none', border: 'none', display: 'flex', width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--gradient-dark-cta)', opacity: canSend ? 1 : 0.4, cursor: canSend ? 'pointer' : 'default', padding: 0 }}><IconArrow /></button>
+        {/* A RAW BUTTON WITH NO ACCESSIBLE NAME, on the send of a money field (20 Sep 2026). A screen
+            reader announced "button". F-28 fixed exactly this on `Composer` and missed its twin, and
+            the twin is the one an advisor uses to commit an amount. Routed through `Pressable`, which
+            is where the name, the 44pt target and the focus ring all come from. */}
+        <Pressable disabled={!canSend} label="Send the amount" pressScale={0.94} onClick={() => canSend && onSend && onSend('₹' + formatted)} style={{ appearance: 'none', border: 'none', display: 'flex', width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--gradient-dark-cta)', opacity: canSend ? 1 : 0.4, cursor: canSend ? 'pointer' : 'default', padding: 0 }}><IconArrow /></Pressable>
       </div>
     </div>
   );

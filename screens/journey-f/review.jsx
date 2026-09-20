@@ -93,7 +93,7 @@ function ReviewFacts({ onExplain }) {
       <REV_DS.StatTile label="Her book" value={inr(MEERA.portfolio.valueRs)} note={`${MEERA.portfolio.funds} funds · as of ${MEERA.portfolio.asOf}`} onExplain={ex('book')} />
       <REV_DS.StatTile label="Her risk number" value={String(MEERA.risk.score)} note={`${MEERA.risk.band} · locked ${MEERA.risk.lockedOn}`} onExplain={ex('risk')} />
       <REV_DS.StatTile label="What she agreed to" value={`${MEERA.mandate.equity} / ${MEERA.mandate.debt} / ${MEERA.mandate.cash}`} note="Equity / debt / cash" onExplain={ex('mandate')} />
-      <REV_DS.StatTile locked label="What she actually holds" value="—" note="[PLACEHOLDER — her split, to supply]" onExplain={ex('actual')} />
+      <REV_DS.StatTile locked label="What she actually holds" value="—" note="Her split is not on file yet" onExplain={ex('actual')} />
     </div>
   );
 }
@@ -136,8 +136,12 @@ function HealthTurn({ clientId = 'meera', chips }) {
   return (
     <REV_DS.SentinelTurn
       say={[`${c.name}'s book scores ${h.value} out of 100 — ${h.band.toLowerCase()}.`,
-            `${h.weakest.label} is what holds it back, at ${h.weakest.value}.`,
-            ...h.missing.map((m) => `${m.label} is not scored — ${m.why}. This is out of the ${h.readWeight} points that could be read.`)]}
+            /* ONE DENOMINATOR, NOT THREE. The score is a 0–100 weighted mean; `readWeight` is how
+               much of the methodology could be read, which is a different quantity. Saying "out of
+               100" in the first line, "out of the 70 points" in the third and "Out of 100" on the
+               card gave one figure three denominators. The score is always out of 100; the coverage
+               is stated as coverage. */
+            ...h.missing.map((m) => `${m.label} is not scored — ${m.why}. So the 100 is a mean of the ${h.readWeight} points that could be read, not of all of them.`)]}
       body={<REV_DS.HeroNumberCard title="Client Health Score" meta="Placeholder" value={h.value}
         badge={h.band} copy={`Out of 100. ${weights}.`} rows={h.rows} />}
       provenance={healthProvenance(c)} chips={chips} />
@@ -172,7 +176,10 @@ function ReviewEnding({ audience = 'record', onChip, continued = true }) {
 }
 
 const REV_PROVENANCE = `As of ${MEERA.portfolio.asOf} · from her September statement · her 43 holdings are not mapped to categories`;
-const REV_SUMMARY = `${inr(MEERA.portfolio.valueRs)} across ${MEERA.portfolio.funds} funds. ${MEERA.tail.topFunds} of them hold ${MEERA.tail.topSharePct}% of it; the other ${MEERA.tail.tinyFunds} hold the rest and none reaches ${MEERA.tail.tinyUnderPct}%.`;
+/* ONE SENTENCE, NOT FOUR. The summary restated every row of the card it sits on — the value, the
+   fund count, the 14/80 split, the tail and the 1.5% — each one printed again with more detail
+   directly underneath. The card says the rest better than a summary can. */
+const REV_SUMMARY = `${inr(MEERA.portfolio.valueRs)} across ${MEERA.portfolio.funds} funds.`;
 
 /* No `sentAt`: a review is never sent. A prop that does nothing is a prop that lies. */
 function ReviewResult({ state = 'draft', savedAt, onSave, onDownload, onExplain }) {
@@ -189,7 +196,7 @@ function ReviewResult({ state = 'draft', savedAt, onSave, onDownload, onExplain 
           secondary pills are the whole of it. `ResultPrimary journey='review'` exists in the contract
           and this screen deliberately does not use it: a review that ends in one big button is a
           proposal wearing a record's title. */}
-      <REV_DS.ResultActions state={state} onSave={onSave} onDownload={onDownload} format="PDF" saveLabel="Save to her file" />
+      <REV_DS.ResultActions doneLabel="Nothing written here" state={state} onSave={onSave} onDownload={onDownload} format="PDF" saveLabel="Save to her file" />
     </div>
   );
 }

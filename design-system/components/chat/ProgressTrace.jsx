@@ -41,10 +41,13 @@ export function ProgressTrace({ steps, stepMs = 850, reasoning, onDone, autoplay
   return (
     <SentinelBlock>
       <div style={{ width: '100%' }}>
-        <button type="button" onClick={() => done && setCollapsed(true)} style={{ appearance: 'none', border: 'none', background: 'transparent', padding: 0, cursor: done ? 'pointer' : 'default', marginBottom: 'var(--space-10)', display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
+        {/* 343 × 14 — the worst ratio in the product, thirty points short, on the real control that
+            collapses a finished trace (20 Sep 2026). `Pressable` measures the rendered box and
+            expands the target to 44 without changing the 14pt row that is drawn. */}
+        <Pressable onClick={() => done && setCollapsed(true)} disabled={!done} label={done ? 'Collapse what I did' : undefined} expanded={done ? true : undefined} style={{ appearance: 'none', border: 'none', background: 'transparent', padding: 0, cursor: done ? 'pointer' : 'default', marginBottom: 'var(--space-10)', display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
           <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', color: done ? 'var(--color-muted)' : 'var(--color-ink)' }}>{stopped ? `Stopped at ${secs}s` : done ? `Thought for ${secs}s` : `Working · ${secs}s`}</span>
           {done && chev(true)}
-        </button>
+        </Pressable>
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 'var(--space-12)', paddingLeft: 'var(--space-2)' }}>
           <div style={{ position: 'absolute', bottom: 8, left: 9, top: 8, width: 1, background: 'var(--color-line)' }} />
           {steps.map((s, i) => {

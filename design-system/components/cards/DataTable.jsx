@@ -63,7 +63,13 @@ function stickyKey(columns) {
 function Cell({ col, row, max }) {
   const v = row[col.key];
   const align = col.align || ALIGN[col.kind] || 'start';
-  const base = { minWidth: 0, textAlign: align === 'end' ? 'right' : 'left', font: 'var(--type-row-font)', color: 'var(--color-ink)' };
+  /* `fontVariantNumeric` AFTER the shorthand, not before and not only in a class (20 Sep 2026).
+     The `font:` shorthand RESETS font-variant-numeric to `normal`, and an inline style beats the
+     `.ds-tabular` rule in the token sheet — so every numeric cell in every table in this product
+     rendered with proportional figures while carrying the class that says it does not. Measured on
+     the proposal: 49 of 49. Rule 4 asks for tabular figures on anything that changes, and a column
+     of rupee amounts that do not share a digit width cannot be compared down. */
+  const base = { minWidth: 0, textAlign: align === 'end' ? 'right' : 'left', font: 'var(--type-row-font)', fontVariantNumeric: 'tabular-nums', color: 'var(--color-ink)' };
   if (col.kind === 'bar') {
     const n = Number(row[`${col.key}Value`] ?? (parseFloat(String(v)) || 0));
     /* `col.min` — A BASELINE, NOT A ZOOM (20 Sep 2026), and the same argument `Dumbbell.min` settled

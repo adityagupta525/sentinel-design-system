@@ -23,7 +23,10 @@ function Node({ state }) {
   return (
     <span aria-hidden="true" style={{ position: 'absolute', left: 0, top: 3, display: 'flex', width: NODE, height: NODE, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: done ? 'var(--color-bronze)' : failed ? 'var(--color-status-over-bg)' : 'var(--color-canvas)', boxShadow: done ? 'none' : `inset 0 0 0 var(--border-1) ${failed ? 'var(--color-status-over-fg)' : running ? 'var(--color-bronze)' : 'var(--color-line)'}` }}>
       {done && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--color-surface)" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}
-      {failed && <span style={{ font: 'var(--type-eyebrow-font)', color: 'var(--color-status-over-fg)', lineHeight: 1 }}>!</span>}
+      {/* DRAWN, like the tick above it (20 Sep 2026). This was a typed "!" — the only exclamation
+          mark in the product's text, against a voice rule that has none, and the only node in a set
+          of three that was a character rather than a stroke. Same node, same colour, same weight. */}
+      {failed && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--color-status-over-fg)" strokeWidth="3.4" strokeLinecap="round"><path d="M12 6v7" /><path d="M12 17.5v.5" /></svg>}
       {running && <span style={{ width: 6, height: 6, borderRadius: 'var(--radius-full)', background: 'var(--color-bronze)', animation: 'dot-pulse 1200ms var(--ease) infinite' }} />}
     </span>
   );

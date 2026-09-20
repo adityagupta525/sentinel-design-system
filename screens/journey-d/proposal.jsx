@@ -40,7 +40,7 @@ const PROP_STEPS = [
     composer: 'or type the goal' },
 
   { name: 'Mix', short: 'Against which mix?', progress: [4, 4],
-    sentinel: [`Against which mix? He stated equity ${AMIT.mandate.equity}, debt ${AMIT.mandate.debt}, cash ${AMIT.mandate.cash}.`,
+    sentinel: [`Against which mix? He stated equity ${AMIT.mandate.equity}%, debt ${AMIT.mandate.debt}%, cash ${AMIT.mandate.cash}%.`,
       'He has no risk profile, so there is no number to check that against — I will build to what he stated and say so on the document.'],
     chips: [c('Use his stated mix', 'primary'), c('Profile his risk first', 'muted'),
       c('Why does that matter?', 'tertiary', { sheet: {
@@ -129,7 +129,7 @@ function ProposalResult({ state = 'draft', savedAt, openRow = null, onSave, onDo
       {/* INSIDE THE TURN, not pinned. The ruling of 18 Sep moved every chip and every CTA into the turn
           that offered them, and ResultCard's own contract still said "the Dock's chips slot" until this
           screen became its first consumer. */}
-      <PROP_DS.ResultActions state={state} onSave={onSave} onDownload={onDownload} format="PDF" />
+      <PROP_DS.ResultActions doneLabel="Nothing written here" state={state} onSave={onSave} onDownload={onDownload} format="PDF" />
       <PROP_DS.ResultPrimary journey="proposal" state={state} client="Mr. Aggrawal" onPrimary={onPrimary} sentAt={sentAt} />
       {/* ResultPrimary's success line says the client has it. It cannot say what this journey has to say
           next — that the document went and the money did not — because that is true of a proposal and

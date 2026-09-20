@@ -2063,3 +2063,84 @@ generator sliced its template above the destructure line, so the first two pages
 they had never named.
 
 **94 components · 94 specified · 144 pages clean · adherence 61 · tokens 0 undefined.**
+
+---
+
+### F-73 · The board, run as a real product — and what four audits found — *20 Sep 2026*
+
+The owner asked for the checks to be run against the application's own rules, treating this as a real
+product rather than a demo. Four audits ran in parallel: the four rules and five rulings, operability,
+compliance and honesty, consistency and craft. Every finding below was **re-verified here** before it
+was acted on; the ones that needed the owner's word are listed at the end rather than changed.
+
+**The two that would have shipped as blockers.**
+
+1. **A quarter of every control in the product showed nothing on keyboard focus.** `Pill` carries
+   `className="ds-pill"` and never `ds-pressable`, and `.ds-pressable:focus-visible` is the system's
+   only focus rule — so 303 chips across 15 of 18 screens had no ring at all. `ListRow` was worse: it
+   set `outline: 'none'` **inline**, which beats a stylesheet, killing even the browser's default.
+   Proved by pixel-diffing a focused control against a blurred one — byte-identical. `.ds-pill` and
+   `.ds-listrow` take the same ring now. **780 controls measured after: 0 without a ring.**
+2. **348 of 1,571 controls were under the 44pt floor the system guarantees.** The composer's attach
+   and send discs at 42 (`expand="none"`), `MessageActions` at 23pt wide, `SuggestionRow` at 42, and
+   `ProgressTrace`'s collapse header at **343 × 14** — thirty points short, on the real control that
+   folds a finished trace. And `Pressable` measured its pad **once**, with deps `[expand, children]`,
+   so 47 identical pills carried three different targets depending on when they mounted. It measures
+   on a `ResizeObserver` now. **905 controls measured after: 0 under 44.**
+
+**Rule 4, broken on every table in the product.** `DataTable` set `font: 'var(--type-row-font)'` and
+then `className="ds-tabular"` — the `font` shorthand **resets** `font-variant-numeric`, and an inline
+style beats the class. Measured on the proposal: **49 of 49** numeric cells rendered with proportional
+figures while carrying the class that says they do not. A column of rupee amounts that does not share
+a digit width cannot be compared down, which is the whole reason the rule exists.
+
+**Three things that claimed something untrue.**
+
+- **Every Download said "Saved to Files" and wrote nothing.** The one control in the product that
+  states an outcome was stating a false one. `doneLabel` now lets a caller tell the truth, and every
+  screen here says *"Nothing written here."*
+- **The shortlist attributed the Centricity Score to the scheme record.** Its provenance read *"from
+  the scheme record and your own book"* over a column of invented weightings. It now names all three
+  sources and calls the score a design placeholder, which the score card already did.
+- **The rebalance printed a capital-gains split fourteen points above a line saying its input did not
+  exist.** `switchCost` supplied the purchase dates when the split was built (F-60) and two older
+  claims that it could not be produced were not retired with them.
+
+**"75 out of 70", and a card with three denominators.** The score is a 0–100 weighted mean;
+`readWeight` is how much of the methodology could be read. Printing the second as the denominator
+produced a fraction nobody can read, and Sunita's card said *78 out of 100*, *out of the 70 points*
+and *Out of 100* in three places at once. One denominator now; coverage is stated as coverage.
+
+**Five repetitions, each the same facts twice inside one card.** The score turns said the card's own
+binding row back to it. The review summary restated every row under it. The holder row repeated the
+breach sentence and then **truncated the folio** — the one fact the sentence did not carry. The risk
+board rendered its result turn twice, giving two ✦ Sentinel and the same two chips 500pt apart.
+
+**And the smaller ones, all verified:** the one refusal Sentinel did not sign · an empty 105 × 44
+button with no name in `ArtifactCard`'s filling state, the fifth of that family · `MoneyComposer`'s
+send with no accessible name at all, which is F-28 fixed on one twin and missed on the other ·
+*"is at 71"* and *"equity 65, debt 30, cash 5"* without their units · *"past the 60%"* when the figure
+beside it is two points **under** it · `ds-table-nudge`, the one keyframe with no reduced-motion
+answer · a typed `!` in a set of drawn nodes, the only exclamation mark in the product's text ·
+`Dock.d.ts` still declaring the `cta` it no longer reads · and the scroll disc resting on the
+disclaimer, which now has its own reserved row.
+
+**Left for the owner, because changing them is a decision rather than a fix.**
+
+- **Contrast.** 254 of 4,549 text nodes inside a phone fail WCAG — including `StandingDisclosure` at
+  **2.52:1**, which is the compliance line on 16 of 18 screens, and `ProgressTrace`'s finished steps
+  at **2.15:1**, which is the record of what Sentinel did. Both are token colours at token sizes.
+  Fixing them changes the visual language, and the visual language is settled.
+- **Client consent, named on the confirm sheet and never captured.** The sheet lists it beside two
+  results; nothing records it, and the money goes. For an MFD that is the transaction-without-a-record
+  problem.
+- **The destination is never argued.** *"Buy ICICI Corporate Bond with it"* — SBI Corporate Bond is on
+  the same shelf, same category, cheaper. Nothing says why that one.
+- **`DisclosureBlock` is on one of the three things that reach a client** — the WhatsApp draft, and
+  not the proposal or the client note.
+- **Other clients' folios render in an unbound thread** — the fund explorer is the one surface with no
+  client bound, and it prints Sharma's name, folio and holding while you sit with Meera.
+- **EUIN** never renders, though `book.jsx` says the confirm sheet carries it.
+
+**Gates after: 144/144 pages clean · screens adherence 0 · system adherence 63 → 59, gate tightened ·
+tokens 0 undefined · 905 controls at 44pt · 780 with a focus ring · 782 with an accessible name.**

@@ -58,9 +58,9 @@ export function ListRow({ variant = 'static', size, leading = 'none', leadingCon
   const shared = { display: 'flex', width: '100%', minHeight: h, alignItems: 'center', gap: 'var(--space-12)', padding: '8px 0', boxSizing: 'border-box', opacity: disabled ? 0.4 : 1 };
   if (isStatic || !onPress) return <div style={{ ...shared, background: 'transparent' }}>{body}</div>;
   return (
-    <button type="button" onClick={onPress} disabled={disabled}
+    <button type="button" className="ds-listrow" onClick={onPress} disabled={disabled}
       onPointerDown={() => !disabled && setDown(true)} onPointerUp={() => setDown(false)} onPointerLeave={() => setDown(false)}
-      style={{ ...shared, appearance: 'none', border: 'none', margin: 0, cursor: disabled ? 'default' : 'pointer', outline: 'none', font: 'inherit', background: down ? 'var(--tint-bronze-06)' : 'transparent', transition: 'background-color var(--dur-press) var(--ease)' }}>
+      style={{ ...shared, appearance: 'none', border: 'none', margin: 0, cursor: disabled ? 'default' : 'pointer', font: 'inherit', background: down ? 'var(--tint-bronze-06)' : 'transparent', transition: 'background-color var(--dur-press) var(--ease)' }}>
       {body}
     </button>
   );

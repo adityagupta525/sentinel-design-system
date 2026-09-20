@@ -83,7 +83,7 @@ function RebalWhere({ continued = false }) {
   const over = caps.find((c) => c.over);
   const drift = driftPoints(SHARMA);
   const say = [
-    `${SHARMA.name} agreed to ${SHARMA.mandate.equity}% equity and is at ${SHARMA.allocation.equity} — ${drift} points over.`,
+    `${SHARMA.name} agreed to ${SHARMA.mandate.equity}% equity and is at ${SHARMA.allocation.equity}% — ${drift} points over.`,
   ];
   if (over) say.push(`The reason is one holding. Quant Small Cap is ${over.pct}% of his book, over the ${LIMITS.singleFund}% single-fund ceiling and the ${LIMITS.smallCapSleeve}% small-cap sleeve at the same time — two rules, one fund.`);
   return (
@@ -146,7 +146,7 @@ const REB_STEPS = [
       title: 'Why are there three?',
       body: ['Each one is a different rule. His mandate is the mix he agreed to. The drift band is the ±5 points either side of it before I raise a review. The single-fund ceiling is 25% in any one scheme.',
         'Quant Small Cap is 31% of his book and it is the whole of his small-cap sleeve, so that one holding is over the fund ceiling and the sleeve ceiling at the same time — two rules, both 25, and they are not the same rule.',
-        'Clearing the fund takes equity past the mandate to 58%. That is a consequence of the ceiling sizing the move, not a view about how much equity he should hold.'] } })] },
+        'Clearing the fund takes equity to 58%, two points under the mandate. That is a consequence of the ceiling sizing the move, not a view about how much equity he should hold.'] } })] },
   { name: 'Result', result: true },
 ];
 const REB_TOTAL = 1;
@@ -175,8 +175,14 @@ function UncostedTurn({ target, onChip, continued = true }) {
   );
 }
 
-const REB_PROVENANCE = 'Costed 30 Sep · exit loads and tax from the scheme documents · purchase dates for folio 9142/28 not on file';
-const REB_SUMMARY = `Two moves. Together they take equity from ${SHARMA.allocation.equity}% to 58% and Quant Small Cap from 31% to 18%. The ceiling sized them, so equity lands past the ${SHARMA.mandate.equity}% mandate.`;
+/* THE PROVENANCE SAID ITS OWN INPUT DID NOT EXIST (20 Sep 2026). This line still read "purchase
+   dates for folio 9142/28 not on file" while the card fourteen points above it printed a short-term
+   and a long-term gains figure — which are computed from exactly those dates. `switchCost` supplied
+   them when the split was built (F-60) and these words were not retired with them. The dates are on
+   file for this folio; what is still uncosted is the other two targets, and the rows that say so are
+   unchanged. Exit load comes from the scheme document; tax does not. */
+const REB_PROVENANCE = 'Costed 30 Sep · exit load from the scheme document · tax at the rates on file, from the purchase dates on folio 9142/28';
+const REB_SUMMARY = `Two moves. Together they take equity from ${SHARMA.allocation.equity}% to 58% and Quant Small Cap from 31% to 18%. The ceiling sized them, so equity lands two points under the ${SHARMA.mandate.equity}% mandate.`;
 
 /* The rail's result is an ARTIFACT, not a message: the advisor asked for a rebalance cold and may save
    it, download it, or come back to it. Journey B's MovesTurn is the same body in a SentinelBlock,
@@ -189,7 +195,7 @@ function RebalanceResult({ state = 'draft', savedAt, onSave, onDownload, onPrima
         title="Two moves" provenance={REB_PROVENANCE} summary={REB_SUMMARY}>
         <MovesBody provenance={false} />
       </REB_DS.ResultCard>
-      <REB_DS.ResultActions state={state} onSave={onSave} onDownload={onDownload} format="PDF" saveLabel="Save the plan" />
+      <REB_DS.ResultActions doneLabel="Nothing written here" state={state} onSave={onSave} onDownload={onDownload} format="PDF" saveLabel="Save the plan" />
       <REB_DS.ResultPrimary journey="rebalance" state={state} moves={MOVES.length} onPrimary={onPrimary} sentAt={sentAt} />
     </div>
   );

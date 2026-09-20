@@ -69,6 +69,16 @@
 /* Pill extends vertically only — its width is its label, and a horizontal extension would overlap the
    next chip in a row. --hit is set per instance by the component. */
 .ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}
+/* THE FOCUS RING REACHED NEITHER OF THESE (20 Sep 2026, measured by pixel-diffing a focused control
+   against a blurred one: byte-identical on four pages). `.ds-pressable:focus-visible` above is the
+   system's only focus rule, and `Pill` carries `ds-pill` and never `ds-pressable` — so every chip in
+   the product, 303 of them across 15 of 18 screens, showed nothing at all on keyboard focus. A row
+   was worse: `ListRow` set `outline: none` INLINE, which beats a stylesheet, so it killed even the
+   browser's own default. Rule: nothing but this file draws a focus ring, and this file has to
+   actually reach the things that need one. Same ring, same offset, same halo — nothing about how a
+   chip looks at rest changes. */
+.ds-pill:focus-visible,
+.ds-listrow:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
 /* Both composers shipped this identical one-line sheet inside themselves, so a thread carrying a
    Composer and a MoneyComposer carried two copies of the same rule. Same correction as .ds-pill. */
 .ds-composer-input::placeholder{color:var(--color-muted)}
@@ -85,4 +95,9 @@
 @keyframes ds-screen-in{from{opacity:0;transform:none}to{opacity:1;transform:none}}
 @keyframes ds-screen-out{from{transform:none}to{transform:none}}
 *,*::before,*::after{transition-duration:1ms!important;scroll-behavior:auto!important}
+  /* ds-table-nudge was the one keyframe in this system with no answer here (20 Sep 2026). The
+     `transition-duration: 1ms` reset above kills transitions, not animations, so a table still slid
+     10px sideways under reduce — and the comment beside it claimed "the fade carries the same fact
+     on its own", which it did not because the fade was never the thing moving. */
+  @keyframes ds-table-nudge { 0%, 100% { transform: none; } }
 }

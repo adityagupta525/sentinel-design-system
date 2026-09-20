@@ -268,16 +268,19 @@ const aheadOf = (v) => (v >= 0 ? 'ahead of' : 'behind');
    `HeroNumberCard` is already exactly this device — it draws Meera's risk number the same way, big
    figure, band word, contributing rows with one of them binding. Nothing new was built for a score;
    the system had the shape, which is the test a new component has to fail before it is written. */
-/* The weakest component, as the start of a sentence: capitalised, and read as English rather than as
-   a meter's label — "One manager, long enough is what holds it back" is not a sentence. */
-const WEAKEST_PHRASE = { 'One manager, long enough': 'How long one manager has run it', 'Beats its category': 'Beating its category' };
-const weakestPhrase = (w) => WEAKEST_PHRASE[w.label] || w.label.charAt(0).toUpperCase() + w.label.slice(1);
+/* `weakestPhrase` lived here to start a sentence with the weakest component's name. That sentence is
+   gone (20 Sep 2026): `HeroNumberCard` already marks the binding row bold and bronze, so saying it
+   again 40pt below was the card's own content a second time. */
 function FundScoreTurn({ id, onChip, enter = false }) {
   const f = fundById(id); const sc = fundScore(id);
   if (!f || !sc) return null;
   const say = [
-    `${f.name} scores ${sc.value} out of ${sc.readWeight} — ${sc.band.toLowerCase()}.`,
-    `${weakestPhrase(sc.weakest)} is what holds it back, at ${sc.weakest.value}.`,
+    /* ONE DENOMINATOR. The score is a 0–100 weighted mean; `readWeight` is how much of the
+       methodology could be read, which is a different quantity — printing it as the denominator gave
+       "75 out of 70", which is not a fraction anybody can read. And the second line said the card's
+       own binding row back to it: `HeroNumberCard` already marks the weakest component bold and
+       bronze, so the sentence was the same two facts a second time, 40pt away. */
+    `${f.name} scores ${sc.value} out of 100 — ${sc.band.toLowerCase()}.`,
   ];
   /* THE MISSING ROWS SHARE ONE SENTENCE, grouped by their reason. Two rows that are absent for the
      same reason produced two near-identical paragraphs — the repetition this product has been pulled
@@ -288,7 +291,7 @@ function FundScoreTurn({ id, onChip, enter = false }) {
        ceilings" put a capital H in the middle of a sentence. */
     const low = labels.map((l, i) => (i === 0 ? l : l.charAt(0).toLowerCase() + l.slice(1)));
     const names = low.length === 1 ? low[0] : `${low.slice(0, -1).join(', ')} and ${low[low.length - 1]}`;
-    say.push(`${names} ${labels.length === 1 ? 'is' : 'are'} not scored here — ${why}. That is why the number is out of ${sc.readWeight} rather than 100.`);
+    say.push(`${names} ${labels.length === 1 ? 'is' : 'are'} not scored here — ${why}. So the 100 is a mean of the ${sc.readWeight} points that could be read, not of all of them.`);
   });
   /* THE WEIGHTS ARE ON THE CARD. A score whose workings are one tap away is a score an advisor has to
      take on trust for the length of that tap, and this is the number they will be asked about first. */
@@ -299,7 +302,7 @@ function FundScoreTurn({ id, onChip, enter = false }) {
   return (
     <FUNDS_DS.SentinelTurn enter={enter} say={say}
       body={<FUNDS_DS.HeroNumberCard title="Centricity Fund Score" meta="Placeholder" value={sc.value}
-        badge={sc.band} copy={`Out of ${sc.readWeight}. ${weights}.`} rows={sc.rows} />}
+        badge={sc.band} copy={`Out of 100. ${weights}.`} rows={sc.rows} />}
       provenance={fundScoreProvenance()} chips={askChips(onChip, 'score')} />
   );
 }
@@ -440,7 +443,10 @@ function HoldersTurn({ id, onChip, enter = false }) {
        `badge` passed beside it was silently dropped. The breach goes into the row's own words, where
        it also says WHICH ceiling: two different rules in LIMITS both read 25 (contradiction 32). */
     subtitle: w.holding
-      ? `${w.holding.pct}% of their book${w.holding.over ? ` · over the ${LIMITS.singleFund}% ${w.holding.over}` : ''} · folio ${w.holding.folio}`
+      /* The breach clause was already in the sentence above, and repeating it here pushed the row
+         past its width — so the one fact the sentence does NOT carry, the folio, was the part that
+         got an ellipsis. The row keeps what identifies the position. */
+      ? `${w.holding.pct}% of their book · folio ${w.holding.folio}`
       : `SIP ${inr(w.sip.amountRs)} a month · no position recorded yet`,
     meta: w.holding ? inr(w.holding.valueRs) : `${w.sip.mandate} · ${w.sip.day}th`,
     trailing: 'meta',
@@ -762,7 +768,8 @@ function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', on
   const [folded, setFolded] = React.useState(state !== 'expanded');
   return (
     <FUNDS_DS.ArtifactCard state={folded ? 'peek' : 'expanded'} eyebrow="Fund search · your shelf" title={funds.length === 1 ? '1 fund matches' : `${funds.length} funds match`}
-      provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => setFolded((v) => !v)}>
+      provenance="As of 30 Sep · funds and shelf from the scheme record · held-by from your own book · the score is a design placeholder"
+      onToggle={() => setFolded((v) => !v)}>
       <FUNDS_DS.DataTable columns={FUND_COLUMNS} rows={fundRows(funds)} emptyState={FUND_EMPTY} overflow="scroll" defaultOpen={openRow}
         expandable={(row) => <FundInfo id={row.id} defaultPeriod={period} heldBy onExplain={onExplain || (() => {})} />} />
     </FUNDS_DS.ArtifactCard>

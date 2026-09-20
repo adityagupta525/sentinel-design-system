@@ -112,9 +112,14 @@ export function ArtifactCard({ state = 'peek', eyebrow, title, children, provena
               Pressable (F-28, F-39, F-42, F-43), and the fourth was mine.
               An empty slot is now a plain div of the same width, so the row's layout does not move. */}
           <div style={{ display: 'flex', padding: '0 14px' }}>
-            {toggle
-              ? <Pressable onClick={filling ? undefined : toggle} style={slot}>
-                  {!filling ? <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)' }}>{label(expanded ? collapseLabel : expandLabel, true)}<Chevron up={expanded} /></span> : null}
+            {/* F-47 made the SLOT conditional on the handler; it did not cover `filling`, so while a
+                card was filling the toggle rendered as a Pressable with its children gated off — an
+                enabled 105 x 44 button with no name and nothing in it, in the tab order. Found on
+                20 Sep by an accessibility sweep, and it is the fifth of this family. A card that is
+                still filling has nothing to toggle, so it renders the empty slot like the others. */}
+            {toggle && !filling
+              ? <Pressable onClick={toggle} style={slot}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)' }}>{label(expanded ? collapseLabel : expandLabel, true)}<Chevron up={expanded} /></span>
                 </Pressable>
               : <div style={slot} />}
             {onWhy ? <Pressable onClick={onWhy} style={slot}>{label('Why?')}</Pressable> : <div style={slot} />}

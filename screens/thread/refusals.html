@@ -84,7 +84,10 @@ mountScreen(
       <StateRow>
         <State label="above the mandate ceiling" note="The amount, the ceiling, whose mandate — and then the clause that matters: “I have not applied it.” Sentinel states what it did NOT do, because an advisor who types a figure and gets a peach card has to know whether it went in. Bad news on the peach bubble, never a red fill (rule 2). Two chips: take the ceiling, or change it — the second is a real path, not a brush-off.">
           <Scene ask={BUCKET_2.ask} money>
-            <RejectCallout eyebrow={BUCKET_2.eyebrow} body={BUCKET_2.body} chips={BUCKET_2.chips} onChip={() => {}} />
+            {/* WRAPPED, like its sibling below (20 Sep 2026). A bare full-width peach card reads as a
+                system banner rather than as Sentinel — on the one refusal whose whole point is "I have
+                not applied it." Every other turn on this page is signed. */}
+            <SentinelBlock><RejectCallout eyebrow={BUCKET_2.eyebrow} body={BUCKET_2.body} chips={BUCKET_2.chips} onChip={() => {}} /></SentinelBlock>
           </Scene>
         </State>
         <State label="an instruction that would act" tone="under" note="Bucket 6. Sentinel does not act on a typed sentence, and it does not just refuse either — it reads the instruction back as exactly what it WOULD do, down to the folio and the NAV basis, so a misread is visible before it runs. Then one chip into the confirm sheet, which is the same Suggest → Confirm → Execute path the CTA takes.">

@@ -36,7 +36,10 @@ export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 
           <React.Fragment>
             <input ref={fileRef} type="file" accept={accept} onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) onAttach(f); e.target.value = ''; }} style={{ display: 'none' }} tabIndex={-1} aria-hidden="true" />
             <span data-attach="live" style={{ display: 'flex' }}>
-              <Pressable onClick={() => fileRef.current && fileRef.current.click()} label={attachLabel} expand="none" style={disc}><IconAttach /></Pressable>
+              {/* `expand="none"` held the target at the 42px disc. Two points short of the floor, on the one
+                  control that is on every screen in the product — the visual disc is unchanged and the
+                  target now reaches 44 (20 Sep 2026). */}
+              <Pressable onClick={() => fileRef.current && fileRef.current.click()} label={attachLabel} style={disc}><IconAttach /></Pressable>
             </span>
           </React.Fragment>
         ) : (
@@ -45,9 +48,9 @@ export function Composer({ value = '', onChange, onFocus, onSend, placeholder = 
           <div data-attach="inert" style={disc}><IconAttach /></div>
         )}
         {streaming ? (
-          <button type="button" onClick={onStop} aria-label="Stop" style={btn}><span aria-hidden="true" style={{ width: 13, height: 13, borderRadius: 3, background: 'var(--color-surface)' }} /></button>
+          <Pressable onClick={onStop} label="Stop" pressScale={0.94} style={btn}><span aria-hidden="true" style={{ width: 13, height: 13, borderRadius: 3, background: 'var(--color-surface)' }} /></Pressable>
         ) : (
-          <button type="button" onClick={() => canSend && onSend && onSend()} disabled={!canSend} aria-label="Send" style={{ ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? 'pointer' : 'default' }}><IconArrow /></button>
+          <Pressable onClick={() => canSend && onSend && onSend()} disabled={!canSend} label="Send" pressScale={0.94} style={{ ...btn, opacity: canSend ? 1 : 0.4, cursor: canSend ? 'pointer' : 'default' }}><IconArrow /></Pressable>
         )}
       </div>
     </div>
