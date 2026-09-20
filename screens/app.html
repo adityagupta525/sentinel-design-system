@@ -13,6 +13,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<!-- `default`, and the alternative was tried and rejected. `black-translucent` gives the page the
+     device's full height — the frame then fills an iPhone 15 Plus exactly, because 375x812 is 0.4618
+     against that screen's 0.4614 — but iOS draws the status bar's own clock and glyphs in WHITE under
+     that style, and this product's canvas is #f6f4f1. The time would have disappeared. The frame
+     giving up about 13px at each side is the cheaper of the two costs. -->
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Sentinel">
 <meta name="theme-color" content="#f6f4f1">
@@ -55,6 +60,13 @@
   #root { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
   .ds-stage { width:375px; height:812px; overflow:hidden; position:relative;
     transform:scale(var(--ds-fit,1)); transform-origin:center center; }
+  /* Installed on a home screen, the device draws its own status bar over the top of the page — and
+     the screen then carried two, the real 12:48 above the system's simulated 3:04. The simulated one
+     is hidden and the 44px it occupies is kept, so the layout below it does not move by a pixel.
+     In a browser tab there is no device status bar and this rule does not apply. */
+  @media (display-mode: standalone) {
+    .ds-statusbar > * { visibility: hidden; }
+  }
 </style>
 </head><body><script data-ds-file-guard>if (location.protocol === 'file:') {
   document.addEventListener('DOMContentLoaded', function () {

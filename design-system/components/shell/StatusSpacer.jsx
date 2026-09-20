@@ -8,7 +8,11 @@ import React from 'react';
    before and after. */
 export function StatusSpacer({ time = '9:41' }) {
   return (
-    <div style={{ position: 'relative', zIndex: 10, display: 'flex', height: 44, width: '100%', flexShrink: 0, alignItems: 'flex-end', justifyContent: 'space-between', padding: '0 24px 6px', boxSizing: 'border-box' }}>
+    /* `ds-statusbar` is a hook, not a style: nothing in this system targets it. It exists so that a
+       build which runs on a REAL phone can blank the simulated clock and glyphs while keeping the
+       44px they occupy, because there the device draws its own status bar in the same place and the
+       screen showed two. See `screens/app.html`. */
+    <div className="ds-statusbar" style={{ position: 'relative', zIndex: 10, display: 'flex', height: 44, width: '100%', flexShrink: 0, alignItems: 'flex-end', justifyContent: 'space-between', padding: '0 24px 6px', boxSizing: 'border-box' }}>
       <p style={{ margin: 0, fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-ink)' }}>{time}</p>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'var(--space-2)' }}>{[6, 9, 12, 15].map((h) => <div key={h} style={{ width: 3, height: h, borderRadius: 1, background: 'var(--color-ink)' }} />)}</div>
