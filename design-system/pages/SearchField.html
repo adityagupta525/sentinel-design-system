@@ -1,0 +1,44 @@
+<!-- @dsCard group="Pages" viewport="1000x1200" name="SearchField" subtitle="The filter above a list — and why it is not a second composer" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SearchField — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SearchField, List, ListRow } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface', '--color-canvas', '--color-chip', '--color-line', '--color-muted', '--color-ink', '--color-bronze', '--color-bronze-deep', '--radius-12', '--radius-16', '--border-focus', '--focus-ring'];
+
+function App(){ const [q,setQ] = React.useState('');
+  const FUNDS = ['Parag Parikh Flexi Cap','HDFC Flexi Cap','Quant Small Cap','ICICI Corporate Bond','Motilal Oswal Midcap','UTI Nifty 50 Index'];
+  const hits = FUNDS.filter(f=>f.toLowerCase().includes(q.toLowerCase()));
+  return (
+  <PageShell name="SearchField" group="Forms" status="shipped" requires={['SearchField','List','ListRow']}
+    summary="The composer’s visual style at one row and 44px, above a list. It reads as a filter rather than as a second composer, which matters on a screen whose one law is that the composer is the thing you type into. The caller composes it with the list; `List.search` does that for you.">
+    <Block n={1} title="Specimen"><Specimen width={343}><SearchField value={q} onChange={setQ} placeholder="Search your shelf" /></Specimen></Block>
+    <Block n={2} title="Filtering, live" sub="Type. The list under it is the caller’s to filter — this field owns the input and nothing else.">
+      <Specimen width={343}>
+        <List search={{value:q,onChange:setQ,placeholder:'Search your shelf',emptyState:{title:'No fund matches that.',body:'Try part of the house name — HDFC, ICICI, Parag.'}}}
+          dividers="inset" emptyState={{title:'No fund matches that.'}}
+          items={hits.map(f=>({title:f, trailing:'chevron', variant:'nav'}))} />
+      </Specimen>
+    </Block>
+    <Block n={3} title="Why it is not the composer" sub="One row, 44px, no send disc, no paperclip. The composer is where you talk to Sentinel; this is where you narrow a list you are already looking at.">
+      <Grid cols={1} items={[
+        {label:'the field', node:<div style={{width:343}}><SearchField value="" onChange={()=>{}} placeholder="Search your shelf" /></div>},
+        {label:'with a value and a clear', node:<div style={{width:343}}><SearchField value="HDFC" onChange={()=>{}} onClear={()=>{}} placeholder="Search your shelf" /></div>, note:'The clear appears only when there is something to clear.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/forms/SearchField.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[
+      {name:'Focus', property:'bronze 1px border plus the 3px halo', duration:'150 ms', reduced:'Immediate.'},
+      {name:'Filtering', property:'the list re-renders under it; nothing slides', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

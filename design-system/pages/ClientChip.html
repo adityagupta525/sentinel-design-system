@@ -1,0 +1,49 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="ClientChip" subtitle="The bound client, in the composer, always removable" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ClientChip — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ClientChip, Composer, Dock, ListRow, List } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble', '--color-bubble-edge', '--color-bronze-deep', '--color-ink', '--color-muted', '--color-surface', '--color-line', '--radius-full', '--border-focus', '--focus-ring', '--press-scale'];
+
+function App(){ const [bound,setBound] = React.useState('Meera Nair'); return (
+  <PageShell name="ClientChip" group="Actions" status="shipped" requires={['ClientChip','Composer','Dock','ListRow','List']}
+    summary="What “bound” looks like. Tapping a client anywhere in this product does not navigate — it binds the next thing you say to that client, and this chip is the evidence. The drawer’s client tap, a journey’s picker and typing a name all resolve to the same chip in the same place, so selection and typing are one flow rather than two.">
+    <Block n={1} title="Specimen"><Specimen width={343}><ClientChip name="R. Sharma" onRemove={()=>{}} /></Specimen></Block>
+    <Block n={2} title="Where it lives" sub="In the composer, above the line you are typing. It is the one piece of state the composer carries, and it is always removable there.">
+      <Specimen width={343}>
+        {bound
+          ? <Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" bound={<ClientChip name={bound} onRemove={()=>setBound(null)} />} />} />
+          : <Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />} />}
+      </Specimen>
+      <p style={{fontFamily:'var(--font-ui)',fontSize:12.5,color:'var(--color-muted)',marginTop:10}}>{bound ? 'Bound. Remove it and the next sentence is about nobody.' : 'Unbound. '}{!bound && <button onClick={()=>setBound('Meera Nair')} style={{font:'inherit',color:'var(--color-bronze-deep)',background:'none',border:0,cursor:'pointer',padding:0}}>Bind Meera again</button>}</p>
+    </Block>
+    <Block n={3} title="Removable and not" sub="In the composer it always has its ×. Inside a list row it does not — there it is a fact about the row rather than a state you can change.">
+      <Grid cols={1} items={[
+        {label:'in the composer', node:<div style={{width:343}}><ClientChip name="Meera Nair" onRemove={()=>{}} /></div>, note:'Always removable. A bound client an advisor cannot unbind is a trap.'},
+        {label:'in a row', node:<div style={{width:343}}><ClientChip name="Sunita Nair" /></div>, note:'No ×. It is describing, not holding.'},
+        {label:'disabled', node:<div style={{width:343}}><ClientChip name="R. Sharma" disabled /></div>, note:'While a journey is committing — the client cannot change under a confirm sheet.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/actions/ClientChip.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><ClientChip name="R. Sharma" onRemove={()=>{}} /></div>}
+        doCaption="One client, named in full, with a way out."
+        dontNode={<div style={{width:300,display:'flex',gap:6}}><ClientChip name="R. Sharma" onRemove={()=>{}} /><ClientChip name="Meera Nair" onRemove={()=>{}} /></div>}
+        dontCaption="Two bound clients. Every journey in this product is about one person, and a sentence bound to two is a sentence nobody can answer." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[
+      {name:'Binds', property:'fade + rise into the composer', duration:'240 ms', reduced:'Appears in place.'},
+      {name:'Removed', property:'the chip goes; the composer line moves up', duration:'150 ms', reduced:'Immediate.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

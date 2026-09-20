@@ -1,0 +1,55 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="AttributionChart" subtitle="What moved a number, in the order it moved it" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>AttributionChart — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { AttributionChart, ArtifactCard, ChartBar } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze', '--color-bronze-deep', '--color-track', '--color-line', '--color-surface', '--color-muted', '--color-ink', '--color-data-deemph', '--radius-full', '--radius-16'];
+
+const C = [
+  {label:'Small-cap rally', value:6.1, note:'the market did this, not you'},
+  {label:'His July top-up', value:2.0, note:'it went into Quant Small Cap', intentional:true},
+  {label:'The funds moved', value:0.9, note:'their managers went to large caps, not you'},
+];
+function App(){ const [k,setK] = React.useState(0); return (
+  <PageShell name="AttributionChart" group="Data" status="shipped" requires={['AttributionChart','ArtifactCard','ChartBar']}
+    summary="Why a number is where it is. From, to, the target it was measured against, and the ranked contributions that made up the difference — each with one muted line saying what it actually was. It is the expanded form of a peek that ChartBar draws.">
+    <Block n={1} title="Specimen" sub="Sharma’s equity, 62 to 71, against the 60 he agreed to.">
+      <Specimen width={343}><div key={k}><AttributionChart from={62} to={71} target={60} targetLabel="He agreed to" todayLabel="He is at" contributions={C} run /></div></Specimen>
+      <p style={{fontFamily:'var(--font-ui)',fontSize:12.5,color:'var(--color-muted)',marginTop:10}}><button onClick={()=>setK(k+1)} style={{font:'inherit',color:'var(--color-bronze-deep)',background:'none',border:0,cursor:'pointer',padding:0}}>Replay the count-up</button></p>
+    </Block>
+    <Block n={2} title="`intentional` — the one row that is not the market" sub="De-emphasis grey and a hairline, never a second hue. It says “this one was a decision of yours”, which is the difference between a drift an advisor caused and one they did not — and the whole reason this chart exists.">
+      <Grid cols={1} items={[
+        {label:'all three, one of them intentional', node:<div style={{width:343}}><AttributionChart from={62} to={71} target={60} contributions={C} /></div>},
+        {label:'none intentional', node:<div style={{width:343}}><AttributionChart from={62} to={71} target={60} contributions={C.map(c=>({...c,intentional:false}))} /></div>, note:'The market did all of it. Same chart, and a very different conversation with the client.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Peek and expanded" sub="The 96pt preview is ChartBar at density=peek — three ranked bars, one hue, direct-labelled. This chart is what opens when the card does.">
+      <Specimen width={343}>
+        <ArtifactCard state="peek" eyebrow="What moved the mix · Q2 → Q3" title="Equity 62% → 71%. Mostly the market."
+          provenance="As of 30 Sep · from his Q3 statement and the mandate on file" onToggle={()=>{}}>
+          <ChartBar density="peek" bars={C.map(c=>({label:c.label,value:c.value}))} valueFormat={(v)=>`+${v.toFixed(1)}`} />
+        </ArtifactCard>
+      </Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/data/AttributionChart.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><AttributionChart from={62} to={71} target={60} contributions={C.slice(0,2)} /></div>}
+        doCaption="Two or three contributions, each with the sentence that says what it was."
+        dontNode={<div style={{width:300}}><AttributionChart from={62} to={71} target={60} contributions={[{label:'Equity',value:6.1},{label:'Debt',value:2.0},{label:'Cash',value:0.9},{label:'Gold',value:0.4},{label:'REITs',value:0.2}]} /></div>}
+        dontCaption="Five bars with no notes. An attribution that does not say what each contribution WAS is a bar chart of an allocation, which is a different question." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[
+      {name:'Bars grow', property:'scaleX from the left, 60 ms apart', duration:'480 ms', reduced:'Drawn at full length.'},
+      {name:'The headline counts', property:'from → to, eased', duration:'600 ms', reduced:'Lands on the final figure immediately.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

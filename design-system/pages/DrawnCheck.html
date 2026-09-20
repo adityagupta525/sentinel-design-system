@@ -1,0 +1,52 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="DrawnCheck" subtitle="The one mark in this product that draws itself" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DrawnCheck — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { DrawnCheck, Surface, SentinelTurn } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze', '--color-bronze-deep', '--color-track', '--color-line', '--color-surface', '--color-muted', '--color-ink', '--color-data-deemph', '--color-status-over-fg', '--type-figure-font', '--type-caption-font', '--radius-full'];
+
+function App(){ const [k,setK] = React.useState(0); return (
+  <PageShell name="DrawnCheck" group="Data" status="shipped" requires={['DrawnCheck','Surface','SentinelTurn']}
+    summary="A check that strokes itself on. It appears once in the whole product — on the receipt, after money has actually moved — and that scarcity is the design: an animation an advisor sees on every screen stops meaning anything, and this one has to mean something.">
+    <Block n={1} title="Specimen" sub="Tap to replay.">
+      <Specimen width={343}><div key={k} onClick={()=>setK(k+1)} style={{cursor:'pointer',display:'flex',justifyContent:'center',padding:12}}><DrawnCheck size={44} /></div></Specimen></Block>
+    <Block n={2} title="Sizes" sub="It is drawn, not set, so it stays crisp at any size. Two are used.">
+      <Grid cols={1} items={[
+        {label:'28 — in a row', node:<div style={{display:'flex',alignItems:'center',gap:12}}><DrawnCheck size={28} /><span style={{font:'var(--type-row-font)'}}>Both moves placed</span></div>},
+        {label:'44 — the receipt', node:<div style={{display:'flex',justifyContent:'center'}}><DrawnCheck size={44} /></div>},
+      ]} />
+    </Block>
+    <Block n={3} title="Where it is allowed" sub="After something irreversible. Not on a save, not on a filter, not on a draft.">
+      <Specimen width={343}>
+        <SentinelTurn bodyFirst body={
+          <Surface style={{display:'flex',alignItems:'center',gap:12}}>
+            <DrawnCheck />
+            <span style={{display:'flex',flexDirection:'column',gap:2}}>
+              <span style={{font:'var(--type-body-strong-font)'}}>Both moves placed</span>
+              <span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>19 Sep, 3:04 pm · settles T+2</span>
+            </span>
+          </Surface>}
+          then="The two switches have gone to the exchange under your ARN — those cannot be pulled back from here." />
+      </Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/data/DrawnCheck.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300,display:'flex',alignItems:'center',gap:10}}><DrawnCheck size={28} /><span style={{font:'var(--type-row-font)'}}>Both moves placed</span></div>}
+        doCaption="Once, after money moved, beside the words that say what happened."
+        dontNode={<div style={{width:300,display:'flex',gap:10}}><DrawnCheck size={20} /><DrawnCheck size={20} /><DrawnCheck size={20} /></div>}
+        dontCaption="Three of them, as a status column. A mark that animates on every row is a mark that means nothing on any of them." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[
+      {name:'The stroke draws', property:'ds-draw — stroke-dashoffset to 0', duration:'600 ms', reduced:'The check is present, fully drawn, from the first frame.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

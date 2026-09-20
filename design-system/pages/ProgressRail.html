@@ -1,0 +1,45 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="ProgressRail" subtitle="Question n of twelve — the one thing on a journey screen that does not scroll" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ProgressRail — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ProgressRail, ScreenScaffold, Composer, SentinelTurn, DetourBanner } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze', '--color-bronze-deep', '--color-track', '--color-line', '--color-surface', '--color-muted', '--color-ink', '--color-data-deemph', '--radius-full', '--radius-16'];
+
+function App(){ const [n,setN] = React.useState(4); return (
+  <PageShell name="ProgressRail" group="Data" status="shipped" requires={['ProgressRail','ScreenScaffold','Composer','SentinelTurn','DetourBanner']}
+    summary="A hairline that fills, and the count in words beside it. It is pinned under the app bar because it is a state the whole SCREEN is in rather than something a turn said — the only thing in this product allowed to sit there.">
+    <Block n={1} title="Specimen"><Specimen width={343}><ProgressRail n={n} total={12} /></Specimen>
+      <p style={{fontFamily:'var(--font-ui)',fontSize:12.5,color:'var(--color-muted)',marginTop:10}}>
+        <button onClick={()=>setN(Math.max(1,n-1))} style={{font:'inherit',color:'var(--color-bronze-deep)',background:'none',border:0,cursor:'pointer'}}>← back</button>
+        {' · '}<button onClick={()=>setN(Math.min(12,n+1))} style={{font:'inherit',color:'var(--color-bronze-deep)',background:'none',border:0,cursor:'pointer'}}>forward →</button>
+      </p></Block>
+    <Block n={2} title="Its three states">
+      <Grid cols={1} items={[
+        {label:'the first question', node:<div style={{width:343}}><ProgressRail n={1} total={12} /></div>, note:'It counts QUESTIONS. The intro carries no rail, because nothing has been asked yet.'},
+        {label:'mid-journey', node:<div style={{width:343}}><ProgressRail n={7} total={12} /></div>},
+        {label:'dimmed — a detour', node:<div style={{width:343}}><ProgressRail n={7} total={12} dim /></div>, note:'40% on the rail and NOT on the label. Dimming the words too would make the one thing an advisor needs to read the hardest thing on the screen — which is why the component owns the dim rather than a parent opacity.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Pinned, in place" sub="Under the bar, above the thread. It is ScreenScaffold’s `progress` prop, not a child — a screen cannot put it anywhere else.">
+      <Specimen width={375}>
+        <ScreenScaffold time="10:12" progress={{n, total:12}} composer={<Composer value="" onChange={()=>{}} placeholder="or type your answer" />}>
+          <SentinelTurn say={['What does she spend in a month?','Her statement says about ₹95,000.']} />
+        </ScreenScaffold>
+      </Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/data/ProgressRail.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[
+      {name:'Advances', property:'the fill grows to the new fraction', duration:'320 ms', reduced:'Jumps to the new width.'},
+      {name:'Dims', property:'opacity to 0.4 on the rail only', duration:'200 ms', reduced:'Immediate.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

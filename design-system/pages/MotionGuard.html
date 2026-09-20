@@ -1,0 +1,39 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="MotionGuard" subtitle="The component that renders nothing, and why it is a component at all" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>MotionGuard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { MotionGuard, SentinelThinking, ChartBar } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-canvas', '--color-surface', '--color-desk', '--color-bronze', '--color-bronze-deep', '--color-ink', '--color-line', '--color-muted', '--radius-44', '--shadow-frame', '--screen-w', '--screen-h'];
+
+function App(){ return (
+  <PageShell name="MotionGuard" group="Shell" status="shipped" requires={['MotionGuard','SentinelThinking','ChartBar']}
+    summary="It renders nothing. It installs the reduced-motion block on module evaluation, so loading the bundle is enough — a consuming project that brings its own page styles still honours prefers-reduced-motion. That is the whole reason it is a component rather than a line in a stylesheet: a stylesheet can be left out, and an import cannot.">
+    <Block n={1} title="Specimen" sub="There is nothing to show, and that is the point. It is mounted on this page right now.">
+      <Specimen width={343}><MotionGuard /><p style={{margin:0,font:'var(--type-caption-font)',color:'var(--color-muted)'}}>&lt;MotionGuard /&gt; — rendered above this line, occupying no space.</p></Specimen></Block>
+    <Block n={2} title="What it guards" sub="Every animation in this system states its reduced-motion behaviour on its own page. This is the mechanism that makes those statements true rather than aspirational.">
+      <Grid cols={1} items={[
+        {label:'a wait', node:<div style={{width:343}}><SentinelThinking verb="Reading her September statement" /></div>, note:'Under reduced motion the dots hold instead of pulsing, and the verb still names the work.'},
+        {label:'bars', node:<div style={{width:343}}><ChartBar bars={[{label:'Small-cap rally',value:6.1},{label:'His July top-up',value:2.0}]} orientation="horizontal" valueFormat={(v)=>`+${v.toFixed(1)}`} run /></div>, note:'Under reduced motion they are drawn at full length rather than growing. The figure is the same either way, which is the test.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Why it cannot appear on a screen" sub="`report:parallel` counts components that appear on a screen and flags this one every time. It is recorded in contradiction 64 rather than fixed, because the fix would be to make it render something — and something is exactly what it must not render.">
+      <Grid cols={1} items={[
+        {label:'installed', node:<span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>Once, on module evaluation. Idempotent — importing the bundle twice installs one block.</span>},
+        {label:'scope', node:<span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>Every keyframe and transition this system ships, including the ones inside a consumer’s own components.</span>},
+      ]} />
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/shell/MotionGuard.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'It is the motion rule', property:'prefers-reduced-motion: reduce — animation and transition durations collapse', duration:'—', reduced:'This component IS the reduced-motion behaviour.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

@@ -1,0 +1,58 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="Pressable" subtitle="The operable base — a 44pt target it measures, and a focus ring a caller cannot break" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pressable — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Pressable, AnswerChip, Pill } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble', '--color-bubble-edge', '--color-bronze-deep', '--color-ink', '--color-muted', '--color-surface', '--color-line', '--radius-full', '--border-focus', '--focus-ring', '--press-scale'];
+
+function App(){ const [on,setOn] = React.useState(false); const [open,setOpen] = React.useState(false); return (
+  <PageShell name="Pressable" group="Actions" status="shipped" requires={['Pressable','AnswerChip','Pill']}
+    summary="Every operable thing in this product is built on it, and inherits two guarantees it cannot get wrong: a tap target of at least 44pt, MEASURED from the rendered box rather than declared, and a :focus-visible ring that clears 3:1. Nothing else in the system is allowed to draw a focus ring.">
+    <Block n={1} title="Specimen" sub="Tab to it. The ring is a solid outline plus a halo — the halo alone measures 1.22:1 and would fail WCAG 2.4.13.">
+      <Specimen width={343}>
+        <div style={{display:'flex',gap:12,alignItems:'center'}}>
+          <Pressable label="A plain pressable" style={{display:'flex',height:36,alignItems:'center',padding:'0 14px',borderRadius:999,background:'var(--color-surface)',boxShadow:'0 0 0 1px var(--color-line)'}}>
+            <span style={{font:'var(--type-row-font)'}}>Press me</span>
+          </Pressable>
+          <Pressable label="An icon disc" pressScale={0.94} style={{display:'flex',width:42,height:42,alignItems:'center',justifyContent:'center',borderRadius:999,background:'var(--color-surface)',boxShadow:'0 0 0 1px var(--color-line)'}}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="var(--color-bronze-deep)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </Pressable>
+        </div>
+      </Specimen>
+    </Block>
+    <Block n={2} title="The ring is an outline, and that is load-bearing" sub="The first build used a box-shadow. An inline style.boxShadow from a caller beats a stylesheet rule, so the ring vanished on every chip that passed its own — measured, not theorised. Callers may pass boxShadow freely; they must not pass outline.">
+      <Grid cols={1} items={[
+        {label:'a caller passing its own boxShadow', node:<div style={{width:343}}><AnswerChip label="Still gets a ring when focused" /></div>, note:'AnswerChip paints its own 1px ring as a boxShadow. The focus outline is a different property, so both survive.'},
+        {label:'a removable filter pill', node:<div style={{width:343}}><Pill label="Flexi cap" size="sm" tone="filter" removable /></div>, note:'A 24px pill with a 12px × inside it. Both are ≥44 to the finger; neither is 44 to the eye.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Roles it can take" sub="It is a button unless you say otherwise. The ARIA is painted from props rather than left to a caller to remember.">
+      <Grid cols={1} items={[
+        {label:'a toggle — aria-pressed', node:<div style={{width:343}}><Pressable label="On your shelf" pressed={on} onClick={()=>setOn(!on)} style={{display:'flex',height:32,alignItems:'center',padding:'0 12px',borderRadius:999,background:on?'var(--color-bubble)':'var(--color-surface)',boxShadow:'0 0 0 1px var(--color-line)'}}><span style={{font:'var(--type-caption-font)'}}>On your shelf {on?'✓':''}</span></Pressable></div>, note:'aria-pressed follows the fill, so a screen reader and an eye are told the same thing.'},
+        {label:'a disclosure — aria-expanded', node:<div style={{width:343}}><Pressable label="Details" expanded={open} controls="d1" onClick={()=>setOpen(!open)} style={{display:'flex',height:36,alignItems:'center',gap:6}}><span style={{font:'var(--type-row-font)'}}>Details</span><span style={{display:'inline-block',transform:open?'rotate(180deg)':'none',transition:'transform 200ms var(--ease)'}}>⌄</span></Pressable><div id="d1" hidden={!open} style={{font:'var(--type-caption-font)',color:'var(--color-muted)',paddingTop:6}}>The region it controls.</div></div>},
+        {label:'inert, not disabled', node:<div style={{width:343}}><Pressable label="Locked" aria-disabled tabIndex={-1} style={{display:'flex',height:32,alignItems:'center',padding:'0 12px',borderRadius:999,background:'var(--color-chip)'}}><span style={{font:'var(--type-caption-font)'}}>54 · Moderate</span></Pressable></div>, note:'Announced as unavailable WITHOUT the 0.4 dimming disabled carries — for a control whose value must stay readable while it cannot be changed.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/actions/Pressable.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><Pressable label="Go to the newest turn" style={{display:'flex',width:36,height:36,alignItems:'center',justifyContent:'center',borderRadius:999,background:'var(--color-surface)',boxShadow:'0 0 0 1px var(--color-line)'}}><span>↓</span></Pressable></div>}
+        doCaption="A glyph with a label. The label is REQUIRED whenever the child is not self-describing."
+        dontNode={<div style={{width:300}}><Pressable style={{display:'flex',width:36,height:36,alignItems:'center',justifyContent:'center',borderRadius:999,background:'var(--color-surface)',boxShadow:'0 0 0 1px var(--color-line)'}}><span>↓</span></Pressable></div>}
+        dontCaption="The same control with no label. A screen reader announces it as “button”. This exact defect shipped twice — F-39 on the app bar and again on ScrollToBottomButton." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[
+      {name:'Press', property:'scale 0.98 — 0.94 on a 42px icon disc', duration:'120 ms', reduced:'No scale. The fill still changes, so the press is still felt.'},
+      {name:'Focus', property:'outline + halo appear together', duration:'150 ms', reduced:'Immediate.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

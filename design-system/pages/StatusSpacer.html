@@ -1,0 +1,34 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="StatusSpacer" subtitle="The status bar, and the one clock the whole repository agrees on" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>StatusSpacer — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { StatusSpacer, PhoneFrame, ScreenBackdrop, TopBar } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-canvas', '--color-surface', '--color-desk', '--color-bronze', '--color-bronze-deep', '--color-ink', '--color-line', '--color-muted', '--radius-44', '--shadow-frame', '--screen-w', '--screen-h'];
+
+function App(){ return (
+  <PageShell name="StatusSpacer" group="Shell" status="shipped" requires={['StatusSpacer','PhoneFrame','ScreenBackdrop','TopBar']}
+    summary="The iOS status row — clock, signal, wifi, battery — and the space it occupies. Its default is 9:41, the fixed specimen time every board and every spec page in this repository renders, so two screenshots taken a year apart still match.">
+    <Block n={1} title="Specimen"><Specimen width={423}><PhoneFrame><div style={{position:'relative',height:'100%'}}><ScreenBackdrop /><StatusSpacer /></div></PhoneFrame></Specimen></Block>
+    <Block n={2} title="The clock" sub="Pass a real one only where the screen STATES a time of day — a greeting that says good afternoon, a receipt that says 3:04 pm. Everywhere else the default keeps the boards comparable.">
+      <Grid cols={1} items={[
+        {label:'9:41 — the default', node:<div style={{width:375,position:'relative'}}><StatusSpacer /></div>, note:'Every specimen in this system. A clock that moved would make every screenshot disagree with the last one.'},
+        {label:'10:12 — the risk journey', node:<div style={{width:375,position:'relative'}}><StatusSpacer time="10:12" /></div>, note:'Meera’s journey is set in the morning and the greeting says so, so the clock has to as well.'},
+        {label:'3:04 — the receipt', node:<div style={{width:375,position:'relative'}}><StatusSpacer time="3:04" /></div>, note:'The placed-moves receipt prints 3:04 pm in its own words. Two clocks disagreeing on one screen is the kind of thing a reader spots instantly.'},
+      ]} />
+    </Block>
+    <Block n={3} title="With the bar under it"><Specimen width={423}><PhoneFrame><div style={{position:'relative',height:'100%'}}><ScreenBackdrop /><StatusSpacer /><TopBar /></div></PhoneFrame></Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/shell/StatusSpacer.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'None', property:'it is chrome; it does not participate in the screen transition', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

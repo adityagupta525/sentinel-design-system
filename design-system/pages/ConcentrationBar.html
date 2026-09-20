@@ -1,0 +1,39 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="ConcentrationBar" subtitle="One bar, one breach, and the number in the label" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ConcentrationBar — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ConcentrationBar, Surface, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze', '--color-bronze-deep', '--color-track', '--color-line', '--color-surface', '--color-muted', '--color-ink', '--color-data-deemph', '--color-status-over-fg', '--type-figure-font', '--type-caption-font', '--radius-full'];
+
+function App(){ return (
+  <PageShell name="ConcentrationBar" group="Data" status="shipped" requires={['ConcentrationBar','Surface','SentinelBlock','SentinelText']}
+    summary="A single filled track with its figure and its limit written into the label. It answers one question — how much of this is that — and it refuses to answer it with the bar alone: the number and the ceiling are both in words, so the picture is a second channel rather than the only one.">
+    <Block n={1} title="Specimen"><Specimen width={343}><ConcentrationBar fraction={0.31} label="Small cap 31% — the sleeve ceiling is 25%" /></Specimen></Block>
+    <Block n={2} title="Inside and over" sub="The bar does not change colour at the ceiling. The LABEL says which side of it you are on, because a reader who cannot see the hue still has to know.">
+      <Grid cols={1} items={[
+        {label:'well inside', node:<div style={{width:343}}><ConcentrationBar fraction={0.14} label="Parag Parikh 14% — the single-fund ceiling is 25%" /></div>},
+        {label:'at it', node:<div style={{width:343}}><ConcentrationBar fraction={0.25} label="Quant Small Cap 25% — exactly at the single-fund ceiling" /></div>},
+        {label:'over', node:<div style={{width:343}}><ConcentrationBar fraction={0.31} label="Quant Small Cap 31% — over the 25% single-fund ceiling" /></div>, note:'Two different rules in this book both read 25 (contradiction 32), which is why the label names WHICH ceiling every time.'},
+        {label:'the whole thing', node:<div style={{width:343}}><ConcentrationBar fraction={0.8} label="14 funds hold 80% — ₹14,72,000" /></div>, note:'It is not only a breach device. Here it carries the shape of a book.'},
+      ]} />
+    </Block>
+    <Block n={3} title="In a turn" sub="Under the sentence that says what it means — never on its own.">
+      <Specimen width={343}>
+        <SentinelBlock><SentinelText text="The reason is one holding. Quant Small Cap is 31% of his book, over two ceilings at once." />
+          <div style={{marginTop:12}}><Surface elevation="flat"><ConcentrationBar fraction={0.31} label="Small cap 31% — the sleeve ceiling is 25%" /></Surface></div>
+        </SentinelBlock></Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/data/ConcentrationBar.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'Fill grows', property:'ds-grow from the left', duration:'400 ms', reduced:'Drawn full.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

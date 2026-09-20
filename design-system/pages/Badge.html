@@ -1,0 +1,54 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="Badge" subtitle="A word and a colour — and the word is never optional" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Badge — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Badge, ListRow, List } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface', '--color-canvas', '--color-chip', '--color-line', '--color-line-soft', '--color-muted', '--color-ink', '--color-bronze-deep', '--color-status-over-bg', '--color-status-over-fg', '--radius-16', '--radius-12'];
+
+function App(){ return (
+  <PageShell name="Badge" group="Cards" status="shipped" requires={['Badge','ListRow','List']}
+    summary="Two variants and one rule. `status` carries a state on the status token pairs; `meta` carries a fact on the chip ground. Neither is interactive, and neither ever ships without a word — colour never signals alone, which is rule 1 applied to ten pixels.">
+    <Block n={1} title="Specimen"><Specimen width={343}>
+      <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+        <Badge variant="status" tone="ok">On shelf</Badge>
+        <Badge variant="status" tone="over">Off shelf</Badge>
+        <Badge variant="status" tone="under">Under review</Badge>
+        <Badge>Locked · 15 Sep 2026</Badge>
+      </div></Specimen></Block>
+    <Block n={2} title="The two variants" sub="status is a STATE the thing is in. meta is a FACT about it. A date is never a status; a breach is never meta.">
+      <Grid cols={1} items={[
+        {label:'status · ok', node:<Badge variant="status" tone="ok">Passed</Badge>, note:'10px uppercase bold on the ok pair. Compliance rows use it.'},
+        {label:'status · over', node:<Badge variant="status" tone="over">Required</Badge>, note:'The over pair. Rule 2: this is the status TEXT colour on the status ground, and it is the only fill in the product that carries bad news — a ten-pixel badge is not a red panel.'},
+        {label:'status · under', node:<Badge variant="status" tone="under">Draft</Badge>},
+        {label:'meta', node:<Badge>43 funds</Badge>, note:'11px medium, chip ground, line ring. A fact, not a verdict.'},
+      ]} />
+    </Block>
+    <Block n={3} title="In a row" sub="A badge sits at the end of a row and never replaces the row’s own words.">
+      <Specimen width={343}>
+        <List dividers="inset" emptyState={{title:'Nothing here yet.'}} items={[
+          {title:'Parag Parikh Flexi Cap', subtitle:'Flexi cap · direct', trailing:'badge', badge:{variant:'status',tone:'ok',text:'On shelf'}},
+          {title:'Quant Small Cap', subtitle:'Small cap · direct', trailing:'badge', badge:{variant:'status',tone:'over',text:'Off shelf'}},
+        ]} />
+      </Specimen>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/cards/Badge.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><Badge variant="status" tone="over">Off shelf</Badge></div>}
+        doCaption="The word carries it. The colour is a second channel, not the only one."
+        dontNode={<div style={{width:300}}><span style={{display:'inline-block',width:10,height:10,borderRadius:999,background:'var(--color-status-over-fg)'}} /></div>}
+        dontCaption="A coloured dot with no word. An advisor reading this to a client has nothing to say, and a reader who cannot see the hue has nothing at all." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[{name:'None', property:'a badge never animates — a state that flickers reads as a thing still deciding', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

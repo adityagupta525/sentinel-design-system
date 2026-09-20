@@ -1,0 +1,47 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="ScrollToBottomButton" subtitle="The way back down a long thread, and the label it shipped without" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ScrollToBottomButton — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ScrollToBottomButton, ScreenScaffold, Composer, SentinelTurn, UserTurn } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-canvas', '--color-surface', '--color-desk', '--color-bronze', '--color-bronze-deep', '--color-ink', '--color-line', '--color-muted', '--radius-44', '--shadow-frame', '--screen-w', '--screen-h'];
+
+function App(){ const [show,setShow] = React.useState(true); return (
+  <PageShell name="ScrollToBottomButton" group="Shell" status="shipped" requires={['ScrollToBottomButton','ScreenScaffold','Composer','SentinelTurn','UserTurn']}
+    summary="A 36px disc that appears when the thread is scrolled more than 120px from the newest turn. It belongs to ScreenScaffold rather than to a caller, for the same reason the Dock does: a thread that forgot it would be a thread with a trap in it.">
+    <Block n={1} title="Specimen"><Specimen width={343}>
+      <div style={{position:'relative',height:80,background:'var(--color-canvas)',borderRadius:12}}>
+        <ScrollToBottomButton show={show} onClick={()=>setShow(false)} />
+      </div></Specimen>
+      <p style={{fontFamily:'var(--font-ui)',fontSize:12.5,color:'var(--color-muted)',marginTop:10}}>
+        <button onClick={()=>setShow(!show)} style={{font:'inherit',color:'var(--color-bronze-deep)',background:'none',border:0,cursor:'pointer',padding:0}}>{show?'Hide it':'Show it'}</button> — it fades and lifts rather than mounting, so it never shifts the layout.
+      </p></Block>
+    <Block n={2} title="Hidden means hidden" sub="While `show` is false it is at opacity 0, out of the tab order and hidden from a screen reader. A control that cannot be seen and cannot be pressed should not be announced either.">
+      <Grid cols={1} items={[
+        {label:'show', node:<div style={{width:200,position:'relative',height:60,background:'var(--color-canvas)',borderRadius:12}}><ScrollToBottomButton show onClick={()=>{}} /></div>},
+        {label:'hidden', node:<div style={{width:200,position:'relative',height:60,background:'var(--color-canvas)',borderRadius:12}}><ScrollToBottomButton show={false} onClick={()=>{}} /></div>, note:'Present in the DOM, inert in every sense that matters.'},
+      ]} />
+    </Block>
+    <Block n={3} title="It shipped with no accessible name" sub="Four versions as a Pressable carrying an SVG and nothing else — announced as “button”. It survived because nothing had ever rendered it; the day it reached a screen, on 20 Sep 2026, the defect was the first thing found. It says “Go to the newest turn” now, which is what the advisor wants rather than where the scroll ends.">
+      <Specimen width={375}>
+        <ScreenScaffold composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />}>
+          <UserTurn text="Why did Sharma’s portfolio drift this quarter?" editable={false} actions={false} />
+          <SentinelTurn say={['Most of it is the small-cap rally — about two of every three points.','Scroll this thread and the disc appears 8px above the composer.']} />
+        </ScreenScaffold>
+      </Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/shell/ScrollToBottomButton.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[
+      {name:'Appears', property:'opacity 0 → 1 and an 8px lift', duration:'150 ms', reduced:'Opacity only, no lift.'},
+      {name:'Pressed', property:'the thread scrolls to the newest turn, smoothly', duration:'browser default', reduced:'Jumps — behavior: auto under prefers-reduced-motion.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

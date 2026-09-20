@@ -2,8 +2,7 @@
  "generated": "2026-09-20",
  "generator": "scripts/build-index.js",
  "counts": {
-  "shipped": 54,
-  "building": 40
+  "shipped": 94
  },
  "rows": [
   {
@@ -52,8 +51,8 @@
   {
    "name": "Eyebrow",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "Eyebrow.html",
    "file": "components/text/Eyebrow.jsx",
    "tokens": [
     "--color-muted",
@@ -67,8 +66,8 @@
   {
    "name": "EyebrowDivider",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "EyebrowDivider.html",
    "file": "components/text/EyebrowDivider.jsx",
    "tokens": [
     "--border-hairline",
@@ -81,8 +80,8 @@
   {
    "name": "HomeIndicator",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "HomeIndicator.html",
    "file": "components/shell/HomeIndicator.jsx",
    "tokens": [
     "--color-bronze",
@@ -95,8 +94,8 @@
   {
    "name": "IconArrow",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconArrow.html",
    "file": "components/icons/IconArrow.jsx",
    "tokens": [
     "--color-surface"
@@ -107,8 +106,8 @@
   {
    "name": "IconAttach",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconAttach.html",
    "file": "components/icons/IconAttach.jsx",
    "tokens": [
     "--color-muted"
@@ -119,8 +118,8 @@
   {
    "name": "IconCheckCircle",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconCheckCircle.html",
    "file": "components/icons/IconCheckCircle.jsx",
    "tokens": [
     "--color-status-ok-fg"
@@ -131,8 +130,8 @@
   {
    "name": "IconChevronRight",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconChevronRight.html",
    "file": "components/icons/IconChevronRight.jsx",
    "tokens": [
     "--color-bronze"
@@ -143,8 +142,8 @@
   {
    "name": "IconDownload",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconDownload.html",
    "file": "components/icons/IconDownload.jsx",
    "tokens": [
     "--color-bronze-deep"
@@ -155,8 +154,8 @@
   {
    "name": "IconFile",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconFile.html",
    "file": "components/icons/IconFile.jsx",
    "tokens": [
     "--color-muted"
@@ -167,8 +166,8 @@
   {
    "name": "IconInfo",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconInfo.html",
    "file": "components/icons/IconInfo.jsx",
    "tokens": [
     "--color-muted"
@@ -179,8 +178,8 @@
   {
    "name": "IconMenu",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconMenu.html",
    "file": "components/icons/IconMenu.jsx",
    "tokens": [
     "--color-ink"
@@ -191,8 +190,8 @@
   {
    "name": "IconPlus",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconPlus.html",
    "file": "components/icons/IconPlus.jsx",
    "tokens": [
     "--color-ink"
@@ -203,8 +202,8 @@
   {
    "name": "IconSparkle",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconSparkle.html",
    "file": "components/icons/IconSparkle.jsx",
    "tokens": [
     "--color-bronze-deep"
@@ -215,8 +214,8 @@
   {
    "name": "IconSpinner",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "IconSpinner.html",
    "file": "components/icons/IconSpinner.jsx",
    "tokens": [
     "--color-bronze-deep"
@@ -227,8 +226,8 @@
   {
    "name": "MotionGuard",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "MotionGuard.html",
    "file": "components/shell/MotionGuard.jsx",
    "tokens": [
     "--border-focus",
@@ -244,8 +243,8 @@
   {
    "name": "PhoneFrame",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "PhoneFrame.html",
    "file": "components/shell/PhoneFrame.jsx",
    "tokens": [
     "--color-canvas",
@@ -259,8 +258,8 @@
   {
    "name": "Provenance",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "Provenance.html",
    "file": "components/text/Provenance.jsx",
    "tokens": [
     "--color-muted",
@@ -275,8 +274,8 @@
   {
    "name": "ScreenBackdrop",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ScreenBackdrop.html",
    "file": "components/shell/ScreenBackdrop.jsx",
    "tokens": [
     "--aura-bronze",
@@ -318,8 +317,8 @@
   {
    "name": "StandingDisclosure",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "StandingDisclosure.html",
    "file": "components/text/StandingDisclosure.jsx",
    "tokens": [
     "--color-data-deemph",
@@ -334,8 +333,8 @@
   {
    "name": "StatusSpacer",
    "group": "Foundations",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "StatusSpacer.html",
    "file": "components/shell/StatusSpacer.jsx",
    "tokens": [
     "--color-ink",
@@ -583,8 +582,8 @@
   {
    "name": "GreetingDivider",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "GreetingDivider.html",
    "file": "components/chat/GreetingDivider.jsx",
    "tokens": [
     "--color-bronze-deep",
@@ -765,8 +764,8 @@
   {
    "name": "RejectCallout",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "RejectCallout.html",
    "file": "components/cards/RejectCallout.jsx",
    "tokens": [
     "--space-10",
@@ -827,8 +826,8 @@
   {
    "name": "ScrollToBottomButton",
    "group": "Chat",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ScrollToBottomButton.html",
    "file": "components/shell/ScrollToBottomButton.jsx",
    "tokens": [
     "--color-bronze-deep",
@@ -1072,8 +1071,8 @@
   {
    "name": "AttributionChart",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "AttributionChart.html",
    "file": "components/data/AttributionChart.jsx",
    "tokens": [
     "--border-hairline",
@@ -1107,8 +1106,8 @@
   {
    "name": "Badge",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "Badge.html",
    "file": "components/cards/Badge.jsx",
    "tokens": [
     "--color-chip",
@@ -1312,8 +1311,8 @@
   {
    "name": "ConcentrationBar",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ConcentrationBar.html",
    "file": "components/data/ConcentrationBar.jsx",
    "tokens": [
     "--color-bronze",
@@ -1332,8 +1331,8 @@
   {
    "name": "DataTableCard",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "DataTableCard.html",
    "file": "components/cards/DataTableCard.jsx",
    "tokens": [
     "--color-bronze-deep",
@@ -1371,8 +1370,8 @@
   {
    "name": "DrawnCheck",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "DrawnCheck.html",
    "file": "components/data/DrawnCheck.jsx",
    "tokens": [
     "--color-bronze",
@@ -1386,8 +1385,8 @@
   {
    "name": "Dumbbell",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "Dumbbell.html",
    "file": "components/data/Dumbbell.jsx",
    "tokens": [
     "--border-1",
@@ -1545,8 +1544,8 @@
   {
    "name": "StatTile",
    "group": "Data",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "StatTile.html",
    "file": "components/data/StatTile.jsx",
    "tokens": [
     "--border-1",
@@ -1572,8 +1571,8 @@
   {
    "name": "AnswerChip",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "AnswerChip.html",
    "file": "components/actions/AnswerChip.jsx",
    "tokens": [
     "--color-bronze",
@@ -1601,8 +1600,8 @@
   {
    "name": "ChipRow",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ChipRow.html",
    "file": "components/actions/ChipRow.jsx",
    "tokens": [
     "--dur-enter",
@@ -1615,8 +1614,8 @@
   {
    "name": "ClientChip",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ClientChip.html",
    "file": "components/actions/ClientChip.jsx",
    "tokens": [
     "--color-bronze-deep",
@@ -1641,8 +1640,8 @@
   {
    "name": "DarkButton",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "DarkButton.html",
    "file": "components/actions/DarkButton.jsx",
    "tokens": [
     "--color-surface",
@@ -1707,8 +1706,8 @@
   {
    "name": "InlineActionRow",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "InlineActionRow.html",
    "file": "components/actions/InlineActionRow.jsx",
    "tokens": [
     "--dur-enter",
@@ -1748,8 +1747,8 @@
   {
    "name": "Pressable",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "Pressable.html",
    "file": "components/actions/Pressable.jsx",
    "tokens": [
     "--dur-press",
@@ -1788,8 +1787,8 @@
   {
    "name": "SearchField",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "SearchField.html",
    "file": "components/forms/SearchField.jsx",
    "tokens": [
     "--color-bronze",
@@ -1839,8 +1838,8 @@
   {
    "name": "SelectionMark",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "SelectionMark.html",
    "file": "components/forms/SelectionMark.jsx",
    "tokens": [
     "--color-bronze",
@@ -1857,8 +1856,8 @@
   {
    "name": "SuggestionRow",
    "group": "Input",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "SuggestionRow.html",
    "file": "components/actions/SuggestionRow.jsx",
    "tokens": [
     "--color-ink",
@@ -1998,8 +1997,8 @@
   {
    "name": "ProgressRail",
    "group": "Navigation",
-   "status": "building",
-   "page": null,
+   "status": "shipped",
+   "page": "ProgressRail.html",
    "file": "components/data/ProgressRail.jsx",
    "tokens": [
     "--color-line",

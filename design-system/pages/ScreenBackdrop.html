@@ -1,0 +1,43 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="ScreenBackdrop" subtitle="Cream, a dotted paper, and two auras — the ground everything else sits on" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ScreenBackdrop — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ScreenBackdrop, PhoneFrame, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-canvas', '--color-surface', '--color-desk', '--color-bronze', '--color-bronze-deep', '--color-ink', '--color-line', '--color-muted', '--radius-44', '--shadow-frame', '--screen-w', '--screen-h'];
+
+function App(){ return (
+  <PageShell name="ScreenBackdrop" group="Shell" status="shipped" requires={['ScreenBackdrop','PhoneFrame','SentinelBlock','SentinelText']}
+    summary="Four layers and no props: the cream canvas, a 3px dotted paper texture, a bronze aura top-left and a shadow aura top-right. It is the first child of every screen, it takes no configuration, and that is deliberate — a backdrop a screen can tune is a backdrop that differs from screen to screen.">
+    <Block n={1} title="Specimen"><Specimen width={423}><PhoneFrame><ScreenBackdrop /></PhoneFrame></Specimen></Block>
+    <Block n={2} title="Why the texture" sub="Flat cream at 375 reads as unfinished. Three pixels of dotted paper at very low contrast gives the surface something to be, without becoming anything a reader notices.">
+      <Grid cols={1} items={[
+        {label:'with it', node:<div style={{width:200,height:120,position:'relative',borderRadius:16,overflow:'hidden'}}><ScreenBackdrop /></div>},
+        {label:'flat cream', node:<div style={{width:200,height:120,borderRadius:16,background:'var(--color-canvas)'}} />, note:'The same colour, nothing else. Side by side the difference is small, which is the intention — it should be felt rather than seen.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Under content" sub="Everything sits above it at z-index 1. The auras never reach the content because they are top-left and top-right of a screen whose content starts below the app bar.">
+      <Specimen width={423}>
+        <PhoneFrame>
+          <div style={{position:'relative',height:'100%',padding:16,boxSizing:'border-box'}}>
+            <ScreenBackdrop />
+            <div style={{position:'relative',zIndex:1,marginTop:120}}>
+              <SentinelBlock><SentinelText text="Everything a screen draws sits above the backdrop, and the backdrop never competes with it." /></SentinelBlock>
+            </div>
+          </div>
+        </PhoneFrame>
+      </Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/shell/ScreenBackdrop.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'None', property:'it never animates and never parallaxes', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

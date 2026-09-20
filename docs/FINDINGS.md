@@ -2029,3 +2029,37 @@ real question: rule 1 argues against a legend at all, which is why nothing ever 
 `ChartShare`. That one is the owner's.
 
 **94 components, 54 shipped, 86 of 94 on a screen.**
+
+---
+
+### F-72 · Tier 2 — every component in the system now has a rendered specification — *20 Sep 2026*
+
+Forty components had source, a contract and a place on a board, and no page of their own. The roadmap
+called them Tier 2 and they had been building since v9. **All forty are written. 94 of 94 shipped,
+144 pages render clean.**
+
+They are not filler. Each one states something true about its component that the contract alone does
+not, and several were found by writing them:
+
+- **`Pressable`** — the focus ring is an `outline` rather than a `box-shadow`, and the page says why
+  with the case that forced it: an inline `style.boxShadow` from a caller beats a stylesheet rule, so
+  the first build's ring vanished on every chip that painted its own.
+- **`Dumbbell`** — `min` shown as the same two numbers read and unread, and `relation` shown as the
+  arrow that is true for a move and false for a comparison.
+- **`StatTile`** — carries contradiction 62's ruling, so a screen author meets *figure tile versus
+  footnote stat* at the moment they are choosing.
+- **`MotionGuard`** — a page for a component that renders nothing, which is the only honest way to
+  document one: it is mounted on its own page, occupying no space, and the page says why it can never
+  satisfy `report:parallel`.
+- **`GreetingDivider`** — the wrapping rule shown at the three name lengths this book contains, up to
+  *Ramasubramanian Venkataraghavan*, rather than described.
+- **The eleven icons** each state their own grid, stroke, source and callers — six different grids
+  across the set, which is contradiction 38, kept visible instead of smoothed over.
+
+**Three things the writing corrected.** The page kit has no `Table`, so a table of facts is a `Grid`
+of labelled rows — caught by the render, not by reading. `Motion` takes objects with named fields, not
+arrays; an array renders and then warns about keys, which is the quiet kind of wrong. And the
+generator sliced its template above the destructure line, so the first two pages referenced components
+they had never named.
+
+**94 components · 94 specified · 144 pages clean · adherence 61 · tokens 0 undefined.**

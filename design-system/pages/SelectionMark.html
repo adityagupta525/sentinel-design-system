@@ -1,0 +1,59 @@
+<!-- @dsCard group="Pages" viewport="1000x1200" name="SelectionMark" subtitle="Radio and checkbox, drawn inside the row that owns them" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SelectionMark — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SelectionMark, List, ListRow } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface', '--color-canvas', '--color-chip', '--color-line', '--color-muted', '--color-ink', '--color-bronze', '--color-bronze-deep', '--radius-12', '--radius-16', '--border-focus', '--focus-ring'];
+
+function App(){ const [one,setOne] = React.useState('meeting'); const [many,setMany] = React.useState(['cost']);
+  const tog = (k)=>setMany(m=>m.includes(k)?m.filter(x=>x!==k):[...m,k]);
+  return (
+  <PageShell name="SelectionMark" group="Forms" status="shipped" requires={['SelectionMark','List','ListRow']}
+    summary="Not an icon. It is drawn inside the component that owns it and is never rendered on its own — a mark with no row is a control with no label, and this product has none of those. Radio is one of a set; checkbox is several. The pairing is enforced by the ROW, not chosen here.">
+    <Block n={1} title="Specimen"><Specimen width={343}>
+      <div style={{display:'flex',gap:24,alignItems:'center'}}>
+        <span style={{display:'flex',gap:10,alignItems:'center'}}><SelectionMark kind="radio" /><SelectionMark kind="radio" selected /><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>radio</span></span>
+        <span style={{display:'flex',gap:10,alignItems:'center'}}><SelectionMark kind="checkbox" /><SelectionMark kind="checkbox" selected /><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>checkbox</span></span>
+        <span style={{display:'flex',gap:10,alignItems:'center'}}><SelectionMark kind="radio" disabled /><SelectionMark kind="checkbox" selected disabled /><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>disabled</span></span>
+      </div></Specimen></Block>
+    <Block n={2} title="One of a set" sub="Radio. The row is `select`, and choosing one unchooses the rest — which is the row’s job, not the mark’s.">
+      <Specimen width={343}>
+        <List dividers="inset" emptyState={{title:'Nothing to pick.'}} items={[
+          {title:'Her annual record', subtitle:'Filed, and it proposes nothing', variant:'select', trailing:'radio', selected:one==='record', onPress:()=>setOne('record')},
+          {title:'A meeting with her', subtitle:'What to raise, and what to ask', variant:'select', trailing:'radio', selected:one==='meeting', onPress:()=>setOne('meeting')},
+          {title:'Before she invests more', subtitle:'What would have to change first', variant:'select', trailing:'radio', selected:one==='invest', onPress:()=>setOne('invest')},
+        ]} />
+      </Specimen>
+    </Block>
+    <Block n={3} title="Several of a set" sub="Checkbox. Same rows, different rule, and the mark is the only thing that tells an advisor which.">
+      <Specimen width={343}>
+        <List dividers="inset" emptyState={{title:'Nothing to pick.'}} items={[
+          {title:'Exit load', variant:'multi', trailing:'checkbox', selected:many.includes('load'), onPress:()=>tog('load')},
+          {title:'Cost of the switch', variant:'multi', trailing:'checkbox', selected:many.includes('cost'), onPress:()=>tog('cost')},
+          {title:'Tax', variant:'multi', trailing:'checkbox', selected:many.includes('tax'), onPress:()=>tog('tax')},
+        ]} />
+      </Specimen>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/forms/SelectionMark.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><List dividers="none" emptyState={{title:''}} items={[{title:'A meeting with her', variant:'select', trailing:'radio', selected:true}]} /></div>}
+        doCaption="Inside its row, with the words that say what it selects."
+        dontNode={<div style={{width:300,display:'flex',gap:10}}><SelectionMark kind="radio" selected /><SelectionMark kind="radio" /><SelectionMark kind="radio" /></div>}
+        dontCaption="Marks on their own. Three controls, no labels, and nothing to read aloud." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[
+      {name:'Select', property:'the fill and the mark appear together', duration:'150 ms', reduced:'Immediate.'},
+      {name:'Press', property:'the ROW presses, not the mark — scale 0.98 on the row', duration:'120 ms', reduced:'No scale.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

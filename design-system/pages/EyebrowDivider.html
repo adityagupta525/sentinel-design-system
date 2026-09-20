@@ -1,0 +1,44 @@
+<!-- @dsCard group="Pages" viewport="1000x1000" name="EyebrowDivider" subtitle="A hairline, a label, a hairline — the one way this product marks a break in a thread" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>EyebrowDivider — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { EyebrowDivider, Eyebrow, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--text-11', '--leading-15', '--weight-bold', '--weight-regular', '--color-muted', '--color-data-deemph', '--color-bronze-deep', '--color-line', '--border-hairline', '--space-10'];
+
+function App(){ return (
+  <PageShell name="EyebrowDivider" group="Text" status="shipped" requires={['EyebrowDivider','Eyebrow','SentinelBlock','SentinelText']}
+    summary="Hairline, eyebrow, hairline. It marks a break in a thread that the turns themselves cannot — a journey ending, a result arriving, a day changing. It is the only horizontal rule in this product: nothing else draws a line across a screen.">
+    <Block n={1} title="Specimen"><Specimen width={343}><EyebrowDivider>Risk profile locked</EyebrowDivider></Specimen></Block>
+    <Block n={2} title="Anatomy" sub="The rules take the space the label does not. 10px either side of it, and the hairline is --border-hairline, not 1px.">
+      <Anatomy width={343} top="hairline — label — hairline" bottom="2px vertical padding" left="flex 1" right="flex 1">
+        <EyebrowDivider>Placed</EyebrowDivider>
+      </Anatomy>
+    </Block>
+    <Block n={3} title="In a thread" sub="It earns its line by marking something the turns cannot say for themselves.">
+      <Grid cols={1} items={[
+        {label:'a journey ending', node:<div style={{width:343,display:'flex',flexDirection:'column',gap:12}}><SentinelBlock><SentinelText text="That is the last question." /></SentinelBlock><EyebrowDivider>Risk profile locked</EyebrowDivider></div>, note:'The turns above it were questions; what follows is a result. The divider is the only thing that says so.'},
+        {label:'short label', node:<div style={{width:343}}><EyebrowDivider>Today</EyebrowDivider></div>, note:'The rules grow to fill what the label leaves.'},
+        {label:'long label', node:<div style={{width:343}}><EyebrowDivider>Everything below this was placed on 19 September</EyebrowDivider></div>, note:'It still fits, and it should not have to. A divider label is two or three words; past that the rules disappear and it reads as a heading.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/text/EyebrowDivider.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><EyebrowDivider>Two moves, not seven</EyebrowDivider></div>}
+        doCaption="A break the turns cannot mark themselves."
+        dontNode={<div style={{width:300,display:'flex',flexDirection:'column',gap:10}}><EyebrowDivider>Holdings</EyebrowDivider><EyebrowDivider>Performance</EyebrowDivider></div>}
+        dontCaption="Two in a row, used as section headings. A thread has turns, not sections — and a screen that needs headings to be read is a page wearing a thread's clothes." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[{name:'Arrives with its turn', property:'ds-rise on the turn it belongs to', duration:'240 ms', reduced:'Fades in place.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

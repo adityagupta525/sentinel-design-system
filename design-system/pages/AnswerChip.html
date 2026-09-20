@@ -1,0 +1,52 @@
+<!-- @dsCard group="Pages" viewport="1000x1300" name="AnswerChip" subtitle="What the advisor is offered, inside the turn that offered it" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>AnswerChip — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { AnswerChip, ChipRow, SentinelTurn } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble', '--color-bubble-edge', '--color-bronze-deep', '--color-ink', '--color-muted', '--color-surface', '--color-line', '--radius-full', '--space-8', '--dur-fast', '--ease'];
+
+function App(){ const [sel,setSel] = React.useState('Salary plus bonus'); return (
+  <PageShell name="AnswerChip" group="Actions" status="shipped" requires={['AnswerChip','ChipRow','SentinelTurn']}
+    summary="The fast path through a question. Five variants, and each one is a different KIND of offer rather than a different colour: an ordinary answer, one read from the client's record, a question about the question, an answer that declines, and the one the product expects.">
+    <Block n={1} title="Specimen"><Specimen width={343}><ChipRow><AnswerChip label="Use her KYC age — 38" variant="smart" /><AnswerChip label="Type it instead" /></ChipRow></Specimen></Block>
+    <Block n={2} title="The five variants" sub="Not five colours for decoration — five different things a chip can be.">
+      <Grid cols={1} items={[
+        {label:'outline — an ordinary answer', node:<div style={{width:343}}><ChipRow><AnswerChip label="Fixed salary" /><AnswerChip label="Own business" /></ChipRow></div>, note:'The default. Most chips in the product are these.'},
+        {label:'smart — read from the record', node:<div style={{width:343}}><ChipRow><AnswerChip label="From her last ITR — ₹1,80,000" variant="smart" /></ChipRow></div>, note:'The product already knows this. It is offered rather than filled in, because the advisor has to agree it is still true.'},
+        {label:'tertiary — a question about the question', node:<div style={{width:343}}><ChipRow><AnswerChip label="Why twelve questions?" variant="tertiary" /><AnswerChip label="How is 54 worked out?" variant="tertiary" /></ChipRow></div>, note:'It does not answer; it opens an explainer. Quieter, because taking it does not move the journey.'},
+        {label:'muted — an answer that declines', node:<div style={{width:343}}><ChipRow><AnswerChip label="She isn’t sure yet" variant="muted" /></ChipRow></div>, note:'A real answer, and the product records it as one. Not a skip.'},
+        {label:'primary — the expected one', node:<div style={{width:343}}><ChipRow><AnswerChip label="Let’s go" variant="primary" /><AnswerChip label="Carry on" variant="primary" /></ChipRow></div>, note:'One per row, at most. Two primaries is a screen that has not decided.'},
+      ]} />
+    </Block>
+    <Block n={3} title="With a subtitle" sub="Full width, and only where the WORDING changes the meaning — a risk question whose five answers differ by a shade of phrasing.">
+      <Specimen width={343}>
+        <div style={{display:'flex',flexDirection:'column',gap:8}}>
+          {[['Protect it','Keep what she has, even if it grows slowly'],['Grow steadily','Accept some falls for a better long run'],['Push for the most','Accept large falls for the highest return']].map(([l,s])=>
+            <AnswerChip key={l} label={l} subtitle={s} selected={sel===l} onClick={()=>setSel(l)} />)}
+        </div>
+      </Specimen>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/actions/AnswerChip.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><ChipRow><AnswerChip label="Show the 18 holdings" /><AnswerChip label="Why is 71% a problem?" variant="tertiary" /></ChipRow></div>}
+        doCaption="Inside the turn that offered them. They scroll away with it."
+        dontNode={<div style={{width:300}}><ChipRow><AnswerChip label="Yes" variant="primary" /><AnswerChip label="OK" variant="primary" /><AnswerChip label="Continue" variant="primary" /></ChipRow></div>}
+        dontCaption="Three primaries, and none of them says what happens. A chip is the sentence the advisor would have typed." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[
+      {name:'Row arrives', property:'fade + rise, 60 ms apart', duration:'240 ms', reduced:'All present at once.'},
+      {name:'Press', property:'scale 0.98', duration:'120 ms', reduced:'No scale; the fill still changes.'},
+      {name:'Select', property:'fill and ring change in place', duration:'150 ms', reduced:'Immediate.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

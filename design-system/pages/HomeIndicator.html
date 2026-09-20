@@ -1,0 +1,34 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="HomeIndicator" subtitle="Four pixels at the bottom, and the two grounds it has to survive" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>HomeIndicator — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { HomeIndicator, PhoneFrame, ScreenBackdrop, Dock, Composer } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-canvas', '--color-surface', '--color-desk', '--color-bronze', '--color-bronze-deep', '--color-ink', '--color-line', '--color-muted', '--radius-44', '--shadow-frame', '--screen-w', '--screen-h'];
+
+function App(){ return (
+  <PageShell name="HomeIndicator" group="Shell" status="shipped" requires={['HomeIndicator','PhoneFrame','ScreenBackdrop','Dock','Composer']}
+    summary="The iOS home bar. Two tones, and the reason there are two is contrast: bronze reads on the cream canvas and disappears on a dark result frame, so a confirm sheet gets the dark one.">
+    <Block n={1} title="Specimen"><Specimen width={343}><div style={{position:'relative',height:40,background:'var(--color-canvas)',borderRadius:12}}><HomeIndicator /></div></Specimen></Block>
+    <Block n={2} title="Two tones, two grounds">
+      <Grid cols={1} items={[
+        {label:'bronze — on a chat surface', node:<div style={{width:343,position:'relative',height:44,background:'var(--color-canvas)',borderRadius:12}}><HomeIndicator /></div>, note:'The default. Every thread and every journey.'},
+        {label:'dark — on a result frame or a confirm sheet', node:<div style={{width:343,position:'relative',height:44,background:'var(--color-surface)',borderRadius:12,boxShadow:'0 0 0 1px var(--color-line)'}}><HomeIndicator tone="dark" /></div>, note:'The sheet sits on white over a scrim, and bronze on white at four pixels is not a bar anybody can see.'},
+      ]} />
+    </Block>
+    <Block n={3} title="At the foot of a screen" sub="Below the Dock, always last, and it belongs to ScreenScaffold rather than to the screen.">
+      <Specimen width={423}><PhoneFrame><div style={{position:'relative',display:'flex',height:'100%',flexDirection:'column'}}><ScreenBackdrop /><div style={{flex:1}} /><Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />} /><HomeIndicator /></div></PhoneFrame></Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/shell/HomeIndicator.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'None', property:'chrome — it does not move when the screen does', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

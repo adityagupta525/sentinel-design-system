@@ -1,0 +1,53 @@
+<!-- @dsCard group="Pages" viewport="1000x1200" name="IconChevronRight" subtitle="There is more, that way" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>IconChevronRight — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { IconChevronRight } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-ink', '--color-muted', '--color-bronze-deep', '--color-surface', '--color-canvas'];
+
+function App(){ return (
+  <PageShell name="IconChevronRight" group="Icons" status="shipped" requires={['IconChevronRight']}
+    summary="There is more, that way. A row you can open. It belongs to `nav` rows and to suggestion rows, and nowhere else — a chevron on a row that does nothing is a promise the row cannot keep.">
+    <Block n={1} title="Specimen" sub="At the three sizes this system uses: 16 in a row, 18 the source default, 20 in a 44pt target.">
+      <Specimen width={343}>
+        <div style={{display:'flex',alignItems:'center',gap:28}}>
+          <span style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}><IconChevronRight size={16} stroke="var(--color-ink)" /><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>16</span></span>
+          <span style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}><IconChevronRight size={18} stroke="var(--color-ink)" /><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>18</span></span>
+          <span style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}><IconChevronRight size={20} stroke="var(--color-ink)" /><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>20</span></span>
+          <span style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}><IconChevronRight size={28} stroke="var(--color-bronze-deep)" /><span style={{font:'var(--type-caption-font)',color:'var(--color-muted)'}}>28, bronze</span></span>
+        </div>
+      </Specimen>
+    </Block>
+    <Block n={2} title="What it means" sub="A row you can open. It belongs to `nav` rows and to suggestion rows, and nowhere else — a chevron on a row that does nothing is a promise the row cannot keep." />
+    <Block n={3} title="Its own grid" sub="This set is on six different grids and it is logged as open debt (contradiction 38). Saying each one’s here is how that debt stays visible instead of being smoothed over.">
+      <Grid cols={1} items={[{label:'Grid', node:<span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>0 0 15 15</span>},{label:'Stroke', node:<span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>1.5</span>},{label:'Source', node:<span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>Figma export</span>},{label:'Drawn at', node:<span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>size × 0.72 inside a size × size box</span>},{label:'Used by', node:<span style={{font:'var(--type-row-font)',color:'var(--color-ink)'}}>SuggestionRow, ListRow</span>},]} />
+    </Block>
+    <Block n={4} title="On its grounds" sub="The stroke is a prop and it takes a token. There is no second colour: an icon never encodes meaning in its hue — rule 1 applies to eighteen pixels the same way it applies to a chart.">
+      <Grid cols={1} items={[
+        {label:'on canvas', node:<div style={{display:'flex',alignItems:'center',justifyContent:'center',width:120,height:56,background:'var(--color-canvas)',borderRadius:12}}><IconChevronRight stroke="var(--color-ink)" /></div>, note:'Ink, the default reading.'},
+        {label:'on a dark control', node:<div style={{display:'flex',alignItems:'center',justifyContent:'center',width:120,height:56,background:'var(--color-ink)',borderRadius:12}}><IconChevronRight stroke="var(--color-surface)" /></div>, note:'Surface. The only place a glyph goes light.'},
+        {label:'as an accent', node:<div style={{display:'flex',alignItems:'center',justifyContent:'center',width:120,height:56,background:'var(--color-surface)',borderRadius:12,boxShadow:'0 0 0 1px var(--color-line)'}}><IconChevronRight stroke="var(--color-bronze-deep)" /></div>, note:'Bronze-deep, for a glyph that is the accent of its row.'},
+      ]} />
+    </Block>
+    <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={6} title="Props"><Props src="../components/icons/IconChevronRight.d.ts" /></Block>
+    <Block n={7} title="Do / don't">
+      <DoDont
+        doNode={<div style={{display:'flex',alignItems:'center',gap:8,width:240}}><IconChevronRight size={18} stroke="var(--color-ink)" /><span style={{font:'var(--type-row-font)'}}>With the word beside it</span></div>}
+        doCaption="A glyph and its label. The label carries the meaning; the glyph makes it findable."
+        dontNode={<div style={{display:'flex',alignItems:'center',gap:14,width:240}}><IconChevronRight size={18} stroke="var(--color-status-over-fg)" /><IconChevronRight size={18} stroke="var(--color-bronze)" /><IconChevronRight size={18} stroke="var(--color-muted)" /></div>}
+        dontCaption="The same glyph in three colours to mean three things. That is colour encoding identity, which is rule 1, and at eighteen pixels it is unreadable as well as wrong." />
+    </Block>
+    <Block n={8} title="Motion"><Motion rows={[{name:'None of its own', property:'an icon inherits the motion of the control it sits in', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

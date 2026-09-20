@@ -1,0 +1,44 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="GreetingDivider" subtitle="The Home greeting, and a name that wraps rather than truncates" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>GreetingDivider — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { GreetingDivider, SuggestionRow, Surface } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface', '--color-canvas', '--color-chip', '--color-line', '--color-line-soft', '--color-muted', '--color-ink', '--color-bronze-deep', '--color-status-over-bg', '--color-status-over-fg', '--radius-16', '--radius-12'];
+
+function App(){ return (
+  <PageShell name="GreetingDivider" group="Chat" status="shipped" requires={['GreetingDivider','SuggestionRow','Surface']}
+    summary="The greeting at the top of Home, between two dashed hairlines. One decision in it matters: the line WRAPS rather than truncating. At 375 a fifteen-character name already runs past the 343 box, and this product’s clients are named Ramasubramanian and Lakshminarayanan — cutting a person’s name in half is the kind of small rudeness a product never recovers from.">
+    <Block n={1} title="Specimen"><Specimen width={343}><GreetingDivider>Good afternoon, Ashish</GreetingDivider></Specimen></Block>
+    <Block n={2} title="It wraps" sub="Shown rather than described, at the three lengths this book actually contains.">
+      <Grid cols={1} items={[
+        {label:'short', node:<div style={{width:343}}><GreetingDivider>Good afternoon, Ashish</GreetingDivider></div>},
+        {label:'long', node:<div style={{width:343}}><GreetingDivider>Good afternoon, Lakshminarayanan</GreetingDivider></div>, note:'Past the box, and it wraps. The dashes re-flow around it.'},
+        {label:'longer than any real name', node:<div style={{width:343}}><GreetingDivider>Good afternoon, Ramasubramanian Venkataraghavan</GreetingDivider></div>, note:'Two lines, still centred, still readable. Truncation would have produced “Ramasubraman…”.'},
+      ]} />
+    </Block>
+    <Block n={3} title="On Home" sub="It is the first thing on the screen and the only one of its kind — Home has no conversation, so it has no turn to carry a greeting.">
+      <Specimen width={343}>
+        <div style={{display:'flex',flexDirection:'column',gap:16}}>
+          <GreetingDivider>Good afternoon, Ashish</GreetingDivider>
+          <Surface elevation="soft" style={{padding:'0 12px'}}>
+            <SuggestionRow label="Build a proposal for Mr. Amit Aggrawal" />
+            <SuggestionRow label="Why did Sharma’s portfolio drift this quarter?" last />
+          </Surface>
+        </div>
+      </Specimen>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/chat/GreetingDivider.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'Arrives with Home', property:'ds-rise, first in the stagger', duration:'320 ms', reduced:'Present at once.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

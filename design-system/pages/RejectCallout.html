@@ -1,0 +1,43 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="RejectCallout" subtitle="What the registrar said, in its own words" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>RejectCallout — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { RejectCallout, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface', '--color-canvas', '--color-chip', '--color-line', '--color-line-soft', '--color-muted', '--color-ink', '--color-bronze-deep', '--color-status-over-bg', '--color-status-over-fg', '--radius-16', '--radius-12'];
+
+function App(){ const [last,setLast] = React.useState('—'); return (
+  <PageShell name="RejectCallout" group="Cards" status="shipped" requires={['RejectCallout','SentinelBlock','SentinelText']}
+    summary="Something outside Sentinel said no. The callout carries the reason VERBATIM, because a rejection paraphrased is a rejection an advisor cannot act on — an RTA’s wording is what they will quote back when they call.">
+    <Block n={1} title="Specimen"><Specimen width={343}>
+      <RejectCallout eyebrow="The RTA rejected one" body="Folio 9142/28 — minimum redemption for this scheme is ₹5,000 and the instruction was for ₹3,200." chips={['Send it at ₹5,000','Leave it']} onChip={setLast} />
+    </Specimen></Block>
+    <Block n={2} title="It is not a refusal" sub="A RefusalTurn is Sentinel declining. This is somebody else declining, and Sentinel reporting it — which is why it has an eyebrow naming who, and why the body is not in Sentinel’s voice.">
+      <Grid cols={1} items={[
+        {label:'an RTA rejection', node:<div style={{width:343}}><RejectCallout eyebrow="The RTA rejected one" body="Folio 7761/04 — the scheme is closed to fresh purchases from 18 Sep." chips={['Pick another debt fund']} /></div>},
+        {label:'a compliance block', node:<div style={{width:343}}><RejectCallout eyebrow="Your compliance shelf" body="Quant Small Cap came off the shelf in Jun 2026 — concentration in the scheme, not a view on the house." chips={['Show what replaced it']} /></div>, note:'Same shape. The eyebrow names who said no, every time.'},
+        {label:'no chips', node:<div style={{width:343}}><RejectCallout eyebrow="The exchange" body="The window for same-day settlement closed at 3:00 pm." /></div>, note:'Where there is genuinely nothing to offer. Rare, and it should stay rare.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Live"><Specimen width={343}><RejectCallout eyebrow="The RTA rejected one" body="Folio 9142/28 — minimum redemption is ₹5,000." chips={['Send it at ₹5,000','Leave it']} onChip={setLast} /></Specimen>
+      <p style={{fontFamily:'var(--font-ui)',fontSize:12.5,color:'var(--color-muted)',marginTop:10}}>Last: {last}</p></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/cards/RejectCallout.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><RejectCallout eyebrow="The RTA rejected one" body="Minimum redemption for this scheme is ₹5,000." chips={['Send it at ₹5,000']} /></div>}
+        doCaption="Their words, their reason, and the one thing that would fix it."
+        dontNode={<div style={{width:300}}><RejectCallout eyebrow="Error" body="The instruction could not be processed." /></div>}
+        dontCaption="Paraphrased into nothing. The advisor now has to ring the RTA to find out what this page already knew." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[{name:'Arrives', property:'ds-rise on the turn it belongs to', duration:'240 ms', reduced:'Fades in place.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

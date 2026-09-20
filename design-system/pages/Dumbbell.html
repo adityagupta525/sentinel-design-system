@@ -1,0 +1,52 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="Dumbbell" subtitle="Two marks on one track — and an arrow is a claim about direction" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Dumbbell — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { Dumbbell, Surface, niceDomain } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze', '--color-bronze-deep', '--color-track', '--color-line', '--color-surface', '--color-muted', '--color-ink', '--color-data-deemph', '--color-status-over-fg', '--type-figure-font', '--type-caption-font', '--radius-full'];
+
+function App(){ const dom = niceDomain(15, 24, 4); return (
+  <PageShell name="Dumbbell" group="Data" status="shipped" requires={['Dumbbell','Surface','niceDomain']}
+    summary="A hollow dot for what a thing is measured against, a filled dot for what it is, and a bronze connector between them. Two numbers, one track, and both direct-labelled — the picture never carries a figure on its own.">
+    <Block n={1} title="Specimen" sub="Sharma’s equity: he agreed to 60 and he is at 71.">
+      <Specimen width={343}><Dumbbell label="Equity today" target={60} actual={71} targetLabel="He agreed to" actualLabel="He is at" /></Specimen></Block>
+    <Block n={2} title="`relation` — a move, or a comparison" sub="The arrow says something travelled. Between a fund and its category nothing does, and printing one there tells a story the numbers do not contain.">
+      <Grid cols={1} items={[
+        {label:"relation='move' — the default", node:<div style={{width:343}}><Dumbbell label="Equity after these two moves" target={60} actual={58} targetLabel="He agreed to" actualLabel="He would be at" /></div>, note:'From what is, to what was agreed. The arrow is true here.'},
+        {label:"relation='against' — a comparison", node:<div style={{width:343}}><Dumbbell label="Against its category" relation="against" min={dom[0]} max={dom[1]} target={18.6} actual={21.4} targetLabel="Category" actualLabel="This fund" /></div>, note:'No arrow. Two measurements of different things, and neither becomes the other.'},
+      ]} />
+    </Block>
+    <Block n={3} title="`min` — a baseline, not a zoom" sub="Default 0, because 0% equity is a real position. It exists for the case where zero is not meaningful: two funds at 23.1 and 21.6 against a 16.8 benchmark are nineteen pixels apart on a 0–100 track.">
+      <Grid cols={1} items={[
+        {label:'from zero', node:<div style={{width:343}}><Dumbbell label="Three-year return" relation="against" target={16.8} actual={23.1} targetLabel="Index" actualLabel="This fund" /></div>, note:'Both dots in the right quarter of the track, and the gap — the whole reason the chart is there — is a few pixels.'},
+        {label:'with a baseline', node:<div style={{width:343}}><Dumbbell label="Three-year return" relation="against" min={dom[0]} max={dom[1]} target={16.8} actual={23.1} targetLabel="Index" actualLabel="This fund" /></div>, note:'Same two numbers, read. The safeguard is that both are still printed — a baseline can never leave a figure unreadable.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Two on one domain" sub="The only way two gaps are comparable: the same min and max under both.">
+      <Specimen width={343}><Surface><div style={{display:'flex',flexDirection:'column',gap:12}}>
+        <Dumbbell label="Against its category" relation="against" min={dom[0]} max={dom[1]} target={18.6} actual={21.4} targetLabel="Category" actualLabel="This fund" />
+        <Dumbbell label="Against Nifty 500 TRI" relation="against" min={dom[0]} max={dom[1]} target={15.4} actual={21.4} targetLabel="The index" actualLabel="This fund" />
+      </div></Surface></Specimen></Block>
+    <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={6} title="Props"><Props src="../components/data/Dumbbell.d.ts" /></Block>
+    <Block n={7} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><Dumbbell label="Equity today" target={60} actual={71} targetLabel="He agreed to" actualLabel="He is at" /></div>}
+        doCaption="Both ends named, both figures printed."
+        dontNode={<div style={{width:300}}><Dumbbell label="Equity today" target={60} actual={71} /></div>}
+        dontCaption="Two numbers with no names. The reader can see there is a gap and cannot say between what and what." />
+    </Block>
+    <Block n={8} title="Motion"><Motion rows={[
+      {name:'Connector grows', property:'ds-grow, from the left', duration:'400 ms', reduced:'Drawn at full length.'},
+      {name:'Dots', property:'no animation — they are positions, not events', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

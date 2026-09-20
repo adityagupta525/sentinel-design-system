@@ -1,0 +1,47 @@
+<!-- @dsCard group="Pages" viewport="1000x1300" name="DarkButton" subtitle="The one dark element in the product, and the only thing that commits" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DarkButton — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { DarkButton, Dock, Composer, SentinelTurn } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble', '--color-bubble-edge', '--color-bronze-deep', '--color-ink', '--color-muted', '--color-surface', '--color-line', '--radius-full', '--space-8', '--dur-fast', '--ease'];
+
+function App(){ const [n,setN] = React.useState(0); return (
+  <PageShell name="DarkButton" group="Actions" status="shipped" requires={['DarkButton','Dock','Composer','SentinelTurn']}
+    summary="Warm ink, a bronze-tinted gradient, and the arrow glyph in surface white. It is the only dark element in a product that is otherwise cream and white, which is the whole argument for it: an advisor should be able to tell, without reading, whether a screen is about to do something.">
+    <Block n={1} title="Specimen"><Specimen width={343}><DarkButton full arrow label="Rebalance to his mandate" onClick={()=>setN(n+1)} /></Specimen></Block>
+    <Block n={2} title="Full and inline" sub="Full width under a turn; inline only where it sits beside something of equal weight, which in this product is nowhere yet.">
+      <Grid cols={1} items={[
+        {label:'full, with the arrow', node:<div style={{width:343}}><DarkButton full arrow label="Approve both moves" /></div>, note:'The arrow says the thing goes somewhere. Commit actions take it.'},
+        {label:'full, no arrow', node:<div style={{width:343}}><DarkButton full label="Build her a portfolio" /></div>, note:'No arrow where nothing leaves — this one opens a journey rather than sending anything.'},
+        {label:'inline', node:<div style={{width:343}}><DarkButton arrow label="Send it" /></div>, note:'Shrinks to its label.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Where it may appear" sub="One per screen, inside the turn that earned it. It has NOT been in the Dock since 18 Sep — a decision pinned above the composer outlives the turn it belongs to, and Dock.cta was deleted on 20 Sep.">
+      <Specimen width={343}>
+        <SentinelTurn say="Two moves bring him inside his mandate. I have not placed anything."
+          cta={{label:'Approve both moves', onClick:()=>{}}} />
+      </Specimen>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/actions/DarkButton.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><DarkButton full arrow label="Approve both moves" /></div>}
+        doCaption="One, and it names what it will do."
+        dontNode={<div style={{width:300,display:'flex',flexDirection:'column',gap:8}}><DarkButton full arrow label="Continue" /><DarkButton full arrow label="Save and continue" /></div>}
+        dontCaption="Two dark buttons, and neither says what happens. If a screen has two commits it has not decided what it is for." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[
+      {name:'Press', property:'scale 0.98; the arrow rotates −15°', duration:'120 ms', reduced:'No scale, no rotation.'},
+      {name:'Arrives with its turn', property:'ds-rise', duration:'240 ms', reduced:'Fades in place.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

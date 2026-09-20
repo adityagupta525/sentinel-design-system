@@ -1,0 +1,44 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="PhoneFrame" subtitle="Three hundred and seventy-five by eight hundred and twelve, and nothing else" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PhoneFrame — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { PhoneFrame, ScreenBackdrop, StatusSpacer, TopBar, Dock, Composer, HomeIndicator } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-canvas', '--color-surface', '--color-desk', '--color-bronze', '--color-bronze-deep', '--color-ink', '--color-line', '--color-muted', '--radius-44', '--shadow-frame', '--screen-w', '--screen-h'];
+
+function App(){ return (
+  <PageShell name="PhoneFrame" group="Shell" status="shipped" requires={['PhoneFrame','ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','HomeIndicator']}
+    summary="The one surface this product has. 375 × 812, radius 44, overflow hidden, one shadow. Every screen and every spec page in this repository is rendered inside it, which is why there is no tablet layout to reconcile and no breakpoint to argue about.">
+    <Block n={1} title="Specimen" sub="Empty. This is what every screen starts as.">
+      <Specimen width={423}><PhoneFrame><ScreenBackdrop /></PhoneFrame></Specimen></Block>
+    <Block n={2} title="What goes in it, in order" sub="Backdrop, status spacer, app bar, the scroller, the Dock, the home indicator. ScreenScaffold assembles all six so a screen cannot get the order wrong.">
+      <Specimen width={423}>
+        <PhoneFrame>
+          <div style={{position:'relative',display:'flex',height:'100%',width:'100%',flexDirection:'column'}}>
+            <ScreenBackdrop /><StatusSpacer /><TopBar />
+            <div style={{flex:1}} />
+            <Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />} />
+            <HomeIndicator />
+          </div>
+        </PhoneFrame>
+      </Specimen></Block>
+    <Block n={3} title="The corners are load-bearing" sub="Radius 44 with overflow hidden. A screenshot cropped to the exact bounding box cuts through them and the phone reads as square — which is why tools/phone-shot leaves 24pt of board around every frame it takes.">
+      <Grid cols={1} items={[
+        {label:'the frame', node:<div style={{width:200}}><div style={{width:180,height:120,borderRadius:22,background:'var(--color-canvas)',boxShadow:'0 0 0 1px var(--color-line)'}} /></div>, note:'Rounded, and the shadow sits outside the radius.'},
+        {label:'cropped at the bounding box', node:<div style={{width:200,overflow:'hidden'}}><div style={{width:180,height:120,borderRadius:22,background:'var(--color-canvas)',boxShadow:'0 0 0 1px var(--color-line)',clipPath:'inset(0 0 0 0)'}} /></div>, note:'The same frame with its corners and shadow clipped away — a defect in the picture, not in the screen.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/shell/PhoneFrame.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'None', property:'the frame never moves — ScreenStack animates what is inside it', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

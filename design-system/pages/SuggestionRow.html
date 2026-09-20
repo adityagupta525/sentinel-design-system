@@ -1,0 +1,46 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="SuggestionRow" subtitle="The three things Home offers, and the only rows on a screen with no conversation" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SuggestionRow — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SuggestionRow, Surface, GreetingDivider } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble', '--color-bubble-edge', '--color-bronze-deep', '--color-ink', '--color-muted', '--color-surface', '--color-line', '--radius-full', '--border-focus', '--focus-ring', '--press-scale'];
+
+function App(){ const [last,setLast] = React.useState('—');
+  const rows = ['Show me Diwali offer from HDFC AMC','Build a proposal for Mr. Amit Aggrawal','Why did Sharma’s portfolio drift this quarter?'];
+  return (
+  <PageShell name="SuggestionRow" group="Actions" status="shipped" requires={['SuggestionRow','Surface','GreetingDivider']}
+    summary="A full-width row with a chevron, used on Home and nowhere else. Each one is a whole sentence an advisor could have typed — which is the point: Home teaches the composer by showing what a good sentence looks like.">
+    <Block n={1} title="Specimen"><Specimen width={343}>
+      <Surface elevation="soft" style={{padding:'0 12px'}}>{rows.map((r,i)=><SuggestionRow key={r} label={r} last={i===rows.length-1} onClick={()=>setLast(r)} />)}</Surface>
+    </Specimen></Block>
+    <Block n={2} title="Three, and they are capabilities rather than shortcuts" sub="One external lookup, one generative, one diagnostic. An advisor who reads all three knows the three kinds of thing this product does.">
+      <Grid cols={1} items={[
+        {label:'external', node:<div style={{width:343}}><Surface elevation="soft" style={{padding:'0 12px'}}><SuggestionRow label="Show me Diwali offer from HDFC AMC" last /></Surface></div>, note:'Something outside the advisor’s own book.'},
+        {label:'generative', node:<div style={{width:343}}><Surface elevation="soft" style={{padding:'0 12px'}}><SuggestionRow label="Build a proposal for Mr. Amit Aggrawal" last /></Surface></div>, note:'Something that makes a document.'},
+        {label:'diagnostic', node:<div style={{width:343}}><Surface elevation="soft" style={{padding:'0 12px'}}><SuggestionRow label="Why did Sharma’s portfolio drift this quarter?" last /></Surface></div>, note:'Something that explains what already happened.'},
+      ]} />
+    </Block>
+    <Block n={3} title="The hairline" sub="`last` drops the rule under the final row, so the card ends on its own edge rather than on a line.">
+      <Specimen width={343}><Surface elevation="soft" style={{padding:'0 12px'}}><SuggestionRow label="With a hairline under it" /><SuggestionRow label="And this one has none" last /></Surface></Specimen>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/actions/SuggestionRow.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><Surface elevation="soft" style={{padding:'0 12px'}}><SuggestionRow label="Why did Sharma’s portfolio drift this quarter?" last /></Surface></div>}
+        doCaption="A whole sentence. Tapping it types it."
+        dontNode={<div style={{width:300}}><Surface elevation="soft" style={{padding:'0 12px'}}><SuggestionRow label="Portfolio analysis" last /></Surface></div>}
+        dontCaption="A menu item. It names a feature rather than a question, and it teaches an advisor nothing about what they could have said." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[{name:'Row arrives', property:'ds-rise on the card, 60 ms apart', duration:'320 ms', reduced:'Present at once.'},{name:'Press', property:'scale 0.98', duration:'120 ms', reduced:'No scale.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

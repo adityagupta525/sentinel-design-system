@@ -1,0 +1,42 @@
+<!-- @dsCard group="Pages" viewport="1000x1000" name="StandingDisclosure" subtitle="The line under the composer, on every screen — and the heaviest repeated element in the product" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>StandingDisclosure — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { StandingDisclosure, Dock, Composer } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--text-11', '--leading-15', '--weight-bold', '--weight-regular', '--color-muted', '--color-data-deemph', '--color-bronze-deep', '--color-line', '--border-hairline', '--space-10'];
+
+function App(){ return (
+  <PageShell name="StandingDisclosure" group="Text" status="shipped" requires={['StandingDisclosure','Dock','Composer']}
+    summary="One centred line under the composer, in de-emphasised grey, on every screen in the product. It is the heaviest repeated element here — it appears on all of them — which is exactly why it is one line and why it is the quietest thing on the screen.">
+    <Block n={1} title="Specimen"><Specimen width={343}><StandingDisclosure /></Specimen></Block>
+    <Block n={2} title="In the Dock" sub="It is the Dock’s, not the screen’s. A screen cannot forget it, and a screen cannot move it.">
+      <Specimen width={343}><Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />} disclosure /></Specimen>
+    </Block>
+    <Block n={3} title="The wording is a placeholder, and the constraint is not">
+      <Grid cols={1} items={[
+        {label:'the stand-in', node:<div style={{width:343}}><StandingDisclosure /></div>, note:'[PLACEHOLDER — compliance to supply]. It reads as final and it is not; the source says so in both the component and its contract.'},
+        {label:'a longer line, at the limit', node:<div style={{width:343}}><StandingDisclosure text="Sentinel assists a registered advisor and does not provide investment advice" /></div>, note:'Still one line at 343. Whatever compliance supplies has to fit one — a two-line disclosure under every composer is 15 more pixels on every screen in the product.'},
+        {label:'too long', node:<div style={{width:343}}><StandingDisclosure text="Sentinel assists a registered investment advisor and does not itself provide investment advice or recommendations of any kind" /></div>, note:'Two lines. This is what the constraint is protecting against, shown rather than described.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/text/StandingDisclosure.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont doNode={<div style={{width:300}}><StandingDisclosure /></div>}
+        doCaption="One line, centred, de-emphasised. Present everywhere and loud nowhere."
+        dontNode={<div style={{width:300}}><p style={{margin:0,textAlign:'center',font:'var(--type-body-strong-font)',color:'var(--color-status-over-fg)'}}>Sentinel assists an advisor · not investment advice</p></div>}
+        dontCaption="Bold, and in the status colour. A disclosure that shouts on every screen teaches an advisor to stop reading it — which is the opposite of what compliance wanted." />
+    </Block>
+    <Block n={7} title="Motion"><Motion rows={[{name:'None', property:'it is present from the first frame and never moves', duration:'—', reduced:'Unchanged.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>

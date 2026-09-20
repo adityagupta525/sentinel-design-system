@@ -1,0 +1,48 @@
+<!-- @dsCard group="Pages" viewport="1000x1250" name="DataTableCard" subtitle="A table that came with a title, and the footer that totals it" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DataTableCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { DataTableCard, Pill, ArtifactCard } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze', '--color-bronze-deep', '--color-track', '--color-line', '--color-surface', '--color-muted', '--color-ink', '--color-data-deemph', '--radius-full', '--radius-16'];
+
+const COLS = [{key:'what',header:'What moved it'},{key:'pts',header:'Points',align:'right'}];
+const ROWS = [
+  {what:'Small-cap rally', pts:'+6.1'},
+  {what:'His July top-up', pts:'+2.0'},
+  {what:'The funds moved', pts:'+0.9'},
+];
+function App(){ return (
+  <PageShell name="DataTableCard" group="Cards" status="shipped" requires={['DataTableCard','Pill','ArtifactCard']}
+    summary="A DataTable with a title, a meta figure and a footer, in a card of its own. It is the TABLE VIEW every chart in this product owes — readme:235, no value is ever reachable only by touching a coloured shape — and it is reached from the ⋯ of the chart it belongs to.">
+    <Block n={1} title="Specimen"><Specimen width={343}>
+      <DataTableCard title="What moved the mix · Q2 → Q3" meta="+9.0 pts" columns={COLS} rows={ROWS} footer="He agreed to 60% · he is at 71% · 9.0 points in all" />
+    </Specimen></Block>
+    <Block n={2} title="Title, meta, footer" sub="The meta is the figure the table adds up to. The footer is the sentence a reader needs to interpret it — not a repeat of the meta.">
+      <Grid cols={1} items={[
+        {label:'all three', node:<div style={{width:343}}><DataTableCard title="What moved the mix" meta="+9.0 pts" columns={COLS} rows={ROWS} footer="He agreed to 60% · he is at 71%" /></div>},
+        {label:'no footer', node:<div style={{width:343}}><DataTableCard title="What moved the mix" meta="+9.0 pts" columns={COLS} rows={ROWS} /></div>, note:'Where the rows speak for themselves.'},
+        {label:'with a description', node:<div style={{width:343}}><DataTableCard title="What moved the mix" description="Three things moved it, and only one was a decision of his." columns={COLS} rows={ROWS} /></div>},
+      ]} />
+    </Block>
+    <Block n={3} title="Where it is reached from" sub="The ⋯ on an expanded artifact. The chart and the table are the same numbers; the menu is the door between them, and there is exactly one door.">
+      <Specimen width={343}>
+        <ArtifactCard state="expanded" eyebrow="What moved the mix · Q2 → Q3" title="Equity 62% → 71%. Mostly the market."
+          provenance="As of 30 Sep · from his Q3 statement" onToggle={()=>{}} onMenu={()=>{}}>
+          <DataTableCard title="As a table" columns={COLS} rows={ROWS} footer="9.0 points in all" />
+        </ArtifactCard>
+      </Specimen></Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/cards/DataTableCard.d.ts" /></Block>
+    <Block n={6} title="Motion"><Motion rows={[{name:'Arrives in place of the chart', property:'ds-fade inside the card; the card does not resize abruptly', duration:'240 ms', reduced:'Swaps without the fade.'}]} /></Block>
+  </PageShell>); }
+mountPage(App);
+
+</script>
+</body></html>
