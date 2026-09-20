@@ -299,7 +299,7 @@
     "--stack"
    ],
    "locals": [],
-   "literals": 2
+   "literals": 1
   },
   {
    "name": "ScreenStack",
@@ -941,7 +941,6 @@
     "--space-6",
     "--space-8",
     "--type-caption-font",
-    "--type-eyebrow-font",
     "--type-label-font",
     "--type-row-font"
    ],
@@ -1862,13 +1861,10 @@
    "tokens": [
     "--color-ink",
     "--color-line-soft",
-    "--dur-press",
-    "--ease",
     "--font-ui",
     "--h-row",
     "--leading-18",
     "--text-12",
-    "--tint-bronze-06",
     "--weight-semibold"
    ],
    "locals": [],
