@@ -593,12 +593,27 @@ const rollUp = (rows) => {
 /* `short` is what the card's weights line prints — the full label names the meter, and repeating five
    full labels in a sentence above five meters that already carry them is the repetition this product
    gets pulled up on. */
+/* TWO HALVES, ON THE OWNER'S WORD (20 Sep 2026): "centricity score ki definition abhi nei hai, fund
+   performance and client holding par hai." The methodology is still not written down anywhere, so the
+   weights below remain invented and the card still says PLACEHOLDER — but the BASIS is now the
+   owner's rather than mine, and the two halves are named on the card so the difference is visible.
+
+   **The trap this shape walks into, stated rather than hidden:** a fund does not become better
+   because more of an advisor's clients hold it. Scoring popularity would make every new fund look
+   weak and every crowded one look strong, which is the opposite of useful. So the second half does
+   not measure popularity — it measures HOW THIS BOOK ALREADY SITS IN THE FUND: the weight it already
+   carries, and the headroom left under the ceilings. And when no client holds it at all, those two
+   rows are MISSING rather than zero: the fund is scored on its own record, out of 70, and the card
+   says so. A fund nobody holds yet is not a bad fund. */
 const FUND_SCORE_WEIGHTS = [
-  ['Return against its category', 30, 'return'], ['Cost', 20, 'cost'], ['Beats its category', 20, 'consistency'],
-  ['Size and liquidity', 15, 'size'], ['One manager, long enough', 15, 'manager'],
+  ['Return against its category', 30, 'return', 'Its own record'],
+  ['Beats its category', 20, 'consistency', 'Its own record'],
+  ['Cost', 20, 'cost', 'Its own record'],
+  ['Share of your whole book', 15, 'share', 'How your book holds it'],
+  ['Headroom under the ceilings', 15, 'headroom', 'How your book holds it'],
 ];
 const fundScore = (id) => {
-  const f = fundById(id); const p = perfOf(id); const cat = categoryAvgOf(id); const m = MANAGERS[id];
+  const f = fundById(id); const p = perfOf(id); const cat = categoryAvgOf(id);
   if (!f || !p) return null;
   /* Six points of score per point of three-year lead, centred at 50 — so matching the category is a
      50 and beating it by eight points is a 98. The slope is a guess; it is written here rather than
@@ -608,20 +623,38 @@ const fundScore = (id) => {
   const cost = 100 - (p.ter / 1.2) * 100;
   /* How many of the three periods clear the category average — the plainest reading of "consistent". */
   const beats = cat ? (['r1', 'r3', 'r5'].filter((k) => p[k] >= cat[k]).length / 3) * 100 : null;
-  /* ₹50,000 cr is a full mark; below ₹2,000 cr a scheme is small enough for liquidity to be a real
-     question in this book. Log-scaled, because the difference between 2,000 and 10,000 crore matters
-     far more than between 60,000 and 90,000. */
-  const size = (Math.log10(Math.max(p.aumCr, 100)) - Math.log10(2000)) / (Math.log10(50000) - Math.log10(2000)) * 100;
-  /* An index fund has no manager to score, so the row is MISSING rather than zero — a tracker is not
-     badly managed, it is differently managed. */
-  const tenure = m && m.years != null ? Math.min(m.years / 10, 1) * 100 : null;
-  const vals = { 'Return against its category': ret, 'Cost': cost, 'Beats its category': beats, 'Size and liquidity': size, 'One manager, long enough': tenure };
+  /* HOW YOUR BOOK HOLDS IT. Positions on file only; a SIP running in with no position yet is counted
+     as a holder for the count on the fund card and NOT here, because there is no weight to measure.
+     A fund no client holds leaves both rows null and is scored on its own record, out of 70. */
+  const pos = CLIENTS.flatMap((c) => (c.holdings || []).filter((h) => h.fundId === id).map((h) => ({ c, h })));
+  /* WEIGHT IS ACROSS THE PRACTICE, NOT INSIDE ONE CLIENT — the two rows have to say different
+     things or the second is decoration. This one is the advisor's own concentration: how much of
+     every rupee they advise sits in this one scheme. Under 10% is unremarkable and scores full;
+     it falls to zero at 30%, where a single scheme moving badly moves the whole practice.
+
+     A FIRST ATTEMPT SCORED THE AVERAGE CLIENT POSITION AGAINST AN 8% IDEAL and marked a fund down
+     for being held at 14%, which is a perfectly ordinary weight in a twelve-fund book. It also made
+     every unheld fund outscore every held one — the popularity trap running backwards. Being small
+     in a book is not a fault; being most of one is. */
+  const totalBook = CLIENTS.reduce((t, c) => t + ((c.portfolio && c.portfolio.valueRs) || 0), 0);
+  const heldRs = pos.reduce((t, x) => t + x.h.valueRs, 0);
+  const sharePct = pos.length && totalBook ? (heldRs / totalBook) * 100 : null;
+  const weight = sharePct == null ? null : 100 - (Math.max(0, sharePct - 10) / 20) * 100;
+  /* The heaviest holder against the single-fund ceiling. At the ceiling there is no headroom left and
+     this fund cannot take another rupee of theirs without a rule being broken — which is a fact about
+     what an advisor can DO with it, and the reason this half belongs in a score at all. */
+  const big = pos.length ? Math.max(...pos.map((x) => x.h.pct)) : null;
+  const headroom = big == null ? null : Math.max(0, (LIMITS.singleFund - big) / LIMITS.singleFund) * 100;
+  const vals = { 'Return against its category': ret, 'Cost': cost, 'Beats its category': beats,
+                 'Share of your whole book': weight, 'Headroom under the ceilings': headroom };
   /* A MISSING INPUT CARRIES ITS REASON. "Could not be read" is not something an advisor can act on;
-     "an index fund has no manager to score" is, and it also says the absence is not a fault. */
-  const why = { 'One manager, long enough': 'an index fund has no manager to score',
+     "no client of yours holds it yet, so there is no weight to read" is, and it also says the absence
+     is not a fault. */
+  const noneHeld = 'no client of yours holds it yet, so there is nothing of yours to measure';
+  const why = { 'Share of your whole book': noneHeld, 'Headroom under the ceilings': noneHeld,
                 'Return against its category': 'no category average on file for this one',
                 'Beats its category': 'no category average on file for this one' };
-  return rollUp(FUND_SCORE_WEIGHTS.map(([label, weight, short]) => ({ label, weight, short, why: why[label],
+  return rollUp(FUND_SCORE_WEIGHTS.map(([label, weight2, short, group]) => ({ label, weight: weight2, short, group, why: why[label],
     value: vals[label] == null ? null : clamp100(vals[label]) })));
 };
 const fundScoreProvenance = () => 'Centricity Fund Score · a DESIGN PLACEHOLDER, not Centricity’s methodology · every input is on this card';

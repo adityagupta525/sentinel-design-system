@@ -71,7 +71,7 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   **F-1 … F-66 recorded; none open.** The four that only driving could find are worth remembering:
+   **F-1 … F-67 recorded; none open.** The four that only driving could find are worth remembering:
    F-39 (the app bar's two icon buttons with no accessible name), F-60 (`namedClient` matching the
    initial in "R. Sharma"), F-61 (the prototype saying it had filtered a shortlist and not doing it),
    F-62 (the benchmark reading 42.6% over one year off a curve whose intermediate path was never

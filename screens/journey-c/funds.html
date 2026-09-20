@@ -415,23 +415,32 @@ mountScreen(
       </StateRow>
     </Section>
 
-    <Section title="9 · The Centricity Fund Score — a placeholder with its workings on the card" sub="The Fund Discovery PRD leads with this number and nobody here has seen its definition. Inventing one quietly is the worst thing this product could do: a score is the one figure an advisor has to defend in front of a client. So it is drawn the only way a placeholder may be — five components that are all fields already in this book, the weights printed on the card, the weakest one distinguished, and a provenance line that says “design placeholder, not Centricity’s methodology” in words. HeroNumberCard already draws Meera’s risk number this way; nothing new was built.">
+    <Section title="9 · The Centricity Fund Score — a placeholder with its workings on the card" sub="The owner, 20 Sep: the definition does not exist yet, and the score is on FUND PERFORMANCE and CLIENT HOLDING. So the basis is theirs and the weights are still invented, and the card says PLACEHOLDER in words. Two halves, named on the card: its own record is 70 of the 100, how your book already holds it is 30. Five components, every one a field already in this book; the weakest is distinguished and the sentence names it, because “71” alone is not something an advisor can act on. HeroNumberCard already draws Meera’s risk number this way — nothing new was built.">
       <StateRow>
-        <State label="A strong fund · 80" note="Parag Parikh scores 80. The sentence does not stop at the number — it names what holds it back, because “80” on its own is not something an advisor can act on. Cost is its weakest component at 48: the fund is good and it is not cheap, and the card says both.">
+        <State label="A fund the book holds sensibly · 71" note="Parag Parikh. Its own record is strong — it clears its category at all three periods — and the thing holding it back is headroom: Sharma is already at 14% of his book against the 25% single-fund ceiling, so there is less than half the room left. That is a fact about what an advisor can DO with the fund, which is why this half belongs in the score at all.">
           <Scene anchor={3}><FundInfo id="ppfas-flexi" /><FundScoreTurn id="ppfas-flexi" /></Scene>
         </State>
-        <State label="An index fund · one component cannot be scored" tone="under" note="A tracker has no manager to score, so that row is MISSING rather than zero — an index fund is not badly managed, it is differently managed. The turn says which 85 of the 100 points of weight the number is out of, and gives the reason rather than “could not be read”.">
-          <Scene anchor={3}><FundInfo id="uti-nifty" /><FundScoreTurn id="uti-nifty" /></Scene>
+        <State label="No headroom at all · 63" tone="under" note="Quant Small Cap. Its three-year record is the best on the shelf and its score is the second lowest, because Sharma is 31% in it — past the ceiling, so the headroom row is zero. A score that ignored the book would call this fund excellent and be no help to the advisor holding it.">
+          <Scene anchor={3}><FundInfo id="quant-small" /><FundScoreTurn id="quant-small" /></Scene>
         </State>
       </StateRow>
       <StateRow>
-        <State label="The weakest fund on the shelf · 58" tone="under" note="HDFC Large Cap at 58, Mixed. Its expense ratio of 0.98% scores 18 and drags the whole thing down. Rule 1 holds: the band is a WORD, never a colour, and the meters are one hue with the binding row distinguished by weight rather than by hue.">
-          <Scene anchor={3}><FundInfo id="hdfc-large" /><FundScoreTurn id="hdfc-large" /></Scene>
+        <State label="Nobody holds it yet · out of 70" tone="under" note="UTI Nifty 50. No client of this advisor holds it, so both holding rows are MISSING rather than zero and the number is out of 70 — the card says which 70. A fund nobody holds yet is not a bad fund, and scoring popularity would make every new fund look weak and every crowded one look strong.">
+          <Scene anchor={3}><FundInfo id="uti-nifty" /><FundScoreTurn id="uti-nifty" /></Scene>
         </State>
-        <State label="The score on the shortlist" note="A Score column, kind='bar' — the magnitude drawn behind the figure in one hue, which is how ten scores become comparable down a column without a second colour encoding anything. The figure is still printed; the bar never carries it alone. “sort by score” is a view like the others.">
+        <State label="The score on the shortlist" note="A Score column, kind='bar' with min 40 — the magnitude drawn behind the figure in one hue, which is how ten scores become comparable down a column without a second colour encoding anything. From zero the whole column looked identical; 40 is where this book's bands stop calling a number a score. The figure is still printed; the bar never carries it alone. “sort by score” is a view like the others.">
           <Scene anchor={2}><FundResults /></Scene>
         </State>
       </StateRow>
+      <Note title="The trap this shape walks into, stated rather than hidden">
+        A fund does not become better because more of an advisor&rsquo;s clients hold it. So the second
+        half does not measure popularity &mdash; it measures how <em>this</em> book already sits in the
+        fund: the share of every rupee under advice that is in this one scheme, and the headroom left
+        under the ceilings for the heaviest holder. A first attempt scored the average client position
+        against an 8% ideal and marked a fund down for being held at 14%, which is an ordinary weight in
+        a twelve-fund book; it also made every unheld fund outscore every held one, which is the
+        popularity trap running backwards. Being small in a book is not a fault. Being most of one is.
+      </Note>
     </Section>
 
     <Section title="10 · Motion, and what each one does under reduced motion">

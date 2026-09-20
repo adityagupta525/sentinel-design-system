@@ -104,10 +104,19 @@ Honest list, because three of these are data decisions and not design:
    because `book.jsx` has point returns, not a curve. **This is the one blocker.**
 2. **Holdings per fund** — for the size breakup, the sector split and any overlap that is not an em dash.
 3. **Category averages and benchmark series** — for the three-marks-on-one-scale.
-4. **The Centricity Score**, which the PRD leads with and we have never seen a definition of.
+4. **The Centricity Score**, which the PRD leads with. **20 Sep 2026 — the owner: the definition does
+   not exist yet, and the score is on FUND PERFORMANCE and CLIENT HOLDING.** So the basis is settled
+   and the methodology is not. It is built as a placeholder on exactly that basis — two halves, its own
+   record 70 and how your book holds it 30 — with the weights printed on the card and a provenance
+   line that says "a design placeholder, not Centricity's methodology" in words. When the real
+   definition arrives, `FUND_SCORE_WEIGHTS` and the five mappings in `book.jsx` are what change; the
+   card, the band words, the turn and the shortlist column do not.
 
-Items 1–3 can be fixtures, clearly labelled the way `PERF` already is. **Item 4 cannot be invented** —
-a score with a made-up methodology is the one number an advisor must never defend.
+Items 1–3 can be fixtures, clearly labelled the way `PERF` already is. **Item 4 still cannot be
+invented** — a score with a made-up methodology is the one number an advisor must never defend — and
+the placeholder answers that by never hiding: every input is a field already in the book, the weights
+are on the card, the weakest component is named in the sentence, and a half that cannot be read is
+withheld rather than assumed.
 
 ---
 

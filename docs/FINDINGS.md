@@ -1847,3 +1847,39 @@ bar in this book is ever in it. The label still does the identifying.
 **A JSX comment in an attribute list, for the fifth time.** `{/* … */}` between two props is a parse
 error, the page did not mount, and the render said so immediately. It belongs above the function. The
 comment now says so, in the file, where the sixth attempt will read it.
+
+---
+
+### F-67 · The Centricity Score, on the owner's basis — *20 Sep 2026*
+
+The owner: *"centricity score ki definition abhi nei hai, fund performance and client holding par hai."*
+The methodology is still not written down anywhere, so the weights stay invented and the card still
+says **Placeholder** — but the **basis** is theirs now rather than mine, and the two halves are named
+on the card so the difference is visible.
+
+| Half | Weight | Components |
+|---|---|---|
+| Its own record | 70 | return against its category 30 · beats its category 20 · cost 20 |
+| How your book holds it | 30 | share of your whole book 15 · headroom under the ceilings 15 |
+
+**The trap this shape walks into, and how it is avoided.** A fund does not become better because more
+of an advisor's clients hold it. Scoring popularity would make every new fund look weak and every
+crowded one look strong. So the second half measures **how this book already sits in the fund**, not how
+popular it is: the share of every rupee under advice that is in this one scheme, and the headroom left
+under the 25% single-fund ceiling for the heaviest holder. Both are facts about what an advisor can
+**do** with the fund, which is the only reason a holding belongs in a fund's score.
+
+**A first attempt got it wrong and the numbers said so.** It scored the average client position against
+an 8% ideal and marked Parag Parikh down for being held at 14% — an ordinary weight in a twelve-fund
+book. It also made every unheld fund outscore every held one, which is the popularity trap running
+backwards. Being small in a book is not a fault; being most of one is.
+
+**When no client holds it, both rows are MISSING rather than zero** — the machinery `rollUp` already
+had. UTI Nifty 50 scores 75 out of 70 and the turn says which 70 and why. Quant Small Cap is the
+opposite and the useful case: the best three-year record on the shelf and the second-lowest score,
+because Sharma is 31% in it, past the ceiling, so headroom is zero. A score that ignored the book would
+call that fund excellent and be no help at all to the advisor holding it.
+
+**Three things the render caught.** The lead sentence said *"out of 100"* while the card said *"Out of
+70"*. Two rows missing for the same reason produced two near-identical paragraphs — one sentence per
+reason now, not per row. And joining two labels mid-sentence put a capital H in the middle of it.

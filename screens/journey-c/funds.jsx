@@ -276,17 +276,30 @@ function FundScoreTurn({ id, onChip }) {
   const f = fundById(id); const sc = fundScore(id);
   if (!f || !sc) return null;
   const say = [
-    `${f.name} scores ${sc.value} out of 100 — ${sc.band.toLowerCase()}.`,
+    `${f.name} scores ${sc.value} out of ${sc.readWeight} — ${sc.band.toLowerCase()}.`,
     `${weakestPhrase(sc.weakest)} is what holds it back, at ${sc.weakest.value}.`,
   ];
-  sc.missing.forEach((m) => say.push(`${m.label} is not scored here — ${m.why || 'the input is not on file'}. The ${sc.readWeight} points of weight that could be read are what this number is out of.`));
+  /* THE MISSING ROWS SHARE ONE SENTENCE, grouped by their reason. Two rows that are absent for the
+     same reason produced two near-identical paragraphs — the repetition this product has been pulled
+     up on twice, and it read as if something had gone wrong twice rather than once. */
+  const byWhy = sc.missing.reduce((m, x) => { const k = x.why || 'the input is not on file'; (m[k] = m[k] || []).push(x.label); return m; }, {});
+  Object.entries(byWhy).forEach(([why, labels]) => {
+    /* Only the first label keeps its capital: "Share of your whole book and Headroom under the
+       ceilings" put a capital H in the middle of a sentence. */
+    const low = labels.map((l, i) => (i === 0 ? l : l.charAt(0).toLowerCase() + l.slice(1)));
+    const names = low.length === 1 ? low[0] : `${low.slice(0, -1).join(', ')} and ${low[low.length - 1]}`;
+    say.push(`${names} ${labels.length === 1 ? 'is' : 'are'} not scored here — ${why}. That is why the number is out of ${sc.readWeight} rather than 100.`);
+  });
   /* THE WEIGHTS ARE ON THE CARD. A score whose workings are one tap away is a score an advisor has to
      take on trust for the length of that tap, and this is the number they will be asked about first. */
-  const weights = FUND_SCORE_WEIGHTS.map(([, w, short]) => `${short} ${w}`).join(' · ');
+  /* THE TWO HALVES ARE NAMED ON THE CARD, because the owner's basis is two things and a flat list of
+     five would hide that. Its own record is 70 of the 100; how this book already holds it is 30. */
+  const half = (g) => FUND_SCORE_WEIGHTS.filter(([, , , grp]) => grp === g).map(([, w, short]) => `${short} ${w}`).join(' · ');
+  const weights = `Its own record — ${half('Its own record')}. How your book holds it — ${half('How your book holds it')}`;
   return (
     <FUNDS_DS.SentinelTurn say={say}
       body={<FUNDS_DS.HeroNumberCard title="Centricity Fund Score" meta="Placeholder" value={sc.value}
-        badge={sc.band} copy={`Out of 100. ${weights}.`} rows={sc.rows} />}
+        badge={sc.band} copy={`Out of ${sc.readWeight}. ${weights}.`} rows={sc.rows} />}
       provenance={fundScoreProvenance()} chips={askChips(onChip, 'score')} />
   );
 }
