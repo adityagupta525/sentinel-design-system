@@ -135,13 +135,12 @@ function ProposalResult({ state = 'draft', savedAt, openRow = null, onSave, onDo
           next — that the document went and the money did not — because that is true of a proposal and
           not of a rebalance, and the component serves both. So the consequence is a sentence in the turn,
           the same shape Journey B's success turn uses to say the opposite. */}
+      {/* F-54's first dissent, ruled 20 Sep 2026 ("tumare vote"): the 8 between two sentences that five
+          other sites set at 10 is now SentinelTurn's 10, and this is no longer a site at all. */}
       {state === 'sent' && (
-        <PROP_DS.SentinelBlock continued>
-          <PROP_DS.SentinelText text={`The document has gone to ${AMIT.name}. Nothing has been placed — no folio is open and no money has moved.`} />
-          <div style={{ marginTop: 'var(--space-8)' }}>
-            <PROP_DS.SentinelText weight="Regular" text="Two things have to clear before any of it can be: his CKYC, and a nominee on file. I will tell you when they do." />
-          </div>
-        </PROP_DS.SentinelBlock>
+        <PROP_DS.SentinelTurn continued
+          say={[`The document has gone to ${AMIT.name}. Nothing has been placed — no folio is open and no money has moved.`,
+            'Two things have to clear before any of it can be: his CKYC, and a nominee on file. I will tell you when they do.']} />
       )}
     </div>
   );

@@ -124,10 +124,16 @@ function AnswerTurn({ artifact = 'peek', view = 'chart', run = false, enter = fa
         {/* R4: the cap split, because Equity 71 is not actionable and both 25% ceilings are written against
             caps. ConcentrationBar states the one that is breached — the small-cap sleeve — as a bar with its
             number and its limit in the label, so the figure is never carried by the bar alone. */}
-        <div style={{ marginTop: 'var(--space-8)', borderRadius: 'var(--radius-16)', background: 'var(--color-surface)', padding: 'var(--space-14)', boxSizing: 'border-box' }}>
-          <ANSWER_DS.ConcentrationBar fraction={0.31} label="Small cap 31% — the sleeve ceiling is 25%" />
+        {/* F-54's other two dissents, ruled 20 Sep 2026: the card that followed a card at 8 takes the part
+            gap (12) seven other sites use, and provenance takes the 10 that InfoCard, OverlapView and the
+            rail all use. The box is Surface — a raised card with no shadow was the fifth elevation
+            Surface exists to stop. */}
+        <div style={{ marginTop: 'var(--space-12)' }}>
+          <ANSWER_DS.Surface elevation="flat">
+            <ANSWER_DS.ConcentrationBar fraction={0.31} label="Small cap 31% — the sleeve ceiling is 25%" />
+          </ANSWER_DS.Surface>
         </div>
-        <div style={{ marginTop: 'var(--space-8)' }}><ANSWER_DS.Provenance text={ALLOC_PROVENANCE} /></div>
+        <div style={{ marginTop: 'var(--space-10)' }}><ANSWER_DS.Provenance text={ALLOC_PROVENANCE} /></div>
         {artifact === 'failed' && (
           <>
             <div style={{ marginTop: 'var(--space-12)' }}>
