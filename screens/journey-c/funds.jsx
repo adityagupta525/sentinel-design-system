@@ -616,6 +616,38 @@ function ComparePicker({ exclude = [], funds = FUND_LIST, onPick, onEvent, lead:
 
    The sentence is BUILT from the verb rather than written three times, for the same reason the
    rebalance's uncosted sentence is: a fourth verb could not arrive with softer wording. */
+/* "WHICH SUITS A 54 MODERATE?" — answerable from the book, so it is answered (20 Sep 2026, the owner:
+   "eg hai jaise, tab working nei hai"). It was a chip that logged and did nothing.
+
+   The product does NOT recommend. What it can do is state the gap: a fund's riskometer against the
+   band the client's number sits in, and the one rule that follows from it — a Very high scheme is
+   above what a Moderate profile was built for, and that is a sentence an advisor says out loud, not a
+   verdict Sentinel reaches. The closing line says exactly that, every time. */
+const RISK_ORDER = ['Low', 'Moderate', 'High', 'Very high'];
+const suitsBody = (ids, band = 'Moderate', score = 54) => {
+  const fs = ids.map(fundById).filter(Boolean);
+  const at = RISK_ORDER.indexOf(band);
+  const lines = fs.map((f) => {
+    const i = RISK_ORDER.indexOf(f.riskometer);
+    const rel = i > at ? `above a ${band} profile` : i === at ? `level with a ${band} profile` : `below a ${band} profile`;
+    return `${f.name} is ${f.riskometer.toLowerCase()} — ${rel}.`;
+  });
+  const over = fs.filter((f) => RISK_ORDER.indexOf(f.riskometer) > at);
+  return {
+    title: `Against a ${score} ${band}`,
+    body: [
+      `A ${score} is ${band.toLowerCase()}: the lowest of the three scores that make it, which is the one that binds.`,
+      ...lines,
+      over.length === fs.length
+        ? 'All of them sit above that band. That does not make them wrong for this client — it makes the size of the position the question, and that is yours to set.'
+        : over.length
+        ? `${over.map((f) => f.name).join(' and ')} sit${over.length === 1 ? 's' : ''} above that band. The size of the position is the question, and that is yours to set.`
+        : 'None of them sits above that band.',
+      'I have not recommended one. I have put the riskometer beside the number and stopped there.',
+    ],
+  };
+};
+
 const VERB_SAYS = {
   propose: (f) => [`${f.name} it is. A proposal is about somebody, so I need the client before I can size anything.`,
     'Once you pick one I will check their risk number and their mandate against this fund before it goes in.'],
@@ -708,10 +740,24 @@ const FUND_EMPTY = { title: 'Nothing matches every filter.', body: 'Drop one and
    the sticky Fund column is what keeps that readable. The ledger has three columns and needs no scroller. */
 /* `period` rides through to the row detail so a typed "show 3Y" changes every figure on the screen,
    not only the one the advisor happened to have open. */
+/* A CONTROL THAT DOES NOTHING IS WORSE THAN NO CONTROL (20 Sep 2026, the owner: "collapse kaam nei
+   kar raha hai har jagah", "top 3 dots working nei hai"). Both were wired to `() => {}`, so the card
+   drew a real Collapse row and a real ⋯ and neither moved. ArtifactCard's own contract says the
+   footer is DRIVEN BY THE HANDLERS — supply none and the card ends after its content — so the fix is
+   to make the one that has a job work and to remove the one that does not.
+
+   COLLAPSE now collapses: the state is held here, because whether a list is folded away is a property
+   of this card on this screen and of nothing else. A caller that wants it frozen open still passes
+   `state` and gets exactly that.
+
+   THE ⋯ IS GONE. Its documented job is "the table view every chart is required to offer" — and this
+   card's content IS the table. There is nothing for it to carry, and a menu that opens a view you are
+   already looking at is the dead end the owner found. */
 function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', onExplain, period = 'r3' }) {
+  const [folded, setFolded] = React.useState(state !== 'expanded');
   return (
-    <FUNDS_DS.ArtifactCard state={state} eyebrow="Fund search · your shelf" title={funds.length === 1 ? '1 fund matches' : `${funds.length} funds match`}
-      provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => {}} onMenu={() => {}}>
+    <FUNDS_DS.ArtifactCard state={folded ? 'peek' : 'expanded'} eyebrow="Fund search · your shelf" title={funds.length === 1 ? '1 fund matches' : `${funds.length} funds match`}
+      provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => setFolded((v) => !v)}>
       <FUNDS_DS.DataTable columns={FUND_COLUMNS} rows={fundRows(funds)} emptyState={FUND_EMPTY} overflow="scroll" defaultOpen={openRow}
         expandable={(row) => <FundInfo id={row.id} defaultPeriod={period} heldBy onExplain={onExplain || (() => {})} />} />
     </FUNDS_DS.ArtifactCard>
@@ -775,9 +821,19 @@ function refine(text, query) {
   /* A NUMBER WITH A DIRECTION. "under 0.7%" is the filter an advisor actually types, and the query had
      no way to hold one — every pill was a word. */
   const num = t.match(/\b(under|below|less than|over|above|more than)\s*₹?\s*([\d.]+)\s*%?/);
-  if (num && /\b(ter|expense|cost|fee|charge)\b/.test(t)) {
-    const op = /^(over|above|more)/.test(num[1]) ? 'gt' : 'lt';
-    return { kind: 'ter', op, value: parseFloat(num[2]) };
+  if (num) {
+    /* A BARE PERCENTAGE IS THE EXPENSE RATIO. "under 0.7% TER" worked and "over 1%" did not, which is
+       the shorter of the two an advisor actually types (20 Sep 2026). On a fund shortlist the expense
+       ratio is the only percentage the query filters on, so a direction and a number with nothing
+       else in the sentence is read as one — and the chip it becomes says "TER over 1%" in words, so a
+       wrong read costs one tap. A sentence that names something else is NOT guessed at: "over 20%
+       returns" keeps its own word and falls through rather than quietly becoming a cost filter. */
+    const costWord = /\b(ter|expense|cost|fee|charge)\b/.test(t);
+    const bare = t.replace(num[0], '').replace(/[^a-z]/g, '') === '';
+    if (costWord || bare) {
+      const op = /^(over|above|more)/.test(num[1]) ? 'gt' : 'lt';
+      return { kind: 'ter', op, value: parseFloat(num[2]) };
+    }
   }
   /* PERIOD — which return every figure on the shortlist is read at. */
   const per = Object.keys(PERIOD_WORDS).find((w) => t.includes(w));
@@ -791,7 +847,11 @@ function refine(text, query) {
     return amb ? { kind: 'ambiguous', funds: amb } : { kind: 'miss', why: 'compare' };
   }
 
-  const hit = REFINE_TERMS.find((x) => t.includes(x.toLowerCase()));
+  /* "only direct" and "only regular" are what an advisor types; the terms on file read "Direct plan"
+     and "Regular plan", so the sentence matched nothing and fell through to the fund-name branch. */
+  const PLAN_WORDS = { direct: 'Direct plan', regular: 'Regular plan' };
+  const planWord = Object.keys(PLAN_WORDS).find((w) => new RegExp(`\\b${w}\\b`).test(t));
+  const hit = REFINE_TERMS.find((x) => t.includes(x.toLowerCase())) || (planWord ? PLAN_WORDS[planWord] : undefined);
   const shelfWord = /\bshelf\b|\bon my shelf\b|\bapproved\b/.test(t);
   const dropping = /\b(drop|remove|without|not|no|except|forget)\b/.test(t);
   const onlying = /\b(only|just)\b/.test(t);
@@ -1000,4 +1060,4 @@ function FundInfo({ id, period, onPeriod, onExplain, heldBy = false, defaultPeri
   );
 }
 
-Object.assign(window, { FundInfo, FundScoreTurn, FUND_CHIPS, ASK_KINDS, askChips, CategoryTurn, ChangedTurn, HoldersTurn, holdersDetail, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineAmbiguous, refineSaid, fundsFor, sortFunds, fundByWords, SORT_KEYS, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE, PERIOD_LABEL, sortSpan });
+Object.assign(window, { FundInfo, FundScoreTurn, FUND_CHIPS, ASK_KINDS, askChips, CategoryTurn, ChangedTurn, HoldersTurn, holdersDetail, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineAmbiguous, refineSaid, fundsFor, sortFunds, fundByWords, SORT_KEYS, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE, PERIOD_LABEL, sortSpan, RISK_ORDER, suitsBody });

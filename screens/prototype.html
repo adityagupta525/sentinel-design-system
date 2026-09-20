@@ -455,6 +455,10 @@ function Proto({ onEvent }) {
             onRemove={(id) => { setCompareIds((c) => c.filter((x) => x !== id)); log('Dropped one — the comparison re-lays out; nothing slides', ''); }}
             onChip={(c) => {
               if (c === 'Add a third') { setFundPhase('pick'); return; }
+              /* ANSWERABLE FROM THE BOOK, SO ANSWERED. The riskometer beside the client's number, and
+                 the rule that follows — never a recommendation. */
+              if (/suits a/i.test(c)) { setWhy(suitsBody([fundId, ...compareIds])); log(`“${c}” — the riskometer beside the number`, 'ds-sheet 300ms'); return; }
+              if (/save this comparison/i.test(c)) { log('Saving a comparison is not built — the ledger holds instructions, not comparisons', ''); return; }
               log(`“${c}” — not built in this prototype`, '');
             }} />
         )}
@@ -534,7 +538,9 @@ function Proto({ onEvent }) {
               onExplain={(x) => { setWhy(x); log(`“${x.title}” — the figure explains itself`, reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }}
               onSave={() => log('Saved to her file — the badge becomes a date', '')}
               onDownload={() => { log('PDF — no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }} />
-            {audience && <ReviewEnding audience={audience} onChip={(l) => log(`“${l}” — not built`, '')} />}
+            {/* A REVIEW'S ENDING CHIPS ARE SENTENCES, so they go through the router like any other.
+                One that reaches a journey opens it; one that does not says so, by name. */}
+            {audience && <ReviewEnding audience={audience} onChip={(l) => { if (route(l)) { send(l); return; } log(`“${l}” — not built in this prototype`, ''); }} />}
           </div>
         )} />
     : railJourney === 'rebal'

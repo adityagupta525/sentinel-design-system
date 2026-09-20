@@ -63,14 +63,24 @@ const DISAMBIGUATE = {
    no way to ask it, and the six router buckets are invisible. It is a TURN in the thread, not a settings
    page — reached from a repeated miss, from the empty composer, and from the drawer. Rows rather than
    chips because every one of them runs past a line (FollowUpRow's own rule). */
+/* EVERY LINE HERE IS A SENTENCE THAT WORKS, and that is the point of the list (20 Sep 2026, the
+   owner: "typing keywords de do jo jo screen, journey, tools and feature hai, wo demo me de paaye").
+   Each `question` is routed by the prototype's own router, so tapping it and typing it reach the same
+   place — which is the rule the whole product is built on, applied to its own index of itself.
+
+   Seven, not five: the rebalance, the review and the ledger were reachable and unlisted, so an
+   advisor asking what this can do was told less than it does. `docs/DEMO-SCRIPT.md` carries the same
+   list with the second-level sentences under each. */
 const CAPABILITIES = [
-  { question: "Profile a client's risk", note: 'Twelve short questions, mostly one tap — ends in a number you can build against' },
-  { question: 'Build a proposal from an amount', note: 'You confirm every constraint before it is costed' },
-  { question: 'Explain why a portfolio drifted', note: 'What moved the mix, what it would cost to fix, and what leaves under your ARN' },
-  { question: 'Search funds on your shelf', note: 'By category and plan — and which of your clients already hold them' },
-  { question: 'Read a statement you attach', note: 'Holdings pulled out and checked against the mandate on file' },
+  { question: "Start Meera's risk profile", note: 'Twelve short questions, mostly one tap — ends in a number you can build against' },
+  { question: 'Build a proposal for Amit of 25 lakh', note: 'You confirm every constraint before it is costed' },
+  { question: "Why did Sharma's portfolio drift this quarter?", note: 'What moved the mix, what it would cost to fix, and what leaves under your ARN' },
+  { question: 'Rebalance Sharma', note: 'The answer first — where he is, what I would do, what it costs — then the dials' },
+  { question: "Review Meera's portfolio", note: 'What she holds, and the one figure it will not give you' },
+  { question: 'Show me flexi cap funds on my shelf', note: 'Then refine it by typing: under 0.7% TER · sort by score · show 3Y · add Motilal' },
+  { question: 'What did I place this month?', note: 'The ledger — every instruction, its status, and what is still unsettled' },
 ];
-const CAPABILITIES_CLOSER = 'Anything outside these I will say I cannot do, rather than guess at it.';
+const CAPABILITIES_CLOSER = 'Every one of those is a sentence you can type as well as tap. Anything outside them I will say I cannot do, rather than guess at it.';
 
 function RefusalTurn({ body, chips = [], onChip, continued = false }) {
   return (

@@ -1915,3 +1915,48 @@ app bar stopped responding. The result's own chip had opened *"How is 54 worked 
 modal — the bar is behind its scrim, exactly as it should be. The driver presses Escape now. Worth
 writing down because the log said "New thread not reachable" three times and the honest reading of that
 line was a bug.
+
+---
+
+### F-69 · Four things the owner found by using it, and a demo script that is driven before it is written — *20 Sep 2026*
+
+**1 · The pinned column did not cover its own row.** Scrolling the fund table sideways showed
+*"Corporate bond"* reading straight through *"ICICI Corporate Bond"*. The pinned cell painted its own
+`--color-surface` box and nothing else, so when a LATER column wrapped to two lines the row grew taller
+than the pinned cell and the scrolled-under text showed above and below it. `alignSelf: stretch` makes
+the cover the row's height, and a `zIndex` puts it in front of the cells that scroll beneath — which
+until now depended on paint order alone.
+
+**2 · Collapse did nothing, on two cards.** `FundResults` and `LedgerArtifact` both passed
+`onToggle={() => {}}`, so the card drew a real Collapse row that never moved. `ArtifactCard`'s own
+contract says the footer is **driven by the handlers**. The state is held on the card now, because
+whether a list is folded is a property of that card on that screen and of nothing else.
+
+**3 · The ⋯ did nothing, and it is gone from both.** Its documented job is *"the table view every chart
+is required to offer"* — and on these two cards the content **is** the table. A menu that opens a view
+you are already looking at is a dead end, and a control that does nothing is worse than no control.
+
+**4 · "Which suits a 54 Moderate?" was an example, not a control.** It is answerable from the book, so
+it is answered: each fund's riskometer against the band the client's number sits in, and the one rule
+that follows. The product does not recommend, and the closing line says so — *"I have put the
+riskometer beside the number and stopped there."* The review's ending chips now go through the router
+like any other sentence; one that reaches a journey opens it.
+
+**And the demo script, `docs/DEMO-SCRIPT.md`** — every sentence that reaches every screen, journey and
+feature, so the product can be demonstrated by typing. It is **verified by driving it**: 44 quoted
+sentences pushed through the prototype's own router and parsers, 41 reaching a journey, an ask or a
+refinement, and the three that reach nothing being the refusal demonstration itself.
+
+Writing it found two real gaps in the parser, both the shorter form an advisor actually types:
+
+- **`over 1%` did not filter.** The rule needed an explicit cost word, so `under 0.7% TER` worked and
+  the shorter one fell through. On a fund shortlist the expense ratio is the only percentage the query
+  filters on, so a direction and a number **with nothing else in the sentence** is read as one, and the
+  chip says *"TER over 1%"* in words so a wrong read costs one tap. A sentence naming something else —
+  *"over 20% returns"* — is not guessed at.
+- **`only direct` matched nothing.** The terms on file read *"Direct plan"* and *"Regular plan"*, so
+  the sentence fell through to the fund-name branch and missed.
+
+And one claim in the script was wrong before it was driven: a bare `Nair` reaches bucket 4, not the
+client picker. `Review Nair's portfolio` is the sentence that demonstrates an ambiguous surname, and
+that is what the script says now.

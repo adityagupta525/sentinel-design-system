@@ -47,16 +47,30 @@ const LedgerDetail = ({ l }) => (
   </div>
 );
 
+/* A CONTROL THAT DOES NOTHING IS WORSE THAN NO CONTROL (20 Sep 2026, the owner: "collapse kaam nei
+   kar raha hai har jagah", "top 3 dots working nei hai"). Both were wired to `() => {}`, so the card
+   drew a real Collapse row and a real ⋯ and neither moved. ArtifactCard's own contract says the
+   footer is DRIVEN BY THE HANDLERS — supply none and the card ends after its content — so the fix is
+   to make the one that has a job work and to remove the one that does not.
+
+   COLLAPSE now collapses: the state is held here, because whether a list is folded away is a property
+   of this card on this screen and of nothing else. A caller that wants it frozen open still passes
+   `state` and gets exactly that.
+
+   THE ⋯ IS GONE. Its documented job is "the table view every chart is required to offer" — and this
+   card's content IS the table. There is nothing for it to carry, and a menu that opens a view you are
+   already looking at is the dead end the owner found. */
 function LedgerArtifact({ items = LEDGER, openRow = null, state = 'expanded', onDownload }) {
   const unsettled = items.filter((l) => l.status === 'sent').length;
+  const [folded, setFolded] = React.useState(state !== 'expanded');
   return (
-    <LED_DS.ArtifactCard state={state} eyebrow={`Placed · ${LEDGER_PERIOD}`} title={`${items.length} instructions`}
+    <LED_DS.ArtifactCard state={folded ? 'peek' : 'expanded'} eyebrow={`Placed · ${LEDGER_PERIOD}`} title={`${items.length} instructions`}
       provenance={`As of 30 Sep · from the RTA, ${items.length - unsettled} of ${items.length} confirmed`}
-      onToggle={() => {}} onMenu={() => {}}>
+      onToggle={() => setFolded((v) => !v)}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
         <LED_DS.DataTable columns={LED_COLUMNS} rows={ledgerRows(items)} emptyState={{ title: 'Nothing placed in this period.', body: 'Change the period, or place something and it appears here.' }}
           overflow="fold" defaultOpen={openRow} expandable={(r) => <LedgerDetail l={items.find((l) => l.id === r.id)} />} />
-        {state === 'expanded' && (
+        {!folded && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-8)', flexWrap: 'wrap' }}>
             <LED_DS.RangePills ranges={['Sep', 'Q2', 'FY 26-27']} value="Sep" onChange={() => {}} label="Period" />
             <LED_DS.DownloadAction format="CSV" onDownload={onDownload} size="sm" />

@@ -153,6 +153,16 @@ export function DataTable({
   };
 
   const cellW = (c) => (c.width ? { width: c.width, flexShrink: 0 } : { flex: 1, minWidth: 0 });
+  /* THE PINNED CELL HAS TO COVER THE WHOLE ROW HEIGHT, NOT ITS OWN (20 Sep 2026, the owner: "data
+     horizontally scroll karne par wo visual glitch aa raha hai"). The cell painted its own
+     `--color-surface` box and nothing else, so when a LATER column wrapped to two lines the row grew
+     taller than the pinned cell and the scrolled-under text showed above and below it — "Corporate
+     bond" reading straight through "ICICI Corporate Bond". `alignSelf: stretch` makes the cover the
+     row's height; the flex centring keeps the content where it was; `zIndex` puts it in front of the
+     cells that scroll beneath, which until now depended on paint order alone. */
+  const stickyCell = scrolls
+    ? { position: 'sticky', left: 0, zIndex: 1, background: 'var(--color-surface)', alignSelf: 'stretch', display: 'flex', alignItems: 'center' }
+    : {};
   const stickyCol = columns.find((c) => c.key === sticky) || columns[0];
 
   const body = (
@@ -160,7 +170,7 @@ export function DataTable({
       style={scrolls ? { overflowX: 'auto', overflowY: 'hidden', WebkitOverflowScrolling: 'touch' } : undefined}>
       <div style={{ minWidth: scrolls ? 'max-content' : undefined }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'var(--space-10)', paddingBottom: 'var(--space-6)', borderBottom: 'var(--border-hairline) solid var(--color-line-soft)' }}>
-          <div style={{ ...cellW(stickyCol), position: scrolls ? 'sticky' : undefined, left: 0, background: 'var(--color-surface)', minWidth: scrolls ? stickyCol.width || 132 : 0 }}>{headCell(stickyCol)}</div>
+          <div style={{ ...cellW(stickyCol), ...stickyCell, minWidth: scrolls ? stickyCol.width || 132 : 0, alignItems: 'flex-end' }}>{headCell(stickyCol)}</div>
           {rest.map((c) => <div key={c.key} style={cellW(c)}>{headCell(c)}</div>)}
         </div>
 
@@ -180,7 +190,7 @@ export function DataTable({
             return (
               <React.Fragment key={r.id || i}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-10)', padding: `${rowPad} 0`, borderBottom: 'var(--border-hairline) solid var(--color-line-soft)' }}>
-                  <div style={{ ...cellW(stickyCol), position: scrolls ? 'sticky' : undefined, left: 0, background: 'var(--color-surface)', minWidth: scrolls ? stickyCol.width || 132 : 0 }}>
+                  <div style={{ ...cellW(stickyCol), ...stickyCell, minWidth: scrolls ? stickyCol.width || 132 : 0 }}>
                     {detail
                       ? <Pressable onClick={() => setOpen(isOpen ? null : i)} expanded={isOpen} label={`${r[sticky]} — details`} style={{ display: 'flex', width: '100%', alignItems: 'center', gap: 'var(--space-6)' }}>
                           <Chevron open={isOpen} /><Cell col={stickyCol} row={r} max={maxima[stickyCol.key]} />
