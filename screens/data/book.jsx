@@ -548,6 +548,118 @@ const clientById = (id) => CLIENTS.find((x) => x.id === id);
    in-flight states use (R2) — placed · settled · rejected · sent (no confirmation yet). A row never says
    "done" for something the RTA has not confirmed. Illustrative figures, consistent with the journeys:
    the two Sharma moves are the ones screens 5 to 7 decide on. */
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE TWO SCORES — CENTRICITY FUND SCORE AND CLIENT HEALTH SCORE · 20 Sep 2026
+
+   THESE ARE DESIGN PLACEHOLDERS AND THE SCREEN SAYS SO IN WORDS. The Fund Discovery PRD leads with a
+   "Centricity Score" and this repository has never seen its definition. Inventing one quietly is the
+   single worst thing this product could do: a score is the one number an advisor has to defend in
+   front of a client, and a number with a hidden methodology cannot be defended at all.
+
+   So the placeholder is built the only way a placeholder may be: **every input is a field already in
+   this book, every weight is stated on the card, and the card names the component dragging the score
+   down.** Nothing is a black box. When Centricity's real definition arrives, the weights and the five
+   mappings below are what change — the card, the band words and the turn do not.
+
+   Two rules the maths obeys:
+   - **A missing input is reported, never assumed.** Sharma is the only client with a current
+     allocation on file, so the other two score on the inputs that exist and the card says which one
+     it could not read. A score quietly computed over four of five components is the "total AUM shown
+     is less" defect (docs/RESEARCH.md R1) wearing a different hat.
+   - **The band is a word, never a colour** (rule 1). Strong · Sound · Mixed · Weak. */
+const clamp100 = (v) => Math.max(0, Math.min(100, Math.round(v)));
+const SCORE_BANDS = [[75, 'Strong'], [60, 'Sound'], [45, 'Mixed'], [0, 'Weak']];
+const scoreBand = (v) => (SCORE_BANDS.find(([floor]) => v >= floor) || [0, 'Weak'])[1];
+
+/* One weighted mean over the components that could be read, plus the list of the ones that could not.
+   `weakest` is the lowest component that carries weight — the card distinguishes it, and the sentence
+   names it, because "78" on its own tells an advisor nothing they can act on. */
+const rollUp = (rows) => {
+  const read = rows.filter((r) => r.value != null);
+  const missing = rows.filter((r) => r.value == null);
+  const w = read.reduce((t, r) => t + r.weight, 0);
+  const value = clamp100(read.reduce((t, r) => t + r.value * r.weight, 0) / (w || 1));
+  const weakest = read.slice().sort((a, b) => a.value - b.value)[0] || null;
+  /* AND A SCORE OVER A THIRD OF ITS INPUTS IS NOT A SCORE. Meera has a fund count and clean records
+     and nothing else on file: 30 of the 100 points of weight. Printing "62" from that is the same
+     defect as a total that is quietly short — it reads as confident and it is not. Under half the
+     weight the number is withheld and the turn says what is missing instead. Above it, the number
+     stands and the card names what it could not read. */
+  const coverage = w / 100;
+  return { value, band: scoreBand(value), rows: read.map((r) => ({ ...r, binding: weakest && r.label === weakest.label })),
+           missing, weakest, coverage, readWeight: w, enough: w >= 50 };
+};
+
+/* `short` is what the card's weights line prints — the full label names the meter, and repeating five
+   full labels in a sentence above five meters that already carry them is the repetition this product
+   gets pulled up on. */
+const FUND_SCORE_WEIGHTS = [
+  ['Return against its category', 30, 'return'], ['Cost', 20, 'cost'], ['Beats its category', 20, 'consistency'],
+  ['Size and liquidity', 15, 'size'], ['One manager, long enough', 15, 'manager'],
+];
+const fundScore = (id) => {
+  const f = fundById(id); const p = perfOf(id); const cat = categoryAvgOf(id); const m = MANAGERS[id];
+  if (!f || !p) return null;
+  /* Six points of score per point of three-year lead, centred at 50 — so matching the category is a
+     50 and beating it by eight points is a 98. The slope is a guess; it is written here rather than
+     buried so that replacing it is a one-line edit. */
+  const ret = cat ? 50 + (p.r3 - cat.r3) * 6 : null;
+  /* 1.2% is the practical top of a direct-plan expense ratio in this book; 0 is free. */
+  const cost = 100 - (p.ter / 1.2) * 100;
+  /* How many of the three periods clear the category average — the plainest reading of "consistent". */
+  const beats = cat ? (['r1', 'r3', 'r5'].filter((k) => p[k] >= cat[k]).length / 3) * 100 : null;
+  /* ₹50,000 cr is a full mark; below ₹2,000 cr a scheme is small enough for liquidity to be a real
+     question in this book. Log-scaled, because the difference between 2,000 and 10,000 crore matters
+     far more than between 60,000 and 90,000. */
+  const size = (Math.log10(Math.max(p.aumCr, 100)) - Math.log10(2000)) / (Math.log10(50000) - Math.log10(2000)) * 100;
+  /* An index fund has no manager to score, so the row is MISSING rather than zero — a tracker is not
+     badly managed, it is differently managed. */
+  const tenure = m && m.years != null ? Math.min(m.years / 10, 1) * 100 : null;
+  const vals = { 'Return against its category': ret, 'Cost': cost, 'Beats its category': beats, 'Size and liquidity': size, 'One manager, long enough': tenure };
+  /* A MISSING INPUT CARRIES ITS REASON. "Could not be read" is not something an advisor can act on;
+     "an index fund has no manager to score" is, and it also says the absence is not a fault. */
+  const why = { 'One manager, long enough': 'an index fund has no manager to score',
+                'Return against its category': 'no category average on file for this one',
+                'Beats its category': 'no category average on file for this one' };
+  return rollUp(FUND_SCORE_WEIGHTS.map(([label, weight, short]) => ({ label, weight, short, why: why[label],
+    value: vals[label] == null ? null : clamp100(vals[label]) })));
+};
+const fundScoreProvenance = () => 'Centricity Fund Score · a DESIGN PLACEHOLDER, not Centricity’s methodology · every input is on this card';
+
+const HEALTH_WEIGHTS = [
+  ['Sticking to the mandate', 30, 'mandate'], ['Concentration', 25, 'concentration'], ['Cost of what they hold', 15, 'cost'],
+  ['Spread across funds', 15, 'spread'], ['Records in order', 15, 'records'],
+];
+const clientHealth = (clientId) => {
+  const c = clientById(clientId);
+  if (!c || !c.portfolio || !c.portfolio.valueRs) return null;
+  /* Drift is measured on equity, which is the leg every mandate in this book states and the one the
+     drift band is written against. Fifteen points out is a zero; on the band is a hundred. */
+  const drift = c.allocation && c.mandate ? Math.abs(c.allocation.equity - c.mandate.equity) : null;
+  const mandate = drift == null ? null : 100 - (Math.max(0, drift - LIMITS.driftBand) / 15) * 100;
+  const big = (c.holdings || []).reduce((t, h) => Math.max(t, h.pct), 0) || null;
+  const conc = big == null ? null : 100 - (Math.max(0, big - LIMITS.singleFund) / LIMITS.singleFund) * 100;
+  /* Weighted by what they actually hold, so one large cheap fund counts for more than three small
+     expensive ones. Only the holdings on file are read, and the card says how much of the book that
+     is when it is not all of it. */
+  const held = (c.holdings || []).map((h) => ({ pct: h.pct, ter: (perfOf(h.fundId) || {}).ter })).filter((h) => h.ter != null);
+  const heldPct = held.reduce((t, h) => t + h.pct, 0);
+  const wTer = heldPct ? held.reduce((t, h) => t + h.ter * h.pct, 0) / heldPct : null;
+  const cost = wTer == null ? null : 100 - (wTer / 1.2) * 100;
+  /* Twelve to twenty funds is a book somebody is managing; forty-three is a book nobody is. */
+  const n = c.portfolio.funds;
+  const spread = n == null ? null : n <= 20 ? 100 : 100 - ((n - 20) / 30) * 100;
+  const records = clamp100([c.kyc && c.kyc.status === 'Valid' ? 50 : 0, c.nominee ? 35 : 0, (c.holdings || []).every((h) => h.folio) ? 15 : 0].reduce((a, b) => a + b, 0));
+  const vals = { 'Sticking to the mandate': mandate, 'Concentration': conc, 'Cost of what they hold': cost, 'Spread across funds': spread, 'Records in order': records };
+  const why = { 'Sticking to the mandate': 'the current equity / debt / cash split is not on file',
+                'Concentration': 'no holdings on file, only the fund count',
+                'Cost of what they hold': 'no holdings on file, so nothing to weigh the expense ratios by' };
+  const out = rollUp(HEALTH_WEIGHTS.map(([label, weight, short]) => ({ label, weight, short, why: why[label],
+    value: vals[label] == null ? null : clamp100(vals[label]) })));
+  return { ...out, heldPct: heldPct || 0, funds: n, drift, big };
+};
+const healthProvenance = (c) => `Client Health Score · a DESIGN PLACEHOLDER, not Centricity’s methodology · from ${c && c.portfolio ? c.portfolio.asOf : '30 Sep 2026'} holdings and the mandate on file`;
+
 const LEDGER = [
   { id: 'l1', date: '19 Sep 2026', client: 'sharma', kind: 'Switch', detail: '₹1,85,000 · Quant Small Cap → ICICI Corporate Bond', amountRs: 185000, status: 'placed', ref: 'ord 8841/22', settles: '23 Sep' },
   { id: 'l2', date: '19 Sep 2026', client: 'sharma', kind: 'SIP change', detail: 'Redirect ₹30,000 SIP → HDFC Large Cap', amountRs: 30000, status: 'rejected', ref: '—', note: 'NACH mandate registered for the old amount' },
@@ -673,5 +785,6 @@ const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
 Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, MANAGERS, managerOf, managerLine, managerProvenance, comparisonProvenance, HOLDINGS, HOLDINGS_AS_OF, HOLD_MONTHS, holdingsOf, holdingsProvenance, overlapPct, MONTHLY, monthlyOf, monthlyProvenance, CATEGORY_AVG, categoryAvgOf, switchCost, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
   REVIEW_TOP_RS, REVIEW_TAIL_RS, REVIEW_TAIL_AVG_RS, REVIEW_TINY_CAP_RS, REVIEW_AUDIENCES, REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
+  clamp100, scoreBand, SCORE_BANDS, FUND_SCORE_WEIGHTS, fundScore, fundScoreProvenance, HEALTH_WEIGHTS, clientHealth, healthProvenance,
   NAV_SERIES, NAV_MONTHS, NAV_BASE, BENCH_CANON, navSeries, tenKAfter, benchCagr, BENCH_SHORT, benchReturnAt, benchProvenance,
   driftPoints, overSingleFund, inr });

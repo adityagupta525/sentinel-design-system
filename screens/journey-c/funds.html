@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','CompareTable','Dumbbell','List','ClientChip','ChartBar','FigureRow','Surface','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','HeroNumberCard','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','CompareTable','Dumbbell','List','ClientChip','ChartBar','FigureRow','Surface','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
@@ -415,11 +415,30 @@ mountScreen(
       </StateRow>
     </Section>
 
-    <Section title="9 · Motion, and what each one does under reduced motion">
+    <Section title="9 · The Centricity Fund Score — a placeholder with its workings on the card" sub="The Fund Discovery PRD leads with this number and nobody here has seen its definition. Inventing one quietly is the worst thing this product could do: a score is the one figure an advisor has to defend in front of a client. So it is drawn the only way a placeholder may be — five components that are all fields already in this book, the weights printed on the card, the weakest one distinguished, and a provenance line that says “design placeholder, not Centricity’s methodology” in words. HeroNumberCard already draws Meera’s risk number this way; nothing new was built.">
+      <StateRow>
+        <State label="A strong fund · 80" note="Parag Parikh scores 80. The sentence does not stop at the number — it names what holds it back, because “80” on its own is not something an advisor can act on. Cost is its weakest component at 48: the fund is good and it is not cheap, and the card says both.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><FundScoreTurn id="ppfas-flexi" /></Scene>
+        </State>
+        <State label="An index fund · one component cannot be scored" tone="under" note="A tracker has no manager to score, so that row is MISSING rather than zero — an index fund is not badly managed, it is differently managed. The turn says which 85 of the 100 points of weight the number is out of, and gives the reason rather than “could not be read”.">
+          <Scene anchor={3}><FundInfo id="uti-nifty" /><FundScoreTurn id="uti-nifty" /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="The weakest fund on the shelf · 58" tone="under" note="HDFC Large Cap at 58, Mixed. Its expense ratio of 0.98% scores 18 and drags the whole thing down. Rule 1 holds: the band is a WORD, never a colour, and the meters are one hue with the binding row distinguished by weight rather than by hue.">
+          <Scene anchor={3}><FundInfo id="hdfc-large" /><FundScoreTurn id="hdfc-large" /></Scene>
+        </State>
+        <State label="The score on the shortlist" note="A Score column, kind='bar' — the magnitude drawn behind the figure in one hue, which is how ten scores become comparable down a column without a second colour encoding anything. The figure is still printed; the bar never carries it alone. “sort by score” is a view like the others.">
+          <Scene anchor={2}><FundResults /></Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="10 · Motion, and what each one does under reduced motion">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="10 · Provenance">
+    <Section title="11 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>

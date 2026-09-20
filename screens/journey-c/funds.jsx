@@ -38,6 +38,18 @@ const heldLine = (f) => (f.heldBy.length === 0 ? 'None of your clients' : f.held
 
 const FUND_COLUMNS = [
   { key: 'name', label: 'Fund', kind: 'text', sticky: true, sortable: true, width: 148 },
+  /* THE SCORE IS A BAR, not a bare number: `kind='bar'` draws the magnitude behind the figure in one
+     hue, which is how ten scores become comparable down a column without a second colour encoding
+     anything (rule 1). The figure is still printed — the bar never carries it alone.
+
+     AND IT SITS SECOND, beside the sticky name column. It went in fifth and the render showed a
+     shortlist with no score on it at all: at 375 the table folds after Category, and a column past
+     the fold is a column an advisor has to go looking for. The score is the first thing the PRD
+     leads with; a figure that has to be scrolled to is not leading anything. */
+  /* min 40, not 0: "Weak" starts below 45 in this book's bands, so 40 is the floor below which a
+     score stops being a shelf fund's score at all. The figure is printed in every cell, which is what
+     the contract asks for in exchange for a baseline. */
+  { key: 'score', label: 'Score', kind: 'bar', min: 40, sortable: true },
   { key: 'cat', label: 'Category', kind: 'text' },
   { key: 'shelf', label: 'Shelf', kind: 'badge' },
   { key: 'held', label: 'Held by', kind: 'text' },
@@ -47,6 +59,8 @@ const fundRows = (funds) => funds.map((f) => ({
   name: f.name,
   cat: f.cat,
   shelf: <FUNDS_DS.Badge tone={f.onShelf ? 'ok' : 'over'}>{f.onShelf ? 'On shelf' : 'Off shelf'}</FUNDS_DS.Badge>,
+  score: String((fundScore(f.id) || {}).value ?? '—'),
+  scoreValue: (fundScore(f.id) || {}).value ?? 0,
   held: heldLine(f),
 }));
 
@@ -89,6 +103,7 @@ const holdAsk = (text) => {
      "hold". */
   /* `/\bcategor\b/` matched nothing: the word boundary after "categor" sits before "y", which is a
      word character. Found by driving it, not by reading it. */
+  if (/\bscore\b|\bcentricity\b|\brating\b/.test(t)) return 'score';
   if (/\bcategor|\bpeers?\b|\bpeer group\b/.test(t)) return 'category';
   if (/\bwho\b.*\b(hold|own)|\b(my |which )clients?\b/.test(t)) return 'holders';
   if (/\bwhat changed\b|\bchanged recently\b|\brecent changes?\b|\bmonthly changes?\b/.test(t)) return 'changed';
@@ -232,7 +247,7 @@ function HoldingsOverlap({ id, otherId, onPick, onChip, onEvent }) {
 
 /* The four asks as KINDS, so a chip and a typed sentence reach the same turn through one map. The
    holdings ask is the one that fans out into five turns of its own; the other three are one each. */
-const ASK_KINDS = { 'How has it done against its category?': 'category', 'What is it holding?': 'shape',
+const ASK_KINDS = { 'What is its Centricity score?': 'score', 'How has it done against its category?': 'category', 'What is it holding?': 'shape',
   'What changed recently?': 'changed', 'Who of my clients hold it?': 'holders' };
 const askChips = (onChip, except) => (
   <FUNDS_DS.ChipRow>
@@ -245,6 +260,36 @@ const askChips = (onChip, except) => (
 const PERIOD_PHRASE = { r1: 'Over the last twelve months', r3: 'Over three years', r5: 'Over five years' };
 const pts = (v) => `${Math.abs(v).toFixed(1)} point${Math.abs(v).toFixed(1) === '1.0' ? '' : 's'}`;
 const aheadOf = (v) => (v >= 0 ? 'ahead of' : 'behind');
+
+/* A0 · THE CENTRICITY FUND SCORE — a DESIGN PLACEHOLDER, and the screen says so twice.
+   The PRD leads with this number and nobody here has seen its definition, so the only honest way to
+   draw it is with its own workings on the card: the weights in the copy line, the five components as
+   meters, the weakest one distinguished, and a provenance line that calls it a placeholder in words.
+   `HeroNumberCard` is already exactly this device — it draws Meera's risk number the same way, big
+   figure, band word, contributing rows with one of them binding. Nothing new was built for a score;
+   the system had the shape, which is the test a new component has to fail before it is written. */
+/* The weakest component, as the start of a sentence: capitalised, and read as English rather than as
+   a meter's label — "One manager, long enough is what holds it back" is not a sentence. */
+const WEAKEST_PHRASE = { 'One manager, long enough': 'How long one manager has run it', 'Beats its category': 'Beating its category' };
+const weakestPhrase = (w) => WEAKEST_PHRASE[w.label] || w.label.charAt(0).toUpperCase() + w.label.slice(1);
+function FundScoreTurn({ id, onChip }) {
+  const f = fundById(id); const sc = fundScore(id);
+  if (!f || !sc) return null;
+  const say = [
+    `${f.name} scores ${sc.value} out of 100 — ${sc.band.toLowerCase()}.`,
+    `${weakestPhrase(sc.weakest)} is what holds it back, at ${sc.weakest.value}.`,
+  ];
+  sc.missing.forEach((m) => say.push(`${m.label} is not scored here — ${m.why || 'the input is not on file'}. The ${sc.readWeight} points of weight that could be read are what this number is out of.`));
+  /* THE WEIGHTS ARE ON THE CARD. A score whose workings are one tap away is a score an advisor has to
+     take on trust for the length of that tap, and this is the number they will be asked about first. */
+  const weights = FUND_SCORE_WEIGHTS.map(([, w, short]) => `${short} ${w}`).join(' · ');
+  return (
+    <FUNDS_DS.SentinelTurn say={say}
+      body={<FUNDS_DS.HeroNumberCard title="Centricity Fund Score" meta="Placeholder" value={sc.value}
+        badge={sc.band} copy={`Out of 100. ${weights}.`} rows={sc.rows} />}
+      provenance={fundScoreProvenance()} chips={askChips(onChip, 'score')} />
+  );
+}
 
 /* A3 · AGAINST ITS CATEGORY — three marks on one scale.
    The plan said "three Dumbbells". The COMPONENT said two, and the component was right: a Dumbbell is
@@ -397,6 +442,7 @@ function HoldersTurn({ id, onChip }) {
 }
 
 function HoldingsTurn({ kind, id, otherId, onPick, onChip, onEvent }) {
+  if (kind === 'score') return <FundScoreTurn id={id} onChip={onChip} />;
   if (kind === 'category') return <CategoryTurn id={id} onChip={onChip} />;
   if (kind === 'changed') return <ChangedTurn id={id} onChip={onChip} />;
   if (kind === 'holders') return <HoldersTurn id={id} onChip={onChip} />;
@@ -674,7 +720,7 @@ function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', on
    so a fund arriving in the book is searchable the same day. */
 /* The four things an advisor asks about a fund. In every reference these are four TABS behind one
    header; in a thread each is a question and each answer is its own turn. */
-const FUND_CHIPS = ['How has it done against its category?', 'What is it holding?', 'What changed recently?', 'Who of my clients hold it?'];
+const FUND_CHIPS = ['What is its Centricity score?', 'How has it done against its category?', 'What is it holding?', 'What changed recently?', 'Who of my clients hold it?'];
 
 const REFINE_CATEGORIES = [...new Set(FUNDS.map((f) => f.category))];
 const REFINE_BUCKETS = [...new Set(FUNDS.map((f) => f.bucket))];
@@ -699,6 +745,7 @@ const SORT_KEYS = [
      period is being displayed, and the sentence names it — a sort the reader cannot verify against the
      column in front of them is the same defect as a figure with no provenance. */
   { key: 'return', dir: 'desc', re: /\b(return|performance|best)\b/, said: 'best return first' },
+  { key: 'score', dir: 'desc', re: /\b(score|centricity|rating)\b/, said: 'highest score first' },
 ];
 const PERIOD_WORDS = { '1y': 'r1', '3y': 'r3', '5y': 'r5', 'one year': 'r1', 'three year': 'r3', 'five year': 'r5' };
 
@@ -803,7 +850,7 @@ const PERIOD_LABEL = { r1: '1Y', r3: '3Y', r5: '5Y' };
    horizontal scroll, so "sorted cheapest first" was a claim with nothing on screen to test it against —
    the same shape as a figure with no provenance. The sentence now carries the span it sorted on, first
    value to last, which is the smallest thing that makes the order verifiable without moving a column. */
-const SORT_UNIT = { ter: (v) => `${v.toFixed(2)}%`, aumCr: (v) => `${inr(Math.round(v))} cr`, return: (v) => `${v.toFixed(1)}%` };
+const SORT_UNIT = { score: (v) => String(v), ter: (v) => `${v.toFixed(2)}%`, aumCr: (v) => `${inr(Math.round(v))} cr`, return: (v) => `${v.toFixed(1)}%` };
 const sortSpan = (r, period, list) => {
   if (!list || list.length < 2) return '';
   const key = r.sort.key === 'return' ? period : r.sort.key;
@@ -854,7 +901,8 @@ const fundsFor = (query, shelf) => {
 const sortFunds = (list, sort, period = 'r5') => {
   if (!sort) return list;
   const key = sort.key === 'return' ? period : sort.key;
-  const val = (f) => { const p = perfOf(f.id); return p ? p[key] : null; };
+  /* The score is not in PERF — it is computed from it — so it is the one key read from elsewhere. */
+  const val = (f) => (key === 'score' ? (fundScore(f.id) || {}).value ?? null : (perfOf(f.id) || {})[key] ?? null);
   return [...list].sort((a, b) => {
     const x = val(a), y = val(b);
     if (x == null || y == null) return x == null ? 1 : -1;
@@ -939,4 +987,4 @@ function FundInfo({ id, period, onPeriod, onExplain, heldBy = false, defaultPeri
   );
 }
 
-Object.assign(window, { FundInfo, FUND_CHIPS, ASK_KINDS, askChips, CategoryTurn, ChangedTurn, HoldersTurn, holdersDetail, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineAmbiguous, refineSaid, fundsFor, sortFunds, fundByWords, SORT_KEYS, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE, PERIOD_LABEL, sortSpan });
+Object.assign(window, { FundInfo, FundScoreTurn, FUND_CHIPS, ASK_KINDS, askChips, CategoryTurn, ChangedTurn, HoldersTurn, holdersDetail, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineAmbiguous, refineSaid, fundsFor, sortFunds, fundByWords, SORT_KEYS, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE, PERIOD_LABEL, sortSpan });

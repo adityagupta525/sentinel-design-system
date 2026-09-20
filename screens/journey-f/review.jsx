@@ -71,6 +71,50 @@ function ReviewFacts() {
 
 const REV_MISSING = `Her statement was loaded fund by fund, and the ${MEERA.tail.tinyFunds} small funds have never been mapped to categories. So I can tell you the shape of her book exactly and I cannot tell you whether she is on the ${MEERA.mandate.equity}/${MEERA.mandate.debt}/${MEERA.mandate.cash} she agreed to. One category mapping fixes it for every review after this one.`;
 
+/* THE CLIENT HEALTH SCORE — a DESIGN PLACEHOLDER, and this journey is the right place for it because
+   this journey already refuses to guess. Five components, weights on the card, the weakest one
+   distinguished; `HeroNumberCard` draws it, the same device that draws Meera's risk number, because
+   the system already had the shape and a score is not a reason to invent a sixth kind of card.
+
+   AND MEERA'S SCORE IS WITHHELD. Three of the five components need her actual split and her holdings,
+   and neither is on file — 30 of 100 points of weight. The review's whole finding is that one missing
+   category mapping, so printing a confident "62" over it would be this product arguing with itself.
+   Under half the weight the number does not appear; what appears is what is missing and what fixes
+   it. Sharma, whose split IS on file, scores on all five. That contrast is the point. */
+function HealthTurn({ clientId = 'meera', chips }) {
+  const c = clientById(clientId); const h = clientHealth(clientId);
+  if (!c) return null;
+  if (!h) {
+    return (
+      <REV_DS.SentinelTurn
+        say={[`There is nothing of ${c.name}'s to score yet — no holdings, no value, no mandate in force.`,
+              'A health score describes a book. Until there is one, the honest answer is the absence.']}
+        provenance="Client Health Score · a design placeholder · nothing on file for this client" chips={chips} />
+    );
+  }
+  const weights = HEALTH_WEIGHTS.map(([, w, short]) => `${short} ${w}`).join(' · ');
+  if (!h.enough) {
+    const miss = h.missing.map((m) => `${m.label.toLowerCase()} — ${m.why}`);
+    return (
+      <REV_DS.SentinelTurn
+        say={[`I cannot put a health score on ${c.name}'s book yet.`,
+              `Three of the five things it is made of need the holdings and the current split, and neither is on file. That leaves ${h.readWeight} of 100 points of weight, and a number out of that would read more confident than it is.`,
+              `What I can read: the ${h.funds} funds and the records. What I cannot: ${miss.join('; ')}.`]}
+        body={<REV_DS.ConstraintCallout eyebrow="What the score is missing" body={REV_MISSING} />}
+        provenance={healthProvenance(c)} chips={chips} />
+    );
+  }
+  return (
+    <REV_DS.SentinelTurn
+      say={[`${c.name}'s book scores ${h.value} out of 100 — ${h.band.toLowerCase()}.`,
+            `${h.weakest.label} is what holds it back, at ${h.weakest.value}.`,
+            ...h.missing.map((m) => `${m.label} is not scored — ${m.why}. This is out of the ${h.readWeight} points that could be read.`)]}
+      body={<REV_DS.HeroNumberCard title="Client Health Score" meta="Placeholder" value={h.value}
+        badge={h.band} copy={`Out of 100. ${weights}.`} rows={h.rows} />}
+      provenance={healthProvenance(c)} chips={chips} />
+  );
+}
+
 /* The ending changes with the audience, and only the ending. */
 const REV_ENDINGS = {
   record: { lines: [`Filed as at ${MEERA.portfolio.asOf}. I have proposed nothing.`,
@@ -147,5 +191,5 @@ const RevCarried = ({ fundId }) => {
   return lines ? <REV_DS.SentinelTurn say={lines} /> : null;
 };
 
-Object.assign(window, { RevCarried, revCarriedLines, MEERA, REV_ASK, REV_STEPS, REV_TOTAL, ReviewShape, ReviewFacts, ReviewEnding,
+Object.assign(window, { HealthTurn, RevCarried, revCarriedLines, MEERA, REV_ASK, REV_STEPS, REV_TOTAL, ReviewShape, ReviewFacts, ReviewEnding,
   REV_ENDINGS, REV_MISSING, REV_PROVENANCE, REV_SUMMARY, ReviewResult });

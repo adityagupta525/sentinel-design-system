@@ -1680,3 +1680,48 @@ fund card folded the two together.
 
 **A regex that matched nothing, found by driving it.** `/\bcategor\b/` never fires: the word boundary
 after *categor* sits before *y*. Reading it would not have shown that.
+
+---
+
+### F-63 · The two scores — a placeholder that shows its workings, and the one it refuses to give — *20 Sep 2026*
+
+The owner asked for a **Centricity Fund Score** and a **Client Health Score** as dummies with UI. This
+repository has said since the first fund plan that the Centricity Score "cannot be invented — a score
+with a made-up methodology is the one number an advisor must never defend." The owner's call stands, so
+the question became **how a placeholder may be drawn at all**, and the answer is the whole design:
+
+- **Every input is a field already in this book.** The fund score reads return against category, expense
+  ratio, how many periods clear the category average, size, and manager tenure. The health score reads
+  drift from the mandate, the largest holding against the ceiling, the weighted cost of what is held,
+  the fund count, and whether the records are in order.
+- **The weights are printed on the card**, not one tap away. A score whose workings are behind a tap is
+  a score an advisor takes on trust for the length of that tap, and this is the figure they will be
+  asked about first.
+- **The provenance line says "a DESIGN PLACEHOLDER, not Centricity's methodology" in words.**
+- **The sentence names the weakest component.** "80" tells an advisor nothing they can act on; "cost is
+  what holds it back, at 48" does.
+
+**Nothing new was built to draw them.** `HeroNumberCard` already draws Meera's risk number exactly this
+way — big figure, band word, contributing rows with one distinguished. The test a new component has to
+fail before it is written is whether the system already has the shape, and it did.
+
+**The best thing here is the score that is withheld.** Three of the five health components need a
+client's holdings and their current split. Meera has neither: 30 of 100 points of weight. A "62"
+computed from that reads confident and is not — the *total AUM shown is less* defect from
+`docs/RESEARCH.md` wearing a different hat. Under half the weight the number does not appear and the
+turn says what is missing and what fixes it, which is the same finding Journey F already carries.
+Sunita clears the line at 70 and is scored with the absent input named; Sharma scores on all five;
+Amit, a prospect, has nothing to score and is told so in a sentence rather than an empty card. A
+missing input carries its reason, never "could not be read" — *"an index fund has no manager to score"*
+says both what is absent and that the absence is not a fault.
+
+**Two things the render corrected, both about a bar that could not be read.**
+
+1. **The Score column went in fifth and the shortlist showed no score at all.** At 375 the table folds
+   after Category, so the column sat past the fold. The score is what the PRD leads with; a figure that
+   has to be scrolled to is not leading anything. It sits second now, beside the sticky name.
+2. **Ten scores between 58 and 80, scaled from zero, are ten bars within a quarter of each other.** The
+   column read as no signal. `DataTable` bar columns gained **`min`** — a baseline, not a zoom, the
+   same argument and the same safeguard `Dumbbell.min` settled this morning: the figure is the cell's
+   content and the bar sits behind it, so a baseline can never leave a number unreadable. The score
+   column passes 40, where this book's bands stop calling a number a score.

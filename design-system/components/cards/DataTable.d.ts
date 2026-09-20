@@ -8,6 +8,13 @@ export interface DataTableColumn {
   key: string;
   label: string;
   kind: ColumnKind;
+  /** `kind='bar'` only: the low end of the bar's scale. **Default 0**, so every bar column written
+   *  before this draws what it drew — a holding weight, where 0% is a real position. Pass it when the
+   *  zero is not meaningful for the quantity: ten fund scores between 58 and 80 scaled from zero are
+   *  ten bars within a quarter of each other's length, and the column reads as no signal. Same
+   *  reasoning and same safeguard as `Dumbbell.min` — the figure is the cell's content and the bar
+   *  sits behind it, so a baseline can never leave a number unreadable. */
+  min?: number;
   /** Derived from `kind` — text and badge start, every figure ends. Override only when the derivation
    *  is wrong for a specific column, never as a style preference: a column of figures that does not
    *  share a right edge cannot be compared down. */

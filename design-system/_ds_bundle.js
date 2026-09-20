@@ -565,7 +565,9 @@ var __ds_out = (() => {
     const base = { minWidth: 0, textAlign: align === "end" ? "right" : "left", font: "var(--type-row-font)", color: "var(--color-ink)" };
     if (col.kind === "bar") {
       const n = Number(row[`${col.key}Value`] ?? (parseFloat(String(v)) || 0));
-      const pct = max > 0 ? Math.max(0, Math.min(1, n / max)) : 0;
+      const lo = Number(col.min) || 0;
+      const span = max - lo;
+      const pct = span > 0 ? Math.max(0, Math.min(1, (n - lo) / span)) : 0;
       return /* @__PURE__ */ react_global_default.createElement("div", { style: { ...base, position: "relative", paddingRight: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", inset: 0, transformOrigin: "right center", transform: `scaleX(${pct})`, background: "var(--tint-bronze-06)", borderRadius: "var(--radius-6)" } }), /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative" }, className: "ds-tabular" }, v));
     }
     const tabular2 = col.kind && col.kind !== "text" && col.kind !== "badge";

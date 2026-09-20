@@ -66,7 +66,16 @@ function Cell({ col, row, max }) {
   const base = { minWidth: 0, textAlign: align === 'end' ? 'right' : 'left', font: 'var(--type-row-font)', color: 'var(--color-ink)' };
   if (col.kind === 'bar') {
     const n = Number(row[`${col.key}Value`] ?? (parseFloat(String(v)) || 0));
-    const pct = max > 0 ? Math.max(0, Math.min(1, n / max)) : 0;
+    /* `col.min` — A BASELINE, NOT A ZOOM (20 Sep 2026), and the same argument `Dumbbell.min` settled
+       this morning. Default 0, so every bar column written before this draws what it drew: a holding
+       weight, where 0% is a real position. It exists because a SCORE is not like that. Ten fund
+       scores between 58 and 80 scaled from zero produced ten bars within a quarter of each other's
+       length — measured on the shortlist, where the column reads as no signal at all. The safeguard
+       is the one the contract already asks for: the figure is the cell's content and the bar sits
+       behind it, so the picture never carries a number on its own. */
+    const lo = Number(col.min) || 0;
+    const span = max - lo;
+    const pct = span > 0 ? Math.max(0, Math.min(1, (n - lo) / span)) : 0;
     return (
       <div style={{ ...base, position: 'relative', paddingRight: 'var(--space-4)' }}>
         <span aria-hidden="true" style={{ position: 'absolute', inset: 0, transformOrigin: 'right center', transform: `scaleX(${pct})`, background: 'var(--tint-bronze-06)', borderRadius: 'var(--radius-6)' }} />

@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConcentrationBar','ConstraintCallout','DarkButton','Dock','DownloadAction','FileUpload','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConcentrationBar','ConstraintCallout','DarkButton','Dock','DownloadAction','FileUpload','HeroNumberCard','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
@@ -31,6 +31,17 @@ function Scene({ audience, state = 'draft', savedAt, anchor = 'bottom' }) {
       <AskTurn text={REV_ASK} costNote="Sending this replaces the review below it." />
       <ReviewResult state={state} savedAt={savedAt} onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} />
       {audience && <ReviewEnding audience={audience} onChip={() => {}} />}
+      <AttachedTurn file={att.file} caption="Here is her September statement." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
+function HealthScene({ clientId, ask }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor={3} revision={`${clientId}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
+      <AskTurn text={ask} editable={false} actions={false} />
+      <HealthTurn clientId={clientId} />
       <AttachedTurn file={att.file} caption="Here is her September statement." onRemove={att.clear} />
     </Thread>
   );
@@ -103,7 +114,33 @@ function App() {
         </Note>
       </Section>
 
-      <Section title="4 · Where the numbers come from">
+      <Section title="4 · The Client Health Score — and the one it refuses to give" sub="Five components, the weights printed on the card, the weakest one distinguished. HeroNumberCard draws it, the same device that draws Meera’s risk number — the system already had the shape, and a score is not a reason to invent a sixth kind of card. It is a DESIGN PLACEHOLDER and the provenance line says so in words; when Centricity’s real definition arrives, the weights and the five mappings change and none of this does.">
+        <StateRow>
+          <State label="Sharma · all five components on file · 74" note="His current split IS on file, so every component can be read and the number is out of the full 100. His weakest is the cost of what he holds, at 47 — which is a sentence an advisor can act on, where “74” alone is not.">
+            <HealthScene clientId="sharma" ask="How healthy is Sharma’s book?" />
+          </State>
+          <State label="Meera · the score is withheld" tone="under" note="Three of the five components need her holdings and her current split, and neither is on file — 30 of 100 points of weight. The review’s whole finding is that missing category mapping, so printing a confident 62 over it would be this product arguing with itself. Under half the weight the number does not appear; what appears is what is missing and what fixes it.">
+            <HealthScene clientId="meera" ask="How healthy is Meera’s book?" />
+          </State>
+        </StateRow>
+        <StateRow>
+          <State label="Sunita · scored, with one input named as absent" note="Her split is not on file either, but her holdings are — 70 of 100 points read, over the half-weight line, so the number stands and the turn names the one thing it could not read. The rule is a threshold, not a veto.">
+            <HealthScene clientId="sunita" ask="How healthy is Sunita’s book?" />
+          </State>
+          <State label="A prospect · nothing to score" tone="under" note="Amit has no holdings, no value and no mandate in force. A health score describes a book; until there is one, the honest answer is the absence, and it is a sentence rather than an empty card.">
+            <HealthScene clientId="amit" ask="How healthy is Amit’s book?" />
+          </State>
+        </StateRow>
+        <Note title="Why the number is withheld rather than shown with an asterisk">
+          A score computed over a third of its inputs reads as confident and is not. It is the
+          <em> total AUM shown is less</em> defect from <code>docs/RESEARCH.md</code> wearing a different hat:
+          the figure is arithmetically correct and the reader draws a conclusion the data cannot carry.
+          The threshold is half the weight, it is written in <code>rollUp</code>, and the turn says which
+          points it is out of whenever that is not 100.
+        </Note>
+      </Section>
+
+      <Section title="5 · Where the numbers come from">
         <ProvenanceTable rows={[
           ['₹18,40,000 · 43 funds', <span><code>meera.portfolio</code></span>, 'The first sentence, and a tile'],
           ['14 funds hold 80%', <span><code>meera.tail.topFunds</code> / <code>topSharePct</code></span>, 'The concentration bar'],
