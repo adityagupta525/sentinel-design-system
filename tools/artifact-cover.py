@@ -1,5 +1,12 @@
 import json, pathlib, html
-g = json.load(open('/tmp/groups.json'))
+# READ THE INDEX ITSELF, not a snapshot of it. The first version read a file written earlier in the
+# session and printed 97 components when the system had 94 — a cover that claims more than exists is
+# exactly what `_index.json` being generated from disk exists to prevent.
+_idx = json.load(open('design-system/pages/_index.json'))
+g = {}
+for _r in _idx['rows']:
+    _k = (_r.get('file') or '').split('/')[1] if _r.get('file') else '?'
+    g.setdefault(_k, []).append({'n': _r['name'], 'p': _r.get('page')})
 GROUP_NOTE = {
  'chat': 'The thread. Sentinel’s half of a turn, the advisor’s half, and everything that arrives between them.',
  'cards': 'What an answer becomes — the artifact, the result, the sheet an advisor decides in.',
@@ -61,6 +68,7 @@ def card(href, kicker, title, note, big=False):
       <span class="n">{html.escape(note)}</span>
     </a>'''
 
+total = sum(len(v) for v in g.values())
 comp_sections = []
 for k in ORDER:
     rows = sorted(g.get(k, []), key=lambda r: r['n'])
@@ -68,8 +76,9 @@ for k in ORDER:
     links = ' '.join(
         (f'<a class="chip" href="pages/{r["p"]}">{html.escape(r["n"])}</a>' if r['p']
          else f'<span class="chip off">{html.escape(r["n"])}</span>') for r in rows)
+    count = f'{len(shipped)} of {len(rows)} specified' if len(shipped) != len(rows) else f'{len(rows)}, all specified'
     comp_sections.append(f'''<section class="grp">
-      <h3>{k} <span class="count">{len(shipped)} of {len(rows)} specified</span></h3>
+      <h3>{k} <span class="count">{count}</span></h3>
       <p class="gn">{html.escape(GROUP_NOTE.get(k,''))}</p>
       <div class="chips">{links}</div>
     </section>''')
@@ -158,9 +167,9 @@ Sentinel will not do.</p>
   {''.join(card(h,'Screen',t,n) for t,n,h in OTHER)}
 </div>
 
-<h2>The system — 97 components</h2>
-<p class="sub">Each one is a contract, a prompt and, for 54 of them, a rendered specification. A filled
-chip opens its spec page; an outlined one is built and not yet specified.</p>
+<h2>The system — {total} components</h2>
+<p class="sub">Every one of them is a contract, a prompt and a rendered specification — Tier 2 closed
+on 20 September. Each chip opens its own page.</p>
 {''.join(comp_sections)}
 
 <h2>Foundations</h2>
@@ -179,7 +188,7 @@ the token files, so the documented numbers cannot drift from the real ones.</p>
   every figure comes from one fixture that is labelled as one on every screen that reads it. What this
   is, is the product's design made executable, so that what gets built can be checked against it rather
   than described.</p>
-  <p>97 components · 54 specified · 100 pages rendering clean · six journeys · one prototype.</p>
+  <p>{total} components, every one specified · 144 pages rendering clean · six journeys · one prototype.</p>
 </footer>
 
 </div></body></html>'''

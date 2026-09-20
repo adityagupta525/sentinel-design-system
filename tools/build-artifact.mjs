@@ -56,11 +56,11 @@ for (const f of await readdir(join(ROOT, 'design-system/guidelines'))) await cop
 for (const p of await walk(join(ROOT, 'design-system/components'), (p) => p.endsWith('.d.ts'))) {
   await copyText(relative(ROOT, p), relative(join(ROOT, 'design-system'), p));
 }
-/* the kits, redrawn on the built screens 20 Sep 2026 — they are the system's states, and the
-   artifact carries them beside the screens they now match */
-for (const p of await walk(join(ROOT, 'design-system/ui_kits'), (p) => /\.(html|jsx|md)$/.test(p))) {
-  await copyText(relative(ROOT, p), relative(join(ROOT, 'design-system'), p));
-}
+/* THE KITS ARE NOT IN THE ARTIFACT, and the reason is a hard limit rather than a judgement: an
+   artifact publishes at most 255 files, and with every component specified the system's own pages
+   and contracts take 254 of them. The kits were redrawn on the built screens on 20 Sep, so the
+   screens are the current thing and the kits are the record of where they came from — which is the
+   half that belongs in the repository rather than in a link sent to a team. */
 /* the readme and the skill: the specification travels with the pages that implement it */
 for (const f of ['design-system/readme.md', 'design-system/SKILL.md']) {
   if (existsSync(join(ROOT, f))) await copyText(f, f.split('/').pop());
