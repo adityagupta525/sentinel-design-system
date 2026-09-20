@@ -67,29 +67,43 @@ so — a search that quietly ignores half of what you typed is worse than one th
 
 ---
 
-## 3 · The holdings view — one question per turn
+## 3 · The holdings view — one question per turn · **BUILT 20 Sep 2026**
 
 The references stack five devices on one Holdings tab: a toggle, a size bar, a sector list with month
 pills, a top-ten list, a concentration table. In a 375-wide thread that is five answers, so it is five
-turns, and the advisor asks for each one:
+turns, and the advisor asks for each one. **Every chip is also a sentence** — `holdAsk()` maps typed
+words to the same turns, so typing *"by sector"* opens exactly what the chip opens.
 
-| turn | question | device | the sentence it earns |
+| turn | question | device **as built** | the sentence it earns |
 |---|---|---|---|
-| **H1 · the shape** | *"What is it holding?"* | `AllocationCard` — large · mid · small · debt & cash, one hue, direct labels | where the weight sits, and the one sector that dominates |
-| **H2 · by sector** | *"By sector"* | `ChartBar` horizontal, six bars, with `RangePills` for the three months (count matches the data — F-46) | *"Financials went 29.8 → 31.6 over three months; tech fell."* |
-| **H3 · top ten** | *"Top 10 stocks"* | `DataTable` — name · sector · % · **change since last month** | *"The top five are 30.9% of the fund. HDFC Bank alone is 8.3%."* |
-| **H4 · concentration** | *"How concentrated?"* | four `FigureRow`s — holdings · top-5 companies · sectors · top-5 sectors | said against the product's own ceilings where one applies |
-| **H5 · overlap** | *"Overlap with HDFC Flexi"* | `OverlapView` **with numbers**, computed from shared top holdings | *"38% of their top tens are the same eleven stocks."* |
+| **H1 · the shape** | *"What is it holding?"* | **`ChartBar`** — large · mid · small · debt & cash, one hue, direct labels | *"Parag Parikh Flexi Cap is 67% large cap, 20.6% mid cap and 6.2% small cap, with 6.2% in debt and cash. Financial services is the biggest sector at 25.2%."* |
+| **H2 · by sector** | *"By sector"* | `ChartBar` + `RangePills` over the three months (count matches the data — F-46) | *"Financial services went 24.6 → 25.2 over three months; Industrials moved most, up 1.5 points."* |
+| **H3 · top ten** | *"Top 10 stocks"* | `DataTable`, **folded at ten**, sticky name · weight-behind-figure · Change | *"The top five are 35.6% of the fund. Power Grid alone is 8.4%. Change is against last month."* + the tail as one row: *"71 more holdings, none above 2%."* |
+| **H4 · concentration** | *"How concentrated?"* | four `FigureRow`s inside a `Surface`, each with its quiet half | *"81 holdings across 10 sectors. The top five companies are 35.6% of the fund, the top five sectors 85.6%."* |
+| **H5 · overlap** | *"Overlap with…"* | `OverlapView` **with a number**, or the `List.search` picker when no second fund was named | *"47% of their top tens are the same 6 stocks — ICICI Bank, Axis Bank, TCS and more."* |
+
+**Three things the plan got wrong and the render corrected.**
+
+1. **H1 is a `ChartBar`, not an `AllocationCard`.** `AllocationCard`'s three hues are *asset classes*
+   (equity · debt · cash). Large, mid and small are all equity, and three hues for three sizes of the
+   same thing is colour encoding identity — rule 1. `ChartBar`'s own contract is the answer: one
+   colour, rank carried by length, every value direct-labelled.
+2. **H3 folds, it does not scroll.** `overflow="scroll"` lays the columns out at max-content and the
+   **Change** column — the only reason the turn exists — sat off the right edge of the phone. Two
+   columns beside the sticky one is inside `DataTable`'s own three-column rule, so folding fits them
+   exactly. The Sector column was dropped for the same reason: sector is H2's question.
+3. **A debt fund draws no cap bar it has no data for.** `ICICI Corporate Bond` says what it is instead:
+   *"holds no equity — 52 debt instruments, 100% of it in debt and cash"*, and the sector chip still
+   works, because a bond fund has issuers by sector.
 
 What is refused, and why: **no donut** (needs a legend to be read; a bar says it in a third of the
-height) · **no gainers/losers as green-and-red pills** (rule 2 — they are sentences in H5's "what
-changed") · **no "103 holdings" list** (the tail is one row: *"93 more, none above 1%"*, the same rule
-the review applies to Meera's 29 tiny funds).
+height) · **no gainers/losers as green-and-red pills** (rule 2 — they are sentences in §2's "what
+changed") · **no 103-row list** (the tail is one row, the same rule the review applies to Meera's
+twenty-nine tiny funds) · **no claim against a ceiling inside a fund** (the product's 25% caps are
+written against a *client's* book, so H4 states the numbers and claims nothing about them).
 
 Every H-turn keeps the fund's four verbs available through the composer — *"compare this with…"* works
 from inside the holdings the way it works from the card.
-
----
 
 ## 4 · The rebalance, made understandable
 
@@ -131,16 +145,30 @@ is a visual decision — yes or no.
 
 ---
 
-## 5 · What the Figma file would add, when it can be read
+## 5 · What the Figma file said — read 20 Sep, for content
 
-The owner's note: *"sab kuch hai but ye chat-led design nahi hai — info hai, content hai."* So it is
-read for **content**, never for shape: the exact field list a fund page carries in the other app, the
-words it uses for them (so both Centricity products call a thing by one name), and any figure this plan
-guessed at — minimum SIP, lock-in, exit-load wording, the riskometer's six bands. Three places it would
-change this plan: the row labels in H3/H4, the fields on the `InfoCard` stat grid, and whether the other
-app has a rebalance flow at all (if it does, R1–R6 are checked against it).
+`Centricity-Global-app-design`, page *fund discovery & Investment* (the only page). Read at 1× from
+five frames: the fund screener (375×2868), fund discovery (375×3005), Portfolio (375×2287), the filter
+sheet and a six-card fund list. **No rebalance flow exists in it**, so §4 has nothing to check against
+and stands on its own research.
 
----
+**Field names both Centricity apps should share** — used here as the labels for H3/H4 and the card:
+`Exp. ratio` · `Risk` · `3Y return` · `Fund return (%)` · `Category avg. (%)` · `Rank` · `Expense · AUM ·
+Min SIP` · `Top 5 holdings allocation` · `Distribution Analysis — By assets / By sectors / By category` ·
+`Fund manager` · `Expense & exit load` · `About this fund` · `SEBI Riskometer` · `Returns & ranking`.
+
+**Content it carries that this plan did not have, and what each becomes here:**
+
+| in the other app | here |
+|---|---|
+| **"+2.3% vs category"** on every fund card, with an arrow | the `compare`-style line on `InfoCard` and the H-turn sentence — the same fact, said in words; **no arrow, no green** (rule 2). `CATEGORY_AVG` already carries it |
+| **Category 3Y range bar** — *14.2% ······●······ 26.4%, Flexi Cap 3Y range* | a strong device: the fund inside its category's spread. `CATEGORY_AVG` gains `range { lo, hi }` per period and the *vs category* turn draws it as a `Dumbbell` from lo to hi with the fund as the mark — one scale, direct-labelled |
+| **Returns & ranking** table — Fund · Category avg · **Rank** across 1Y/3Y/5Y/All | category average is in; **rank is not** — a rank needs the whole peer set and this book holds two funds per category. Said plainly on the turn rather than invented |
+| **3Y quant statistics** — Sharpe, Sortino, alpha, beta, standard deviation, tracking error, info ratio | not in the book. Legitimate factsheet content; a `QUANT[id]` fixture is possible on PERF's terms but is *not* in this build — an advisor reads these to a client rarely and a wrong one is unrecoverable |
+| **Portfolio → Insights: "3 funds overlap 40% — your top funds hold the same stocks"** | the reverse lookup this plan already has the data for: `overlapPct` across a **client's** funds. Belongs to the review (Journey F), as a sentence: *"14 of Meera's 43 funds share 60%+ of their top ten."* Added to the review's backlog, not built here |
+| **Idle cash** insight · **Goals planning** (on track / behind target · *Increase SIP by ₹8,400/mo*) | not the explorer's. Noted for the review and the proposal |
+| **"Choose your exposure"** — Equity 612 · Debt 448 · Hybrid 216 · Index/Passive 463 funds | the shelf's shape, as the refusal's *"remove that pill to search all 1,412 schemes"* already implies. A count per bucket on the shortlist's sentence |
+| **Smart collections** (*Long-term Wealth Builders · 3 funds*) | a saved shortlist with a name — Journey C's *Save this comparison* chip is the same idea; not built here |
 
 ## 6 · Build order, and what needs a yes
 

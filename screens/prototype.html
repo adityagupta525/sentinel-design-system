@@ -133,7 +133,7 @@ function affordances(s) {
     if (s.phase === 'done') { next.push('Read it back to the client', 'Back to his portfolio', 'Drop a note on the file'); return { next, back, where: 'Thread', journey: J, step: 'placed' }; }
   }
   if (s.journey === 'funds') {
-    if (s.fundPhase === 'fund') next.push('Compare it with another fund', 'Add it to a proposal — asks which client first', 'Attach it to a rebalance', 'Send it for review');
+    if (s.fundPhase === 'fund') next.push('Ask what it is holding — or type “by sector”, “top 10”, “overlap with…”', 'Compare it with another fund', 'Add it to a proposal — asks which client first', 'Attach it to a rebalance', 'Send it for review');
     else if (s.fundPhase === 'pick') next.push('Pick a fund, or search the shelf');
     else if (s.fundPhase === 'compare') next.push('Add a third — the cap is three', 'Drop one', 'Which suits a 54 Moderate?');
     else next.push('Open a fund — it arrives as a turn', 'Drop a filter');
@@ -186,6 +186,14 @@ function Proto({ onEvent }) {
      It is cleared by a NEW sentence, never by finishing a journey — an advisor who goes back to the
      rail is still working on the fund they came in with. */
   const [carried, setCarried] = React.useState(null);
+  /* THE HOLDINGS TURNS, in the order they were asked. A thread is its own tab history: each ask adds a
+     turn and scrolling back IS going back, so this is a list and not a mode. `otherId` is the second
+     fund an overlap was asked against; null until the picker answers. */
+  const [asks, setAsks] = React.useState([]);
+  const askHoldings = (kind, label) => {
+    setAsks((a) => [...a, { kind, otherId: null }]);
+    log(`“${label || kind}” — a holdings question, answered as its own turn`, reduced() ? 'fades in' : 'ds-rise · 240ms');
+  };
   const scroller = React.useRef(null);
   const card = React.useRef(null);
   const savedScroll = React.useRef(0);
@@ -197,6 +205,9 @@ function Proto({ onEvent }) {
 
   /* One entry point for every sentence in the product, typed or tapped. */
   const send = (text) => {
+    /* EVERY CHIP IS ALSO A SENTENCE. A fund is open and the words are a holdings question, so it is
+       answered as one — before the router, which would otherwise read "holdings" as a fund search. */
+    if (journey === 'funds' && fundId && holdAsk(text)) { setDraft(''); askHoldings(holdAsk(text), text); return; }
     const r = route(text);
     setAsk(text);
     /* THE WHO GATE, before anything opens. */
@@ -211,7 +222,7 @@ function Proto({ onEvent }) {
       setClient(named);
     }
     setJourney(r.id);
-    if (r.id === 'funds') { setFundPhase('list'); setFundId(null); setCompareIds([]); }
+    if (r.id === 'funds') { setFundPhase('list'); setFundId(null); setCompareIds([]); setAsks([]); }
     /* A sentence is a new question. The fund only rides along when a VERB carried it. */
     setCarried(null);
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
@@ -332,6 +343,17 @@ function Proto({ onEvent }) {
         {fundPhase === 'fund' && fundId && (
           <React.Fragment>
             <FundInfo id={fundId} onExplain={() => log('A figure explains itself', 'ds-sheet 300ms')} />
+            {/* THE FOUR ASKS are questions ABOUT the fund; the four verbs below DO something with it. Two
+                rows, so an advisor reads four to find either. Three of the asks are not built yet and
+                say so when tapped, rather than opening a turn that pretends. */}
+            <ChipRow animate>
+              {FUND_CHIPS.map((c) => (
+                <AnswerChip key={c} label={c} onClick={() => {
+                  if (holdAsk(c)) askHoldings(holdAsk(c), c);
+                  else log(`“${c}” — not built in this prototype yet (plan §2, steps 3, 5 and 6)`, '');
+                }} />
+              ))}
+            </ChipRow>
             <FundVerbs animate onVerb={(v) => {
               if (v.id === 'compare') {
                 setFundPhase('pick');
@@ -357,6 +379,11 @@ function Proto({ onEvent }) {
             }} />
           </React.Fragment>
         )}
+        {fundPhase === 'fund' && asks.map((a, i) => (
+          <HoldingsTurn key={i} kind={a.kind} id={fundId} otherId={a.otherId} onEvent={log}
+            onChip={(kind, label) => askHoldings(kind, label)}
+            onPick={(other) => { setAsks((list) => list.map((x, j) => (j === i ? { ...x, otherId: other } : x))); log(`Overlap against ${fundById(other).name}`, 'the picker becomes the answer, in place'); }} />
+        ))}
         {fundPhase === 'pick' && (
           <ComparePicker exclude={[fundId, ...compareIds]} onEvent={log}
             onPick={(id) => {

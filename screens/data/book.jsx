@@ -233,7 +233,11 @@ FUNDS.forEach((f) => {
   const key = CAT_KEY[f.category] || 'large'; const rnd = seeded('hold:' + f.id);
   const [w0, slope] = SHAPE[key];
   const pool = key === 'index' ? NAMES[key] : [...NAMES[key]].sort(() => rnd() - 0.5);
-  const top = pool.slice(0, 10).map(([name, sector], i) => ({ name, sector, pct: round1(w0 - slope * i + (rnd() - 0.5) * 0.6) }));
+  const top = pool.slice(0, 10).map(([name, sector], i) => {
+    const pct = round1(w0 - slope * i + (rnd() - 0.5) * 0.6);
+    /* Last month's weight drifts by fractions of a point, so H3's change column reads as a real month. */
+    return { name, sector, pct, prevPct: round1(pct - (rnd() - 0.5) * 0.9) };
+  });
   const isDebt = key === 'debt';
   const equity = isDebt ? 0 : key === 'hybrid' ? 70 : key === 'index' ? 99.4 : round1(84 + rnd() * 10);
   const debtCash = round1(100 - equity);

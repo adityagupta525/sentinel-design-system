@@ -47,7 +47,13 @@ await page.goto(`http://127.0.0.1:${PORT}/${rel}`, { waitUntil: 'networkidle' })
    screens/thread/going-back.html, phone 5 of 7. Resize to the document's own height (capped, so a runaway
    page cannot ask for a gigapixel), then let the layout settle before measuring anything. */
 const docH = await page.evaluate(() => Math.ceil(document.documentElement.scrollHeight));
-if (docH > 2600) { await page.setViewportSize({ width: 1400, height: Math.min(docH + 40, 12000) }); await page.waitForTimeout(400); }
+/* THE CAP WAS 12000 AND A PAGE OUTGREW IT (20 Sep 2026). journey-c/funds is 13,293 tall with the
+   holdings section on it, so the last three phones sat below the viewport and Chrome returned a
+   328px sliver instead of an 812pt phone — a shot that LOOKS like a cropped screen rather than a
+   failure, which is the worst kind. 16000 is under Chrome's own texture limit; past that the shot
+   is refused loudly instead of returning a sliver. */
+if (docH + 40 > 16000) { console.error(`phone-shot: page is ${docH}px, past the 16000 viewport limit — split the page or shoot a smaller node`); process.exit(2); }
+if (docH > 2600) { await page.setViewportSize({ width: 1400, height: docH + 40 }); await page.waitForTimeout(400); }
 
 /* WAIT FOR THE PHONE, DO NOT SLEEP AT IT. A fixed 500ms was a race: these pages compile JSX in the
    browser with Babel from a CDN, and a slow fetch meant zero frames and a confusing "no phone frame"

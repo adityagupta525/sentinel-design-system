@@ -1502,3 +1502,33 @@ hand-written rows had) changed a value's width, wrapped a row and moved the reba
 scroll — **262,499 px of diff from one property that `space-between` already did.** Removing it left
 2,588 px at max 55: a single text run shaping differently from the three adjacent text nodes
 `{inr(x)} · {pct}%` used to produce. That one is the string being more correct, not less.
+
+### F-59 · The holdings view — five turns, and three things the render corrected — *20 Sep 2026*
+
+H1–H5 of `docs/FUND-EXPLORER-V2-PLAN.md` §3, built on the `HOLDINGS` fixture. The references stack five
+devices on one Holdings tab; in a 375-wide thread that is five answers, so it is five turns.
+**Every chip is also a sentence** — `holdAsk()` maps typed words to the same turns, and typing
+*"by sector"* opens exactly what the chip opens. Driven on `screens/prototype.html`: all five answered,
+two of them from typed sentences, five signatures in the thread, no page errors.
+
+**Three things the plan specified and the render corrected.**
+
+1. **H1 is a `ChartBar`, not an `AllocationCard`** — and the system decided that, not the plan.
+   `AllocationCard`'s three hues are *asset classes*; large, mid and small are all equity, and three
+   hues for three sizes of the same thing is **colour encoding identity (rule 1)**. `ChartBar`'s own
+   contract is the answer: one colour, rank by length, every value direct-labelled.
+2. **H3 folds, it does not scroll.** `overflow="scroll"` lays the columns out at max-content, and the
+   **Change** column — the only reason that turn exists — sat off the right edge: measured twice,
+   first with four columns, then with three. Two columns beside the sticky one is inside `DataTable`'s
+   own three-column rule, so folding fits them exactly. Sector was dropped because sector is H2.
+3. **`vs last month` did not fit as a header** at any column width tried; it is `Change`, and the
+   sentence above the table says what the month is.
+
+**A tool limit, found by hitting it.** `tools/phone-shot.mjs` capped its viewport at 12,000px.
+`journey-c/funds.html` is **13,293** tall with this section on it, so the last three phones sat below
+the viewport and Chrome returned a **328px sliver instead of an 812pt phone** — a shot that looks like
+a cropped screen rather than a failure, which is the worst kind. The cap is now Chrome's own texture
+limit, and past it the tool **exits 2 with a message** instead of returning a sliver.
+
+**And a fourth repeat of my own mistake:** a `{/* … */}` comment in a JSX *attribute* list is a parse
+error, and this is the third time in this repository. It is recorded in the file above the function now.

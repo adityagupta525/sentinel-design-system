@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','CompareTable','Dumbbell','List','ClientChip','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','CompareTable','Dumbbell','List','ClientChip','ChartBar','FigureRow','Surface','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
@@ -288,11 +288,41 @@ mountScreen(
       </StateRow>
     </Section>
 
-    <Section title="6 · Motion, and what each one does under reduced motion">
+    <Section title="6 · Holdings — one question per turn" sub="The references stack five devices on one Holdings tab: a toggle, a size bar, a sector list with month pills, a top-ten list, a concentration table. In a 375-wide thread that is five answers, so it is five turns, and the advisor asks for each one. Every chip is also a sentence — typing “by sector” opens the same turn the chip does.">
+      <StateRow>
+        <State label="H1 · the shape" note="The cap split is a ChartBar, not an AllocationCard — and the system decided that, not the plan. AllocationCard's three hues are asset classes; large, mid and small are all equity, and three hues for three sizes of the same thing is colour encoding identity (rule 1). One colour, rank by length, every value labelled. The sentence names where the weight sits and the one sector that dominates.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><HoldingsShape id="ppfas-flexi" /></Scene>
+        </State>
+        <State label="H2 · by sector, over three months" note="RangePills count matches the data — three months, three pills (F-46). Six bars, one hue. The sentence is the move that matters: the biggest sector's three-month change in points, and whichever sector moved most.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><HoldingsSectors id="ppfas-flexi" /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="H3 · the top ten, and what moved" note="DataTable with the sticky name column; `bar` draws the weight behind the figure in one hue. The tail is ONE row — “93 more, none above 1%” — the rule the review applies to Meera's twenty-nine tiny funds. A 103-row list is a list that hides the finding.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><HoldingsTop id="ppfas-flexi" /></Scene>
+        </State>
+        <State label="H4 · how concentrated" note="Four FigureRows, each with its quiet half. No ceiling of the product's applies INSIDE a fund — the 25% caps are written against a client's book — so the turn states the numbers and claims nothing about them.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><HoldingsConcentration id="ppfas-flexi" /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="H5 · overlap — the em dashes become numbers" note="OverlapView was built for this question in v9 and has rendered “—” ever since, because nothing here knew what any fund held. The number is computed from the names two top tens actually share, and the sentence names them. Two flexi caps under different houses: about half.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><HoldingsOverlap id="ppfas-flexi" otherId="hdfc-flexi" /></Scene>
+        </State>
+        <State label="H5 · asked without a second fund" note="Overlap needs two. Without the second it asks — with the same List.search picker Compare uses, so an advisor meets one way of picking a fund, not two.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><HoldingsOverlap id="ppfas-flexi" /></Scene>
+        </State>
+        <State label="a debt fund, no equity to split" tone="under" note="The shape turn does not draw a cap bar it has no data for. It says what the fund is — debt instruments, all of it debt and cash — and the sector chip still works, because a bond fund has issuers by sector.">
+          <Scene anchor={3}><FundInfo id="icici-corp" /><HoldingsShape id="icici-corp" /></Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="7 · Motion, and what each one does under reduced motion">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="7 · Provenance">
+    <Section title="8 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>

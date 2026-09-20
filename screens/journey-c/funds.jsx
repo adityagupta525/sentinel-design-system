@@ -65,6 +65,165 @@ const fundRows = (funds) => funds.map((f) => ({
    THE PERIOD IS NAMED IN WORDS under the figure. "27.6%" over three years means a CAGR, and an advisor
    reading it to a client as "it made 27.6% last year" has been misled by a layout. SEBI's own
    presentation rule; `perfNote` writes it. */
+/* ── THE HOLDINGS, ONE QUESTION PER TURN (H1–H5, docs/FUND-EXPLORER-V2-PLAN.md §3) ────────────────
+   The references stack five devices on one Holdings tab. In a 375-wide thread that is five answers,
+   so it is five turns, each asked for. Every turn is a SentinelTurn: a sentence BUILT from the data,
+   the one device that answers the question, the book's provenance line, and chips for the next
+   questions. Every chip is also a sentence — `holdAsk()` maps typed words to the same turns.
+
+   THE CAP SPLIT IS A ChartBar, NOT AN AllocationCard. The plan said AllocationCard; the system said
+   otherwise. AllocationCard's three hues are ASSET CLASSES (equity · debt · cash) and large, mid and
+   small are all equity — three hues for three sizes of the same thing is colour encoding identity
+   (rule 1). ChartBar's own contract is the answer: one colour, rank carried by length, every value
+   direct-labelled. The same device answers H2, which is fine: two questions, two turns. */
+const HOLD_CHIPS = ['By sector', 'Top 10 stocks', 'How concentrated?', 'Overlap with…'];
+const HOLD_KINDS = { 'By sector': 'sectors', 'Top 10 stocks': 'top', 'How concentrated?': 'concentration', 'Overlap with…': 'overlap' };
+/* Typed words → the same turns the chips open. Null means "not a holdings question" and the caller
+   routes it as usual — a search that quietly ignores half of what you typed is worse than one that
+   says it did not follow. */
+const holdAsk = (text) => {
+  const t = (text || '').toLowerCase();
+  if (/\b(what is it holding|holdings?|what does it hold|inside it)\b/.test(t)) return 'shape';
+  if (/\bsectors?\b/.test(t)) return 'sectors';
+  if (/\btop\s*(10|ten)\b|\bstocks?\b/.test(t)) return 'top';
+  if (/\bconcentrat/.test(t)) return 'concentration';
+  if (/\boverlap\b/.test(t)) return 'overlap';
+  return null;
+};
+const pctOf = (v) => `${v}%`;
+const holdChips = (onChip, except) => (
+  <FUNDS_DS.ChipRow>
+    {HOLD_CHIPS.filter((c) => HOLD_KINDS[c] !== except).map((c) => <FUNDS_DS.AnswerChip key={c} label={c} onClick={() => onChip && onChip(HOLD_KINDS[c], c)} />)}
+  </FUNDS_DS.ChipRow>
+);
+
+/* H1 · THE SHAPE. Where the weight sits, and the one sector that dominates. */
+function HoldingsShape({ id, onChip }) {
+  const f = fundById(id); const h = holdingsOf(id); if (!f || !h) return null;
+  const bars = [...h.caps.map((c) => ({ label: c.label, value: c.pct })), { label: 'Debt & cash', value: h.split.debtCash }].filter((b) => b.value > 0);
+  const big = h.sectors[h.asOf][0];
+  const lead = h.caps.length
+    ? `${f.name} is ${h.caps[0].pct}% ${h.caps[0].label.toLowerCase()}${h.caps[1] ? `, ${h.caps[1].pct}% ${h.caps[1].label.toLowerCase()}` : ''}${h.caps[2] ? ` and ${h.caps[2].pct}% ${h.caps[2].label.toLowerCase()}` : ''}, with ${h.split.debtCash}% in debt and cash.`
+    : `${f.name} holds no equity — ${h.count} debt instruments, ${h.split.debtCash}% of it in debt and cash.`;
+  const sector = `${big.name} is the biggest sector at ${big.pct}%${big.pct >= 30 ? ' — one sector is more than a third of the fund' : ''}.`;
+  return (
+    <FUNDS_DS.SentinelTurn say={[lead, sector]}
+      body={<FUNDS_DS.ChartBar bars={bars} orientation="horizontal" valueFormat={pctOf} run={false} />}
+      provenance={holdingsProvenance()} chips={holdChips(onChip)} />
+  );
+}
+
+/* H2 · BY SECTOR, over three months. RangePills' count MATCHES the data (F-46). The sentence names the
+   biggest sector's move across the window, in points. */
+function HoldingsSectors({ id, onChip }) {
+  const h = holdingsOf(id); const [month, setMonth] = React.useState(h ? h.asOf : null);
+  if (!h) return null;
+  const rows = h.sectors[month] || [];
+  const newest = h.sectors[HOLD_MONTHS[0]], oldest = h.sectors[HOLD_MONTHS[HOLD_MONTHS.length - 1]];
+  const at = (list, name) => (list.find((x) => x.name === name) || {}).pct;
+  const top = newest[0]; const topThen = at(oldest, top.name);
+  const mover = newest.map((x) => ({ name: x.name, d: +(x.pct - (at(oldest, x.name) || x.pct)).toFixed(1) })).sort((a, b) => Math.abs(b.d) - Math.abs(a.d))[0];
+  const say = [`${top.name} went ${topThen} → ${top.pct} over three months${mover && mover.name !== top.name ? `; ${mover.name} moved most, ${mover.d > 0 ? 'up' : 'down'} ${Math.abs(mover.d)} points` : ''}.`];
+  return (
+    <FUNDS_DS.SentinelTurn say={say}
+      body={
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+          <FUNDS_DS.RangePills ranges={HOLD_MONTHS} value={month} onChange={setMonth} label="Month" />
+          <FUNDS_DS.ChartBar bars={rows.slice(0, 6).map((x) => ({ label: x.name, value: x.pct }))} orientation="horizontal" valueFormat={pctOf} run={false} />
+        </div>
+      }
+      provenance={holdingsProvenance()} chips={holdChips(onChip, 'sectors')} />
+  );
+}
+
+/* H3 · THE TOP TEN, with the change since last month. `bar` draws the weight behind the figure —
+   one hue, magnitude only. The tail is ONE row, not ninety-three: the same rule the review applies to
+   Meera's twenty-nine tiny funds. */
+/* THREE COLUMNS, NOT FOUR — the render decided it. With a Sector column the table scrolled sideways
+   and "vs last month" sat off the right edge of the phone, which is the one column this turn exists
+   for. Sector is H2's question and is answered there; the name is enough here. */
+const TOP_COLUMNS = [
+  { key: 'name', label: 'Holding', kind: 'text', sticky: true, width: 124 },
+  { key: 'pct', label: 'Weight', kind: 'bar' },
+  /* "vs last month" wrapped to two lines and still lost its last character at 375 — measured. The
+     header is the short word and the sentence above the table says what the month is. */
+  { key: 'chg', label: 'Change', kind: 'number' },
+];
+/* `fold`, NOT `scroll` — and the render decided it. `overflow="scroll"` lays the columns out at
+   max-content and the Change column, which is the only reason this turn exists, sat off the right edge
+   of the phone. Two columns beside the sticky one is under DataTable's own three-column rule, so
+   folding fits them exactly. `maxRows` is ten, because ten IS the answer.
+   A JSX comment cannot sit in an attribute list — third time; it goes above the function. */
+function HoldingsTop({ id, onChip }) {
+  const h = holdingsOf(id); if (!h) return null;
+  const rows = h.top.map((x) => {
+    const d = +(x.pct - x.prevPct).toFixed(1);
+    return { id: x.name, name: x.name, pct: `${x.pct}%`, pctValue: x.pct, chg: d === 0 ? '—' : `${d > 0 ? '+' : ''}${d.toFixed(1)}` };
+  });
+  const rest = h.count - h.top.length;
+  return (
+    <FUNDS_DS.SentinelTurn say={`The top five are ${h.concentration.top5CompaniesPct}% of the fund. ${h.top[0].name} alone is ${h.top[0].pct}%. Change is against last month.`}
+      body={<FUNDS_DS.DataTable columns={TOP_COLUMNS} rows={rows} maxRows={10} emptyState={{ title: 'No holdings on file for this fund.' }} />}
+      then={rest > 0 ? `${rest} more holdings, none above ${Math.max(0.5, +(h.top[9].pct * 0.8).toFixed(1))}%.` : undefined}
+      provenance={holdingsProvenance()} chips={holdChips(onChip, 'top')} />
+  );
+}
+
+/* H4 · HOW CONCENTRATED. Four figures on one baseline each. No ceiling of the product's applies INSIDE
+   a fund — the 25% caps are written against a client's book — so the sentence states the numbers and
+   claims nothing about them. */
+function HoldingsConcentration({ id, onChip }) {
+  const h = holdingsOf(id); if (!h) return null;
+  const c = h.concentration;
+  return (
+    <FUNDS_DS.SentinelTurn say={`${h.count} holdings across ${c.sectorsCount} sectors. The top five companies are ${c.top5CompaniesPct}% of the fund, the top five sectors ${c.top5SectorsPct}%.`}
+      body={
+        <FUNDS_DS.Surface>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+            <FUNDS_DS.FigureRow label="Holdings" value={String(h.count)} sub={{ label: 'Largest', value: `${c.largestCompany.name} · ${c.largestCompany.pct}%` }} />
+            <FUNDS_DS.FigureRow label="Top 5 companies" value={`${c.top5CompaniesPct}%`} />
+            <FUNDS_DS.FigureRow label="Sectors" value={String(c.sectorsCount)} sub={{ label: 'Largest', value: `${c.largestSector.name} · ${c.largestSector.pct}%` }} />
+            <FUNDS_DS.FigureRow label="Top 5 sectors" value={`${c.top5SectorsPct}%`} />
+          </div>
+        </FUNDS_DS.Surface>
+      }
+      provenance={holdingsProvenance()} chips={holdChips(onChip, 'concentration')} />
+  );
+}
+
+/* H5 · OVERLAP — the em dashes become numbers. `OverlapView` was built for this question in v9 and has
+   rendered "—" ever since, because nothing here knew what any fund held. `overlapPct` is computed from
+   the names two top tens actually share. Without a second fund it asks for one, the same way Compare
+   does: the picker is `List.search`, one mechanism for picking a thing. */
+function HoldingsOverlap({ id, otherId, onPick, onChip, onEvent }) {
+  const f = fundById(id); if (!f) return null;
+  if (!otherId) return <ComparePicker exclude={[id]} onPick={onPick} onEvent={onEvent} lead="Overlap with which fund?" />;
+  const g = fundById(otherId); const pct = overlapPct(id, otherId);
+  const shared = pct == null ? [] : holdingsOf(id).top.filter((x) => holdingsOf(otherId).top.some((y) => y.name === x.name));
+  const say = pct == null ? `I do not have holdings on file for both, so I cannot say how much they overlap.`
+    : pct === 0 ? `${f.name} and ${g.name} share none of their top ten — they hold different things.`
+    : `${pct}% of their top tens are the same ${shared.length} ${shared.length === 1 ? 'stock' : 'stocks'} — ${shared.slice(0, 3).map((x) => x.name).join(', ')}${shared.length > 3 ? ' and more' : ''}.`;
+  return (
+    <FUNDS_DS.SentinelTurn say={say}
+      body={<FUNDS_DS.OverlapView mode="pairs"
+        funds={[{ id, name: f.name, inComparison: true }, { id: otherId, name: g.name, inComparison: true }]}
+        properties={[{ id: 'top10', label: 'top 10 holdings', active: true }]}
+        cells={[{ a: id, b: otherId, pct }]}
+        footnote={pct == null ? undefined : `Share of the smaller top ten held in common · ${holdingsProvenance()}`} />}
+      chips={holdChips(onChip, 'overlap')} />
+  );
+}
+
+/* One door for the five: the prototype and the page render whichever kind was asked for. */
+function HoldingsTurn({ kind, id, otherId, onPick, onChip, onEvent }) {
+  if (kind === 'shape') return <HoldingsShape id={id} onChip={onChip} />;
+  if (kind === 'sectors') return <HoldingsSectors id={id} onChip={onChip} />;
+  if (kind === 'top') return <HoldingsTop id={id} onChip={onChip} />;
+  if (kind === 'concentration') return <HoldingsConcentration id={id} onChip={onChip} />;
+  if (kind === 'overlap') return <HoldingsOverlap id={id} otherId={otherId} onPick={onPick} onChip={onChip} onEvent={onEvent} />;
+  return null;
+}
+
 /* ── THE FOUR VERBS ─────────────────────────────────────────────────────────────────────────────────
    The owner, 19 Sep: a fund card must let an advisor "compare kar paaye / rebalance me attach kar paaye
    / review ke liye bhej paaye / proposal me add kar paaye". Three of the four are HAND-OFFS to journeys
@@ -186,10 +345,10 @@ const FundVerbs = ({ onVerb, animate = false }) => (
    picked a client from a searchable list once should not meet a second, different way of picking a
    thing three screens later. It is `List.search` in both places now, so they cannot drift.
    The shelf is the pool, and a fund already in the comparison is not offered again. */
-function ComparePicker({ exclude = [], funds = FUND_LIST, onPick, onEvent }) {
+function ComparePicker({ exclude = [], funds = FUND_LIST, onPick, onEvent, lead: leadProp }) {
   const [q, setQ] = React.useState('');
   const pool = funds.filter((f) => !exclude.includes(f.id));
-  const lead = exclude.length > 1 ? 'Add which third fund?' : 'Compare it with which fund?';
+  const lead = leadProp || (exclude.length > 1 ? 'Add which third fund?' : 'Compare it with which fund?');
   return (
     <FUNDS_DS.SentinelTurn say={lead}
       body={
@@ -480,4 +639,4 @@ function FundInfo({ id, period, onPeriod, onExplain, heldBy = false, defaultPeri
   );
 }
 
-Object.assign(window, { FundInfo, FUND_CHIPS, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
+Object.assign(window, { FundInfo, FUND_CHIPS, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
