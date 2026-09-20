@@ -14,8 +14,16 @@ export interface DumbbellProps {
   min?: number;
   /** The high end. Default 100. */
   max?: number;
-  /** Sits BESIDE its value, never instead of it (F-46). */
+  /** Sits BESIDE its value, never instead of it (F-46). Pass the NAME only — the component prints
+   *  the number, so `actualLabel="This fund"` renders "This fund 23.1%" and `"This fund 23.1%"`
+   *  renders it twice. */
   targetLabel?: string;
   actualLabel?: string;
+  /** What the pair means. `'move'` (default) is what this component was built for — from what is to
+   *  what was agreed — and prints the target with a leading arrow. `'against'` is the comparison case
+   *  the `target` doc above already allows, where the hollow dot is a benchmark or a category average:
+   *  two measurements of different things, with nothing travelling between them. It drops the arrow
+   *  and changes nothing else. */
+  relation?: 'move' | 'against';
 }
 export function Dumbbell(props: DumbbellProps): JSX.Element;

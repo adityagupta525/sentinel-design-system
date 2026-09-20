@@ -49,10 +49,10 @@ means in a chat, and it is what makes the composer the one control that never fa
 | **0 · entry** | types *"flexi cap under 0.7% on my shelf"* or taps the starter | reads the sentence back as **removable chips** (`Flexi cap ✕ · TER < 0.7% ✕ · On your shelf ✕`), counts the matches, and says the one thing worth saying: *"Four clear it. Two clear it comfortably."* | chips ✓ · **numeric filters new** · the sentence new |
 | **1 · shortlist** ✓ | reads the table; says *"sort by cost"*, *"only direct"*, *"drop the shelf"*, *"add Motilal"* | the `DataTable` re-sorts or re-filters **as a new turn** that says what changed; a fund added by name joins the list | table ✓ · refine parser ✓ (add/drop/shelf) · **sort · numeric · add-by-name BUILT 20 Sep** |
 | **2 · the fund** | taps a name, or types it | `InfoCard`: ₹10,000 → what it became, the two-line chart, the range row, riskometer · TER · size · exit load · who holds it. Under it two rows of chips: **the four asks** and **the four verbs** | ✓ |
-| **3 · vs category** | *"How has it done against its category?"* | three `Dumbbell`s on one scale — category average · this fund · benchmark — for the chosen period, and the sentence: *"Ahead of its category by 2.1 points and its benchmark by 6.3."* | `Dumbbell` ✓ · **needs `CATEGORY_AVG`** |
+| **3 · vs category** | *"How has it done against its category?"* | three `Dumbbell`s on one scale — category average · this fund · benchmark — for the chosen period, and the sentence: *"Ahead of its category by 2.1 points and its benchmark by 6.3."* | **BUILT 20 Sep** · two `Dumbbell`s on one domain, not three |
 | **4 · holdings** | *"What is it holding?"* | **the shape first, one turn**: `AllocationCard` by cap (large · mid · small · debt & cash) with its sentence — *"Two-thirds large cap. 31.6% is financials — one sector is a third of the fund."* — then chips for the next questions (§3) | `AllocationCard` ✓ · **needs `HOLDINGS`** |
 | **5 · what changed** | *"What changed recently?"* | a `SentinelTurn` of sentences, tone in the words: *"Size rose ₹1,900 cr in May."* · *"May's return was 0.6 points under its benchmark; April's was 1.8 over."* · *"HCL and TCS carried the month; HDFC Bank cost it 10.6%."* · manager change if any | `SentinelTurn` ✓ · **needs `MONTHLY`** |
-| **6 · who holds it** | *"Who of my clients hold it?"* | a `List` of the clients, each with **% of their own book** and whether it sits over a ceiling for them | `holdersOf` ✓ · `List` ✓ · the % new |
+| **6 · who holds it** | *"Who of my clients hold it?"* | a `List` of the clients, each with **% of their own book** and whether it sits over a ceiling for them | **BUILT 20 Sep** · `List`, positions first, SIPs named as SIPs |
 | **7 · verbs** | Compare · Add to a proposal · Attach to a rebalance · Send for review | as built 20 Sep — Compare is two blocks with one signature; the three hand-offs carry the fund into D, E, F | ✓ |
 | **8 · period** | *"show 3Y"*, taps `1Y · 3Y · 5Y` | the card's figure, chart and Dumbbells re-read for that period; the sentence says what changed | pills ✓ · **the command BUILT 20 Sep** |
 
@@ -79,6 +79,26 @@ it did not follow.
 - **An ambiguous fund name binds nobody.** *"add HDFC"* matches three, so it names all three and asks —
   `namedClient`'s ruling from F-60, applied to the shelf.
 - **A fund added by name stays** whatever the filters say. The advisor asked for that fund.
+
+
+### What building steps 3, 5 and 6 settled · **20 Sep 2026**
+
+- **Three marks on one scale is two Dumbbells, not three.** A `Dumbbell` is a PAIR — a hollow dot for
+  what a thing is measured against, a filled one for what it is. Two rows share one domain, the fund's
+  dot sits in both, and the two gaps are comparable because the track underneath is the same. The
+  component also gained `relation='against'`: an arrow is a claim about direction, and nothing travels
+  from a fund to its category.
+- **The benchmark could not be read at one year, and the series said so.** Deriving it from the same
+  five-year curve returned **42.6% for Nifty 500 TRI over twelve months**, because only the curve's
+  endpoint was ever constrained. The benchmark's shorter periods are now a table, one row per index,
+  the shape `CATEGORY_AVG` already had. Five years is still derived, so the number under the chart and
+  the line in it cannot disagree.
+- **Two funds on the same index now draw the same index.** Parag Parikh and HDFC Flexi Cap both quote
+  Nifty 500 TRI and had two different benchmark paths with a shared endpoint. The first fund naming a
+  benchmark owns its series and every other fund reads it.
+- **"Who holds it" has an honest half nobody asks for.** A client with a SIP running in and no
+  position yet is not a holder, and the count on the fund card folded the two together. The rows
+  separate them, positions lead, and each weight is read against that client's own book.
 
 ---
 

@@ -17,7 +17,15 @@ import React from 'react';
    same safeguard — every figure is direct-labelled here (F-46), so the picture never carries a number
    on its own and a reader can see what the ends are. A caller that passes `min` is saying the zero is
    not meaningful for this quantity; a caller that does not gets the zero. */
-export function Dumbbell({ label, target, actual, min = 0, max = 100, targetLabel, actualLabel }) {
+/* `relation` — AN ARROW IS A CLAIM ABOUT DIRECTION (20 Sep 2026). The target label has always rendered
+   as `→ 60%`, which is right for the thing this component was built for: a move from what is to what
+   was agreed. The contract's own words offer the other case — "the hollow dot: what was agreed, **or
+   the benchmark**" — and there the arrow is false. A fund at 23.1% and its category at 19.2% are two
+   measurements of different things; nothing travels from one to the other, and an advisor reading
+   "This fund → Category" is being told a story the numbers do not contain. `'against'` drops the
+   arrow and nothing else. Default `'move'`, so every caller written before this draws what it drew. */
+export function Dumbbell({ label, target, actual, min = 0, max = 100, targetLabel, actualLabel, relation = 'move' }) {
+  const arrow = relation === 'against' ? '' : '→ ';
   const lo = Math.min(target, actual), hi = Math.max(target, actual);
   const span = max - min || 1;
   /* A POSITION AND A LENGTH ARE NOT THE SAME CONVERSION once the scale has a baseline: `pct` places a
@@ -37,7 +45,7 @@ export function Dumbbell({ label, target, actual, min = 0, max = 100, targetLabe
       </div>
       <div style={{ marginTop: 'var(--space-5)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', color: 'var(--color-muted)', fontVariantNumeric: 'tabular-nums' }}>{actualLabel ? `${actualLabel} ${actual}%` : `${actual}% now`}</span>
-        <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-12)', color: 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>{targetLabel ? `→ ${targetLabel} ${target}%` : `→ ${target}%`}</span>
+        <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-12)', color: 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>{targetLabel ? `${arrow}${targetLabel} ${target}%` : `${arrow}${target}%`}</span>
       </div>
     </div>
   );

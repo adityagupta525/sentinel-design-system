@@ -83,6 +83,15 @@ const HOLD_KINDS = { 'By sector': 'sectors', 'Top 10 stocks': 'top', 'How concen
    says it did not follow. */
 const holdAsk = (text) => {
   const t = (text || '').toLowerCase();
+  /* THE THREE ASKS THAT ARE NOT HOLDINGS go through the same door, because an advisor typing
+     "against its category" and an advisor tapping the chip asked the same question and one product
+     cannot have two answers to that. Ordered before the holdings patterns: "who holds it" contains
+     "hold". */
+  /* `/\bcategor\b/` matched nothing: the word boundary after "categor" sits before "y", which is a
+     word character. Found by driving it, not by reading it. */
+  if (/\bcategor|\bpeers?\b|\bpeer group\b/.test(t)) return 'category';
+  if (/\bwho\b.*\b(hold|own)|\b(my |which )clients?\b/.test(t)) return 'holders';
+  if (/\bwhat changed\b|\bchanged recently\b|\brecent changes?\b|\bmonthly changes?\b/.test(t)) return 'changed';
   if (/\b(what is it holding|holdings?|what does it hold|inside it)\b/.test(t)) return 'shape';
   if (/\bsectors?\b/.test(t)) return 'sectors';
   if (/\btop\s*(10|ten)\b|\bstocks?\b/.test(t)) return 'top';
@@ -215,7 +224,182 @@ function HoldingsOverlap({ id, otherId, onPick, onChip, onEvent }) {
 }
 
 /* One door for the five: the prototype and the page render whichever kind was asked for. */
+/* ── THE THREE ASKS THAT ARE NOT HOLDINGS ─────────────────────────────────────────────────────────
+   `FUND_CHIPS` offers four questions under a fund card. "What is it holding?" has been five turns
+   since this morning; the other three said "not built yet" when tapped. They are built here, on the
+   same terms: one question per turn, every figure direct-labelled, the sentence carrying the finding
+   and the device carrying the evidence. */
+
+/* The four asks as KINDS, so a chip and a typed sentence reach the same turn through one map. The
+   holdings ask is the one that fans out into five turns of its own; the other three are one each. */
+const ASK_KINDS = { 'How has it done against its category?': 'category', 'What is it holding?': 'shape',
+  'What changed recently?': 'changed', 'Who of my clients hold it?': 'holders' };
+const askChips = (onChip, except) => (
+  <FUNDS_DS.ChipRow>
+    {FUND_CHIPS.filter((c) => ASK_KINDS[c] !== except).map((c) => (
+      <FUNDS_DS.AnswerChip key={c} label={c} onClick={() => onChip && onChip(ASK_KINDS[c], c)} />
+    ))}
+  </FUNDS_DS.ChipRow>
+);
+
+const PERIOD_PHRASE = { r1: 'Over the last twelve months', r3: 'Over three years', r5: 'Over five years' };
+const pts = (v) => `${Math.abs(v).toFixed(1)} point${Math.abs(v).toFixed(1) === '1.0' ? '' : 's'}`;
+const aheadOf = (v) => (v >= 0 ? 'ahead of' : 'behind');
+
+/* A3 · AGAINST ITS CATEGORY — three marks on one scale.
+   The plan said "three Dumbbells". The COMPONENT said two, and the component was right: a Dumbbell is
+   a pair — a hollow dot for what a thing is measured against, a filled one for what it is. So this is
+   two rows sharing ONE domain, the fund's dot in both, and the two gaps are directly comparable
+   because the track underneath them is the same. A bespoke three-dot device would be a new component,
+   and nothing is hand-built on a screen.
+
+   The domain comes from `niceDomain` over the three values, not from zero: at 5Y the fund is 23.1 and
+   its benchmark 16.8, and on a 0–100 track that difference is four pixels. Every figure is
+   direct-labelled, which is the safeguard the contract asks for in exchange. */
+function CategoryTurn({ id, onChip, defaultPeriod = 'r5' }) {
+  const f = fundById(id); const p = perfOf(id); const cat = categoryAvgOf(id);
+  const [key, setKey] = React.useState(defaultPeriod);
+  if (!f || !p || !cat) return null;
+  const fund = p[key], avg = cat[key], bench = benchReturnAt(id, key);
+  const marks = [fund, avg, bench].filter((v) => v != null);
+  const dom = FUNDS_DS.niceDomain(Math.min(...marks), Math.max(...marks), 4);
+  const gapCat = +(fund - avg).toFixed(1);
+  const gapBench = bench == null ? null : +(fund - bench).toFixed(1);
+  const say = [
+    `${PERIOD_PHRASE[key]} ${f.name} returned ${fund}%${key === 'r1' ? '' : ' a year'}.`,
+    gapBench == null
+      ? `That is ${pts(gapCat)} ${aheadOf(gapCat)} its category.`
+      : `That is ${pts(gapCat)} ${aheadOf(gapCat)} its category and ${pts(gapBench)} ${aheadOf(gapBench)} ${p.benchmark}.`,
+  ];
+  /* THE ONE SENTENCE THAT IS NOT ARITHMETIC. A three-year record is one person's work only if one
+     person did it, and `MANAGERS` knows when they started — so a fund that changed hands inside the
+     window says so, rather than letting the advisor read the number as the manager's. */
+  const m = MANAGERS[id];
+  const yrs = { r1: 1, r3: 3, r5: 5 }[key];
+  const YRS_WORD = { r1: 'one', r3: 'three', r5: 'five' };
+  if (m && m.years != null && m.years < yrs) say.push(`${m.name} has run it for ${m.years} years, so this ${YRS_WORD[key]}-year number is not one person's work.`);
+  return (
+    <FUNDS_DS.SentinelTurn say={say}
+      body={
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+          <FUNDS_DS.RangePills ranges={PERF_PERIODS.map((x) => x.label)} value={PERIOD_LABEL[key]}
+            onChange={(lbl) => setKey((PERF_PERIODS.find((x) => x.label === lbl) || {}).key || key)} label="Period" />
+          {/* The label is the NAME only: Dumbbell prints the number itself, so "This fund 23.1%" as a
+              label rendered "This fund 23.1% 23.1%". `relation='against'` drops the arrow — nothing
+              travels from this fund to its category, and the component learned that before the
+              screen used it. */}
+          <FUNDS_DS.Dumbbell label="Against its category" relation="against" min={dom[0]} max={dom[1]}
+            target={avg} actual={fund} targetLabel="Category" actualLabel="This fund" />
+          {bench != null && (
+            <FUNDS_DS.Dumbbell label={`Against ${p.benchmark}`} relation="against" min={dom[0]} max={dom[1]}
+              target={bench} actual={fund} targetLabel="The index" actualLabel="This fund" />
+          )}
+        </div>
+      }
+      provenance={`${perfProvenance(PERIOD_LABEL[key])} · ${benchProvenance(key)}`}
+      chips={askChips(onChip, 'category')} />
+  );
+}
+
+/* A5 · WHAT CHANGED — the reference set's weakest execution of its strongest idea.
+   Every app in the study renders this as green and red pills. Rule 2 says bad news is text on the
+   peach bubble and never a fill, and a pill that encodes its verdict in its colour also has to be
+   read twice — once for the colour, once for the number. Sentences say it once. The FigureRows under
+   them carry the three months' returns with the benchmark's in the quiet half, so nothing in the
+   words has to be taken on trust. */
+function ChangedTurn({ id, onChip }) {
+  const f = fundById(id); const rows = monthlyOf(id);
+  if (!f || !rows || !rows.length) return null;
+  const now = rows[0], prev = rows[1];
+  const gap = +(now.fundReturn - now.benchReturn).toFixed(1);
+  const prevGap = prev ? +(prev.fundReturn - prev.benchReturn).toFixed(1) : null;
+  const up = now.gainers[0], down = now.losers[0];
+  const say = [
+    `Size ${now.aumChangeCr >= 0 ? 'rose' : 'fell'} ${inr(Math.abs(now.aumChangeCr))} cr in ${now.month}.`,
+    prevGap == null
+      ? `${now.month}'s return was ${pts(gap)} ${gap >= 0 ? 'over' : 'under'} its benchmark.`
+      : `${now.month}'s return was ${pts(gap)} ${gap >= 0 ? 'over' : 'under'} its benchmark; ${prev.month}'s was ${pts(prevGap)} ${prevGap >= 0 ? 'over' : 'under'}.`,
+    /* `down.pct` is already negative, so "cost it ${down.pct}%" printed "cost it -3%" — the minus and
+       the word "cost" saying the same thing twice, and the second one wrongly. The direction is in the
+       verb; the figure is a magnitude. */
+    `${up.name} carried the month at +${up.pct.toFixed(1)}%; ${down.name} cost it ${Math.abs(down.pct).toFixed(1)}%.`,
+  ];
+  const m = MANAGERS[id];
+  if (m && m.years != null && m.years < 3) say.push(`${m.name} took it over in ${m.since}.`);
+  return (
+    <FUNDS_DS.SentinelTurn say={say}
+      body={
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+          {rows.map((r) => (
+            <FUNDS_DS.FigureRow key={r.month} label={r.month} value={`${r.fundReturn >= 0 ? '+' : ''}${r.fundReturn}%`}
+              weight={r === now ? 'strong' : 'quiet'}
+              sub={{ label: 'Its benchmark', value: `${r.benchReturn >= 0 ? '+' : ''}${r.benchReturn}%` }} />
+          ))}
+        </div>
+      }
+      provenance={monthlyProvenance()} chips={askChips(onChip, 'changed')} />
+  );
+}
+
+/* A6 · WHO OF MY CLIENTS HOLD IT — and the honest half of the answer is the part nobody asks for.
+   `holdersOf` counts a client who has a SIP running into a fund but no position recorded yet. That is
+   a different fact from a ₹4.4 L holding, and the count on the fund card has always folded the two
+   together. The rows separate them, each client's weight is read against THEIR OWN book rather than
+   against the fund, and a position over one of the book's ceilings says which ceiling — `LIMITS`
+   carries two different rules that both read 25 (contradiction 32), so naming it is not optional. */
+const holdersDetail = (fundId) => CLIENTS.map((c) => {
+  const h = (c.holdings || []).find((x) => x.fundId === fundId);
+  const sip = (c.sips || []).find((x) => x.fundId === fundId);
+  return h || sip ? { client: c, holding: h || null, sip: sip || null } : null;
+}).filter(Boolean).sort((a, b) => {
+  /* POSITIONS FIRST, BIGGEST FIRST. The rows came back in book order, which put a client with a SIP
+     and no position above one holding ₹1,99,220 of it. A SIP running in is the qualifier to this
+     answer, not the answer — and the row that might be over a ceiling has to be the one an advisor
+     sees without scrolling. */
+  if (!!a.holding !== !!b.holding) return a.holding ? -1 : 1;
+  if (a.holding && b.holding) return b.holding.pct - a.holding.pct;
+  return 0;
+});
+
+function HoldersTurn({ id, onChip }) {
+  const f = fundById(id); const who = holdersDetail(id);
+  if (!f) return null;
+  const withPos = who.filter((w) => w.holding);
+  const sipOnly = who.filter((w) => !w.holding && w.sip);
+  const over = withPos.filter((w) => w.holding.over);
+  const say = who.length === 0
+    ? [`None of your clients hold ${f.name}.`]
+    : [
+        withPos.length === 0
+          ? `No client holds ${f.name} yet — ${sipOnly.length === 1 ? 'one has' : `${sipOnly.length} have`} a SIP running into it.`
+          : `${withPos.length === 1 ? 'One client holds' : `${withPos.length} clients hold`} it${sipOnly.length ? `, and ${sipOnly.length === 1 ? 'one more has' : `${sipOnly.length} more have`} a SIP running into it with no position yet` : ''}.`,
+      ];
+  if (over.length) say.push(`${over[0].client.name} is at ${over[0].holding.pct}% of their own book, over the ${over[0].holding.over} of ${LIMITS.singleFund}%.`);
+  const items = who.map((w) => ({
+    title: w.client.name,
+    /* NO BADGE HERE, and the render is why: a ListRow shows ONE trailing thing, and `meta` is the
+       rupee value — rule 4 asks for every figure direct-labelled, so the value keeps the slot and a
+       `badge` passed beside it was silently dropped. The breach goes into the row's own words, where
+       it also says WHICH ceiling: two different rules in LIMITS both read 25 (contradiction 32). */
+    subtitle: w.holding
+      ? `${w.holding.pct}% of their book${w.holding.over ? ` · over the ${LIMITS.singleFund}% ${w.holding.over}` : ''} · folio ${w.holding.folio}`
+      : `SIP ${inr(w.sip.amountRs)} a month · no position recorded yet`,
+    meta: w.holding ? inr(w.holding.valueRs) : `${w.sip.mandate} · ${w.sip.day}th`,
+    trailing: 'meta',
+  }));
+  return (
+    <FUNDS_DS.SentinelTurn say={say}
+      body={who.length ? <FUNDS_DS.List items={items} dividers="inset" rowProps={{ variant: 'static' }}
+        emptyState={{ title: `None of your clients hold ${f.name}.` }} /> : null}
+      provenance="your own book · positions as of 30 Sep 2026 · SIPs from the mandates on file"
+      chips={askChips(onChip, 'holders')} />
+  );
+}
+
 function HoldingsTurn({ kind, id, otherId, onPick, onChip, onEvent }) {
+  if (kind === 'category') return <CategoryTurn id={id} onChip={onChip} />;
+  if (kind === 'changed') return <ChangedTurn id={id} onChip={onChip} />;
+  if (kind === 'holders') return <HoldersTurn id={id} onChip={onChip} />;
   if (kind === 'shape') return <HoldingsShape id={id} onChip={onChip} />;
   if (kind === 'sectors') return <HoldingsSectors id={id} onChip={onChip} />;
   if (kind === 'top') return <HoldingsTop id={id} onChip={onChip} />;
@@ -619,7 +803,7 @@ const PERIOD_LABEL = { r1: '1Y', r3: '3Y', r5: '5Y' };
    horizontal scroll, so "sorted cheapest first" was a claim with nothing on screen to test it against —
    the same shape as a figure with no provenance. The sentence now carries the span it sorted on, first
    value to last, which is the smallest thing that makes the order verifiable without moving a column. */
-const SORT_UNIT = { ter: (v) => `${v.toFixed(2)}%`, aumCr: (v) => `₹${inr(Math.round(v))} cr`, return: (v) => `${v.toFixed(1)}%` };
+const SORT_UNIT = { ter: (v) => `${v.toFixed(2)}%`, aumCr: (v) => `${inr(Math.round(v))} cr`, return: (v) => `${v.toFixed(1)}%` };
 const sortSpan = (r, period, list) => {
   if (!list || list.length < 2) return '';
   const key = r.sort.key === 'return' ? period : r.sort.key;
@@ -755,4 +939,4 @@ function FundInfo({ id, period, onPeriod, onExplain, heldBy = false, defaultPeri
   );
 }
 
-Object.assign(window, { FundInfo, FUND_CHIPS, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineAmbiguous, refineSaid, fundsFor, sortFunds, fundByWords, SORT_KEYS, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE, PERIOD_LABEL, sortSpan });
+Object.assign(window, { FundInfo, FUND_CHIPS, ASK_KINDS, askChips, CategoryTurn, ChangedTurn, HoldersTurn, holdersDetail, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineAmbiguous, refineSaid, fundsFor, sortFunds, fundByWords, SORT_KEYS, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE, PERIOD_LABEL, sortSpan });

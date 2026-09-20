@@ -1628,3 +1628,55 @@ path on a short page).
 
 **Still open:** the sort specimen needed a four-fund query to prove anything, because on the default
 two-fund shortlist cheapest-first is the order already. A specimen that cannot fail is not a specimen.
+
+---
+
+### F-62 · The last three asks — and the benchmark that could not be read at one year — *20 Sep 2026*
+
+Four questions sit under every fund card. *"What is it holding?"* became five turns this morning; the
+other three answered *"not built yet"* when tapped. They are built: **against its category** ·
+**what changed recently** · **who of my clients hold it**. Plan §2 is closed. Frozen on
+`screens/journey-c/funds.html` §8, live in the prototype, and every chip is also a sentence — the
+router `holdAsk` now covers all eight kinds, so typing the question opens the turn the chip opens.
+
+**The data was wrong before the turn was, and only measuring found it.**
+
+1. **The benchmark cannot be read at one year.** Deriving it from the same five-year curve over a
+   shorter window returned **42.6% for Nifty 500 TRI over twelve months**. The curve's intermediate
+   path was never constrained — only its endpoint is ever read, so only its endpoint is trustworthy.
+   The benchmark's one- and three-year figures are now a table, one row per index, the shape
+   `CATEGORY_AVG` already had. Five years stays derived, so the figure under the chart and the line
+   in it cannot disagree.
+2. **Two funds on the same index drew two different indexes.** Parag Parikh and HDFC Flexi Cap both
+   quote Nifty 500 TRI and had separate benchmark arrays with a shared endpoint, so the five-year
+   headline agreed and every month between disagreed. The first fund naming a benchmark owns its
+   series; everyone else reads it. Both shared groups already had equal endpoints, so no headline
+   moved, and a warning fires if that stops being true.
+
+**Three marks on one scale turned out to be two Dumbbells, and the component said so.** The plan asked
+for three. A `Dumbbell` is a **pair** — a hollow dot for what a thing is measured against, a filled one
+for what it is. Two rows on one domain, the fund's dot in both, and the two gaps comparable because the
+track is the same. The system change that made it honest: **`relation='against'`**, which drops the
+arrow. `→` is a claim about direction, and nothing travels from a fund to its category. Default stays
+`'move'`, so every existing caller draws what it drew.
+
+**Four things the render caught that the source could not.**
+
+- **`This fund 23.1% 23.1%`** — `Dumbbell` prints the value itself and the label sits beside it
+  (F-46), so a label carrying its own number printed it twice.
+- **`cost it -3%`** — the minus and the word *cost* saying the same thing, and the second one wrongly.
+  Direction belongs to the verb; the figure is a magnitude.
+- **`₹₹1,99,220`** — `inr()` already carries the glyph. The same mistake was live in yesterday's
+  `sortSpan`, shipped an hour earlier, and this render found it.
+- **A `badge` passed beside a `meta` was silently dropped.** A `ListRow` shows one trailing thing, and
+  the rupee value keeps the slot under rule 4. So *"over a ceiling"* moved into the row's own words —
+  with **which** ceiling named, because two different rules in `LIMITS` both read 25.
+
+**And one ordering defect.** The holders list came back in book order, putting a client with a SIP and
+no position above one holding ₹1,99,220 of the fund. Positions lead now, biggest first, so the row that
+might breach a ceiling is the one an advisor sees without scrolling. That separation is the honest half
+of this answer: `holdersOf` has always counted a SIP with no position as a holder, and the count on the
+fund card folded the two together.
+
+**A regex that matched nothing, found by driving it.** `/\bcategor\b/` never fires: the word boundary
+after *categor* sits before *y*. Reading it would not have shown that.

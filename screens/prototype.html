@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','VersionRow'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FigureRow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','List','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','VersionRow'];</script>
 <script type="text/babel" src="./screen-kit.jsx"></script>
 <script type="text/babel" src="./data/book.jsx"></script>
 <script type="text/babel" src="./journey-b/home.jsx"></script>
@@ -398,15 +398,12 @@ function Proto({ onEvent }) {
         {fundPhase === 'fund' && fundId && (
           <React.Fragment>
             <FundInfo id={fundId} onExplain={() => log('A figure explains itself', 'ds-sheet 300ms')} />
-            {/* THE FOUR ASKS are questions ABOUT the fund; the four verbs below DO something with it. Two
-                rows, so an advisor reads four to find either. Three of the asks are not built yet and
-                say so when tapped, rather than opening a turn that pretends. */}
+            {/* THE FOUR ASKS are questions ABOUT the fund; the four verbs below DO something with it.
+                Two rows, so an advisor reads four to find either. All four open a turn now — the
+                three that used to answer "not built yet" are the last of plan §2. */}
             <ChipRow animate>
               {FUND_CHIPS.map((c) => (
-                <AnswerChip key={c} label={c} onClick={() => {
-                  if (holdAsk(c)) askHoldings(holdAsk(c), c);
-                  else log(`“${c}” — not built in this prototype yet (plan §2, steps 3, 5 and 6)`, '');
-                }} />
+                <AnswerChip key={c} label={c} onClick={() => askHoldings(ASK_KINDS[c], c)} />
               ))}
             </ChipRow>
             <FundVerbs animate onVerb={(v) => {

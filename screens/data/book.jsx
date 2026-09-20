@@ -125,6 +125,29 @@ const NAV_SERIES = {
   'hdfc-stdebt': { f: [10000,10104,10252,10252,10309,10356,10388,10560,10518,10549,10661,10688,10754,10732,10744,10901,10895,10942,11155,11219,11281,11329,11436,11529,11601,11498,11498,11479,11445,11393,11506,11594,11703,11741,11748,11834,11945,12067,12107,12106,12149,12256,12397,12676,12700,12830,12916,12867,12856,12937,12883,12909,13112,13046,13163,13203,13432,13511,13480,13765,13895],
     b: [10000,9960,9996,10036,10000,10025,10172,10182,10171,10258,10355,10489,10657,10651,10757,10726,10759,10812,10873,10829,10773,10781,10843,10926,10931,10953,10952,11062,11132,11109,11197,11281,11372,11396,11517,11713,11819,11911,11881,11951,11958,11933,11971,12157,12386,12444,12489,12512,12646,12793,12775,12716,12823,12906,13014,13052,13142,13236,13328,13515,13573] },
 };
+/* ONE INDEX, ONE LINE (20 Sep 2026, found by measuring). Parag Parikh and HDFC Flexi Cap both quote
+   **Nifty 500 TRI**, and the table above gave them two different benchmark paths — same endpoint, so
+   the five-year headline agreed, but every month in between disagreed. It never showed, because until
+   now only the endpoint was ever read. The moment the "against its category" turn asked the benchmark
+   for a one-year figure it printed 42.6% for one fund and 46.4% for the other, off the same index.
+
+   Two funds cannot see different histories of the same index. The first fund in FUNDS that names a
+   benchmark owns its series and every other fund quoting that name reads the same array — derived,
+   not hand-listed, so a fund arriving tomorrow joins the right line by naming it. Both shared groups
+   already had equal endpoints (21738 for Nifty 500 TRI, 13765 for CRISIL Corporate Bond A-II), so no
+   headline moved; the warning fires if that ever stops being true. */
+const BENCH_CANON = {};
+FUNDS.forEach((f) => {
+  const name = (PERF[f.id] || {}).benchmark; const own = NAV_SERIES[f.id];
+  if (!name || !own) return;
+  if (!BENCH_CANON[name]) { BENCH_CANON[name] = f.id; return; }
+  const src = NAV_SERIES[BENCH_CANON[name]];
+  if (src.b[NAV_MONTHS] !== own.b[NAV_MONTHS] && typeof console !== 'undefined') {
+    console.warn(`book: ${f.id} and ${BENCH_CANON[name]} both quote ${name} but end at different values — the headline will move`);
+  }
+  own.b = src.b;
+});
+
 /* Points for ChartLine: x is the month index, y is the rupee value. */
 const navSeries = (id) => {
   const s = NAV_SERIES[id];
@@ -151,6 +174,34 @@ const benchCagr = (id) => {
   const t = tenKAfter(id);
   return t ? +(((Math.pow(t.bench / t.base, 1 / t.years) - 1) * 100).toFixed(1)) : null;
 };
+/* AND AT ONE AND THREE YEARS — as a table, not from the series, and the difference was found by
+   measuring (20 Sep 2026). The "against its category" turn puts three marks on one scale — category
+   average · this fund · its benchmark — at a period the advisor chooses, so the benchmark needs a
+   figure at each one. The obvious move was to read the same series over a shorter window. It returned
+   **42.6% for Nifty 500 TRI over one year**, because the series' intermediate path was never
+   constrained: only its endpoint was ever read, so only its endpoint is trustworthy.
+
+   So the benchmark's shorter periods are a fixture, one row per index, exactly the shape CATEGORY_AVG
+   already has. FIVE YEARS IS STILL DERIVED from the series, so the number under the chart and the line
+   in it cannot disagree — the one figure that has a second source keeps the source it always had. */
+const BENCH_SHORT = {
+  'Nifty 500 TRI':              { r1: 13.1, r3: 15.4 },
+  'Nifty 50 TRI':               { r1: 12.9, r3: 14.8 },
+  'Nifty 100 TRI':              { r1: 12.2, r3: 14.1 },
+  'Nifty Midcap 150 TRI':       { r1: 16.4, r3: 27.2 },
+  'Nifty Smallcap 250 TRI':     { r1: 4.2,  r3: 22.5 },
+  'CRISIL Hybrid 50+50':        { r1: 9.8,  r3: 11.3 },
+  'CRISIL Corporate Bond A-II': { r1: 6.9,  r3: 6.4 },
+  'CRISIL Short Duration A-II': { r1: 6.8,  r3: 6.1 },
+};
+const benchReturnAt = (id, key = 'r5') => {
+  if (key === 'r5') return benchCagr(id);
+  const name = (PERF[id] || {}).benchmark; const row = name ? BENCH_SHORT[name] : null;
+  return row && row[key] != null ? row[key] : null;
+};
+const benchProvenance = (key) => (key === 'r5'
+  ? 'benchmark · derived from the same five-year series the chart draws'
+  : 'benchmark · illustrative index figures for design, not an index record');
 
 const perfOf = (id) => PERF[id] || null;
 /* THE ONLY PROVENANCE LINE THIS DATA MAY CARRY. A screen that prints anything else about where these
@@ -622,5 +673,5 @@ const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
 Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, MANAGERS, managerOf, managerLine, managerProvenance, comparisonProvenance, HOLDINGS, HOLDINGS_AS_OF, HOLD_MONTHS, holdingsOf, holdingsProvenance, overlapPct, MONTHLY, monthlyOf, monthlyProvenance, CATEGORY_AVG, categoryAvgOf, switchCost, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
   REVIEW_TOP_RS, REVIEW_TAIL_RS, REVIEW_TAIL_AVG_RS, REVIEW_TINY_CAP_RS, REVIEW_AUDIENCES, REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
-  NAV_SERIES, NAV_MONTHS, NAV_BASE, navSeries, tenKAfter, benchCagr,
+  NAV_SERIES, NAV_MONTHS, NAV_BASE, BENCH_CANON, navSeries, tenKAfter, benchCagr, BENCH_SHORT, benchReturnAt, benchProvenance,
   driftPoints, overSingleFund, inr });

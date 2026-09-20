@@ -278,7 +278,7 @@ mountScreen(
         <State label="the four chips are their four tabs" note="Overview · Holdings · Performance · Peer Analysis are four PAGES behind one header in every reference. Here each is a question, each answer is its own turn, and scrolling back through the thread IS going back through the tabs. Nothing is pinned — the chips sit in the turn that offered them.">
           <Scene anchor="bottom">
             <FundInfo id="quant-small" />
-            <ChipRow>{FUND_CHIPS.map((c) => <AnswerChip key={c} label={c} onClick={() => {}} />)}</ChipRow>
+            <ChipRow>{FUND_CHIPS.map((c) => <AnswerChip key={c} label={c} />)}</ChipRow>
           </Scene>
         </State>
         <State label="a debt fund, where the line is nearly flat" note="The chart says “debt” by being almost straight. Volatility in the fixture is by CATEGORY — small cap swings hardest, debt almost not at all — because a debt fund drawn with equity's shape would be the chart lying about the asset class.">
@@ -388,11 +388,38 @@ mountScreen(
       </StateRow>
     </Section>
 
-    <Section title="8 · Motion, and what each one does under reduced motion">
+    <Section title="8 · The other three asks — against its category · what changed · who holds it" sub="Four questions sit under every fund card. “What is it holding?” became five turns this morning; these are the other three, and they finish §2 of the plan. Each is one question, one turn, one finding in the sentence and the evidence under it.">
+      <StateRow>
+        <State label="Against its category · 5Y" note="Three marks, one scale. The plan asked for three Dumbbells; the component gave two, and the component was right — a Dumbbell is a PAIR, a hollow dot for what a thing is measured against and a filled one for what it is. Two rows share one domain, the fund's dot is in both, and the two gaps are comparable because the track is the same. The domain is niceDomain over the three values, not zero: at 5Y the fund is 23.1 and the index 16.8, which on a 0–100 track is four pixels.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><CategoryTurn id="ppfas-flexi" /></Scene>
+        </State>
+        <State label="Against its category · a fund that changed hands" tone="under" note="HDFC Flexi Cap's three-year number is 22.8% and S. Iyer has run it for 2.2 years. The turn says so. A record is one person's work only if one person did it, and MANAGERS knows when they started — arithmetic cannot produce that sentence, so it is the one line here that is not arithmetic.">
+          <Scene anchor={3}><FundInfo id="hdfc-flexi" /><CategoryTurn id="hdfc-flexi" defaultPeriod="r3" /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="What changed recently" note="The references render this as green and red pills — the weakest execution of the strongest idea in the set. Rule 2: bad news is text, never a fill, and a pill that encodes its verdict in colour has to be read twice. Sentences say it once; the three FigureRows under them carry each month's return with the benchmark's in the quiet half, so nothing in the words is taken on trust.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><ChangedTurn id="ppfas-flexi" /></Scene>
+        </State>
+        <State label="Who of my clients hold it" note="The honest half is the part nobody asks for: holdersOf counts a client with a SIP running into a fund and no position yet, and the count on the fund card has always folded the two together. The rows separate them. Each weight is read against THAT client's own book, and a position over a ceiling names which ceiling — LIMITS carries two different rules that both read 25.">
+          <Scene anchor={3}><FundInfo id="ppfas-flexi" /><HoldersTurn id="ppfas-flexi" /></Scene>
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="Who holds it · one client, over a ceiling" tone="under" note="Quant Small Cap is 31% of Sharma's book against a 25% single-fund ceiling. The badge states it and the sentence names the client, the number and the rule — three things, because “over a ceiling” alone is not something an advisor can act on.">
+          <Scene anchor={3}><FundInfo id="quant-small" /><HoldersTurn id="quant-small" /></Scene>
+        </State>
+        <State label="Who holds it · nobody does" tone="under" note="The empty case is a sentence, not an empty card. Sentinel says plainly that none of the advisor's clients hold it and offers the next question — a fund nobody holds is a perfectly good fund to be looking at.">
+          <Scene anchor={3}><FundInfo id="sbi-corp" /><HoldersTurn id="sbi-corp" /></Scene>
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="9 · Motion, and what each one does under reduced motion">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="9 · Provenance">
+    <Section title="10 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>
