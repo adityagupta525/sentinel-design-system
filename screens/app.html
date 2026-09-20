@@ -75,10 +75,11 @@
      — not hidden, removed — and the stage is shortened by exactly the 68px they occupied, so the
      layout between them does not move by a pixel and the app ends up the size of the phone.
 
-     The `#root` padding is the part that stops the top being cut: iOS may hand the page the whole
-     screen and paint its status bar over it, or hand it what is left below. Padding by the real
-     safe-area insets is correct either way, and the scale is computed from what is left after them
-     rather than from `window.innerHeight`, which does not know about either. */
+     Insetting `#root` by the safe areas is the part that stops the top being cut: iOS may hand the
+     page the whole screen and paint its status bar over it, or hand it what is left below. Insetting
+     is correct either way, and the scale is computed from what is left after the insets rather than
+     from `window.innerHeight`, which does not know about either. It was padding first, and padding
+     was the bug — `clientHeight` includes it, so the scale never saw it. */
   @media (display-mode: standalone) {
     .ds-statusbar, .ds-homeindicator { display: none; }
     .ds-stage { height: 744px; }
