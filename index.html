@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sentinel — start here</title>
+<style>
+  :root { color-scheme: light; }
+  html,body { margin:0; background:#faf9f5; color:#251f1b;
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  .w { max-width:640px; margin:0 auto; padding:72px 20px 96px; }
+  h1 { font-size:34px; line-height:1.1; letter-spacing:-.02em; margin:0 0 14px; font-weight:600; }
+  p { margin:0 0 16px; color:#4a423c; }
+  a.go { display:block; margin:28px 0 10px; padding:20px 22px; border-radius:16px; background:#251f1b;
+    color:#fff; text-decoration:none; }
+  a.go b { display:block; font-size:18px; font-weight:600; margin-bottom:4px; }
+  a.go span { display:block; font-size:13.5px; color:#cfc6bd; }
+  ul { margin:8px 0 0; padding-left:20px; color:#4a423c; font-size:14px; }
+  li { margin-bottom:7px; }
+  code { font:500 13px ui-monospace,SFMono-Regular,Menlo,monospace; background:#f0ece5;
+    padding:1px 5px; border-radius:5px; }
+  hr { border:0; border-top:1px solid #e5ded4; margin:36px 0 28px; }
+</style></head><body><div class="w">
+
+<h1>Sentinel</h1>
+<p>The design system for Centricity WealthTech's chat-led assistant for advisors — and every screen
+it has. This file is here so that opening the folder lands somewhere useful.</p>
+
+<a class="go" href="site/index.html">
+  <b>Look at it →</b>
+  <span>Every screen, every journey, all 94 component specifications. Nothing to install.</span>
+</a>
+
+<hr>
+
+<p><b>Building it?</b> The source is next to this file, and it is not what you should open directly:</p>
+<ul>
+  <li><code>design-system/</code> — the system. <code>index.js</code> is the only public entry.</li>
+  <li><code>screens/</code> — every screen and journey, plus the one fixture they all read.</li>
+  <li><code>dist/</code> — the whole system as one file, every screen as one file.</li>
+  <li><code>docs/HANDOVER.md</code> — install, import, the four rules.</li>
+</ul>
+<p style="margin-top:18px">The pages under <code>design-system/pages/</code> and <code>screens/</code>
+compile their JSX in the browser, so a source edit shows up on reload with no build step. That is also
+why double-clicking one does nothing useful — run <code>npm run preview</code> and open them over
+http, or read the built copies in <code>site/</code>.</p>
+
+</div></body></html>

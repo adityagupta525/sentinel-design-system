@@ -32,6 +32,7 @@ const maxUnused = args.includes('--max-unused') ? Number(args[args.indexOf('--ma
 async function walk(dir) {
   const out = [];
   for (const e of await readdir(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue; // .DS_Store and friends are not content
     const p = join(dir, e.name);
     if (e.isDirectory()) out.push(...await walk(p));
     else if (['.html', '.jsx'].includes(extname(e.name))) out.push(p);

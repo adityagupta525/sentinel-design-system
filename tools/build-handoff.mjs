@@ -24,6 +24,7 @@ const OUT = join(ROOT, 'handoff');
 
 const walk = async (dir, filter, acc = []) => {
   for (const e of await readdir(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue; // .DS_Store and friends are not content
     const p = join(dir, e.name);
     if (e.isDirectory()) await walk(p, filter, acc);
     else if (filter(p)) acc.push(p);

@@ -12,7 +12,7 @@ const DS = join(dirname(fileURLToPath(import.meta.url)), '..', 'design-system');
 const { buildIndex } = await import(pathToFileURL(join(DS, 'scripts', 'build-index.js')));
 
 const out = await buildIndex({
-  ls: (p) => readdir(join(DS, p)),
+  ls: async (p) => (await readdir(join(DS, p))).filter((f) => !f.startsWith('.')),
   readFile: (p) => read(join(DS, p), 'utf8'),
   saveFile: (p, data) => writeFile(join(DS, p), data),
   today: new Date().toISOString().slice(0, 10),

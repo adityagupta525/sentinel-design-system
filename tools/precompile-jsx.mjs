@@ -71,12 +71,19 @@ export function precompilePage(html, htmlPath) {
       return `<script>${guard(compile(code, presets, name))}</script>`;
     },
   );
-  if (!compiled) return { html: out, compiled };
-  /* The compiler itself is now dead weight — and leaving it would keep the CSP dependency the
-     whole exercise removes, because Babel runs `runScripts` on DOMContentLoaded whether or not
-     there is anything left to compile. */
+  /* The guard is stripped whether or not anything compiled. `screens/flow.html` and
+     `screens/index.html` name `text/babel` in their own prose about how the pages work, so the
+     injector gave them a guard and there was nothing here to compile — and both shipped the bar. */
+  const ungarded = (h) => h.replace(/<script data-ds-file-guard>[\s\S]*?<\/script>/g, '');
+  if (!compiled) return { html: ungarded(out), compiled };
+  /* Two things come out. The compiler is dead weight, and leaving it would keep the CSP dependency
+     this whole exercise removes — Babel runs `runScripts` on DOMContentLoaded whether or not there
+     is anything left to compile. The `file://` guard has to go too, and that one matters more: the
+     repository's pages carry it because they are silently blank when opened from a file, and these
+     pages are the copy that is NOT. Left in, it would put a black bar reading "this page cannot
+     compile its JSX" across the top of the one copy that needs no compiling. */
   return {
-    html: out.replace(/\s*<script src="[^"]*babel[^"]*"[^>]*><\/script>/g, ''),
+    html: ungarded(out.replace(/\s*<script src="[^"]*babel[^"]*"[^>]*><\/script>/g, '')),
     compiled,
   };
 }

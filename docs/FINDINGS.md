@@ -2236,3 +2236,59 @@ be told what the folder is.
 
 **Gates after: 131/131 pages render over `file://` with no console error and no failed request ·
 125/125 cover links mount under the artifact CSP with no `unsafe-eval` · 144/144 preview pages clean.**
+
+---
+
+## F-76 · A page that goes blank and says nothing — Closed 20 Sep 2026
+
+The owner, after F-75 shipped: *"abhi b local folder me index file open kar raha hu na wo main screen
+dikha rahi hai but abhi b internal page missing hai dono jagah."*
+
+**Two causes, and the first was mine to have checked.** His download is timestamped 21:16; the commit
+that added `site/` is 21:35. The folder he had contained no `site/` at all. Opening his actual
+directory confirmed it rather than assuming:
+
+```
+ 4188 chars  screens/index.html            renders — it is plain HTML, hence "main screen dikha rahi hai"
+    0 chars  screens/prototype.html        XHR '.../screen-kit.jsx' … CORS
+    0 chars  design-system/pages/Pill.html  XHR '.../page-kit.jsx' … CORS
+   99 chars  design-system/pages/00-Index.html  "Could not read _index.json"
+```
+
+**The second cause is the real finding.** Even with `site/` present, the repository's own pages remain
+a trap: `screens/index.html` renders and every link on it leads to a page that is blank, with no
+error, no message and nothing in the console a designer would look at. A person who has not been told
+about `site/` gets no clue at all. Shipping a correct copy does not fix a copy that fails silently.
+
+**The fix.**
+
+- `tools/file-guard.js`, injected into the 125 pages that compile JSX by `tools/add-file-guard.mjs`.
+  Inert over http. Over `file://` it says what happened and links to the same page under `site/` —
+  `../../site/pages/Pill.html` from a spec page, `site/index.html` for `ui_kits/`, which `site/` does
+  not carry.
+- `check-previews.mjs` fails any page that compiles JSX and lacks the guard, so a new page cannot
+  quietly reintroduce the trap. It immediately earned its place: it caught 14 pages the injector had
+  missed — the eleven `*.card.html` and the two `ui_kits/` boards — because the first pass walked only
+  `pages/` and `screens/`.
+- `index.html` at the repository root, so that opening the folder lands on a door rather than a file
+  listing.
+
+**Two mistakes of my own, both caught by looking rather than reasoning.**
+
+1. The guard is in `design-system/`, so the artifact build copied it into `site/` — where it is a lie.
+   Every built page would have carried a black bar reading *"this page cannot compile its JSX"* across
+   the copy that needs no compiling. The build strips it now, and the sweep asserts its absence.
+2. Stripping it was not enough: the build wrote a page only when something had compiled, so
+   `screens/flow.html` and `screens/index.html` — which name `text/babel` in their own prose about how
+   the pages work, and so were given a guard with nothing to compile — kept shipping it. The build
+   writes when the page changed.
+
+**And one unrelated defect found on the way.** `npm run check` died with
+`ENOTDIR … components/.DS_Store`: `extract-scale.mjs` read the components directory and treated a file
+Finder leaves behind as a component group. A build a file manager can break is a build defect. Every
+directory read in `tools/` now skips dotfiles, and it is verified by creating three `.DS_Store` files
+and running the whole gate.
+
+**Gates after: 131/131 `site/` pages render over `file://` with no console error, no failed request
+and no guard bar · 144/144 preview pages clean · 125/125 cover links under the artifact CSP ·
+integrity 449 files · tokens 0 undefined · screens adherence 0.**

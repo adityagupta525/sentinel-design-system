@@ -33,6 +33,7 @@ const normalise = (rel, buf) => (rel === 'pages/_index.json'
 
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue; // .DS_Store and friends are not content
     const p = join(dir, entry.name);
     if (entry.isDirectory()) yield* walk(p);
     else yield p;

@@ -36,7 +36,9 @@ const sp = decls(spacing), ty = decls(type), ef = decls(effects), co = decls(col
    published step. A note about the code has to be read off the code. */
 const stepPx = new Set([...ty.filter((d) => /^--(text|display)-/.test(d.name)).map((d) => parseFloat(d.value))]);
 const raw = new Map();
-for (const dir of await readdir(join(DS, 'components'))) {
+/* Skip dotfiles. Finder leaves a `.DS_Store` in any folder the owner looks at, and this read
+   treated it as a component group and died with ENOTDIR — a build that a file manager can break. */
+for (const dir of (await readdir(join(DS, 'components'))).filter((d) => !d.startsWith('.'))) {
   for (const file of (await readdir(join(DS, 'components', dir))).filter((f) => f.endsWith('.jsx'))) {
     const src = await readFile(join(DS, 'components', dir, file), 'utf8');
     for (const m of src.matchAll(/fontSize:\s*'?(-?\d+(?:\.\d+)?)'?/g)) {

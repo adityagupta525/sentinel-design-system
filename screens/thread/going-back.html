@@ -15,7 +15,23 @@
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../journey-b/answer.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
-</head><body><div id="root"></div>
+</head><body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/screens/thread/going-back.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
 <script type="text/babel" data-presets="react">
 /* thread.jsx and answer.jsx compile into this scope — Thread, AnswerTurn and the DRIFT_* data are
    globals here. Only the names this file adds are destructured. */

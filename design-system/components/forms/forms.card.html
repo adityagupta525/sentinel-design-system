@@ -4,7 +4,23 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../_ds_bundle.js"></script>
-<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 8px}.note{font:500 12px/1.6 var(--font-ui);color:var(--color-muted);margin:12px 0 0}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
+<style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 8px}.note{font:500 12px/1.6 var(--font-ui);color:var(--color-muted);margin:12px 0 0}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../../site/index.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
 <script type="text/babel">
 const { SelectionMark, SearchField } = window.SentinelDesignSystem_0682a2;
 const Row = ({ kind, selected, disabled, title, meta }) => (

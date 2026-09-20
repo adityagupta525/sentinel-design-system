@@ -107,6 +107,7 @@ const ATTR = (s, k) => (new RegExp(`${k}="([^"]*)"`).exec(s) || [])[1];
 
 async function* walk(dir) {
   for (const e of await readdir(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue; // .DS_Store and friends are not content
     const p = join(dir, e.name);
     if (e.isDirectory()) yield* walk(p); else if (e.name.endsWith('.html')) yield p;
   }
@@ -137,6 +138,12 @@ for (const [base, prefix] of (SELF_TEST ? [[FIXTURES, 'tools/fixtures/']] : [[DS
      at all. Requiring exactly one failed all 17 of them the first time this check ran. */
   if (count(/id="root"/g) > 1) structure.push(`id="root" appears ${count(/id="root"/g)}\u00d7 — must be at most 1`);
   if (count(/page-kit\.jsx/g) > 1) structure.push(`page-kit.jsx loaded ${count(/page-kit\.jsx/g)}\u00d7 — must be at most 1`);
+  /* THE file:// GUARD, on any page that compiles JSX. Such a page is silently blank when it is opened
+     from a downloaded folder rather than served — no error, no message, nothing — and that is how the
+     owner met it. The guard says so and points at the built copy in `site/`; it is inert over http, so
+     it changes nothing here. `node tools/add-file-guard.mjs` adds it to a page that is missing it. */
+  if (count(/text\/babel/g) > 0 && count(/data-ds-file-guard/g) !== 1)
+    structure.push('no file:// guard — this page compiles JSX and would be silently blank from a file; run `node tools/add-file-guard.mjs`');
   /* SHARED-SCOPE CHECK, static. Every text/babel script a page loads compiles into ONE global scope, so
      a `const { Dock }` in home.jsx and another in the page is a SyntaxError and the page renders nothing —
      which is exactly how screen 1's extraction and the drawer failed on first load (18 Sep 2026). Counted

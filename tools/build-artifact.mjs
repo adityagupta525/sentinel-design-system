@@ -20,6 +20,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'site');
 const walk = async (dir, filter, acc = []) => {
   for (const e of await readdir(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue; // .DS_Store and friends are not content
     const p = join(dir, e.name);
     if (e.isDirectory()) await walk(p, filter, acc);
     else if (filter(p)) acc.push(p);
@@ -121,9 +122,12 @@ console.log(`inlined ${assetsInlined} asset reference(s) as data URIs`);
 const { precompilePage, inlineFetches } = await import('./precompile-jsx.mjs');
 let tags = 0, pagesTouched = 0, cached = 0;
 for (const p of await walk(OUT, (p) => p.endsWith('.html'))) {
-  const { html, compiled } = precompilePage(await readFile(p, 'utf8'), p);
+  const before = await readFile(p, 'utf8');
+  const { html, compiled } = precompilePage(before, p);
   const withCache = inlineFetches(html, p, OUT);
-  if (!compiled && !withCache.inlined) continue;
+  /* Write when anything changed, not when something compiled. Keyed on `compiled` alone, two pages
+     that only needed their `file://` guard removed were skipped and shipped it. */
+  if (withCache.html === before) continue;
   await writeFile(p, withCache.html);
   tags += compiled; cached += withCache.inlined; if (compiled) pagesTouched += 1;
 }
