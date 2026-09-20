@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConfirmSheet','DarkButton','DataTable','Dock','DownloadAction','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoveCard','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatusSpacer','StepTrace','Surface','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConfirmSheet','DarkButton','DataTable','Dock','DownloadAction','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoveCard','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','SentinelBlock','SentinelText','ChartBar','FigureRow','SentinelTurn','Surface','SentinelThinking','StandingDisclosure','StatusSpacer','StepTrace','Surface','TopBar','UserBubble'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
@@ -17,19 +17,9 @@
 <script type="text/babel" data-presets="react">
 const { ConfirmSheet, SentinelText, MoveCard } = window.SentinelDesignSystem_0682a2;
 
-const Targets = ({ onPick, onAskCost }) => (
-  <div>{REBALANCE_TARGETS.map((t) => <TargetRow key={t.id} t={t} onPick={onPick} onAskCost={onAskCost} />)}</div>
-);
-
-/* The one step, frozen. */
-function Step({ extra }) {
-  return (
-    <Rail n={1} total={REB_TOTAL} revision={0} composer={<RailAsk step={REB_STEPS[0]} onAttach={() => {}} />}>
-      <StepTurn step={REB_STEPS[0]} onChip={() => {}} extra={extra !== undefined ? extra : <Targets />} />
-    </Rail>
-  );
-}
-
+/* The rail's `Step` and `Targets` were deleted on 20 Sep 2026 with the sequence they served. The three
+   targets are REB_DIALS now — chips under a recommendation rather than a gate in front of one — and
+   TargetRow lives on in rebalance.jsx for whatever needs to draw one. */
 function ResultScene({ state = 'draft', savedAt, sentAt, children, anchor = 'bottom' }) {
   const att = useAttachment();
   return (
@@ -57,6 +47,20 @@ function AfterScene({ children }) {
   );
 }
 
+/* The answer-first sequence is a THREAD, not a rail — Sentinel can answer "rebalance Sharma", so there
+   is nothing to ask before it does. `anchor` takes the turn the state is about, the way Journey C's
+   holdings scenes do. */
+function Scene({ children, anchor = 'bottom' }) {
+  const att = useAttachment();
+  return (
+    <Thread anchor={anchor} revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
+      <AskTurn text={REB_ASK} costNote="Sending this replaces everything below it." />
+      {children}
+      <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+    </Thread>
+  );
+}
+
 function LiveRebalance() {
   const [sheet, setSheet] = React.useState(false);
   const [picked, setPicked] = React.useState(null);
@@ -72,14 +76,14 @@ function LiveRebalance() {
             <RebalanceResult onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onPrimary={() => setSheet(true)} />
             <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
           </Thread>
-        : <LiveRail steps={REB_STEPS} total={REB_TOTAL} attachCaption="Here is his Q3 statement."
-            stepExtra={() => (
-              <React.Fragment>
-                <Targets onPick={(t) => setPicked(t)} onAskCost={(t) => setUncosted(t)} />
-                {uncosted && <div style={{ marginTop: 'var(--space-12)' }}><UncostedTurn target={uncosted} continued={false} onChip={(l) => { if (/can cost/.test(l)) setPicked(REBALANCE_TARGETS.find((x) => x.costRs != null)); }} /></div>}
-              </React.Fragment>
-            )}
-            result={() => null} />}
+        : <Thread anchor={uncosted ? 'bottom' : 2} revision={`${uncosted ? uncosted.id : 'none'}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
+            <AskTurn text={REB_ASK} costNote="Sending this replaces everything below it." />
+            <RebalanceAnswer
+              onApprove={uncosted ? undefined : () => setPicked(REBALANCE_TARGETS.find((t) => t.costRs != null))}
+              onDial={(d) => { const t = REBALANCE_TARGETS.find((x) => x.id === d.id); if (t) setUncosted(t); }} />
+            {uncosted && <UncostedTurn target={uncosted} onChip={(l) => { if (/can cost/.test(l)) setUncosted(null); }} />}
+            <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+          </Thread>}
       <ConfirmSheet open={sheet} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
         commitLabel="Approve both moves" onCommit={() => setSheet(false)} onClose={() => setSheet(false)}>
         {MOVES.map((m) => <MoveCard key={m.n} n={m.n} title={m.title} body={m.body} />)}
@@ -95,16 +99,29 @@ function App() {
       job="Journey B rebalances Sharma after explaining why he drifted. This one starts with the advisor typing “rebalance Sharma” and nothing in front of them — so Sentinel asks the one question that makes it an instruction: how far. Three answers, three different rules, and only one of them has a cost."
       without="has a rebalance that only exists as the end of a drift explanation — and no answer at all when an advisor asks for one directly."
     >
-      <Section title="1 · “Rebalance” is not an instruction yet" sub="One rail step, and the three answers are three different RULES rather than three appetites. Each is sized against his ₹14,23,000, and each says which rule produced it.">
+      <Section title="1 · The answer first, then the dials" sub="Ruled 20 Sep 2026. The version this replaces opened with a QUESTION — how far — and three rule-named targets, each with a headline, a rule, a paragraph of why, a cost or a refusal and a chip: three parallel options and ~180 words before a single move was shown. The rules were right and the sequence was not. Journey B's version of the same rebalance is understood in one line, because it leads with the answer. So: diagnose, propose, cost, then offer the dials — and the three rules survive as those dials, which is where an alternative belongs.">
         <StateRow>
-          <State label="how far?" note="His mandate is 60 and he is at 71. To the mandate moves ₹1,56,530; inside the ±5 band moves ₹85,380 and leaves him at the edge; clearing the fund ceiling moves ₹1,85,000 and lands him at 58 — past the mandate, because the ceiling sized the move and not the drift.">
-            <Step />
+          <State label="R1 · where he is" note="The CAP split, not Equity/Debt/Cash — both of this product's 25% ceilings are written against caps the three-row card never showed, which is the research's own complaint in an MFD's words. One hue: ChartBar offers `tone='status'` for the bar that crossed a limit and it is used on no screen, so a danger-coloured FILL would be a first here and rule 2 reserves that colour for text. The bar ranks by length; the sentence names the fund, the figure and both ceilings.">
+            <Scene anchor={2}><RebalWhere /></Scene>
           </State>
-          <State label="only one has a cost" tone="over" note="A switch is a redemption plus a purchase, so it is taxable, and the tax depends on when each lot was bought. Folio 9142/28 has no purchase dates on file, so two of the three can be SIZED and not COSTED. The line says which figure is missing and what would produce it — it does not print a zero and it does not guess.">
-            <Step extra={<div>{REBALANCE_TARGETS.filter((t) => t.costRs == null).map((t) => <TargetRow key={t.id} t={t} />)}</div>} />
+          <State label="R2 · what I would do, R3 · what it costs" note="One body with Journey B, so the figure on this card and the figure on that one can never disagree. The cost is no longer a total an advisor cannot take apart: exit load, short-term tax, long-term tax, each carrying the rule that produced it, and the SIP redirect saying plainly that it costs nothing because nothing is sold.">
+            <Scene anchor={3}><RebalWhere /><RebalPlan /></Scene>
           </State>
-          <State label="asking for the uncosted one" tone="under" note="Not a refusal and not an error — a missing input with a name. Sentinel sizes it, says plainly it will not put a figure on it, says it will not let the advisor approve it without one, and offers the nearest real thing in the same breath. That is the shape every refusal in this product keeps.">
-            <Step extra={<React.Fragment><Targets /><div style={{ marginTop: 'var(--space-12)' }}><UncostedTurn target={REBALANCE_TARGETS[0]} continued={false} /></div></React.Fragment>} />
+        </StateRow>
+        <StateRow>
+          <State label="R4 · the dials" note="The two rules Sentinel could not cost, the destination, and the question behind the recommendation. Each re-runs the plan as its own turn rather than replacing this one. One dark CTA, and it is the approve — SentinelTurn's `cta` can only hold one.">
+            <Scene anchor={4}><RebalWhere /><RebalPlan /><RebalDials /></Scene>
+          </State>
+          <State label="the whole arrival" note="Three blocks, ONE ✦ Sentinel — it is one thing Sentinel said. The advisor has not spoken between them, so a second signature would be the name said twice for one answer (18 Sep).">
+            <Scene anchor={2}><RebalanceAnswer /></Scene>
+          </State>
+        </StateRow>
+        <StateRow>
+          <State label="R5 · a dial Sentinel cannot cost" tone="under" note="Unchanged in substance, and it is the journey's whole argument rather than a state of it: the two other rules have no purchase dates on folio 9142/28, so Sentinel sizes them, refuses a figure, and offers the nearest real thing. No confirm sheet opens on a move nobody can cost.">
+            <Scene anchor={4}><RebalanceAnswer /><UncostedTurn target={REBALANCE_TARGETS[0]} /></Scene>
+          </State>
+          <State label="entered carrying a fund" note="“Attach to a rebalance” on the fund explorer lands here with the fund already chosen, and it becomes the DESTINATION — the half the three targets never carried. Off the shelf is refused in the first sentence, not at the confirm, because this moves money under the advisor's own ARN.">
+            <Scene anchor={2}><RebCarried fundId="icici-corp" /><RebalanceAnswer /></Scene>
           </State>
         </StateRow>
       </Section>

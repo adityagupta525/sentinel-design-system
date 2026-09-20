@@ -1532,3 +1532,50 @@ limit, and past it the tool **exits 2 with a message** instead of returning a sl
 
 **And a fourth repeat of my own mistake:** a `{/* … */}` comment in a JSX *attribute* list is a parse
 error, and this is the third time in this repository. It is recorded in the file above the function now.
+
+### F-60 · The rebalance, made understandable — and two defects in its own path — *20 Sep 2026*
+
+**Measured before it was touched.** Journey E opened with a QUESTION — *how far* — and three rule-named
+targets, each carrying a headline, a rule, a paragraph of why, a cost or a refusal, and a chip: **three
+parallel options and ~180 words before a single move was shown.** The rules were right and the sequence
+was not. Journey B's version of the same rebalance is understood in one line, because it leads with the
+answer.
+
+**Journey E is a thread now, not a rail.** A rail is the surface for a question Sentinel must ask before
+it can answer. It can answer — so there is nothing to ask and nothing for a rail to carry. R1 diagnoses
+(the **cap** split, because both 25% ceilings are written against caps the Equity/Debt/Cash card never
+showed), R2 recommends, R3 costs it **line by line**, R4 offers the three rules as dials under the
+recommendation, R5 is the unchanged refusal and R6 the unchanged confirm. Three blocks, **one
+signature** — driven and counted.
+
+**The ceiling-mark question, answered by the system rather than by me.** The plan asked for ceiling
+marks on `AllocationCard`; building it produced two facts. The device is a `ChartBar`, because three
+hues for large/mid/small would be colour encoding identity — all three are equity (the same call H1
+made). And `ChartBar` **already** offers `tone='status'` for *"the one bar that crossed a limit"* — used
+on no screen. A danger-coloured *fill* would be a first here where rule 2 reserves that colour for
+text, so the bar ranks by length and the **sentence** names the fund, the figure and both ceilings.
+**Left for the owner**, with the mechanism already in the contract.
+
+**Two defects the drive found, both in the rebalance's own entry path.**
+
+1. **Typing "rebalance Sharma" asked "whose portfolio are we rebalancing?"** — the one thing the WHO
+   step promises never to do. `namedClient` matched the **first word** of the name, and for *"R. Sharma"*
+   that is the initial. It now matches any part longer than one character, and **an ambiguous name binds
+   nobody**: Meera Nair and Sunita Nair share a surname, so *"review Nair"* falls through to the WHO
+   step rather than silently taking the first — which is worse than asking.
+2. **The Approve CTA stayed on screen above an uncosted refusal.** It commits the two costed moves and
+   not the dial just asked for, but an advisor reading *"I can size it and I cannot cost it"* had an
+   Approve in view. It withdraws while a dial is open and returns with *"Take the one I can cost"*. The
+   journey's argument is that there is no path from an uncosted move to a confirm sheet; this is the
+   screen keeping it rather than the code claiming it.
+
+**And the cost stopped being a total nobody can take apart.** `MovesSimulation` showed one row —
+*"What it costs him · ₹11,200"*. `switchCost` splits it into the three rules that produce it (exit load
+₹777 · short-term ₹5,173 · long-term ₹5,250) with the SIP redirect saying plainly that it costs nothing
+because nothing is sold. The total still leads, because the total is what the advisor approves. This
+improves **Journey B too** — same money, same breakdown, one body.
+
+**A third thing the render caught:** on the default 0–100 track, the simulation's *58* and *60* sat six
+pixels apart, so the two 10px dots overlapped into one blob and the second row said nothing at all.
+Both rows now share a non-zero domain from `niceDomain` — `Dumbbell.min`, built for exactly this two
+commits ago (F-57), with the same safeguard: both ends direct-labelled.

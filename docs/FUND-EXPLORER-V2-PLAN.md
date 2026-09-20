@@ -105,45 +105,46 @@ written against a *client's* book, so H4 states the numbers and claims nothing a
 Every H-turn keeps the fund's four verbs available through the composer — *"compare this with…"* works
 from inside the holdings the way it works from the card.
 
-## 4 · The rebalance, made understandable
+## 4 · The rebalance, made understandable · **BUILT 20 Sep 2026**
 
-**What is wrong with the one that exists.** It opens with a question — *how far?* — and three
-rule-named targets (*To the mandate · Inside the band · Clear the fund ceiling*), each carrying a
-headline pair, a rule, a paragraph of why, a cost or a refusal, and a chip. Measured on the rendered
-rail: **three parallel options, ~180 words, before a single move is shown.** The rules are correct;
-the sequence asks the advisor to understand the theory before seeing the answer. Journey B's version of
-the same rebalance — *"Two moves, not seven. Together they bring equity from 71% back to 58%, and they
-cost ₹11,200."* — is understood in one line, because it leads with the answer.
+**What was wrong.** It opened with a QUESTION — *how far* — and three rule-named targets, each carrying
+a headline, a rule, a paragraph of why, a cost or a refusal, and a chip. Measured on the rendered rail:
+**three parallel options and ~180 words before a single move was shown.** The rules were right and the
+sequence was not. Journey B's version of the same rebalance is understood in one line, because it leads
+with the answer.
 
-What the research says an advisor actually wants (`RESEARCH.md` §5, an MFD's own words): *the shape of
-the portfolio, not one word for it* — the cap split, and change in **points**. And what mining cannot
-tell us and a study should: *whether they would approve a rebalance from a simulation they did not
-compute themselves.* The redesign is built around that doubt: **every number shows its working.**
-
-### The new sequence — diagnose, propose, then offer the dials
+**Journey E is a thread now, not a rail.** A rail is the surface for a question Sentinel must ask before
+it can answer. It *can* answer — so there is nothing to ask, and nothing for a rail to carry.
 
 | turn | what Sentinel says | device |
 |---|---|---|
-| **R1 · where he is** | *"Sharma agreed to 60% equity and is at 71 — 11 points over. The reason is one fund: Quant Small Cap is 31% of his book, over the 25% fund ceiling and the 25% small-cap sleeve at once."* | `AllocationCard` **by cap**, with the two ceilings drawn as marks on the bar. Provenance under it |
-| **R2 · what I would do** | *"Two moves. Sell ₹1,85,000 of Quant Small Cap and buy ICICI Corporate Bond with it; redirect his ₹30,000 SIP the same way so it does not drift back. He lands at 58% equity."* | two `MoveCard`s · a `Dumbbell` **71 → 58 against 60** · the after-state `AllocationCard` beside the before |
-| **R3 · what it costs him, line by line** | *"₹11,200 — exit load ₹777 on the 42% bought inside the year, short-term tax ₹5,173 on those gains, long-term tax ₹5,250 on the rest. No tax on the SIP redirect; nothing is sold."* | `FigureRow` × 4 with a `sub` naming each rule, from `SWITCH_COST` and `TAX` |
-| **R4 · the dials** | chips, in the turn: **Go all the way to his mandate** (60) · **Just inside the band** (65) · **Move into a different fund** · **Why these two funds?** · **Approve** | the three rules are now *alternatives to a recommendation*, each re-running R2–R3 as a new turn, rather than a gate before it |
-| **R5 · the uncosted case** | unchanged in substance: *"I can size this and I cannot cost it — folio 9142/28 has no purchase dates."* — and **no confirm sheet opens** | as built; a dial that lands here says so in its own turn |
-| **R6 · approve** | the same `ConfirmSheet` and the same three rows as Journey B, because it is the same money | ✓ |
+| **R1 · where he is** | *"R. Sharma agreed to 60% equity and is at 71 — 11 points over. The reason is one holding. Quant Small Cap is 31% of his book, over the 25% single-fund ceiling and the 25% small-cap sleeve at the same time — two rules, one fund."* | the **cap** split as a `ChartBar`, one hue, plus the provenance that says how complete the book is |
+| **R2 · what I would do** | *"Two moves. Sell ₹1,85,000 of Quant Small Cap and buy ICICI Corporate Bond with it; redirect his ₹30,000 SIP the same way so it does not drift back."* | `MovesBody`, shared with Journey B — two `MoveCard`s and the simulation |
+| **R3 · what it costs, line by line** | *"₹11,200 — exit load ₹777, short-term gains tax ₹5,173, long-term gains tax ₹5,250. The SIP redirect: no cost."* | `FigureRow` × 5 from `switchCost`, the total leading |
+| **R4 · the dials** | *"Those are the two I would place. If you want it sized by a different rule, say which."* | four chips + **one** dark CTA (`SentinelTurn.cta` can hold one) |
+| **R5 · a dial nobody can cost** | unchanged: sized, refused a figure, the nearest real thing offered | and **the Approve withdraws** while it is on screen |
+| **R6 · approve** | the same `ConfirmSheet`, disclosure and three rows as Journey B — it is the same money | ✓ |
 
-**Why this is not a restyle.** Every device is one that exists. What changes is the *order* and the
-*words*: answer first, rules second, cost with its working. The three targets survive as R4's chips and
-`REBALANCE_TARGETS` is still the arithmetic behind them.
+**Sentinel recommends the one it can cost.** That is not a preference: the other two have no purchase
+dates on folio 9142/28, and a product that recommends a move it cannot put a figure on has made the
+figure optional. Tapping either still works and still gets the honest refusal.
 
-**What the carried fund does here.** "Attach to a rebalance" with HDFC Flexi Cap carried in makes it
-the *destination* in R2 — *"buy HDFC Flexi Cap with it"* — and R3 costs that switch. Off-shelf is
-refused in R2's first sentence, as built.
+**The ceiling-mark question, answered by the system rather than by me.** The plan asked for ceiling
+marks on `AllocationCard`. Two things came out of building it: the device is a `ChartBar` (three hues
+for large/mid/small would be colour encoding identity — all three are equity), and `ChartBar` already
+offers `tone='status'` for *"the one bar that crossed a limit"*. **It is used on no screen**, and a
+danger-coloured *fill* would be a first in this product where rule 2 reserves that colour for text —
+so the bar ranks by length like every other bar and the **sentence** names the fund, the figure and
+both ceilings. If you want the toned bar, that is one word and one line.
 
-**The question for the owner in this section:** R1 draws the two ceilings as marks on the allocation
-bar. That is a new use of an existing device (`AllocationCard` has never carried a target mark), so it
-is a visual decision — yes or no.
-
----
+**Two defects the drive found**, both in the rebalance's own path:
+- typing *"rebalance Sharma"* asked **"whose portfolio are we rebalancing?"** — `namedClient` matched on
+  the first word of the name, which for *"R. Sharma"* is the initial. It matches every part longer than
+  one character now, and **an ambiguous name binds nobody**: Meera Nair and Sunita Nair share a surname,
+  so *"review Nair"* falls through to the WHO step rather than silently taking the first.
+- the **Approve** CTA stayed on screen above an uncosted refusal. It commits the two costed moves and
+  not the dial just asked for, but an advisor reading *"I cannot cost it"* had an Approve in view. It
+  withdraws while a dial is open and comes back with *"Take the one I can cost"*.
 
 ## 5 · What the Figma file said — read 20 Sep, for content
 

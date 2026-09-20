@@ -22,6 +22,12 @@ const MOVES = [
   { n: 2, title: 'Redirect his ₹30,000 monthly SIP', body: 'Nothing is sold here, so this one costs nothing — and it stops the drift coming back.' },
 ];
 const MOVES_PROVENANCE = 'Costed 30 Sep · exit loads and tax from the scheme documents';
+/* The three rules that make the ₹11,200, from the book rather than from this file: one figure, one
+   place it is worked out, so the card and the confirm sheet cannot disagree. */
+const MOVES_COST = switchCost('quant-small', 185000);
+/* The domain both equity rows share, rounded outward to whole tick steps by the system's own
+   `niceDomain` rather than picked — 58, 60 and 71 are the three numbers on this card. */
+const EQ = MOVES_DS.niceDomain(58, 71, 4);
 const SKIPPED = {
   title: 'The five I skipped',
   body: [
@@ -64,14 +70,27 @@ function MovesSimulation({ provenance = true }) {
     <MOVES_DS.Surface>
       <MOVES_DS.Eyebrow>If you approve both</MOVES_DS.Eyebrow>
       <div style={{ marginTop: 'var(--space-12)', display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
-        <MOVES_DS.Dumbbell label="Equity today" target={60} actual={71} targetLabel="He agreed to" actualLabel="He is at" />
-        <MOVES_DS.Dumbbell label="Equity after these two moves" target={60} actual={58} targetLabel="He agreed to" actualLabel="He would be at" />
+        {/* ONE SCALE, AND IT IS NOT ZERO-BASED — the render decided it. On the default 0–100 track, 58
+            and 60 sit six pixels apart, so the two 10px dots overlapped into one blob and the second
+            row said nothing at all. `Dumbbell.min` exists for exactly this (F-57) and the safeguard is
+            the same: both ends are direct-labelled, so the picture never carries a number on its own.
+            The two rows share the domain, which is the point — the eye compares the thing that moved. */}
+        <MOVES_DS.Dumbbell label="Equity today" target={60} actual={71} min={EQ[0]} max={EQ[1]} targetLabel="He agreed to" actualLabel="He is at" />
+        <MOVES_DS.Dumbbell label="Equity after these two moves" target={60} actual={58} min={EQ[0]} max={EQ[1]} targetLabel="He agreed to" actualLabel="He would be at" />
       </div>
-      <div style={{ marginTop: 'var(--space-12)', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--space-8)' }}>
-        <span style={{ font: 'var(--type-row-font)', color: 'var(--color-ink)' }}>What it costs him</span>
-        <span style={{ font: 'var(--type-row-strong-font)', color: 'var(--color-ink)', fontVariantNumeric: 'tabular-nums' }}>₹11,200</span>
+      {/* THE COST, LINE BY LINE (20 Sep 2026). This was one row — "What it costs him · ₹11,200" — and a
+          total an advisor cannot take apart is a total they cannot defend when the client asks why.
+          `switchCost` splits it into the three rules that produce it, each row carrying the rule as its
+          quiet half. The total still leads, because the total is what the advisor approves.
+          It is also the fourth FigureRow instance the 19 Sep audit named (moves.jsx:70) and the one I
+          left as a spacing dissent: its label was medium where the other three were semibold. The owner
+          ruled on the other three on 20 Sep; this one follows them. */}
+      <div style={{ marginTop: 'var(--space-12)', display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
+        <MOVES_DS.FigureRow label="What it costs him" value={inr(MOVES_COST.totalRs)} />
+        {MOVES_COST.lines.map((l) => <MOVES_DS.FigureRow key={l.label} weight="quiet" label={l.label} value={l.value} />)}
+        <MOVES_DS.FigureRow weight="quiet" label="The SIP redirect" value="No cost" />
       </div>
-      {provenance && <div style={{ marginTop: 'var(--space-8)' }}><MOVES_DS.Provenance text={MOVES_PROVENANCE} /></div>}
+      {provenance && <div style={{ marginTop: 'var(--space-10)' }}><MOVES_DS.Provenance text={MOVES_PROVENANCE} /></div>}
     </MOVES_DS.Surface>
   );
 }

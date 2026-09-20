@@ -48,6 +48,87 @@ function TargetRow({ t, onPick, onAskCost }) {
   );
 }
 
+/* ── THE REBALANCE, ANSWER FIRST (R1–R4, docs/FUND-EXPLORER-V2-PLAN.md §4, ruled 20 Sep 2026) ──────
+   What was wrong with the version above: it opened with a QUESTION — how far — and three rule-named
+   targets, each with a headline, a rule, a paragraph of why, a cost or a refusal and a chip. Measured
+   on the rendered rail: three parallel options and ~180 words before a single move is shown. The rules
+   were right and the sequence was not — Journey B's version of the same rebalance is understood in one
+   line, because it leads with the answer.
+
+   So: diagnose, propose, cost, then offer the dials. The three rules survive as R4's chips, which is
+   where an alternative belongs — after a recommendation, not as a gate in front of one. REBALANCE_TARGETS
+   is still the arithmetic behind them.
+
+   AND SENTINEL RECOMMENDS THE ONE IT CAN COST. That is not a preference: the other two have no purchase
+   dates on folio 9142/28, and a product that recommends a move it cannot put a figure on has made the
+   figure optional. Tapping either of those still works and still gets the honest refusal (R5). */
+const REB_RECOMMENDED = REBALANCE_TARGETS.find(costed);
+
+/* R1 · WHERE HE IS. The cap split, because his mandate breach and both ceilings are written against
+   caps and the three-row Equity/Debt/Cash card never showed them — the research's own words: "only a
+   part of asset allocation shown that too it says equity no mention of mid large or small".
+
+   ONE HUE, and the breach is in the SENTENCE. `ChartBar` offers `tone='status'` for "the one bar that
+   crossed a limit" and it is used on no screen; a danger-coloured FILL would be the first in this
+   product and rule 2 reserves that colour for text. So the bar ranks by length like every other bar
+   here, and the sentence names the fund, the figure and both ceilings it crosses. */
+function RebalWhere({ continued = false }) {
+  const caps = SHARMA.allocationByCap || [];
+  const over = caps.find((c) => c.over);
+  const drift = driftPoints(SHARMA);
+  const say = [
+    `${SHARMA.name} agreed to ${SHARMA.mandate.equity}% equity and is at ${SHARMA.allocation.equity} — ${drift} points over.`,
+  ];
+  if (over) say.push(`The reason is one holding. Quant Small Cap is ${over.pct}% of his book, over the ${LIMITS.singleFund}% single-fund ceiling and the ${LIMITS.smallCapSleeve}% small-cap sleeve at the same time — two rules, one fund.`);
+  return (
+    <REB_DS.SentinelTurn continued={continued} say={say}
+      body={<REB_DS.ChartBar bars={caps.map((c) => ({ label: c.label, value: c.pct }))} orientation="horizontal" valueFormat={(v) => `${v}%`} run={false} />}
+      provenance={`As of ${SHARMA.portfolio.asOf} · his ${SHARMA.reporting.reported} of ${SHARMA.reporting.funds} funds reported · the caps are his, the ceilings are yours`} />
+  );
+}
+
+/* R2 + R3 · WHAT I WOULD DO, AND WHAT IT COSTS. One body with Journey B (`MovesBody`), so the figure on
+   this card and the figure on that one can never disagree — and the cost is the three rules that make
+   it, not a total an advisor cannot take apart. */
+function RebalPlan({ continued = true }) {
+  const t = REB_RECOMMENDED;
+  return (
+    <REB_DS.SentinelTurn continued={continued}
+      say={[`Two moves. Sell ${inr(t.amountRs)} of Quant Small Cap and buy ICICI Corporate Bond with it; redirect his ₹30,000 SIP the same way so it does not drift back.`,
+        `That clears the fund ceiling and lands him at equity ${t.equityAfter}% — past the ${SHARMA.mandate.equity}% he agreed to, as a consequence of the ceiling sizing the move rather than as a view about how much equity he should hold.`]}
+      body={<MovesBody />} />
+  );
+}
+
+/* R4 · THE DIALS. The two rules Sentinel could not cost, the destination, and the question behind the
+   recommendation — each one re-runs the plan as its own turn rather than replacing this one. The dark
+   CTA is the only one, and it is the approve. */
+const REB_DIALS = [
+  { id: 'mandate', label: 'Go all the way to his mandate' },
+  { id: 'band', label: 'Just inside the band' },
+  { id: 'fund', label: 'Move into a different fund' },
+  { id: 'why', label: 'Why these two moves?' },
+];
+function RebalDials({ continued = true, onDial, onApprove }) {
+  return (
+    <REB_DS.SentinelTurn continued={continued}
+      say="Those are the two I would place. If you want it sized by a different rule, say which."
+      chips={<REB_DS.ChipRow>{REB_DIALS.map((d) => <REB_DS.AnswerChip key={d.id} label={d.label} onClick={() => onDial && onDial(d)} />)}</REB_DS.ChipRow>}
+      cta={onApprove ? { label: 'Approve both moves', onClick: onApprove } : undefined} />
+  );
+}
+
+/* The whole arrival: one signature, three blocks, because it is one thing Sentinel said. */
+function RebalanceAnswer({ onDial, onApprove }) {
+  return (
+    <>
+      <RebalWhere />
+      <RebalPlan />
+      <RebalDials onDial={onDial} onApprove={onApprove} />
+    </>
+  );
+}
+
 const REB_STEPS = [
   { name: 'How far', short: 'How far do you want to take it?', progress: [1, 1],
     provenance: 'As of 30 Sep · from his Q3 statement, his mandate and your own limits',
@@ -123,12 +204,13 @@ function rebCarriedLines(fundId) {
       `I will not move ${SHARMA.name}'s money into it, so pick the size below and then tell me where it goes, or bring a fund that is on the shelf.`];
   }
   const holds = (SHARMA.holdings || []).some((h) => h.fundId === fundId);
-  return [`Moving into ${f.name}${holds ? ', which he already holds' : ''}.`,
-    `Still one question first: how far. ${f.category} at ${(perfOf(fundId) || {}).ter.toFixed(2)}% — I will size the switch against his mandate and cost it where the purchase dates are on file.`];
+  /* No "one question first" any more: the journey answers before it offers the dials (20 Sep). */
+  return [`Moving into ${f.name}${holds ? ', which he already holds' : ''} — ${f.category.toLowerCase()} at ${(perfOf(fundId) || {}).ter.toFixed(2)}%.`,
+    'I have sized the switch against his mandate and costed it where the purchase dates are on file. Here is what I would do.'];
 }
 const RebCarried = ({ fundId }) => {
   const lines = rebCarriedLines(fundId);
   return lines ? <REB_DS.SentinelTurn say={lines} /> : null;
 };
 
-Object.assign(window, { RebCarried, rebCarriedLines, SHARMA, REB_ASK, UncostedTurn, REB_STEPS, REB_TOTAL, REB_UNCOSTED, REB_PROVENANCE, REB_SUMMARY, TargetRow, RebalanceResult });
+Object.assign(window, { RebCarried, rebCarriedLines, REB_RECOMMENDED, REB_DIALS, RebalWhere, RebalPlan, RebalDials, RebalanceAnswer, SHARMA, REB_ASK, UncostedTurn, REB_STEPS, REB_TOTAL, REB_UNCOSTED, REB_PROVENANCE, REB_SUMMARY, TargetRow, RebalanceResult });

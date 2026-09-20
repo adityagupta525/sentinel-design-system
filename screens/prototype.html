@@ -77,10 +77,21 @@ const route = (text) => ROUTES.find((r) => r.re.test(text || ''));
    risk profile and Amit's proposal, and nothing for Sunita. Picking a client we have no data for is a
    real state and it says so, rather than opening an empty journey. */
 const NEEDS_CLIENT = { risk: 'meera', propose: 'amit', rebal: 'sharma', review: 'meera', drift: 'sharma', ledger: null };
-const namedClient = (text) => CLIENTS.find((c) => {
-  const first = c.name.replace(/^(Mr|Ms|Mrs)\.?\s+/i, '').split(' ')[0].toLowerCase();
-  return new RegExp(`\\b${first}\\b`, 'i').test(text || '');
-});
+/* WHO IS NAMED IN THE SENTENCE — and it took the FIRST word, which for "R. Sharma" is the initial.
+   Found by driving the rebalance on 20 Sep: typing "rebalance Sharma" asked "whose portfolio are we
+   rebalancing?", which is the one thing the WHO step promises never to do. Initials and titles are
+   dropped, and every remaining part of the name is a match.
+
+   AN AMBIGUOUS NAME BINDS NOBODY. Meera Nair and Sunita Nair share a surname, so "review Nair" matches
+   two clients — and silently taking the first is worse than asking. Two matches fall through to the
+   WHO step, which is exactly the surface for "which one". */
+const namedClient = (text) => {
+  const hit = CLIENTS.filter((c) => c.name.replace(/^(Mr|Ms|Mrs)\.?\s+/i, '').split(/\s+/)
+    .map((w) => w.replace(/\.$/, ''))
+    .filter((w) => w.length > 1)
+    .some((w) => new RegExp(`\\b${w}\\b`, 'i').test(text || '')));
+  return hit.length === 1 ? hit[0] : null;
+};
 
 /* What the advisor can do from here, and how to get back — derived from the state rather than written
    per screen, because a list of affordances kept by hand is a list that goes stale the first time a
@@ -103,17 +114,16 @@ function affordances(s) {
       back.push('Edit the answer above — the ending changes, the card does not', 'New thread (the app bar)');
       return { next, back, where: s.audience ? 'Thread' : 'Journey rail', journey: J, step: s.audience ? 'a review, with an ending' : 'one question: what is it for' };
     }
-    if (s.railJourney === 'rebal' && s.rebalPicked) {
-      /* The plan is a thread turn, not a rail step — so it goes back the way a thread does. */
-      next.push('Save the plan, or take the PDF', 'Approve both moves');
+    /* JOURNEY E IS A THREAD NOW (20 Sep 2026) — answer first, the three rules as dials underneath — so
+       every one of its states goes back the way a thread does, not the way a rail does. */
+    if (s.railJourney === 'rebal') {
+      if (s.rebalPicked) next.push('Save the plan, or take the PDF', 'Approve both moves');
+      else if (s.uncosted) next.push('Ask the RTA for the purchase dates', 'Take the one I can cost — the Approve comes back with it');
+      else next.push('Approve both moves', 'Size it by a different rule — two of the three have no cost', 'Move into a different fund', 'Why these two moves?');
       back.push('Edit the prompt above — sending it replaces the plan', 'New thread (the app bar)', 'Open the menu for saved work');
-      return { next, back, where: 'Thread', journey: J, step: 'a plan, costed' };
+      return { next, back, where: 'Thread', journey: J, step: s.rebalPicked ? 'a plan, costed' : s.uncosted ? 'a rule nobody can cost' : 'answered, with the dials under it' };
     }
     back.push('Edit any answer above — the journey reopens there', 'Leave by the menu or a new thread — this product has no back arrow');
-    if (s.railJourney === 'rebal') {
-      next.push('Take the target that has a cost', 'Ask for the purchase dates on the two that have none', 'Ask why there are three');
-      return { next, back, where: 'Journey rail', journey: J, step: 'one question: how far' };
-    }
     const isProp = s.railJourney === 'propose';
     next.push('Answer the question', 'Ask why this question exists', isProp ? 'Take the ceiling, or raise it first' : 'Skip to the result', 'Type an answer instead');
     return { next, back, where: 'Journey rail', journey: J, step: isProp ? 'one of four' : 'a question at a time' };
@@ -201,7 +211,7 @@ function Proto({ onEvent }) {
   const att = useAttachment();
   const log = (what, motion) => onEvent && onEvent(what, motion);
 
-  const state = { screen, journey, phase, artifact, fundPhase, carried };
+  const state = { screen, journey, phase, artifact, fundPhase, carried, uncosted, rebalPicked, railJourney };
 
   /* One entry point for every sentence in the product, typed or tapped. */
   const send = (text) => {
@@ -229,7 +239,11 @@ function Proto({ onEvent }) {
     if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal' || r.id === 'review') {
       setRailJourney(r.id);
       setDir('forward'); setScreen('rail');
-      log(`The rail opens — ${({ propose: 'four steps for a proposal', rebal: 'one question: how far', review: 'one question: what is it for', risk: 'sixteen for a risk profile' })[r.id]}; a journey is its own surface`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+      /* Journey E is a THREAD now, so it does not "open a rail" — it answers. The other three still do. */
+      log(r.id === 'rebal'
+        ? 'Sentinel answers — where he is, the two moves, what they cost, then the dials; there is no question to ask first'
+        : `The rail opens — ${({ propose: 'four steps for a proposal', review: 'one question: what is it for', risk: 'sixteen for a risk profile' })[r.id]}; a journey is its own surface`,
+        reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
       return;
     }
     if (screen !== 'thread') { setDir('forward'); setScreen('thread'); log('Thread in, Home out', reduced() ? 'a fade · 320ms' : 'ScreenStack forward: ds-screen-in over ds-screen-out · 320ms'); }
@@ -479,37 +493,48 @@ function Proto({ onEvent }) {
           </div>
         )} />
     : railJourney === 'rebal'
-    ? (rebalPicked
-        /* The costed target opens the plan as an ARTIFACT in the thread, which is where a rebalance the
-           advisor asked for cold belongs. The uncosted ones never get here: there is no path from them
-           to a confirm sheet, which is the journey's whole argument rather than a state of it. */
-        ? <Thread anchor="bottom" revision={`rebal-${!!att.file}`} onMenu={railMenu} onNew={goHome}
-            composer={<Composer value={draft} onChange={setDraft} placeholder="Ask Sentinel" onSend={(t) => { setDraft(''); send(t || draft); }} onAttach={att.onAttach} />}>
-            <AskTurn text={ask} costNote="Sending this replaces the plan below it."
-              onCancel={() => log('Edit cancelled — nothing was discarded', '')}
-              onSave={(next) => { log('Edit sent — the plan below it is replaced', 'the turn re-runs'); send(next); }} />
-            <RebalanceResult
+    /* JOURNEY E IS A THREAD, NOT A RAIL (20 Sep 2026). It was a rail because it opened with a question —
+       how far — and a rail is the surface for a question Sentinel must ask before it can answer. It can
+       answer: it recommends the move it can cost, and the two rules it cannot are dials underneath. So
+       there is nothing to ask, and nothing for a rail to carry. `railJourney` still routes it, because
+       that is how `send` classifies the sentence; only the surface changed. */
+    ? <Thread anchor={rebalPicked || uncosted ? 'bottom' : 2} revision={`rebal-${rebalPicked}-${uncosted ? uncosted.id : ''}-${!!att.file}`}
+        scrollRef={scroller} onMenu={railMenu} onNew={goHome}
+        composer={<Composer value={draft} onChange={setDraft} placeholder="Ask Sentinel" onSend={(t) => { setDraft(''); send(t || draft); }} onAttach={att.onAttach} />}>
+        <AskTurn text={ask} costNote="Sending this replaces the plan below it."
+          onCancel={() => log('Edit cancelled — nothing was discarded', '')}
+          onSave={(next) => { log('Edit sent — the plan below it is replaced', 'the turn re-runs'); send(next); }} />
+        {carried && <RebCarried fundId={carried} />}
+        {rebalPicked
+          /* Saved or approved, the plan becomes the ARTIFACT an advisor keeps — ResultCard, with its
+             provenance, a Save, a Download and exactly ONE approve. */
+          ? <RebalanceResult
               onSave={() => log('Saved the plan — it exists; nothing is placed', 'the badge becomes a date')}
               onDownload={() => { log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }}
               onPrimary={() => { setConfirm('moves'); log('Approve — the same sheet, the same disclosure and the same three rows as Journey B, because it is the same money', 'ds-sheet 300ms'); }} />
-            <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
-          </Thread>
-        : <LiveRail steps={REB_STEPS} total={REB_TOTAL} attachCaption="Here is his Q3 statement."
-            lead={carried ? <RebCarried fundId={carried} /> : null}
-            onEvent={log} onNew={goHome} onMenu={railMenu}
-            stepExtra={() => (
-              <React.Fragment>
-                <div>{REBALANCE_TARGETS.map((t) => (
-                  <TargetRow key={t.id} t={t}
-                    onPick={(x) => { setRebalPicked(true); log(`Took “${x.label}” — the one the book can cost`, 'the plan arrives as an artifact'); }}
-                    onAskCost={(x) => { setUncosted(x); log(`“${x.label}” is sized and not costed — and there is no path from it to a confirm`, 'the turn names the missing input'); }} />))}</div>
-                {uncosted && <div style={{ marginTop: 'var(--space-12)' }}>
-                  <UncostedTurn target={uncosted} continued={false}
-                    onChip={(l) => { if (/can cost/.test(l)) { setUncosted(null); setRebalPicked(true); log('Took the one with a cost instead', 'the plan arrives'); } else { log('Asked the RTA for the dates — this build has no RTA', ''); } }} />
-                </div>}
-              </React.Fragment>
-            )}
-            result={() => null} />)
+          : <RebalanceAnswer
+              /* NO APPROVE WHILE AN UNCOSTED MOVE IS ON SCREEN. The CTA commits the two costed moves,
+                 not the dial just asked for — but it sat ABOVE the refusal, so an advisor reading
+                 "Inside the band: I cannot cost it" had an Approve in view. Found by driving it.
+                 The refusal's own "Take the one I can cost" is the way back, and it brings the CTA
+                 with it. The journey's argument is that there is no path from an uncosted move to a
+                 confirm sheet; this is the screen keeping it rather than the code claiming it. */
+              onApprove={uncosted ? undefined : () => { setRebalPicked(true); log('Approve — the plan becomes the artifact, then the confirm', reduced() ? 'fades in' : 'ds-rise · 240ms'); }}
+              onDial={(d) => {
+                if (d.id === 'why') { setWhy({ title: 'Why these two moves?', body: [SKIPPED] }); log('Why these two — the explainer', 'ds-sheet 300ms'); return; }
+                if (d.id === 'fund') { log('“Move into a different fund” — the fund picker, not built on this route yet', ''); return; }
+                /* The two rules Sentinel cannot cost. Sized, refused a figure, and the nearest real
+                   thing offered — and there is no path from here to a confirm sheet. */
+                const t2 = REBALANCE_TARGETS.find((x) => x.id === d.id);
+                setUncosted(t2);
+                log(`“${d.label}” is sized and not costed — and there is no path from it to a confirm sheet`, '');
+              }} />}
+        {uncosted && !rebalPicked && (
+          <UncostedTurn target={uncosted}
+            onChip={(l) => { if (/can cost/.test(l)) { setUncosted(null); log('Back to the one with a cost', ''); } else log(`“${l}” — this build has no RTA`, ''); }} />
+        )}
+        <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+      </Thread>
     : railJourney === 'propose'
     ? <LiveRail steps={PROP_STEPS} total={PROP_TOTAL} attachCaption="Here is the mandate he signed."
         lead={carried ? <PropCarried fundId={carried} /> : null}
