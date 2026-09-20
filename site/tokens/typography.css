@@ -1,0 +1,88 @@
+/* Type — two faces. Urbanist for all UI text (400/500/600/700), Darker Grotesque
+   Medium (a condensed sans) for display numerals and the greeting.
+
+   THE RAMP (v11). Sizes and leadings used to exist as loose values, so nothing stopped 14/22 in one
+   card and 14/20 in another. Apple, Polaris and Stripe all publish named roles that carry size,
+   leading, weight and tracking together; these are ours, named for the JOB rather than the value —
+   the same correction the colour audit made when it deleted appearance-named colour tokens.
+   No value changed: every number below already existed in the product. What changed is that a
+   component now asks for a role instead of a number. */
+:root{
+--font-ui:'Urbanist',sans-serif;
+--font-display:'Darker Grotesque',sans-serif;
+
+--weight-regular:400;
+--weight-medium:500;
+--weight-semibold:600;
+--weight-bold:700;
+--weight-display:500;
+
+/* Raw steps — kept, because the ramp is composed of them and a one-off must still name a real step. */
+--text-10:10px;   /* Badge label, OVER CEILING pill */
+--text-11:11px;   /* Eyebrow, Provenance, disclosures */
+--text-11-5:11.5px; /* v12 · the one non-integer step, and it earned the slot. Seven components were
+   already setting 11.5 by hand with the SAME weight and the SAME leading — medium / 16 — differing
+   only in colour: MessageActions, ChartLegend (label and value), ChartLine's caption, SearchField and
+   ListRow (both meta slots). readme.md has listed it among the literal sizes since v1 and §231
+   specifies it for the legend; contradictions 22 called it a one-off to delete. Seven identical uses
+   is not a one-off, it is a role nobody had named, so it is named below rather than removed — which
+   would have restyled five components to settle a bookkeeping argument.
+   It is the only half-step, and the product renders at 2x/3x, where it resolves exactly. */
+--text-12:12px;   /* chip labels, Sentinel label, parse note */
+--text-13:13px;   /* rows, callout body, meter labels */
+--text-14:14px;   /* body, bubbles, composer input */
+--text-15:15px;   /* move-card title, journey card label */
+--text-16:16px;   /* card title, drawer wordmark */
+--text-18:18px;   /* sheet title, client name */
+--display-24:24px; /* MoveCard numeral */
+--display-27:27px; /* GreetingDivider */
+--display-40:40px; /* AttributionChart total */
+--display-64:64px; /* HeroNumberCard */
+
+--leading-14:14px;
+--leading-15:15px;
+--leading-16:16px;
+--leading-17:17px;
+--leading-18:18px;
+--leading-19:19px;
+--leading-20:20px;
+--leading-22:22px;
+--leading-24:24px;
+
+--tracking-eyebrow:0.08em;
+--tracking-pill:0.04em;
+
+/* ── The roles. Ask for one of these, never for a number. ───────────────────────────────
+   Each role binds size · leading · weight · family in ONE declaration: font: var(--type-row-font).
+   Thirteen shorthands and nothing else — the first draft of this ramp also published --type-row-size,
+   --type-row-leading and --type-row-weight per role, and the closing dead-token count showed all 43
+   of them unreferenced on the same day they were written, because a component always wants the whole
+   role. Cut rather than kept, so the ramp is 12 tokens a reader can hold in their head. Anything
+   needing one axis alone reaches for the raw step above it, which is what those are for. */
+--type-display-font:var(--weight-display) var(--display-64)/1 var(--font-display);
+--type-total-font:var(--weight-display) var(--display-40)/1 var(--font-display);
+--type-greeting-font:var(--weight-display) var(--display-27)/1 var(--font-display);
+--type-figure-font:var(--weight-display) var(--display-24)/1 var(--font-display);
+--type-sheet-title-font:var(--weight-semibold) var(--text-18)/var(--leading-24) var(--font-ui);
+--type-title-font:var(--weight-medium) var(--text-16)/var(--leading-24) var(--font-ui);
+--type-body-font:var(--weight-regular) var(--text-14)/var(--leading-20) var(--font-ui);
+--type-body-strong-font:var(--weight-medium) var(--text-14)/var(--leading-20) var(--font-ui);
+--type-row-font:var(--weight-medium) var(--text-13)/var(--leading-18) var(--font-ui);
+/* THE RAMP ALREADY BELIEVED THIS EXISTED (F-52, 19 Sep 2026). Seven files asked for it — including
+   ConfirmSheet.jsx, a system component, and ConfirmSheet's own spec page, which listed it in its TOK
+   array. It was never published. A `font:` shorthand with an undefined variable is an INVALID
+   declaration, so all fourteen call sites fell back to the initial value and rendered at
+   `400 16px/normal` — a size, weight and leading on no line of this ramp, and LARGER than the body
+   text beside them. Measured live on screens/journey-e/rebalance.html.
+   Defined the way the ramp already pairs strong with plain: body/body-strong differ by one weight step
+   and nothing else, so row/row-strong do too. This is completing the ramp, not adding to it. */
+--type-row-strong-font:var(--weight-semibold) var(--text-13)/var(--leading-18) var(--font-ui);
+--type-label-font:var(--weight-bold) var(--text-12)/var(--leading-16) var(--font-ui);
+--type-caption-font:var(--weight-regular) var(--text-11)/var(--leading-15) var(--font-ui);
+--type-meta-font:var(--weight-medium) var(--text-11-5)/var(--leading-16) var(--font-ui);
+--type-eyebrow-font:var(--weight-bold) var(--text-10)/var(--leading-14) var(--font-ui);
+}
+body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* Tabular figures wherever a number can change under the reader: every count-up, every column,
+   every chart label. chartMath exports the same guarantee as a style object for inline use. */
+.ds-tabular,[data-tabular]{font-variant-numeric:tabular-nums}

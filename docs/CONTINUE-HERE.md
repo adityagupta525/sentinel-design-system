@@ -23,7 +23,7 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 | Parallel | **86 of 94** on a screen. The eight are named in contradiction 64, in three kinds |
 | Findings | **F-1 … F-72, none open** |
 | Contradictions | **9 open**, every one dated and triggered |
-| Artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — **version 29**, a grouped cover rather than a file tree, 254 files. Rebuild with `npm run build:artifact`, then republish with `url` |
+| Artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — **version 33**, a grouped cover rather than a file tree, 254 files. Rebuild with `npm run build:artifact`, then republish with `url` |
 | Deployment | `vercel.json` builds the same staged site. `docs/DEPLOY.md` covers it, and answers the `.apk` question honestly |
 | Handoff | `npm run build:handoff` → one folder for a development team. `dist/` carries the two single code files the owner asked for by name |
 

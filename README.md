@@ -16,17 +16,18 @@ Pick the row that describes you. Each is a short path, not a tour.
 
 | You are | Start here | Then |
 |---|---|---|
+| **Just looking** — you downloaded this folder and want to see it | **open `site/index.html`** — double-click it. No install and no server. React and the fonts still come from a CDN, so stay online | every screen, every journey, and all 94 component specifications |
 | **Driving the product** — demo, review, or seeing what it does | `npm run preview` → [the prototype](http://localhost:4321/screens/prototype.html) | **[`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md)** — every sentence that reaches every screen |
 | **Building it** — a development team | **[`docs/HANDOVER.md`](docs/HANDOVER.md)** — install, import, the four rules, what gets a PR sent back | `npm run build:handoff` → one folder with the system, the screens and the rules |
 | **Designing on it** | **[`design-system/readme.md`](design-system/readme.md)** — the specification, 43 KB | [the component pages](http://localhost:4321/pages/00-Index.html), and `CLAUDE.md` for the working rules |
-| **Sharing it** — a link for the team | **[`docs/DEPLOY.md`](docs/DEPLOY.md)** — the artifact, a Vercel deployment, and the honest answer on an `.apk` | `npm run build:artifact` |
+| **Sharing it** — a link for the team | **[`docs/DEPLOY.md`](docs/DEPLOY.md)** — the artifact, a Vercel deployment, and the honest answer on an `.apk` | `npm run build:artifact` rebuilds `site/` |
 
 ```bash
 npm install
 npm run preview          # http://localhost:4321
 npm run check            # barrel · bundle · integrity · adherence
 npm run build:handoff    # handoff/ — the folder you give a development team
-npm run build:artifact   # artifact/ — the shareable site, and what Vercel serves
+npm run build:artifact   # rebuilds site/ — the shareable copy, and what Vercel serves
 ```
 
 ---
@@ -34,13 +35,31 @@ npm run build:artifact   # artifact/ — the shareable site, and what Vercel ser
 ## What is in here
 
 ```
-design-system/      the system: 97 components, tokens, guidelines, per-component spec pages
+site/               THE ONE TO OPEN — the whole thing as a self-contained folder (committed)
+design-system/      the system: 94 components, tokens, guidelines, per-component spec pages
 screens/            every screen and journey, plus the single fixture they all read
 docs/               the plans, the research, the findings, the demo script
 dist/               two single files: the system, and every screen
 tools/              the build and the gates
 studio/             the research the product rests on
 ```
+
+### `site/` — why a build output is committed
+
+Everywhere else in this repository the source is the truth and build output is ignored. `site/` is the
+one exception, and it is deliberate.
+
+The pages under `design-system/pages/` and `screens/` compile their JSX **in the browser**, so a source
+edit shows up on reload with no build step. That is right for working here, and it is why `npm run
+preview` exists. It is also why double-clicking one of those files does nothing useful: over a `file://`
+URL the origin is opaque, the compiler's request for the `.jsx` is refused by CORS, and the page comes
+up blank.
+
+`site/` is the same 131 pages with the JSX already compiled, the files each page reads inlined, and the
+one icon it needs embedded. Clone the repository, double-click `site/index.html`, and it opens. Measured,
+not assumed: all 131 render over `file://` with no console error and no failed request.
+
+The internet is still wanted for React and the fonts, which come from a CDN.
 
 ### The design system — 94 components
 

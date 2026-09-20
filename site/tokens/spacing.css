@@ -1,0 +1,63 @@
+/* Spacing, radius and the dimensional vocabulary.
+
+   THE SCALE (v11). 4 / 8 / 12 / 16 / 20 / 24 is the scale. 2, 3, 5, 13 and 14 survive as named
+   EXCEPTIONS because the product genuinely uses them (a 2px rail, a 0.5px-adjacent 3px inset, a 13px
+   pill inset, a 14px card padding) — but each one must be justified on the page that uses it, and a
+   new component may not reach for one without saying why. 6 and 10 are the two tolerated in-betweens
+   for chip and card internals. No value changed here; what changed is that the off-grid steps are
+   now labelled as debts rather than sitting in the scale as equals. */
+:root{
+/* The scale */
+--space-4:4px;--space-8:8px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;
+/* Tolerated in-betweens */
+--space-6:6px;--space-10:10px;
+/* Exceptions — justify at the point of use */
+--space-2:2px;--space-3:3px;--space-5:5px;--space-13:13px;--space-14:14px;
+
+--screen-w:375px;--screen-h:812px;
+--gutter:16px;            /* horizontal page padding */
+--stack:12px;             /* gap between thread messages */
+--chip-gap:8px;
+
+--h-status:44px;--h-topbar:44px;--h-home:24px;
+--h-touch:44px;           /* the floor. Pressable expands to it; nothing operable is smaller. */
+--h-row:42px;             /* SuggestionRow, AllocationCard rows */
+--h-row-md:56px;          /* ListRow, one line */
+--h-row-lg:46px;          /* Jump-back-in / drawer rows */
+--h-row-xl:52px;          /* holdings, compliance, figure-comparison rows */
+--h-row-2l:72px;          /* ListRow with a subtitle — every client, thread and fund row. F-21: the most
+   common row in the product had no token, and `lg` was already taken by the 46px row above. Named 2l
+   (two lines) rather than renaming -lg, because the 46 and 52 rows were still raw literals in ui_kits
+   when this landed and are wired to -lg / -xl in the same commit; the name clash is contradiction 57. */
+--h-chip:36px;--h-filter-chip:32px;--h-cta:48px;--h-icon-btn:42px;
+--h-chip-sm:28px;
+--w-drawer:300px;         /* v12 · the menu panel. The kits and readme.md:56 always said 300; now it has a name, so a
+   screen cannot drift it to 280 without saying so. */
+/* Layers and scrims — the modal vocabulary, so a component can be written with zero raw values. Two
+   layers only: the scrim, and the modal surface above it. readme.md:206: sheets carry the scrim at 40%,
+   the drawer at 25%, and nothing else carries one. ExplainerSheet still writes 20 / 30 / 0.4 raw; it
+   re-points to these on its next touch, with the screenshot hash proving the no-op. */
+--z-scrim:20;--z-modal:30;
+--scrim-sheet:0.4;--scrim-drawer:0.25;         /* v12 · ClientChip's box and ResponseFeedback's thumb targets. Both were
+   setting 28 by hand, the only box in the product outside this vocabulary. The visual box is 28; the
+   TARGET is still 44 — ClientChip's own header says so and both thumbs sit inside Pressable. Naming
+   it changes nothing visually and stops the value drifting when the row rhythm is next tuned. */
+
+--radius-6:6px;           /* bubble tail corner */
+--radius-8:8px;           /* keyboard keys, tooltip */
+--radius-10:10px;         /* detour banner */
+--radius-12:12px;         /* show-all button, locked figure */
+--radius-16:16px;         /* cards, dark CTA, callouts — load-bearing */
+--radius-20:20px;         /* composer, bubble — load-bearing */
+--radius-24:24px;         /* bottom sheet top corners */
+--radius-44:44px;         /* phone frame */
+--radius-full:9999px;
+
+--border-hairline:0.5px;  /* ROW DIVIDERS AND CARD EDGES ONLY. Not chart data-ink: a baseline or a
+   track rail stays at --border-1, because --color-line measures 1.22:1 and halving a chart axis in a
+   perceivability pass is the opposite of the point. v11's blanket height:1 conversion did exactly that
+   to ChartBar's baseline and Dumbbell's rail before it was caught; both are back at --border-1. */
+--border-1:1px;
+--border-focus-width:2px; /* a focus ring must itself clear 3:1 — 2px solid is what does it */
+
+}

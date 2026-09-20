@@ -1,0 +1,103 @@
+/* Shadows, motion, texture — verbatim from src/lib/ui.tsx and src/index.css. */
+:root{
+--shadow-card:0px 1px 2px 0px rgba(37,31,27,0.05);
+--shadow-card-soft:0px 1px 2px 0px rgba(37,31,27,0.04);
+--shadow-composer:0px 16px 30px -18px rgba(37,31,27,0.24),0px 2px 4px 0px rgba(37,31,27,0.05);
+--shadow-float:0px 4px 12px -4px rgba(37,31,27,0.24);
+--shadow-bar:0px 2px 8px -2px rgba(37,31,27,0.12);
+--shadow-drawer:24px 0px 60px -24px rgba(37,31,27,0.4);
+--shadow-phone:0px 40px 80px -24px rgba(37,31,27,0.45);
+--shadow-key:0px 1px 1px rgba(37,31,27,0.08);
+/* --focus-ring is the HALO ONLY. Measured 1.22:1 against canvas (bronze at 24% composites to #e7ddd4),
+   so on its own it fails WCAG 2.4.13 / 1.4.11's 3.0 floor for a focus indicator. Pressable pairs it
+   with a solid --border-focus ring at --border-focus-width, which measures 6.59 / 7.24 and is what
+   actually carries the focus state. Never use this token alone. */
+--focus-ring:0 0 0 3px rgba(182,147,119,0.24);/* @kind shadow */
+
+--ease:cubic-bezier(0.2,0.8,0.2,1);/* @kind other */
+--dur-press:150ms;/* @kind other */
+--dur-fast:200ms;/* @kind other */
+--dur-enter:240ms;/* @kind other */
+--dur-screen:320ms;/* @kind other */
+/* --dur-canvas deleted v11: contradiction 40 removed the canvas from the product in v5 and its
+   duration outlived it by two passes. Nothing referenced it. */
+--dur-bar:480ms;/* @kind other */
+--dur-count:600ms;/* @kind other */
+--press-scale:0.98;/* @kind other */
+--press-scale-icon:0.94;/* @kind other */
+
+--paper-texture:radial-gradient(rgba(37,31,27,0.045) 1px,transparent 1px);/* @kind other */
+--paper-texture-size:3px 3px;/* @kind other */
+}
+@keyframes sentinel-shimmer{0%{opacity:.35}50%{opacity:1}100%{opacity:.35}}
+@keyframes dot-pulse{0%,100%{opacity:.28}50%{opacity:1}}
+@keyframes ds-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ds-fade{from{opacity:0}to{opacity:1}}
+/* ds-scrim — a fade that ends at the element's OWN opacity, not at 1. A keyframe with a `from` and no `to`
+   animates to the underlying computed value, so a scrim declared at --scrim-drawer (0.25) fades to 0.25.
+   Why it exists (F-27, 18 Sep 2026): ExplainerSheet's scrim used ds-fade with fill-mode `both`, and
+   `both` holds the keyframe's final value — 1 — forever. Measured: the sheet's scrim computes to
+   opacity 1, not the 0.4 its page states; the Drawer inherited the same line and the same result.
+   Opacity only, so reduced motion needs no redefinition. */
+@keyframes ds-scrim{from{opacity:0}}
+@keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* Screen transitions. readme.md has specified these since v1 — "screens slide 100% in / -30% out at
+   320ms" — and no keyframe carried them: the app kit defined its own private copy and every other
+   surface had nothing to reach for. Named here so a journey is assembled from the system rather than
+   invented per screen. The outgoing screen parallaxes to -30% and holds its opacity; it is covered,
+   not faded. There is no scale and no blur: this is the same slide the phone platform makes, not a
+   zoom, and an artifact does NOT use it (it expands in place — see ArtifactCard). */
+@keyframes ds-screen-in{from{transform:translateX(100%);opacity:.6}to{transform:none;opacity:1}}
+@keyframes ds-screen-out{from{transform:translateX(0)}to{transform:translateX(-30%)}}
+/* DataTable's one-time nudge: a hint that the row continues past the right edge, fired once on first
+   render and only when there is something off-screen to find. Global and identical for every table, so
+   it lives here rather than as a <style> inside the component — the same correction Pressable and Pill
+   both took. Under reduced motion the fade carries the same fact on its own. */
+@keyframes ds-table-nudge{0%{transform:translateX(0)}35%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+.ds-table-nudge>*{animation:ds-table-nudge 640ms var(--ease) both}
+/* Pressable's two guarantees live here rather than inside the component, because a <style> tag
+   rendered as a child of <button> is an invalid content model (metadata inside phrasing content) and
+   duplicates once per instance — a page of 53 range chips carried 53 identical copies. The rule is
+   global and identical for every instance, so it belongs in the stylesheet.
+   The focus ring is an OUTLINE, not a box-shadow: an inline style.boxShadow from a caller beats a
+   stylesheet declaration, so a box-shadow ring vanished on every chip that passed its own ring.
+   2px solid --border-focus measures 6.59 / 7.24 and satisfies WCAG 2.4.7, 2.4.13 and 1.4.11 together;
+   --focus-ring is the halo beside it and fails that floor alone (1.22:1). */
+.ds-pressable{outline:none}
+.ds-pressable:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+.ds-pressable[data-hit]::before{content:"";position:absolute;left:calc(-1 * var(--hit-x));right:calc(-1 * var(--hit-x));top:calc(-1 * var(--hit-y));bottom:calc(-1 * var(--hit-y))}
+/* Pill extends vertically only — its width is its label, and a horizontal extension would overlap the
+   next chip in a row. --hit is set per instance by the component. */
+.ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}
+/* THE FOCUS RING REACHED NEITHER OF THESE (20 Sep 2026, measured by pixel-diffing a focused control
+   against a blurred one: byte-identical on four pages). `.ds-pressable:focus-visible` above is the
+   system's only focus rule, and `Pill` carries `ds-pill` and never `ds-pressable` — so every chip in
+   the product, 303 of them across 15 of 18 screens, showed nothing at all on keyboard focus. A row
+   was worse: `ListRow` set `outline: none` INLINE, which beats a stylesheet, so it killed even the
+   browser's own default. Rule: nothing but this file draws a focus ring, and this file has to
+   actually reach the things that need one. Same ring, same offset, same halo — nothing about how a
+   chip looks at rest changes. */
+.ds-pill:focus-visible,
+.ds-listrow:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+/* Both composers shipped this identical one-line sheet inside themselves, so a thread carrying a
+   Composer and a MoneyComposer carried two copies of the same rule. Same correction as .ds-pill. */
+.ds-composer-input::placeholder{color:var(--color-muted)}
+/* Reduced motion — the law, implemented, not asserted. Every looping or entrance animation in the
+   system resolves to its final state with an opacity fade and nothing else: no translate, no scale,
+   no rotation, no pulse. Keyframes are redefined rather than cancelled, so nothing is left mid-way
+   through a transform. Component-local keyframes (ds-artifact, ds-sheet, ds-tip-*, ds-draw, ds-spin, ds-drawer)
+   carry the same override inside their own <style>, because those sheets are appended after this one. */
+@media (prefers-reduced-motion:reduce){
+@keyframes sentinel-shimmer{0%,100%{opacity:1}}
+@keyframes dot-pulse{0%,100%{opacity:1}}
+@keyframes ds-rise{from{opacity:0}to{opacity:1}}
+@keyframes ds-grow{from{transform:scaleX(1)}to{transform:scaleX(1)}}
+@keyframes ds-screen-in{from{opacity:0;transform:none}to{opacity:1;transform:none}}
+@keyframes ds-screen-out{from{transform:none}to{transform:none}}
+*,*::before,*::after{transition-duration:1ms!important;scroll-behavior:auto!important}
+  /* ds-table-nudge was the one keyframe in this system with no answer here (20 Sep 2026). The
+     `transition-duration: 1ms` reset above kills transitions, not animations, so a table still slid
+     10px sideways under reduce — and the comment beside it claimed "the fade carries the same fact
+     on its own", which it did not because the fade was never the thing moving. */
+  @keyframes ds-table-nudge { 0%, 100% { transform: none; } }
+}

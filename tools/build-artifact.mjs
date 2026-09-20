@@ -12,12 +12,12 @@
  * underscore is not servable: _ds_bundle.js, _ds_manifest.json, pages/_index.json.
  */
 import { cp, mkdir, rm, writeFile, readFile, readdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = join(ROOT, 'artifact');
+const OUT = join(ROOT, 'site');
 const walk = async (dir, filter, acc = []) => {
   for (const e of await readdir(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
@@ -101,15 +101,34 @@ for (const p of await walk(join(OUT, 'screens'), (p) => p.endsWith('.html'))) {
 }
 /* Now that every path is final, compile the pages' JSX into the pages. See
    `tools/precompile-jsx.mjs` for why the artifact may not carry a compiler. */
-const { precompilePage } = await import('./precompile-jsx.mjs');
-let tags = 0, pagesTouched = 0;
+/* The staging does not carry `design-system/assets/` — there is no room under the 255-file limit and
+   one page uses one file from it. Over http the published copy still resolved it, because a file
+   published once is kept; a downloaded folder has no such luck and showed a broken image. The svg
+   goes into the page instead of into the tree, which costs no file slot. */
+let assetsInlined = 0;
+for (const p of await walk(OUT, (p) => p.endsWith('.html'))) {
+  let s = await readFile(p, 'utf8');
+  const next = s.replace(/(?:\.\.\/)*assets\/([\w/.-]+\.svg)/g, (m, rel) => {
+    const src = join(ROOT, 'design-system', 'assets', rel);
+    if (!existsSync(src)) return m;
+    assetsInlined += 1;
+    return `data:image/svg+xml;base64,${readFileSync(src).toString('base64')}`;
+  });
+  if (next !== s) await writeFile(p, next);
+}
+console.log(`inlined ${assetsInlined} asset reference(s) as data URIs`);
+
+const { precompilePage, inlineFetches } = await import('./precompile-jsx.mjs');
+let tags = 0, pagesTouched = 0, cached = 0;
 for (const p of await walk(OUT, (p) => p.endsWith('.html'))) {
   const { html, compiled } = precompilePage(await readFile(p, 'utf8'), p);
-  if (!compiled) continue;
-  await writeFile(p, html);
-  tags += compiled; pagesTouched += 1;
+  const withCache = inlineFetches(html, p, OUT);
+  if (!compiled && !withCache.inlined) continue;
+  await writeFile(p, withCache.html);
+  tags += compiled; cached += withCache.inlined; if (compiled) pagesTouched += 1;
 }
 console.log(`precompiled ${tags} JSX blocks across ${pagesTouched} pages — no compiler ships`);
+console.log(`inlined ${cached} fetched files, so a downloaded folder opens without a server`);
 
 /* THE COVER IS WRITTEN LAST, because this script starts by deleting `artifact/` — the first run
    wrote it before the rebuild and the rebuild ate it. `tools/artifact-cover.py` is the generator; it
@@ -118,4 +137,4 @@ const { execFileSync } = await import('node:child_process');
 execFileSync('python3', [join(ROOT, 'tools', 'artifact-cover.py')], { cwd: ROOT, stdio: 'inherit' });
 
 const n = (await walk(OUT, () => true)).length;
-console.log(`artifact/: ${n} files staged (limit 255)`);
+console.log(`site/: ${n} files staged (limit 255)`);

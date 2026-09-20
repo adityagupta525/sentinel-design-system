@@ -1,0 +1,3575 @@
+<!-- @dsCard group="Screens" viewport="1500x2300" name="Journey F · the client review" subtitle="One question — what is this for — and a review whose finding is a figure that is not on file" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, Dock, HomeIndicator, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey F · the client review — Sentinel screens</title><link rel="stylesheet" href="../../styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../../ds_bundle.js"></script>
+<script>window.__screenRequires = ['AnswerChip','AttachmentTurn','Badge','ChipRow','Composer','ConcentrationBar','ConstraintCallout','DarkButton','Dock','DownloadAction','ExplainerSheet','FileUpload','HeroNumberCard','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepComposer','StepTrace','TopBar','UserBubble','UserTurn'];</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* screens/ own page shell. Deliberately not design-system/pages/page-kit.jsx: that kit is built for
+   component spec pages and links back to 00-Index.html, which does not exist from here.
+
+   What it gives a screen page: a header that states the screen's job, a State frame that puts a real
+   375x812 PhoneFrame under a caption, and two tables — motion with its reduced-motion answer, and
+   provenance for every figure on the screen. Tokens only; no raw colour or type value. */
+/* THE FOUR TURN COMPONENTS THE SCREENS WERE CARRYING THEMSELVES, destructured once here because
+   screen-kit is the one file every screen page loads (20 Sep 2026). `UserTurn`, `AttachmentTurn`,
+   `RefusalTurn` and `StepComposer` were defined inside `screens/` until today and are the system's
+   now — the owner's rule: anything built on a screen that belongs in the design system goes into the
+   design system. Every page compiles into ONE Babel scope, so this is the only place they may be
+   named; a second `const UserTurn` anywhere under screens/ renders nothing at all. */
+var _ref = window.SentinelDesignSystem_0682a2 || {},
+  PhoneFrame = _ref.PhoneFrame;
+/* Named on `window` rather than destructured into a const, for the reason the linter states plainly:
+   every screen file is linted on its own, so a const here reads as unused and a use over there reads
+   as undefined. `window` is what the one Babel scope actually shares, and the adherence config lists
+   these four as screen globals — the same way it lists every other cross-file name. */
+Object.assign(window, {
+  UserTurn: (window.SentinelDesignSystem_0682a2 || {}).UserTurn,
+  AttachmentTurn: (window.SentinelDesignSystem_0682a2 || {}).AttachmentTurn,
+  RefusalTurn: (window.SentinelDesignSystem_0682a2 || {}).RefusalTurn,
+  StepComposer: (window.SentinelDesignSystem_0682a2 || {}).StepComposer
+});
+var FONT = 'var(--font-ui)';
+var muted = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12.5,
+  lineHeight: '18px',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+function ScreenShell(_ref2) {
+  var journey = _ref2.journey,
+    n = _ref2.n,
+    name = _ref2.name,
+    job = _ref2.job,
+    without = _ref2.without,
+    children = _ref2.children;
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = (window.__screenRequires || []).filter(function (c) {
+    return !ns[c];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 1360,
+      margin: '0 auto',
+      padding: '28px 24px 72px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 26
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, journey, " \xB7 ", n), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("a", {
+    href: "../index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "Screens \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)',
+      maxWidth: '70ch'
+    })
+  }, job), without && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '70ch'
+    })
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      fontWeight: 600,
+      color: 'var(--color-ink-soft)'
+    }
+  }, "Without this screen"), " the advisor ", without)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-12)',
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This screen needs ", missing.join(', '), ". Run ", /*#__PURE__*/React.createElement("code", null, "npm run build:bundle"), " and reload \u2014 the screen is not broken, the build is behind it.")) : children);
+}
+function Section(_ref3) {
+  var title = _ref3.title,
+    sub = _ref3.sub,
+    children = _ref3.children;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4,
+      borderBottom: '1px solid var(--color-line)',
+      paddingBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 15,
+      lineHeight: '20px',
+      color: 'var(--color-ink)'
+    }
+  }, title), sub && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '78ch'
+    })
+  }, sub)), children);
+}
+
+/* One state: the caption says which state, the note says why it looks like that. The phone is the
+   real component tree at the real 375x812, never a picture of one. */
+function State(_ref4) {
+  var label = _ref4.label,
+    _ref4$tone = _ref4.tone,
+    tone = _ref4$tone === void 0 ? 'ok' : _ref4$tone,
+    note = _ref4.note,
+    children = _ref4.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8,
+      width: 375
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 'var(--radius-full)',
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, label)), /*#__PURE__*/React.createElement(PhoneFrame, null, children), note && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      width: 375
+    })
+  }, note));
+}
+function StateRow(_ref5) {
+  var children = _ref5.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 28,
+      alignItems: 'flex-start'
+    }
+  }, children);
+}
+function Note(_ref6) {
+  var title = _ref6.title,
+    children = _ref6.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-16)',
+      background: 'var(--color-bubble)',
+      padding: 14,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 5,
+      maxWidth: '82ch'
+    }
+  }, title && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, title), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, children));
+}
+function Table(_ref7) {
+  var head = _ref7.head,
+    rows = _ref7.rows;
+  var cell = {
+    fontFamily: FONT,
+    fontSize: 12,
+    lineHeight: '17px',
+    padding: '9px 12px',
+    verticalAlign: 'top',
+    textAlign: 'left'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      borderCollapse: 'collapse',
+      width: '100%',
+      minWidth: 640,
+      background: 'var(--color-surface)',
+      borderRadius: 'var(--radius-12)'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, head.map(function (h) {
+    return /*#__PURE__*/React.createElement("th", {
+      key: h,
+      style: _objectSpread(_objectSpread({}, cell), {}, {
+        fontWeight: 700,
+        fontSize: 10.5,
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+        color: 'var(--color-muted)',
+        borderBottom: '1px solid var(--color-line)'
+      })
+    }, h);
+  }))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r, i) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, r.map(function (c, j) {
+      return /*#__PURE__*/React.createElement("td", {
+        key: j,
+        style: _objectSpread(_objectSpread({}, cell), {}, {
+          fontWeight: j === 0 ? 600 : 400,
+          color: j === 0 ? 'var(--color-ink)' : 'var(--color-ink-soft)',
+          borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none'
+        })
+      }, c);
+    }));
+  }))));
+}
+
+/* THE INERT COMPOSER A FROZEN SPECIMEN DRAWS — written once (20 Sep 2026).
+
+   `const Ask = …` was declared TEN times across ten screen pages, seven of them byte-for-byte:
+   05-decide:19 · funds:21 · rebalance:20 · proposal:19 · review:19 · ledger:22 · going-back:24, with
+   03-thread-answer:23 differing by a placeholder and risk-profile:20 / refusals:20 branching to
+   MoneyComposer. Ten copies of one decision, and the decision is rule 3 — every screen has a
+   composer — drawn rather than wired, because a frozen specimen has nothing to send to.
+
+   IT BELONGS HERE AND NOT IN design-system/. The system already ships `Composer`; a "pretend
+   composer" beside it would be a one-off component in a system that has a rule against those. This
+   is the screens' own shared layer, which exists for exactly this.
+
+   Read through a namespaced const, never destructured: every .jsx and inline script a page loads
+   compiles into ONE Babel scope, and ten of these pages already declare `const { Composer, … }` at
+   their top level. A second declaration of that name here renders the page blank. */
+var KIT_DS = window.SentinelDesignSystem_0682a2 || {};
+function FrozenAsk(_ref8) {
+  var _ref8$about = _ref8.about,
+    about = _ref8$about === void 0 ? false : _ref8$about,
+    _ref8$money = _ref8.money,
+    money = _ref8$money === void 0 ? false : _ref8$money,
+    placeholder = _ref8.placeholder,
+    onAttach = _ref8.onAttach;
+  /* Money is a different control, not a different placeholder: MoneyComposer owns its own value and
+     hands back a formatted rupee string, which is why it takes no value/onChange even when wired. */
+  if (money) return /*#__PURE__*/React.createElement(KIT_DS.MoneyComposer, {
+    onSend: function onSend() {},
+    placeholder: "or type the amount"
+  });
+  return /*#__PURE__*/React.createElement(KIT_DS.Composer, {
+    value: "",
+    onChange: function onChange() {},
+    onSend: function onSend() {},
+    onAttach: onAttach,
+    placeholder: placeholder || (about ? 'Ask about this' : 'Ask Sentinel')
+  });
+}
+var MotionTable = function MotionTable(_ref9) {
+  var rows = _ref9.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Motion', 'Property', 'Duration', 'Under reduced motion'],
+    rows: rows
+  });
+};
+var ProvenanceTable = function ProvenanceTable(_ref0) {
+  var rows = _ref0.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Figure on screen', 'Where it comes from', 'Shown to the advisor as'],
+    rows: rows
+  });
+};
+function mountScreen(node) {
+  var el = document.getElementById('root');
+  if (el) ReactDOM.createRoot(el).render(node);
+}
+Object.assign(window, {
+  ScreenShell: ScreenShell,
+  Section: Section,
+  State: State,
+  StateRow: StateRow,
+  Note: Note,
+  Table: Table,
+  MotionTable: MotionTable,
+  ProvenanceTable: ProvenanceTable,
+  FrozenAsk: FrozenAsk,
+  mountScreen: mountScreen,
+  screenMuted: muted
+});</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+/* THE ADVISOR'S BOOK — one dummy data set for every screen in this repository.
+
+   Why it exists: until now each screen carried its own figures, and the same client could hold 43 funds
+   on one page and 31 on another. This is the single source: every number already rendered on a built
+   screen is either IN here or DERIVABLE from what is in here, and the derivations are written down.
+
+   WHAT IS REAL AND WHAT IS ILLUSTRATIVE — the line matters more than the data:
+     · REAL (structural, checked against the market on 19 Sep 2026): SEBI's scheme categories and the
+       large/mid/small definitions (1st–100th, 101st–250th, 251st onward by full market capitalisation,
+       SEBI/HO/IMD/DF3/CIR/P/2017/114; flexi cap added Nov 2020); one scheme per category per AMC;
+       equity taxation — STCG 20% under twelve months, LTCG 12.5% on aggregate gains above ₹1.25 L a
+       financial year, no indexation; the shape of a KYC record, a NACH mandate, an ARN/EUIN, a folio,
+       a riskometer band and an exit load.
+     · ILLUSTRATIVE: every rupee figure, every holding, every date. They are internally consistent and
+       they are not anybody's real money.
+     · UNKNOWN, AND LEFT UNKNOWN: fund performance, TER and AUM have no confirmed source in this
+       project, so this file carries none. A screen that needs them renders locked and says why
+       (InfoCard `locked`, RangePills `locked`, OverlapView's null cell). Adding them here later fills
+       those cards in without redesigning anything.
+
+   No top-level destructuring: every .jsx a page loads compiles into ONE scope. */
+
+/* The advisor, and the two numbers every execution runs under. An ARN is the distributor's registration
+   and an EUIN identifies the individual who advised the transaction — both appear on the confirm sheet's
+   "runs under your ARN" line, which is the one place the product states whose authority is being used. */
+var ADVISOR = {
+  name: 'Ashish',
+  firm: 'Centricity WealthTech',
+  arn: "ARN-[PLACEHOLDER — the firm’s own registration]",
+  euin: 'E[PLACEHOLDER]',
+  clients: 512,
+  // the book's real size; the drawer shows eight and says "See all"
+  asOf: '30 Sep 2026'
+};
+
+/* THE SHELF — the funds this firm will transact in, with the facts a compliance shelf actually holds.
+   `category` is SEBI's, not a marketing name. `plan: 'direct'` matters because a regular plan pays the
+   distributor and a direct one does not, and an advisor has to be able to say which they put a client in.
+   No performance, TER or AUM: see the header. */
+var FUNDS = [{
+  id: 'ppfas-flexi',
+  name: 'Parag Parikh Flexi Cap',
+  amc: 'PPFAS',
+  category: 'Flexi cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '2% within 365 days',
+  onShelf: true
+}, {
+  id: 'hdfc-flexi',
+  name: 'HDFC Flexi Cap',
+  amc: 'HDFC',
+  category: 'Flexi cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: true
+}, {
+  id: 'quant-small',
+  name: 'Quant Small Cap',
+  amc: 'Quant',
+  category: 'Small cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: false,
+  shelfNote: 'Off the shelf since Jun 2026 — concentration in the scheme, not a view on the house'
+}, {
+  id: 'icici-corp',
+  name: 'ICICI Corporate Bond',
+  amc: 'ICICI',
+  category: 'Corporate bond',
+  bucket: 'Debt',
+  plan: 'direct',
+  riskometer: 'Moderate',
+  exitLoad: 'Nil',
+  onShelf: true
+}, {
+  id: 'sbi-corp',
+  name: 'SBI Corporate Bond',
+  amc: 'SBI',
+  category: 'Corporate bond',
+  bucket: 'Debt',
+  plan: 'direct',
+  riskometer: 'Moderate',
+  exitLoad: 'Nil',
+  onShelf: true
+}, {
+  id: 'icici-baf',
+  name: 'ICICI Balanced Advantage',
+  amc: 'ICICI',
+  category: 'Balanced advantage',
+  bucket: 'Hybrid',
+  plan: 'direct',
+  riskometer: 'High',
+  exitLoad: '1% above 10% units in 12m',
+  onShelf: true
+}, {
+  id: 'uti-nifty',
+  name: 'UTI Nifty 50 Index',
+  amc: 'UTI',
+  category: 'Index',
+  bucket: 'Index',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: 'Nil',
+  onShelf: true
+}, {
+  id: 'hdfc-large',
+  name: 'HDFC Large Cap',
+  amc: 'HDFC',
+  category: 'Large cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: true
+}, {
+  id: 'motilal-mid',
+  name: 'Motilal Oswal Midcap',
+  amc: 'Motilal Oswal',
+  category: 'Mid cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: true
+}, {
+  id: 'hdfc-stdebt',
+  name: 'HDFC Short Term Debt',
+  amc: 'HDFC',
+  category: 'Short duration',
+  bucket: 'Debt',
+  plan: 'direct',
+  riskometer: 'Moderate',
+  exitLoad: 'Nil',
+  onShelf: true
+}];
+var fundById = function fundById(id) {
+  return FUNDS.find(function (f) {
+    return f.id === id;
+  });
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   PERFORMANCE, TER AND AUM — A DESIGN FIXTURE, AND THE BOOK SAYS SO.
+
+   Journeys C and F have been shipping `InfoCard locked` and an em-dash where a return should be,
+   because this repository had no confirmed source for any of it. The owner has now asked for the data
+   so the screens can be finished. It is INVENTED, and that fact lives here rather than in a footnote
+   nobody reads:
+
+     · The RETURNS are made up. They are not any real scheme's record and must not be read as one.
+     · The TERs and AUMs are plausible rather than invented at random — direct-plan equity TERs sit
+       roughly 0.3–1.2%, debt 0.2–0.6%, index 0.1–0.3%, and a large AMC's flagship runs to tens of
+       thousands of crore. Those bands are public and general; the exact figures here are still ours.
+     · `fixture: true` is on every row. A screen may use these numbers; it may NOT print a provenance
+       line claiming they came from a scheme record. `perfProvenance()` below writes the only line this
+       data is allowed to carry, and it says what it is.
+
+   INTERNAL CONSISTENCY IS THE POINT, because that is what a design has to survive. Small cap beats
+   flexi beats large over three years and swings hardest over one; debt is flat and boring; the index
+   fund's TER is the lowest on the shelf and its return tracks the large-cap band. A designer who sorts
+   this table must get an order that looks like a real one. */
+var PERF_AS_OF = '30 Sep 2026';
+var PERF = {
+  'ppfas-flexi': {
+    nav: 82.14,
+    ter: 0.63,
+    aumCr: 89400,
+    r1: 18.2,
+    r3: 21.4,
+    r5: 23.1,
+    benchmark: 'Nifty 500 TRI',
+    fixture: true
+  },
+  'hdfc-flexi': {
+    nav: 1842.60,
+    ter: 0.74,
+    aumCr: 71230,
+    r1: 16.9,
+    r3: 22.8,
+    r5: 21.6,
+    benchmark: 'Nifty 500 TRI',
+    fixture: true
+  },
+  'quant-small': {
+    nav: 271.38,
+    ter: 0.71,
+    aumCr: 26840,
+    r1: 9.4,
+    r3: 27.6,
+    r5: 34.2,
+    benchmark: 'Nifty Smallcap 250 TRI',
+    fixture: true
+  },
+  'icici-corp': {
+    nav: 29.86,
+    ter: 0.34,
+    aumCr: 31570,
+    r1: 7.8,
+    r3: 6.9,
+    r5: 7.2,
+    benchmark: 'CRISIL Corporate Bond A-II',
+    fixture: true
+  },
+  'sbi-corp': {
+    nav: 15.42,
+    ter: 0.31,
+    aumCr: 24110,
+    r1: 7.6,
+    r3: 6.7,
+    r5: 7.0,
+    benchmark: 'CRISIL Corporate Bond A-II',
+    fixture: true
+  },
+  'icici-baf': {
+    nav: 74.93,
+    ter: 0.86,
+    aumCr: 62480,
+    r1: 12.1,
+    r3: 13.8,
+    r5: 13.2,
+    benchmark: 'CRISIL Hybrid 50+50',
+    fixture: true
+  },
+  'uti-nifty': {
+    nav: 168.27,
+    ter: 0.17,
+    aumCr: 22960,
+    r1: 13.7,
+    r3: 15.9,
+    r5: 16.4,
+    benchmark: 'Nifty 50 TRI',
+    fixture: true
+  },
+  'hdfc-large': {
+    nav: 1094.55,
+    ter: 0.98,
+    aumCr: 38720,
+    r1: 14.3,
+    r3: 16.2,
+    r5: 16.8,
+    benchmark: 'Nifty 100 TRI',
+    fixture: true
+  },
+  'motilal-mid': {
+    nav: 108.71,
+    ter: 0.66,
+    aumCr: 29340,
+    r1: 21.8,
+    r3: 29.1,
+    r5: 28.4,
+    benchmark: 'Nifty Midcap 150 TRI',
+    fixture: true
+  },
+  'hdfc-stdebt': {
+    nav: 31.05,
+    ter: 0.29,
+    aumCr: 15680,
+    r1: 7.4,
+    r3: 6.5,
+    r5: 6.8,
+    benchmark: 'CRISIL Short Duration A-II',
+    fixture: true
+  }
+};
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE NAV SERIES — the curve the whole fund page rests on, and a FIXTURE like PERF above.
+
+   Sixty monthly points, five years, and every one of them is **what ₹10,000 invested at the start
+   would be worth on that date**. Not a NAV, not an index level — the figure an advisor reads to a
+   client. `f` is the fund, `b` is its own benchmark.
+
+   THE ENDPOINT IS FORCED TO THE STATED CAGR. A seeded random walk gives the shape, and then a
+   geometric correction is distributed across every point so the last one lands exactly on PERF's
+   five-year figure. Checked at generation: all ten agree to two decimals. A chart that disagrees with
+   the number printed beside it is the defect this whole product exists to avoid.
+
+   Volatility is by category, not by taste: small cap swings hardest, mid cap next, flexi/large/index
+   together, hybrid less, debt almost not at all. And UTI Nifty 50 Index ends at ₹21,368 against its
+   benchmark's ₹21,552 — an index fund TRAILING its index by about its expense ratio, which is the one
+   relationship a reader would notice if we got it wrong.
+
+   Invented, deterministic, and only ever shown through `perfProvenance()`. */
+var NAV_MONTHS = 60;
+var NAV_BASE = 10000;
+var NAV_SERIES = {
+  'ppfas-flexi': {
+    f: [10000, 10332, 10967, 10926, 11405, 11904, 11244, 11334, 11372, 12158, 12624, 12393, 12562, 12974, 13311, 14216, 13827, 13865, 13940, 13787, 14715, 14217, 15009, 14934, 14753, 14902, 15441, 16277, 17224, 16587, 17054, 16596, 16453, 17588, 18946, 18772, 20439, 19950, 21148, 22599, 22115, 23104, 23097, 22631, 23933, 23782, 25531, 25232, 25664, 25409, 27346, 28963, 28708, 28065, 26939, 27621, 27710, 28792, 28753, 28622, 28268],
+    b: [10000, 10105, 10215, 10002, 10052, 10002, 10239, 10309, 10678, 10409, 10350, 10546, 10927, 11287, 11372, 11694, 11841, 12341, 12263, 11973, 11741, 11832, 12304, 12850, 13497, 14261, 13719, 14694, 15315, 14976, 14905, 14944, 15122, 15808, 14888, 14098, 14232, 13903, 14098, 15055, 15520, 15430, 15436, 15449, 15228, 15282, 15341, 15022, 15240, 16349, 17255, 17506, 18611, 18835, 19316, 20003, 21153, 21638, 21180, 20902, 21738]
+  },
+  'hdfc-flexi': {
+    f: [10000, 9954, 10238, 10882, 10053, 9790, 9961, 10896, 10944, 10512, 10295, 10370, 9918, 9652, 9166, 9430, 9060, 9177, 9499, 9807, 10050, 10808, 10894, 10298, 11198, 10608, 10977, 10685, 11016, 11331, 11949, 12502, 12981, 13834, 14020, 13715, 14540, 14596, 14084, 15049, 16171, 17685, 17336, 18542, 19651, 19729, 21126, 21659, 23977, 25687, 25291, 25328, 27486, 26643, 25484, 25939, 26053, 25806, 27185, 27061, 26587],
+    b: [10000, 9590, 9399, 9176, 8810, 9437, 9412, 10212, 9983, 9416, 9378, 9262, 9681, 10013, 10119, 10038, 9996, 9793, 9686, 9795, 9931, 9895, 10436, 10905, 10921, 11167, 11299, 11727, 11166, 11421, 11553, 11696, 11902, 12754, 13437, 13124, 13624, 14439, 14590, 14244, 14175, 14708, 14902, 14793, 15189, 14759, 14909, 14851, 14850, 15765, 16004, 15555, 16067, 17158, 18180, 18475, 19787, 20741, 20500, 19832, 21738]
+  },
+  'quant-small': {
+    f: [10000, 10701, 10563, 10938, 11969, 12795, 12703, 12391, 12627, 13679, 14396, 15448, 17310, 16691, 17159, 18463, 20973, 19248, 18485, 18033, 20482, 23131, 23854, 27694, 23188, 26091, 28448, 30902, 29619, 30842, 30897, 29154, 32743, 33108, 35378, 39472, 37874, 35053, 38374, 37964, 35811, 38651, 41646, 42085, 39189, 41960, 39287, 38954, 39248, 38611, 44102, 42673, 41508, 42475, 41272, 42872, 46728, 43806, 47599, 45410, 43527],
+    b: [10000, 10179, 10706, 10239, 10218, 9405, 9685, 10658, 11204, 11388, 11541, 12766, 12924, 14052, 15559, 15148, 14354, 13921, 13084, 12411, 11874, 12895, 13448, 14452, 16175, 14821, 16466, 16043, 14463, 15220, 16034, 16891, 17108, 17580, 17904, 19147, 20843, 21280, 20332, 20428, 21708, 22868, 21420, 22079, 22693, 22469, 21651, 23828, 23321, 22924, 22848, 23795, 24981, 24634, 25247, 27268, 27350, 30496, 28963, 31051, 29435]
+  },
+  'icici-corp': {
+    f: [10000, 10008, 10119, 10179, 10183, 10384, 10388, 10453, 10495, 10590, 10720, 10705, 10663, 10763, 10766, 10878, 10995, 11119, 11211, 11243, 11188, 11215, 11374, 11462, 11545, 11667, 11704, 11760, 11779, 11797, 11916, 11941, 12028, 12170, 12160, 12235, 12211, 12171, 12332, 12407, 12568, 12641, 12802, 12920, 12919, 12958, 13027, 13150, 13182, 13291, 13456, 13623, 13736, 13780, 13889, 13906, 13959, 13974, 14008, 14153, 14157],
+    b: [10000, 9974, 9949, 10026, 10158, 10150, 10212, 10280, 10336, 10405, 10443, 10535, 10619, 10681, 10713, 10792, 10904, 10955, 11053, 11131, 11209, 11292, 11300, 11298, 11311, 11305, 11264, 11290, 11424, 11555, 11619, 11649, 11746, 11741, 11845, 11881, 11952, 12059, 12091, 12162, 12298, 12374, 12427, 12479, 12512, 12654, 12780, 12867, 13018, 13093, 13151, 13176, 13128, 13146, 13286, 13317, 13358, 13409, 13536, 13702, 13765]
+  },
+  'sbi-corp': {
+    f: [10000, 10123, 10127, 10169, 10175, 10179, 10156, 10111, 10205, 10246, 10162, 10258, 10295, 10368, 10489, 10612, 10678, 10793, 10789, 10898, 10834, 10936, 10920, 10968, 11059, 11071, 11238, 11197, 11278, 11413, 11531, 11548, 11721, 11705, 11858, 11927, 11925, 12097, 12003, 11972, 11974, 12139, 12251, 12346, 12402, 12623, 12723, 12806, 12889, 12912, 12882, 12979, 13022, 13197, 13341, 13422, 13513, 13533, 13647, 13851, 14026],
+    b: [10000, 10016, 9995, 10156, 10189, 10181, 10282, 10260, 10364, 10434, 10504, 10572, 10519, 10592, 10513, 10655, 10700, 10728, 10766, 10803, 10824, 10918, 10997, 11037, 11111, 11206, 11208, 11350, 11363, 11461, 11582, 11627, 11707, 11745, 11854, 11955, 12033, 12119, 12193, 12198, 12294, 12309, 12277, 12309, 12401, 12571, 12666, 12724, 12803, 12942, 12961, 12980, 13084, 13260, 13318, 13482, 13583, 13704, 13619, 13695, 13765]
+  },
+  'icici-baf': {
+    f: [10000, 9583, 10102, 9802, 9349, 9722, 10261, 10572, 10846, 10418, 10430, 10357, 10065, 10644, 11056, 11461, 11764, 11730, 11934, 11615, 12507, 12833, 12993, 13245, 13125, 12860, 12459, 12510, 13307, 13221, 13401, 12863, 12987, 12884, 12772, 12851, 12626, 12676, 12802, 13011, 13234, 13019, 13076, 13083, 13688, 14567, 14378, 14371, 14688, 15398, 16079, 15989, 15930, 16699, 17302, 17117, 16954, 17144, 16855, 17702, 18588],
+    b: [10000, 10539, 10450, 10434, 10268, 10326, 10104, 10031, 10138, 10211, 10578, 11030, 11326, 11306, 11395, 11946, 11877, 12214, 12163, 12061, 12221, 12140, 12049, 11987, 11558, 11629, 11567, 11274, 11503, 11383, 11748, 12081, 12173, 12711, 13246, 13165, 13710, 13797, 13985, 14231, 14870, 14475, 14523, 14556, 14958, 15432, 15868, 16289, 15996, 16331, 15822, 15864, 16369, 16202, 16100, 16565, 16609, 17266, 17860, 17941, 17940]
+  },
+  'uti-nifty': {
+    f: [10000, 9926, 10078, 10487, 10868, 11202, 10249, 10821, 10213, 9610, 9689, 9802, 9703, 10143, 10017, 9694, 10288, 10617, 10663, 11029, 11385, 11262, 11650, 12240, 12342, 12675, 12019, 11504, 11249, 11131, 11883, 12361, 12953, 12621, 11760, 11888, 11748, 11061, 11559, 12276, 13009, 12147, 12286, 12662, 12735, 12505, 12808, 13298, 14271, 15013, 15084, 15286, 15611, 16794, 18527, 18465, 19941, 20227, 20800, 20462, 21368],
+    b: [10000, 10310, 10287, 10304, 10743, 11038, 10564, 10634, 10737, 11093, 11006, 11095, 10674, 10878, 11190, 11157, 11494, 12125, 11278, 11607, 11631, 11977, 11643, 11107, 11346, 11370, 11800, 11598, 11725, 12166, 12754, 12867, 13751, 13823, 14006, 14631, 14333, 14727, 15427, 15604, 16617, 16560, 17377, 18104, 19489, 19346, 18984, 19713, 19124, 20947, 20819, 20672, 20039, 19897, 19854, 18661, 19609, 19506, 20337, 20358, 21552]
+  },
+  'hdfc-large': {
+    f: [10000, 10522, 10181, 10000, 10031, 10271, 10525, 9666, 9704, 10148, 10476, 11141, 11421, 11318, 11217, 11327, 11920, 12804, 12763, 12944, 13497, 13757, 13885, 13005, 13018, 13183, 13438, 12820, 13597, 13228, 14404, 15660, 15115, 15098, 14779, 14678, 14493, 16000, 16882, 16523, 16033, 16734, 17244, 16670, 17851, 19235, 19530, 19590, 20801, 20603, 21190, 20857, 22674, 23259, 22573, 23349, 23372, 22465, 22357, 22377, 21738],
+    b: [10000, 10184, 10801, 11159, 11699, 12432, 11993, 12683, 12817, 12696, 13201, 13124, 12787, 13179, 12959, 13240, 12513, 12234, 11856, 11761, 11565, 12104, 12171, 12317, 13145, 12737, 12776, 12848, 12909, 12260, 12270, 12535, 12438, 12992, 13859, 13155, 13753, 13949, 13585, 13910, 14218, 14026, 14922, 15615, 16360, 17222, 16543, 17611, 18870, 19820, 19417, 19412, 19084, 18923, 18868, 19893, 20921, 21354, 20897, 21173, 20289]
+  },
+  'motilal-mid': {
+    f: [10000, 10322, 10536, 9514, 9253, 9236, 9321, 9308, 9950, 10441, 10805, 10860, 10852, 11594, 12224, 12650, 12722, 13209, 13567, 14668, 15151, 15732, 15098, 15498, 14670, 15551, 16485, 16909, 16549, 17065, 17821, 17067, 18416, 20822, 20507, 21220, 21322, 21285, 20375, 20617, 22276, 21161, 22757, 25138, 25265, 29179, 30330, 32461, 33798, 32620, 33466, 36909, 40539, 36908, 36532, 36420, 35052, 36187, 32268, 32813, 34900],
+    b: [10000, 9774, 10137, 10529, 11010, 10554, 11143, 11649, 11468, 10940, 11458, 11961, 11920, 11444, 11739, 12339, 12643, 12395, 13157, 13581, 13746, 14060, 13109, 12938, 12322, 12542, 11551, 12050, 12651, 12619, 13390, 13030, 12852, 13184, 14331, 15169, 16386, 15581, 17499, 20019, 21991, 21431, 20855, 21740, 23561, 23853, 25598, 24372, 25269, 23622, 27171, 26950, 27111, 26096, 25148, 26910, 28145, 29267, 28792, 27689, 30886]
+  },
+  'hdfc-stdebt': {
+    f: [10000, 10104, 10252, 10252, 10309, 10356, 10388, 10560, 10518, 10549, 10661, 10688, 10754, 10732, 10744, 10901, 10895, 10942, 11155, 11219, 11281, 11329, 11436, 11529, 11601, 11498, 11498, 11479, 11445, 11393, 11506, 11594, 11703, 11741, 11748, 11834, 11945, 12067, 12107, 12106, 12149, 12256, 12397, 12676, 12700, 12830, 12916, 12867, 12856, 12937, 12883, 12909, 13112, 13046, 13163, 13203, 13432, 13511, 13480, 13765, 13895],
+    b: [10000, 9960, 9996, 10036, 10000, 10025, 10172, 10182, 10171, 10258, 10355, 10489, 10657, 10651, 10757, 10726, 10759, 10812, 10873, 10829, 10773, 10781, 10843, 10926, 10931, 10953, 10952, 11062, 11132, 11109, 11197, 11281, 11372, 11396, 11517, 11713, 11819, 11911, 11881, 11951, 11958, 11933, 11971, 12157, 12386, 12444, 12489, 12512, 12646, 12793, 12775, 12716, 12823, 12906, 13014, 13052, 13142, 13236, 13328, 13515, 13573]
+  }
+};
+/* ONE INDEX, ONE LINE (20 Sep 2026, found by measuring). Parag Parikh and HDFC Flexi Cap both quote
+   **Nifty 500 TRI**, and the table above gave them two different benchmark paths — same endpoint, so
+   the five-year headline agreed, but every month in between disagreed. It never showed, because until
+   now only the endpoint was ever read. The moment the "against its category" turn asked the benchmark
+   for a one-year figure it printed 42.6% for one fund and 46.4% for the other, off the same index.
+
+   Two funds cannot see different histories of the same index. The first fund in FUNDS that names a
+   benchmark owns its series and every other fund quoting that name reads the same array — derived,
+   not hand-listed, so a fund arriving tomorrow joins the right line by naming it. Both shared groups
+   already had equal endpoints (21738 for Nifty 500 TRI, 13765 for CRISIL Corporate Bond A-II), so no
+   headline moved; the warning fires if that ever stops being true. */
+var BENCH_CANON = {};
+FUNDS.forEach(function (f) {
+  var name = (PERF[f.id] || {}).benchmark;
+  var own = NAV_SERIES[f.id];
+  if (!name || !own) return;
+  if (!BENCH_CANON[name]) {
+    BENCH_CANON[name] = f.id;
+    return;
+  }
+  var src = NAV_SERIES[BENCH_CANON[name]];
+  if (src.b[NAV_MONTHS] !== own.b[NAV_MONTHS] && typeof console !== 'undefined') {
+    console.warn("book: ".concat(f.id, " and ").concat(BENCH_CANON[name], " both quote ").concat(name, " but end at different values \u2014 the headline will move"));
+  }
+  own.b = src.b;
+});
+
+/* Points for ChartLine: x is the month index, y is the rupee value. */
+var navSeries = function navSeries(id) {
+  var s = NAV_SERIES[id];
+  if (!s) return null;
+  return {
+    fund: s.f.map(function (y, x) {
+      return {
+        x: x,
+        y: y
+      };
+    }),
+    bench: s.b.map(function (y, x) {
+      return {
+        x: x,
+        y: y
+      };
+    })
+  };
+};
+/* THE HEADLINE. The best idea in the whole reference set: not "23.1% CAGR" but "₹10,000 would be
+   ₹28,268". A percentage has to be translated before an advisor can say it to a client; a rupee figure
+   does not. The benchmark is quoted beside it, because a number with nothing to sit against is a claim. */
+var tenKAfter = function tenKAfter(id) {
+  var s = NAV_SERIES[id];
+  var p = PERF[id];
+  if (!s || !p) return null;
+  return {
+    fund: s.f[NAV_MONTHS],
+    bench: s.b[NAV_MONTHS],
+    base: NAV_BASE,
+    years: 5,
+    cagr: p.r5,
+    benchmark: p.benchmark
+  };
+};
+
+/* THE BENCHMARK'S OWN CAGR, derived rather than stored — the series already holds both endpoints, so
+   writing the benchmark's return down separately would give it a second place to drift from the line
+   the chart draws. One decimal, because that is the product's rule for a rate. */
+var benchCagr = function benchCagr(id) {
+  var t = tenKAfter(id);
+  return t ? +((Math.pow(t.bench / t.base, 1 / t.years) - 1) * 100).toFixed(1) : null;
+};
+/* AND AT ONE AND THREE YEARS — as a table, not from the series, and the difference was found by
+   measuring (20 Sep 2026). The "against its category" turn puts three marks on one scale — category
+   average · this fund · its benchmark — at a period the advisor chooses, so the benchmark needs a
+   figure at each one. The obvious move was to read the same series over a shorter window. It returned
+   **42.6% for Nifty 500 TRI over one year**, because the series' intermediate path was never
+   constrained: only its endpoint was ever read, so only its endpoint is trustworthy.
+
+   So the benchmark's shorter periods are a fixture, one row per index, exactly the shape CATEGORY_AVG
+   already has. FIVE YEARS IS STILL DERIVED from the series, so the number under the chart and the line
+   in it cannot disagree — the one figure that has a second source keeps the source it always had. */
+var BENCH_SHORT = {
+  'Nifty 500 TRI': {
+    r1: 13.1,
+    r3: 15.4
+  },
+  'Nifty 50 TRI': {
+    r1: 12.9,
+    r3: 14.8
+  },
+  'Nifty 100 TRI': {
+    r1: 12.2,
+    r3: 14.1
+  },
+  'Nifty Midcap 150 TRI': {
+    r1: 16.4,
+    r3: 27.2
+  },
+  'Nifty Smallcap 250 TRI': {
+    r1: 4.2,
+    r3: 22.5
+  },
+  'CRISIL Hybrid 50+50': {
+    r1: 9.8,
+    r3: 11.3
+  },
+  'CRISIL Corporate Bond A-II': {
+    r1: 6.9,
+    r3: 6.4
+  },
+  'CRISIL Short Duration A-II': {
+    r1: 6.8,
+    r3: 6.1
+  }
+};
+var benchReturnAt = function benchReturnAt(id) {
+  var key = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'r5';
+  if (key === 'r5') return benchCagr(id);
+  var name = (PERF[id] || {}).benchmark;
+  var row = name ? BENCH_SHORT[name] : null;
+  return row && row[key] != null ? row[key] : null;
+};
+var benchProvenance = function benchProvenance(key) {
+  return key === 'r5' ? 'benchmark · derived from the same five-year series the chart draws' : 'benchmark · illustrative index figures for design, not an index record';
+};
+var perfOf = function perfOf(id) {
+  return PERF[id] || null;
+};
+/* THE ONLY PROVENANCE LINE THIS DATA MAY CARRY. A screen that prints anything else about where these
+   numbers came from is lying, and the lie would be in the one place this product promises never to. */
+/* WHO HAS RUN IT, AND FOR HOW LONG — a FIXTURE, on the same terms as PERF above (20 Sep 2026).
+
+   The manager is the sharpest sentence a comparison can make: "HDFC beat its benchmark by more, but it
+   changed managers in 2024, so its three-year record is not one person's work." The v2 spec names it
+   as a compare row and `InfoCard kind='manager'` was built for it and has been on no screen since v12,
+   because nothing in this repository knew who runs a fund.
+
+   The NAMES here are invented. They are not the real managers of these schemes and must not be read as
+   one; `fixture: true` is on every row and `managerProvenance()` writes the only line this data may
+   carry. `fundYears` is how long the SCHEME has run, which is what makes the tenure share mean
+   something — three years under a manager who arrived last year is not that manager's record. */
+var MANAGERS = {
+  'ppfas-flexi': {
+    name: 'R. Thakkar',
+    since: 'May 2013',
+    years: 13.4,
+    fundYears: 13.4,
+    fixture: true
+  },
+  'hdfc-flexi': {
+    name: 'S. Iyer',
+    since: 'Jul 2024',
+    years: 2.2,
+    fundYears: 31.0,
+    fixture: true
+  },
+  'quant-small': {
+    name: 'A. Mohanty',
+    since: 'Nov 2020',
+    years: 5.9,
+    fundYears: 29.0,
+    fixture: true
+  },
+  'icici-corp': {
+    name: 'R. Lakhotia',
+    since: 'Jan 2019',
+    years: 7.7,
+    fundYears: 16.0,
+    fixture: true
+  },
+  'sbi-corp': {
+    name: 'P. Deshmukh',
+    since: 'Feb 2022',
+    years: 4.6,
+    fundYears: 12.0,
+    fixture: true
+  },
+  'icici-baf': {
+    name: 'S. Naren',
+    since: 'Dec 2015',
+    years: 10.8,
+    fundYears: 19.0,
+    fixture: true
+  },
+  'uti-nifty': {
+    name: 'Index, not a manager',
+    since: null,
+    years: null,
+    fundYears: 26.0,
+    fixture: true
+  },
+  'hdfc-large': {
+    name: 'M. Bhandari',
+    since: 'Mar 2024',
+    years: 2.5,
+    fundYears: 30.0,
+    fixture: true
+  },
+  'motilal-mid': {
+    name: 'N. Agrawal',
+    since: 'Feb 2018',
+    years: 8.6,
+    fundYears: 12.0,
+    fixture: true
+  },
+  'hdfc-stdebt': {
+    name: 'A. Pathak',
+    since: 'Jun 2017',
+    years: 9.3,
+    fundYears: 15.0,
+    fixture: true
+  }
+};
+var managerOf = function managerOf(id) {
+  return MANAGERS[id] || null;
+};
+/* "R. Thakkar · 13.4 yr", or the honest answer for a fund that has no manager to name. */
+var managerLine = function managerLine(id) {
+  var m = MANAGERS[id];
+  if (!m) return null;
+  return m.years == null ? m.name : "".concat(m.name, " \xB7 ").concat(m.years, " yr");
+};
+var managerProvenance = function managerProvenance() {
+  return "manager tenure is illustrative for design, not a scheme record \xB7 as of ".concat(PERF_AS_OF);
+};
+/* ONE LINE FOR A CARD THAT CARRIES BOTH FIXTURES. Concatenating perfProvenance() and
+   managerProvenance() printed "illustrative for design, not a scheme record · as of 30 Sep 2026"
+   TWICE on the comparison, which reads as a stutter and makes the disclosure easier to skip rather
+   than harder. Named here, beside the data, because the rule this file states is that these numbers
+   may only be shown through a line this file writes. */
+var comparisonProvenance = function comparisonProvenance() {
+  return "returns, cost, size and manager tenure \xB7 illustrative figures for design, not a scheme record \xB7 as of ".concat(PERF_AS_OF);
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   HOLDINGS, MONTHLY CHANGES, CATEGORY AVERAGES, SWITCH COST — the four feeds the explorer lacked, as
+   FIXTURES on PERF's terms (20 Sep 2026, docs/FUND-EXPLORER-V2-PLAN.md §1).
+
+   Generated at load, deterministically, from a seed per fund — the same way NAV_SERIES got its shape —
+   so the numbers are stable across renders and nobody hand-typed three hundred weights. The COMPANY
+   NAMES are real listed companies chosen to fit each fund's category (an index fund holds the Nifty's
+   largest; a corporate-bond fund holds AAA issuers). THE WEIGHTS ARE OURS. `fixture: true` on every row,
+   and `holdingsProvenance()` writes the only line a card may carry about where they came from.
+
+   Internal consistency is the point: top-ten weights descend; an index fund is more concentrated at the
+   top than a flexi cap; a small cap is flatter; the three months of sector weights drift by fractions,
+   never jump; concentration figures are COMPUTED from the same list the table shows, so the two cannot
+   disagree; and overlap between two funds is computed from the names they actually share. */
+var seeded = function seeded(key) {
+  var h = 2166136261;
+  var _iterator = _createForOfIteratorHelper(key),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var ch = _step.value;
+      h ^= ch.charCodeAt(0);
+      h = Math.imul(h, 16777619);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return function () {
+    h ^= h << 13;
+    h ^= h >>> 17;
+    h ^= h << 5;
+    return (h >>> 0) % 10000 / 10000;
+  };
+};
+var HOLDINGS_AS_OF = 'Jun 2026';
+var HOLD_MONTHS = ['Jun 2026', 'May 2026', 'Apr 2026'];
+/* What each category holds, by name and sector. Real companies; invented weights. */
+var NAMES = {
+  /* Fourteen names for the diversified equity funds and each fund draws TEN of them in its own seeded
+     order — so two flexi caps share some of their top ten and not all of it. Measured before this:
+     every 'large' fund read the same list top-down and ppfas↔hdfc-flexi overlapped 98%, which no two
+     real flexi caps do. The index fund is the exception: its top ten IS the index's, in index order. */
+  large: [['HDFC Bank', 'Financial services'], ['ICICI Bank', 'Financial services'], ['Infosys', 'IT'], ['Reliance Industries', 'Energy'], ['Bharti Airtel', 'Telecom'], ['ITC', 'Consumer'], ['Larsen & Toubro', 'Industrials'], ['TCS', 'IT'], ['Axis Bank', 'Financial services'], ['Coal India', 'Energy'], ['Power Grid', 'Utilities'], ['Maruti Suzuki', 'Consumer'], ['Sun Pharma', 'Healthcare'], ['Bajaj Finance', 'Financial services']],
+  index: [['HDFC Bank', 'Financial services'], ['Reliance Industries', 'Energy'], ['ICICI Bank', 'Financial services'], ['Infosys', 'IT'], ['Bharti Airtel', 'Telecom'], ['Larsen & Toubro', 'Industrials'], ['ITC', 'Consumer'], ['TCS', 'IT'], ['Axis Bank', 'Financial services'], ['State Bank of India', 'Financial services']],
+  mid: [['Coforge', 'IT'], ['Persistent Systems', 'IT'], ['Polycab India', 'Industrials'], ['Trent', 'Consumer'], ['Dixon Technologies', 'Industrials'], ['Max Healthcare', 'Healthcare'], ['Bharat Electronics', 'Industrials'], ['Indian Hotels', 'Consumer'], ['Voltas', 'Consumer'], ['Kalyan Jewellers', 'Consumer']],
+  small: [['RBL Bank', 'Financial services'], ['Aegis Logistics', 'Energy'], ['Bikaji Foods', 'Consumer'], ['Jyothy Labs', 'Consumer'], ['KEI Industries', 'Industrials'], ['Cyient DLM', 'Industrials'], ['Godrej Agrovet', 'Consumer'], ['Welspun Living', 'Consumer'], ['Sun Pharma Advanced', 'Healthcare'], ['CESC', 'Utilities']],
+  hybrid: [['HDFC Bank', 'Financial services'], ['ICICI Bank', 'Financial services'], ['Govt of India G-Sec 2033', 'Sovereign'], ['Infosys', 'IT'], ['Reliance Industries', 'Energy'], ['Govt of India G-Sec 2030', 'Sovereign'], ['Bharti Airtel', 'Telecom'], ['NABARD 2028 bond', 'PSU finance'], ['ITC', 'Consumer'], ['Larsen & Toubro', 'Industrials']],
+  debt: [['HDFC Bank NCD 2028', 'Housing finance'], ['REC 2029 bond', 'PSU finance'], ['PFC 2028 bond', 'PSU finance'], ['NABARD 2027 bond', 'PSU finance'], ['Bajaj Finance NCD 2028', 'NBFC'], ['LIC Housing Finance 2029', 'Housing finance'], ['SIDBI 2027 bond', 'PSU finance'], ['NHAI 2030 bond', 'Infrastructure'], ['IRFC 2029 bond', 'PSU finance'], ['Govt of India G-Sec 2029', 'Sovereign']]
+};
+var CAT_KEY = {
+  'Flexi cap': 'large',
+  'Large cap': 'large',
+  'Index': 'index',
+  'Mid cap': 'mid',
+  'Small cap': 'small',
+  'Balanced advantage': 'hybrid',
+  'Corporate bond': 'debt',
+  'Short duration': 'debt'
+};
+/* Top-ten shape by category: first weight and the slope down. Index funds are top-heavy; small caps flat. */
+var SHAPE = {
+  large: [8.4, 0.62],
+  index: [12.1, 0.95],
+  mid: [5.6, 0.32],
+  small: [4.1, 0.18],
+  hybrid: [7.2, 0.55],
+  debt: [6.8, 0.45]
+};
+var CAPS = {
+  large: [65, 20, 6],
+  index: [100, 0, 0],
+  mid: [12, 74, 8],
+  small: [4, 18, 74],
+  hybrid: [58, 8, 4],
+  debt: [0, 0, 0]
+};
+var round1 = function round1(n) {
+  return Math.round(n * 10) / 10;
+};
+var HOLDINGS = {};
+FUNDS.forEach(function (f) {
+  var key = CAT_KEY[f.category] || 'large';
+  var rnd = seeded('hold:' + f.id);
+  var _SHAPE$key = _slicedToArray(SHAPE[key], 2),
+    w0 = _SHAPE$key[0],
+    slope = _SHAPE$key[1];
+  var pool = key === 'index' ? NAMES[key] : _toConsumableArray(NAMES[key]).sort(function () {
+    return rnd() - 0.5;
+  });
+  var top = pool.slice(0, 10).map(function (_ref, i) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      name = _ref2[0],
+      sector = _ref2[1];
+    var pct = round1(w0 - slope * i + (rnd() - 0.5) * 0.6);
+    /* Last month's weight drifts by fractions of a point, so H3's change column reads as a real month. */
+    return {
+      name: name,
+      sector: sector,
+      pct: pct,
+      prevPct: round1(pct - (rnd() - 0.5) * 0.9)
+    };
+  });
+  var isDebt = key === 'debt';
+  var equity = isDebt ? 0 : key === 'hybrid' ? 70 : key === 'index' ? 99.4 : round1(84 + rnd() * 10);
+  var debtCash = round1(100 - equity);
+  var _CAPS$key = _slicedToArray(CAPS[key], 3),
+    L = _CAPS$key[0],
+    M = _CAPS$key[1],
+    S = _CAPS$key[2];
+  var capScale = equity / (L + M + S || 1);
+  var caps = isDebt ? [] : [['Large cap', L], ['Mid cap', M], ['Small cap', S]].filter(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+      v = _ref4[1];
+    return v > 0;
+  }).map(function (_ref5) {
+    var _ref6 = _slicedToArray(_ref5, 2),
+      label = _ref6[0],
+      v = _ref6[1];
+    return {
+      label: label,
+      pct: round1(v * capScale)
+    };
+  });
+  /* Sector weights for three months: the newest is summed from the top ten plus a tail; the older two
+     drift back by fractions so a month-over-month reading is real and small. */
+  var bySector = {};
+  top.forEach(function (h) {
+    bySector[h.sector] = (bySector[h.sector] || 0) + h.pct;
+  });
+  var tail = 100 - top.reduce(function (a, h) {
+    return a + h.pct;
+  }, 0);
+  var secNames = Object.keys(bySector);
+  secNames.forEach(function (n) {
+    bySector[n] = round1(bySector[n] + tail * (0.5 + rnd()) / secNames.length * 0.9);
+  });
+  var sectors = {};
+  HOLD_MONTHS.forEach(function (m, mi) {
+    sectors[m] = secNames.map(function (n) {
+      return {
+        name: n,
+        pct: round1(bySector[n] - mi * (rnd() - 0.4) * 1.4)
+      };
+    }).sort(function (a, b) {
+      return b.pct - a.pct;
+    });
+  });
+  var count = isDebt ? 38 + Math.round(rnd() * 20) : key === 'index' ? 50 : 60 + Math.round(rnd() * 60);
+  var top5 = round1(top.slice(0, 5).reduce(function (a, h) {
+    return a + h.pct;
+  }, 0));
+  var secNow = sectors[HOLDINGS_AS_OF];
+  HOLDINGS[f.id] = {
+    asOf: HOLDINGS_AS_OF,
+    count: count,
+    split: {
+      equity: equity,
+      debtCash: debtCash
+    },
+    caps: caps,
+    sectors: sectors,
+    top: top,
+    concentration: {
+      top5CompaniesPct: top5,
+      largestCompany: top[0],
+      sectorsCount: secNames.length + (isDebt ? 0 : 3),
+      top5SectorsPct: round1(secNow.slice(0, 5).reduce(function (a, x) {
+        return a + x.pct;
+      }, 0)),
+      largestSector: secNow[0]
+    },
+    fixture: true
+  };
+});
+var holdingsOf = function holdingsOf(id) {
+  return HOLDINGS[id] || null;
+};
+var holdingsProvenance = function holdingsProvenance() {
+  return "holdings and sector weights \xB7 illustrative for design, not a scheme portfolio \xB7 as of ".concat(HOLDINGS_AS_OF);
+};
+/* OVERLAP, computed: the weight two funds share in the names their top tens have in common, as a
+   share of the smaller fund's top-ten weight. Null when either side has no holdings on file — an em
+   dash, never a zero, which is OverlapView's own rule. */
+var overlapPct = function overlapPct(a, b) {
+  var A = HOLDINGS[a],
+    B = HOLDINGS[b];
+  if (!A || !B) return null;
+  var wb = Object.fromEntries(B.top.map(function (h) {
+    return [h.name, h.pct];
+  }));
+  var shared = A.top.reduce(function (s, h) {
+    return s + (wb[h.name] != null ? Math.min(h.pct, wb[h.name]) : 0);
+  }, 0);
+  var base = Math.min(A.top.reduce(function (s, h) {
+    return s + h.pct;
+  }, 0), B.top.reduce(function (s, h) {
+    return s + h.pct;
+  }, 0));
+  return base ? Math.round(shared / base * 100) : 0;
+};
+
+/* WHAT CHANGED — three months per fund, as facts a sentence can be built from. `aumChangeCr` is
+   scaled to the fund's size; returns are monthly, not annualised, and the benchmark's sits beside. */
+var MONTHLY = {};
+FUNDS.forEach(function (f) {
+  var rnd = seeded('month:' + f.id);
+  var p = PERF[f.id];
+  var h = HOLDINGS[f.id];
+  var vol = {
+    'Small cap': 4.2,
+    'Mid cap': 3.4,
+    'Flexi cap': 2.4,
+    'Large cap': 2.2,
+    'Index': 2.2,
+    'Balanced advantage': 1.4,
+    'Corporate bond': 0.35,
+    'Short duration': 0.3
+  }[f.category] || 2;
+  MONTHLY[f.id] = HOLD_MONTHS.map(function (month) {
+    var bench = round1((rnd() - 0.45) * vol * 1.6);
+    var fund = round1(bench + (rnd() - 0.42) * vol * 0.8);
+    var names = h.top.map(function (x) {
+      return x.name;
+    });
+    var picks = _toConsumableArray(names).sort(function () {
+      return rnd() - 0.5;
+    });
+    return {
+      month: month,
+      aumChangeCr: Math.round(p.aumCr * (0.004 + rnd() * 0.02) * (rnd() > 0.25 ? 1 : -1)),
+      fundReturn: fund,
+      benchReturn: bench,
+      gainers: picks.slice(0, 3).map(function (n) {
+        return {
+          name: n,
+          pct: round1(2 + rnd() * 9)
+        };
+      }),
+      losers: picks.slice(3, 6).map(function (n) {
+        return {
+          name: n,
+          pct: round1(-(1 + rnd() * 9))
+        };
+      }),
+      fixture: true
+    };
+  });
+});
+var monthlyOf = function monthlyOf(id) {
+  return MONTHLY[id] || null;
+};
+var monthlyProvenance = function monthlyProvenance() {
+  return "monthly changes \xB7 illustrative figures for design, not a scheme record \xB7 as of ".concat(HOLDINGS_AS_OF);
+};
+
+/* CATEGORY AVERAGES — one row per category, so two funds in one category are read against the same
+   number. Set below the good funds and above the index fund's tracking, which is how a category
+   average sits in the real tables this was read from. */
+var CATEGORY_AVG = {
+  'Flexi cap': {
+    r1: 14.9,
+    r3: 18.6,
+    r5: 19.2
+  },
+  'Large cap': {
+    r1: 12.8,
+    r3: 15.1,
+    r5: 15.4
+  },
+  'Index': {
+    r1: 13.5,
+    r3: 15.7,
+    r5: 16.3
+  },
+  'Mid cap': {
+    r1: 17.2,
+    r3: 25.3,
+    r5: 24.8
+  },
+  'Small cap': {
+    r1: 6.1,
+    r3: 24.9,
+    r5: 29.6
+  },
+  'Balanced advantage': {
+    r1: 10.4,
+    r3: 12.1,
+    r5: 11.9
+  },
+  'Corporate bond': {
+    r1: 7.4,
+    r3: 6.6,
+    r5: 6.9
+  },
+  'Short duration': {
+    r1: 7.2,
+    r3: 6.4,
+    r5: 6.6
+  }
+};
+var categoryAvgOf = function categoryAvgOf(id) {
+  var f = fundById(id);
+  return f ? CATEGORY_AVG[f.category] || null : null;
+};
+
+/* THE COST OF A SWITCH, line by line. A switch is a redemption plus a purchase, so it is taxable, and
+   the tax depends on when each lot was bought — which is why this returns NULL when the folio has no
+   purchase dates on file: the uncosted case is a missing input with a name, not a zero. For Sharma's
+   one costed move the split reproduces the ₹11,200 the product has stated since Journey B, so the total
+   printed on the confirm and the breakdown printed above it cannot disagree. */
+var SWITCH_LOTS = {
+  /* 42% of the ₹1,85,000 was bought inside the last year (the 2024–25 small-cap run), so the exit load
+     bites only there; the rest is long-term. The three lines sum to the ₹11,200 Journey B has stated. */
+  'quant-small': {
+    forAmountRs: 185000,
+    underYearRs: 77700,
+    gainUnderYearRs: 25865,
+    gainOverYearRs: 42000,
+    datesOnFile: true
+  }
+};
+var switchCost = function switchCost(fromId, amountRs) {
+  var f = fundById(fromId);
+  var lots = SWITCH_LOTS[fromId];
+  if (!f || !lots || !lots.datesOnFile) return null;
+  /* The lots are written for the ₹1,85,000 the product has always moved; a different amount scales them
+     pro rata, so a dial that moves less (or the whole holding) costs in proportion. */
+  var k = amountRs / lots.forAmountRs;
+  var loadPct = parseFloat(f.exitLoad) || 0;
+  var exitLoadRs = Math.round(lots.underYearRs * k * loadPct / 100);
+  var stcgRs = Math.round(lots.gainUnderYearRs * k * TAX.stcgPct / 100);
+  var ltcgRs = Math.round(lots.gainOverYearRs * k * TAX.ltcgPct / 100);
+  return {
+    exitLoadRs: exitLoadRs,
+    stcgRs: stcgRs,
+    ltcgRs: ltcgRs,
+    totalRs: exitLoadRs + stcgRs + ltcgRs,
+    lines: [{
+      label: 'Exit load',
+      value: inr(exitLoadRs),
+      rule: "".concat(f.exitLoad, " \u2014 on the units under a year old")
+    }, {
+      label: 'Short-term gains tax',
+      value: inr(stcgRs),
+      rule: "".concat(TAX.stcgPct, "% on gains under twelve months")
+    }, {
+      label: 'Long-term gains tax',
+      value: inr(ltcgRs),
+      rule: "".concat(TAX.ltcgPct, "% above the \u20B91.25 L annual allowance")
+    }]
+  };
+};
+var perfProvenance = function perfProvenance(period) {
+  return "".concat(period ? period + ' returns · ' : '', "illustrative figures for design, not a scheme record \xB7 as of ").concat(PERF_AS_OF);
+};
+var PERF_PERIODS = [{
+  key: 'r1',
+  label: '1Y'
+}, {
+  key: 'r3',
+  label: '3Y'
+}, {
+  key: 'r5',
+  label: '5Y'
+}];
+/* Returns are annualised past 1Y, and saying so is not optional — SEBI's own presentation rule, and the
+   difference between 27.6 meaning "a year like that" and "every year for three". */
+var perfNote = function perfNote(key) {
+  return key === 'r1' ? 'Last 12 months' : "".concat(key === 'r3' ? 'Three' : 'Five', "-year CAGR");
+};
+
+/* THE RULES THIS BOOK IS CHECKED AGAINST. Two of them carry the number 25 and they are NOT the same rule
+   (contradiction 32): one caps a single fund, the other caps the small-cap sleeve. */
+var LIMITS = {
+  singleFund: 25,
+  // % of a portfolio in one scheme
+  smallCapSleeve: 25,
+  // % of a portfolio in small cap overall
+  driftBand: 5 // points either side of the mandate before a review is raised
+};
+
+/* TAX, as it stands for equity-oriented schemes on 19 Sep 2026. Checked, not remembered: STCG 20% under
+   twelve months (s.111A, from 23 Jul 2024), LTCG 12.5% on aggregate equity gains above ₹1.25 L in a
+   financial year, no indexation. A switch is a redemption plus a purchase, so it is taxable — which is
+   why "no exit load, no tax" on Sharma's SIP redirect is a claim the book has to support. */
+var TAX = {
+  stcgPct: 20,
+  ltcgPct: 12.5,
+  ltcgExemptionRs: 125000,
+  equityHoldingMonths: 12
+};
+
+/* ───────────────────────────── THE CLIENTS ─────────────────────────────
+   Four are carried in full because four journeys are built on them. The rest are the drawer's book:
+   name, city and enough to be reached, which is what the drawer actually shows. */
+var CLIENTS = [{
+  id: 'meera',
+  name: 'Meera Nair',
+  age: 38,
+  city: 'Kochi',
+  since: 2019,
+  pan: 'ABCPN••••K',
+  kyc: {
+    status: 'Valid',
+    mode: 'CKYC',
+    updated: '11 Feb 2026'
+  },
+  nominee: {
+    name: 'Rahul Nair',
+    relation: 'Spouse',
+    share: 100
+  },
+  income: {
+    monthly: 180000,
+    source: 'Salary plus bonus',
+    evidence: 'ITR, AY 2025-26'
+  },
+  spendMonthly: 95000,
+  emergencyFund: 600000,
+  goal: {
+    label: 'Corpus',
+    amountRs: 20000000,
+    byYear: 2041
+  },
+  // ₹2 crore — the journey's own goal
+  /* The risk profile the rail produces. Three scores, and the rule is the LOWEST of them. */
+  risk: {
+    score: 54,
+    band: 'Moderate',
+    lockedOn: '15 Sep 2026',
+    rows: [{
+      label: 'What her finances can absorb',
+      value: 71
+    }, {
+      label: 'What she can sit through calmly',
+      value: 54,
+      binding: true
+    }, {
+      label: 'What her ₹2 crore goal needs',
+      value: 62
+    }]
+  },
+  mandate: {
+    equity: 55,
+    debt: 30,
+    cash: 15
+  },
+  portfolio: {
+    valueRs: 1840000,
+    funds: 43,
+    asOf: '30 Sep 2026'
+  },
+  // ₹18.4 L across 43 funds
+  /* The long tail is the point of her review: 14 funds hold 80% and the other 29 are under 1.5% each. */
+  tail: {
+    topFunds: 14,
+    topSharePct: 80,
+    tinyFunds: 29,
+    tinyUnderPct: 1.5
+  },
+  sips: [{
+    fundId: 'ppfas-flexi',
+    amountRs: 15000,
+    day: 5,
+    mandate: 'NACH'
+  }],
+  flags: ['Review due — 43 funds, 29 of them under 1.5%']
+}, {
+  id: 'sharma',
+  name: 'R. Sharma',
+  age: 46,
+  city: 'Pune',
+  since: 2017,
+  pan: 'AXSPS••••M',
+  kyc: {
+    status: 'Valid',
+    mode: 'KRA',
+    updated: '3 Aug 2025'
+  },
+  nominee: {
+    name: 'Anita Sharma',
+    relation: 'Spouse',
+    share: 100
+  },
+  income: {
+    monthly: 240000,
+    source: 'Own business',
+    evidence: 'ITR, AY 2025-26'
+  },
+  spendMonthly: 130000,
+  emergencyFund: 1200000,
+  goal: {
+    label: 'Retirement',
+    amountRs: 40000000,
+    byYear: 2040
+  },
+  risk: {
+    score: 58,
+    band: 'Moderate',
+    lockedOn: '22 Mar 2026',
+    rows: [{
+      label: 'What his finances can absorb',
+      value: 74
+    }, {
+      label: 'What he can sit through calmly',
+      value: 58,
+      binding: true
+    }, {
+      label: 'What his retirement needs',
+      value: 66
+    }]
+  },
+  mandate: {
+    equity: 60,
+    debt: 30,
+    cash: 10
+  },
+  /* ₹14.2 L IS DERIVED, NOT INVENTED. The product says the switch of ₹1,85,000 moves equity from 71%
+     to 58% — thirteen points — and a switch changes today's allocation while a SIP redirect does not.
+     ₹1,85,000 ÷ 0.13 = ₹14,23,077, so the portfolio is ₹14.2 L and every percentage on the drift
+     screens resolves against it. If the portfolio figure is ever changed, the ₹1,85,000 has to move
+     with it or screen 5 starts lying. */
+  portfolio: {
+    valueRs: 1423000,
+    funds: 18,
+    asOf: '30 Sep 2026'
+  },
+  allocation: {
+    equity: 71,
+    debt: 24,
+    cash: 5
+  },
+  // today, from his Q3 statement
+  /* R4, from the research: "only a part of asset allocation shown that too it says equity no mention of
+     mid large or small" — an MFD's own words. Equity / Debt / Cash is one level too coarse to act on,
+     and BOTH of this product's 25% ceilings are written against caps the three-row card never showed.
+     Split from his holdings: small 31 + flexi 14 + large 11 + 15 across the thirteen funds under 5%. */
+  allocationByCap: [{
+    label: 'Small cap',
+    pct: 31,
+    over: 'smallCapSleeve'
+  }, {
+    label: 'Other equity',
+    pct: 15
+  }, {
+    label: 'Flexi cap',
+    pct: 14
+  }, {
+    label: 'Large cap',
+    pct: 11
+  }],
+  /* R1, from the research: the top theme was a total that was silently short because one AMC had not
+     reported. Provenance says WHERE a figure came from; this says HOW COMPLETE it is. */
+  reporting: {
+    funds: 18,
+    reported: 18,
+    asOf: '30 Sep 2026'
+  },
+  allocationPrior: {
+    equity: 62
+  },
+  // Q2 — the drift is 62 → 71
+  /* Quant Small Cap at 31% breaches the single-fund ceiling of 25%: 31% of ₹14.2 L is ₹4,41,130, and
+     taking ₹1,85,000 out leaves ₹2,56,130 — 18% — which is why the confirm sheet can state "No fund
+     over 25%" after the moves and not before. */
+  holdings: [{
+    fundId: 'quant-small',
+    pct: 31,
+    valueRs: 441130,
+    folio: '9142/28',
+    over: 'single-fund ceiling'
+  }, {
+    fundId: 'ppfas-flexi',
+    pct: 14,
+    valueRs: 199220,
+    folio: '9142/29'
+  }, {
+    fundId: 'hdfc-large',
+    pct: 11,
+    valueRs: 156530,
+    folio: '9142/31'
+  }, {
+    fundId: 'icici-corp',
+    pct: 10,
+    valueRs: 142300,
+    folio: '7761/04'
+  }, {
+    fundId: 'hdfc-stdebt',
+    pct: 8,
+    valueRs: 113840,
+    folio: '7761/05'
+  }],
+  holdingsShown: 5,
+  // of 18 — the rest are under 5% each
+  holdingsTailNote: '13 more, each under 5%',
+  sips: [{
+    fundId: 'quant-small',
+    amountRs: 30000,
+    day: 7,
+    mandate: 'NACH',
+    note: 'the redirect in move 2'
+  }],
+  /* The rebalance the built screens decide on. The cost is stated on the simulation and again on the
+     sheet, and it is a switch — a redemption plus a purchase — so it is taxable by definition. */
+  rebalance: {
+    moves: [{
+      n: 1,
+      kind: 'switch',
+      fromId: 'quant-small',
+      toId: 'icici-corp',
+      amountRs: 185000
+    }, {
+      n: 2,
+      kind: 'sip-redirect',
+      fromId: 'quant-small',
+      toId: 'hdfc-large',
+      amountRs: 30000
+    }],
+    equityAfter: 58,
+    costRs: 11200,
+    /* The split is no longer a placeholder: `switchCost` produces it from SWITCH_LOTS, which
+       carries the purchase dates for this folio. ₹777 exit load + ₹5,173 short-term + ₹5,250
+       long-term = the ₹11,200 this book has stated since Journey B. */
+    costParts: 'exit load ₹777 · short-term ₹5,173 · long-term ₹5,250',
+    settles: 'T+2'
+  },
+  flags: ['Equity 11 points over mandate', 'Quant Small Cap over the single-fund ceiling']
+}, {
+  id: 'amit',
+  name: 'Mr. Amit Aggrawal',
+  age: 52,
+  city: 'Delhi',
+  since: 2026,
+  pan: 'AGGPA••••R',
+  kyc: {
+    status: 'In process',
+    mode: 'CKYC',
+    updated: '—',
+    note: 'PAN–Aadhaar seeding pending'
+  },
+  nominee: null,
+  income: {
+    monthly: 400000,
+    source: 'Own business',
+    evidence: 'Declared — no ITR on file yet'
+  },
+  spendMonthly: 180000,
+  emergencyFund: 2500000,
+  goal: {
+    label: 'Wealth',
+    amountRs: 50000000,
+    byYear: 2045
+  },
+  risk: {
+    score: null,
+    band: null,
+    lockedOn: null,
+    note: 'Not profiled — the proposal is built against the mandate he stated'
+  },
+  /* ceilingRs is the most he has agreed to commit, and it is part of the mandate he STATED rather
+     than a number anyone scored. It is what the refusal in thread/refusals.jsx holds the line at
+     (₹60,00,000 is above it), and it is why the proposal is headed "Where ₹25 lakh would go"
+     when the advisor answered ₹50,00,000 — which is SCREENS-PLAN open question 2, answered:
+     both numbers are real, one is the ask and the other is the ceiling. */
+  mandate: {
+    equity: 65,
+    debt: 30,
+    cash: 5,
+    ceilingRs: 2500000
+  },
+  portfolio: {
+    valueRs: 0,
+    funds: 0,
+    asOf: '30 Sep 2026'
+  },
+  proposal: {
+    amountRs: 2500000,
+    funds: 6,
+    drafted: '14 Sep 2026',
+    versions: 3,
+    sentVersion: 2
+  },
+  sips: [],
+  flags: ['KYC in process — nothing can be executed until it clears', 'No risk profile']
+}, {
+  id: 'sunita',
+  name: 'Sunita Nair',
+  age: 41,
+  city: 'Kochi',
+  since: 2020,
+  pan: 'BNSPS••••J',
+  kyc: {
+    status: 'Valid',
+    mode: 'CKYC',
+    updated: '19 Jan 2026'
+  },
+  nominee: {
+    name: 'Meera Nair',
+    relation: 'Sister',
+    share: 100
+  },
+  income: {
+    monthly: 150000,
+    source: 'Fixed salary',
+    evidence: 'Form 16, FY 2025-26'
+  },
+  spendMonthly: 80000,
+  emergencyFund: 500000,
+  goal: {
+    label: "Daughter's education",
+    amountRs: 6000000,
+    byYear: 2034
+  },
+  risk: {
+    score: 47,
+    band: 'Moderately conservative',
+    lockedOn: '8 Jul 2026',
+    rows: [{
+      label: 'What her finances can absorb',
+      value: 61
+    }, {
+      label: 'What she can sit through calmly',
+      value: 47,
+      binding: true
+    }, {
+      label: 'What her goal needs',
+      value: 55
+    }]
+  },
+  mandate: {
+    equity: 45,
+    debt: 45,
+    cash: 10
+  },
+  portfolio: {
+    valueRs: 920000,
+    funds: 31,
+    asOf: '30 Sep 2026'
+  },
+  holdings: [{
+    fundId: 'hdfc-flexi',
+    pct: 12,
+    valueRs: 110400,
+    folio: '5520/11'
+  }, {
+    fundId: 'icici-baf',
+    pct: 10,
+    valueRs: 92000,
+    folio: '5520/12'
+  }],
+  sips: [{
+    fundId: 'icici-baf',
+    amountRs: 10000,
+    day: 10,
+    mandate: 'NACH'
+  }],
+  /* The exit-load question in her thread: units bought inside twelve months carry the load AND short-term
+     tax, which is the pair an advisor has to state together. */
+  flags: ['Exit load on the Jun 2026 purchase until 12 Jun 2027']
+},
+/* The rest of the drawer's book. Enough to be reached and named; no portfolio detail, because none of
+   the built screens shows any and inventing it would be inventing. */
+{
+  id: 'kavita',
+  name: 'Kavita Rao',
+  city: 'Bengaluru',
+  since: 2021,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'anil',
+  name: 'Anil Menon',
+  city: 'Chennai',
+  since: 2018,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'priya',
+  name: 'Priya Deshpande',
+  city: 'Pune',
+  since: 2022,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'vikram',
+  name: 'Vikram Shah',
+  city: 'Ahmedabad',
+  since: 2019,
+  kyc: {
+    status: 'Re-KYC due'
+  }
+}, {
+  id: 'lakshmi',
+  name: 'Lakshmi Iyer',
+  city: 'Coimbatore',
+  since: 2023,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'rohan',
+  name: 'Rohan Gupta',
+  city: 'Gurugram',
+  since: 2024,
+  kyc: {
+    status: 'Valid'
+  }
+}];
+var clientById = function clientById(id) {
+  return CLIENTS.find(function (x) {
+    return x.id === id;
+  });
+};
+
+/* ── R3 · WHAT ACTUALLY HAPPENED ───────────────────────────────────────────────────────────────────
+   The research asked for this in almost every app: "There is no option check all transactions day wise
+   & type wise" · "Could not download statement" · "monthly sip Reports not available". The drawer is the
+   history of CONVERSATIONS; this is the history of MONEY, and they are not the same thing.
+
+   Every row is one instruction and its outcome. `status` is the honest set, and it is the same set the
+   in-flight states use (R2) — placed · settled · rejected · sent (no confirmation yet). A row never says
+   "done" for something the RTA has not confirmed. Illustrative figures, consistent with the journeys:
+   the two Sharma moves are the ones screens 5 to 7 decide on. */
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE TWO SCORES — CENTRICITY FUND SCORE AND CLIENT HEALTH SCORE · 20 Sep 2026
+
+   THESE ARE DESIGN PLACEHOLDERS AND THE SCREEN SAYS SO IN WORDS. The Fund Discovery PRD leads with a
+   "Centricity Score" and this repository has never seen its definition. Inventing one quietly is the
+   single worst thing this product could do: a score is the one number an advisor has to defend in
+   front of a client, and a number with a hidden methodology cannot be defended at all.
+
+   So the placeholder is built the only way a placeholder may be: **every input is a field already in
+   this book, every weight is stated on the card, and the card names the component dragging the score
+   down.** Nothing is a black box. When Centricity's real definition arrives, the weights and the five
+   mappings below are what change — the card, the band words and the turn do not.
+
+   Two rules the maths obeys:
+   - **A missing input is reported, never assumed.** Sharma is the only client with a current
+     allocation on file, so the other two score on the inputs that exist and the card says which one
+     it could not read. A score quietly computed over four of five components is the "total AUM shown
+     is less" defect (docs/RESEARCH.md R1) wearing a different hat.
+   - **The band is a word, never a colour** (rule 1). Strong · Sound · Mixed · Weak. */
+var clamp100 = function clamp100(v) {
+  return Math.max(0, Math.min(100, Math.round(v)));
+};
+var SCORE_BANDS = [[75, 'Strong'], [60, 'Sound'], [45, 'Mixed'], [0, 'Weak']];
+var scoreBand = function scoreBand(v) {
+  return (SCORE_BANDS.find(function (_ref7) {
+    var _ref8 = _slicedToArray(_ref7, 1),
+      floor = _ref8[0];
+    return v >= floor;
+  }) || [0, 'Weak'])[1];
+};
+
+/* One weighted mean over the components that could be read, plus the list of the ones that could not.
+   `weakest` is the lowest component that carries weight — the card distinguishes it, and the sentence
+   names it, because "78" on its own tells an advisor nothing they can act on. */
+var rollUp = function rollUp(rows) {
+  var read = rows.filter(function (r) {
+    return r.value != null;
+  });
+  var missing = rows.filter(function (r) {
+    return r.value == null;
+  });
+  var w = read.reduce(function (t, r) {
+    return t + r.weight;
+  }, 0);
+  var value = clamp100(read.reduce(function (t, r) {
+    return t + r.value * r.weight;
+  }, 0) / (w || 1));
+  var weakest = read.slice().sort(function (a, b) {
+    return a.value - b.value;
+  })[0] || null;
+  /* AND A SCORE OVER A THIRD OF ITS INPUTS IS NOT A SCORE. Meera has a fund count and clean records
+     and nothing else on file: 30 of the 100 points of weight. Printing "62" from that is the same
+     defect as a total that is quietly short — it reads as confident and it is not. Under half the
+     weight the number is withheld and the turn says what is missing instead. Above it, the number
+     stands and the card names what it could not read. */
+  var coverage = w / 100;
+  return {
+    value: value,
+    band: scoreBand(value),
+    rows: read.map(function (r) {
+      return _objectSpread(_objectSpread({}, r), {}, {
+        binding: weakest && r.label === weakest.label
+      });
+    }),
+    missing: missing,
+    weakest: weakest,
+    coverage: coverage,
+    readWeight: w,
+    enough: w >= 50
+  };
+};
+
+/* `short` is what the card's weights line prints — the full label names the meter, and repeating five
+   full labels in a sentence above five meters that already carry them is the repetition this product
+   gets pulled up on. */
+/* TWO HALVES, ON THE OWNER'S WORD (20 Sep 2026): "centricity score ki definition abhi nei hai, fund
+   performance and client holding par hai." The methodology is still not written down anywhere, so the
+   weights below remain invented and the card still says PLACEHOLDER — but the BASIS is now the
+   owner's rather than mine, and the two halves are named on the card so the difference is visible.
+
+   **The trap this shape walks into, stated rather than hidden:** a fund does not become better
+   because more of an advisor's clients hold it. Scoring popularity would make every new fund look
+   weak and every crowded one look strong, which is the opposite of useful. So the second half does
+   not measure popularity — it measures HOW THIS BOOK ALREADY SITS IN THE FUND: the weight it already
+   carries, and the headroom left under the ceilings. And when no client holds it at all, those two
+   rows are MISSING rather than zero: the fund is scored on its own record, out of 70, and the card
+   says so. A fund nobody holds yet is not a bad fund. */
+var FUND_SCORE_WEIGHTS = [['Return against its category', 30, 'return', 'Its own record'], ['Beats its category', 20, 'consistency', 'Its own record'], ['Cost', 20, 'cost', 'Its own record'], ['Share of your whole book', 15, 'share', 'How your book holds it'], ['Headroom under the ceilings', 15, 'headroom', 'How your book holds it']];
+var fundScore = function fundScore(id) {
+  var f = fundById(id);
+  var p = perfOf(id);
+  var cat = categoryAvgOf(id);
+  if (!f || !p) return null;
+  /* Six points of score per point of three-year lead, centred at 50 — so matching the category is a
+     50 and beating it by eight points is a 98. The slope is a guess; it is written here rather than
+     buried so that replacing it is a one-line edit. */
+  var ret = cat ? 50 + (p.r3 - cat.r3) * 6 : null;
+  /* 1.2% is the practical top of a direct-plan expense ratio in this book; 0 is free. */
+  var cost = 100 - p.ter / 1.2 * 100;
+  /* How many of the three periods clear the category average — the plainest reading of "consistent". */
+  var beats = cat ? ['r1', 'r3', 'r5'].filter(function (k) {
+    return p[k] >= cat[k];
+  }).length / 3 * 100 : null;
+  /* HOW YOUR BOOK HOLDS IT. Positions on file only; a SIP running in with no position yet is counted
+     as a holder for the count on the fund card and NOT here, because there is no weight to measure.
+     A fund no client holds leaves both rows null and is scored on its own record, out of 70. */
+  var pos = CLIENTS.flatMap(function (c) {
+    return (c.holdings || []).filter(function (h) {
+      return h.fundId === id;
+    }).map(function (h) {
+      return {
+        c: c,
+        h: h
+      };
+    });
+  });
+  /* WEIGHT IS ACROSS THE PRACTICE, NOT INSIDE ONE CLIENT — the two rows have to say different
+     things or the second is decoration. This one is the advisor's own concentration: how much of
+     every rupee they advise sits in this one scheme. Under 10% is unremarkable and scores full;
+     it falls to zero at 30%, where a single scheme moving badly moves the whole practice.
+      A FIRST ATTEMPT SCORED THE AVERAGE CLIENT POSITION AGAINST AN 8% IDEAL and marked a fund down
+     for being held at 14%, which is a perfectly ordinary weight in a twelve-fund book. It also made
+     every unheld fund outscore every held one — the popularity trap running backwards. Being small
+     in a book is not a fault; being most of one is. */
+  var totalBook = CLIENTS.reduce(function (t, c) {
+    return t + (c.portfolio && c.portfolio.valueRs || 0);
+  }, 0);
+  var heldRs = pos.reduce(function (t, x) {
+    return t + x.h.valueRs;
+  }, 0);
+  var sharePct = pos.length && totalBook ? heldRs / totalBook * 100 : null;
+  var weight = sharePct == null ? null : 100 - Math.max(0, sharePct - 10) / 20 * 100;
+  /* The heaviest holder against the single-fund ceiling. At the ceiling there is no headroom left and
+     this fund cannot take another rupee of theirs without a rule being broken — which is a fact about
+     what an advisor can DO with it, and the reason this half belongs in a score at all. */
+  var big = pos.length ? Math.max.apply(Math, _toConsumableArray(pos.map(function (x) {
+    return x.h.pct;
+  }))) : null;
+  var headroom = big == null ? null : Math.max(0, (LIMITS.singleFund - big) / LIMITS.singleFund) * 100;
+  var vals = {
+    'Return against its category': ret,
+    'Cost': cost,
+    'Beats its category': beats,
+    'Share of your whole book': weight,
+    'Headroom under the ceilings': headroom
+  };
+  /* A MISSING INPUT CARRIES ITS REASON. "Could not be read" is not something an advisor can act on;
+     "no client of yours holds it yet, so there is no weight to read" is, and it also says the absence
+     is not a fault. */
+  var noneHeld = 'no client of yours holds it yet, so there is nothing of yours to measure';
+  var why = {
+    'Share of your whole book': noneHeld,
+    'Headroom under the ceilings': noneHeld,
+    'Return against its category': 'no category average on file for this one',
+    'Beats its category': 'no category average on file for this one'
+  };
+  return rollUp(FUND_SCORE_WEIGHTS.map(function (_ref9) {
+    var _ref0 = _slicedToArray(_ref9, 4),
+      label = _ref0[0],
+      weight2 = _ref0[1],
+      _short = _ref0[2],
+      group = _ref0[3];
+    return {
+      label: label,
+      weight: weight2,
+      "short": _short,
+      group: group,
+      why: why[label],
+      value: vals[label] == null ? null : clamp100(vals[label])
+    };
+  }));
+};
+var fundScoreProvenance = function fundScoreProvenance() {
+  return 'Centricity Fund Score · a DESIGN PLACEHOLDER, not Centricity’s methodology · every input is on this card';
+};
+var HEALTH_WEIGHTS = [['Sticking to the mandate', 30, 'mandate'], ['Concentration', 25, 'concentration'], ['Cost of what they hold', 15, 'cost'], ['Spread across funds', 15, 'spread'], ['Records in order', 15, 'records']];
+var clientHealth = function clientHealth(clientId) {
+  var c = clientById(clientId);
+  if (!c || !c.portfolio || !c.portfolio.valueRs) return null;
+  /* Drift is measured on equity, which is the leg every mandate in this book states and the one the
+     drift band is written against. Fifteen points out is a zero; on the band is a hundred. */
+  var drift = c.allocation && c.mandate ? Math.abs(c.allocation.equity - c.mandate.equity) : null;
+  var mandate = drift == null ? null : 100 - Math.max(0, drift - LIMITS.driftBand) / 15 * 100;
+  var big = (c.holdings || []).reduce(function (t, h) {
+    return Math.max(t, h.pct);
+  }, 0) || null;
+  var conc = big == null ? null : 100 - Math.max(0, big - LIMITS.singleFund) / LIMITS.singleFund * 100;
+  /* Weighted by what they actually hold, so one large cheap fund counts for more than three small
+     expensive ones. Only the holdings on file are read, and the card says how much of the book that
+     is when it is not all of it. */
+  var held = (c.holdings || []).map(function (h) {
+    return {
+      pct: h.pct,
+      ter: (perfOf(h.fundId) || {}).ter
+    };
+  }).filter(function (h) {
+    return h.ter != null;
+  });
+  var heldPct = held.reduce(function (t, h) {
+    return t + h.pct;
+  }, 0);
+  var wTer = heldPct ? held.reduce(function (t, h) {
+    return t + h.ter * h.pct;
+  }, 0) / heldPct : null;
+  var cost = wTer == null ? null : 100 - wTer / 1.2 * 100;
+  /* Twelve to twenty funds is a book somebody is managing; forty-three is a book nobody is. */
+  var n = c.portfolio.funds;
+  var spread = n == null ? null : n <= 20 ? 100 : 100 - (n - 20) / 30 * 100;
+  var records = clamp100([c.kyc && c.kyc.status === 'Valid' ? 50 : 0, c.nominee ? 35 : 0, (c.holdings || []).every(function (h) {
+    return h.folio;
+  }) ? 15 : 0].reduce(function (a, b) {
+    return a + b;
+  }, 0));
+  var vals = {
+    'Sticking to the mandate': mandate,
+    'Concentration': conc,
+    'Cost of what they hold': cost,
+    'Spread across funds': spread,
+    'Records in order': records
+  };
+  var why = {
+    'Sticking to the mandate': 'the current equity / debt / cash split is not on file',
+    'Concentration': 'no holdings on file, only the fund count',
+    'Cost of what they hold': 'no holdings on file, so nothing to weigh the expense ratios by'
+  };
+  var out = rollUp(HEALTH_WEIGHTS.map(function (_ref1) {
+    var _ref10 = _slicedToArray(_ref1, 3),
+      label = _ref10[0],
+      weight = _ref10[1],
+      _short2 = _ref10[2];
+    return {
+      label: label,
+      weight: weight,
+      "short": _short2,
+      why: why[label],
+      value: vals[label] == null ? null : clamp100(vals[label])
+    };
+  }));
+  return _objectSpread(_objectSpread({}, out), {}, {
+    heldPct: heldPct || 0,
+    funds: n,
+    drift: drift,
+    big: big
+  });
+};
+var healthProvenance = function healthProvenance(c) {
+  return "Client Health Score \xB7 a DESIGN PLACEHOLDER, not Centricity\u2019s methodology \xB7 from ".concat(c && c.portfolio ? c.portfolio.asOf : '30 Sep 2026', " holdings and the mandate on file");
+};
+var LEDGER = [{
+  id: 'l1',
+  date: '19 Sep 2026',
+  client: 'sharma',
+  kind: 'Switch',
+  detail: '₹1,85,000 · Quant Small Cap → ICICI Corporate Bond',
+  amountRs: 185000,
+  status: 'placed',
+  ref: 'ord 8841/22',
+  settles: '23 Sep'
+}, {
+  id: 'l2',
+  date: '19 Sep 2026',
+  client: 'sharma',
+  kind: 'SIP change',
+  detail: 'Redirect ₹30,000 SIP → HDFC Large Cap',
+  amountRs: 30000,
+  status: 'rejected',
+  ref: '—',
+  note: 'NACH mandate registered for the old amount'
+}, {
+  id: 'l3',
+  date: '12 Sep 2026',
+  client: 'meera',
+  kind: 'SIP',
+  detail: '₹15,000 · Parag Parikh Flexi Cap',
+  amountRs: 15000,
+  status: 'settled',
+  ref: 'ord 8712/09',
+  settles: '16 Sep'
+}, {
+  id: 'l4',
+  date: '10 Sep 2026',
+  client: 'sunita',
+  kind: 'Purchase',
+  detail: '₹50,000 · ICICI Balanced Advantage',
+  amountRs: 50000,
+  status: 'settled',
+  ref: 'ord 8698/41',
+  settles: '12 Sep'
+}, {
+  id: 'l5',
+  date: '5 Sep 2026',
+  client: 'meera',
+  kind: 'Redemption',
+  detail: '₹1,20,000 · UTI Nifty 50 Index',
+  amountRs: 120000,
+  status: 'sent',
+  ref: '—',
+  note: 'No confirmation from the RTA yet'
+}];
+var LEDGER_PERIOD = 'Sep 2026';
+/* What an export would carry, named so a screen never implies more than the file holds. */
+var LEDGER_EXPORT = {
+  formats: ['CSV', 'PDF'],
+  columns: ['Date', 'Client', 'Type', 'Detail', 'Amount', 'Status', 'Reference']
+};
+
+/* MEERA'S REVIEW — and the shape of it is decided by what the book DOES NOT have.
+
+   Her record carries the value, the fund count, the as-of date, the long tail, her SIP, her mandate,
+   her risk number and her goal. It does NOT carry her 43 holdings, and it does not carry her actual
+   equity / debt / cash split. So a review of Meera can describe the SHAPE of her book exactly and
+   cannot say whether she is on her mandate — which is the single most useful thing a review would say.
+
+   That is not a gap to paper over with a plausible 57%. It is the finding: the statement was loaded
+   fund-wise and nobody has mapped the 29 tail funds to categories, so the split is a figure to supply.
+   `StatTile locked` exists for exactly this and had been on no screen since v9.
+
+   Every figure below is derived from `portfolio.valueRs` and `tail`, so changing either moves all of
+   them together and none of them can drift. */
+var REVIEW_TOP_RS = Math.round(1840000 * 0.80); // 14 funds hold 80% → ₹14,72,000
+var REVIEW_TAIL_RS = 1840000 - REVIEW_TOP_RS; // 29 funds hold the rest → ₹3,68,000
+var REVIEW_TAIL_AVG_RS = Math.round(REVIEW_TAIL_RS / 29); // ₹12,690 each, on average
+var REVIEW_TINY_CAP_RS = Math.round(1840000 * 0.015); // 1.5% of her book is ₹27,600
+
+/* WHAT A REVIEW IS FOR, and it is the one thing Sentinel cannot infer. The facts are identical in all
+   three; what changes is what is left out and what is proposed. A product that quietly turns a record
+   into a proposal has sold something, and the advisor is the one who signed it. */
+var REVIEW_AUDIENCES = [{
+  id: 'record',
+  label: 'Her annual record',
+  chip: 'Her annual record',
+  ending: 'A record, not a proposal. Dated, with what I could not check stated on it, and nothing suggested.',
+  note: 'This is the one you file.'
+}, {
+  id: 'meeting',
+  label: 'A meeting with her',
+  chip: 'A meeting with her',
+  ending: 'Plain words she would use, the tail explained, and the one question worth asking her.',
+  note: 'This is the one you read aloud.'
+}, {
+  id: 'invest',
+  label: 'Before she invests more',
+  chip: 'Before she invests more',
+  ending: 'Headroom against her mandate — which I cannot work out until her split is on file.',
+  note: 'This is the one I cannot finish yet.'
+}];
+
+/* HOW FAR TO TAKE A REBALANCE — the one question the rail asks, and the three answers are three
+   different RULES rather than three appetites.
+
+     · to the mandate   equity 71 → 60. The number he agreed to. 11 points of ₹14,23,000 = ₹1,56,530.
+     · inside the band  equity 71 → 65. LIMITS.driftBand is 5 either side, so 65 is the edge at which a
+                        review stops being raised. 6 points = ₹85,380. The cheapest thing that ends the
+                        breach, and it leaves him at the edge rather than at the middle.
+     · clear the fund   equity 71 → 58. NOT an appetite: Quant Small Cap is 31% of the book and is the
+                        WHOLE small-cap sleeve, so one holding breaches the single-fund ceiling and the
+                        sleeve ceiling at once, both 25 and both different rules (contradiction 32).
+                        Taking ₹1,85,000 out leaves it at 18%, and the equity lands at 58 — past the
+                        mandate — because the ceiling sized the move, not the drift did.
+
+   COST IS WHERE THIS STOPS BEING A MENU. Only the third is costed. `sharma.rebalance.costRs` is a
+   figure the book carries and `switchCost` now produces its three-line split from SWITCH_LOTS, which
+   holds the purchase dates for folio 9142/28. The other two targets have no lots on file, so they can
+   be SIZED and cannot be COSTED, and the screen says so rather than printing a zero or a guess.
+
+   The first two amounts are exactly points × ₹14,23,000. The third is ₹1,85,000 and NOT ₹1,84,990,
+   because ₹1,85,000 is the anchor the whole drift story is derived from and 13 points is the figure
+   derived from it — see the portfolio comment above. Do not "correct" it. */
+var REBALANCE_TARGETS = [{
+  id: 'mandate',
+  label: 'To the mandate',
+  equityAfter: 60,
+  points: 11,
+  amountRs: 156530,
+  why: 'The mix he agreed to. The furthest of the three, and the one you can read to him in his own words.',
+  rule: 'His mandate',
+  costRs: null
+}, {
+  id: 'band',
+  label: 'Inside the band',
+  equityAfter: 65,
+  points: 6,
+  amountRs: 85380,
+  why: 'The cheapest thing that ends the breach. It leaves him at the edge of the band, so a small move next quarter puts him back outside it.',
+  rule: "The \xB1".concat(LIMITS.driftBand, "-point drift band"),
+  costRs: null
+}, {
+  id: 'ceiling',
+  label: 'Clear the fund ceiling',
+  equityAfter: 58,
+  points: 13,
+  amountRs: 185000,
+  why: 'Sized by the ceiling rather than by the drift: it takes Quant Small Cap from 31% to 18%. Equity lands past the mandate as a consequence, not as a choice.',
+  rule: "The ".concat(LIMITS.singleFund, "% single-fund ceiling"),
+  costRs: 11200
+}];
+
+/* THE PROPOSAL FOR AMIT — ₹25,00,000 split six ways, and every line of it is checked against something
+   in this file rather than chosen. The mandate he stated is equity 65 / debt 30 / cash 5, so the sleeves
+   are ₹16,25,000 / ₹7,50,000 / ₹1,25,000 and they add to the whole. Cash is not a fund and is not given
+   one: it is the 5% he asked to keep liquid, and a proposal that quietly invested it would be answering
+   a question he did not ask. Six funds, which is what his record already said (`proposal.funds: 6`).
+
+   THE CEILING IS LIVE, NOT DECORATIVE. LIMITS.singleFund is 25%, and the largest line here is 24% —
+   deliberately just under, so the card can state the headroom instead of claiming there is none. Every
+   fund is on the shelf; Quant Small Cap is not, and does not appear. */
+var PROPOSAL_AMOUNT = 2500000;
+var PROPOSAL_ASKED = 5000000; /* what the advisor typed before the ceiling was stated */
+var PROPOSAL_SPLIT = [{
+  fund: 'ppfas-flexi',
+  amountRs: 600000,
+  pct: 24.0,
+  why: 'The core. Flexi cap, so the manager moves between sizes rather than you doing it.'
+}, {
+  fund: 'hdfc-large',
+  amountRs: 500000,
+  pct: 20.0,
+  why: 'Large cap ballast — the part of the equity he is least likely to flinch at.'
+}, {
+  fund: 'motilal-mid',
+  amountRs: 300000,
+  pct: 12.0,
+  why: 'The only mid-cap line. Small cap is absent on purpose: he has no risk profile yet.'
+}, {
+  fund: 'hdfc-flexi',
+  amountRs: 225000,
+  pct: 9.0,
+  why: 'A second flexi cap under a different house, so one AMC does not hold the whole core.'
+}, {
+  fund: 'icici-corp',
+  amountRs: 450000,
+  pct: 18.0,
+  why: 'Corporate bond, nil exit load — the debt he can reach without a penalty.'
+}, {
+  fund: 'hdfc-stdebt',
+  amountRs: 300000,
+  pct: 12.0,
+  why: 'Short duration, to keep the debt sleeve from taking a rate view.'
+}];
+var PROPOSAL_CASH = {
+  amountRs: 125000,
+  pct: 5.0,
+  why: 'Left in cash, because that is the 5% he asked to keep liquid.'
+};
+/* Three versions, and version 2 is the one the client has seen. The going-back layer is not a demo here:
+   an advisor who sends a proposal and then edits it has two documents in the world, and only one of them
+   is the one being discussed on the phone. */
+/* The summaries are SHORT because VersionRow's column is 235px and the preview gate measures it: the
+   first cut said "Mid-cap trimmed from ₹4,00,000 to ₹3,00,000" and needed 269. What changed goes here in
+   the advisor's words; the rupees are in the table the version produced. */
+var PROPOSAL_VERSIONS = [{
+  v: 3,
+  at: '19 Sep 2026, 11:20 am',
+  note: 'Mid-cap trimmed by ₹1,00,000',
+  state: 'draft'
+}, {
+  v: 2,
+  at: '16 Sep 2026, 4:05 pm',
+  note: 'Sent to Mr. Aggrawal',
+  state: 'sent'
+}, {
+  v: 1,
+  at: '14 Sep 2026, 6:40 pm',
+  note: 'Draft, before the ceiling',
+  state: 'superseded'
+}];
+/* WHAT STOPS THIS BEING PLACED, and it is not a design state — it is his record. KYC is in process and he
+   has no nominee, so the proposal can be built, saved and SENT, and nothing in it can be executed. Every
+   row is a fact from CLIENTS, so a screen cannot show a green tick the book does not support. */
+var PROPOSAL_BLOCKERS = [{
+  label: 'KYC',
+  value: 'In process · CKYC',
+  blocking: true,
+  note: 'PAN–Aadhaar seeding pending. Nothing can be placed until it clears.'
+}, {
+  label: 'Nominee',
+  value: 'Not on file',
+  blocking: true,
+  note: 'An AMC will not accept a folio without a nominee or a signed opt-out.'
+}, {
+  label: 'Risk profile',
+  value: 'Not done',
+  blocking: false,
+  note: 'Built against the mandate he stated, not against a score. Say so when you send it.'
+}, {
+  label: 'Mandate',
+  value: 'Equity 65 / Debt 30 / Cash 5',
+  blocking: false,
+  note: 'Stated by him on 14 Sep. The split matches it to the rupee.'
+}];
+
+/* Derived, so a screen never hand-computes a figure the book can answer. */
+var driftPoints = function driftPoints(c) {
+  return c.allocation && c.mandate ? c.allocation.equity - c.mandate.equity : null;
+};
+var overSingleFund = function overSingleFund(c) {
+  return (c.holdings || []).filter(function (h) {
+    return h.pct > LIMITS.singleFund;
+  });
+};
+var inr = function inr(n) {
+  return '₹' + Number(n).toLocaleString('en-IN');
+};
+Object.assign(window, {
+  ADVISOR: ADVISOR,
+  FUNDS: FUNDS,
+  fundById: fundById,
+  PERF: PERF,
+  PERF_AS_OF: PERF_AS_OF,
+  PERF_PERIODS: PERF_PERIODS,
+  perfOf: perfOf,
+  perfProvenance: perfProvenance,
+  perfNote: perfNote,
+  MANAGERS: MANAGERS,
+  managerOf: managerOf,
+  managerLine: managerLine,
+  managerProvenance: managerProvenance,
+  comparisonProvenance: comparisonProvenance,
+  HOLDINGS: HOLDINGS,
+  HOLDINGS_AS_OF: HOLDINGS_AS_OF,
+  HOLD_MONTHS: HOLD_MONTHS,
+  holdingsOf: holdingsOf,
+  holdingsProvenance: holdingsProvenance,
+  overlapPct: overlapPct,
+  MONTHLY: MONTHLY,
+  monthlyOf: monthlyOf,
+  monthlyProvenance: monthlyProvenance,
+  CATEGORY_AVG: CATEGORY_AVG,
+  categoryAvgOf: categoryAvgOf,
+  switchCost: switchCost,
+  LIMITS: LIMITS,
+  TAX: TAX,
+  CLIENTS: CLIENTS,
+  clientById: clientById,
+  LEDGER: LEDGER,
+  LEDGER_PERIOD: LEDGER_PERIOD,
+  LEDGER_EXPORT: LEDGER_EXPORT,
+  REVIEW_TOP_RS: REVIEW_TOP_RS,
+  REVIEW_TAIL_RS: REVIEW_TAIL_RS,
+  REVIEW_TAIL_AVG_RS: REVIEW_TAIL_AVG_RS,
+  REVIEW_TINY_CAP_RS: REVIEW_TINY_CAP_RS,
+  REVIEW_AUDIENCES: REVIEW_AUDIENCES,
+  REBALANCE_TARGETS: REBALANCE_TARGETS,
+  PROPOSAL_AMOUNT: PROPOSAL_AMOUNT,
+  PROPOSAL_ASKED: PROPOSAL_ASKED,
+  PROPOSAL_SPLIT: PROPOSAL_SPLIT,
+  PROPOSAL_CASH: PROPOSAL_CASH,
+  PROPOSAL_VERSIONS: PROPOSAL_VERSIONS,
+  PROPOSAL_BLOCKERS: PROPOSAL_BLOCKERS,
+  clamp100: clamp100,
+  scoreBand: scoreBand,
+  SCORE_BANDS: SCORE_BANDS,
+  FUND_SCORE_WEIGHTS: FUND_SCORE_WEIGHTS,
+  fundScore: fundScore,
+  fundScoreProvenance: fundScoreProvenance,
+  HEALTH_WEIGHTS: HEALTH_WEIGHTS,
+  clientHealth: clientHealth,
+  healthProvenance: healthProvenance,
+  NAV_SERIES: NAV_SERIES,
+  NAV_MONTHS: NAV_MONTHS,
+  NAV_BASE: NAV_BASE,
+  BENCH_CANON: BENCH_CANON,
+  navSeries: navSeries,
+  tenKAfter: tenKAfter,
+  benchCagr: benchCagr,
+  BENCH_SHORT: BENCH_SHORT,
+  benchReturnAt: benchReturnAt,
+  benchProvenance: benchProvenance,
+  driftPoints: driftPoints,
+  overSingleFund: overSingleFund,
+  inr: inr
+});</script>
+<script>"use strict";
+
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/* The thread shell, shared by every screen of the journey that is a conversation — screens 2 to 5 and
+   7. One file so the five do not drift into five slightly different threads.
+
+   No top-level destructuring on purpose. Every .jsx a page loads compiles into ONE scope, so
+   `const { Dock } = …` here and the same line in home.jsx would be a redeclaration and the page would
+   render nothing. A single uniquely-named const, read through in JSX, cannot collide. */
+var THREAD_DS = window.SentinelDesignSystem_0682a2;
+
+/* The thread carries the scroll — never a card inside it, and never a second scroller. */
+/* scrollRef: the live prototype owns the two thread scrolls ArtifactCard's contract assigns to the
+   caller — header under the app bar on expand, back to the card on collapse — and needs the scroller. */
+/* `banner` is pinned BETWEEN the app bar and the thread — the one slot in this shell that does not
+   scroll, and the only thing that belongs in it is a state the whole thread is in: a journey paused
+   behind the conversation (`DetourBanner`). It is deliberately not a place for what a message offered;
+   that is inside the turn (contradiction 60). */
+/* The shell itself is ScreenScaffold's now (20 Sep 2026) — the nineteen lines that used to be here
+   were the same nineteen in rail.jsx, and the rail's copy had lost the scroll rule below. What stays
+   here is what is the THREAD's rather than the phone's: the default clock, and the fact that the
+   thread passes no chips to the Dock (`chips` and `cta` are deprecated, contradiction 60). */
+function Thread(_ref) {
+  var _ref$time = _ref.time,
+    time = _ref$time === void 0 ? '3:04' : _ref$time,
+    children = _ref.children,
+    composer = _ref.composer,
+    banner = _ref.banner,
+    onMenu = _ref.onMenu,
+    onNew = _ref.onNew,
+    scrollRef = _ref.scrollRef,
+    _ref$revision = _ref.revision,
+    revision = _ref$revision === void 0 ? 0 : _ref$revision,
+    _ref$anchor = _ref.anchor,
+    anchor = _ref$anchor === void 0 ? 'newest' : _ref$anchor;
+  return /*#__PURE__*/React.createElement(THREAD_DS.ScreenScaffold, {
+    time: time,
+    banner: banner,
+    onMenu: onMenu,
+    onNew: onNew,
+    scrollRef: scrollRef,
+    revision: revision,
+    anchor: anchor,
+    composer: composer
+  }, children);
+}
+
+/* THE ADVISOR'S LAST PROMPT IS ALWAYS EDITABLE — and it is one component so it cannot be forgotten.
+
+   The owner, 19 Sep: "jaise user jo last apna prompt edit karne ka option ho — wo missing hai,
+   consistency nei hai." It was built on the answer screen and nowhere else, because every page rendered
+   its own `UserBubble` and each one had to remember. A rule that every page has to remember is a rule
+   that half the pages break, so the rule is a component now: `UserTurn` is the only way a screen renders
+   what the advisor said.
+
+   WHERE IT IS VALID, from the advisor's side:
+     · A finished turn — yes. Edit replaces what came after it, and `costNote` says so before it happens.
+     · A turn still running — no, and not silently: Stop is right there in the send slot, and it is the
+       honest control for "I did not mean that". Edit returns the moment the turn finishes.
+     · A journey ANSWER — yes, and it costs more: MessageActions' own contract says edit there "must warn
+       what it costs (Editing this reopens question 7. The four answers after it will be asked again.)".
+       Same component, same gesture, a bigger `costNote`.
+     · A file the advisor attached — no. A file is not a sentence to re-word; it is removed and replaced,
+       which is what FileUpload's own Remove is for.
+   Home has no prompt at all, so it has no UserTurn — that is not an exception, there is simply nothing
+   there to edit yet. */
+/* `UserTurn` AND `AttachmentTurn` WERE HERE AND ARE NOW THE SYSTEM'S (20 Sep 2026, the owner: anything
+   built on a screen that belongs in the design system goes into the design system). They are
+   `UserTurn` and `AttachmentTurn` — neither read the book, neither was journey-specific, and every
+   journey in the product used the same twelve and ten lines of them. What stays here is what is
+   genuinely this thread's: the attachment STATE, and this product's own parse stages. */
+/* THE PAPERCLIP IS REAL ON EVERY SCREEN, AND WHAT IT PRODUCES IS HONEST.
+
+   The owner, 19 Sep: "attachment demo nei real hona chahiye har screen par, and output and prompt ke
+   saath." Three of the four thread screens passed `onAttach={() => {}}` — a picker that opens and drops
+   the file on the floor, which is a demo wearing a control's clothes. `useAttachment` gives every screen
+   the same real one in one line.
+
+   THE HONEST PART. The designed specimen (Sharma's Q3 statement) has a designed output: three stages and
+   "14 pages · 18 holdings". A file the VIEWER picks has no such output — this is a rendered specimen, not
+   the product, and nothing here parses a PDF. Printing "18 holdings" over someone's own file would be a
+   fabricated figure, which is the one thing these screens never do. So a picked file shows its REAL name
+   and size, its stages sit pending, and a ParseNote says plainly that the prototype does not read it.
+   The control is real; the claim is not made. */
+function useAttachment() {
+  var _React$useState = React.useState(null),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    file = _React$useState2[0],
+    setFile = _React$useState2[1];
+  return {
+    file: file,
+    clear: function clear() {
+      return setFile(null);
+    },
+    onAttach: function onAttach(f) {
+      return setFile({
+        name: f.name,
+        meta: "".concat(Math.max(1, Math.round(f.size / 1024)), " KB \xB7 just now"),
+        picked: true
+      });
+    }
+  };
+}
+var PARSE_DONE = [{
+  label: 'Read the file',
+  state: 'done',
+  meta: '14 pages'
+}, {
+  label: 'Found the holdings',
+  state: 'done',
+  meta: '18 funds'
+}, {
+  label: 'Checked them against his mandate',
+  state: 'done',
+  meta: '3 outside it'
+}];
+var PARSE_PENDING = PARSE_DONE.map(function (x) {
+  return {
+    label: x.label,
+    state: 'pending'
+  };
+});
+
+/* A file is a message from the ADVISOR: it lands at the end of the thread, on their side, capped like
+   their bubble. The caption above it is theirs too — and it is NOT editable, because a file is not a
+   sentence to re-word; it is removed and replaced, which is FileUpload's own Remove. */
+Object.assign(window, {
+  Thread: Thread,
+  useAttachment: useAttachment,
+  PARSE_DONE: PARSE_DONE,
+  PARSE_PENDING: PARSE_PENDING
+});</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* global AttachmentTurn, useAttachment -- thread.jsx declares both in the one Babel scope every page
+   loads it into, before this file. The lint cannot see across files; the preview gate can, and fails a
+   page that loads this one without thread.jsx. */
+/* Journey A — Meera's risk profile. The rail: one question at a time, twelve of them, two interjections
+   and a locked number at the end. Shared by risk-profile.html and any prototype that runs it.
+
+   The steps, their wording and their chips are the product's own
+   (docs/screens-source/src/journeys.tsx:67-204). Nothing here is written for a specimen.
+
+   No top-level destructuring: every .jsx a page loads compiles into ONE scope. */
+var RAIL_DS = window.SentinelDesignSystem_0682a2;
+var c = function c(label, tone, extra) {
+  return _objectSpread({
+    label: label,
+    tone: tone
+  }, extra);
+};
+var RAIL_STEPS = [{
+  name: 'Intro',
+  "short": "Start Meera's risk profile",
+  provenance: 'As of 15 Sep · from her account record and September statement',
+  sentinel: ['Meera Nair, 38, Kochi. Your client since 2019. ₹18.4 L across 43 funds.', 'Her risk profile was never completed, so nothing after it can be checked against anything. Let us fix that first — twelve short questions, mostly one tap each.'],
+  chips: [c("Let's go", 'primary'), c('Why twelve questions?', 'tertiary', {
+    sheet: {
+      title: 'Why twelve questions?',
+      body: ['Twelve short questions — mostly one tap each — are the minimum needed to score her finances, her temperament and her goal.', 'With a real risk number, everything after it (the proposal, the drift, the rebalance) can be checked against something.']
+    }
+  }), c('Skip to the result', 'muted', {
+    "goto": 15
+  })]
+}, {
+  name: 'Q1 Age',
+  "short": 'How old is Meera?',
+  progress: [1, 12],
+  sentinel: 'How old is Meera?',
+  chips: [c('Use her KYC age — 38', 'smart'), c('Type it instead')],
+  composer: 'or type an age'
+}, {
+  name: 'Q2 Income',
+  "short": 'How steady is her income?',
+  progress: [2, 12],
+  sentinel: 'How steady is her income?',
+  chips: [c('Fixed salary'), c('Salary plus bonus'), c('Own business'), c('Freelance, varies'), c('Rent or pension')],
+  composer: 'or type your answer'
+}, {
+  name: 'Q3 Earns',
+  "short": 'What does she earn a month?',
+  progress: [3, 12],
+  sentinel: 'What does she earn a month?',
+  chips: [c('From her last ITR — ₹1,80,000', 'smart'), c('₹1,50,000'), c('₹2,00,000')],
+  money: true
+}, {
+  name: 'Q4 Spend',
+  "short": 'And what does she spend a month?',
+  progress: [4, 12],
+  sentinel: 'And what does she spend a month?',
+  chips: [c('₹75,000'), c('₹95,000'), c('₹1,20,000')],
+  money: true
+}, {
+  name: 'Q5 Emergency',
+  "short": 'How much for emergencies?',
+  progress: [5, 12],
+  sentinel: 'How much has she kept aside for emergencies?',
+  chips: [c('₹3,00,000'), c('₹6,00,000'), c('₹10,00,000')],
+  money: true
+}, {
+  name: 'Reflect 1',
+  progress: [5, 12],
+  interjection: true,
+  sentinel: 'That is about six months of her spending. Comfortable — it means a fall in the market will not force her to sell.',
+  chips: [c('Carry on', 'primary')]
+}, {
+  name: 'Q6 Dependents',
+  "short": 'How many people depend on this?',
+  progress: [6, 12],
+  sentinel: 'How many people depend on this income?',
+  chips: [c('Nobody'), c('1'), c('2'), c('3'), c('4 or more')]
+}, {
+  name: 'Q7 Horizon',
+  "short": 'When will she need this money?',
+  progress: [7, 12],
+  sentinel: 'When will she need this money?',
+  chips: [c('Within a year'), c('1 to 3 years'), c('3 to 7 years'), c('7 to 15 years'), c('More than 15 years')]
+}, {
+  name: 'Q8 Goal',
+  "short": 'What is she saving towards?',
+  progress: [8, 12],
+  sentinel: 'What is she saving towards, in rupees?',
+  chips: [c('₹50 lakh'), c('₹1 crore'), c('₹2 crore'), c("She isn't sure yet", 'muted')],
+  money: true
+}, {
+  name: 'Q9 Behaviour',
+  "short": 'The last 20% fall — what did she do?',
+  progress: [9, 12],
+  sentinel: 'The last time markets fell 20% or more — what did she actually do?',
+  chips: [c('Invested more'), c('Stayed put'), c('Sold some'), c('Sold everything')]
+}, {
+  name: 'Reflect 2',
+  progress: [9, 12],
+  interjection: true,
+  sentinel: 'Good — that is the most useful answer in the whole set. Saying you can handle a fall and living through one are different things.',
+  chips: [c('Carry on', 'primary')]
+}, {
+  name: 'Q10 Drawdown',
+  "short": 'How big a fall could she sit through?',
+  progress: [10, 12],
+  sentinel: 'How big a fall could she sit through without calling you?',
+  chips: [c('Almost none'), c('About 10%'), c('About 20%'), c('About 30%'), c('More than that')]
+}, {
+  name: 'Q11 Objective',
+  "short": 'What is this money asked to do?',
+  progress: [11, 12],
+  sentinel: 'What is she asking this money to do?',
+  chips: [c('Protect it'), c('Give steady income'), c('Grow steadily'), c('Grow it properly'), c('Push for the most')]
+}, {
+  name: 'Q12 Knowledge',
+  "short": 'How well does she understand it?',
+  progress: [12, 12],
+  sentinel: 'How well does she understand what she holds?',
+  chips: [c('New to this'), c('Knows the basics'), c('Fairly experienced'), c('Works in finance')]
+}, {
+  name: 'Result',
+  result: true,
+  chips: [c('How is 54 worked out?', 'tertiary', {
+    sheet: {
+      title: 'How is 54 worked out?',
+      body: ['Three scores: what her finances can absorb (71), what she can sit through calmly (54), and what her ₹2 crore goal needs (62).', 'We go with the lowest of the three. Her money could carry more risk than she could, so 54 is what we build against.']
+    }
+  }), c('Share with Meera on WhatsApp', 'outline', {
+    external: true
+  })],
+  cta: 'Build her a portfolio'
+}];
+var RAIL_TOTAL = 12;
+var RISK_RESULT = {
+  title: "Meera's risk number",
+  meta: 'Locked · 15 Sep 2026',
+  value: 54,
+  badge: 'Moderate',
+  copy: 'We look at three things and go with the lowest of them. Her money can take more risk than she can.',
+  rows: [{
+    label: 'What her finances can absorb',
+    value: 71
+  }, {
+    label: 'What she can sit through calmly',
+    value: 54,
+    binding: true
+  }, {
+    label: 'What her ₹2 crore goal needs',
+    value: 62
+  }],
+  trailing: 'She is a 54, Moderate. Her finances could carry more, but she would not sleep through it — so 54 is what we build against.'
+};
+
+/* THE RAIL SHELL. Same spine as the thread — backdrop, status, app bar, one scroller, the Dock with the
+   composer — plus the rail itself pinned under the app bar, which is the one thing here that does not
+   scroll because it is a state the whole surface is in. `dim` is the detour state: ProgressRail's own
+   prop, which dims the rail and NOT its label.
+
+   RULE 3 HOLDS HERE TOO: the composer is present on every question. An advisor can always type instead
+   of tapping, and on a money question it is the MoneyComposer. */
+/* The shell is ScreenScaffold's now (20 Sep 2026). This file's copy was the thread's nineteen lines
+   with two additions — the progress rail and a hardcoded clock — and ONE SUBTRACTION that was a bug:
+   `e.scrollTop = e.scrollHeight`, the scroll-to-the-bottom that thread.jsx:17-45 exists to reject.
+   Looked at on screens/journey-e/rebalance: the rail opened on the middle of a list of targets with
+   Sentinel's question scrolled off the top. What stays here is what is the RAIL's rather than the
+   phone's: the morning clock this journey is set at, and `n`/`total`/`dim` as the rail's own words. */
+function Rail(_ref) {
+  var n = _ref.n,
+    _ref$total = _ref.total,
+    total = _ref$total === void 0 ? RAIL_TOTAL : _ref$total,
+    dim = _ref.dim,
+    banner = _ref.banner,
+    children = _ref.children,
+    composer = _ref.composer,
+    onMenu = _ref.onMenu,
+    onNew = _ref.onNew,
+    scrollRef = _ref.scrollRef,
+    _ref$revision = _ref.revision,
+    revision = _ref$revision === void 0 ? 0 : _ref$revision,
+    _ref$anchor = _ref.anchor,
+    anchor = _ref$anchor === void 0 ? 'newest' : _ref$anchor;
+  return /*#__PURE__*/React.createElement(RAIL_DS.ScreenScaffold, {
+    time: "10:12",
+    banner: banner,
+    onMenu: onMenu,
+    onNew: onNew,
+    progress: n != null ? {
+      n: n,
+      total: total,
+      dim: dim
+    } : undefined,
+    scrollRef: scrollRef,
+    revision: revision,
+    anchor: anchor,
+    composer: composer
+  }, children);
+}
+
+/* WHAT SHE HAS ALREADY ANSWERED. QAPair collapses a question and its answer to one line each, so twelve
+   of them do not bury the one being asked now.
+
+   THE LAST ANSWER IS EDITABLE, and this is the same gesture as editing a prompt in the thread — the
+   owner's rule that a pattern valid from the advisor's side must exist everywhere it is valid. Here it
+   costs more, and MessageActions' own contract says exactly what to say: "Editing this reopens question
+   7. The four answers after it will be asked again." Nothing is discarded until the new answer is given. */
+function AnsweredList(_ref2) {
+  var items = _ref2.items,
+    onEdit = _ref2.onEdit,
+    _ref2$editable = _ref2.editable,
+    editable = _ref2$editable === void 0 ? true : _ref2$editable;
+  if (!items.length) return null;
+  var last = items.length - 1;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, items.map(function (a, i) {
+    return (
+      /*#__PURE__*/
+      /* A plain div rather than a keyed Fragment: the lint reads `React.Fragment` in a file that never
+         imports React (the bundle provides it globally), and a wrapper here costs nothing — the column
+         it sits in already owns the gap. */
+      React.createElement("div", {
+        key: i,
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-6)'
+        }
+      }, /*#__PURE__*/React.createElement(RAIL_DS.QAPair, {
+        question: a.q,
+        answer: a.a
+      }), a.note && /*#__PURE__*/React.createElement(RAIL_DS.ParseNote, {
+        text: a.note
+      }), editable && i === last && onEdit && /*#__PURE__*/React.createElement(RAIL_DS.MessageActions, {
+        role: "user",
+        onAction: function onAction(act) {
+          return act === 'edit' && onEdit(i);
+        }
+      }))
+    );
+  }));
+}
+
+/* The question being asked, and its answers as chips INSIDE the turn — the 18 Sep ruling, applied to the
+   rail rather than left as the one surface still answering from the Dock (contradiction 60). */
+/* `extra` is a slot, not a feature. A step in the risk rail is a question and some chips; a step in the
+   rebalance rail has to lay three sized options side by side before a chip means anything. Rather than
+   teach this shared file about journey E, the caller renders what its own step needs and the rail keeps
+   deciding only where things sit — inside the SentinelBlock, under the sentence, above the chips, so it
+   reads as part of what Sentinel said rather than as a widget parked beside it. */
+function StepTurn(_ref3) {
+  var step = _ref3.step,
+    onChip = _ref3.onChip,
+    thinking = _ref3.thinking,
+    extra = _ref3.extra,
+    _ref3$continued = _ref3.continued,
+    continued = _ref3$continued === void 0 ? false : _ref3$continued;
+  if (!step) return null;
+  var lines = Array.isArray(step.sentinel) ? step.sentinel : [step.sentinel];
+  return /*#__PURE__*/React.createElement(RAIL_DS.SentinelTurn, {
+    continued: continued,
+    thinking: thinking ? 'Reading her account record…' : false,
+    say: lines,
+    body: extra,
+    provenance: step.provenance,
+    chips: step.chips && /*#__PURE__*/React.createElement(RAIL_DS.ChipRow, null, step.chips.map(function (ch) {
+      return /*#__PURE__*/React.createElement(RAIL_DS.AnswerChip, {
+        key: ch.label,
+        label: ch.label,
+        variant: ch.tone || 'outline',
+        onClick: function onClick() {
+          return onChip && onChip(ch);
+        }
+      });
+    }))
+  });
+}
+function RiskResult(_ref4) {
+  var onChip = _ref4.onChip,
+    chips = _ref4.chips,
+    cta = _ref4.cta;
+  return /*#__PURE__*/React.createElement(RAIL_DS.SentinelTurn, {
+    bodyFirst: true,
+    body: /*#__PURE__*/React.createElement(RAIL_DS.HeroNumberCard, RISK_RESULT),
+    then: RISK_RESULT.trailing,
+    chips: chips && /*#__PURE__*/React.createElement(RAIL_DS.ChipRow, null, chips.map(function (ch) {
+      return /*#__PURE__*/React.createElement(RAIL_DS.AnswerChip, {
+        key: ch.label,
+        label: ch.label,
+        variant: ch.tone || 'outline',
+        onClick: function onClick() {
+          return onChip && onChip(ch);
+        }
+      });
+    })),
+    cta: cta ? {
+      label: cta,
+      onClick: function onClick() {}
+    } : undefined
+  });
+}
+
+/* THE WHOLE JOURNEY, RUNNING — lifted out of risk-profile.html when the end-to-end prototype needed it,
+   so the spec page and the prototype run ONE rail rather than two that can drift apart. It carries its
+   own composer, because which composer a step wants is a property of the step (`money`), not of the page.
+   `onMenu` / `onNew` are the prototype's only addition: a rail reached from the thread has to be
+   leavable, and it leaves by the same two doors every other surface uses. */
+/* A REAL COMPOSER, NOT A DRAWING OF ONE (F-45). Every rail step says "or type your answer" and this
+   was `value=""` with a no-op onChange and a no-op onSend — inert on journeys A, D, E and F, four of
+   the six. The same defect was found and fixed on the thread's composer for the prototype and left
+   here. A control that invites typing and drops it is the DEAD PAPERCLIP rule applied to the composer,
+   and the gate only knew to look at the paperclip.
+   The state lives HERE rather than in every caller: what an advisor types into a rail step is an
+   answer to that step, and nothing else on the page needs it. */
+/* `StepComposer` WAS HERE AND IS NOW `StepComposer` IN THE SYSTEM (20 Sep 2026). Which composer a
+   question wants is a property of the STEP, and three journeys were each deciding it again. */
+var SHARE_SHEET = {
+  title: 'Share with Meera',
+  body: ['This build prepares the summary and hands it to your own share sheet — it does not send anything on its own.', 'Nothing leaves Sentinel until you pick a channel and send it there.']
+};
+
+/* STEPS AND THE RESULT ARE ARGUMENTS, not this file's own. The rail is shared: SCREENS-PLAN counts 22
+   steps across it — Risk 16, Proposal 4, Review 1, Rebalance 1 — so a second journey on a second copy of
+   this loop would be two places for "what happens when you edit answer 3" to drift apart. The defaults
+   are the risk journey, so every existing caller is unchanged. */
+/* `lead` — WHAT THE JOURNEY WAS ENTERED WITH (20 Sep 2026). A journey reached from the fund explorer
+   arrives carrying a fund, and a door that drops what you carried through it is not a hand-off. It sits
+   ABOVE the first question rather than inside it, because it is not part of the question: it is
+   Sentinel saying what it already has and what it will do with it, and it stays visible as the advisor
+   answers. The sentence is each journey's own — proposal.jsx, rebalance.jsx and review.jsx write it —
+   because what a carried fund MEANS is different in each and a shared sentence would have to be vague
+   in all three. */
+function LiveRail(_ref5) {
+  var _ref5$steps = _ref5.steps,
+    steps = _ref5$steps === void 0 ? RAIL_STEPS : _ref5$steps,
+    _ref5$total = _ref5.total,
+    total = _ref5$total === void 0 ? RAIL_TOTAL : _ref5$total,
+    result = _ref5.result,
+    stepExtra = _ref5.stepExtra,
+    onAnswer = _ref5.onAnswer,
+    _ref5$attachCaption = _ref5.attachCaption,
+    attachCaption = _ref5$attachCaption === void 0 ? 'Here is her last ITR.' : _ref5$attachCaption,
+    onEvent = _ref5.onEvent,
+    onMenu = _ref5.onMenu,
+    onNew = _ref5.onNew,
+    lead = _ref5.lead;
+  var _React$useState = React.useState(0),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    cursor = _React$useState2[0],
+    setCursor = _React$useState2[1];
+  var _React$useState3 = React.useState([]),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    answered = _React$useState4[0],
+    setAnswered = _React$useState4[1];
+  var _React$useState5 = React.useState(null),
+    _React$useState6 = _slicedToArray(_React$useState5, 2),
+    sheet = _React$useState6[0],
+    setSheet = _React$useState6[1];
+  var _React$useState7 = React.useState(false),
+    _React$useState8 = _slicedToArray(_React$useState7, 2),
+    thinking = _React$useState8[0],
+    setThinking = _React$useState8[1];
+  var att = useAttachment();
+  var step = steps[cursor];
+  var log = function log(what, motion) {
+    return onEvent && onEvent(what, motion);
+  };
+  /* `onAnswer` tells the caller WHICH chip was taken, which the answered list cannot: it stores the
+     label the advisor sees, and a journey that branches on the answer needs the chip. Journey F is the
+     first to branch — its one question picks who the review is for. */
+  var advance = function advance(label, _goto, chip) {
+    /* PAST THE LAST QUESTION THERE IS NO STEP, and a chip in the RESULT turn comes through here too —
+       "Build her a portfolio", "Share with Meera on WhatsApp". `step.short` on an undefined step threw
+       and took the whole prototype down with it: React unmounted, the composer went, and nothing after
+       it worked. Found by driving the prototype end to end on 20 Sep 2026, which is the only thing
+       that could reach a result chip after twelve answers. A result's chip is not an answer to a
+       question, so it records nothing and advances nothing; the caller's `onAnswer` still fires,
+       because that is how a journey learns what was taken. */
+    if (onAnswer) onAnswer(step, chip || {
+      label: label
+    });
+    if (!step) {
+      log("\u201C".concat(label, "\u201D \u2014 the rail is finished, so this is not an answer to anything"), '');
+      return;
+    }
+    setAnswered(function (a) {
+      return [].concat(_toConsumableArray(a), [{
+        q: step["short"],
+        a: label
+      }]);
+    });
+    setThinking(true);
+    var next = _goto != null ? _goto : cursor + 1;
+    log("Answered \u201C".concat(label, "\u201D"), 'SentinelThinking for 520ms, then ds-rise on the next question');
+    setTimeout(function () {
+      setCursor(next);
+      setThinking(false);
+    }, 520);
+  };
+  var onChip = function onChip(ch) {
+    if (ch.sheet) {
+      log('Explainer opens — a detour, the rail dims', 'ds-sheet 300ms; ProgressRail dim to 40%');
+      return setSheet(ch.sheet);
+    }
+    if (ch.external) {
+      log('Share — the OS sheet, not ours', '');
+      return setSheet(SHARE_SHEET);
+    }
+    advance(ch.label, ch["goto"], ch);
+  };
+  /* Edit answer i: the journey reopens THERE and everything after it is asked again. */
+  var editAt = function editAt(i) {
+    log("Edited answer ".concat(i + 1, " \u2014 everything after it is asked again"), 'the list truncates; the rail steps back');
+    setAnswered(function (a) {
+      return a.slice(0, i);
+    });
+    setCursor(steps.findIndex(function (s) {
+      return s["short"] === answered[i].q;
+    }) || 0);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      height: '100%',
+      width: '100%'
+    }
+  }, /*#__PURE__*/React.createElement(Rail, {
+    n: step && step.progress ? step.progress[0] : undefined,
+    total: total,
+    revision: "".concat(cursor, "-").concat(answered.length, "-").concat(!!att.file),
+    onMenu: onMenu,
+    onNew: onNew,
+    composer: /*#__PURE__*/React.createElement(StepComposer, {
+      step: step,
+      onAttach: att.onAttach,
+      onSend: function onSend(t) {
+        log("Typed \u201C".concat(t, "\u201D"), "the same path a chip takes \u2014 typing is never a second-class answer");
+        advance(t);
+      }
+    })
+  }, lead, /*#__PURE__*/React.createElement(AnsweredList, {
+    items: answered,
+    onEdit: editAt
+  }), step && step.result ? result ? result({
+    step: step,
+    onChip: onChip
+  }) : /*#__PURE__*/React.createElement(RiskResult, {
+    chips: step.chips,
+    cta: step.cta,
+    onChip: onChip
+  })
+  /* ONE SIGNATURE ON ARRIVAL. The lead and the first question are one thing Sentinel said —
+     "here is the fund you brought, and here is my first question" — so the question does not
+     sign itself again eleven points below the lead (the 18 Sep ruling). The moment an answer
+     lands, an AnsweredList sits between them and two signatures are correct again, because
+     the advisor has spoken in between. */ : /*#__PURE__*/React.createElement(StepTurn, {
+    step: step,
+    thinking: thinking,
+    onChip: onChip,
+    continued: !!lead && answered.length === 0,
+    extra: stepExtra ? stepExtra({
+      step: step,
+      advance: advance,
+      onChip: onChip
+    }) : undefined
+  }), /*#__PURE__*/React.createElement(AttachmentTurn, {
+    file: att.file,
+    caption: attachCaption,
+    onRemove: att.clear
+  })), /*#__PURE__*/React.createElement(RAIL_DS.ExplainerSheet, {
+    open: !!sheet,
+    title: (sheet || {}).title || '',
+    body: (sheet || {}).body || [],
+    onClose: function onClose() {
+      setSheet(null);
+      log('Explainer closes — the rail comes back to full', 'immediate');
+    }
+  }));
+}
+Object.assign(window, {
+  StepComposer: StepComposer,
+  SHARE_SHEET: SHARE_SHEET,
+  LiveRail: LiveRail,
+  RAIL_STEPS: RAIL_STEPS,
+  RAIL_TOTAL: RAIL_TOTAL,
+  RISK_RESULT: RISK_RESULT,
+  Rail: Rail,
+  AnsweredList: AnsweredList,
+  StepTurn: StepTurn,
+  RiskResult: RiskResult
+});</script>
+<script>"use strict";
+
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/* JOURNEY F — the client review. Shared by review.html and the end-to-end prototype.
+
+   SCREENS-PLAN counts one rail step for this journey, and the honest one is not a fact-finding
+   question: the book already holds every fact this review can state. The one thing Sentinel cannot
+   infer is WHAT THE REVIEW IS FOR — and the same holdings produce a different document for a filing,
+   for a meeting, and for a decision to invest more. The facts do not change; what is left out and what
+   is proposed does. A product that quietly turns a record into a proposal has sold something, and the
+   advisor is the one who signed it.
+
+   THE REVIEW'S REAL FINDING IS A MISSING FIGURE. Meera's record has her value, her fund count, her long
+   tail, her SIP, her mandate, her risk and her goal — and NOT her 43 holdings, and NOT her actual
+   equity / debt / cash split. So this review describes the shape of her book exactly and cannot say
+   whether she is on her mandate, which is the most useful sentence a review would carry. It says so,
+   with the reason and with what would fix it. `StatTile locked` is built for precisely that and had
+   been on no screen since v9.
+
+   `book.jsx` and `journey-a/rail.jsx` are loaded before this file. */
+var REV_DS = window.SentinelDesignSystem_0682a2;
+var MEERA = clientById('meera');
+var REV_ASK = "Review Meera's portfolio";
+
+/* The chip carries the audience id, so a branch reads the DECISION rather than matching the label text.
+   Copy changes; an id does not. */
+var REV_STEPS = [{
+  name: 'What for',
+  "short": 'What is this review for?',
+  progress: [1, 1],
+  provenance: "As of ".concat(MEERA.portfolio.asOf, " \xB7 from her September statement and the mandate on file"),
+  sentinel: ["".concat(MEERA.name, " holds ").concat(inr(MEERA.portfolio.valueRs), " across ").concat(MEERA.portfolio.funds, " funds. Her risk number is ").concat(MEERA.risk.score, ", ").concat(MEERA.risk.band, ", locked ").concat(MEERA.risk.lockedOn, "."), 'The facts are the same whoever reads this. What changes is what I leave out and what I propose — so tell me what it is for, and I will not turn a record into a proposal on my own.'],
+  audiences: true,
+  chips: REVIEW_AUDIENCES.map(function (a) {
+    return c(a.chip, a.id === 'record' ? 'primary' : undefined, {
+      audience: a.id
+    });
+  })
+}, {
+  name: 'Result',
+  result: true
+}];
+var REV_TOTAL = 1;
+
+/* THE SHAPE OF HER BOOK, which is the thing a review of 43 funds is actually about. Fourteen funds hold
+   four-fifths of her money; twenty-nine hold the rest and none of them reaches 1.5%. The tail is ONE
+   row, not twenty-nine: a list an advisor cannot read to a client is a list that hides the finding. */
+function ReviewShape() {
+  var tailPct = 100 - MEERA.tail.topSharePct;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(REV_DS.ConcentrationBar, {
+    fraction: MEERA.tail.topSharePct / 100,
+    label: "".concat(MEERA.tail.topFunds, " funds hold ").concat(MEERA.tail.topSharePct, "% \u2014 ").concat(inr(REVIEW_TOP_RS))
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-6)'
+    }
+  }, /*#__PURE__*/React.createElement(REV_DS.FigureRow, {
+    label: "The other ".concat(MEERA.tail.tinyFunds, " funds"),
+    value: "".concat(inr(REVIEW_TAIL_RS), " \xB7 ").concat(tailPct, "%")
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      font: 'var(--type-row-font)',
+      color: 'var(--color-ink-soft)'
+    }
+  }, "None of them reaches ", MEERA.tail.tinyUnderPct, "% of her book, which is ", inr(REVIEW_TINY_CAP_RS), ". On average ", inr(REVIEW_TAIL_AVG_RS), " each."), /*#__PURE__*/React.createElement("span", {
+    style: {
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-muted)'
+    }
+  }, "Too small to move the needle, and they still cost her a fee and a line on every statement.")));
+}
+
+/* THE FOUR FIGURES EXPLAIN THEMSELVES — contradiction 63, closed 20 Sep 2026.
+   `InfoDot` was shipped, specified, and reached nothing directly on any screen; it arrived only
+   through `InfoCard`'s stats. So the review's four figures — including the locked one, which IS the
+   review's finding — had no door to an explanation, while the same class of figure on the fund card
+   had one on every stat. The row was left open because the fix is CONTENT: four bodies that are
+   claims about somebody's money, and every fact in them has to be in the book already. They are.
+
+   The voice is the product's: the number first, then what it is, then what it is not. The last one
+   explains an absence, which is the only explainer here that could not be written from the figure. */
+var REV_EXPLAINERS = {
+  book: {
+    title: 'Her book — ₹18,40,000',
+    body: ["This is what her ".concat(MEERA.portfolio.funds, " funds were worth on ").concat(MEERA.portfolio.asOf, ". It comes from her September statement, and all ").concat(MEERA.portfolio.funds, " of them are in it \u2014 nothing is missing from the total."), 'It is a value, not a return. What she put in and what she has made are two different numbers, and this review does not claim either.']
+  },
+  risk: {
+    title: "Her risk number \u2014 ".concat(MEERA.risk.score),
+    body: [
+    /* Not "54 is the lowest…": a sentence that opens with a digit reads as a fragment, and shouting
+       LOWEST in capitals is not this product's voice. The word carries it. */
+    "It is the lowest of three scores, not an average \u2014 ".concat(MEERA.risk.rows.map(function (r) {
+      return "".concat(r.label.toLowerCase(), " (").concat(r.value, ")");
+    }).join(', '), "."), 'We go with the lowest because a mix she cannot sit through is a mix she sells at the wrong moment, and that costs more than being slightly under-invested.', "It was locked on ".concat(MEERA.risk.lockedOn, " and it does not move on its own. Re-running her profile is what changes it.")]
+  },
+  mandate: {
+    title: "What she agreed to \u2014 ".concat(MEERA.mandate.equity, "/").concat(MEERA.mandate.debt, "/").concat(MEERA.mandate.cash),
+    body: ["Equity ".concat(MEERA.mandate.equity, "%, debt ").concat(MEERA.mandate.debt, "%, cash ").concat(MEERA.mandate.cash, "%. This is the mix on her file, agreed when her risk number was locked."), "It is a target, not a rule about any one day \u2014 a portfolio moves around it as markets do. ".concat(LIMITS.driftBand, " points either side is inside the band; past that a review is raised.")]
+  },
+  actual: {
+    title: 'What she actually holds — no figure',
+    body: ['There is no number here, and that is this review’s finding rather than a gap in the page.', REV_MISSING, 'Until then, everything above is exact and this one line is honestly blank. A split guessed from 14 mapped funds out of 43 would look like an answer and would not be one.']
+  }
+};
+
+/* WHAT IS ON FILE, AND WHAT IS NOT — side by side, because a review that shows only what it knows is
+   the exact failure the research's top theme describes. The locked tile is not a placeholder for a
+   figure we forgot; it is the review's finding, and it names what would produce it. */
+function ReviewFacts(_ref) {
+  var onExplain = _ref.onExplain;
+  var ex = function ex(k) {
+    return onExplain ? function () {
+      return onExplain(REV_EXPLAINERS[k]);
+    } : undefined;
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 'var(--space-8)'
+    }
+  }, /*#__PURE__*/React.createElement(REV_DS.StatTile, {
+    label: "Her book",
+    value: inr(MEERA.portfolio.valueRs),
+    note: "".concat(MEERA.portfolio.funds, " funds \xB7 as of ").concat(MEERA.portfolio.asOf),
+    onExplain: ex('book')
+  }), /*#__PURE__*/React.createElement(REV_DS.StatTile, {
+    label: "Her risk number",
+    value: String(MEERA.risk.score),
+    note: "".concat(MEERA.risk.band, " \xB7 locked ").concat(MEERA.risk.lockedOn),
+    onExplain: ex('risk')
+  }), /*#__PURE__*/React.createElement(REV_DS.StatTile, {
+    label: "What she agreed to",
+    value: "".concat(MEERA.mandate.equity, " / ").concat(MEERA.mandate.debt, " / ").concat(MEERA.mandate.cash),
+    note: "Equity / debt / cash",
+    onExplain: ex('mandate')
+  }), /*#__PURE__*/React.createElement(REV_DS.StatTile, {
+    locked: true,
+    label: "What she actually holds",
+    value: "\u2014",
+    note: "Her split is not on file yet",
+    onExplain: ex('actual')
+  }));
+}
+var REV_MISSING = "Her statement was loaded fund by fund, and the ".concat(MEERA.tail.tinyFunds, " small funds have never been mapped to categories. So I can tell you the shape of her book exactly and I cannot tell you whether she is on the ").concat(MEERA.mandate.equity, "/").concat(MEERA.mandate.debt, "/").concat(MEERA.mandate.cash, " she agreed to. One category mapping fixes it for every review after this one.");
+
+/* THE CLIENT HEALTH SCORE — a DESIGN PLACEHOLDER, and this journey is the right place for it because
+   this journey already refuses to guess. Five components, weights on the card, the weakest one
+   distinguished; `HeroNumberCard` draws it, the same device that draws Meera's risk number, because
+   the system already had the shape and a score is not a reason to invent a sixth kind of card.
+
+   AND MEERA'S SCORE IS WITHHELD. Three of the five components need her actual split and her holdings,
+   and neither is on file — 30 of 100 points of weight. The review's whole finding is that one missing
+   category mapping, so printing a confident "62" over it would be this product arguing with itself.
+   Under half the weight the number does not appear; what appears is what is missing and what fixes
+   it. Sharma, whose split IS on file, scores on all five. That contrast is the point. */
+function HealthTurn(_ref2) {
+  var _ref2$clientId = _ref2.clientId,
+    clientId = _ref2$clientId === void 0 ? 'meera' : _ref2$clientId,
+    chips = _ref2.chips;
+  var c = clientById(clientId);
+  var h = clientHealth(clientId);
+  if (!c) return null;
+  if (!h) {
+    return /*#__PURE__*/React.createElement(REV_DS.SentinelTurn, {
+      say: ["There is nothing of ".concat(c.name, "'s to score yet \u2014 no holdings, no value, no mandate in force."), 'A health score describes a book. Until there is one, the honest answer is the absence.'],
+      provenance: "Client Health Score \xB7 a design placeholder \xB7 nothing on file for this client",
+      chips: chips
+    });
+  }
+  var weights = HEALTH_WEIGHTS.map(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 3),
+      w = _ref4[1],
+      _short = _ref4[2];
+    return "".concat(_short, " ").concat(w);
+  }).join(' · ');
+  if (!h.enough) {
+    var miss = h.missing.map(function (m) {
+      return "".concat(m.label.toLowerCase(), " \u2014 ").concat(m.why);
+    });
+    return /*#__PURE__*/React.createElement(REV_DS.SentinelTurn, {
+      say: ["I cannot put a health score on ".concat(c.name, "'s book yet."), "Three of the five things it is made of need the holdings and the current split, and neither is on file. That leaves ".concat(h.readWeight, " of 100 points of weight, and a number out of that would read more confident than it is."), "What I can read: the ".concat(h.funds, " funds and the records. What I cannot: ").concat(miss.join('; '), ".")],
+      body: /*#__PURE__*/React.createElement(REV_DS.ConstraintCallout, {
+        eyebrow: "What the score is missing",
+        body: REV_MISSING
+      }),
+      provenance: healthProvenance(c),
+      chips: chips
+    });
+  }
+  return /*#__PURE__*/React.createElement(REV_DS.SentinelTurn, {
+    say: ["".concat(c.name, "'s book scores ").concat(h.value, " out of 100 \u2014 ").concat(h.band.toLowerCase(), ".")].concat(_toConsumableArray(h.missing.map(function (m) {
+      return "".concat(m.label, " is not scored \u2014 ").concat(m.why, ". So the 100 is a mean of the ").concat(h.readWeight, " points that could be read, not of all of them.");
+    }))),
+    body: /*#__PURE__*/React.createElement(REV_DS.HeroNumberCard, {
+      title: "Client Health Score",
+      meta: "Placeholder",
+      value: h.value,
+      badge: h.band,
+      copy: "Out of 100. ".concat(weights, "."),
+      rows: h.rows
+    }),
+    provenance: healthProvenance(c),
+    chips: chips
+  });
+}
+
+/* The ending changes with the audience, and only the ending. */
+var REV_ENDINGS = {
+  record: {
+    lines: ["Filed as at ".concat(MEERA.portfolio.asOf, ". I have proposed nothing."), 'What I could not check is written on the document, so the file says what was known on the day rather than implying everything was.'],
+    chips: ['What could not be checked?', 'Add a note to the file']
+  },
+  meeting: {
+    lines: ['Twenty-nine of her forty-three funds are under ₹27,600 each. Together they are a fifth of her money and they do nothing a single fund would not do better.', 'The question worth asking her: were those bought for a reason you would want kept, or did they arrive one SIP at a time?'],
+    chips: ['Read it to her', 'Draft the question']
+  },
+  invest: {
+    lines: ['I cannot answer that one yet.', 'Headroom is what her mandate allows her to add, and it is her mandate minus what she already holds. I have the first half and not the second.'],
+    chips: ['Map her funds to categories', 'Review what I do have']
+  }
+};
+function ReviewEnding(_ref5) {
+  var _ref5$audience = _ref5.audience,
+    audience = _ref5$audience === void 0 ? 'record' : _ref5$audience,
+    onChip = _ref5.onChip,
+    _ref5$continued = _ref5.continued,
+    continued = _ref5$continued === void 0 ? true : _ref5$continued;
+  var e = REV_ENDINGS[audience];
+  var blocked = audience === 'invest';
+  return /*#__PURE__*/React.createElement(REV_DS.SentinelTurn, {
+    continued: continued,
+    say: e.lines,
+    body: blocked ? /*#__PURE__*/React.createElement(REV_DS.ConstraintCallout, {
+      eyebrow: "What is missing",
+      body: REV_MISSING
+    }) : null,
+    chips: /*#__PURE__*/React.createElement(REV_DS.ChipRow, null, e.chips.map(function (l) {
+      return /*#__PURE__*/React.createElement(REV_DS.AnswerChip, {
+        key: l,
+        label: l,
+        onClick: function onClick() {
+          return onChip && onChip(l);
+        }
+      });
+    }))
+  });
+}
+var REV_PROVENANCE = "As of ".concat(MEERA.portfolio.asOf, " \xB7 from her September statement \xB7 her 43 holdings are not mapped to categories");
+/* ONE SENTENCE, NOT FOUR. The summary restated every row of the card it sits on — the value, the
+   fund count, the 14/80 split, the tail and the 1.5% — each one printed again with more detail
+   directly underneath. The card says the rest better than a summary can. */
+var REV_SUMMARY = "".concat(inr(MEERA.portfolio.valueRs), " across ").concat(MEERA.portfolio.funds, " funds.");
+
+/* No `sentAt`: a review is never sent. A prop that does nothing is a prop that lies. */
+function ReviewResult(_ref6) {
+  var _ref6$state = _ref6.state,
+    state = _ref6$state === void 0 ? 'draft' : _ref6$state,
+    savedAt = _ref6.savedAt,
+    onSave = _ref6.onSave,
+    onDownload = _ref6.onDownload,
+    onExplain = _ref6.onExplain;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(REV_DS.ResultCard, {
+    journey: "review",
+    state: state,
+    savedAt: savedAt,
+    title: "What Meera holds",
+    provenance: REV_PROVENANCE,
+    summary: REV_SUMMARY
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-14)'
+    }
+  }, /*#__PURE__*/React.createElement(ReviewFacts, {
+    onExplain: onExplain
+  }), /*#__PURE__*/React.createElement(ReviewShape, null))), /*#__PURE__*/React.createElement(REV_DS.ResultActions, {
+    doneLabel: "Nothing written here",
+    state: state,
+    onSave: onSave,
+    onDownload: onDownload,
+    format: "PDF",
+    saveLabel: "Save to her file"
+  }));
+}
+
+/* THE FUND THE JOURNEY WAS ENTERED WITH — and a review is the one journey where the answer is a
+   question back.
+
+   A review is about a CLIENT's book, not about a fund. So a fund carried in cannot change the facts of
+   the review; what it can do is answer the thing an advisor is really asking when they send a fund for
+   review — should she hold this? That is the reverse lookup, and it is the one this journey can do
+   honestly: whether she already holds it, and what it would sit beside.
+
+   It still does not skip the question. The audience decides whether this fund becomes a PROPOSAL inside
+   the review or stays a note on the record, and that is exactly the choice step 1 asks for. */
+function revCarriedLines(fundId) {
+  var f = fundById(fundId);
+  if (!f) return null;
+  var holds = (MEERA.holdings || []).some(function (h) {
+    return h.fundId === fundId;
+  });
+  var first = holds ? "".concat(f.name, " is already in ").concat(MEERA.name, "'s book, so a review can say how it has done and what it sits beside.") : "".concat(MEERA.name, " does not hold ").concat(f.name, " today.");
+  var second = f.onShelf ? 'What the review says about it depends on who reads it — a record states the position, an investment case argues for it. That is the question below.' : "It is also off your compliance shelf, so an investment case for it cannot be written whatever the audience. The record can still name it.";
+  return [first, second];
+}
+var RevCarried = function RevCarried(_ref7) {
+  var fundId = _ref7.fundId;
+  var lines = revCarriedLines(fundId);
+  return lines ? /*#__PURE__*/React.createElement(REV_DS.SentinelTurn, {
+    say: lines
+  }) : null;
+};
+Object.assign(window, {
+  HealthTurn: HealthTurn,
+  REV_EXPLAINERS: REV_EXPLAINERS,
+  RevCarried: RevCarried,
+  revCarriedLines: revCarriedLines,
+  MEERA: MEERA,
+  REV_ASK: REV_ASK,
+  REV_STEPS: REV_STEPS,
+  REV_TOTAL: REV_TOTAL,
+  ReviewShape: ReviewShape,
+  ReviewFacts: ReviewFacts,
+  ReviewEnding: ReviewEnding,
+  REV_ENDINGS: REV_ENDINGS,
+  REV_MISSING: REV_MISSING,
+  REV_PROVENANCE: REV_PROVENANCE,
+  REV_SUMMARY: REV_SUMMARY,
+  ReviewResult: ReviewResult
+});</script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script>/* review.jsx and the two journeys before it declare what they need; ExplainerSheet is this page's
+   own, because the four figures' ⓘ opens here rather than inside the result card. */
+const {
+  ExplainerSheet
+} = window.SentinelDesignSystem_0682a2;
+function Step() {
+  return /*#__PURE__*/React.createElement(Rail, {
+    n: 1,
+    total: REV_TOTAL,
+    revision: 0,
+    composer: /*#__PURE__*/React.createElement(StepComposer, {
+      step: REV_STEPS[0],
+      onAttach: () => {}
+    })
+  }, /*#__PURE__*/React.createElement(StepTurn, {
+    step: REV_STEPS[0],
+    onChip: () => {}
+  }));
+}
+
+/* THE SHEET IS THE SCENE'S, not the tile's. Every one of the four figures now has an ⓘ, and an ⓘ
+   that opens nothing is worse than none — so the specimen carries a real ExplainerSheet and the
+   frozen boards are live in exactly this one way. */
+function Scene({
+  audience,
+  state = 'draft',
+  savedAt,
+  anchor = 'bottom'
+}) {
+  const att = useAttachment();
+  const [sheet, setSheet] = React.useState(null);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      height: '100%',
+      width: '100%'
+    }
+  }, /*#__PURE__*/React.createElement(Thread, {
+    anchor: anchor,
+    revision: `${audience}-${state}-${!!att.file}-${sheet ? sheet.title : ''}`,
+    composer: /*#__PURE__*/React.createElement(FrozenAsk, {
+      onAttach: att.onAttach
+    })
+  }, /*#__PURE__*/React.createElement(UserTurn, {
+    text: REV_ASK,
+    costNote: "Sending this replaces the review below it."
+  }), /*#__PURE__*/React.createElement(ReviewResult, {
+    state: state,
+    savedAt: savedAt,
+    onSave: () => {},
+    onDownload: () => new Promise(r => setTimeout(r, 700)),
+    onExplain: setSheet
+  }), audience && /*#__PURE__*/React.createElement(ReviewEnding, {
+    audience: audience,
+    onChip: () => {}
+  }), /*#__PURE__*/React.createElement(AttachmentTurn, {
+    file: att.file,
+    caption: "Here is her September statement.",
+    onRemove: att.clear
+  })), /*#__PURE__*/React.createElement(ExplainerSheet, {
+    open: !!sheet,
+    title: (sheet || {}).title || '',
+    body: (sheet || {}).body || [],
+    onClose: () => setSheet(null)
+  }));
+}
+function HealthScene({
+  clientId,
+  ask
+}) {
+  const att = useAttachment();
+  return /*#__PURE__*/React.createElement(Thread, {
+    anchor: 3,
+    revision: `${clientId}-${!!att.file}`,
+    composer: /*#__PURE__*/React.createElement(FrozenAsk, {
+      onAttach: att.onAttach
+    })
+  }, /*#__PURE__*/React.createElement(UserTurn, {
+    text: ask,
+    editable: false,
+    actions: false
+  }), /*#__PURE__*/React.createElement(HealthTurn, {
+    clientId: clientId
+  }), /*#__PURE__*/React.createElement(AttachmentTurn, {
+    file: att.file,
+    caption: "Here is her September statement.",
+    onRemove: att.clear
+  }));
+}
+function LiveReview() {
+  const [audience, setAudience] = React.useState(null);
+  return /*#__PURE__*/React.createElement(LiveRail, {
+    steps: REV_STEPS,
+    total: REV_TOTAL,
+    attachCaption: "Here is her September statement.",
+    onAnswer: (step, chip) => {
+      if (chip.audience) setAudience(chip.audience);
+    },
+    result: () => /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack)'
+      }
+    }, /*#__PURE__*/React.createElement(ReviewResult, {
+      onSave: () => {},
+      onDownload: () => new Promise(r => setTimeout(r, 700))
+    }), audience && /*#__PURE__*/React.createElement(ReviewEnding, {
+      audience: audience,
+      onChip: () => {}
+    }))
+  });
+}
+function App() {
+  return /*#__PURE__*/React.createElement(ScreenShell, {
+    journey: "Journey F \xB7 Meera's review",
+    n: "5",
+    name: "The client review",
+    job: "Meera holds \u20B918,40,000 across 43 funds, and 29 of them are under \u20B927,600 each. The review describes the shape of her book exactly \u2014 and cannot say whether she is on the mix she agreed to, because her holdings have never been mapped to categories. It says so, on the document, rather than printing a plausible number.",
+    without: "cannot answer \u201Cwhat does she hold, and is it what we agreed?\u201D \u2014 and has no way to hand a client a record that is honest about what was not known on the day."
+  }, /*#__PURE__*/React.createElement(Section, {
+    title: "1 \xB7 The one question, and it is not about facts",
+    sub: "The book already holds every fact this review can state. What Sentinel cannot infer is what the review is FOR \u2014 and the same holdings produce a different document for a filing, for a meeting, and for a decision to invest more."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "what is this for?",
+    note: "The facts do not change; what is left out and what is proposed does. Sentinel says so in the same breath and will not turn a record into a proposal on its own. Her three numbers lead \u2014 \u20B918,40,000, 43 funds, risk 54 Moderate locked 15 Sep \u2014 so the advisor picks the audience knowing the client."
+  }, /*#__PURE__*/React.createElement(Step, null)), /*#__PURE__*/React.createElement(State, {
+    label: "the review itself",
+    note: "Four tiles and a shape. 14 funds hold 80% \u2014 \u20B914,72,000; the other 29 hold \u20B93,68,000 between them, an average of \u20B912,690 each, none reaching 1.5% of her book. The tail is ONE row and not twenty-nine, because a list an advisor cannot read to a client is a list that hides the finding."
+  }, /*#__PURE__*/React.createElement(Scene, null)), /*#__PURE__*/React.createElement(State, {
+    label: "the finding is a missing figure",
+    tone: "under",
+    note: "Three tiles are facts and the fourth is LOCKED: what she actually holds. Her statement was loaded fund by fund and the 29 small funds have never been mapped to categories, so the most useful sentence a review could carry \u2014 is she on her mandate \u2014 cannot be written. StatTile locked has existed since v9 for exactly this and had been on no screen."
+  }, /*#__PURE__*/React.createElement(Scene, {
+    anchor: 1
+  })))), /*#__PURE__*/React.createElement(Section, {
+    title: "2 \xB7 Three endings, and only the ending changes",
+    sub: "Same card, same figures, same provenance. What follows it is written for whoever is going to read it."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "her annual record",
+    note: "Filed as at 30 Sep, with nothing proposed and with what could not be checked written ON the document. A file that implies everything was known is worse than one that says what was not."
+  }, /*#__PURE__*/React.createElement(Scene, {
+    audience: "record"
+  })), /*#__PURE__*/React.createElement(State, {
+    label: "a meeting with her",
+    note: "The same tail in words she would use, and the one question worth asking: were those bought for a reason you would want kept, or did they arrive one SIP at a time? A review that ends in a recommendation nobody asked for is a sale."
+  }, /*#__PURE__*/React.createElement(Scene, {
+    audience: "meeting"
+  })), /*#__PURE__*/React.createElement(State, {
+    label: "before she invests more",
+    tone: "over",
+    note: "The only one Sentinel cannot finish. Headroom is her mandate minus what she already holds, and it has the first half and not the second. It says which half, why, and that ONE category mapping fixes it for every review after this \u2014 rather than printing a plausible 57%."
+  }, /*#__PURE__*/React.createElement(Scene, {
+    audience: "invest"
+  })))), /*#__PURE__*/React.createElement(Section, {
+    title: "3 \xB7 Saved, and what it is not",
+    sub: "A review commits to nothing, so there is no dark CTA on it at all."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "saved to her file",
+    note: "draft \u2192 saved on Save. The badge is a date, not a tick."
+  }, /*#__PURE__*/React.createElement(Scene, {
+    audience: "record",
+    state: "saved",
+    savedAt: "19 Sep"
+  })), /*#__PURE__*/React.createElement(State, {
+    label: "live \xB7 pick an audience",
+    note: "The rail asks once. Every ending draws the same card above it; only the block underneath changes, which is the argument the screen is making."
+  }, /*#__PURE__*/React.createElement(LiveReview, null))), /*#__PURE__*/React.createElement(Note, {
+    title: "There is no primary button on this card, deliberately"
+  }, /*#__PURE__*/React.createElement("code", null, "ResultPrimary journey='review'"), " exists in the contract and this screen does not use it. A review commits to nothing \u2014 it is a description of what is already true \u2014 and a record that ends in one big dark button is a proposal wearing a record\u2019s title. Save and Download are the whole of it. Compare Journey D, where the button sends a document, and Journey E, where it moves real money: both earn theirs.")), /*#__PURE__*/React.createElement(Section, {
+    title: "4 \xB7 The Client Health Score \u2014 and the one it refuses to give",
+    sub: "Five components, the weights printed on the card, the weakest one distinguished. HeroNumberCard draws it, the same device that draws Meera\u2019s risk number \u2014 the system already had the shape, and a score is not a reason to invent a sixth kind of card. It is a DESIGN PLACEHOLDER and the provenance line says so in words; when Centricity\u2019s real definition arrives, the weights and the five mappings change and none of this does."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "Sharma \xB7 all five components on file \xB7 74",
+    note: "His current split IS on file, so every component can be read and the number is out of the full 100. His weakest is the cost of what he holds, at 47 \u2014 which is a sentence an advisor can act on, where \u201C74\u201D alone is not."
+  }, /*#__PURE__*/React.createElement(HealthScene, {
+    clientId: "sharma",
+    ask: "How healthy is Sharma\u2019s book?"
+  })), /*#__PURE__*/React.createElement(State, {
+    label: "Meera \xB7 the score is withheld",
+    tone: "under",
+    note: "Three of the five components need her holdings and her current split, and neither is on file \u2014 30 of 100 points of weight. The review\u2019s whole finding is that missing category mapping, so printing a confident 62 over it would be this product arguing with itself. Under half the weight the number does not appear; what appears is what is missing and what fixes it."
+  }, /*#__PURE__*/React.createElement(HealthScene, {
+    clientId: "meera",
+    ask: "How healthy is Meera\u2019s book?"
+  }))), /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "Sunita \xB7 scored, with one input named as absent",
+    note: "Her split is not on file either, but her holdings are \u2014 70 of 100 points read, over the half-weight line, so the number stands and the turn names the one thing it could not read. The rule is a threshold, not a veto."
+  }, /*#__PURE__*/React.createElement(HealthScene, {
+    clientId: "sunita",
+    ask: "How healthy is Sunita\u2019s book?"
+  })), /*#__PURE__*/React.createElement(State, {
+    label: "A prospect \xB7 nothing to score",
+    tone: "under",
+    note: "Amit has no holdings, no value and no mandate in force. A health score describes a book; until there is one, the honest answer is the absence, and it is a sentence rather than an empty card."
+  }, /*#__PURE__*/React.createElement(HealthScene, {
+    clientId: "amit",
+    ask: "How healthy is Amit\u2019s book?"
+  }))), /*#__PURE__*/React.createElement(Note, {
+    title: "Why the number is withheld rather than shown with an asterisk"
+  }, "A score computed over a third of its inputs reads as confident and is not. It is the", /*#__PURE__*/React.createElement("em", null, " total AUM shown is less"), " defect from ", /*#__PURE__*/React.createElement("code", null, "docs/RESEARCH.md"), " wearing a different hat: the figure is arithmetically correct and the reader draws a conclusion the data cannot carry. The threshold is half the weight, it is written in ", /*#__PURE__*/React.createElement("code", null, "rollUp"), ", and the turn says which points it is out of whenever that is not 100.")), /*#__PURE__*/React.createElement(Section, {
+    title: "5 \xB7 Where the numbers come from"
+  }, /*#__PURE__*/React.createElement(ProvenanceTable, {
+    rows: [['₹18,40,000 · 43 funds', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "meera.portfolio")), 'The first sentence, and a tile'], ['14 funds hold 80%', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "meera.tail.topFunds"), " / ", /*#__PURE__*/React.createElement("code", null, "topSharePct")), 'The concentration bar'], ['₹14,72,000', /*#__PURE__*/React.createElement("span", null, "80% of \u20B918,40,000, derived in ", /*#__PURE__*/React.createElement("code", null, "book.jsx")), 'On the bar’s label'], ['₹3,68,000 across 29 funds', /*#__PURE__*/React.createElement("span", null, "the remainder, derived"), 'The tail as one row'], ['₹12,690 each', /*#__PURE__*/React.createElement("span", null, "\u20B93,68,000 \xF7 29, derived"), 'What "too small" means in rupees'], ['₹27,600', /*#__PURE__*/React.createElement("span", null, "1.5% of her book, derived from ", /*#__PURE__*/React.createElement("code", null, "tail.tinyUnderPct")), 'The line none of the 29 reaches'], ['54 · Moderate · 15 Sep', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "meera.risk"), ", the number Journey A locks"), 'A tile — the two journeys agree because they read one record'], ['55 / 30 / 15', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "meera.mandate")), 'What she agreed to'], ['Her actual split', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "not in the book"), " \u2014 her 43 holdings are not mapped to categories"), 'A LOCKED tile with the placeholder, never a plausible figure']]
+  }), /*#__PURE__*/React.createElement(Note, {
+    title: "What this screen does not do"
+  }, /*#__PURE__*/React.createElement("strong", null, "It does not list her 43 funds"), ", because the book does not hold them. The archive\u2019s eight holding rows are Meera\u2019s and were already ruled out for Sharma\u2019s screen on the same grounds \u2014 a card filled with rows nobody can source is the exact figure an advisor would read to a client. ", /*#__PURE__*/React.createElement("strong", null, "Nothing is saved and no file is written:"), " Save changes a badge and Download holds its own loading state, and neither leaves the page. The category mapping the locked tile asks for is a decision for the owner, not a screen to build.")));
+}
+mountScreen(/*#__PURE__*/React.createElement(App, null));</script></body></html>

@@ -1,0 +1,591 @@
+<!-- @dsCard group="Screens" viewport="1400x2600" name="Journey B · 01 Home" subtitle="The way in. Greeting, three rows, composer — and the three rows are built from the advisor's own book" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, Dock, HomeIndicator" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey B · 01 Home — Sentinel screens</title><link rel="stylesheet" href="../../styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../../ds_bundle.js"></script>
+<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','GreetingDivider','SuggestionRow','Dock','Composer','Pill','ChipRow','HomeIndicator','PhoneFrame'];</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* screens/ own page shell. Deliberately not design-system/pages/page-kit.jsx: that kit is built for
+   component spec pages and links back to 00-Index.html, which does not exist from here.
+
+   What it gives a screen page: a header that states the screen's job, a State frame that puts a real
+   375x812 PhoneFrame under a caption, and two tables — motion with its reduced-motion answer, and
+   provenance for every figure on the screen. Tokens only; no raw colour or type value. */
+/* THE FOUR TURN COMPONENTS THE SCREENS WERE CARRYING THEMSELVES, destructured once here because
+   screen-kit is the one file every screen page loads (20 Sep 2026). `UserTurn`, `AttachmentTurn`,
+   `RefusalTurn` and `StepComposer` were defined inside `screens/` until today and are the system's
+   now — the owner's rule: anything built on a screen that belongs in the design system goes into the
+   design system. Every page compiles into ONE Babel scope, so this is the only place they may be
+   named; a second `const UserTurn` anywhere under screens/ renders nothing at all. */
+var _ref = window.SentinelDesignSystem_0682a2 || {},
+  PhoneFrame = _ref.PhoneFrame;
+/* Named on `window` rather than destructured into a const, for the reason the linter states plainly:
+   every screen file is linted on its own, so a const here reads as unused and a use over there reads
+   as undefined. `window` is what the one Babel scope actually shares, and the adherence config lists
+   these four as screen globals — the same way it lists every other cross-file name. */
+Object.assign(window, {
+  UserTurn: (window.SentinelDesignSystem_0682a2 || {}).UserTurn,
+  AttachmentTurn: (window.SentinelDesignSystem_0682a2 || {}).AttachmentTurn,
+  RefusalTurn: (window.SentinelDesignSystem_0682a2 || {}).RefusalTurn,
+  StepComposer: (window.SentinelDesignSystem_0682a2 || {}).StepComposer
+});
+var FONT = 'var(--font-ui)';
+var muted = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12.5,
+  lineHeight: '18px',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+function ScreenShell(_ref2) {
+  var journey = _ref2.journey,
+    n = _ref2.n,
+    name = _ref2.name,
+    job = _ref2.job,
+    without = _ref2.without,
+    children = _ref2.children;
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = (window.__screenRequires || []).filter(function (c) {
+    return !ns[c];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 1360,
+      margin: '0 auto',
+      padding: '28px 24px 72px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 26
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, journey, " \xB7 ", n), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("a", {
+    href: "../index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "Screens \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)',
+      maxWidth: '70ch'
+    })
+  }, job), without && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '70ch'
+    })
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      fontWeight: 600,
+      color: 'var(--color-ink-soft)'
+    }
+  }, "Without this screen"), " the advisor ", without)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-12)',
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This screen needs ", missing.join(', '), ". Run ", /*#__PURE__*/React.createElement("code", null, "npm run build:bundle"), " and reload \u2014 the screen is not broken, the build is behind it.")) : children);
+}
+function Section(_ref3) {
+  var title = _ref3.title,
+    sub = _ref3.sub,
+    children = _ref3.children;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4,
+      borderBottom: '1px solid var(--color-line)',
+      paddingBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 15,
+      lineHeight: '20px',
+      color: 'var(--color-ink)'
+    }
+  }, title), sub && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '78ch'
+    })
+  }, sub)), children);
+}
+
+/* One state: the caption says which state, the note says why it looks like that. The phone is the
+   real component tree at the real 375x812, never a picture of one. */
+function State(_ref4) {
+  var label = _ref4.label,
+    _ref4$tone = _ref4.tone,
+    tone = _ref4$tone === void 0 ? 'ok' : _ref4$tone,
+    note = _ref4.note,
+    children = _ref4.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8,
+      width: 375
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 'var(--radius-full)',
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, label)), /*#__PURE__*/React.createElement(PhoneFrame, null, children), note && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      width: 375
+    })
+  }, note));
+}
+function StateRow(_ref5) {
+  var children = _ref5.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 28,
+      alignItems: 'flex-start'
+    }
+  }, children);
+}
+function Note(_ref6) {
+  var title = _ref6.title,
+    children = _ref6.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-16)',
+      background: 'var(--color-bubble)',
+      padding: 14,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 5,
+      maxWidth: '82ch'
+    }
+  }, title && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, title), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, children));
+}
+function Table(_ref7) {
+  var head = _ref7.head,
+    rows = _ref7.rows;
+  var cell = {
+    fontFamily: FONT,
+    fontSize: 12,
+    lineHeight: '17px',
+    padding: '9px 12px',
+    verticalAlign: 'top',
+    textAlign: 'left'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      borderCollapse: 'collapse',
+      width: '100%',
+      minWidth: 640,
+      background: 'var(--color-surface)',
+      borderRadius: 'var(--radius-12)'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, head.map(function (h) {
+    return /*#__PURE__*/React.createElement("th", {
+      key: h,
+      style: _objectSpread(_objectSpread({}, cell), {}, {
+        fontWeight: 700,
+        fontSize: 10.5,
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+        color: 'var(--color-muted)',
+        borderBottom: '1px solid var(--color-line)'
+      })
+    }, h);
+  }))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r, i) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, r.map(function (c, j) {
+      return /*#__PURE__*/React.createElement("td", {
+        key: j,
+        style: _objectSpread(_objectSpread({}, cell), {}, {
+          fontWeight: j === 0 ? 600 : 400,
+          color: j === 0 ? 'var(--color-ink)' : 'var(--color-ink-soft)',
+          borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none'
+        })
+      }, c);
+    }));
+  }))));
+}
+
+/* THE INERT COMPOSER A FROZEN SPECIMEN DRAWS — written once (20 Sep 2026).
+
+   `const Ask = …` was declared TEN times across ten screen pages, seven of them byte-for-byte:
+   05-decide:19 · funds:21 · rebalance:20 · proposal:19 · review:19 · ledger:22 · going-back:24, with
+   03-thread-answer:23 differing by a placeholder and risk-profile:20 / refusals:20 branching to
+   MoneyComposer. Ten copies of one decision, and the decision is rule 3 — every screen has a
+   composer — drawn rather than wired, because a frozen specimen has nothing to send to.
+
+   IT BELONGS HERE AND NOT IN design-system/. The system already ships `Composer`; a "pretend
+   composer" beside it would be a one-off component in a system that has a rule against those. This
+   is the screens' own shared layer, which exists for exactly this.
+
+   Read through a namespaced const, never destructured: every .jsx and inline script a page loads
+   compiles into ONE Babel scope, and ten of these pages already declare `const { Composer, … }` at
+   their top level. A second declaration of that name here renders the page blank. */
+var KIT_DS = window.SentinelDesignSystem_0682a2 || {};
+function FrozenAsk(_ref8) {
+  var _ref8$about = _ref8.about,
+    about = _ref8$about === void 0 ? false : _ref8$about,
+    _ref8$money = _ref8.money,
+    money = _ref8$money === void 0 ? false : _ref8$money,
+    placeholder = _ref8.placeholder,
+    onAttach = _ref8.onAttach;
+  /* Money is a different control, not a different placeholder: MoneyComposer owns its own value and
+     hands back a formatted rupee string, which is why it takes no value/onChange even when wired. */
+  if (money) return /*#__PURE__*/React.createElement(KIT_DS.MoneyComposer, {
+    onSend: function onSend() {},
+    placeholder: "or type the amount"
+  });
+  return /*#__PURE__*/React.createElement(KIT_DS.Composer, {
+    value: "",
+    onChange: function onChange() {},
+    onSend: function onSend() {},
+    onAttach: onAttach,
+    placeholder: placeholder || (about ? 'Ask about this' : 'Ask Sentinel')
+  });
+}
+var MotionTable = function MotionTable(_ref9) {
+  var rows = _ref9.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Motion', 'Property', 'Duration', 'Under reduced motion'],
+    rows: rows
+  });
+};
+var ProvenanceTable = function ProvenanceTable(_ref0) {
+  var rows = _ref0.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Figure on screen', 'Where it comes from', 'Shown to the advisor as'],
+    rows: rows
+  });
+};
+function mountScreen(node) {
+  var el = document.getElementById('root');
+  if (el) ReactDOM.createRoot(el).render(node);
+}
+Object.assign(window, {
+  ScreenShell: ScreenShell,
+  Section: Section,
+  State: State,
+  StateRow: StateRow,
+  Note: Note,
+  Table: Table,
+  MotionTable: MotionTable,
+  ProvenanceTable: ProvenanceTable,
+  FrozenAsk: FrozenAsk,
+  mountScreen: mountScreen,
+  screenMuted: muted
+});</script>
+<script>"use strict";
+
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/* The Home screen itself, so that every page which needs to draw Home draws the SAME Home — the
+   drawer opens over it, and a hand-copied Home behind a scrim would drift from the real one within a
+   week. Loaded by 01-home.html and by shell/drawer.html. */
+var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
+  ScreenScaffold = _window$SentinelDesig.ScreenScaffold,
+  GreetingDivider = _window$SentinelDesig.GreetingDivider,
+  SuggestionRow = _window$SentinelDesig.SuggestionRow,
+  Composer = _window$SentinelDesig.Composer,
+  Pill = _window$SentinelDesig.Pill,
+  ChipRow = _window$SentinelDesig.ChipRow;
+
+/* TWO LISTS, TWO JOBS — and the difference is what stops them being the same list twice.
+
+   READY PROMPTS (the card under the greeting) are the advisor's OWN BOOK, written out as whole
+   sentences they can send as they stand: a named client, a piece of work already waiting. Tap one and
+   Sentinel answers about that person.
+
+   STARTERS (the chips above the composer) are CAPABILITIES with no client attached: tap one and the
+   thread asks which client — the same disambiguation the router already does in reverse when a name
+   arrives without an intent.
+
+   So "Build a proposal for Mr. Amit Aggrawal" and "Build proposal" are not one thing said twice: the
+   first is this proposal, the second is a proposal. When the book is unavailable the card is omitted
+   ENTIRELY rather than falling back to capability-shaped rows, because that fallback WOULD be the
+   chips again, one card higher up.
+
+   Every label routes: checked by hand against the three intent patterns in
+   docs/screens-source/src/lib/router.ts, which match on "risk profil", "propos" and "drift". */
+var NAMED = ["Start Meera Nair's risk profile", 'Build a proposal for Mr. Amit Aggrawal', "Why did Sharma's portfolio drift this quarter?"];
+var STARTERS = ['Build proposal', 'Review portfolio', 'Fund explorer'];
+function greetingFor(hour) {
+  return hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+}
+
+/* onRow / onStarter / onSend / onAttach exist for the live prototype, which has to know what was tapped.
+   The frozen pages pass nothing and the rows stay inert, as before.
+
+   The paperclip is wired here too: the owner attached a file on the landing screen and nothing happened,
+   because Composer's `onAttach` was only passed in the thread. A control that works on one screen and is
+   a drawing on the next is worse than one that is a drawing everywhere. Attaching on Home starts a thread
+   with the file in it — the caller decides what that thread is. */
+function Home(_ref) {
+  var _ref$hour = _ref.hour,
+    hour = _ref$hour === void 0 ? 15 : _ref$hour,
+    _ref$time = _ref.time,
+    time = _ref$time === void 0 ? '3:04' : _ref$time,
+    _ref$advisor = _ref.advisor,
+    advisor = _ref$advisor === void 0 ? 'Ashish' : _ref$advisor,
+    _ref$rows = _ref.rows,
+    rows = _ref$rows === void 0 ? NAMED : _ref$rows,
+    onMenu = _ref.onMenu,
+    onRow = _ref.onRow,
+    onStarter = _ref.onStarter,
+    _onSend = _ref.onSend,
+    onAttach = _ref.onAttach;
+  var _React$useState = React.useState(''),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    value = _React$useState2[0],
+    setValue = _React$useState2[1];
+  /* HOME IS THE ONE `body="page"` IN THE PRODUCT (20 Sep 2026). Every other screen is a thread: it
+     scrolls and it is bottom-anchored. Home has no scroller at all — a greeting, a card of ready
+     prompts, and a spacer that pushes the Dock to the floor — and that is a real difference rather
+     than an oversight, so ScreenScaffold names it instead of pretending Home is a short thread. */
+  return /*#__PURE__*/React.createElement(ScreenScaffold, {
+    body: "page",
+    time: time,
+    onMenu: onMenu,
+    onNew: function onNew() {
+      return setValue('');
+    },
+    chips: /*#__PURE__*/React.createElement(ChipRow, null, STARTERS.map(function (c) {
+      return /*#__PURE__*/React.createElement(Pill, {
+        key: c,
+        label: c,
+        onClick: function onClick() {
+          return onStarter && onStarter(c);
+        }
+      });
+    })),
+    composer: /*#__PURE__*/React.createElement(Composer, {
+      value: value,
+      onChange: setValue,
+      placeholder: "Ask Sentinel",
+      onAttach: onAttach || function () {},
+      onSend: function onSend() {
+        if (_onSend && value.trim()) {
+          _onSend(value.trim());
+          setValue('');
+        }
+      }
+    })
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      zIndex: 1,
+      paddingTop: 'var(--space-4)'
+    }
+  }, /*#__PURE__*/React.createElement(GreetingDivider, null, greetingFor(hour), ", ", advisor)), rows.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      zIndex: 1,
+      padding: '24px var(--gutter) 0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: '100%',
+      boxSizing: 'border-box',
+      borderRadius: 'var(--radius-16)',
+      background: 'var(--color-surface)',
+      padding: '0 var(--space-12)',
+      boxShadow: 'var(--shadow-card-soft)'
+    }
+  }, rows.map(function (s, i) {
+    return /*#__PURE__*/React.createElement(SuggestionRow, {
+      key: s,
+      label: s,
+      last: i === rows.length - 1,
+      onClick: function onClick() {
+        return onRow && onRow(s);
+      }
+    });
+  }))));
+}
+Object.assign(window, {
+  Home: Home,
+  HOME_NAMED: NAMED,
+  HOME_STARTERS: STARTERS,
+  greetingFor: greetingFor
+});</script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script>/* Home itself lives in home.jsx, loaded above, so the drawer page draws the same one. Both files
+   compile into the same top-level scope, so nothing is re-declared here — `Home` and `HOME_UNNAMED`
+   are already globals, and declaring them again is a SyntaxError that leaves the page blank. */
+
+const MOTION = [['Screen enter', /*#__PURE__*/React.createElement("code", null, "ds-screen-in"), '320ms', 'Fades in place; no slide, nothing stranded off-screen'], ['Section rise', 'fade + 8–12px rise, 60ms stagger', '240–320ms', 'Held at the resting position, opacity 1 — the rows are there, they do not travel'], ['Row press', /*#__PURE__*/React.createElement("span", null, "background to ", /*#__PURE__*/React.createElement("code", null, "--tint-bronze-06")), '150ms', 'Unchanged — a colour change is not motion'], ['Send disc press', 'transform: scale(0.94)', '150ms', 'No scale']];
+const PROVENANCE = [['The three rows', /*#__PURE__*/React.createElement("span", null, "The advisor\u2019s own book \u2014 the client whose profile is unstarted, the one with an open proposal, the one whose portfolio moved"), 'Named in the row itself: “Meera Nair”, “Mr. Amit Aggrawal”, “Sharma”'], ['The greeting', 'The device clock and the signed-in advisor', '“Good afternoon, Ashish”, beside a status bar showing the same time'], ['Everything else', 'Home carries no client figure at all', '—']];
+mountScreen(/*#__PURE__*/React.createElement(ScreenShell, {
+  journey: "Journey B \xB7 Sharma\u2019s drift",
+  n: "Home",
+  name: "Home",
+  job: "The way in, and the only screen an advisor sees before they have asked anything. Ready prompts drawn from their own book, three starters for work with no client yet, and the composer.",
+  without: "has no way in that shows what Sentinel can do, and no one-tap route back to the client who needs them most."
+}, /*#__PURE__*/React.createElement(Section, {
+  title: "1 \xB7 The screen",
+  sub: "Greeting, ready prompts, starters, composer. The saved-work widget moved to the menu, so what is left answers \u201Cwhat can I do, and for whom\u201D in two lists that do not overlap."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "typical",
+  note: "Two lists doing two jobs. The card is READY PROMPTS \u2014 the advisor's own book as whole sentences they can send as they stand. The chips are STARTERS \u2014 a capability with no client attached, which the thread then asks for. Rows are ordered by the client lifecycle: know them, build for them, keep it right."
+}, /*#__PURE__*/React.createElement(Home, {
+  hour: 15,
+  time: "3:04"
+})), /*#__PURE__*/React.createElement(State, {
+  label: "book unavailable",
+  tone: "under",
+  note: "A first day, or a book that has not arrived, or one that failed to \u2014 all three render this. The card is omitted ENTIRELY rather than falling back to capability-shaped rows, because that fallback would have been the chips again one card higher. The starters carry the first run, so the screen is never blank and never promises a name it does not have. No loading state and no error state to get wrong."
+}, /*#__PURE__*/React.createElement(Home, {
+  hour: 9,
+  time: "8:30",
+  rows: []
+}))), /*#__PURE__*/React.createElement(Note, {
+  title: "Why there is no \u201CJump back in\u201D here any more"
+}, "Saved work is history, and history belongs in the menu with the rest of it \u2014 recent threads and the client list. Home is what an advisor sees before they have asked anything, so it should answer \u201Cwhat can I do, and for whom\u201D, not \u201Cwhat were you doing yesterday\u201D. The empty and loading states that section used to carry went with it; they are the drawer\u2019s question now."), /*#__PURE__*/React.createElement(Note, {
+  title: "The starters came back, and one of my two arguments for removing them was wrong"
+}, "I took the chips out with two reasons. ", /*#__PURE__*/React.createElement("strong", null, "The second was a misreading:"), " I read", /*#__PURE__*/React.createElement("code", null, "Dock.d.ts"), "\u2019s \u201CContextual AnswerChips\u201D as meaning only follow-ups to something Sentinel had just said. The slot is chips above the composer; on Home the context is an advisor who has asked nothing yet, and a starter is exactly what that context calls for.", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("strong", null, "The first reason was real"), " \u2014 the chips repeated the card\u2019s three capabilities in the abstract \u2014 and it is answered by giving the two lists different jobs rather than by deleting one. The card sends ", /*#__PURE__*/React.createElement("em", null, "this"), " proposal, for Mr. Amit Aggrawal. A chip starts ", /*#__PURE__*/React.createElement("em", null, "a"), " proposal, and the thread asks who for. That is also why the card is dropped entirely when the book is unavailable: a capability-shaped card would have been the chips again.")), /*#__PURE__*/React.createElement(Section, {
+  title: "2 \xB7 A name that does not fit",
+  sub: "Measured, not assumed, at 375 with a 343 content box."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "short name",
+  note: "\u201CGood afternoon, Ashish\u201D \u2014 233pt of text with 47pt of dashed rule on each side."
+}, /*#__PURE__*/React.createElement(Home, {
+  hour: 15,
+  time: "3:04",
+  advisor: "Ashish"
+})), /*#__PURE__*/React.createElement(State, {
+  label: "long name",
+  tone: "under",
+  note: "\u201CGood afternoon, Ramasubramanian\u201D \u2014 349pt on one line against a 343 box, so it wrapped. Two lines, 70pt tall instead of 43, and the 27pt it costs comes out of the empty middle of the screen. Nothing below it moves."
+}, /*#__PURE__*/React.createElement(Home, {
+  hour: 15,
+  time: "3:04",
+  advisor: "Ramasubramanian"
+}))), /*#__PURE__*/React.createElement(Note, {
+  title: "What was measured, and what the numbers actually were"
+}, "At 375 the greeting has a 343 content box. As shipped the line was ", /*#__PURE__*/React.createElement("code", null, "white-space: nowrap"), ": \u201CAshish\u201D 233, \u201CPriya\u201D 216, \u201CVishwanathan\u201D 304 \u2014 all fine \u2014 then \u201CRamasubramanian\u201D 349 and \u201CLakshminarayanan\u201D 351, which sit 3 and 4 points into each gutter. So the break is real, it starts at about fifteen characters rather than twelve, and it is a few points rather than tens of them. It wraps now instead of truncating: a tool whose whole job is to treat a client as a person does not cut a person\u2019s name in half. Names that already fitted render identically, which was checked by hashing all 75 pages either side of the change."), /*#__PURE__*/React.createElement(Note, {
+  title: "Open, and not fixed here \u2014 the hairlines yield before the text does"
+}, "The two dashed rules are ", /*#__PURE__*/React.createElement("code", null, "flex: 1"), ", so the name squeezes them: 47pt beside \u201CAshish\u201D, 12pt beside \u201CVishwanathan\u201D, and nothing at all beyond that, where the component stops looking like a divider. Wrapping does not bring them back, because the wrapped line still fills the width. A", /*#__PURE__*/React.createElement("code", null, " max-width"), " on the text would reserve them, at the cost of wrapping shorter names sooner. That is a visible change to a settled component on every screen, so it is yours to call.")), /*#__PURE__*/React.createElement(Section, {
+  title: "3 \xB7 The states this screen does not have",
+  sub: "Named, because a matrix with a silent gap is a matrix nobody can check."
+}, /*#__PURE__*/React.createElement(Note, {
+  title: "No loading, no error, no separate empty"
+}, "All three collapse into \u201Cbook unavailable\u201D above. The rows always render; the names are the part that may not arrive. There is nothing on this screen that can half-load, so there is no skeleton to show and no failure to report."), /*#__PURE__*/React.createElement(Note, {
+  title: "No refusal"
+}, "Home never refuses. The composer hands every input to the thread, which routes it through the six buckets and answers there. A refusal is a thing Sentinel says, and Sentinel has not spoken yet.")), /*#__PURE__*/React.createElement(Section, {
+  title: "4 \xB7 Motion, and what each one does under reduced motion"
+}, /*#__PURE__*/React.createElement(MotionTable, {
+  rows: MOTION
+})), /*#__PURE__*/React.createElement(Section, {
+  title: "5 \xB7 Provenance"
+}, /*#__PURE__*/React.createElement(ProvenanceTable, {
+  rows: PROVENANCE
+}))));</script></body></html>

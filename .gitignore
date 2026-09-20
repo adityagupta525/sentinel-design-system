@@ -1,5 +1,9 @@
 node_modules/
-dist/
+# `dist/` holds the two files the owner asked for by name — the whole design system as one file and
+# all the screens as one file — so those two are committed and the rest of the directory is not.
+dist/*
+!dist/sentinel-design-system.js
+!dist/sentinel-screens.jsx
 .DS_Store
 *.log
 .env
@@ -10,5 +14,9 @@ dist/
 # Build output — regenerate with `npm run build:handoff`. The repository is the source of truth.
 handoff/
 
-# Build output — regenerate with `npm run build:artifact`.
+# `site/` IS COMMITTED, and the earlier name for it is not. It is build output, so committing it is
+# a deliberate exception: the owner downloaded the repository, opened a page and got a blank one,
+# because the repository's own pages compile their JSX in the browser and a `file://` origin cannot
+# fetch the .jsx to compile. `site/` is precompiled and self-contained — clone, double-click
+# site/index.html, and it opens with no server. Rebuild it with `npm run build:artifact`.
 artifact/

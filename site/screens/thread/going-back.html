@@ -1,0 +1,1111 @@
+<!-- @dsCard group="Screens" viewport="1400x3200" name="Thread · going back" subtitle="The four ways an advisor undoes something — say it was wrong, ask what comes next, return to the version the client saw, and resume a journey they left" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, DetourBanner" -->
+<!-- VersionRow's summary is one fixed-height line and truncates, like every ListRow. These summaries are
+     written SHORT so nothing is cut at 375 — and short with room to spare, because CI renders on Linux where
+     this face measures wider than it does on macOS: run 64 failed on "Swapped the mid-cap for a flexi-cap"
+     needing 220px in a 218px box, two pixels nobody could see locally. The guard was right. -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Thread · going back — Sentinel screens</title><link rel="stylesheet" href="../../styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../../ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttachmentTurn','ChartBar','ChipRow','Composer','ConcentrationBar','DetourBanner','Dock','FileUpload','FollowUpRow','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','Provenance','ResponseFeedback','ScreenBackdrop','SentinelBlock','SentinelText','StatusSpacer','StepTrace','TopBar','UserBubble','UserTurn','VersionRow'];</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* screens/ own page shell. Deliberately not design-system/pages/page-kit.jsx: that kit is built for
+   component spec pages and links back to 00-Index.html, which does not exist from here.
+
+   What it gives a screen page: a header that states the screen's job, a State frame that puts a real
+   375x812 PhoneFrame under a caption, and two tables — motion with its reduced-motion answer, and
+   provenance for every figure on the screen. Tokens only; no raw colour or type value. */
+/* THE FOUR TURN COMPONENTS THE SCREENS WERE CARRYING THEMSELVES, destructured once here because
+   screen-kit is the one file every screen page loads (20 Sep 2026). `UserTurn`, `AttachmentTurn`,
+   `RefusalTurn` and `StepComposer` were defined inside `screens/` until today and are the system's
+   now — the owner's rule: anything built on a screen that belongs in the design system goes into the
+   design system. Every page compiles into ONE Babel scope, so this is the only place they may be
+   named; a second `const UserTurn` anywhere under screens/ renders nothing at all. */
+var _ref = window.SentinelDesignSystem_0682a2 || {},
+  PhoneFrame = _ref.PhoneFrame;
+/* Named on `window` rather than destructured into a const, for the reason the linter states plainly:
+   every screen file is linted on its own, so a const here reads as unused and a use over there reads
+   as undefined. `window` is what the one Babel scope actually shares, and the adherence config lists
+   these four as screen globals — the same way it lists every other cross-file name. */
+Object.assign(window, {
+  UserTurn: (window.SentinelDesignSystem_0682a2 || {}).UserTurn,
+  AttachmentTurn: (window.SentinelDesignSystem_0682a2 || {}).AttachmentTurn,
+  RefusalTurn: (window.SentinelDesignSystem_0682a2 || {}).RefusalTurn,
+  StepComposer: (window.SentinelDesignSystem_0682a2 || {}).StepComposer
+});
+var FONT = 'var(--font-ui)';
+var muted = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12.5,
+  lineHeight: '18px',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+function ScreenShell(_ref2) {
+  var journey = _ref2.journey,
+    n = _ref2.n,
+    name = _ref2.name,
+    job = _ref2.job,
+    without = _ref2.without,
+    children = _ref2.children;
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = (window.__screenRequires || []).filter(function (c) {
+    return !ns[c];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 1360,
+      margin: '0 auto',
+      padding: '28px 24px 72px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 26
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, journey, " \xB7 ", n), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("a", {
+    href: "../index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "Screens \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)',
+      maxWidth: '70ch'
+    })
+  }, job), without && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '70ch'
+    })
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      fontWeight: 600,
+      color: 'var(--color-ink-soft)'
+    }
+  }, "Without this screen"), " the advisor ", without)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-12)',
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This screen needs ", missing.join(', '), ". Run ", /*#__PURE__*/React.createElement("code", null, "npm run build:bundle"), " and reload \u2014 the screen is not broken, the build is behind it.")) : children);
+}
+function Section(_ref3) {
+  var title = _ref3.title,
+    sub = _ref3.sub,
+    children = _ref3.children;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4,
+      borderBottom: '1px solid var(--color-line)',
+      paddingBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 15,
+      lineHeight: '20px',
+      color: 'var(--color-ink)'
+    }
+  }, title), sub && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '78ch'
+    })
+  }, sub)), children);
+}
+
+/* One state: the caption says which state, the note says why it looks like that. The phone is the
+   real component tree at the real 375x812, never a picture of one. */
+function State(_ref4) {
+  var label = _ref4.label,
+    _ref4$tone = _ref4.tone,
+    tone = _ref4$tone === void 0 ? 'ok' : _ref4$tone,
+    note = _ref4.note,
+    children = _ref4.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8,
+      width: 375
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 'var(--radius-full)',
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, label)), /*#__PURE__*/React.createElement(PhoneFrame, null, children), note && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      width: 375
+    })
+  }, note));
+}
+function StateRow(_ref5) {
+  var children = _ref5.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 28,
+      alignItems: 'flex-start'
+    }
+  }, children);
+}
+function Note(_ref6) {
+  var title = _ref6.title,
+    children = _ref6.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-16)',
+      background: 'var(--color-bubble)',
+      padding: 14,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 5,
+      maxWidth: '82ch'
+    }
+  }, title && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, title), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, children));
+}
+function Table(_ref7) {
+  var head = _ref7.head,
+    rows = _ref7.rows;
+  var cell = {
+    fontFamily: FONT,
+    fontSize: 12,
+    lineHeight: '17px',
+    padding: '9px 12px',
+    verticalAlign: 'top',
+    textAlign: 'left'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      borderCollapse: 'collapse',
+      width: '100%',
+      minWidth: 640,
+      background: 'var(--color-surface)',
+      borderRadius: 'var(--radius-12)'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, head.map(function (h) {
+    return /*#__PURE__*/React.createElement("th", {
+      key: h,
+      style: _objectSpread(_objectSpread({}, cell), {}, {
+        fontWeight: 700,
+        fontSize: 10.5,
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+        color: 'var(--color-muted)',
+        borderBottom: '1px solid var(--color-line)'
+      })
+    }, h);
+  }))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r, i) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, r.map(function (c, j) {
+      return /*#__PURE__*/React.createElement("td", {
+        key: j,
+        style: _objectSpread(_objectSpread({}, cell), {}, {
+          fontWeight: j === 0 ? 600 : 400,
+          color: j === 0 ? 'var(--color-ink)' : 'var(--color-ink-soft)',
+          borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none'
+        })
+      }, c);
+    }));
+  }))));
+}
+
+/* THE INERT COMPOSER A FROZEN SPECIMEN DRAWS — written once (20 Sep 2026).
+
+   `const Ask = …` was declared TEN times across ten screen pages, seven of them byte-for-byte:
+   05-decide:19 · funds:21 · rebalance:20 · proposal:19 · review:19 · ledger:22 · going-back:24, with
+   03-thread-answer:23 differing by a placeholder and risk-profile:20 / refusals:20 branching to
+   MoneyComposer. Ten copies of one decision, and the decision is rule 3 — every screen has a
+   composer — drawn rather than wired, because a frozen specimen has nothing to send to.
+
+   IT BELONGS HERE AND NOT IN design-system/. The system already ships `Composer`; a "pretend
+   composer" beside it would be a one-off component in a system that has a rule against those. This
+   is the screens' own shared layer, which exists for exactly this.
+
+   Read through a namespaced const, never destructured: every .jsx and inline script a page loads
+   compiles into ONE Babel scope, and ten of these pages already declare `const { Composer, … }` at
+   their top level. A second declaration of that name here renders the page blank. */
+var KIT_DS = window.SentinelDesignSystem_0682a2 || {};
+function FrozenAsk(_ref8) {
+  var _ref8$about = _ref8.about,
+    about = _ref8$about === void 0 ? false : _ref8$about,
+    _ref8$money = _ref8.money,
+    money = _ref8$money === void 0 ? false : _ref8$money,
+    placeholder = _ref8.placeholder,
+    onAttach = _ref8.onAttach;
+  /* Money is a different control, not a different placeholder: MoneyComposer owns its own value and
+     hands back a formatted rupee string, which is why it takes no value/onChange even when wired. */
+  if (money) return /*#__PURE__*/React.createElement(KIT_DS.MoneyComposer, {
+    onSend: function onSend() {},
+    placeholder: "or type the amount"
+  });
+  return /*#__PURE__*/React.createElement(KIT_DS.Composer, {
+    value: "",
+    onChange: function onChange() {},
+    onSend: function onSend() {},
+    onAttach: onAttach,
+    placeholder: placeholder || (about ? 'Ask about this' : 'Ask Sentinel')
+  });
+}
+var MotionTable = function MotionTable(_ref9) {
+  var rows = _ref9.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Motion', 'Property', 'Duration', 'Under reduced motion'],
+    rows: rows
+  });
+};
+var ProvenanceTable = function ProvenanceTable(_ref0) {
+  var rows = _ref0.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Figure on screen', 'Where it comes from', 'Shown to the advisor as'],
+    rows: rows
+  });
+};
+function mountScreen(node) {
+  var el = document.getElementById('root');
+  if (el) ReactDOM.createRoot(el).render(node);
+}
+Object.assign(window, {
+  ScreenShell: ScreenShell,
+  Section: Section,
+  State: State,
+  StateRow: StateRow,
+  Note: Note,
+  Table: Table,
+  MotionTable: MotionTable,
+  ProvenanceTable: ProvenanceTable,
+  FrozenAsk: FrozenAsk,
+  mountScreen: mountScreen,
+  screenMuted: muted
+});</script>
+<script>"use strict";
+
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/* The thread shell, shared by every screen of the journey that is a conversation — screens 2 to 5 and
+   7. One file so the five do not drift into five slightly different threads.
+
+   No top-level destructuring on purpose. Every .jsx a page loads compiles into ONE scope, so
+   `const { Dock } = …` here and the same line in home.jsx would be a redeclaration and the page would
+   render nothing. A single uniquely-named const, read through in JSX, cannot collide. */
+var THREAD_DS = window.SentinelDesignSystem_0682a2;
+
+/* The thread carries the scroll — never a card inside it, and never a second scroller. */
+/* scrollRef: the live prototype owns the two thread scrolls ArtifactCard's contract assigns to the
+   caller — header under the app bar on expand, back to the card on collapse — and needs the scroller. */
+/* `banner` is pinned BETWEEN the app bar and the thread — the one slot in this shell that does not
+   scroll, and the only thing that belongs in it is a state the whole thread is in: a journey paused
+   behind the conversation (`DetourBanner`). It is deliberately not a place for what a message offered;
+   that is inside the turn (contradiction 60). */
+/* The shell itself is ScreenScaffold's now (20 Sep 2026) — the nineteen lines that used to be here
+   were the same nineteen in rail.jsx, and the rail's copy had lost the scroll rule below. What stays
+   here is what is the THREAD's rather than the phone's: the default clock, and the fact that the
+   thread passes no chips to the Dock (`chips` and `cta` are deprecated, contradiction 60). */
+function Thread(_ref) {
+  var _ref$time = _ref.time,
+    time = _ref$time === void 0 ? '3:04' : _ref$time,
+    children = _ref.children,
+    composer = _ref.composer,
+    banner = _ref.banner,
+    onMenu = _ref.onMenu,
+    onNew = _ref.onNew,
+    scrollRef = _ref.scrollRef,
+    _ref$revision = _ref.revision,
+    revision = _ref$revision === void 0 ? 0 : _ref$revision,
+    _ref$anchor = _ref.anchor,
+    anchor = _ref$anchor === void 0 ? 'newest' : _ref$anchor;
+  return /*#__PURE__*/React.createElement(THREAD_DS.ScreenScaffold, {
+    time: time,
+    banner: banner,
+    onMenu: onMenu,
+    onNew: onNew,
+    scrollRef: scrollRef,
+    revision: revision,
+    anchor: anchor,
+    composer: composer
+  }, children);
+}
+
+/* THE ADVISOR'S LAST PROMPT IS ALWAYS EDITABLE — and it is one component so it cannot be forgotten.
+
+   The owner, 19 Sep: "jaise user jo last apna prompt edit karne ka option ho — wo missing hai,
+   consistency nei hai." It was built on the answer screen and nowhere else, because every page rendered
+   its own `UserBubble` and each one had to remember. A rule that every page has to remember is a rule
+   that half the pages break, so the rule is a component now: `UserTurn` is the only way a screen renders
+   what the advisor said.
+
+   WHERE IT IS VALID, from the advisor's side:
+     · A finished turn — yes. Edit replaces what came after it, and `costNote` says so before it happens.
+     · A turn still running — no, and not silently: Stop is right there in the send slot, and it is the
+       honest control for "I did not mean that". Edit returns the moment the turn finishes.
+     · A journey ANSWER — yes, and it costs more: MessageActions' own contract says edit there "must warn
+       what it costs (Editing this reopens question 7. The four answers after it will be asked again.)".
+       Same component, same gesture, a bigger `costNote`.
+     · A file the advisor attached — no. A file is not a sentence to re-word; it is removed and replaced,
+       which is what FileUpload's own Remove is for.
+   Home has no prompt at all, so it has no UserTurn — that is not an exception, there is simply nothing
+   there to edit yet. */
+/* `UserTurn` AND `AttachmentTurn` WERE HERE AND ARE NOW THE SYSTEM'S (20 Sep 2026, the owner: anything
+   built on a screen that belongs in the design system goes into the design system). They are
+   `UserTurn` and `AttachmentTurn` — neither read the book, neither was journey-specific, and every
+   journey in the product used the same twelve and ten lines of them. What stays here is what is
+   genuinely this thread's: the attachment STATE, and this product's own parse stages. */
+/* THE PAPERCLIP IS REAL ON EVERY SCREEN, AND WHAT IT PRODUCES IS HONEST.
+
+   The owner, 19 Sep: "attachment demo nei real hona chahiye har screen par, and output and prompt ke
+   saath." Three of the four thread screens passed `onAttach={() => {}}` — a picker that opens and drops
+   the file on the floor, which is a demo wearing a control's clothes. `useAttachment` gives every screen
+   the same real one in one line.
+
+   THE HONEST PART. The designed specimen (Sharma's Q3 statement) has a designed output: three stages and
+   "14 pages · 18 holdings". A file the VIEWER picks has no such output — this is a rendered specimen, not
+   the product, and nothing here parses a PDF. Printing "18 holdings" over someone's own file would be a
+   fabricated figure, which is the one thing these screens never do. So a picked file shows its REAL name
+   and size, its stages sit pending, and a ParseNote says plainly that the prototype does not read it.
+   The control is real; the claim is not made. */
+function useAttachment() {
+  var _React$useState = React.useState(null),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    file = _React$useState2[0],
+    setFile = _React$useState2[1];
+  return {
+    file: file,
+    clear: function clear() {
+      return setFile(null);
+    },
+    onAttach: function onAttach(f) {
+      return setFile({
+        name: f.name,
+        meta: "".concat(Math.max(1, Math.round(f.size / 1024)), " KB \xB7 just now"),
+        picked: true
+      });
+    }
+  };
+}
+var PARSE_DONE = [{
+  label: 'Read the file',
+  state: 'done',
+  meta: '14 pages'
+}, {
+  label: 'Found the holdings',
+  state: 'done',
+  meta: '18 funds'
+}, {
+  label: 'Checked them against his mandate',
+  state: 'done',
+  meta: '3 outside it'
+}];
+var PARSE_PENDING = PARSE_DONE.map(function (x) {
+  return {
+    label: x.label,
+    state: 'pending'
+  };
+});
+
+/* A file is a message from the ADVISOR: it lands at the end of the thread, on their side, capped like
+   their bubble. The caption above it is theirs too — and it is NOT editable, because a file is not a
+   sentence to re-word; it is removed and replaced, which is FileUpload's own Remove. */
+Object.assign(window, {
+  Thread: Thread,
+  useAttachment: useAttachment,
+  PARSE_DONE: PARSE_DONE,
+  PARSE_PENDING: PARSE_PENDING
+});</script>
+<script>"use strict";
+
+/* The answer turn of Journey B — screens 3 and 4 of the flow, which are ONE page, because the artifact
+   expands in place and a second page for a state of the same screen is a page nobody needs.
+
+   Shared by 03-thread-answer.html (frozen states) and prototype.html (live), so the two cannot drift.
+   Everything drawn is the system's; this file only says what Sharma's answer contains and in what order.
+
+   No top-level destructuring: every .jsx a page loads compiles into ONE scope, and home.jsx / thread.jsx
+   are loaded beside this. One uniquely-named const cannot collide. */
+var ANSWER_DS = window.SentinelDesignSystem_0682a2;
+
+/* THE COPY IS PLAINER THAN THE ARCHIVE'S, on the owner's ruling of 18 Sep 2026: an advisor reading this
+   aloud may not be a confident English reader, and every sentence here is one they have to say to a
+   client. So: short sentences, no jargon where a plain word exists ("what moved the mix", not "drift
+   attribution"), and the number before the explanation. The FACTS are unchanged — 62 → 71 against a 60
+   target, two-thirds from the rally — and they are the product's own (docs/screens-source/src/screens/
+   Chat.tsx:254-268). What changed is only the words around them. */
+var DRIFT_ASK = "Why did Sharma's portfolio drift this quarter?";
+var DRIFT_STEPS = ["Reading Sharma's holdings — 18 funds", 'Comparing them with his mandate', 'Checking his Q2 and Q3 statements', 'Working out what moved'];
+var DRIFT_REASONING = 'Equity went from 62% to 71%. He agreed to 60%. Three things moved it, and only one was his own decision.';
+var DRIFT_ANSWER = 'Most of it is the small-cap rally — about two of every three points. You did not cause it, and selling now has a cost.';
+
+/* Colours are the allocation tokens, never a hex: the archive wrote #b69377 / #d9bb9e / #ebd4c3
+   (Chat.tsx:36-40), which are exactly --color-alloc-equity / -debt / -cash. */
+var SHARMA_ALLOC = [{
+  label: 'Equity',
+  value: 71,
+  color: 'var(--color-alloc-equity)'
+}, {
+  label: 'Debt',
+  value: 24,
+  color: 'var(--color-alloc-debt)'
+}, {
+  label: 'Cash',
+  value: 5,
+  color: 'var(--color-alloc-cash)'
+}];
+/* Chat.tsx:42 marks these "[draft] … illustrative demo figures — the headline (62→71, small-cap rally)
+   is from the pattern plate". So the headline is the product's; the 6.1 / 2.0 / 0.9 split is the
+   archive's illustration of it, carried here as that and labelled as that on the page. The middle one is
+   flagged as his own decision, which the reasoning line requires and the archive's data did not do. */
+var DRIFT_CONTRIB = [{
+  label: 'Small-cap rally',
+  value: 6.1,
+  note: 'the market did this, not you'
+}, {
+  label: 'His July top-up',
+  value: 2.0,
+  note: 'it went into Quant Small Cap',
+  intentional: true
+}, {
+  label: 'The funds moved',
+  value: 0.9,
+  note: 'their managers went to large caps, not you'
+}];
+var DRIFT_PROVENANCE = 'As of 30 Sep · from his Q3 statement and the mandate on file';
+/* COMPLETENESS, NOT JUST PROVENANCE (R1, docs/RESEARCH.md). The top theme in the study was a total that
+   was quietly short because one AMC had not reported — "total AUM shown is less". Saying where a figure
+   came from does not say whether it is all of it, so the allocation now states both. */
+var ALLOC_PROVENANCE = 'As of 30 Sep · from his Q3 statement · all 18 funds reported';
+var WHY_71 = {
+  title: 'Why is 71% a problem?',
+  body: ['He agreed to 60% in equity. He is at 71%, which is 11 points more. In a normal year you would barely notice it.', 'If the market falls 20%, he loses more than he would have at 60%. That is when the extra equity shows.']
+};
+
+/* WHAT FITS IN 96px. The peek is recognition, not reading (ArtifactCard's header, readme:181), and a peek
+   bar chart caps at four rows (readme:171 — 3 rows = 62). So the peek is ChartBar at density "peek":
+   three ranked bars, one colour, direct-labelled. Rule 1 — the label carries the identity, never the hue.
+   AttributionChart, with its target caption, notes and count-up, is the EXPANDED artifact. */
+function DriftPeek(_ref) {
+  var _ref$run = _ref.run,
+    run = _ref$run === void 0 ? false : _ref$run;
+  return /*#__PURE__*/React.createElement(ANSWER_DS.ChartBar, {
+    density: "peek",
+    run: run,
+    bars: DRIFT_CONTRIB.map(function (c) {
+      return {
+        label: c.label,
+        value: c.value
+      };
+    }),
+    valueFormat: function valueFormat(v) {
+      return "+".concat(v.toFixed(1));
+    }
+  });
+}
+function DriftExpanded(_ref2) {
+  var _ref2$run = _ref2.run,
+    run = _ref2$run === void 0 ? false : _ref2$run;
+  return /*#__PURE__*/React.createElement(ANSWER_DS.AttributionChart, {
+    from: 62,
+    to: 71,
+    target: 60,
+    targetLabel: "He agreed to",
+    todayLabel: "He is at",
+    contributions: DRIFT_CONTRIB,
+    run: run
+  });
+}
+
+/* The table view every chart owes the advisor (readme.md:235 — no value is ever reachable only by
+   touching a coloured shape), reached from the expanded card's ⋯. Same numbers, same order, as words. */
+var DRIFT_TABLE = {
+  columns: [{
+    key: 'what',
+    header: 'What moved it'
+  }, {
+    key: 'pts',
+    header: 'Points',
+    align: 'right'
+  }],
+  rows: DRIFT_CONTRIB.map(function (c) {
+    return {
+      what: /*#__PURE__*/React.createElement("span", {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-2)'
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          font: 'var(--type-row-font)',
+          color: c.intentional ? 'var(--color-data-deemph)' : 'var(--color-ink)'
+        }
+      }, c.label), /*#__PURE__*/React.createElement("span", {
+        style: {
+          font: 'var(--type-caption-font)',
+          color: 'var(--color-muted)'
+        }
+      }, c.note)),
+      pts: /*#__PURE__*/React.createElement("span", {
+        style: {
+          font: 'var(--type-row-strong-font)',
+          color: c.intentional ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)',
+          fontVariantNumeric: 'tabular-nums'
+        }
+      }, "+", c.value.toFixed(1))
+    };
+  }),
+  footer: 'He agreed to 60% · he is at 71% · 9.0 points in all'
+};
+function DriftTable() {
+  return /*#__PURE__*/React.createElement(ANSWER_DS.DataTableCard, {
+    title: "What moved the mix \xB7 Q2 \u2192 Q3",
+    meta: "+9.0 pts",
+    columns: DRIFT_TABLE.columns,
+    rows: DRIFT_TABLE.rows,
+    footer: DRIFT_TABLE.footer
+  });
+}
+
+/* WHAT THE ADVISOR IS OFFERED SITS IN THE CONVERSATION (18 Sep 2026, the owner's ruling). Not pinned
+   above the composer: a chip that outlives the turn that offered it makes the screen a toolbar, and an
+   advisor scrolling back through the thread cannot tell which answer a pinned chip belonged to. So the
+   chips and the CTA scroll with the message they came from. The Dock keeps the composer and nothing
+   else — rule 3 is untouched, and the deprecation is written into Dock.d.ts.
+
+   There is exactly ONE way to each thing here. "Why is 71% a problem?" used to sit in the Dock while the
+   card's footer also carried "Why?", two controls opening the same sheet on the same screen; the card's
+   Why? is gone and the plain question stays, because a question in words is a better door than a word. */
+function AnswerActions(_ref3) {
+  var onWhy = _ref3.onWhy,
+    onHoldings = _ref3.onHoldings,
+    onRebalance = _ref3.onRebalance,
+    _ref3$holdings = _ref3.holdings,
+    holdings = _ref3$holdings === void 0 ? true : _ref3$holdings,
+    _ref3$animate = _ref3.animate,
+    animate = _ref3$animate === void 0 ? false : _ref3$animate;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-10)'
+    }
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.ChipRow, {
+    animate: animate
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.AnswerChip, {
+    label: WHY_71.title,
+    variant: "tertiary",
+    onClick: onWhy || function () {}
+  }), holdings && /*#__PURE__*/React.createElement(ANSWER_DS.AnswerChip, {
+    label: "Show the 18 holdings",
+    onClick: onHoldings || function () {}
+  })), /*#__PURE__*/React.createElement(ANSWER_DS.DarkButton, {
+    full: true,
+    arrow: true,
+    label: "Rebalance to his mandate",
+    onClick: onRebalance || function () {}
+  }));
+}
+
+/* The turn. `artifact` is ArtifactCard's own state plus 'failed', the case where the answer arrived and
+   its breakdown did not. `enter` plays the system's ds-rise the way the archive's motion.div did
+   (Chat.tsx:266) — the live page passes it, the frozen page does not.
+
+   `continued` on the block: the trace above it already signed the turn "✦ Sentinel", and the name was
+   appearing twice for one thing Sentinel said. */
+function AnswerTurn(_ref4) {
+  var _ref4$artifact = _ref4.artifact,
+    artifact = _ref4$artifact === void 0 ? 'peek' : _ref4$artifact,
+    _ref4$view = _ref4.view,
+    view = _ref4$view === void 0 ? 'chart' : _ref4$view,
+    _ref4$run = _ref4.run,
+    run = _ref4$run === void 0 ? false : _ref4$run,
+    _ref4$enter = _ref4.enter,
+    enter = _ref4$enter === void 0 ? false : _ref4$enter,
+    _ref4$continued = _ref4.continued,
+    continued = _ref4$continued === void 0 ? true : _ref4$continued,
+    actions = _ref4.actions,
+    onToggle = _ref4.onToggle,
+    onShare = _ref4.onShare,
+    onMenu = _ref4.onMenu,
+    onRetry = _ref4.onRetry,
+    cardRef = _ref4.cardRef;
+  var filling = artifact === 'filling';
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--stack)',
+      animation: enter ? 'ds-rise var(--dur-enter) var(--ease) both' : 'none'
+    }
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.SentinelBlock, {
+    continued: continued
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.SentinelText, {
+    text: DRIFT_ANSWER
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.AllocationCard, {
+    segments: SHARMA_ALLOC,
+    animate: run
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.Surface, {
+    elevation: "flat"
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.ConcentrationBar, {
+    fraction: 0.31,
+    label: "Small cap 31% \u2014 the sleeve ceiling is 25%"
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-10)'
+    }
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.Provenance, {
+    text: ALLOC_PROVENANCE
+  })), artifact === 'failed' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.SentinelText, {
+    weight: "Regular",
+    text: "I know the mix moved, but not what moved it. His Q3 statement did not open, so I have not guessed the rest."
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.AnswerChip, {
+    label: "Try again",
+    variant: "primary",
+    onClick: onRetry || function () {}
+  })))), artifact !== 'failed' && /*#__PURE__*/React.createElement("div", {
+    ref: cardRef
+  }, /*#__PURE__*/React.createElement(ANSWER_DS.ArtifactCard, {
+    state: artifact,
+    eyebrow: "What moved the mix \xB7 Q2 \u2192 Q3",
+    title: filling ? 'Working out what moved it' : 'Equity 62% → 71%. Mostly the market.',
+    provenance: filling ? undefined : DRIFT_PROVENANCE,
+    onToggle: onToggle || function () {},
+    onShare: onShare,
+    onMenu: onMenu
+  }, artifact === 'expanded' ? view === 'table' ? /*#__PURE__*/React.createElement(DriftTable, null) : /*#__PURE__*/React.createElement(DriftExpanded, {
+    run: run
+  }) : /*#__PURE__*/React.createElement(DriftPeek, {
+    run: run
+  }))), actions);
+}
+
+/* WHERE SHARE GOES — built 20 Sep 2026, and it was a dead end before ("Share — not in this build").
+   The UI kit's B/11 artboard has documented this pattern since v9 and no screen had it: the message
+   draft arrives as an EXPANDED ArtifactCard in the thread. No canvas, no back pill — there is no
+   second surface in this product, and a draft is a thing Sentinel made, so it is an artifact.
+
+   `DisclosureBlock` sits ABOVE the body and cannot be scrolled away from it. That is the whole point:
+   the advisor is about to put words in front of a client under their own ARN, and the line saying
+   Sentinel drafts and does not send has to be read before the words, not after them. The component
+   was specified, shipped and on no screen until now. */
+var SHARE_DRAFT = "Hi Sharma \u2014 your equity had drifted to 71% against the 60% we agreed, mostly because small caps ran. I have moved \u20B91,85,000 from Quant Small Cap into ICICI Corporate Bond and redirected your monthly SIP the same way. That brings you to 58%. The switch cost \u20B911,200 in exit load and tax, and the SIP change cost nothing.";
+function ShareDraftTurn(_ref5) {
+  var _ref5$enter = _ref5.enter,
+    enter = _ref5$enter === void 0 ? false : _ref5$enter,
+    onSend = _ref5.onSend,
+    onEdit = _ref5.onEdit;
+  return /*#__PURE__*/React.createElement(ANSWER_DS.SentinelTurn, {
+    enter: enter,
+    continued: true,
+    say: "Here is the note, drafted from the same figures. You send it from your own channel \u2014 I do not.",
+    body: /*#__PURE__*/React.createElement(ANSWER_DS.ArtifactCard, {
+      state: "expanded",
+      eyebrow: "Draft for R. Sharma \xB7 not sent",
+      title: "What moved, and what you did about it",
+      provenance: "As of 30 Sep \xB7 drafted from the drift attribution. You send it, not Sentinel."
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--space-8)'
+      }
+    }, /*#__PURE__*/React.createElement(ANSWER_DS.DisclosureBlock, null), /*#__PURE__*/React.createElement(ANSWER_DS.Surface, {
+      elevation: "ring"
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: 0,
+        font: 'var(--type-body-font)',
+        color: 'var(--color-ink-soft)'
+      }
+    }, SHARE_DRAFT)))),
+    chips: /*#__PURE__*/React.createElement(ANSWER_DS.ChipRow, {
+      animate: enter
+    }, /*#__PURE__*/React.createElement(ANSWER_DS.AnswerChip, {
+      label: "Change the wording",
+      variant: "tertiary",
+      onClick: onEdit || function () {}
+    })),
+    cta: onSend ? {
+      label: 'Send it from WhatsApp',
+      onClick: onSend
+    } : undefined
+  });
+}
+Object.assign(window, {
+  SHARE_DRAFT: SHARE_DRAFT,
+  ShareDraftTurn: ShareDraftTurn,
+  DRIFT_TABLE: DRIFT_TABLE,
+  DriftTable: DriftTable,
+  DRIFT_ASK: DRIFT_ASK,
+  DRIFT_STEPS: DRIFT_STEPS,
+  DRIFT_REASONING: DRIFT_REASONING,
+  DRIFT_ANSWER: DRIFT_ANSWER,
+  SHARMA_ALLOC: SHARMA_ALLOC,
+  DRIFT_CONTRIB: DRIFT_CONTRIB,
+  DRIFT_PROVENANCE: DRIFT_PROVENANCE,
+  ALLOC_PROVENANCE: ALLOC_PROVENANCE,
+  WHY_71: WHY_71,
+  DriftPeek: DriftPeek,
+  DriftExpanded: DriftExpanded,
+  AnswerTurn: AnswerTurn,
+  AnswerActions: AnswerActions
+});</script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script>/* thread.jsx and answer.jsx compile into this scope — Thread, AnswerTurn and the DRIFT_* data are
+   globals here. Only the names this file adds are destructured. */
+const {
+  UserBubble,
+  SentinelBlock,
+  SentinelText,
+  ResponseFeedback,
+  FollowUpRow,
+  VersionRow,
+  DetourBanner,
+  AnswerChip,
+  ChipRow
+} = window.SentinelDesignSystem_0682a2;
+
+/* The follow-ups are the questions this answer actually leads to, and the first of them is the one the
+   journey really asks next — it is the UserBubble that opens the deciding screen. */
+const FOLLOWUPS = [{
+  question: 'What would fixing it cost?',
+  note: 'Two moves, costed, before anything runs'
+}, {
+  question: 'Has his mix drifted like this before?',
+  note: 'Compares this quarter with the last four'
+}, {
+  question: 'Which of my other clients have drifted past their mandate?',
+  note: 'Runs the same check across your book'
+}];
+
+/* The proposal for Mr. Amit Aggrawal — the drawer's second saved row, which is where an advisor meets
+   this. V2 is the one the client actually received, and that is the whole reason the trail is kept. */
+const VERSIONS = [{
+  id: 'v1',
+  name: 'V1',
+  summary: 'First draft, 6 funds',
+  meta: '14 Sep, 4:12 pm'
+}, {
+  id: 'v2',
+  name: 'V2',
+  summary: 'Mid-cap → flexi-cap',
+  meta: '15 Sep, 11:20 am',
+  sent: true
+}, {
+  id: 'v3',
+  name: 'V3',
+  summary: 'Small-cap cut to 12%',
+  meta: 'Yesterday, 6:40 pm'
+}];
+const Answer = ({
+  feedback,
+  followups,
+  children
+}) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(UserTurn, {
+  text: DRIFT_ASK,
+  costNote: "Sending this replaces the answer below it."
+}), /*#__PURE__*/React.createElement(AnswerTurn, {
+  artifact: "peek",
+  continued: false
+}), feedback, followups, children);
+function Scene({
+  feedback,
+  followups,
+  banner,
+  children,
+  anchor = 'bottom'
+}) {
+  const att = useAttachment();
+  return /*#__PURE__*/React.createElement(Thread, {
+    anchor: anchor,
+    banner: banner,
+    composer: /*#__PURE__*/React.createElement(FrozenAsk, {
+      onAttach: att.onAttach
+    })
+  }, /*#__PURE__*/React.createElement(Answer, {
+    feedback: feedback,
+    followups: followups
+  }, children), /*#__PURE__*/React.createElement(AttachmentTurn, {
+    file: att.file,
+    onRemove: att.clear
+  }));
+}
+
+/* Live: rate it, pick a reason, ask a follow-up, revert a version, resume the journey. */
+function LiveScene() {
+  const [rated, setRated] = React.useState(null);
+  const [reason, setReason] = React.useState(null);
+  const [asked, setAsked] = React.useState(null);
+  const [versions, setVersions] = React.useState(VERSIONS);
+  const [current, setCurrent] = React.useState('v3');
+  const [paused, setPaused] = React.useState(true);
+  const att = useAttachment();
+  /* Revert APPENDS the restored version as a new revision — the trail only ever grows. VersionRow's own
+     contract, and the same reasoning as the edit warning one level up: nothing is destroyed quietly. */
+  const revert = id => {
+    const from = versions.find(v => v.id === id);
+    const next = {
+      id: `v${versions.length + 1}`,
+      name: `V${versions.length + 1}`,
+      summary: `Restored ${from.name}`,
+      meta: 'Just now'
+    };
+    setVersions([...versions, next]);
+    setCurrent(next.id);
+  };
+  return /*#__PURE__*/React.createElement(Thread, {
+    anchor: "bottom",
+    revision: `${rated}-${asked}-${versions.length}-${paused}-${!!att.file}`,
+    banner: paused ? /*#__PURE__*/React.createElement(DetourBanner, {
+      label: "Meera's risk profile \xB7 paused at question 7",
+      onResume: () => setPaused(false)
+    }) : undefined,
+    composer: /*#__PURE__*/React.createElement(FrozenAsk, {
+      onAttach: att.onAttach
+    })
+  }, /*#__PURE__*/React.createElement(UserTurn, {
+    text: DRIFT_ASK,
+    costNote: "Sending this replaces the answer below it."
+  }), /*#__PURE__*/React.createElement(AnswerTurn, {
+    artifact: "peek",
+    continued: false
+  }), /*#__PURE__*/React.createElement(ResponseFeedback, {
+    value: rated,
+    onRate: setRated,
+    onReason: setReason,
+    note: "Your reason goes to the team that builds Sentinel."
+  }), reason && /*#__PURE__*/React.createElement(SentinelBlock, null, /*#__PURE__*/React.createElement(SentinelText, {
+    text: `Noted — “${reason}”. I have not changed the answer; you can ask it again and I will work it out from scratch.`
+  })), /*#__PURE__*/React.createElement(FollowUpRow, {
+    items: FOLLOWUPS,
+    onAsk: setAsked
+  }), asked && /*#__PURE__*/React.createElement(UserBubble, {
+    text: asked
+  }), /*#__PURE__*/React.createElement(VersionRow, {
+    label: "Mr. Amit Aggrawal \xB7 \u20B925 L proposal",
+    versions: versions,
+    currentId: current,
+    onRevert: revert,
+    onSelect: () => {}
+  }), /*#__PURE__*/React.createElement(AttachmentTurn, {
+    file: att.file,
+    onRemove: att.clear
+  }));
+}
+const MOTION = [['Thumb press', /*#__PURE__*/React.createElement("span", null, "the pressed thumb fills ", /*#__PURE__*/React.createElement("code", null, "--color-selected"), "; the row says \u201CNoted\u201D, in place"), '150ms', 'Unchanged — a colour change is not motion'], ['Reason chips appear', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "ds-rise"), ", 60ms stagger"), '240ms', 'Fade only'], ['Follow-up rows arrive', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "ds-rise"), " with the message that produced them"), '240ms', 'Fade only'], ['Detour banner in', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "ds-rise"), " \u2014 it arrives under the app bar and stays there"), '240ms', 'Fade only'], ['Revert', 'the restored version is appended as a new row', 'immediate', 'Unchanged — no animation to drop']];
+const PROVENANCE = [['V1 · V2 · V3', 'The advisor’s own revisions of that proposal, in order', 'A row each, with when it was made — and “sent to the client” on the one that was'], ['“question 7”', 'Where the risk profile was left', 'The banner, which names the journey and the question rather than saying “in progress”'], ['The four reasons', 'The four things that are actually wrong with an answer in this product — a wrong number, a misread question, a missing holding, too much text', 'Chips, not a text field: a field asks for an essay between meetings']];
+mountScreen(/*#__PURE__*/React.createElement(ScreenShell, {
+  journey: "Every journey",
+  n: "Thread \xB7 going back",
+  name: "The four ways back",
+  job: "What an advisor does when something is wrong, unfinished, or better the way it was. Four affordances that were designed, specified and on no screen until now \u2014 and one of them, the version trail, is the difference between \u201CI revised it\u201D and \u201Chere is what the client actually saw\u201D.",
+  without: "can only go forward: an answer they cannot mark wrong, a proposal whose earlier version is gone, and a journey they cannot leave without losing it."
+}, /*#__PURE__*/React.createElement(Section, {
+  title: "1 \xB7 Say it was wrong",
+  sub: "The affordance Sentinel had nowhere \u2014 for a product whose whole value is the quality of its answers, and whose answers an advisor has to defend to a client."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "not rated",
+  note: "Two drawn thumbs at the icon set's 24pt grid \u2014 no emoji, the system's rule \u2014 sitting under the answer they belong to. They are quiet: this is the least visible thing on the screen, and it should be."
+}, /*#__PURE__*/React.createElement(Scene, {
+  feedback: /*#__PURE__*/React.createElement(ResponseFeedback, {
+    note: "Your reason goes to the team that builds Sentinel."
+  })
+})), /*#__PURE__*/React.createElement(State, {
+  label: "marked wrong",
+  tone: "under",
+  note: "Down is deliberately NOT symmetrical with up. Up is one tap and done; down opens four reason chips, because an advisor who marks an answer wrong has a reason and the reason is the whole value of the signal. Chips, not a text field \u2014 a field asks for an essay between meetings. Confirmation lands ON the control that was pressed, because this product has no toasts."
+}, /*#__PURE__*/React.createElement(Scene, {
+  feedback: /*#__PURE__*/React.createElement(ResponseFeedback, {
+    value: "down",
+    note: "Your reason goes to the team that builds Sentinel."
+  })
+}))), /*#__PURE__*/React.createElement(Note, {
+  title: "What marking it wrong does NOT do"
+}, "It does not delete the answer, and it does not silently re-run it. The answer stays where it is, the advisor can ask again, and Sentinel says so. An affordance that quietly replaced the thing it was rating would make the rating unsafe to use in front of a client.")), /*#__PURE__*/React.createElement(Section, {
+  title: "2 \xB7 Ask what comes next",
+  sub: "A follow-up that exceeds one line becomes a ROW, not a pill \u2014 FollowUpRow's own rule. The chips keep the short ones."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "follow-ups under the answer",
+  note: "Three questions as an advisor would actually ask them, each with one line of why it is worth asking. The first is the question this journey really asks next \u2014 it is the one that opens the deciding screen. Rows sit in the thread and scroll away with the message that produced them; the component's own contract says so, and it was written before the 18 Sep ruling that moved chips out of the dock."
+}, /*#__PURE__*/React.createElement(Scene, {
+  followups: /*#__PURE__*/React.createElement(FollowUpRow, {
+    items: FOLLOWUPS
+  })
+})), /*#__PURE__*/React.createElement(State, {
+  label: "both, together",
+  tone: "under",
+  note: "Rate it, then ask the next thing. The order on screen is the order of the decision: judge the answer, then use it. Two affordances, no collision \u2014 one is about the answer, the other is about what to do with it."
+}, /*#__PURE__*/React.createElement(Scene, {
+  feedback: /*#__PURE__*/React.createElement(ResponseFeedback, null),
+  followups: /*#__PURE__*/React.createElement(FollowUpRow, {
+    items: FOLLOWUPS
+  })
+})))), /*#__PURE__*/React.createElement(Section, {
+  title: "3 \xB7 Go back to the version the client saw",
+  sub: "An advisor who has revised a proposal twice has no way back to the version that matters \u2014 and the version that matters is the one the client actually received, because that is the one they ring about."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "three revisions, one of them sent",
+  note: "V1, V2, V3 with what changed in each and when. V2 carries \u201Csent to the client\u201D, which is the whole reason the trail is kept. Revert is a WORD, not a glyph alone. The current version keeps the sand selected fill rather than a dot."
+}, /*#__PURE__*/React.createElement(Scene, null, /*#__PURE__*/React.createElement(VersionRow, {
+  label: "Mr. Amit Aggrawal \xB7 \u20B925 L proposal",
+  versions: VERSIONS,
+  currentId: "v3",
+  onRevert: () => {},
+  onSelect: () => {}
+}))), /*#__PURE__*/React.createElement(State, {
+  label: "live \xB7 revert one",
+  tone: "under",
+  note: "Tap Revert on V2 and the restored version is APPENDED as V4 \u2014 the trail only ever grows and nothing is destroyed. That is the same reasoning as the edit warning one level up: in an advisory tool, going back must not throw away what you were on."
+}, /*#__PURE__*/React.createElement(LiveScene, null)))), /*#__PURE__*/React.createElement(Section, {
+  title: "4 \xB7 Leave a journey, and come back to it",
+  sub: "A sequence the advisor is partway through does not have to be finished in one sitting. The banner is pinned under the app bar \u2014 it is a state the whole thread is in, not something a message offered."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "a journey, paused behind the conversation",
+  note: "\u201CMeera's risk profile \xB7 paused at question 7\u201D, with Resume. It names the journey AND the question, because \u201Cin progress\u201D tells an advisor nothing about how much is left. It is the one thing in this shell that sits between the app bar and the thread and does not scroll \u2014 everything a message offered scrolls with that message."
+}, /*#__PURE__*/React.createElement(Scene, {
+  banner: /*#__PURE__*/React.createElement(DetourBanner, {
+    label: "Meera's risk profile \xB7 paused at question 7",
+    onResume: () => {}
+  }),
+  followups: /*#__PURE__*/React.createElement(FollowUpRow, {
+    items: FOLLOWUPS
+  })
+}))), /*#__PURE__*/React.createElement(Note, {
+  title: "The rail itself is not built yet, and this screen does not pretend otherwise"
+}, "`ProgressRail`, the sixteen questions and their result frame are build #4 in ", /*#__PURE__*/React.createElement("code", null, "APP-PLAN.md"), ". What is designed here is the THREAD's side of the detour: what an advisor sees while a journey is parked behind the conversation they are having. Resume leads to a surface that does not exist yet, and the live phone simply drops the banner rather than drawing a rail nobody has designed.")), /*#__PURE__*/React.createElement(Section, {
+  title: "5 \xB7 Why these four, and what is still only forward"
+}, /*#__PURE__*/React.createElement(Note, {
+  title: "The whole going-back layer, in one table"
+}, "The question \u2014 ", /*#__PURE__*/React.createElement("em", null, "how do I go back?"), " \u2014 is answered at five levels, and only the last one is not answerable. ", /*#__PURE__*/React.createElement("strong", null, "The question:"), " edit it in place, and the answer is replaced only on send.", /*#__PURE__*/React.createElement("strong", null, " The work:"), " Stop the trace and keep the partial. ", /*#__PURE__*/React.createElement("strong", null, "The answer:"), " mark it wrong, with a reason. ", /*#__PURE__*/React.createElement("strong", null, "The artifact:"), " revert to the version the client saw. ", /*#__PURE__*/React.createElement("strong", null, "The journey:"), "leave it and resume. ", /*#__PURE__*/React.createElement("strong", null, "The decision:"), " nothing \u2014 and the deciding screen says so plainly rather than offering an undo that would be a lie.")), /*#__PURE__*/React.createElement(Section, {
+  title: "6 \xB7 Motion, and what each one does under reduced motion"
+}, /*#__PURE__*/React.createElement(MotionTable, {
+  rows: MOTION
+})), /*#__PURE__*/React.createElement(Section, {
+  title: "7 \xB7 Provenance"
+}, /*#__PURE__*/React.createElement(ProvenanceTable, {
+  rows: PROVENANCE
+}))));</script></body></html>

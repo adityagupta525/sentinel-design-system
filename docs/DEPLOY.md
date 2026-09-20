@@ -10,7 +10,7 @@ Two things a team can be given, and they answer different questions.
 ## Vercel
 
 `vercel.json` is in the repository and needs nothing else. It builds the bundle, regenerates
-the component index, stages `artifact/` and serves that as the site root — so the deployed
+the component index, stages `site/` and serves that as the site root — so the deployed
 landing page is the same grouped cover as the artifact, and every link under it works.
 
 ```bash

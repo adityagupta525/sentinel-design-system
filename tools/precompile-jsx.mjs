@@ -11,7 +11,7 @@
    exactly what that runner does with `document.createElement('script')`. So the compiled page runs
    in the same one global script scope the pages were written against, and a screen module still
    publishes onto `window` rather than relying on a shared binding. */
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 
@@ -79,4 +79,39 @@ export function precompilePage(html, htmlPath) {
     html: out.replace(/\s*<script src="[^"]*babel[^"]*"[^>]*><\/script>/g, ''),
     compiled,
   };
+}
+
+/* OFFLINE: A DOWNLOADED FOLDER HAS TO OPEN (20 Sep 2026).
+   The owner cloned the repository, opened a page and got a blank one. Measured rather than guessed:
+   over `file://` the origin is opaque, so Babel's XHR for each `.jsx` is refused by CORS and nothing
+   mounts. Precompiling fixed the mount; two `fetch()` calls still fail the same way — the spec pages
+   read their own `.d.ts` to print the Props block, and the index reads `index-data.json`.
+
+   Rather than change `page-kit.jsx` — that file is the specification and the repository's own pages
+   want the live fetch — the build inlines what a page fetches and puts a shim in front of `fetch`
+   that answers from it. Only the paths a page actually names are inlined, so no page carries the
+   tree. On http the shim answers from the same bytes it would have downloaded. */
+const cacheable = (html, htmlPath, root) => {
+  const map = {};
+  for (const m of html.matchAll(/["'](\.\.?\/[^"']*?\.(?:d\.ts|json))["']/g)) {
+    const url = m[1];
+    const file = resolve(dirname(htmlPath), url);
+    if (!file.startsWith(root) || !existsSync(file)) continue;
+    map[url] = readFileSync(file, 'utf8');
+  }
+  return map;
+};
+
+export function inlineFetches(html, htmlPath, root) {
+  const map = cacheable(html, htmlPath, root);
+  if (!Object.keys(map).length) return { html, inlined: 0 };
+  /* A page that reads a manifest tends to check, one HEAD at a time, that what the manifest lists is
+     really there — the component index does exactly that, and over `file://` every one of those
+     checks fails, so a complete index reports itself as 94 missing pages. The names are enough to
+     answer; the bodies are not needed, and inlining 144 pages into one page would be absurd. */
+  const siblings = Object.keys(map).some((k) => k.endsWith('.json'))
+    ? readdirSync(dirname(htmlPath)).filter((f) => f.endsWith('.html')).map((f) => `./${f}`)
+    : [];
+  const shim = `<script>(function(){var M=${JSON.stringify(map).replace(/<\/script/gi, '<\\/script')};var E=${JSON.stringify(siblings)};var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script>`;
+  return { html: html.replace('<body>', `<body>${shim}`), inlined: Object.keys(map).length };
 }

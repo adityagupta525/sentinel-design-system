@@ -1,0 +1,173 @@
+<!-- @dsCard group="Screens" viewport="1000x1700" name="Journey B · the flow" subtitle="Seven screens end to end: what the advisor does, what Sentinel answers, and what each screen owes" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Journey B — the flow</title><link rel="stylesheet" href="../styles.css">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-ui)}
+  .wrap{max-width:900px;margin:0 auto;padding-inline:20px;padding-block:52px 96px}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible{outline:2px solid var(--color-bronze-deep);outline-offset:3px;border-radius:6px}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0}
+  h1{font-family:var(--font-display);font-weight:500;font-size:48px;line-height:1;margin:8px 0 0}
+  .lede{max-width:64ch;margin:14px 0 0;font-size:15px;line-height:23px;color:var(--color-ink-soft)}
+  h2{font-size:15px;font-weight:600;margin:0;padding-bottom:8px;border-bottom:1px solid var(--color-line)}
+  section{margin-top:44px}
+
+  .step{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:16px}
+  .rail{display:flex;flex-direction:column;align-items:center}
+  .dot{width:32px;height:32px;flex-shrink:0;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;
+       font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--color-surface);box-shadow:0 0 0 1px var(--color-line);color:var(--color-bronze-deep)}
+  .dot.on{background:var(--color-selected);box-shadow:0 0 0 1px var(--color-bronze);color:var(--color-ink)}
+  .line{flex:1;width:1px;background:var(--color-line);margin:6px 0}
+  .card{background:var(--color-surface);border-radius:var(--radius-16);box-shadow:0 0 0 1px var(--color-line);padding:16px;margin-bottom:6px}
+  .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .name{font-size:15px;font-weight:600}
+  .tag{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:var(--radius-full);padding:3px 8px;margin-left:auto}
+  .built{color:var(--color-status-ok-fg);background:var(--color-status-ok-bg)}
+  .todo{color:var(--color-muted);background:var(--color-chip)}
+  .next{color:var(--color-bronze-deep);background:var(--color-status-under-bg);box-shadow:inset 0 0 0 1px var(--color-bubble-edge)}
+  .card p{margin:8px 0 0;font-size:13px;line-height:19px;color:var(--color-ink-soft)}
+  .card .says{background:var(--color-bubble);border-radius:var(--radius-12);padding:10px 12px;margin-top:10px;font-size:13px;line-height:19px;color:var(--color-ink-soft)}
+  .dock{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}
+  .k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--color-muted);margin-right:2px}
+  .pill{font-size:11.5px;line-height:16px;color:var(--color-bronze-deep);background:var(--color-chip);border-radius:var(--radius-full);padding:4px 10px;box-shadow:inset 0 0 0 1px var(--color-line)}
+  .cta{font-size:11.5px;line-height:16px;color:var(--color-surface);background:var(--color-cta);border-radius:var(--radius-full);padding:4px 10px}
+  .open{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;color:var(--color-bronze-deep)}
+  .move{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:16px;align-items:center;padding:2px 0 8px}
+  .move .arrow{display:flex;justify-content:center;color:var(--color-bronze)}
+  .move p{margin:0;font-size:12.5px;line-height:18px;color:var(--color-muted)}
+  .move b{font-weight:600;color:var(--color-ink-soft)}
+  .note{background:var(--color-bubble);border-radius:var(--radius-16);padding:14px;margin-top:12px;max-width:80ch}
+  .note p{margin:0;font-size:12.5px;line-height:18px;color:var(--color-ink-soft)}
+  .note .t{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-bronze-deep);margin-bottom:5px}
+  .bad{background:var(--color-status-over-bg)}
+  .bad .t{color:var(--color-status-over-fg)}
+  footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--color-line);font-size:12px;line-height:18px;color:var(--color-muted)}
+</style></head><body>
+<div class="wrap">
+  <p class="eyebrow"><a href="../index.html">‹ Sentinel design system</a> · <a href="index.html">Screens</a> · <a href="journey-b/prototype.html">Live prototype</a></p>
+  <h1>Journey B — Sharma&rsquo;s drift</h1>
+  <p class="lede">One advisor, one question, seven screens. The drift explained, the fix costed, approved and drafted to the
+  client. Every line of copy below is the product&rsquo;s own, taken from <code>docs/screens-source</code> — nothing here
+  is written for the diagram.</p>
+
+  <section>
+    <h2>The flow</h2>
+
+    <div class="step"><div class="rail"><span class="dot on">1</span><span class="line"></span></div>
+      <div class="card">
+        <div class="head"><span class="name">Home</span><span class="tag built">built</span></div>
+        <p>Greeting, three rows built from the advisor&rsquo;s own book, composer. Nothing else.</p>
+        <div class="dock"><span class="k">Dock</span><span class="pill">composer only</span></div>
+        <a class="open" href="journey-b/01-home.html">Open the screen ›</a>
+      </div></div>
+    <div class="move"><span class="arrow">↓</span><p>The advisor taps <b>&ldquo;Why did Sharma&rsquo;s portfolio drift this quarter?&rdquo;</b></p></div>
+
+    <div class="step"><div class="rail"><span class="dot">2</span><span class="line"></span></div>
+      <div class="card">
+        <div class="head"><span class="name">Thread &middot; the trace</span><span class="tag built">built</span></div>
+        <p>Four real ordered steps, not a spinner: <em>Reading Sharma&rsquo;s holdings — 18 funds &middot; Comparing against
+        his mandate &middot; Checking Q2 statements &middot; Attributing the drift.</em></p>
+        <div class="dock"><span class="k">Dock</span><span class="pill">composer, Stop live</span></div>
+        <p>Stop keeps what was worked out and offers Continue — it never leaves the thread mid-stream with no exit.
+        A dropped connection is worded differently on purpose: the advisor did not choose it.</p>
+        <a class="open" href="journey-b/02-thread-trace.html">Open the screen ›</a>
+      </div></div>
+    <div class="move"><span class="arrow">↓</span><p>The trace finishes and the answer takes its place</p></div>
+
+    <div class="step"><div class="rail"><span class="dot">3</span><span class="line"></span></div>
+      <div class="card">
+        <div class="head"><span class="name">Thread &middot; the answer</span><span class="tag built">built</span></div>
+        <div class="says">&ldquo;Two-thirds of the drift is the small-cap rally. You did not cause it, and selling into it has a cost.&rdquo;</div>
+        <p>Then the allocation bar, and the artifact card at its <b>96px peek</b> — recognition, not reading.</p>
+        <div class="dock"><span class="k">Dock</span><span class="pill">Why is 71% a problem?</span><span class="pill">Show the 18 holdings</span><span class="cta">Rebalance to his mandate</span></div>
+        <a class="open" href="journey-b/03-thread-answer.html">Open the screen &rsaquo;</a>
+      </div></div>
+    <div class="move"><span class="arrow">↓</span><p>The advisor taps the artifact card</p></div>
+
+    <div class="step"><div class="rail"><span class="dot">4</span><span class="line"></span></div>
+      <div class="card">
+        <div class="head"><span class="name">The artifact, expanded</span><span class="tag built">built</span></div>
+        <p>It expands <b>in place</b> to its natural height and the thread carries the scroll. There is no canvas and no
+        shared-element transition — a screen that smart-animates a card into a page has invented something.</p>
+        <p>The attribution: equity 62% → 71% against a 60% target, and the three things that moved it.</p>
+        <a class="open" href="journey-b/03-thread-answer.html">Open the screen &rsaquo; &mdash; it is a state of screen 3, on the same page</a>
+      </div></div>
+    <div class="move"><span class="arrow">↓</span><p>The advisor taps <b>&ldquo;Rebalance to his mandate&rdquo;</b></p></div>
+
+    <div class="step"><div class="rail"><span class="dot">5</span><span class="line"></span></div>
+      <div class="card">
+        <div class="head"><span class="name">Thread &middot; two moves</span><span class="tag built">built</span></div>
+        <div class="says">&ldquo;Two moves, not seven. This alone brings equity from 71% back to 58% and costs ₹11,200.&rdquo;</div>
+        <p><b>1</b> Move ₹1,85,000 out of Quant Small Cap &nbsp;·&nbsp; <b>2</b> Redirect the ₹30,000 monthly SIP</p>
+        <div class="dock"><span class="k">Dock</span><span class="pill">Show the five we skipped</span><span class="cta">Approve both moves</span></div>
+        <a class="open" href="journey-b/05-decide.html">Open the screen &rsaquo;</a>
+      </div></div>
+    <div class="move"><span class="arrow">↓</span><p>The advisor taps <b>Approve both moves</b></p></div>
+
+    <div class="step"><div class="rail"><span class="dot">6</span><span class="line"></span></div>
+      <div class="card">
+        <div class="head"><span class="name">Confirm sheet</span><span class="tag built">built</span></div>
+        <p>The <b>one surface in the product with no composer</b> — the single documented exception to rule 3. It is a
+        commit-or-dismiss decision, and a composer there offers a third path that does not exist.</p>
+        <p>Disclosure sits <b>above</b> the numbers; compliance is stated as rows, never implied.</p>
+        <a class="open" href="journey-b/05-decide.html">Open the screen &rsaquo;</a>
+      </div></div>
+    <div class="move"><span class="arrow">↓</span><p>Approved</p></div>
+
+    <div class="step"><div class="rail"><span class="dot">7</span></div>
+      <div class="card">
+        <div class="head"><span class="name">Success, and the draft</span><span class="tag built">built</span></div>
+        <p>A drawn check, not confetti. Then the note to R. Sharma — and this build <b>drafts it, it does not send</b>:
+        nothing leaves the app until the advisor picks a channel and confirms outside Sentinel.</p>
+        <a class="open" href="journey-b/05-decide.html">Open the screen &rsaquo;</a>
+      </div></div>
+  </section>
+
+  <section>
+    <h2>Reachable from every screen</h2>
+    <div class="step" style="margin-top:14px"><div class="rail"><span class="dot on">&#8617;</span></div>
+      <div class="card">
+        <div class="head"><span class="name">The four ways back</span><span class="tag built">built</span></div>
+        <p>Mark an answer wrong with a reason &middot; ask a follow-up too long for a chip &middot; revert to the version the
+        client actually saw &middot; resume a journey left at question 7. Four affordances the system had specified and
+        no screen had ever placed.</p>
+        <a class="open" href="thread/going-back.html">Open the screen &rsaquo;</a>
+      </div></div>
+    <div class="step" style="margin-top:14px"><div class="rail"><span class="dot on">☰</span></div>
+      <div class="card">
+        <div class="head"><span class="name">The menu</span><span class="tag built">built</span></div>
+        <p>Saved work, recent threads and the client book, over a 25% scrim. Opened by the hamburger on any screen, and
+        it carries no composer — the thread and its own is one tap behind the scrim.</p>
+        <a class="open" href="shell/drawer.html">Open the screen ›</a>
+      </div></div>
+  </section>
+
+  <section>
+    <h2>What laying the journey out end to end found</h2>
+    <p class="lede" style="margin-top:10px">Two copy defects in <code>docs/screens-source</code> that no single screen shows,
+    because each needs two screens — or two lines of one screen — side by side.</p>
+
+    <div class="note bad"><p class="t">One number, told twice</p>
+      <p>On the rebalance screen the sentence reads <b>&ldquo;brings equity from 71% back to 58%&rdquo;</b> while the move
+      card beneath it reads <b>&ldquo;Brings equity from 67% to 58%&rdquo;</b>
+      (<code>src/screens/Chat.tsx:280</code> and <code>:283</code>). Both are on screen at once. 71 is the figure the whole
+      journey is built on — the trace, the attribution and the chips all say it — so 67 is the one that is wrong.</p></div>
+
+    <div class="note bad"><p class="t">Sharma is called &ldquo;her&rdquo;</p>
+      <p>The second move reads <b>&ldquo;Redirect her ₹30,000 monthly SIP&rdquo;</b> (<code>Chat.tsx:284</code>, and again at
+      <code>:753</code>) in a journey that says <em>his</em> holdings and <em>his</em> mandate everywhere else. Rule 4 asks
+      for provenance under every figure; this is the same standard applied to a person. Meera is &ldquo;her&rdquo; correctly
+      elsewhere, so this is a copy slip in the Sharma flow, not a convention.</p></div>
+
+    <div class="note"><p class="t">Neither is fixed here</p>
+      <p>Both live in <code>docs/screens-source</code>, which is the Figma Make archive and is kept byte-for-byte as it was
+      exported. They are corrected when the screens that carry them are built — screens 5 and 7 — and they are written down
+      now so that the correction is deliberate rather than accidental.</p></div>
+  </section>
+
+  <footer>
+    <p>Three of seven built. The copy on this page is the product&rsquo;s, from <code>docs/screens-source/src/screens/Chat.tsx</code>
+    and <code>src/lib/router.ts</code>; the flow order is <code>docs/SCREENS-PLAN.md</code> §4.</p>
+  </footer>
+</div>
+</body></html>

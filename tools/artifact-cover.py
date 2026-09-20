@@ -192,5 +192,5 @@ the token files, so the documented numbers cannot drift from the real ones.</p>
 </footer>
 
 </div></body></html>'''
-pathlib.Path('artifact/index.html').write_text(doc)
+pathlib.Path('site/index.html').write_text(doc)
 print('cover written', len(doc), 'bytes')

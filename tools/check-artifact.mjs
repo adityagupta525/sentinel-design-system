@@ -17,8 +17,8 @@ import { existsSync } from 'node:fs';
 import net from 'node:net';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-if (!existsSync(join(ROOT, 'artifact', 'index.html'))) {
-  console.error('artifact/ is not staged — run `npm run build:artifact` first');
+if (!existsSync(join(ROOT, 'site', 'index.html'))) {
+  console.error('site/ is not staged — run `npm run build:artifact` first');
   process.exit(2);
 }
 const PORT = await new Promise((res, rej) => {
@@ -46,7 +46,7 @@ const { readFile } = await import('node:fs/promises');
 const { extname, normalize } = await import('node:path');
 const srv = createServer(async (req, res) => {
   const rel = normalize(decodeURIComponent(req.url.split('?')[0])).replace(/^(\.\.[/\\])+/, '');
-  const file = join(ROOT, 'artifact', rel);
+  const file = join(ROOT, 'site', rel);
   try {
     const buf = await readFile(file);
     const ext = rel.endsWith('.d.ts') ? '.ts' : extname(rel);

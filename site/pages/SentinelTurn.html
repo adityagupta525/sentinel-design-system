@@ -1,0 +1,980 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="SentinelTurn" subtitle="One thing Sentinel said — and the spacing grammar thirteen hand-built turns were already following" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SentinelTurn — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script>(function(){var M={"../components/chat/SentinelTurn.d.ts":"import * as React from 'react';\n\nexport interface SentinelTurnProps {\n  /** What Sentinel says. One string, or several — the first carries the statement, the rest carry\n   *  the reasoning. Gapped at **--space-10** between sentences, which 5 of the 6 hand-built\n   *  multi-sentence turns already used. */\n  say?: string | string[];\n  /** How the FIRST sentence is set. Default 'Medium'; every later line is Regular, which is the\n   *  weight pair `SentinelText` was built around. */\n  weight?: 'Medium' | 'Regular';\n  /** The one thing the turn carries — a card, a chart, a trace, a list, a search field, a callout.\n   *  Gapped at **--space-12**. */\n  body?: React.ReactNode;\n  /** Put the body ABOVE the sentences. For a turn whose answer IS the artifact and whose sentence\n   *  reads it out: the risk result, the execution trace, the placed-moves receipt. */\n  bodyFirst?: boolean;\n  /** A sentence that follows the body. Set Regular, gapped at **--space-12** — a sentence after\n   *  something that is not a sentence takes the part gap, not the sentence gap. Unanimous across the\n   *  five hand-built cases. */\n  then?: string;\n  /** A second thing after `then` — the drafted note under the receipt, the client list under the\n   *  search field. Gapped at **--space-12**. */\n  tail?: React.ReactNode;\n  /** Where the turn's figures came from. Gapped at **--space-10**, the value `InfoCard` and\n   *  `OverlapView` both use; the two screens that hand-wrote it disagreed (10 and 8) and the system's\n   *  own placements break the tie. */\n  provenance?: string;\n  /** The answer chips, as a `ChipRow`. Sits BELOW the block at `--stack` (12px) — the same 12px the\n   *  seven turns that nested it inside the block were already drawing. */\n  chips?: React.ReactNode;\n  /** **At most one dark CTA**, and the type is how that survives. Three hand-built action rows paired\n   *  a `ChipRow` with a `<DarkButton full arrow>` and three copies can only agree where a type can\n   *  enforce — two dark buttons in a turn is two primary actions and the advisor cannot tell which\n   *  one the turn was for. Sits under the chips at `--stack`. */\n  cta?: { label: string; onClick: () => void; /** Default true. */ arrow?: boolean };\n  /** The artifact, `MessageActions` — whatever belongs to this turn but not to the sentence. The dark\n   *  CTA does NOT go here; it goes in `cta`, which can only hold one. Also at `--stack`. */\n  actions?: React.ReactNode;\n  /** The turn is still arriving: renders `SentinelThinking` and NOTHING ELSE. Pass the verb as a\n   *  string and it names what is being read. Chips and actions are dropped on purpose — offering an\n   *  answer's chips beside the dots lets an advisor answer a question Sentinel has not finished\n   *  asking. */\n  thinking?: boolean | string;\n  /** Drop the \"✦ Sentinel\" signature, for the second and later blocks of one turn. One label per\n   *  turn is a standing ruling (18 Sep 2026). */\n  continued?: boolean;\n  /** Play `ds-rise` on the whole turn. The live page passes it; a frozen spec page does not. */\n  enter?: boolean;\n  /** Overrides the \"Sentinel\" label. Rarely right — see `SentinelBlock`. */\n  label?: string;\n}\n\n/** ONE THING SENTINEL SAID, AND EVERYTHING THAT BELONGS TO IT.\n *\n *  Thirteen turns were hand-built across nine screen modules, with 35 spacer divs between their\n *  parts. The values were not arbitrary — measured on 20 Sep 2026 they spell a grammar the screens\n *  were already following without it being written down anywhere:\n *\n *  | between                            | value        | vote  |\n *  |------------------------------------|--------------|-------|\n *  | a sentence and the next sentence   | --space-10   | 5 / 6 |\n *  | the lead sentence and the body     | --space-12   | 7 / 8 |\n *  | the body and a sentence after it   | --space-12   | 5 / 5 |\n *  | the block and its chips            | --space-12   | 7 / 7 |\n *  | anything and its provenance        | --space-10   | the system's own two placements |\n *\n *  Three sites dissent and are NOT what this component draws: `proposal.jsx:141` gaps two sentences\n *  at 8, `answer.jsx:127` gaps a card at 8, `answer.jsx:130` gaps provenance at 8. Each is a visible\n *  2–4px and therefore the owner's call, not a migration.\n *\n *  It adds no visual decision. Every gap it draws is one the repository was already drawing most\n *  often. What it adds is that the gap is decided ONCE — so a fourteenth turn cannot quietly\n *  introduce a fifth value for \"the next sentence\". */\nexport function SentinelTurn(props: SentinelTurnProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* The component-page kit — the nine blocks, in the one order, so every page reads identically and a
+   reviewer builds a habit instead of hunting. Blocks, in order:
+   1 Specimen · 2 Anatomy · 3 Variants · 4 States · 5 In context · 6 Tokens · 7 Props · 8 Do/Don't · 9 Motion
+   Rules the kit enforces rather than asks for: the specimen sits alone on the product background;
+   anatomy annotates OUTSIDE the frame (B/05's rule); the Tokens block resolves each name against the
+   live stylesheet, so a value that is not a token shows up as missing; Props prints the real .d.ts. */
+var _React = React,
+  useState = _React.useState,
+  useEffect = _React.useEffect;
+var FONT = 'var(--font-ui)';
+var lbl = {
+  fontFamily: FONT,
+  fontWeight: 700,
+  fontSize: 10,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+var note = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12,
+  lineHeight: '17px',
+  color: 'var(--color-muted)',
+  margin: '6px 0 0',
+  maxWidth: 560
+};
+function PageShell(_ref) {
+  var name = _ref.name,
+    group = _ref.group,
+    status = _ref.status,
+    summary = _ref.summary,
+    _ref$requires = _ref.requires,
+    requires = _ref$requires === void 0 ? [] : _ref$requires,
+    children = _ref.children;
+  var tone = status === 'shipped' ? 'ok' : status === 'building' ? 'under' : 'over';
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = requires.filter(function (n) {
+    return !ns[n];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 980,
+      margin: '0 auto',
+      padding: '28px 24px 64px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 28
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 9999,
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, status), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 500,
+      fontSize: 11.5,
+      color: 'var(--color-muted)'
+    }
+  }, group), /*#__PURE__*/React.createElement("a", {
+    href: "./00-Index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "00 Index \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      margin: 0,
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)'
+    })
+  }, summary)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle yet"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This page needs ", missing.map(function (n, i) {
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: n
+    }, i ? ', ' : '', /*#__PURE__*/React.createElement("code", null, n));
+  }), ", which ", /*#__PURE__*/React.createElement("code", null, "ds_bundle.js"), " does not carry yet. The bundle recompiles from source at the end of a turn \u2014 reload then. The page is not broken; the build is behind it.")) : /*#__PURE__*/React.createElement(PageBoundary, null, children));
+}
+/* A page whose component has gone says so, the way the index does — never a blank screen. */
+var PageBoundary = /*#__PURE__*/function (_React$Component) {
+  function PageBoundary(p) {
+    var _this;
+    _classCallCheck(this, PageBoundary);
+    _this = _callSuper(this, PageBoundary, [p]);
+    _this.state = {
+      err: null
+    };
+    return _this;
+  }
+  _inherits(PageBoundary, _React$Component);
+  return _createClass(PageBoundary, [{
+    key: "render",
+    value: function render() {
+      if (!this.state.err) return this.props.children;
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          borderRadius: 12,
+          background: 'var(--color-status-over-bg)',
+          padding: 16
+        }
+      }, /*#__PURE__*/React.createElement("p", {
+        style: {
+          margin: 0,
+          fontFamily: FONT,
+          fontWeight: 700,
+          fontSize: 11,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          color: 'var(--color-status-over-fg)'
+        }
+      }, "This page failed to render"), /*#__PURE__*/React.createElement("p", {
+        style: _objectSpread(_objectSpread({}, note), {}, {
+          color: 'var(--color-ink-soft)'
+        })
+      }, String(this.state.err.message || this.state.err)));
+    }
+  }], [{
+    key: "getDerivedStateFromError",
+    value: function getDerivedStateFromError(err) {
+      return {
+        err: err
+      };
+    }
+  }]);
+}(React.Component);
+function Block(_ref2) {
+  var n = _ref2.n,
+    title = _ref2.title,
+    sub = _ref2.sub,
+    children = _ref2.children,
+    _ref2$frame = _ref2.frame,
+    frame = _ref2$frame === void 0 ? false : _ref2$frame;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    style: lbl
+  }, String(n).padStart(2, '0'), " \xB7 ", title), sub && /*#__PURE__*/React.createElement("p", {
+    style: note
+  }, sub)), /*#__PURE__*/React.createElement("div", {
+    style: frame ? {
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: 24
+    } : undefined
+  }, children));
+}
+/* 1 — the component alone, at real size, on the product background. Nothing else in frame. */
+function Specimen(_ref3) {
+  var children = _ref3.children,
+    _ref3$width = _ref3.width,
+    width = _ref3$width === void 0 ? 375 : _ref3$width;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: '32px 24px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children));
+}
+/* 2 — the same specimen with dimensions annotated OUTSIDE the frame, per B/05.
+   Side tags are anchored at left:100% / right:100% so they grow AWAY from the specimen. Anchoring them
+   with right:-90 (the first version) pins the tag's right edge 90px outside the frame and lets the box
+   grow leftwards instead — measured, a 245px annotation computed left:156px and laid 155px of itself
+   across a 311px specimen, over the legend's own value column. Any annotation wider than the gutter
+   did it; this one was just long enough to be seen. Tags wrap inside a fixed gutter width rather than
+   nowrapping, so length cannot push them anywhere. */
+var GUTTER = 128;
+function Anatomy(_ref4) {
+  var children = _ref4.children,
+    _ref4$width = _ref4.width,
+    width = _ref4$width === void 0 ? 343 : _ref4$width,
+    top = _ref4.top,
+    bottom = _ref4.bottom,
+    left = _ref4.left,
+    right = _ref4.right;
+  var tick = {
+    position: 'absolute',
+    background: 'var(--color-bronze)',
+    opacity: 0.5
+  };
+  var tag = {
+    position: 'absolute',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    lineHeight: '14px',
+    color: 'var(--color-bronze-deep)'
+  };
+  var side = _objectSpread(_objectSpread({}, tag), {}, {
+    width: GUTTER - 24,
+    textWrap: 'pretty'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: "44px ".concat(GUTTER, "px 40px")
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children, top && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      top: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      bottom: '100%',
+      marginBottom: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, top)), bottom && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      bottom: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      top: '100%',
+      marginTop: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, bottom)), left && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      left: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      right: '100%',
+      marginRight: 22,
+      top: '50%',
+      transform: 'translateY(-50%)',
+      textAlign: 'right'
+    })
+  }, left)), right && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      right: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      left: '100%',
+      marginLeft: 22,
+      top: '50%',
+      transform: 'translateY(-50%)'
+    })
+  }, right))));
+}
+/* 3 / 4 — labelled grid; States takes only the states that genuinely exist. */
+function Grid(_ref5) {
+  var items = _ref5.items,
+    _ref5$cols = _ref5.cols,
+    cols = _ref5$cols === void 0 ? 2 : _ref5$cols,
+    itemWidth = _ref5.itemWidth;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: "repeat(".concat(cols, ", minmax(0, 1fr))"),
+      gap: 20
+    }
+  }, items.map(function (it) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: it.label,
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)',
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: lbl
+    }, it.label), /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: itemWidth,
+        maxWidth: '100%'
+      }
+    }, it.node), it.note && /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11
+      })
+    }, it.note));
+  }));
+}
+/* 5 — inside a 375pt thread fragment: real width, real neighbours. Catches anything that only works alone. */
+function Thread(_ref6) {
+  var children = _ref6.children,
+    before = _ref6.before,
+    after = _ref6.after,
+    dock = _ref6.dock;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: 375,
+      borderRadius: 24,
+      background: 'var(--color-canvas)',
+      boxShadow: '0 0 0 1px var(--ring-frame)',
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12,
+      padding: '20px 16px 16px'
+    }
+  }, before, children, after), dock && /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--color-line-soft)',
+      padding: '8px 16px 12px'
+    }
+  }, dock)));
+}
+/* 6 — every token the component consumes, resolved against the live stylesheet. A name that does not
+   resolve renders as MISSING, which is the page failing loudly instead of quietly. */
+function Tokens(_ref7) {
+  var names = _ref7.names;
+  var _useState = useState({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    vals = _useState2[0],
+    setVals = _useState2[1];
+  useEffect(function () {
+    var cs = getComputedStyle(document.documentElement);
+    var out = {};
+    names.forEach(function (n) {
+      out[n] = cs.getPropertyValue(n).trim();
+    });
+    setVals(out);
+  }, [names.join()]);
+  var isColor = function isColor(v) {
+    return /^(#|rgb|hsl)/.test(v);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+      gap: '8px 20px'
+    }
+  }, names.map(function (n) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: n,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        flexShrink: 0,
+        width: 14,
+        height: 14,
+        borderRadius: 4,
+        background: isColor(vals[n]) ? vals[n] : 'transparent',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)'
+      }
+    }), /*#__PURE__*/React.createElement("code", {
+      style: {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11,
+        color: 'var(--color-ink)',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }
+    }, n), /*#__PURE__*/React.createElement("span", {
+      style: {
+        marginLeft: 'auto',
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: 10.5,
+        color: vals[n] ? 'var(--color-muted)' : 'var(--color-status-over-fg)',
+        whiteSpace: 'nowrap'
+      }
+    }, vals[n] || 'MISSING'));
+  }));
+}
+/* 7 — the .d.ts, printed. Fetched, never retyped, so the page cannot drift from the contract. */
+function Props(_ref8) {
+  var src = _ref8.src;
+  var _useState3 = useState('loading…'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    text = _useState4[0],
+    setText = _useState4[1];
+  useEffect(function () {
+    fetch(src).then(function (r) {
+      return r.ok ? r.text() : Promise.reject(r.status);
+    }).then(setText)["catch"](function (e) {
+      return setText("could not read ".concat(src, " (").concat(e, ")"));
+    });
+  }, [src]);
+  return /*#__PURE__*/React.createElement("pre", {
+    style: {
+      margin: 0,
+      padding: 16,
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      fontFamily: 'ui-monospace, monospace',
+      fontSize: 11.5,
+      lineHeight: '17px',
+      color: 'var(--color-ink-soft)',
+      overflowX: 'auto',
+      whiteSpace: 'pre-wrap'
+    }
+  }, text);
+}
+/* 8 — one pair, the sharpest one. A page of eight don'ts teaches nothing. */
+function DoDont(_ref9) {
+  var doNode = _ref9.doNode,
+    doCaption = _ref9.doCaption,
+    dontNode = _ref9.dontNode,
+    dontCaption = _ref9.dontCaption;
+  var cell = function cell(ok, caption, node) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: "inset 0 0 0 1px ".concat(ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'),
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: 0,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        fontFamily: FONT,
+        fontWeight: 700,
+        fontSize: 11,
+        color: ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'
+      }
+    }, ok ? 'Do' : "Don't"), /*#__PURE__*/React.createElement("div", null, node), /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11.5
+      })
+    }, caption));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 20
+    }
+  }, cell(true, doCaption, doNode), cell(false, dontCaption, dontNode));
+}
+/* 9 — the motion rows that apply, each with what it does under reduced motion. */
+function Motion(_ref0) {
+  var rows = _ref0.rows;
+  var th = {
+    textAlign: 'left',
+    padding: '8px 12px',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: 'var(--color-muted)',
+    borderBottom: '1px solid var(--color-line)'
+  };
+  var td = {
+    padding: '9px 12px',
+    fontFamily: FONT,
+    fontWeight: 500,
+    fontSize: 11.5,
+    lineHeight: '16px',
+    color: 'var(--color-ink)',
+    borderBottom: '0.5px solid var(--color-line-soft)',
+    verticalAlign: 'top'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      width: '100%',
+      borderCollapse: 'collapse'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Motion"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Property"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Duration"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Under reduced motion"))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.name
+    }, /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.name), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11
+      })
+    }, r.property), /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.duration), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        color: 'var(--color-muted)'
+      })
+    }, r.reduced));
+  }))));
+}
+/* Pages mount after d3-scale / d3-shape land, so a chart never renders its fallback maths here. */
+function mountPage(App) {
+  var go = function go() {
+    return ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+  };
+  if (window.d3 && window.d3.scaleLinear) go();else {
+    var done = false;
+    var once = function once() {
+      if (!done) {
+        done = true;
+        go();
+      }
+    };
+    window.addEventListener('d3ready', once);
+    setTimeout(once, 2500);
+  }
+}
+Object.assign(window, {
+  PageShell: PageShell,
+  PageBoundary: PageBoundary,
+  Block: Block,
+  Specimen: Specimen,
+  Anatomy: Anatomy,
+  Grid: Grid,
+  Thread: Thread,
+  Tokens: Tokens,
+  Props: Props,
+  DoDont: DoDont,
+  Motion: Motion,
+  mountPage: mountPage,
+  pageLbl: lbl,
+  pageNote: note
+});</script>
+<script>"use strict";
+
+var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
+  SentinelTurn = _window$SentinelDesig.SentinelTurn,
+  ChipRow = _window$SentinelDesig.ChipRow,
+  AnswerChip = _window$SentinelDesig.AnswerChip,
+  AllocationCard = _window$SentinelDesig.AllocationCard,
+  DarkButton = _window$SentinelDesig.DarkButton,
+  Surface = _window$SentinelDesig.Surface,
+  StepTrace = _window$SentinelDesig.StepTrace,
+  ConstraintCallout = _window$SentinelDesig.ConstraintCallout;
+var TOK = ['--stack', '--space-12', '--space-10', '--dur-enter', '--ease', '--text-14', '--leading-20', '--color-ink-soft', '--text-11', '--color-muted'];
+var ALLOC = [{
+  label: 'Equity',
+  value: 71,
+  tone: 'bronze'
+}, {
+  label: 'Debt',
+  value: 22,
+  tone: 'sand'
+}, {
+  label: 'Cash',
+  value: 7,
+  tone: 'line'
+}];
+var PROV = 'As of 30 Sep · from his September statement · his 18 holdings are mapped to categories';
+
+/* A ruler between two parts, so the page states the gap it is claiming rather than asking you to
+   trust the prose. */
+var Gap = function Gap(_ref) {
+  var px = _ref.px,
+    what = _ref.what;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'var(--space-8)',
+      margin: 'var(--space-4) 0'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      height: px,
+      width: 28,
+      background: 'var(--color-selected)',
+      boxShadow: '0 0 0 var(--border-1) var(--color-bronze)'
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-muted)',
+      fontVariantNumeric: 'tabular-nums'
+    }
+  }, px, "px \xB7 ", what));
+};
+function App() {
+  return /*#__PURE__*/React.createElement(PageShell, {
+    name: "SentinelTurn",
+    group: "Chat",
+    status: "shipped",
+    requires: ['SentinelTurn', 'SentinelBlock', 'SentinelText', 'SentinelThinking', 'Provenance', 'ChipRow', 'AnswerChip'],
+    summary: "Thirteen turns were hand-built across nine screen modules, and between their parts sat 35 spacer divs. Measured 20 Sep 2026, the values spell a grammar the screens were already following without anyone writing it down: a sentence after a sentence is 10, anything after something that is not a sentence is 12, provenance is 10. This component draws that grammar, so the gap is decided once \u2014 and a fourteenth turn cannot quietly introduce a fifth value for 'the next sentence'. It adds no visual decision."
+  }, /*#__PURE__*/React.createElement(Block, {
+    n: 1,
+    title: "Specimen",
+    sub: "The drift answer, as Journey B draws it: one sentence, the allocation, where the figures came from, then the chips and the move."
+  }, /*#__PURE__*/React.createElement(Specimen, {
+    width: 375
+  }, /*#__PURE__*/React.createElement(SentinelTurn, {
+    say: "Equity is 71% of Mr Sharma's portfolio. His mandate says 60%, and small cap alone is 31% against a 25% ceiling.",
+    body: /*#__PURE__*/React.createElement(AllocationCard, {
+      segments: ALLOC
+    }),
+    provenance: PROV,
+    chips: /*#__PURE__*/React.createElement(ChipRow, null, /*#__PURE__*/React.createElement(AnswerChip, {
+      label: "Why did it move?",
+      variant: "tertiary",
+      onClick: function onClick() {}
+    }), /*#__PURE__*/React.createElement(AnswerChip, {
+      label: "Show the 18 holdings",
+      onClick: function onClick() {}
+    })),
+    actions: /*#__PURE__*/React.createElement(DarkButton, {
+      full: true,
+      arrow: true,
+      label: "Rebalance to his mandate",
+      onClick: function onClick() {}
+    })
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 2,
+    title: "Anatomy",
+    sub: "Five gaps, and not one of them is new. Each is the value the repository already used most often for that pair."
+  }, /*#__PURE__*/React.createElement(Anatomy, {
+    width: 343,
+    top: "\u2726 Sentinel \u2014 once per turn, dropped by `continued`",
+    left: "say \xB7 body \xB7 then \xB7 tail \xB7 provenance, in that order",
+    right: "chips and actions sit BELOW the block, at --stack",
+    bottom: "the whole turn rises together: ds-rise, --dur-enter"
+  }, /*#__PURE__*/React.createElement(SentinelTurn, {
+    say: ['Two moves.', 'Together they take equity from 71% to 58%.'],
+    provenance: PROV
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(Gap, {
+    px: 10,
+    what: "a sentence after a sentence \u2014 5 of the 6 hand-built cases"
+  }), /*#__PURE__*/React.createElement(Gap, {
+    px: 12,
+    what: "the body after the lead sentence \u2014 7 of 8"
+  }), /*#__PURE__*/React.createElement(Gap, {
+    px: 12,
+    what: "a sentence after the body \u2014 5 of 5, unanimous"
+  }), /*#__PURE__*/React.createElement(Gap, {
+    px: 10,
+    what: "provenance \u2014 InfoCard.jsx:119 and OverlapView.jsx:201 both"
+  }), /*#__PURE__*/React.createElement(Gap, {
+    px: 12,
+    what: "--stack, between the block, the chips and the actions \u2014 all 8 turn wrappers"
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "The four shapes a turn takes",
+    sub: "Thirteen hand-built turns, and every one of them is one of these."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 2,
+    itemWidth: 343,
+    items: [{
+      label: 'say → chips',
+      node: /*#__PURE__*/React.createElement(SentinelTurn, {
+        say: ['There is nobody on your book yet.', 'Add a client and everything here works on them — the risk profile, the proposal, the review.'],
+        chips: /*#__PURE__*/React.createElement(ChipRow, null, /*#__PURE__*/React.createElement(AnswerChip, {
+          label: "Add a client",
+          variant: "primary",
+          onClick: function onClick() {}
+        }), /*#__PURE__*/React.createElement(AnswerChip, {
+          label: "Import from my ARN",
+          onClick: function onClick() {}
+        }))
+      }),
+      note: 'The refusal, the empty book, the uncosted rebalance. 10 between the sentences, 12 before the chips.'
+    }, {
+      label: 'say → body → provenance',
+      node: /*#__PURE__*/React.createElement(SentinelTurn, {
+        say: "Equity is 71%. His mandate says 60%.",
+        body: /*#__PURE__*/React.createElement(AllocationCard, {
+          segments: ALLOC
+        }),
+        provenance: PROV
+      }),
+      note: 'The answer. The body is the one thing the turn carries.'
+    }, {
+      label: 'bodyFirst → then',
+      node: /*#__PURE__*/React.createElement(SentinelTurn, {
+        bodyFirst: true,
+        body: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement("p", {
+          style: {
+            margin: 0,
+            font: 'var(--type-title-font)',
+            color: 'var(--color-ink)'
+          }
+        }, "Both moves placed"), /*#__PURE__*/React.createElement("p", {
+          style: {
+            margin: 'var(--space-2) 0 0',
+            font: 'var(--type-caption-font)',
+            color: 'var(--color-muted)',
+            fontVariantNumeric: 'tabular-nums'
+          }
+        }, "19 Sep, 3:04 pm \xB7 settles T+2")),
+        then: "The two switches have gone to the exchange under your ARN \u2014 those cannot be pulled back from here."
+      }),
+      note: 'The answer IS the artifact and the sentence reads it out: the risk result, the execution trace, the receipt. 12, not 10 — a sentence after something that is not a sentence takes the part gap.'
+    }, {
+      label: 'thinking',
+      node: /*#__PURE__*/React.createElement(SentinelTurn, {
+        thinking: "Reading his Q3 statement\u2026"
+      }),
+      note: 'And nothing else. Chips and actions are dropped on purpose: offering an answer’s chips beside the dots lets an advisor answer a question Sentinel has not finished asking.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 4,
+    title: "Where the numbers came from",
+    sub: "Counted across screens/*.jsx on 20 Sep 2026. Not a preference \u2014 a vote."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 1,
+    itemWidth: 700,
+    items: [{
+      label: 'a sentence after a sentence → 10',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          font: 'var(--type-row-font)',
+          color: 'var(--color-ink-soft)'
+        }
+      }, "rail.jsx:154 \xB7 rebalance.jsx:86 \xB7 rebalance.jsx:89 \xB7 review.jsx:96 \xB7 who.jsx:92 \xA0\u2014\xA0 ", /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: 'var(--color-status-over-fg)'
+        }
+      }, "proposal.jsx:141 is 8"))
+    }, {
+      label: 'the body after the lead sentence → 12',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          font: 'var(--type-row-font)',
+          color: 'var(--color-ink-soft)'
+        }
+      }, "rail.jsx:155 \xB7 answer.jsx:123 \xB7 moves.jsx:102 \xB7 moves.jsx:219 \xB7 review.jsx:100 \xB7 who.jsx:71 \xB7 refusals.jsx:94 \xA0\u2014\xA0 ", /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: 'var(--color-status-over-fg)'
+        }
+      }, "answer.jsx:127 is 8"))
+    }, {
+      label: 'a sentence after the body → 12 (unanimous)',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          font: 'var(--type-row-font)',
+          color: 'var(--color-ink-soft)'
+        }
+      }, "rail.jsx:173 \xB7 answer.jsx:133 \xB7 moves.jsx:179 \xB7 moves.jsx:215 \xB7 refusals.jsx:97")
+    }, {
+      label: 'the chips → 12 (unanimous)',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          font: 'var(--type-row-font)',
+          color: 'var(--color-ink-soft)'
+        }
+      }, "answer.jsx:136 \xB7 moves.jsx:181 \xB7 moves.jsx:187 \xB7 rebalance.jsx:90 \xB7 review.jsx:101 \xB7 who.jsx:95 \xB7 refusals.jsx:80 \u2014 and the 8 turn wrappers that put chips outside the block spell the same 12px as --stack")
+    }, {
+      label: 'provenance → 10',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          font: 'var(--type-row-font)',
+          color: 'var(--color-ink-soft)'
+        }
+      }, "The two screens disagreed \u2014 rail.jsx:156 is 10, ", /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: 'var(--color-status-over-fg)'
+        }
+      }, "answer.jsx:130 is 8"), " \u2014 so the system\u2019s own placements break the tie: InfoCard.jsx:119 and OverlapView.jsx:201 are both 10.")
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 5,
+    title: "Tokens"
+  }, /*#__PURE__*/React.createElement(Tokens, {
+    names: TOK
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 6,
+    title: "Props"
+  }, /*#__PURE__*/React.createElement(Props, {
+    src: "../components/chat/SentinelTurn.d.ts"
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 7,
+    title: "Do / Don't"
+  }, /*#__PURE__*/React.createElement(DoDont, {
+    doNode: /*#__PURE__*/React.createElement(SentinelTurn, {
+      say: "I can size it and I cannot cost it.",
+      body: /*#__PURE__*/React.createElement(ConstraintCallout, {
+        eyebrow: "What is missing",
+        body: "Folio 9142/28 has no purchase dates on file, so the tax on a switch cannot be worked out."
+      }),
+      chips: /*#__PURE__*/React.createElement(ChipRow, null, /*#__PURE__*/React.createElement(AnswerChip, {
+        label: "Size it anyway",
+        onClick: function onClick() {}
+      }), /*#__PURE__*/React.createElement(AnswerChip, {
+        label: "Ask for the dates",
+        onClick: function onClick() {}
+      }))
+    }),
+    doCaption: "One turn, one thing said, one body, one row of chips. The gaps are the component's, so this turn cannot drift from the twelve beside it.",
+    dontNode: /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack)'
+      }
+    }, /*#__PURE__*/React.createElement(SentinelTurn, {
+      say: "I can size it and I cannot cost it."
+    }), /*#__PURE__*/React.createElement(SentinelTurn, {
+      say: "Folio 9142/28 has no purchase dates on file.",
+      chips: /*#__PURE__*/React.createElement(ChipRow, null, /*#__PURE__*/React.createElement(AnswerChip, {
+        label: "Ask for the dates",
+        onClick: function onClick() {}
+      }))
+    })),
+    dontCaption: "Two turns for ONE thing Sentinel said \u2014 so the name is signed twice, eleven points apart. A turn that continues another passes `continued`. One signature per turn is a standing ruling (18 Sep 2026)."
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 8,
+    title: "Motion"
+  }, /*#__PURE__*/React.createElement(Motion, {
+    rows: [{
+      name: 'Turn entrance',
+      property: 'ds-rise on the whole turn — block, chips and actions rise together',
+      duration: '--dur-enter, --ease',
+      reduced: 'Opacity only; no travel.'
+    }, {
+      name: 'Each sentence',
+      property: 'ds-fade, owned by SentinelText',
+      duration: '300ms',
+      reduced: 'Opacity only.'
+    }, {
+      name: 'Waiting',
+      property: 'SentinelThinking — shimmer on the label, staggered dot-pulse',
+      duration: '1200ms, looping',
+      reduced: 'Both hold at full opacity.'
+    }]
+  })));
+}
+mountPage(App);</script></body></html>

@@ -1,0 +1,1192 @@
+<!-- @dsCard group="Screens" viewport="1400x3400" name="Journey rail · Meera's risk profile" subtitle="One question at a time, twelve of them, two interjections and a number that is locked — and the answer you just gave is always editable" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, Dock, HomeIndicator, DetourBanner, scrim, sheet" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Journey rail · Meera's risk profile — Sentinel screens</title><link rel="stylesheet" href="../../styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../../ds_bundle.js"></script>
+<script>window.__screenRequires = ['AnswerChip','AttachmentTurn','ChipRow','Composer','DarkButton','DetourBanner','Dock','ExplainerSheet','FileUpload','HeroNumberCard','HomeIndicator','MessageActions','MoneyComposer','ParseNote','PhoneFrame','ProgressRail','Provenance','QAPair','RejectCallout','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* screens/ own page shell. Deliberately not design-system/pages/page-kit.jsx: that kit is built for
+   component spec pages and links back to 00-Index.html, which does not exist from here.
+
+   What it gives a screen page: a header that states the screen's job, a State frame that puts a real
+   375x812 PhoneFrame under a caption, and two tables — motion with its reduced-motion answer, and
+   provenance for every figure on the screen. Tokens only; no raw colour or type value. */
+/* THE FOUR TURN COMPONENTS THE SCREENS WERE CARRYING THEMSELVES, destructured once here because
+   screen-kit is the one file every screen page loads (20 Sep 2026). `UserTurn`, `AttachmentTurn`,
+   `RefusalTurn` and `StepComposer` were defined inside `screens/` until today and are the system's
+   now — the owner's rule: anything built on a screen that belongs in the design system goes into the
+   design system. Every page compiles into ONE Babel scope, so this is the only place they may be
+   named; a second `const UserTurn` anywhere under screens/ renders nothing at all. */
+var _ref = window.SentinelDesignSystem_0682a2 || {},
+  PhoneFrame = _ref.PhoneFrame;
+/* Named on `window` rather than destructured into a const, for the reason the linter states plainly:
+   every screen file is linted on its own, so a const here reads as unused and a use over there reads
+   as undefined. `window` is what the one Babel scope actually shares, and the adherence config lists
+   these four as screen globals — the same way it lists every other cross-file name. */
+Object.assign(window, {
+  UserTurn: (window.SentinelDesignSystem_0682a2 || {}).UserTurn,
+  AttachmentTurn: (window.SentinelDesignSystem_0682a2 || {}).AttachmentTurn,
+  RefusalTurn: (window.SentinelDesignSystem_0682a2 || {}).RefusalTurn,
+  StepComposer: (window.SentinelDesignSystem_0682a2 || {}).StepComposer
+});
+var FONT = 'var(--font-ui)';
+var muted = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12.5,
+  lineHeight: '18px',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+function ScreenShell(_ref2) {
+  var journey = _ref2.journey,
+    n = _ref2.n,
+    name = _ref2.name,
+    job = _ref2.job,
+    without = _ref2.without,
+    children = _ref2.children;
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = (window.__screenRequires || []).filter(function (c) {
+    return !ns[c];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 1360,
+      margin: '0 auto',
+      padding: '28px 24px 72px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 26
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, journey, " \xB7 ", n), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("a", {
+    href: "../index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "Screens \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)',
+      maxWidth: '70ch'
+    })
+  }, job), without && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '70ch'
+    })
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      fontWeight: 600,
+      color: 'var(--color-ink-soft)'
+    }
+  }, "Without this screen"), " the advisor ", without)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-12)',
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This screen needs ", missing.join(', '), ". Run ", /*#__PURE__*/React.createElement("code", null, "npm run build:bundle"), " and reload \u2014 the screen is not broken, the build is behind it.")) : children);
+}
+function Section(_ref3) {
+  var title = _ref3.title,
+    sub = _ref3.sub,
+    children = _ref3.children;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4,
+      borderBottom: '1px solid var(--color-line)',
+      paddingBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 15,
+      lineHeight: '20px',
+      color: 'var(--color-ink)'
+    }
+  }, title), sub && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '78ch'
+    })
+  }, sub)), children);
+}
+
+/* One state: the caption says which state, the note says why it looks like that. The phone is the
+   real component tree at the real 375x812, never a picture of one. */
+function State(_ref4) {
+  var label = _ref4.label,
+    _ref4$tone = _ref4.tone,
+    tone = _ref4$tone === void 0 ? 'ok' : _ref4$tone,
+    note = _ref4.note,
+    children = _ref4.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8,
+      width: 375
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 'var(--radius-full)',
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, label)), /*#__PURE__*/React.createElement(PhoneFrame, null, children), note && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      width: 375
+    })
+  }, note));
+}
+function StateRow(_ref5) {
+  var children = _ref5.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 28,
+      alignItems: 'flex-start'
+    }
+  }, children);
+}
+function Note(_ref6) {
+  var title = _ref6.title,
+    children = _ref6.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-16)',
+      background: 'var(--color-bubble)',
+      padding: 14,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 5,
+      maxWidth: '82ch'
+    }
+  }, title && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, title), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, children));
+}
+function Table(_ref7) {
+  var head = _ref7.head,
+    rows = _ref7.rows;
+  var cell = {
+    fontFamily: FONT,
+    fontSize: 12,
+    lineHeight: '17px',
+    padding: '9px 12px',
+    verticalAlign: 'top',
+    textAlign: 'left'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      borderCollapse: 'collapse',
+      width: '100%',
+      minWidth: 640,
+      background: 'var(--color-surface)',
+      borderRadius: 'var(--radius-12)'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, head.map(function (h) {
+    return /*#__PURE__*/React.createElement("th", {
+      key: h,
+      style: _objectSpread(_objectSpread({}, cell), {}, {
+        fontWeight: 700,
+        fontSize: 10.5,
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+        color: 'var(--color-muted)',
+        borderBottom: '1px solid var(--color-line)'
+      })
+    }, h);
+  }))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r, i) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, r.map(function (c, j) {
+      return /*#__PURE__*/React.createElement("td", {
+        key: j,
+        style: _objectSpread(_objectSpread({}, cell), {}, {
+          fontWeight: j === 0 ? 600 : 400,
+          color: j === 0 ? 'var(--color-ink)' : 'var(--color-ink-soft)',
+          borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none'
+        })
+      }, c);
+    }));
+  }))));
+}
+
+/* THE INERT COMPOSER A FROZEN SPECIMEN DRAWS — written once (20 Sep 2026).
+
+   `const Ask = …` was declared TEN times across ten screen pages, seven of them byte-for-byte:
+   05-decide:19 · funds:21 · rebalance:20 · proposal:19 · review:19 · ledger:22 · going-back:24, with
+   03-thread-answer:23 differing by a placeholder and risk-profile:20 / refusals:20 branching to
+   MoneyComposer. Ten copies of one decision, and the decision is rule 3 — every screen has a
+   composer — drawn rather than wired, because a frozen specimen has nothing to send to.
+
+   IT BELONGS HERE AND NOT IN design-system/. The system already ships `Composer`; a "pretend
+   composer" beside it would be a one-off component in a system that has a rule against those. This
+   is the screens' own shared layer, which exists for exactly this.
+
+   Read through a namespaced const, never destructured: every .jsx and inline script a page loads
+   compiles into ONE Babel scope, and ten of these pages already declare `const { Composer, … }` at
+   their top level. A second declaration of that name here renders the page blank. */
+var KIT_DS = window.SentinelDesignSystem_0682a2 || {};
+function FrozenAsk(_ref8) {
+  var _ref8$about = _ref8.about,
+    about = _ref8$about === void 0 ? false : _ref8$about,
+    _ref8$money = _ref8.money,
+    money = _ref8$money === void 0 ? false : _ref8$money,
+    placeholder = _ref8.placeholder,
+    onAttach = _ref8.onAttach;
+  /* Money is a different control, not a different placeholder: MoneyComposer owns its own value and
+     hands back a formatted rupee string, which is why it takes no value/onChange even when wired. */
+  if (money) return /*#__PURE__*/React.createElement(KIT_DS.MoneyComposer, {
+    onSend: function onSend() {},
+    placeholder: "or type the amount"
+  });
+  return /*#__PURE__*/React.createElement(KIT_DS.Composer, {
+    value: "",
+    onChange: function onChange() {},
+    onSend: function onSend() {},
+    onAttach: onAttach,
+    placeholder: placeholder || (about ? 'Ask about this' : 'Ask Sentinel')
+  });
+}
+var MotionTable = function MotionTable(_ref9) {
+  var rows = _ref9.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Motion', 'Property', 'Duration', 'Under reduced motion'],
+    rows: rows
+  });
+};
+var ProvenanceTable = function ProvenanceTable(_ref0) {
+  var rows = _ref0.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Figure on screen', 'Where it comes from', 'Shown to the advisor as'],
+    rows: rows
+  });
+};
+function mountScreen(node) {
+  var el = document.getElementById('root');
+  if (el) ReactDOM.createRoot(el).render(node);
+}
+Object.assign(window, {
+  ScreenShell: ScreenShell,
+  Section: Section,
+  State: State,
+  StateRow: StateRow,
+  Note: Note,
+  Table: Table,
+  MotionTable: MotionTable,
+  ProvenanceTable: ProvenanceTable,
+  FrozenAsk: FrozenAsk,
+  mountScreen: mountScreen,
+  screenMuted: muted
+});</script>
+<script>"use strict";
+
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/* The thread shell, shared by every screen of the journey that is a conversation — screens 2 to 5 and
+   7. One file so the five do not drift into five slightly different threads.
+
+   No top-level destructuring on purpose. Every .jsx a page loads compiles into ONE scope, so
+   `const { Dock } = …` here and the same line in home.jsx would be a redeclaration and the page would
+   render nothing. A single uniquely-named const, read through in JSX, cannot collide. */
+var THREAD_DS = window.SentinelDesignSystem_0682a2;
+
+/* The thread carries the scroll — never a card inside it, and never a second scroller. */
+/* scrollRef: the live prototype owns the two thread scrolls ArtifactCard's contract assigns to the
+   caller — header under the app bar on expand, back to the card on collapse — and needs the scroller. */
+/* `banner` is pinned BETWEEN the app bar and the thread — the one slot in this shell that does not
+   scroll, and the only thing that belongs in it is a state the whole thread is in: a journey paused
+   behind the conversation (`DetourBanner`). It is deliberately not a place for what a message offered;
+   that is inside the turn (contradiction 60). */
+/* The shell itself is ScreenScaffold's now (20 Sep 2026) — the nineteen lines that used to be here
+   were the same nineteen in rail.jsx, and the rail's copy had lost the scroll rule below. What stays
+   here is what is the THREAD's rather than the phone's: the default clock, and the fact that the
+   thread passes no chips to the Dock (`chips` and `cta` are deprecated, contradiction 60). */
+function Thread(_ref) {
+  var _ref$time = _ref.time,
+    time = _ref$time === void 0 ? '3:04' : _ref$time,
+    children = _ref.children,
+    composer = _ref.composer,
+    banner = _ref.banner,
+    onMenu = _ref.onMenu,
+    onNew = _ref.onNew,
+    scrollRef = _ref.scrollRef,
+    _ref$revision = _ref.revision,
+    revision = _ref$revision === void 0 ? 0 : _ref$revision,
+    _ref$anchor = _ref.anchor,
+    anchor = _ref$anchor === void 0 ? 'newest' : _ref$anchor;
+  return /*#__PURE__*/React.createElement(THREAD_DS.ScreenScaffold, {
+    time: time,
+    banner: banner,
+    onMenu: onMenu,
+    onNew: onNew,
+    scrollRef: scrollRef,
+    revision: revision,
+    anchor: anchor,
+    composer: composer
+  }, children);
+}
+
+/* THE ADVISOR'S LAST PROMPT IS ALWAYS EDITABLE — and it is one component so it cannot be forgotten.
+
+   The owner, 19 Sep: "jaise user jo last apna prompt edit karne ka option ho — wo missing hai,
+   consistency nei hai." It was built on the answer screen and nowhere else, because every page rendered
+   its own `UserBubble` and each one had to remember. A rule that every page has to remember is a rule
+   that half the pages break, so the rule is a component now: `UserTurn` is the only way a screen renders
+   what the advisor said.
+
+   WHERE IT IS VALID, from the advisor's side:
+     · A finished turn — yes. Edit replaces what came after it, and `costNote` says so before it happens.
+     · A turn still running — no, and not silently: Stop is right there in the send slot, and it is the
+       honest control for "I did not mean that". Edit returns the moment the turn finishes.
+     · A journey ANSWER — yes, and it costs more: MessageActions' own contract says edit there "must warn
+       what it costs (Editing this reopens question 7. The four answers after it will be asked again.)".
+       Same component, same gesture, a bigger `costNote`.
+     · A file the advisor attached — no. A file is not a sentence to re-word; it is removed and replaced,
+       which is what FileUpload's own Remove is for.
+   Home has no prompt at all, so it has no UserTurn — that is not an exception, there is simply nothing
+   there to edit yet. */
+/* `UserTurn` AND `AttachmentTurn` WERE HERE AND ARE NOW THE SYSTEM'S (20 Sep 2026, the owner: anything
+   built on a screen that belongs in the design system goes into the design system). They are
+   `UserTurn` and `AttachmentTurn` — neither read the book, neither was journey-specific, and every
+   journey in the product used the same twelve and ten lines of them. What stays here is what is
+   genuinely this thread's: the attachment STATE, and this product's own parse stages. */
+/* THE PAPERCLIP IS REAL ON EVERY SCREEN, AND WHAT IT PRODUCES IS HONEST.
+
+   The owner, 19 Sep: "attachment demo nei real hona chahiye har screen par, and output and prompt ke
+   saath." Three of the four thread screens passed `onAttach={() => {}}` — a picker that opens and drops
+   the file on the floor, which is a demo wearing a control's clothes. `useAttachment` gives every screen
+   the same real one in one line.
+
+   THE HONEST PART. The designed specimen (Sharma's Q3 statement) has a designed output: three stages and
+   "14 pages · 18 holdings". A file the VIEWER picks has no such output — this is a rendered specimen, not
+   the product, and nothing here parses a PDF. Printing "18 holdings" over someone's own file would be a
+   fabricated figure, which is the one thing these screens never do. So a picked file shows its REAL name
+   and size, its stages sit pending, and a ParseNote says plainly that the prototype does not read it.
+   The control is real; the claim is not made. */
+function useAttachment() {
+  var _React$useState = React.useState(null),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    file = _React$useState2[0],
+    setFile = _React$useState2[1];
+  return {
+    file: file,
+    clear: function clear() {
+      return setFile(null);
+    },
+    onAttach: function onAttach(f) {
+      return setFile({
+        name: f.name,
+        meta: "".concat(Math.max(1, Math.round(f.size / 1024)), " KB \xB7 just now"),
+        picked: true
+      });
+    }
+  };
+}
+var PARSE_DONE = [{
+  label: 'Read the file',
+  state: 'done',
+  meta: '14 pages'
+}, {
+  label: 'Found the holdings',
+  state: 'done',
+  meta: '18 funds'
+}, {
+  label: 'Checked them against his mandate',
+  state: 'done',
+  meta: '3 outside it'
+}];
+var PARSE_PENDING = PARSE_DONE.map(function (x) {
+  return {
+    label: x.label,
+    state: 'pending'
+  };
+});
+
+/* A file is a message from the ADVISOR: it lands at the end of the thread, on their side, capped like
+   their bubble. The caption above it is theirs too — and it is NOT editable, because a file is not a
+   sentence to re-word; it is removed and replaced, which is FileUpload's own Remove. */
+Object.assign(window, {
+  Thread: Thread,
+  useAttachment: useAttachment,
+  PARSE_DONE: PARSE_DONE,
+  PARSE_PENDING: PARSE_PENDING
+});</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* global AttachmentTurn, useAttachment -- thread.jsx declares both in the one Babel scope every page
+   loads it into, before this file. The lint cannot see across files; the preview gate can, and fails a
+   page that loads this one without thread.jsx. */
+/* Journey A — Meera's risk profile. The rail: one question at a time, twelve of them, two interjections
+   and a locked number at the end. Shared by risk-profile.html and any prototype that runs it.
+
+   The steps, their wording and their chips are the product's own
+   (docs/screens-source/src/journeys.tsx:67-204). Nothing here is written for a specimen.
+
+   No top-level destructuring: every .jsx a page loads compiles into ONE scope. */
+var RAIL_DS = window.SentinelDesignSystem_0682a2;
+var c = function c(label, tone, extra) {
+  return _objectSpread({
+    label: label,
+    tone: tone
+  }, extra);
+};
+var RAIL_STEPS = [{
+  name: 'Intro',
+  "short": "Start Meera's risk profile",
+  provenance: 'As of 15 Sep · from her account record and September statement',
+  sentinel: ['Meera Nair, 38, Kochi. Your client since 2019. ₹18.4 L across 43 funds.', 'Her risk profile was never completed, so nothing after it can be checked against anything. Let us fix that first — twelve short questions, mostly one tap each.'],
+  chips: [c("Let's go", 'primary'), c('Why twelve questions?', 'tertiary', {
+    sheet: {
+      title: 'Why twelve questions?',
+      body: ['Twelve short questions — mostly one tap each — are the minimum needed to score her finances, her temperament and her goal.', 'With a real risk number, everything after it (the proposal, the drift, the rebalance) can be checked against something.']
+    }
+  }), c('Skip to the result', 'muted', {
+    "goto": 15
+  })]
+}, {
+  name: 'Q1 Age',
+  "short": 'How old is Meera?',
+  progress: [1, 12],
+  sentinel: 'How old is Meera?',
+  chips: [c('Use her KYC age — 38', 'smart'), c('Type it instead')],
+  composer: 'or type an age'
+}, {
+  name: 'Q2 Income',
+  "short": 'How steady is her income?',
+  progress: [2, 12],
+  sentinel: 'How steady is her income?',
+  chips: [c('Fixed salary'), c('Salary plus bonus'), c('Own business'), c('Freelance, varies'), c('Rent or pension')],
+  composer: 'or type your answer'
+}, {
+  name: 'Q3 Earns',
+  "short": 'What does she earn a month?',
+  progress: [3, 12],
+  sentinel: 'What does she earn a month?',
+  chips: [c('From her last ITR — ₹1,80,000', 'smart'), c('₹1,50,000'), c('₹2,00,000')],
+  money: true
+}, {
+  name: 'Q4 Spend',
+  "short": 'And what does she spend a month?',
+  progress: [4, 12],
+  sentinel: 'And what does she spend a month?',
+  chips: [c('₹75,000'), c('₹95,000'), c('₹1,20,000')],
+  money: true
+}, {
+  name: 'Q5 Emergency',
+  "short": 'How much for emergencies?',
+  progress: [5, 12],
+  sentinel: 'How much has she kept aside for emergencies?',
+  chips: [c('₹3,00,000'), c('₹6,00,000'), c('₹10,00,000')],
+  money: true
+}, {
+  name: 'Reflect 1',
+  progress: [5, 12],
+  interjection: true,
+  sentinel: 'That is about six months of her spending. Comfortable — it means a fall in the market will not force her to sell.',
+  chips: [c('Carry on', 'primary')]
+}, {
+  name: 'Q6 Dependents',
+  "short": 'How many people depend on this?',
+  progress: [6, 12],
+  sentinel: 'How many people depend on this income?',
+  chips: [c('Nobody'), c('1'), c('2'), c('3'), c('4 or more')]
+}, {
+  name: 'Q7 Horizon',
+  "short": 'When will she need this money?',
+  progress: [7, 12],
+  sentinel: 'When will she need this money?',
+  chips: [c('Within a year'), c('1 to 3 years'), c('3 to 7 years'), c('7 to 15 years'), c('More than 15 years')]
+}, {
+  name: 'Q8 Goal',
+  "short": 'What is she saving towards?',
+  progress: [8, 12],
+  sentinel: 'What is she saving towards, in rupees?',
+  chips: [c('₹50 lakh'), c('₹1 crore'), c('₹2 crore'), c("She isn't sure yet", 'muted')],
+  money: true
+}, {
+  name: 'Q9 Behaviour',
+  "short": 'The last 20% fall — what did she do?',
+  progress: [9, 12],
+  sentinel: 'The last time markets fell 20% or more — what did she actually do?',
+  chips: [c('Invested more'), c('Stayed put'), c('Sold some'), c('Sold everything')]
+}, {
+  name: 'Reflect 2',
+  progress: [9, 12],
+  interjection: true,
+  sentinel: 'Good — that is the most useful answer in the whole set. Saying you can handle a fall and living through one are different things.',
+  chips: [c('Carry on', 'primary')]
+}, {
+  name: 'Q10 Drawdown',
+  "short": 'How big a fall could she sit through?',
+  progress: [10, 12],
+  sentinel: 'How big a fall could she sit through without calling you?',
+  chips: [c('Almost none'), c('About 10%'), c('About 20%'), c('About 30%'), c('More than that')]
+}, {
+  name: 'Q11 Objective',
+  "short": 'What is this money asked to do?',
+  progress: [11, 12],
+  sentinel: 'What is she asking this money to do?',
+  chips: [c('Protect it'), c('Give steady income'), c('Grow steadily'), c('Grow it properly'), c('Push for the most')]
+}, {
+  name: 'Q12 Knowledge',
+  "short": 'How well does she understand it?',
+  progress: [12, 12],
+  sentinel: 'How well does she understand what she holds?',
+  chips: [c('New to this'), c('Knows the basics'), c('Fairly experienced'), c('Works in finance')]
+}, {
+  name: 'Result',
+  result: true,
+  chips: [c('How is 54 worked out?', 'tertiary', {
+    sheet: {
+      title: 'How is 54 worked out?',
+      body: ['Three scores: what her finances can absorb (71), what she can sit through calmly (54), and what her ₹2 crore goal needs (62).', 'We go with the lowest of the three. Her money could carry more risk than she could, so 54 is what we build against.']
+    }
+  }), c('Share with Meera on WhatsApp', 'outline', {
+    external: true
+  })],
+  cta: 'Build her a portfolio'
+}];
+var RAIL_TOTAL = 12;
+var RISK_RESULT = {
+  title: "Meera's risk number",
+  meta: 'Locked · 15 Sep 2026',
+  value: 54,
+  badge: 'Moderate',
+  copy: 'We look at three things and go with the lowest of them. Her money can take more risk than she can.',
+  rows: [{
+    label: 'What her finances can absorb',
+    value: 71
+  }, {
+    label: 'What she can sit through calmly',
+    value: 54,
+    binding: true
+  }, {
+    label: 'What her ₹2 crore goal needs',
+    value: 62
+  }],
+  trailing: 'She is a 54, Moderate. Her finances could carry more, but she would not sleep through it — so 54 is what we build against.'
+};
+
+/* THE RAIL SHELL. Same spine as the thread — backdrop, status, app bar, one scroller, the Dock with the
+   composer — plus the rail itself pinned under the app bar, which is the one thing here that does not
+   scroll because it is a state the whole surface is in. `dim` is the detour state: ProgressRail's own
+   prop, which dims the rail and NOT its label.
+
+   RULE 3 HOLDS HERE TOO: the composer is present on every question. An advisor can always type instead
+   of tapping, and on a money question it is the MoneyComposer. */
+/* The shell is ScreenScaffold's now (20 Sep 2026). This file's copy was the thread's nineteen lines
+   with two additions — the progress rail and a hardcoded clock — and ONE SUBTRACTION that was a bug:
+   `e.scrollTop = e.scrollHeight`, the scroll-to-the-bottom that thread.jsx:17-45 exists to reject.
+   Looked at on screens/journey-e/rebalance: the rail opened on the middle of a list of targets with
+   Sentinel's question scrolled off the top. What stays here is what is the RAIL's rather than the
+   phone's: the morning clock this journey is set at, and `n`/`total`/`dim` as the rail's own words. */
+function Rail(_ref) {
+  var n = _ref.n,
+    _ref$total = _ref.total,
+    total = _ref$total === void 0 ? RAIL_TOTAL : _ref$total,
+    dim = _ref.dim,
+    banner = _ref.banner,
+    children = _ref.children,
+    composer = _ref.composer,
+    onMenu = _ref.onMenu,
+    onNew = _ref.onNew,
+    scrollRef = _ref.scrollRef,
+    _ref$revision = _ref.revision,
+    revision = _ref$revision === void 0 ? 0 : _ref$revision,
+    _ref$anchor = _ref.anchor,
+    anchor = _ref$anchor === void 0 ? 'newest' : _ref$anchor;
+  return /*#__PURE__*/React.createElement(RAIL_DS.ScreenScaffold, {
+    time: "10:12",
+    banner: banner,
+    onMenu: onMenu,
+    onNew: onNew,
+    progress: n != null ? {
+      n: n,
+      total: total,
+      dim: dim
+    } : undefined,
+    scrollRef: scrollRef,
+    revision: revision,
+    anchor: anchor,
+    composer: composer
+  }, children);
+}
+
+/* WHAT SHE HAS ALREADY ANSWERED. QAPair collapses a question and its answer to one line each, so twelve
+   of them do not bury the one being asked now.
+
+   THE LAST ANSWER IS EDITABLE, and this is the same gesture as editing a prompt in the thread — the
+   owner's rule that a pattern valid from the advisor's side must exist everywhere it is valid. Here it
+   costs more, and MessageActions' own contract says exactly what to say: "Editing this reopens question
+   7. The four answers after it will be asked again." Nothing is discarded until the new answer is given. */
+function AnsweredList(_ref2) {
+  var items = _ref2.items,
+    onEdit = _ref2.onEdit,
+    _ref2$editable = _ref2.editable,
+    editable = _ref2$editable === void 0 ? true : _ref2$editable;
+  if (!items.length) return null;
+  var last = items.length - 1;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, items.map(function (a, i) {
+    return (
+      /*#__PURE__*/
+      /* A plain div rather than a keyed Fragment: the lint reads `React.Fragment` in a file that never
+         imports React (the bundle provides it globally), and a wrapper here costs nothing — the column
+         it sits in already owns the gap. */
+      React.createElement("div", {
+        key: i,
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-6)'
+        }
+      }, /*#__PURE__*/React.createElement(RAIL_DS.QAPair, {
+        question: a.q,
+        answer: a.a
+      }), a.note && /*#__PURE__*/React.createElement(RAIL_DS.ParseNote, {
+        text: a.note
+      }), editable && i === last && onEdit && /*#__PURE__*/React.createElement(RAIL_DS.MessageActions, {
+        role: "user",
+        onAction: function onAction(act) {
+          return act === 'edit' && onEdit(i);
+        }
+      }))
+    );
+  }));
+}
+
+/* The question being asked, and its answers as chips INSIDE the turn — the 18 Sep ruling, applied to the
+   rail rather than left as the one surface still answering from the Dock (contradiction 60). */
+/* `extra` is a slot, not a feature. A step in the risk rail is a question and some chips; a step in the
+   rebalance rail has to lay three sized options side by side before a chip means anything. Rather than
+   teach this shared file about journey E, the caller renders what its own step needs and the rail keeps
+   deciding only where things sit — inside the SentinelBlock, under the sentence, above the chips, so it
+   reads as part of what Sentinel said rather than as a widget parked beside it. */
+function StepTurn(_ref3) {
+  var step = _ref3.step,
+    onChip = _ref3.onChip,
+    thinking = _ref3.thinking,
+    extra = _ref3.extra,
+    _ref3$continued = _ref3.continued,
+    continued = _ref3$continued === void 0 ? false : _ref3$continued;
+  if (!step) return null;
+  var lines = Array.isArray(step.sentinel) ? step.sentinel : [step.sentinel];
+  return /*#__PURE__*/React.createElement(RAIL_DS.SentinelTurn, {
+    continued: continued,
+    thinking: thinking ? 'Reading her account record…' : false,
+    say: lines,
+    body: extra,
+    provenance: step.provenance,
+    chips: step.chips && /*#__PURE__*/React.createElement(RAIL_DS.ChipRow, null, step.chips.map(function (ch) {
+      return /*#__PURE__*/React.createElement(RAIL_DS.AnswerChip, {
+        key: ch.label,
+        label: ch.label,
+        variant: ch.tone || 'outline',
+        onClick: function onClick() {
+          return onChip && onChip(ch);
+        }
+      });
+    }))
+  });
+}
+function RiskResult(_ref4) {
+  var onChip = _ref4.onChip,
+    chips = _ref4.chips,
+    cta = _ref4.cta;
+  return /*#__PURE__*/React.createElement(RAIL_DS.SentinelTurn, {
+    bodyFirst: true,
+    body: /*#__PURE__*/React.createElement(RAIL_DS.HeroNumberCard, RISK_RESULT),
+    then: RISK_RESULT.trailing,
+    chips: chips && /*#__PURE__*/React.createElement(RAIL_DS.ChipRow, null, chips.map(function (ch) {
+      return /*#__PURE__*/React.createElement(RAIL_DS.AnswerChip, {
+        key: ch.label,
+        label: ch.label,
+        variant: ch.tone || 'outline',
+        onClick: function onClick() {
+          return onChip && onChip(ch);
+        }
+      });
+    })),
+    cta: cta ? {
+      label: cta,
+      onClick: function onClick() {}
+    } : undefined
+  });
+}
+
+/* THE WHOLE JOURNEY, RUNNING — lifted out of risk-profile.html when the end-to-end prototype needed it,
+   so the spec page and the prototype run ONE rail rather than two that can drift apart. It carries its
+   own composer, because which composer a step wants is a property of the step (`money`), not of the page.
+   `onMenu` / `onNew` are the prototype's only addition: a rail reached from the thread has to be
+   leavable, and it leaves by the same two doors every other surface uses. */
+/* A REAL COMPOSER, NOT A DRAWING OF ONE (F-45). Every rail step says "or type your answer" and this
+   was `value=""` with a no-op onChange and a no-op onSend — inert on journeys A, D, E and F, four of
+   the six. The same defect was found and fixed on the thread's composer for the prototype and left
+   here. A control that invites typing and drops it is the DEAD PAPERCLIP rule applied to the composer,
+   and the gate only knew to look at the paperclip.
+   The state lives HERE rather than in every caller: what an advisor types into a rail step is an
+   answer to that step, and nothing else on the page needs it. */
+/* `StepComposer` WAS HERE AND IS NOW `StepComposer` IN THE SYSTEM (20 Sep 2026). Which composer a
+   question wants is a property of the STEP, and three journeys were each deciding it again. */
+var SHARE_SHEET = {
+  title: 'Share with Meera',
+  body: ['This build prepares the summary and hands it to your own share sheet — it does not send anything on its own.', 'Nothing leaves Sentinel until you pick a channel and send it there.']
+};
+
+/* STEPS AND THE RESULT ARE ARGUMENTS, not this file's own. The rail is shared: SCREENS-PLAN counts 22
+   steps across it — Risk 16, Proposal 4, Review 1, Rebalance 1 — so a second journey on a second copy of
+   this loop would be two places for "what happens when you edit answer 3" to drift apart. The defaults
+   are the risk journey, so every existing caller is unchanged. */
+/* `lead` — WHAT THE JOURNEY WAS ENTERED WITH (20 Sep 2026). A journey reached from the fund explorer
+   arrives carrying a fund, and a door that drops what you carried through it is not a hand-off. It sits
+   ABOVE the first question rather than inside it, because it is not part of the question: it is
+   Sentinel saying what it already has and what it will do with it, and it stays visible as the advisor
+   answers. The sentence is each journey's own — proposal.jsx, rebalance.jsx and review.jsx write it —
+   because what a carried fund MEANS is different in each and a shared sentence would have to be vague
+   in all three. */
+function LiveRail(_ref5) {
+  var _ref5$steps = _ref5.steps,
+    steps = _ref5$steps === void 0 ? RAIL_STEPS : _ref5$steps,
+    _ref5$total = _ref5.total,
+    total = _ref5$total === void 0 ? RAIL_TOTAL : _ref5$total,
+    result = _ref5.result,
+    stepExtra = _ref5.stepExtra,
+    onAnswer = _ref5.onAnswer,
+    _ref5$attachCaption = _ref5.attachCaption,
+    attachCaption = _ref5$attachCaption === void 0 ? 'Here is her last ITR.' : _ref5$attachCaption,
+    onEvent = _ref5.onEvent,
+    onMenu = _ref5.onMenu,
+    onNew = _ref5.onNew,
+    lead = _ref5.lead;
+  var _React$useState = React.useState(0),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    cursor = _React$useState2[0],
+    setCursor = _React$useState2[1];
+  var _React$useState3 = React.useState([]),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    answered = _React$useState4[0],
+    setAnswered = _React$useState4[1];
+  var _React$useState5 = React.useState(null),
+    _React$useState6 = _slicedToArray(_React$useState5, 2),
+    sheet = _React$useState6[0],
+    setSheet = _React$useState6[1];
+  var _React$useState7 = React.useState(false),
+    _React$useState8 = _slicedToArray(_React$useState7, 2),
+    thinking = _React$useState8[0],
+    setThinking = _React$useState8[1];
+  var att = useAttachment();
+  var step = steps[cursor];
+  var log = function log(what, motion) {
+    return onEvent && onEvent(what, motion);
+  };
+  /* `onAnswer` tells the caller WHICH chip was taken, which the answered list cannot: it stores the
+     label the advisor sees, and a journey that branches on the answer needs the chip. Journey F is the
+     first to branch — its one question picks who the review is for. */
+  var advance = function advance(label, _goto, chip) {
+    /* PAST THE LAST QUESTION THERE IS NO STEP, and a chip in the RESULT turn comes through here too —
+       "Build her a portfolio", "Share with Meera on WhatsApp". `step.short` on an undefined step threw
+       and took the whole prototype down with it: React unmounted, the composer went, and nothing after
+       it worked. Found by driving the prototype end to end on 20 Sep 2026, which is the only thing
+       that could reach a result chip after twelve answers. A result's chip is not an answer to a
+       question, so it records nothing and advances nothing; the caller's `onAnswer` still fires,
+       because that is how a journey learns what was taken. */
+    if (onAnswer) onAnswer(step, chip || {
+      label: label
+    });
+    if (!step) {
+      log("\u201C".concat(label, "\u201D \u2014 the rail is finished, so this is not an answer to anything"), '');
+      return;
+    }
+    setAnswered(function (a) {
+      return [].concat(_toConsumableArray(a), [{
+        q: step["short"],
+        a: label
+      }]);
+    });
+    setThinking(true);
+    var next = _goto != null ? _goto : cursor + 1;
+    log("Answered \u201C".concat(label, "\u201D"), 'SentinelThinking for 520ms, then ds-rise on the next question');
+    setTimeout(function () {
+      setCursor(next);
+      setThinking(false);
+    }, 520);
+  };
+  var onChip = function onChip(ch) {
+    if (ch.sheet) {
+      log('Explainer opens — a detour, the rail dims', 'ds-sheet 300ms; ProgressRail dim to 40%');
+      return setSheet(ch.sheet);
+    }
+    if (ch.external) {
+      log('Share — the OS sheet, not ours', '');
+      return setSheet(SHARE_SHEET);
+    }
+    advance(ch.label, ch["goto"], ch);
+  };
+  /* Edit answer i: the journey reopens THERE and everything after it is asked again. */
+  var editAt = function editAt(i) {
+    log("Edited answer ".concat(i + 1, " \u2014 everything after it is asked again"), 'the list truncates; the rail steps back');
+    setAnswered(function (a) {
+      return a.slice(0, i);
+    });
+    setCursor(steps.findIndex(function (s) {
+      return s["short"] === answered[i].q;
+    }) || 0);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      height: '100%',
+      width: '100%'
+    }
+  }, /*#__PURE__*/React.createElement(Rail, {
+    n: step && step.progress ? step.progress[0] : undefined,
+    total: total,
+    revision: "".concat(cursor, "-").concat(answered.length, "-").concat(!!att.file),
+    onMenu: onMenu,
+    onNew: onNew,
+    composer: /*#__PURE__*/React.createElement(StepComposer, {
+      step: step,
+      onAttach: att.onAttach,
+      onSend: function onSend(t) {
+        log("Typed \u201C".concat(t, "\u201D"), "the same path a chip takes \u2014 typing is never a second-class answer");
+        advance(t);
+      }
+    })
+  }, lead, /*#__PURE__*/React.createElement(AnsweredList, {
+    items: answered,
+    onEdit: editAt
+  }), step && step.result ? result ? result({
+    step: step,
+    onChip: onChip
+  }) : /*#__PURE__*/React.createElement(RiskResult, {
+    chips: step.chips,
+    cta: step.cta,
+    onChip: onChip
+  })
+  /* ONE SIGNATURE ON ARRIVAL. The lead and the first question are one thing Sentinel said —
+     "here is the fund you brought, and here is my first question" — so the question does not
+     sign itself again eleven points below the lead (the 18 Sep ruling). The moment an answer
+     lands, an AnsweredList sits between them and two signatures are correct again, because
+     the advisor has spoken in between. */ : /*#__PURE__*/React.createElement(StepTurn, {
+    step: step,
+    thinking: thinking,
+    onChip: onChip,
+    continued: !!lead && answered.length === 0,
+    extra: stepExtra ? stepExtra({
+      step: step,
+      advance: advance,
+      onChip: onChip
+    }) : undefined
+  }), /*#__PURE__*/React.createElement(AttachmentTurn, {
+    file: att.file,
+    caption: attachCaption,
+    onRemove: att.clear
+  })), /*#__PURE__*/React.createElement(RAIL_DS.ExplainerSheet, {
+    open: !!sheet,
+    title: (sheet || {}).title || '',
+    body: (sheet || {}).body || [],
+    onClose: function onClose() {
+      setSheet(null);
+      log('Explainer closes — the rail comes back to full', 'immediate');
+    }
+  }));
+}
+Object.assign(window, {
+  StepComposer: StepComposer,
+  SHARE_SHEET: SHARE_SHEET,
+  LiveRail: LiveRail,
+  RAIL_STEPS: RAIL_STEPS,
+  RAIL_TOTAL: RAIL_TOTAL,
+  RISK_RESULT: RISK_RESULT,
+  Rail: Rail,
+  AnsweredList: AnsweredList,
+  StepTurn: StepTurn,
+  RiskResult: RiskResult
+});</script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script>/* thread.jsx is loaded for useAttachment / AttachmentTurn — the paperclip is real on every screen, and a
+   journey is a screen. rail.jsx owns the steps and the shell. Only new names are destructured here. */
+const {
+  ExplainerSheet,
+  DetourBanner,
+  RejectCallout,
+  SentinelBlock,
+  SentinelText,
+  AnswerChip,
+  ChipRow
+} = window.SentinelDesignSystem_0682a2;
+const S = name => RAIL_STEPS.find(x => x.name === name);
+const ANSWERED = [{
+  a: "Start Meera's risk profile"
+}, {
+  q: 'How old is Meera?',
+  a: '38',
+  note: 'from her KYC'
+}, {
+  q: 'How steady is her income?',
+  a: 'Salary plus bonus'
+}, {
+  q: 'What does she earn a month?',
+  a: '₹1,80,000',
+  note: 'understood as ₹1,80,000'
+}];
+function Scene({
+  step,
+  answered = ANSWERED,
+  dim,
+  banner,
+  editable = true,
+  after,
+  thinking
+}) {
+  const att = useAttachment();
+  return /*#__PURE__*/React.createElement(Rail, {
+    n: step && step.progress ? step.progress[0] : undefined,
+    dim: dim,
+    banner: banner,
+    revision: !!att.file,
+    composer: /*#__PURE__*/React.createElement(FrozenAsk, {
+      money: step && step.money,
+      placeholder: step && step.composer || 'or type your answer',
+      onAttach: att.onAttach
+    })
+  }, /*#__PURE__*/React.createElement(AnsweredList, {
+    items: answered,
+    editable: editable,
+    onEdit: () => {}
+  }), step && step.result ? after : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(StepTurn, {
+    step: step,
+    thinking: thinking
+  }), after), /*#__PURE__*/React.createElement(AttachmentTurn, {
+    file: att.file,
+    caption: "Here is her last ITR.",
+    onRemove: att.clear
+  }));
+}
+
+/* The whole journey, live: twelve questions, two interjections, the result. Every answer is recorded as a
+   QAPair, the last one is editable, and editing it REOPENS the journey there — the four answers after it
+   are asked again, which is what the cost note says before anything is discarded. */
+/* LiveRail and SHARE_SHEET now live in ./rail.jsx, shared with the end-to-end prototype. */
+
+const MOTION = [['A question arrives', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "ds-rise"), ": fade + 8px"), '240ms', 'Fades in place'], ['The rail advances', 'the filled length grows to the new question', '240ms', 'The new length, drawn'], ['Thinking', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "SentinelThinking"), ": three dots on opacity, 150ms apart"), '1.2s loop', 'The dots hold at full opacity'], ['An answer collapses to a QAPair', 'the chips leave, the line stays', 'immediate', 'Unchanged'], ['Rail dims on a detour', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "ProgressRail dim"), " \u2014 the rail to 40%, the label not"), '240ms', 'Unchanged — an opacity difference is not motion'], ['The number counts up', /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("code", null, "useCountUp"), " over ", /*#__PURE__*/React.createElement("code", null, "--dur-count")), '600ms', 'The final number, once']];
+const PROVENANCE = [['38', 'Her KYC record', 'A smart chip that names its source — “Use her KYC age — 38” — and a ParseNote under the answer'], ['₹1,80,000', 'Her last ITR', 'The same: the chip says where it came from, so tapping it is not guessing'], ['71 · 54 · 62', 'Her finances, her temperament, and what her ₹2 crore goal needs', 'Three meter rows, with the lowest marked as the binding one'], ['54 · Moderate', 'The lowest of the three, which is the rule', 'The hero number, with “Locked · 15 Sep 2026” beside it'], ['“six months of her spending”', '₹6,00,000 against ₹95,000 a month', 'The first interjection, which does the arithmetic out loud']];
+mountScreen(/*#__PURE__*/React.createElement(ScreenShell, {
+  journey: "Journey A \xB7 Meera's risk profile",
+  n: "Journey rail",
+  name: "Twelve questions, and a number that is locked",
+  job: "The surface for work that has an order. One question at a time with its answers as chips, the advisor's own typing always available, two moments where Sentinel says what it has understood so far, and a result that says which of three scores it is built on.",
+  without: "has a client whose risk was never profiled \u2014 so the proposal, the drift and the rebalance have nothing to be checked against."
+}, /*#__PURE__*/React.createElement(Section, {
+  title: "1 \xB7 One question at a time",
+  sub: "The rail is pinned under the app bar and does not scroll; the answers collapse to one line each so twelve of them do not bury the one being asked."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "live \xB7 run the whole journey",
+  note: "Twelve questions, two interjections and the result. Tap a chip or type; the answer becomes a QAPair and the rail advances. \u201CSkip to the result\u201D on the intro jumps to the end, which is the archive's own affordance for an advisor who already knows the number."
+}, /*#__PURE__*/React.createElement(LiveRail, null)), /*#__PURE__*/React.createElement(State, {
+  label: "a question, with a smart chip",
+  note: "The first chip names its SOURCE \u2014 \u201CUse her KYC age \u2014 38\u201D \u2014 so tapping it is not guessing, and a ParseNote records where the answer came from. The composer is present on every question (rule 3): an advisor can always type instead of tapping."
+}, /*#__PURE__*/React.createElement(Scene, {
+  step: S('Q1 Age'),
+  answered: ANSWERED.slice(0, 1)
+})), /*#__PURE__*/React.createElement(State, {
+  label: "a money question",
+  tone: "under",
+  note: "The Dock carries the MoneyComposer instead of the text one, because the answer is an amount and Indian grouping is not something to leave to a free-text field. The chips still offer the two figures an advisor would otherwise type."
+}, /*#__PURE__*/React.createElement(Scene, {
+  step: S('Q4 Spend')
+})))), /*#__PURE__*/React.createElement(Section, {
+  title: "2 \xB7 The answer you just gave is editable \u2014 here it costs more",
+  sub: "The same gesture as editing a prompt in the thread, which is the point: an affordance valid from the advisor's side exists everywhere it is valid."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "edit the last answer",
+  note: "Edit sits under the most recent QAPair, exactly where it sits under the most recent bubble in a thread. What differs is the cost, and the line says it before anything is discarded: editing reopens the journey at that question and the answers after it are asked again. Nothing is thrown away until the new answer is given."
+}, /*#__PURE__*/React.createElement(Scene, {
+  step: S('Q5 Emergency'),
+  after: /*#__PURE__*/React.createElement(Note, {
+    title: ""
+  })
+})), /*#__PURE__*/React.createElement(State, {
+  label: "a detour \u2014 she asked something else",
+  tone: "under",
+  note: "The advisor left the journey to ask a question in the thread. The rail DIMS to 40% and its label does not, which is ProgressRail's own prop rather than a parent opacity; the banner names the journey and the question so \u201Cresume\u201D means something. This is the same banner the going-back screen shows from the thread's side."
+}, /*#__PURE__*/React.createElement(Scene, {
+  step: S('Q7 Horizon'),
+  dim: true,
+  banner: /*#__PURE__*/React.createElement(DetourBanner, {
+    label: "Risk profile \xB7 paused at question 7",
+    onResume: () => {}
+  })
+}))), /*#__PURE__*/React.createElement(Note, {
+  title: "Why the chips are in the turn and not in the Dock"
+}, "The journey rail was the one surface the 18 Sep ruling left alone \u2014 ", /*#__PURE__*/React.createElement("code", null, "Dock.d.ts"), " kept the slot", /*#__PURE__*/React.createElement("em", null, " \u201Cso the journey rail, which asks one question at a time and answers it in place, can be migrated deliberately rather than broken.\u201D"), " It is built new here, so it is built the ruled way: the answers to a question sit under that question and scroll with it. The Dock carries the composer and nothing else, on every screen in the product. ", /*#__PURE__*/React.createElement("strong", null, "That leaves ", /*#__PURE__*/React.createElement("code", null, "Dock.chips"), " and ", /*#__PURE__*/React.createElement("code", null, "Dock.cta"), " with no consumer anywhere"), " \u2014 a removal, and the owner's to make.")), /*#__PURE__*/React.createElement(Section, {
+  title: "3 \xB7 Where Sentinel speaks without being asked",
+  sub: "Two interjections in twelve questions. They are not encouragement \u2014 each one does arithmetic out loud and says what it means."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "an interjection",
+  note: "After the emergency-fund question: \u201CThat is about six months of her spending. Comfortable \u2014 it means a fall in the market will not force her to sell.\u201D It states the sum (\u20B96,00,000 against \u20B995,000 a month) and what it implies, then offers one chip. The rail does not advance: an interjection is not a question."
+}, /*#__PURE__*/React.createElement(Scene, {
+  step: S('Reflect 1'),
+  answered: [...ANSWERED, {
+    q: 'And what does she spend a month?',
+    a: '₹95,000'
+  }, {
+    q: 'How much for emergencies?',
+    a: '₹6,00,000'
+  }]
+})), /*#__PURE__*/React.createElement(State, {
+  label: "thinking, between two questions",
+  tone: "under",
+  note: "SentinelThinking's verb is a provenance claim, not decoration: \u201CReading her account record\u2026\u201D names the source the next line cites. A waiting state that says one thing and then answers from somewhere else has lied, which is what rule 4 exists to prevent."
+}, /*#__PURE__*/React.createElement(Scene, {
+  step: S('Q6 Dependents'),
+  thinking: true
+})))), /*#__PURE__*/React.createElement(Section, {
+  title: "4 \xB7 The number, and what it is built on",
+  sub: "Three scores, and the rule is the lowest of them \u2014 stated on the card rather than left for the advisor to infer."
+}, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+  label: "the result",
+  note: "71 her finances, 54 her temperament, 62 her goal \u2014 and 54 is marked as the binding one, because that is what everything after this is built against. \u201CLocked \xB7 15 Sep 2026\u201D is beside the number: a risk profile that quietly drifts is worse than none. The two chips are the two things an advisor actually does next \u2014 explain it, or send it."
+}, /*#__PURE__*/React.createElement(Scene, {
+  step: S('Result'),
+  answered: ANSWERED,
+  after: /*#__PURE__*/React.createElement(RiskResult, {
+    chips: S('Result').chips,
+    cta: S('Result').cta
+  })
+})))), /*#__PURE__*/React.createElement(Section, {
+  title: "5 \xB7 What this screen does not do yet"
+}, /*#__PURE__*/React.createElement(Note, {
+  title: "The refusal path is the router's, and it is not built here"
+}, "Typing something that is not an answer \u2014 a question, an instruction, nonsense \u2014 is bucket 4, 5 or 6 of the router, and it renders in the thread rather than on the rail. ", /*#__PURE__*/React.createElement("code", null, "RejectCallout"), " and", /*#__PURE__*/React.createElement("code", null, " ConstraintCallout"), " are the components for it and they are still on no screen. That is the refusals pass, build order #6."), /*#__PURE__*/React.createElement(Note, {
+  title: "Twelve questions, sixteen steps"
+}, "The rail says ", /*#__PURE__*/React.createElement("em", null, "n of 12"), " because twelve of the sixteen are questions: the intro, two interjections and the result are not. An interjection keeps the number it follows rather than inventing a thirteenth, which is why the rail does not move under it.")), /*#__PURE__*/React.createElement(Section, {
+  title: "6 \xB7 Motion, and what each one does under reduced motion"
+}, /*#__PURE__*/React.createElement(MotionTable, {
+  rows: MOTION
+})), /*#__PURE__*/React.createElement(Section, {
+  title: "7 \xB7 Provenance"
+}, /*#__PURE__*/React.createElement(ProvenanceTable, {
+  rows: PROVENANCE
+}))));</script></body></html>

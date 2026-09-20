@@ -1,0 +1,1064 @@
+<!-- @dsCard group="Pages" viewport="1000x1700" name="List" subtitle="The card around the rows — a required empty state, and a footer instead of a second scroller" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>List — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script>(function(){var M={"../components/lists/List.d.ts":"export type ListDividers = 'none' | 'inset' | 'full';\nexport interface ListEmptyState {\n  /** One line in the product's voice. Never \"No data\" — \"No drift to review — I'll flag it here when a portfolio moves\". */\n  title: string;\n  body?: string;\n  /** One pill, at most. */\n  action?: React.ReactNode;\n}\nexport interface ListProps {\n  /** Row prop objects; each renders a <ListRow>. Omit and pass children to compose rows yourself. */\n  items?: Array<Record<string, unknown>>;\n  children?: React.ReactNode;\n  /** Default 'inset'. */\n  dividers?: ListDividers;\n  /** Eyebrow above the card. */\n  header?: string;\n  /** A row under the last divider — the \"See all 43\" ghost button. A capped list plus a footer is how\n   *  this system avoids a nested scroller; never make a List scroll inside a scrolling surface. */\n  footer?: React.ReactNode;\n  groupBy?: 'none' | 'client' | 'date' | 'journey';\n  /** REQUIRED — every list in this product is empty on someone's first day. */\n  emptyState: ListEmptyState;\n  /** Skeleton rows with a shimmer; under prefers-reduced-motion they hold still. */\n  loading?: boolean;\n  /** Props merged into every row (e.g. `{variant:'nav', trailing:'chevron'}`). */\n  rowProps?: Record<string, unknown>;\n  /** Renders a `SearchField` ABOVE the card and filters `items` by `title`, case-insensitively.\n   *\n   *  An AMENDMENT rather than a `SearchableList`: `SearchField`'s own header has said since v9 that\n   *  it is \"the search field a `searchable` List renders\", and this prop never existed — so\n   *  `who.jsx` held the query in state, filtered by hand and rendered the field itself, and the fund\n   *  picker was about to do it a second time.\n   *\n   *  **The pool stays the caller's.** `items` on the who-picker is already \"the four most recent\",\n   *  and a search that silently widens to 512 clients on the first keystroke is a different surface.\n   *  This filters what it was given and nothing more.\n   *\n   *  `emptyState` here is the SEARCH's, not the list's: a list with no rows and a query with no\n   *  matches need different words. Omit it and the list's own is used for both. */\n  search?: {\n    value: string;\n    onChange: (value: string) => void;\n    onClear?: () => void;\n    placeholder?: string;\n    autoFocus?: boolean;\n    emptyState?: ListEmptyState;\n  };\n}\nexport function List(props: ListProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* The component-page kit — the nine blocks, in the one order, so every page reads identically and a
+   reviewer builds a habit instead of hunting. Blocks, in order:
+   1 Specimen · 2 Anatomy · 3 Variants · 4 States · 5 In context · 6 Tokens · 7 Props · 8 Do/Don't · 9 Motion
+   Rules the kit enforces rather than asks for: the specimen sits alone on the product background;
+   anatomy annotates OUTSIDE the frame (B/05's rule); the Tokens block resolves each name against the
+   live stylesheet, so a value that is not a token shows up as missing; Props prints the real .d.ts. */
+var _React = React,
+  useState = _React.useState,
+  useEffect = _React.useEffect;
+var FONT = 'var(--font-ui)';
+var lbl = {
+  fontFamily: FONT,
+  fontWeight: 700,
+  fontSize: 10,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+var note = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12,
+  lineHeight: '17px',
+  color: 'var(--color-muted)',
+  margin: '6px 0 0',
+  maxWidth: 560
+};
+function PageShell(_ref) {
+  var name = _ref.name,
+    group = _ref.group,
+    status = _ref.status,
+    summary = _ref.summary,
+    _ref$requires = _ref.requires,
+    requires = _ref$requires === void 0 ? [] : _ref$requires,
+    children = _ref.children;
+  var tone = status === 'shipped' ? 'ok' : status === 'building' ? 'under' : 'over';
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = requires.filter(function (n) {
+    return !ns[n];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 980,
+      margin: '0 auto',
+      padding: '28px 24px 64px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 28
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 9999,
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, status), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 500,
+      fontSize: 11.5,
+      color: 'var(--color-muted)'
+    }
+  }, group), /*#__PURE__*/React.createElement("a", {
+    href: "./00-Index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "00 Index \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      margin: 0,
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)'
+    })
+  }, summary)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle yet"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This page needs ", missing.map(function (n, i) {
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: n
+    }, i ? ', ' : '', /*#__PURE__*/React.createElement("code", null, n));
+  }), ", which ", /*#__PURE__*/React.createElement("code", null, "ds_bundle.js"), " does not carry yet. The bundle recompiles from source at the end of a turn \u2014 reload then. The page is not broken; the build is behind it.")) : /*#__PURE__*/React.createElement(PageBoundary, null, children));
+}
+/* A page whose component has gone says so, the way the index does — never a blank screen. */
+var PageBoundary = /*#__PURE__*/function (_React$Component) {
+  function PageBoundary(p) {
+    var _this;
+    _classCallCheck(this, PageBoundary);
+    _this = _callSuper(this, PageBoundary, [p]);
+    _this.state = {
+      err: null
+    };
+    return _this;
+  }
+  _inherits(PageBoundary, _React$Component);
+  return _createClass(PageBoundary, [{
+    key: "render",
+    value: function render() {
+      if (!this.state.err) return this.props.children;
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          borderRadius: 12,
+          background: 'var(--color-status-over-bg)',
+          padding: 16
+        }
+      }, /*#__PURE__*/React.createElement("p", {
+        style: {
+          margin: 0,
+          fontFamily: FONT,
+          fontWeight: 700,
+          fontSize: 11,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          color: 'var(--color-status-over-fg)'
+        }
+      }, "This page failed to render"), /*#__PURE__*/React.createElement("p", {
+        style: _objectSpread(_objectSpread({}, note), {}, {
+          color: 'var(--color-ink-soft)'
+        })
+      }, String(this.state.err.message || this.state.err)));
+    }
+  }], [{
+    key: "getDerivedStateFromError",
+    value: function getDerivedStateFromError(err) {
+      return {
+        err: err
+      };
+    }
+  }]);
+}(React.Component);
+function Block(_ref2) {
+  var n = _ref2.n,
+    title = _ref2.title,
+    sub = _ref2.sub,
+    children = _ref2.children,
+    _ref2$frame = _ref2.frame,
+    frame = _ref2$frame === void 0 ? false : _ref2$frame;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    style: lbl
+  }, String(n).padStart(2, '0'), " \xB7 ", title), sub && /*#__PURE__*/React.createElement("p", {
+    style: note
+  }, sub)), /*#__PURE__*/React.createElement("div", {
+    style: frame ? {
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: 24
+    } : undefined
+  }, children));
+}
+/* 1 — the component alone, at real size, on the product background. Nothing else in frame. */
+function Specimen(_ref3) {
+  var children = _ref3.children,
+    _ref3$width = _ref3.width,
+    width = _ref3$width === void 0 ? 375 : _ref3$width;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: '32px 24px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children));
+}
+/* 2 — the same specimen with dimensions annotated OUTSIDE the frame, per B/05.
+   Side tags are anchored at left:100% / right:100% so they grow AWAY from the specimen. Anchoring them
+   with right:-90 (the first version) pins the tag's right edge 90px outside the frame and lets the box
+   grow leftwards instead — measured, a 245px annotation computed left:156px and laid 155px of itself
+   across a 311px specimen, over the legend's own value column. Any annotation wider than the gutter
+   did it; this one was just long enough to be seen. Tags wrap inside a fixed gutter width rather than
+   nowrapping, so length cannot push them anywhere. */
+var GUTTER = 128;
+function Anatomy(_ref4) {
+  var children = _ref4.children,
+    _ref4$width = _ref4.width,
+    width = _ref4$width === void 0 ? 343 : _ref4$width,
+    top = _ref4.top,
+    bottom = _ref4.bottom,
+    left = _ref4.left,
+    right = _ref4.right;
+  var tick = {
+    position: 'absolute',
+    background: 'var(--color-bronze)',
+    opacity: 0.5
+  };
+  var tag = {
+    position: 'absolute',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    lineHeight: '14px',
+    color: 'var(--color-bronze-deep)'
+  };
+  var side = _objectSpread(_objectSpread({}, tag), {}, {
+    width: GUTTER - 24,
+    textWrap: 'pretty'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: "44px ".concat(GUTTER, "px 40px")
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children, top && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      top: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      bottom: '100%',
+      marginBottom: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, top)), bottom && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      bottom: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      top: '100%',
+      marginTop: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, bottom)), left && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      left: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      right: '100%',
+      marginRight: 22,
+      top: '50%',
+      transform: 'translateY(-50%)',
+      textAlign: 'right'
+    })
+  }, left)), right && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      right: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      left: '100%',
+      marginLeft: 22,
+      top: '50%',
+      transform: 'translateY(-50%)'
+    })
+  }, right))));
+}
+/* 3 / 4 — labelled grid; States takes only the states that genuinely exist. */
+function Grid(_ref5) {
+  var items = _ref5.items,
+    _ref5$cols = _ref5.cols,
+    cols = _ref5$cols === void 0 ? 2 : _ref5$cols,
+    itemWidth = _ref5.itemWidth;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: "repeat(".concat(cols, ", minmax(0, 1fr))"),
+      gap: 20
+    }
+  }, items.map(function (it) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: it.label,
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)',
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: lbl
+    }, it.label), /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: itemWidth,
+        maxWidth: '100%'
+      }
+    }, it.node), it.note && /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11
+      })
+    }, it.note));
+  }));
+}
+/* 5 — inside a 375pt thread fragment: real width, real neighbours. Catches anything that only works alone. */
+function Thread(_ref6) {
+  var children = _ref6.children,
+    before = _ref6.before,
+    after = _ref6.after,
+    dock = _ref6.dock;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: 375,
+      borderRadius: 24,
+      background: 'var(--color-canvas)',
+      boxShadow: '0 0 0 1px var(--ring-frame)',
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12,
+      padding: '20px 16px 16px'
+    }
+  }, before, children, after), dock && /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--color-line-soft)',
+      padding: '8px 16px 12px'
+    }
+  }, dock)));
+}
+/* 6 — every token the component consumes, resolved against the live stylesheet. A name that does not
+   resolve renders as MISSING, which is the page failing loudly instead of quietly. */
+function Tokens(_ref7) {
+  var names = _ref7.names;
+  var _useState = useState({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    vals = _useState2[0],
+    setVals = _useState2[1];
+  useEffect(function () {
+    var cs = getComputedStyle(document.documentElement);
+    var out = {};
+    names.forEach(function (n) {
+      out[n] = cs.getPropertyValue(n).trim();
+    });
+    setVals(out);
+  }, [names.join()]);
+  var isColor = function isColor(v) {
+    return /^(#|rgb|hsl)/.test(v);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+      gap: '8px 20px'
+    }
+  }, names.map(function (n) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: n,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        flexShrink: 0,
+        width: 14,
+        height: 14,
+        borderRadius: 4,
+        background: isColor(vals[n]) ? vals[n] : 'transparent',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)'
+      }
+    }), /*#__PURE__*/React.createElement("code", {
+      style: {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11,
+        color: 'var(--color-ink)',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }
+    }, n), /*#__PURE__*/React.createElement("span", {
+      style: {
+        marginLeft: 'auto',
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: 10.5,
+        color: vals[n] ? 'var(--color-muted)' : 'var(--color-status-over-fg)',
+        whiteSpace: 'nowrap'
+      }
+    }, vals[n] || 'MISSING'));
+  }));
+}
+/* 7 — the .d.ts, printed. Fetched, never retyped, so the page cannot drift from the contract. */
+function Props(_ref8) {
+  var src = _ref8.src;
+  var _useState3 = useState('loading…'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    text = _useState4[0],
+    setText = _useState4[1];
+  useEffect(function () {
+    fetch(src).then(function (r) {
+      return r.ok ? r.text() : Promise.reject(r.status);
+    }).then(setText)["catch"](function (e) {
+      return setText("could not read ".concat(src, " (").concat(e, ")"));
+    });
+  }, [src]);
+  return /*#__PURE__*/React.createElement("pre", {
+    style: {
+      margin: 0,
+      padding: 16,
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      fontFamily: 'ui-monospace, monospace',
+      fontSize: 11.5,
+      lineHeight: '17px',
+      color: 'var(--color-ink-soft)',
+      overflowX: 'auto',
+      whiteSpace: 'pre-wrap'
+    }
+  }, text);
+}
+/* 8 — one pair, the sharpest one. A page of eight don'ts teaches nothing. */
+function DoDont(_ref9) {
+  var doNode = _ref9.doNode,
+    doCaption = _ref9.doCaption,
+    dontNode = _ref9.dontNode,
+    dontCaption = _ref9.dontCaption;
+  var cell = function cell(ok, caption, node) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: "inset 0 0 0 1px ".concat(ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'),
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: 0,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        fontFamily: FONT,
+        fontWeight: 700,
+        fontSize: 11,
+        color: ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'
+      }
+    }, ok ? 'Do' : "Don't"), /*#__PURE__*/React.createElement("div", null, node), /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11.5
+      })
+    }, caption));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 20
+    }
+  }, cell(true, doCaption, doNode), cell(false, dontCaption, dontNode));
+}
+/* 9 — the motion rows that apply, each with what it does under reduced motion. */
+function Motion(_ref0) {
+  var rows = _ref0.rows;
+  var th = {
+    textAlign: 'left',
+    padding: '8px 12px',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: 'var(--color-muted)',
+    borderBottom: '1px solid var(--color-line)'
+  };
+  var td = {
+    padding: '9px 12px',
+    fontFamily: FONT,
+    fontWeight: 500,
+    fontSize: 11.5,
+    lineHeight: '16px',
+    color: 'var(--color-ink)',
+    borderBottom: '0.5px solid var(--color-line-soft)',
+    verticalAlign: 'top'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      width: '100%',
+      borderCollapse: 'collapse'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Motion"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Property"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Duration"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Under reduced motion"))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.name
+    }, /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.name), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11
+      })
+    }, r.property), /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.duration), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        color: 'var(--color-muted)'
+      })
+    }, r.reduced));
+  }))));
+}
+/* Pages mount after d3-scale / d3-shape land, so a chart never renders its fallback maths here. */
+function mountPage(App) {
+  var go = function go() {
+    return ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+  };
+  if (window.d3 && window.d3.scaleLinear) go();else {
+    var done = false;
+    var once = function once() {
+      if (!done) {
+        done = true;
+        go();
+      }
+    };
+    window.addEventListener('d3ready', once);
+    setTimeout(once, 2500);
+  }
+}
+Object.assign(window, {
+  PageShell: PageShell,
+  PageBoundary: PageBoundary,
+  Block: Block,
+  Specimen: Specimen,
+  Anatomy: Anatomy,
+  Grid: Grid,
+  Thread: Thread,
+  Tokens: Tokens,
+  Props: Props,
+  DoDont: DoDont,
+  Motion: Motion,
+  mountPage: mountPage,
+  pageLbl: lbl,
+  pageNote: note
+});</script>
+<script>"use strict";
+
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
+  List = _window$SentinelDesig.List,
+  ListRow = _window$SentinelDesig.ListRow,
+  Pill = _window$SentinelDesig.Pill,
+  ClientChip = _window$SentinelDesig.ClientChip,
+  Composer = _window$SentinelDesig.Composer,
+  Dock = _window$SentinelDesig.Dock;
+function SearchDemo() {
+  var _React$useState = React.useState(''),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    q = _React$useState2[0],
+    setQ = _React$useState2[1];
+  return /*#__PURE__*/React.createElement(List, {
+    items: CLIENTS,
+    rowProps: {
+      variant: 'select'
+    },
+    search: {
+      value: q,
+      onChange: setQ,
+      onClear: function onClear() {
+        return setQ('');
+      },
+      placeholder: 'Search 512 clients',
+      emptyState: {
+        title: "No client called \u201C".concat(q, "\u201D."),
+        body: 'Check the spelling, or clear the search.'
+      }
+    },
+    emptyState: {
+      title: 'Nobody on your book yet.'
+    }
+  });
+}
+var TOK = ['--color-surface', '--color-line', '--color-line-soft', '--color-track', '--color-ink', '--color-muted', '--radius-16', '--space-12', '--border-hairline', '--h-touch', '--ease'];
+var CLIENTS = [{
+  variant: 'nav',
+  leading: 'avatar',
+  title: 'Ravi Menon',
+  subtitle: '₹1,85,00,000 · 6.2% off mandate',
+  trailing: 'chevron',
+  onPress: function onPress() {}
+}, {
+  variant: 'nav',
+  leading: 'avatar',
+  title: 'Meera Iyer',
+  subtitle: '₹92,40,000 · on mandate',
+  trailing: 'chevron',
+  onPress: function onPress() {}
+}, {
+  variant: 'nav',
+  leading: 'avatar',
+  title: 'Anil Sharma',
+  subtitle: '₹3,10,00,000 · review due',
+  trailing: 'chevron',
+  onPress: function onPress() {}
+}];
+var THREADS = [{
+  variant: 'nav',
+  title: 'Rebalance draft',
+  chip: /*#__PURE__*/React.createElement(ClientChip, {
+    name: "Ravi Menon"
+  }),
+  meta: '2h ago',
+  trailing: 'chevron',
+  date: 'Today',
+  onPress: function onPress() {}
+}, {
+  variant: 'nav',
+  title: 'Risk journey',
+  chip: /*#__PURE__*/React.createElement(ClientChip, {
+    name: "Meera Iyer"
+  }),
+  meta: '5h ago',
+  trailing: 'chevron',
+  date: 'Today',
+  onPress: function onPress() {}
+}, {
+  variant: 'nav',
+  title: 'Fund overlap — 4 funds',
+  meta: 'Tue',
+  trailing: 'chevron',
+  date: 'Earlier',
+  onPress: function onPress() {}
+}, {
+  variant: 'nav',
+  title: 'Q3 review · Sharma',
+  meta: 'Mon',
+  trailing: 'chevron',
+  date: 'Earlier',
+  onPress: function onPress() {}
+}];
+function App() {
+  return /*#__PURE__*/React.createElement(PageShell, {
+    name: "List",
+    group: "Lists",
+    status: "shipped",
+    requires: ['List', 'ListRow', 'Pill', 'ClientChip'],
+    summary: "The card around the rows: an eyebrow, dividers, an optional footer, grouping \u2014 and an empty state the contract makes REQUIRED, because every list in this product is empty on someone's first day. It never scrolls inside a scrolling surface; it is capped and given a footer instead."
+  }, /*#__PURE__*/React.createElement(Block, {
+    n: 1,
+    title: "Specimen",
+    sub: "Header, three rows, inset dividers, a \u201CSee all\u201D footer. This is the drawer's client section at real width."
+  }, /*#__PURE__*/React.createElement(Specimen, {
+    width: 343
+  }, /*#__PURE__*/React.createElement(List, {
+    header: "Clients",
+    emptyState: {
+      title: 'No clients yet'
+    },
+    footer: /*#__PURE__*/React.createElement(Pill, {
+      label: "See all 43",
+      size: "sm"
+    }),
+    items: CLIENTS
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 2,
+    title: "Anatomy",
+    sub: "The footer sits under a FULL-width divider while the row dividers are inset. That difference is doing work: it says the footer is not another row."
+  }, /*#__PURE__*/React.createElement(Anatomy, {
+    width: 343,
+    top: "Eyebrow above the card, 6pt clear \u2014 outside the surface, so the card starts at its first row",
+    left: "12pt inside the card. Inset dividers start at the same 12pt, so they align with the title column",
+    right: "Footer row is at least 44pt and holds one small Pill \u2014 never two",
+    bottom: "Hairline dividers at --border-hairline on --color-line-soft. The card ring is a 1px --color-line box-shadow, not a border"
+  }, /*#__PURE__*/React.createElement(List, {
+    header: "Clients",
+    emptyState: {
+      title: 'No clients yet'
+    },
+    footer: /*#__PURE__*/React.createElement(Pill, {
+      label: "See all 43",
+      size: "sm"
+    }),
+    items: CLIENTS
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "Variants",
+    sub: "Dividers and grouping. Grouping inserts an eyebrow per bucket and restarts the dividers inside it, so a group reads as a card within the card."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 1,
+    itemWidth: 343,
+    items: [{
+      label: "dividers='inset' (default)",
+      node: /*#__PURE__*/React.createElement(List, {
+        emptyState: {
+          title: 'Empty'
+        },
+        items: CLIENTS
+      }),
+      note: 'Aligned with the title column. The avatar column stays clear, which is what makes a run of rows scannable.'
+    }, {
+      label: "dividers='full'",
+      node: /*#__PURE__*/React.createElement(List, {
+        dividers: "full",
+        emptyState: {
+          title: 'Empty'
+        },
+        items: CLIENTS
+      }),
+      note: 'Edge to edge. For rows with no leading element, where an inset line would float.'
+    }, {
+      label: "dividers='none'",
+      node: /*#__PURE__*/React.createElement(List, {
+        dividers: "none",
+        emptyState: {
+          title: 'Empty'
+        },
+        items: CLIENTS
+      }),
+      note: 'Rows separated by height alone. Use only when every row is 72pt — at 56pt they run together.'
+    }, {
+      label: "groupBy='date'",
+      node: /*#__PURE__*/React.createElement(List, {
+        groupBy: "date",
+        header: "Recent",
+        emptyState: {
+          title: 'Nothing yet'
+        },
+        items: THREADS
+      }),
+      note: 'The drawer. Buckets come from each row\'s own key, in first-seen order — the list never sorts your data behind your back.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 4,
+    title: "States",
+    sub: "Three, and the empty one is required by the type. A list that renders nothing is a bug report waiting to be filed."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 2,
+    itemWidth: 311,
+    items: [{
+      label: 'Loading',
+      node: /*#__PURE__*/React.createElement(List, {
+        header: "Clients",
+        loading: true,
+        emptyState: {
+          title: 'No clients yet'
+        }
+      }),
+      note: 'Three shimmer rows at staggered widths. Under reduced motion they hold still rather than stopping mid-pulse.'
+    }, {
+      label: 'Empty — in the product\'s voice',
+      node: /*#__PURE__*/React.createElement(List, {
+        header: "Drift",
+        emptyState: {
+          title: "No drift to review",
+          body: "I'll flag it here when a portfolio moves off its mandate.",
+          action: /*#__PURE__*/React.createElement(Pill, {
+            label: "Review a client anyway",
+            size: "sm"
+          })
+        }
+      }),
+      note: 'Never "No data". It says what will put something here, and offers at most one pill.'
+    }, {
+      label: 'Empty, bare',
+      node: /*#__PURE__*/React.createElement(List, {
+        emptyState: {
+          title: 'No funds on the shelf for this mandate'
+        }
+      }),
+      note: 'Title alone is legal. Body and action are both optional.'
+    }, {
+      label: 'Capped, with a footer',
+      node: /*#__PURE__*/React.createElement(List, {
+        emptyState: {
+          title: 'Empty'
+        },
+        footer: /*#__PURE__*/React.createElement(Pill, {
+          label: "See all 43",
+          size: "sm"
+        }),
+        items: CLIENTS
+      }),
+      note: 'Three of 43. This is how the system refuses a nested scroller — cap the list, state the total, move on.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 5,
+    title: "search \u2014 an amendment, not a SearchableList",
+    sub: "SearchField's own header has said since v9 that it is \u201Cthe search field a `searchable` List renders\u201D, and this prop never existed \u2014 so who.jsx held the query in state, filtered by hand and drew the field itself, and the fund picker was about to do it a second time. Two hand-built copies is how two ways of picking a thing appear in one product."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 2,
+    itemWidth: 311,
+    items: [{
+      label: 'The field sits ABOVE the card',
+      node: /*#__PURE__*/React.createElement(SearchDemo, null),
+      note: 'It is how you narrow the list, not a row of it. Type “ra” and the rows filter by title, case-insensitively.'
+    }, {
+      label: 'A search with no matches has its own words',
+      node: /*#__PURE__*/React.createElement(List, {
+        items: CLIENTS,
+        rowProps: {
+          variant: 'select'
+        },
+        search: {
+          value: 'zzz',
+          onChange: function onChange() {},
+          placeholder: 'Search 512 clients',
+          emptyState: {
+            title: 'No client called “zzz”.',
+            body: 'Check the spelling, or clear the search to see the four most recent.'
+          }
+        },
+        emptyState: {
+          title: 'Nobody on your book yet.',
+          body: 'Add a client and every journey here works on them.'
+        }
+      }),
+      note: "A list with no rows and a query with no matches need different sentences. Omit the search\u2019s own emptyState and the list\u2019s is used for both."
+    }]
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 'var(--space-12) 0 0',
+      font: 'var(--type-row-font)',
+      color: 'var(--color-ink-soft)',
+      maxWidth: '78ch',
+      textWrap: 'pretty'
+    }
+  }, /*#__PURE__*/React.createElement("strong", null, "The pool stays the caller\u2019s."), " ", /*#__PURE__*/React.createElement("code", null, "items"), " on the who-picker is already \u201Cthe four most recent\u201D, and a search that silently widens to 512 clients on the first keystroke is a different surface. This filters what it was given and nothing more \u2014 ", /*#__PURE__*/React.createElement("code", null, "who.jsx"), " still decides that typing widens the pool from four to the whole book.")), /*#__PURE__*/React.createElement(Block, {
+    n: 6,
+    title: "In context",
+    sub: "Inside the drawer, where the rule that produced the footer is visible: the drawer scrolls, so nothing inside it may."
+  }, /*#__PURE__*/React.createElement(Thread, {
+    dock: /*#__PURE__*/React.createElement(Dock, {
+      composer: /*#__PURE__*/React.createElement(Composer, {
+        value: "",
+        onChange: function onChange() {},
+        placeholder: "Ask Sentinel"
+      })
+    })
+  }, /*#__PURE__*/React.createElement(List, {
+    header: "Clients",
+    emptyState: {
+      title: 'No clients yet'
+    },
+    footer: /*#__PURE__*/React.createElement(Pill, {
+      label: "See all 43",
+      size: "sm"
+    }),
+    items: CLIENTS
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 8
+    }
+  }), /*#__PURE__*/React.createElement(List, {
+    groupBy: "date",
+    header: "Recent",
+    emptyState: {
+      title: 'Nothing yet'
+    },
+    footer: /*#__PURE__*/React.createElement(Pill, {
+      label: "See all threads",
+      size: "sm"
+    }),
+    items: THREADS
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 7,
+    title: "Tokens"
+  }, /*#__PURE__*/React.createElement(Tokens, {
+    names: TOK
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 8,
+    title: "Props",
+    sub: "emptyState is not optional in the type. That is deliberate \u2014 it is the one prop a caller would forget and never notice until a new advisor opened the app."
+  }, /*#__PURE__*/React.createElement(Props, {
+    src: "../components/lists/List.d.ts"
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 9,
+    title: "Do / Don't"
+  }, /*#__PURE__*/React.createElement(DoDont, {
+    doNode: /*#__PURE__*/React.createElement(List, {
+      header: "Clients",
+      emptyState: {
+        title: 'No clients yet'
+      },
+      footer: /*#__PURE__*/React.createElement(Pill, {
+        label: "See all 43",
+        size: "sm"
+      }),
+      items: CLIENTS
+    }),
+    doCaption: "Three rows and a footer that states the total. The advisor knows there are 43 and knows how to reach them, and the surface behind this list is the only thing that scrolls.",
+    dontNode: /*#__PURE__*/React.createElement("div", {
+      style: {
+        height: 150,
+        overflow: 'auto',
+        borderRadius: 'var(--radius-16)',
+        boxShadow: '0 0 0 1px var(--color-status-over-fg)'
+      }
+    }, /*#__PURE__*/React.createElement(List, {
+      dividers: "inset",
+      emptyState: {
+        title: 'Empty'
+      },
+      items: [].concat(CLIENTS, CLIENTS)
+    })),
+    dontCaption: "Never let a List scroll inside a scrolling surface. Two scrollers on one screen means the advisor's flick does one of two different things depending on where their thumb landed \u2014 the same defect the removed canvas existed to avoid."
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 10,
+    title: "Motion"
+  }, /*#__PURE__*/React.createElement(Motion, {
+    rows: [{
+      name: 'Loading rows',
+      property: 'sentinel-shimmer — opacity 0.35 → 1, 120ms stagger',
+      duration: '1200 ms, infinite',
+      reduced: 'Holds at full opacity. The skeleton stays, still.'
+    }, {
+      name: 'Row enter',
+      property: 'none',
+      duration: '—',
+      reduced: 'Unchanged. Rows appear; they do not arrive.'
+    }, {
+      name: 'Empty → filled',
+      property: 'none',
+      duration: '—',
+      reduced: 'Unchanged. A list filling in is data, not an event.'
+    }]
+  })));
+}
+mountPage(App);</script>
+</body></html>

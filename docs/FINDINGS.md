@@ -2191,3 +2191,48 @@ blocked origin.
 
 **Gates after: artifact 125/125 mount under the real CSP, no `unsafe-eval` · 144/144 preview pages
 clean · 254 files staged, limit 255.**
+
+---
+
+## F-75 · The repository downloaded as a folder opened blank — Closed 20 Sep 2026
+
+The owner: *"artifacts b dikh raha hai but jab me github se download kar raha hu folder to waha blank
+hi aa raha hai."* The artifact was fixed; the repository was not, and it is the repository a
+development team clones.
+
+**Measured, not reasoned.** Four pages opened over a real `file://` URL in headless Chromium:
+
+```
+BLANK   design-system/pages/Pill.html     Access to XMLHttpRequest at '.../page-kit.jsx' … CORS
+                                          ReferenceError: mountPage is not defined
+MOUNTS  design-system/pages/00-Index.html Fetch API cannot load .../_index.json. URL scheme …
+BLANK   screens/prototype.html            Access to XMLHttpRequest at '.../screen-kit.jsx' … CORS
+BLANK   screens/journey-c/funds.html      same
+```
+
+A `file://` origin is opaque, so Babel's XHR for each `.jsx` is refused and nothing mounts. This is
+not a defect in the pages — compiling in the browser is what makes a source edit visible on reload
+with no build step, and it is why `npm run preview` exists. It is a defect in what the repository
+*ships*: it shipped no copy that opens without one.
+
+**The fix.** `site/` — the same 131 pages, precompiled (F-74), with what each page fetches inlined,
+the component index's 94 existence checks answered from a name list, and the one `assets/` icon
+embedded as a data URI. It is committed, which is a deliberate exception to "build output is ignored"
+and is argued in `README.md` and in `.gitignore` itself. `dist/`'s two files — the whole system as one
+file, every screen as one file — are committed for the same reason: the owner asked for them by name
+and a clone was getting neither.
+
+The staging directory was renamed `artifact/` → `site/`, because a development team should not have to
+be told what the folder is.
+
+**Two false findings recorded, because the instrument was wrong twice.**
+
+- The first sweep reported 16 pages blank. All 16 are plain HTML with no React and no `#root`, and the
+  detector counted `#root` children. Re-measured on visible text: `index.html` 6,108 characters,
+  `screens/index.html` 4,188, `screens/flow.html` 4,631. None were blank.
+- `guidelines/wordmark.html` was the one real 404 behind that noise — `../assets/icons/sparkle.svg`,
+  which the staging has never carried and which the published artifact only resolved because a file
+  published once is kept. That is now a data URI.
+
+**Gates after: 131/131 pages render over `file://` with no console error and no failed request ·
+125/125 cover links mount under the artifact CSP with no `unsafe-eval` · 144/144 preview pages clean.**

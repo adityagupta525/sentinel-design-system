@@ -1,0 +1,1087 @@
+<!-- @dsCard group="Pages" viewport="1000x1600" name="DataTable" subtitle="Sorting, filters, expand-in-place and one sticky column — the rules that make a table survive 375pt" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DataTable — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script>(function(){var M={"../components/cards/DataTable.d.ts":"export type ColumnKind = 'text' | 'number' | 'percent' | 'currency' | 'badge' | 'bar' | 'sparkline';\nexport type ColumnAlign = 'start' | 'end';\nexport type SortDir = 'asc' | 'desc' | 'none';\nexport type Density = 'compact' | 'default';\nexport type TableOverflow = 'fold' | 'scroll';\n\nexport interface DataTableColumn {\n  key: string;\n  label: string;\n  kind: ColumnKind;\n  /** `kind='bar'` only: the low end of the bar's scale. **Default 0**, so every bar column written\n   *  before this draws what it drew — a holding weight, where 0% is a real position. Pass it when the\n   *  zero is not meaningful for the quantity: ten fund scores between 58 and 80 scaled from zero are\n   *  ten bars within a quarter of each other's length, and the column reads as no signal. Same\n   *  reasoning and same safeguard as `Dumbbell.min` — the figure is the cell's content and the bar\n   *  sits behind it, so a baseline can never leave a number unreadable. */\n  min?: number;\n  /** Derived from `kind` — text and badge start, every figure ends. Override only when the derivation\n   *  is wrong for a specific column, never as a style preference: a column of figures that does not\n   *  share a right edge cannot be compared down. */\n  align?: ColumnAlign;\n  /** Fixed px. Omit to share the remaining width. The sticky column defaults to 132 when scrolling. */\n  width?: number;\n  /** EXACTLY ONE column may be sticky, and it is the entity name. Without it the table is unreadable\n   *  the moment it scrolls sideways. TypeScript cannot express \"exactly one\" over an array, so the\n   *  rule lives here and the component warns once and uses the first rather than rendering two sticky\n   *  cells that fight over the same offset. Omit it entirely and the first column is used. */\n  sticky?: boolean;\n  sortable?: boolean;\n}\n\nexport type DataTableRow = Record<string, React.ReactNode> & {\n  /** Stable key. Falls back to the index, which is wrong the moment rows re-sort. */\n  id?: string;\n};\n\nexport interface DataTableEmptyState {\n  /** One line in the product's voice. Never \"No data\" — \"Nothing matches every filter\". */\n  title: string;\n  body?: string;\n  /** One pill, at most — usually the way out of the filter that emptied it. */\n  action?: React.ReactNode;\n}\n\nexport interface DataTableProps {\n  columns: DataTableColumn[];\n  rows: DataTableRow[];\n  /** Title above the table. */\n  title?: string;\n  /** Default 'default'. 'compact' tightens the row inset only; it never changes type or alignment. */\n  density?: Density;\n  /** Default 'fold' — `maxRows` then a ghost \"Show all 43\", the pattern the review journey already\n   *  uses. A 43-row table inside a chat thread is not a good idea. 'scroll' shows every row. */\n  overflow?: TableOverflow;\n  /** The active sort. One column at a time: multi-column sort is unusable on a phone. */\n  sort?: { key: string; dir: SortDir };\n  /** Called with the next state in the cycle none → desc → asc. Omit and no header is pressable. */\n  onSort?: (key: string, dir: SortDir) => void;\n  /** A row of filter Pills (tone=\"filter\"), above the header. */\n  filters?: React.ReactNode;\n  /** Return a node and the row becomes expandable IN PLACE — never a modal. The chevron lives in the\n   *  sticky column and the detail pushes the rows below it down, so the row you opened does not move\n   *  under your thumb. Return null for rows with nothing to show. */\n  expandable?: (row: DataTableRow) => React.ReactNode;\n  /** Which row index starts expanded. Null (default) means all closed, which is every product call site.\n   *  It exists because the expansion was internal state with no way in, so a frozen specimen could not\n   *  show a row opened in place — the state this component's whole no-modal rule is about. Same gap and\n   *  the same fix as `ProgressTrace.initialCollapsed`. */\n  defaultOpen?: number | null;\n  /** 'fold' only. Default 5. */\n  maxRows?: number;\n  onShowAll?: () => void;\n  /** REQUIRED — every table in this product is empty on someone's first day, or one filter away. */\n  emptyState: DataTableEmptyState;\n  /** Skeleton rows on --color-track, not a spinner. */\n  loading?: boolean;\n  /** The live label the first skeleton row carries — \"Reading her September statement\". A skeleton\n   *  that says what it is doing is the difference between waiting and wondering. */\n  loadingLabel?: string;\n}\n\n/** The full table: sorting, filters, expand-in-place, horizontal scroll with a fade and a one-time\n *  nudge. `DataTableCard` remains the three-column card for a thread; this is its widening.\n *\n *  A `kind='bar'` column reads its magnitude from `<key>Value` when present, otherwise by parsing the\n *  displayed string. The bar is drawn behind the figure in `--tint-bronze-06` — one hue, magnitude\n *  only. Never a categorical colour in a table. */\nexport function DataTable(props: DataTableProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* The component-page kit — the nine blocks, in the one order, so every page reads identically and a
+   reviewer builds a habit instead of hunting. Blocks, in order:
+   1 Specimen · 2 Anatomy · 3 Variants · 4 States · 5 In context · 6 Tokens · 7 Props · 8 Do/Don't · 9 Motion
+   Rules the kit enforces rather than asks for: the specimen sits alone on the product background;
+   anatomy annotates OUTSIDE the frame (B/05's rule); the Tokens block resolves each name against the
+   live stylesheet, so a value that is not a token shows up as missing; Props prints the real .d.ts. */
+var _React = React,
+  useState = _React.useState,
+  useEffect = _React.useEffect;
+var FONT = 'var(--font-ui)';
+var lbl = {
+  fontFamily: FONT,
+  fontWeight: 700,
+  fontSize: 10,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+var note = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12,
+  lineHeight: '17px',
+  color: 'var(--color-muted)',
+  margin: '6px 0 0',
+  maxWidth: 560
+};
+function PageShell(_ref) {
+  var name = _ref.name,
+    group = _ref.group,
+    status = _ref.status,
+    summary = _ref.summary,
+    _ref$requires = _ref.requires,
+    requires = _ref$requires === void 0 ? [] : _ref$requires,
+    children = _ref.children;
+  var tone = status === 'shipped' ? 'ok' : status === 'building' ? 'under' : 'over';
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = requires.filter(function (n) {
+    return !ns[n];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 980,
+      margin: '0 auto',
+      padding: '28px 24px 64px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 28
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 9999,
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, status), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 500,
+      fontSize: 11.5,
+      color: 'var(--color-muted)'
+    }
+  }, group), /*#__PURE__*/React.createElement("a", {
+    href: "./00-Index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "00 Index \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      margin: 0,
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)'
+    })
+  }, summary)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle yet"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This page needs ", missing.map(function (n, i) {
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: n
+    }, i ? ', ' : '', /*#__PURE__*/React.createElement("code", null, n));
+  }), ", which ", /*#__PURE__*/React.createElement("code", null, "ds_bundle.js"), " does not carry yet. The bundle recompiles from source at the end of a turn \u2014 reload then. The page is not broken; the build is behind it.")) : /*#__PURE__*/React.createElement(PageBoundary, null, children));
+}
+/* A page whose component has gone says so, the way the index does — never a blank screen. */
+var PageBoundary = /*#__PURE__*/function (_React$Component) {
+  function PageBoundary(p) {
+    var _this;
+    _classCallCheck(this, PageBoundary);
+    _this = _callSuper(this, PageBoundary, [p]);
+    _this.state = {
+      err: null
+    };
+    return _this;
+  }
+  _inherits(PageBoundary, _React$Component);
+  return _createClass(PageBoundary, [{
+    key: "render",
+    value: function render() {
+      if (!this.state.err) return this.props.children;
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          borderRadius: 12,
+          background: 'var(--color-status-over-bg)',
+          padding: 16
+        }
+      }, /*#__PURE__*/React.createElement("p", {
+        style: {
+          margin: 0,
+          fontFamily: FONT,
+          fontWeight: 700,
+          fontSize: 11,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          color: 'var(--color-status-over-fg)'
+        }
+      }, "This page failed to render"), /*#__PURE__*/React.createElement("p", {
+        style: _objectSpread(_objectSpread({}, note), {}, {
+          color: 'var(--color-ink-soft)'
+        })
+      }, String(this.state.err.message || this.state.err)));
+    }
+  }], [{
+    key: "getDerivedStateFromError",
+    value: function getDerivedStateFromError(err) {
+      return {
+        err: err
+      };
+    }
+  }]);
+}(React.Component);
+function Block(_ref2) {
+  var n = _ref2.n,
+    title = _ref2.title,
+    sub = _ref2.sub,
+    children = _ref2.children,
+    _ref2$frame = _ref2.frame,
+    frame = _ref2$frame === void 0 ? false : _ref2$frame;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    style: lbl
+  }, String(n).padStart(2, '0'), " \xB7 ", title), sub && /*#__PURE__*/React.createElement("p", {
+    style: note
+  }, sub)), /*#__PURE__*/React.createElement("div", {
+    style: frame ? {
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: 24
+    } : undefined
+  }, children));
+}
+/* 1 — the component alone, at real size, on the product background. Nothing else in frame. */
+function Specimen(_ref3) {
+  var children = _ref3.children,
+    _ref3$width = _ref3.width,
+    width = _ref3$width === void 0 ? 375 : _ref3$width;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: '32px 24px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children));
+}
+/* 2 — the same specimen with dimensions annotated OUTSIDE the frame, per B/05.
+   Side tags are anchored at left:100% / right:100% so they grow AWAY from the specimen. Anchoring them
+   with right:-90 (the first version) pins the tag's right edge 90px outside the frame and lets the box
+   grow leftwards instead — measured, a 245px annotation computed left:156px and laid 155px of itself
+   across a 311px specimen, over the legend's own value column. Any annotation wider than the gutter
+   did it; this one was just long enough to be seen. Tags wrap inside a fixed gutter width rather than
+   nowrapping, so length cannot push them anywhere. */
+var GUTTER = 128;
+function Anatomy(_ref4) {
+  var children = _ref4.children,
+    _ref4$width = _ref4.width,
+    width = _ref4$width === void 0 ? 343 : _ref4$width,
+    top = _ref4.top,
+    bottom = _ref4.bottom,
+    left = _ref4.left,
+    right = _ref4.right;
+  var tick = {
+    position: 'absolute',
+    background: 'var(--color-bronze)',
+    opacity: 0.5
+  };
+  var tag = {
+    position: 'absolute',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    lineHeight: '14px',
+    color: 'var(--color-bronze-deep)'
+  };
+  var side = _objectSpread(_objectSpread({}, tag), {}, {
+    width: GUTTER - 24,
+    textWrap: 'pretty'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: "44px ".concat(GUTTER, "px 40px")
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children, top && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      top: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      bottom: '100%',
+      marginBottom: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, top)), bottom && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      bottom: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      top: '100%',
+      marginTop: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, bottom)), left && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      left: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      right: '100%',
+      marginRight: 22,
+      top: '50%',
+      transform: 'translateY(-50%)',
+      textAlign: 'right'
+    })
+  }, left)), right && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      right: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      left: '100%',
+      marginLeft: 22,
+      top: '50%',
+      transform: 'translateY(-50%)'
+    })
+  }, right))));
+}
+/* 3 / 4 — labelled grid; States takes only the states that genuinely exist. */
+function Grid(_ref5) {
+  var items = _ref5.items,
+    _ref5$cols = _ref5.cols,
+    cols = _ref5$cols === void 0 ? 2 : _ref5$cols,
+    itemWidth = _ref5.itemWidth;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: "repeat(".concat(cols, ", minmax(0, 1fr))"),
+      gap: 20
+    }
+  }, items.map(function (it) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: it.label,
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)',
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: lbl
+    }, it.label), /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: itemWidth,
+        maxWidth: '100%'
+      }
+    }, it.node), it.note && /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11
+      })
+    }, it.note));
+  }));
+}
+/* 5 — inside a 375pt thread fragment: real width, real neighbours. Catches anything that only works alone. */
+function Thread(_ref6) {
+  var children = _ref6.children,
+    before = _ref6.before,
+    after = _ref6.after,
+    dock = _ref6.dock;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: 375,
+      borderRadius: 24,
+      background: 'var(--color-canvas)',
+      boxShadow: '0 0 0 1px var(--ring-frame)',
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12,
+      padding: '20px 16px 16px'
+    }
+  }, before, children, after), dock && /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--color-line-soft)',
+      padding: '8px 16px 12px'
+    }
+  }, dock)));
+}
+/* 6 — every token the component consumes, resolved against the live stylesheet. A name that does not
+   resolve renders as MISSING, which is the page failing loudly instead of quietly. */
+function Tokens(_ref7) {
+  var names = _ref7.names;
+  var _useState = useState({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    vals = _useState2[0],
+    setVals = _useState2[1];
+  useEffect(function () {
+    var cs = getComputedStyle(document.documentElement);
+    var out = {};
+    names.forEach(function (n) {
+      out[n] = cs.getPropertyValue(n).trim();
+    });
+    setVals(out);
+  }, [names.join()]);
+  var isColor = function isColor(v) {
+    return /^(#|rgb|hsl)/.test(v);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+      gap: '8px 20px'
+    }
+  }, names.map(function (n) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: n,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        flexShrink: 0,
+        width: 14,
+        height: 14,
+        borderRadius: 4,
+        background: isColor(vals[n]) ? vals[n] : 'transparent',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)'
+      }
+    }), /*#__PURE__*/React.createElement("code", {
+      style: {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11,
+        color: 'var(--color-ink)',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }
+    }, n), /*#__PURE__*/React.createElement("span", {
+      style: {
+        marginLeft: 'auto',
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: 10.5,
+        color: vals[n] ? 'var(--color-muted)' : 'var(--color-status-over-fg)',
+        whiteSpace: 'nowrap'
+      }
+    }, vals[n] || 'MISSING'));
+  }));
+}
+/* 7 — the .d.ts, printed. Fetched, never retyped, so the page cannot drift from the contract. */
+function Props(_ref8) {
+  var src = _ref8.src;
+  var _useState3 = useState('loading…'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    text = _useState4[0],
+    setText = _useState4[1];
+  useEffect(function () {
+    fetch(src).then(function (r) {
+      return r.ok ? r.text() : Promise.reject(r.status);
+    }).then(setText)["catch"](function (e) {
+      return setText("could not read ".concat(src, " (").concat(e, ")"));
+    });
+  }, [src]);
+  return /*#__PURE__*/React.createElement("pre", {
+    style: {
+      margin: 0,
+      padding: 16,
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      fontFamily: 'ui-monospace, monospace',
+      fontSize: 11.5,
+      lineHeight: '17px',
+      color: 'var(--color-ink-soft)',
+      overflowX: 'auto',
+      whiteSpace: 'pre-wrap'
+    }
+  }, text);
+}
+/* 8 — one pair, the sharpest one. A page of eight don'ts teaches nothing. */
+function DoDont(_ref9) {
+  var doNode = _ref9.doNode,
+    doCaption = _ref9.doCaption,
+    dontNode = _ref9.dontNode,
+    dontCaption = _ref9.dontCaption;
+  var cell = function cell(ok, caption, node) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: "inset 0 0 0 1px ".concat(ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'),
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: 0,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        fontFamily: FONT,
+        fontWeight: 700,
+        fontSize: 11,
+        color: ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'
+      }
+    }, ok ? 'Do' : "Don't"), /*#__PURE__*/React.createElement("div", null, node), /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11.5
+      })
+    }, caption));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 20
+    }
+  }, cell(true, doCaption, doNode), cell(false, dontCaption, dontNode));
+}
+/* 9 — the motion rows that apply, each with what it does under reduced motion. */
+function Motion(_ref0) {
+  var rows = _ref0.rows;
+  var th = {
+    textAlign: 'left',
+    padding: '8px 12px',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: 'var(--color-muted)',
+    borderBottom: '1px solid var(--color-line)'
+  };
+  var td = {
+    padding: '9px 12px',
+    fontFamily: FONT,
+    fontWeight: 500,
+    fontSize: 11.5,
+    lineHeight: '16px',
+    color: 'var(--color-ink)',
+    borderBottom: '0.5px solid var(--color-line-soft)',
+    verticalAlign: 'top'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      width: '100%',
+      borderCollapse: 'collapse'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Motion"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Property"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Duration"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Under reduced motion"))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.name
+    }, /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.name), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11
+      })
+    }, r.property), /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.duration), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        color: 'var(--color-muted)'
+      })
+    }, r.reduced));
+  }))));
+}
+/* Pages mount after d3-scale / d3-shape land, so a chart never renders its fallback maths here. */
+function mountPage(App) {
+  var go = function go() {
+    return ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+  };
+  if (window.d3 && window.d3.scaleLinear) go();else {
+    var done = false;
+    var once = function once() {
+      if (!done) {
+        done = true;
+        go();
+      }
+    };
+    window.addEventListener('d3ready', once);
+    setTimeout(once, 2500);
+  }
+}
+Object.assign(window, {
+  PageShell: PageShell,
+  PageBoundary: PageBoundary,
+  Block: Block,
+  Specimen: Specimen,
+  Anatomy: Anatomy,
+  Grid: Grid,
+  Thread: Thread,
+  Tokens: Tokens,
+  Props: Props,
+  DoDont: DoDont,
+  Motion: Motion,
+  mountPage: mountPage,
+  pageLbl: lbl,
+  pageNote: note
+});</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
+  DataTable = _window$SentinelDesig.DataTable,
+  Pill = _window$SentinelDesig.Pill,
+  ChipRow = _window$SentinelDesig.ChipRow,
+  SentinelBlock = _window$SentinelDesig.SentinelBlock,
+  SentinelText = _window$SentinelDesig.SentinelText,
+  Badge = _window$SentinelDesig.Badge,
+  Provenance = _window$SentinelDesig.Provenance;
+var TOK = ['--color-surface', '--color-track', '--tint-bronze-06', '--color-line-soft', '--border-hairline', '--radius-16', '--space-8', '--space-14', '--type-row-font', '--dur-fast', '--ease'];
+var COLS = [{
+  key: 'name',
+  label: 'Fund',
+  kind: 'text',
+  sticky: true,
+  sortable: true,
+  width: 150
+}, {
+  key: 'held',
+  label: 'Held',
+  kind: 'currency',
+  sortable: true
+}, {
+  key: 'weight',
+  label: 'Weight',
+  kind: 'bar',
+  sortable: true
+}];
+var WIDE = [].concat(COLS, [{
+  key: 'cat',
+  label: 'Category',
+  kind: 'text'
+}, {
+  key: 'ter',
+  label: 'TER',
+  kind: 'percent'
+}, {
+  key: 'shelf',
+  label: 'Shelf',
+  kind: 'badge'
+}]);
+var ROWS = [{
+  id: 'ppfc',
+  name: 'Parag Parikh Flexi Cap',
+  held: '₹4.2 L',
+  weight: '34%',
+  weightValue: 34,
+  cat: 'Flexi cap',
+  ter: 'data to supply',
+  shelf: /*#__PURE__*/React.createElement(Badge, {
+    variant: "status",
+    tone: "ok"
+  }, "On shelf")
+}, {
+  id: 'icbo',
+  name: 'ICICI Corporate Bond',
+  held: '₹2.4 L',
+  weight: '20%',
+  weightValue: 20,
+  cat: 'Corporate bond',
+  ter: 'data to supply',
+  shelf: /*#__PURE__*/React.createElement(Badge, {
+    variant: "status",
+    tone: "ok"
+  }, "On shelf")
+}, {
+  id: 'qsc',
+  name: 'Quant Small Cap',
+  held: '₹3.7 L',
+  weight: '31%',
+  weightValue: 31,
+  cat: 'Small cap',
+  ter: 'data to supply',
+  shelf: /*#__PURE__*/React.createElement(Badge, {
+    variant: "status",
+    tone: "over"
+  }, "Not on shelf")
+}, {
+  id: 'hdfl',
+  name: 'HDFC Flexi Cap',
+  held: '₹1.1 L',
+  weight: '9%',
+  weightValue: 9,
+  cat: 'Flexi cap',
+  ter: 'data to supply',
+  shelf: /*#__PURE__*/React.createElement(Badge, {
+    variant: "status",
+    tone: "ok"
+  }, "On shelf")
+}, {
+  id: 'utin',
+  name: 'UTI Nifty 50 Index',
+  held: '₹0.7 L',
+  weight: '6%',
+  weightValue: 6,
+  cat: 'Index',
+  ter: 'data to supply',
+  shelf: /*#__PURE__*/React.createElement(Badge, {
+    variant: "status",
+    tone: "under"
+  }, "Under review")
+}, {
+  id: 'sbcb',
+  name: 'SBI Corporate Bond',
+  held: '₹0.4 L',
+  weight: '3%',
+  weightValue: 3,
+  cat: 'Corporate bond',
+  ter: 'data to supply',
+  shelf: /*#__PURE__*/React.createElement(Badge, {
+    variant: "status",
+    tone: "ok"
+  }, "On shelf")
+}];
+var EMPTY = {
+  title: 'Nothing matches every filter.',
+  body: 'Drop one and I will widen the search.',
+  action: /*#__PURE__*/React.createElement(Pill, {
+    label: "Clear filters",
+    size: "sm",
+    tone: "filter"
+  })
+};
+function App() {
+  var _React$useState = React.useState({
+      key: 'weight',
+      dir: 'desc'
+    }),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    sort = _React$useState2[0],
+    setSort = _React$useState2[1];
+  var sorted = React.useMemo(function () {
+    if (!sort || sort.dir === 'none') return ROWS;
+    var num = function num(r) {
+      var _r;
+      return Number((_r = r[sort.key + 'Value']) !== null && _r !== void 0 ? _r : parseFloat(String(r[sort.key]).replace(/[^\d.]/g, '')) || 0);
+    };
+    var out = [].concat(ROWS).sort(function (a, b) {
+      return sort.key === 'name' ? String(a.name).localeCompare(String(b.name)) : num(a) - num(b);
+    });
+    return sort.dir === 'desc' ? out.reverse() : out;
+  }, [sort]);
+  var onSort = function onSort(key, dir) {
+    return setSort(dir === 'none' ? null : {
+      key: key,
+      dir: dir
+    });
+  };
+  return /*#__PURE__*/React.createElement(PageShell, {
+    name: "DataTable",
+    group: "Data",
+    status: "shipped",
+    requires: ['DataTable', 'Pill', 'Badge', 'ChipRow'],
+    summary: "The full table \u2014 sorting, filters, expand in place, and horizontal scroll when the columns outgrow the screen. DataTableCard stays the three-column card that sits in a thread; this is its widening. Every rule here exists because a table at 375pt fails in a specific way without it: one sticky column or the numbers have nothing to attach to; three visible columns beside it or the advisor never learns there is more; numbers on a shared right edge or a column cannot be read down."
+  }, /*#__PURE__*/React.createElement(Block, {
+    n: 1,
+    title: "Specimen",
+    sub: "Three columns and a sticky name, at real width, on the product background."
+  }, /*#__PURE__*/React.createElement(Specimen, {
+    width: 343
+  }, /*#__PURE__*/React.createElement(DataTable, {
+    title: "What Meera holds",
+    columns: COLS,
+    rows: sorted,
+    sort: sort,
+    onSort: onSort,
+    emptyState: EMPTY,
+    maxRows: 4,
+    onShowAll: function onShowAll() {}
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 2,
+    title: "Anatomy",
+    sub: "Dimensions outside the frame. The sticky column is the entity name \u2014 always, and there is exactly one."
+  }, /*#__PURE__*/React.createElement(Anatomy, {
+    width: 343,
+    top: "header: Eyebrow 10/700 \xB7 caret 9",
+    bottom: "row inset 8 \xB7 hairline 0.5",
+    left: "sticky column 150",
+    right: "figures share one right edge"
+  }, /*#__PURE__*/React.createElement(DataTable, {
+    columns: COLS,
+    rows: ROWS.slice(0, 3),
+    sort: {
+      key: 'weight',
+      dir: 'desc'
+    },
+    onSort: function onSort() {},
+    emptyState: EMPTY,
+    overflow: "scroll"
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "Column kinds",
+    sub: "Alignment is derived from kind, not chosen per caller. text and badge start; every figure ends."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 1,
+    items: [{
+      label: 'text · currency · bar',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: 343
+        }
+      }, /*#__PURE__*/React.createElement(DataTable, {
+        columns: COLS,
+        rows: ROWS.slice(0, 3),
+        emptyState: EMPTY,
+        overflow: "scroll"
+      })),
+      note: 'kind="bar" draws the magnitude behind the figure in --tint-bronze-06. The cell reads as text first; the bar is a secondary cue. No categorical colour anywhere in a table.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 4,
+    title: "Sorting",
+    sub: "One column at a time, cycling none \u2192 desc \u2192 asc. Only the active column shows a caret; press a header to move it."
+  }, /*#__PURE__*/React.createElement(Specimen, {
+    width: 343
+  }, /*#__PURE__*/React.createElement(DataTable, {
+    columns: COLS,
+    rows: sorted,
+    sort: sort,
+    onSort: onSort,
+    emptyState: EMPTY,
+    overflow: "scroll"
+  })), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 'var(--space-8) 0 0',
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-muted)'
+    }
+  }, "Live \u2014 sort is ", sort ? "".concat(sort.key, " ").concat(sort.dir) : 'none', ". Press Fund, Held or Weight.")), /*#__PURE__*/React.createElement(Block, {
+    n: 5,
+    title: "Six columns \u2014 scroll, fade and the one-time nudge",
+    sub: "Beyond three columns beside the sticky one the body scrolls. The fade says the row continues; the nudge, once on first render, says it before you touch anything."
+  }, /*#__PURE__*/React.createElement(Specimen, {
+    width: 343
+  }, /*#__PURE__*/React.createElement(DataTable, {
+    title: "Her shelf",
+    columns: WIDE,
+    rows: ROWS.slice(0, 4),
+    emptyState: EMPTY,
+    overflow: "scroll"
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 6,
+    title: "Expand in place",
+    sub: "The chevron lives in the sticky column and the detail pushes the rows below it down \u2014 never a modal, so the row you opened does not move under your thumb."
+  }, /*#__PURE__*/React.createElement(Specimen, {
+    width: 343
+  }, /*#__PURE__*/React.createElement(DataTable, {
+    columns: COLS,
+    rows: ROWS.slice(0, 4),
+    emptyState: EMPTY,
+    overflow: "scroll",
+    expandable: function expandable(r) {
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--space-6)'
+        }
+      }, /*#__PURE__*/React.createElement("p", {
+        style: {
+          margin: 0,
+          font: 'var(--type-row-font)',
+          color: 'var(--color-ink)'
+        }
+      }, r.cat, " \xB7 ", r.held, " held"), /*#__PURE__*/React.createElement(Provenance, {
+        text: "As of 30 Sep \xB7 from her September statement"
+      }));
+    }
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 7,
+    title: "States",
+    sub: "Fold is the default: a 43-row table inside a chat thread is not a good idea. Loading carries a live label, not a spinner."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 1,
+    items: [{
+      label: 'fold — 4 of 6',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: 343
+        }
+      }, /*#__PURE__*/React.createElement(DataTable, {
+        columns: COLS,
+        rows: ROWS,
+        maxRows: 4,
+        emptyState: EMPTY,
+        onShowAll: function onShowAll() {}
+      })),
+      note: 'The ghost pill names the real total, so the advisor knows what is hidden.'
+    }, {
+      label: 'loading',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: 343
+        }
+      }, /*#__PURE__*/React.createElement(DataTable, {
+        columns: COLS,
+        rows: [],
+        loading: true,
+        loadingLabel: "Reading her September statement",
+        emptyState: EMPTY
+      })),
+      note: 'A skeleton that says what it is doing is the difference between waiting and wondering.'
+    }, {
+      label: 'empty',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: 343
+        }
+      }, /*#__PURE__*/React.createElement(DataTable, {
+        columns: COLS,
+        rows: [],
+        emptyState: EMPTY
+      })),
+      note: 'Never "No data". It names the filter and offers the way out.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 8,
+    title: "In context",
+    sub: "In the thread, under the answer that produced it."
+  }, /*#__PURE__*/React.createElement(Thread, {
+    before: /*#__PURE__*/React.createElement(SentinelBlock, null, /*#__PURE__*/React.createElement(SentinelText, {
+      text: "Forty-three holdings. These six are 94% of the money."
+    }))
+  }, /*#__PURE__*/React.createElement(DataTable, {
+    title: "What Meera holds",
+    columns: COLS,
+    rows: ROWS,
+    maxRows: 4,
+    emptyState: EMPTY,
+    onShowAll: function onShowAll() {}
+  }))), /*#__PURE__*/React.createElement(Block, {
+    n: 9,
+    title: "Tokens"
+  }, /*#__PURE__*/React.createElement(Tokens, {
+    names: TOK
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 10,
+    title: "Props"
+  }, /*#__PURE__*/React.createElement(Props, {
+    src: "../components/cards/DataTable.d.ts"
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 11,
+    title: "Do / don't"
+  }, /*#__PURE__*/React.createElement(DoDont, {
+    doNode: /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 300
+      }
+    }, /*#__PURE__*/React.createElement(DataTable, {
+      columns: COLS,
+      rows: ROWS.slice(0, 3),
+      emptyState: EMPTY,
+      overflow: "scroll"
+    })),
+    doCaption: "Figures on one right edge, the name sticky. The column can be read down.",
+    dontNode: /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 300
+      }
+    }, /*#__PURE__*/React.createElement(DataTable, {
+      columns: COLS.map(function (c) {
+        return _objectSpread(_objectSpread({}, c), {}, {
+          align: 'start'
+        });
+      }),
+      rows: ROWS.slice(0, 3),
+      emptyState: EMPTY,
+      overflow: "scroll"
+    })),
+    dontCaption: "Figures aligned start. Nothing lines up, and comparing two rows means reading every digit."
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 12,
+    title: "Motion"
+  }, /*#__PURE__*/React.createElement(Motion, {
+    rows: [{
+      name: 'Sort caret',
+      property: 'transform: rotate(180deg)',
+      duration: '200 ms',
+      reduced: 'No rotation; the caret still moves column.'
+    }, {
+      name: 'Expand',
+      property: 'ds-fade on the detail block',
+      duration: '240 ms',
+      reduced: 'Unchanged — already opacity only.'
+    }, {
+      name: 'Scroll nudge',
+      property: 'ds-table-nudge — translateX −10 and back',
+      duration: '640 ms, once',
+      reduced: 'Does not run. The fade carries the same fact.'
+    }, {
+      name: 'Loading',
+      property: 'sentinel-shimmer on --color-track',
+      duration: '1200 ms, looping',
+      reduced: 'Holds at full opacity.'
+    }]
+  })));
+}
+mountPage(App);</script>
+</body></html>

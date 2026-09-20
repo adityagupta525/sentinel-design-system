@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sentinel</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root { color-scheme: light; }
+  html,body { margin:0; background:var(--color-desk); color:var(--color-ink); font-family:var(--font-ui); }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 20px 96px; box-sizing:border-box; }
+  header { padding:88px 0 40px; }
+  .mark { font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--color-bronze-deep); margin:0 0 20px; }
+  h1 { font-size:clamp(34px,6vw,56px); line-height:1.06; letter-spacing:-.02em; margin:0 0 20px; font-weight:600; text-wrap:balance; }
+  .lede { font-size:17px; line-height:1.6; color:var(--color-ink-soft); max-width:62ch; margin:0; }
+  .lede + .lede { margin-top:14px; }
+  h2 { font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--color-muted);
+       margin:0 0 6px; padding-top:56px; border-top:1px solid var(--color-line); }
+  .sub { font-size:15px; line-height:1.6; color:var(--color-ink-soft); max-width:64ch; margin:0 0 24px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(272px,1fr)); gap:14px; }
+  .card { display:flex; flex-direction:column; gap:7px; text-decoration:none; background:var(--color-surface);
+    border-radius:16px; padding:20px; box-shadow:0 0 0 1px var(--color-line); transition:box-shadow .18s, transform .18s; }
+  .card:hover { box-shadow:0 0 0 1px var(--color-bronze), 0 8px 24px -14px rgba(37,31,27,.3); transform:translateY(-1px); }
+  .card.big { grid-column:1/-1; background:var(--color-ink); box-shadow:none; padding:28px; }
+  .card.big .t { color:#fff; font-size:26px; } .card.big .n { color:#cfc6bd; max-width:54ch; }
+  .card.big .kicker { color:var(--color-bronze); }
+  .kicker { font-size:10.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--color-bronze-deep); }
+  .t { font-size:17px; font-weight:600; color:var(--color-ink); line-height:1.3; }
+  .n { font-size:13.5px; line-height:1.55; color:var(--color-muted); }
+  .grp { padding:22px 0; border-bottom:1px solid var(--color-line-soft); }
+  .grp:last-child { border-bottom:0; }
+  .grp h3 { font-size:15px; font-weight:600; margin:0 0 4px; text-transform:capitalize; }
+  .count { font-size:11.5px; font-weight:500; color:var(--color-muted); text-transform:none; letter-spacing:0; margin-left:8px; }
+  .gn { font-size:13.5px; line-height:1.5; color:var(--color-muted); margin:0 0 12px; max-width:70ch; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { display:inline-block; font-size:12.5px; line-height:1; padding:7px 11px; border-radius:999px; text-decoration:none;
+    background:var(--color-bubble); color:var(--color-bronze-deep); box-shadow:0 0 0 1px var(--color-bubble-edge); }
+  .chip:hover { background:var(--color-bronze); color:#fff; box-shadow:none; }
+  .chip.off { background:transparent; color:var(--color-muted); box-shadow:0 0 0 1px var(--color-line); }
+  ol.rules { counter-reset:r; list-style:none; padding:0; margin:0; display:grid; gap:12px; }
+  ol.rules li { counter-increment:r; background:var(--color-surface); border-radius:14px; padding:18px 20px 18px 56px;
+    position:relative; box-shadow:0 0 0 1px var(--color-line); }
+  ol.rules li::before { content:counter(r); position:absolute; left:20px; top:18px; font-size:15px; font-weight:700; color:var(--color-bronze); }
+  ol.rules b { display:block; font-size:15px; font-weight:600; margin-bottom:4px; }
+  ol.rules span { font-size:13.5px; line-height:1.55; color:var(--color-muted); }
+  ul.rulings { list-style:none; padding:0; margin:18px 0 0; display:grid; gap:9px; }
+  ul.rulings li { font-size:14px; line-height:1.55; color:var(--color-ink-soft); padding-left:18px; position:relative; }
+  ul.rulings li::before { content:'·'; position:absolute; left:4px; color:var(--color-bronze); font-weight:700; }
+  .small { display:flex; flex-wrap:wrap; gap:7px; }
+  .small a { font-size:12.5px; padding:8px 12px; border-radius:10px; background:var(--color-surface); color:var(--color-ink-soft);
+    text-decoration:none; box-shadow:0 0 0 1px var(--color-line); }
+  .small a:hover { box-shadow:0 0 0 1px var(--color-bronze); color:var(--color-bronze-deep); }
+  footer { padding-top:56px; border-top:1px solid var(--color-line); margin-top:56px; font-size:13px; line-height:1.6; color:var(--color-muted); max-width:70ch; }
+  @media (max-width:520px) { header { padding:56px 0 32px; } h2 { padding-top:40px; } }
+</style></head><body><div class="wrap">
+
+<header>
+  <p class="mark">Centricity WealthTech</p>
+  <h1>Sentinel</h1>
+  <p class="lede">A chat-led wealth-management assistant for advisors. An advisor talks to Sentinel about a
+  client, a fund or a plan; Sentinel answers in a thread, asks one question at a time, and turns the
+  answers into artifacts — a risk number, a proposal, a holdings review, a two-move rebalance.</p>
+  <p class="lede">One surface, at 375 × 812. Everything below is rendered from the same code, so what
+  you are looking at is the product rather than a picture of it.</p>
+</header>
+
+<h2>Start here</h2>
+<p class="sub">One phone, every journey, one router deciding which a sentence enters. Type into it — the
+sentences that work are listed in the demo script.</p>
+<div class="grid">
+  <a class="card big" href="screens/prototype.html">
+      <span class="kicker">The prototype</span>
+      <span class="t">Drive the whole product</span>
+      <span class="n">Home, the six journeys, the ledger, the refusals and going back — wired together. Type “Show me flexi cap funds on my shelf”, then “under 0.7% TER”.</span>
+    </a>
+</div>
+
+<h2>The six journeys</h2>
+<p class="sub">Each is a question an advisor actually asks. Every page renders the journey in all of its
+states, not only the one that goes well.</p>
+<div class="grid">
+  <a class="card" href="screens/journey-a/risk-profile.html">
+      <span class="kicker">Journey A</span>
+      <span class="t">Risk</span>
+      <span class="n">Twelve questions, mostly one tap, ending in a number you can build against.</span>
+    </a><a class="card" href="screens/journey-b/03-thread-answer.html">
+      <span class="kicker">Journey B</span>
+      <span class="t">Drift</span>
+      <span class="n">The trace, the answer, the artifact that expands in place, two moves and their cost.</span>
+    </a><a class="card" href="screens/journey-c/funds.html">
+      <span class="kicker">Journey C</span>
+      <span class="t">Funds</span>
+      <span class="n">A shortlist you can talk to, a fund’s own page, and five questions it answers.</span>
+    </a><a class="card" href="screens/journey-d/proposal.html">
+      <span class="kicker">Journey D</span>
+      <span class="t">Proposal</span>
+      <span class="n">Four questions, then where ₹25,00,000 would go — and what blocks it.</span>
+    </a><a class="card" href="screens/journey-e/rebalance.html">
+      <span class="kicker">Journey E</span>
+      <span class="t">Rebalance</span>
+      <span class="n">The answer first: where he is, what I would do, what it costs. Then the dials.</span>
+    </a><a class="card" href="screens/journey-f/review.html">
+      <span class="kicker">Journey F</span>
+      <span class="t">Review</span>
+      <span class="n">A record that asks what it is for, and names the figure it will not give.</span>
+    </a>
+</div>
+
+<h2>The rest of the product</h2>
+<p class="sub">The layer around the journeys: where an advisor starts, what they go back to, and what
+Sentinel will not do.</p>
+<div class="grid">
+  <a class="card" href="screens/thread/ledger.html">
+      <span class="kicker">Screen</span>
+      <span class="t">The ledger</span>
+      <span class="n">What was placed, and what has not settled</span>
+    </a><a class="card" href="screens/thread/refusals.html">
+      <span class="kicker">Screen</span>
+      <span class="t">What it refuses</span>
+      <span class="n">Five refusals, each naming what it can do instead</span>
+    </a><a class="card" href="screens/thread/going-back.html">
+      <span class="kicker">Screen</span>
+      <span class="t">Going back</span>
+      <span class="n">Editing a question that has already been answered</span>
+    </a><a class="card" href="screens/shell/drawer.html">
+      <span class="kicker">Screen</span>
+      <span class="t">The drawer</span>
+      <span class="n">The shell, and the one place a journey is resumed from</span>
+    </a><a class="card" href="screens/shell/who.html">
+      <span class="kicker">Screen</span>
+      <span class="t">Who</span>
+      <span class="n">The client picker every journey shares</span>
+    </a><a class="card" href="screens/journey-b/01-home.html">
+      <span class="kicker">Screen</span>
+      <span class="t">Home</span>
+      <span class="n">Where an advisor starts, and the three capabilities on it</span>
+    </a>
+</div>
+
+<h2>The system — 94 components</h2>
+<p class="sub">Every one of them is a contract, a prompt and a rendered specification — Tier 2 closed
+on 20 September. Each chip opens its own page.</p>
+<section class="grp">
+      <h3>chat <span class="count">17, all specified</span></h3>
+      <p class="gn">The thread. Sentinel’s half of a turn, the advisor’s half, and everything that arrives between them.</p>
+      <div class="chips"><a class="chip" href="pages/AttachmentTurn.html">AttachmentTurn</a> <a class="chip" href="pages/DetourBanner.html">DetourBanner</a> <a class="chip" href="pages/GreetingDivider.html">GreetingDivider</a> <a class="chip" href="pages/MessageActions.html">MessageActions</a> <a class="chip" href="pages/ParseNote.html">ParseNote</a> <a class="chip" href="pages/ProgressTrace.html">ProgressTrace</a> <a class="chip" href="pages/QAPair.html">QAPair</a> <a class="chip" href="pages/RefusalTurn.html">RefusalTurn</a> <a class="chip" href="pages/ResponseFeedback.html">ResponseFeedback</a> <a class="chip" href="pages/SentinelBlock.html">SentinelBlock</a> <a class="chip" href="pages/SentinelText.html">SentinelText</a> <a class="chip" href="pages/SentinelThinking.html">SentinelThinking</a> <a class="chip" href="pages/SentinelTurn.html">SentinelTurn</a> <a class="chip" href="pages/StepTrace.html">StepTrace</a> <a class="chip" href="pages/UserBubble.html">UserBubble</a> <a class="chip" href="pages/UserTurn.html">UserTurn</a> <a class="chip" href="pages/VersionRow.html">VersionRow</a></div>
+    </section><section class="grp">
+      <h3>cards <span class="count">15, all specified</span></h3>
+      <p class="gn">What an answer becomes — the artifact, the result, the sheet an advisor decides in.</p>
+      <div class="chips"><a class="chip" href="pages/AllocationCard.html">AllocationCard</a> <a class="chip" href="pages/ArtifactCard.html">ArtifactCard</a> <a class="chip" href="pages/Badge.html">Badge</a> <a class="chip" href="pages/ConfirmSheet.html">ConfirmSheet</a> <a class="chip" href="pages/ConstraintCallout.html">ConstraintCallout</a> <a class="chip" href="pages/DataTable.html">DataTable</a> <a class="chip" href="pages/DataTableCard.html">DataTableCard</a> <a class="chip" href="pages/DisclosureBlock.html">DisclosureBlock</a> <a class="chip" href="pages/ExplainerSheet.html">ExplainerSheet</a> <a class="chip" href="pages/HeroNumberCard.html">HeroNumberCard</a> <a class="chip" href="pages/InfoCard.html">InfoCard</a> <a class="chip" href="pages/MoveCard.html">MoveCard</a> <a class="chip" href="pages/RejectCallout.html">RejectCallout</a> <a class="chip" href="pages/ResultCard.html">ResultCard</a> <a class="chip" href="pages/Surface.html">Surface</a></div>
+    </section><section class="grp">
+      <h3>data <span class="count">15, all specified</span></h3>
+      <p class="gn">Figures, and the three devices allowed to draw them. One hue, always direct-labelled.</p>
+      <div class="chips"><a class="chip" href="pages/AttributionChart.html">AttributionChart</a> <a class="chip" href="pages/ChartBar.html">ChartBar</a> <a class="chip" href="pages/ChartLegend.html">ChartLegend</a> <a class="chip" href="pages/ChartLine.html">ChartLine</a> <a class="chip" href="pages/ChartReadout.html">ChartReadout</a> <a class="chip" href="pages/ChartShare.html">ChartShare</a> <a class="chip" href="pages/ChartTooltip.html">ChartTooltip</a> <a class="chip" href="pages/CompareTable.html">CompareTable</a> <a class="chip" href="pages/ConcentrationBar.html">ConcentrationBar</a> <a class="chip" href="pages/DrawnCheck.html">DrawnCheck</a> <a class="chip" href="pages/Dumbbell.html">Dumbbell</a> <a class="chip" href="pages/FigureRow.html">FigureRow</a> <a class="chip" href="pages/OverlapView.html">OverlapView</a> <a class="chip" href="pages/ProgressRail.html">ProgressRail</a> <a class="chip" href="pages/StatTile.html">StatTile</a></div>
+    </section><section class="grp">
+      <h3>actions <span class="count">12, all specified</span></h3>
+      <p class="gn">What the advisor is offered. Chips inside a turn, never pinned above the composer.</p>
+      <div class="chips"><a class="chip" href="pages/AnswerChip.html">AnswerChip</a> <a class="chip" href="pages/ChipRow.html">ChipRow</a> <a class="chip" href="pages/ClientChip.html">ClientChip</a> <a class="chip" href="pages/DarkButton.html">DarkButton</a> <a class="chip" href="pages/DownloadAction.html">DownloadAction</a> <a class="chip" href="pages/InfoDot.html">InfoDot</a> <a class="chip" href="pages/InlineActionRow.html">InlineActionRow</a> <a class="chip" href="pages/Pill.html">Pill</a> <a class="chip" href="pages/Pressable.html">Pressable</a> <a class="chip" href="pages/RangePills.html">RangePills</a> <a class="chip" href="pages/SegmentedRow.html">SegmentedRow</a> <a class="chip" href="pages/SuggestionRow.html">SuggestionRow</a></div>
+    </section><section class="grp">
+      <h3>shell <span class="count">11, all specified</span></h3>
+      <p class="gn">The phone: the bar, the dock, the scroller, the screen transition.</p>
+      <div class="chips"><a class="chip" href="pages/Dock.html">Dock</a> <a class="chip" href="pages/Drawer.html">Drawer</a> <a class="chip" href="pages/HomeIndicator.html">HomeIndicator</a> <a class="chip" href="pages/MotionGuard.html">MotionGuard</a> <a class="chip" href="pages/PhoneFrame.html">PhoneFrame</a> <a class="chip" href="pages/ScreenBackdrop.html">ScreenBackdrop</a> <a class="chip" href="pages/ScreenScaffold.html">ScreenScaffold</a> <a class="chip" href="pages/ScreenStack.html">ScreenStack</a> <a class="chip" href="pages/ScrollToBottomButton.html">ScrollToBottomButton</a> <a class="chip" href="pages/StatusSpacer.html">StatusSpacer</a> <a class="chip" href="pages/TopBar.html">TopBar</a></div>
+    </section><section class="grp">
+      <h3>composer <span class="count">3, all specified</span></h3>
+      <p class="gn">The one control on every screen, and the money variant a question can ask for.</p>
+      <div class="chips"><a class="chip" href="pages/Composer.html">Composer</a> <a class="chip" href="pages/MoneyComposer.html">MoneyComposer</a> <a class="chip" href="pages/StepComposer.html">StepComposer</a></div>
+    </section><section class="grp">
+      <h3>forms <span class="count">3, all specified</span></h3>
+      <p class="gn">Search, selection, and a file the advisor attached.</p>
+      <div class="chips"><a class="chip" href="pages/FileUpload.html">FileUpload</a> <a class="chip" href="pages/SearchField.html">SearchField</a> <a class="chip" href="pages/SelectionMark.html">SelectionMark</a></div>
+    </section><section class="grp">
+      <h3>lists <span class="count">3, all specified</span></h3>
+      <p class="gn">A row, a card of rows, and the follow-up row a turn offers.</p>
+      <div class="chips"><a class="chip" href="pages/FollowUpRow.html">FollowUpRow</a> <a class="chip" href="pages/List.html">List</a> <a class="chip" href="pages/ListRow.html">ListRow</a></div>
+    </section><section class="grp">
+      <h3>text <span class="count">4, all specified</span></h3>
+      <p class="gn">The lines that qualify a figure — the eyebrow, the provenance, the standing disclosure.</p>
+      <div class="chips"><a class="chip" href="pages/Eyebrow.html">Eyebrow</a> <a class="chip" href="pages/EyebrowDivider.html">EyebrowDivider</a> <a class="chip" href="pages/Provenance.html">Provenance</a> <a class="chip" href="pages/StandingDisclosure.html">StandingDisclosure</a></div>
+    </section><section class="grp">
+      <h3>icons <span class="count">11, all specified</span></h3>
+      <p class="gn">Eleven stroke glyphs. Six from the source set, five drawn to match.</p>
+      <div class="chips"><a class="chip" href="pages/IconArrow.html">IconArrow</a> <a class="chip" href="pages/IconAttach.html">IconAttach</a> <a class="chip" href="pages/IconCheckCircle.html">IconCheckCircle</a> <a class="chip" href="pages/IconChevronRight.html">IconChevronRight</a> <a class="chip" href="pages/IconDownload.html">IconDownload</a> <a class="chip" href="pages/IconFile.html">IconFile</a> <a class="chip" href="pages/IconInfo.html">IconInfo</a> <a class="chip" href="pages/IconMenu.html">IconMenu</a> <a class="chip" href="pages/IconPlus.html">IconPlus</a> <a class="chip" href="pages/IconSparkle.html">IconSparkle</a> <a class="chip" href="pages/IconSpinner.html">IconSpinner</a></div>
+    </section>
+
+<h2>Foundations</h2>
+<p class="sub">Every value the system allows, rendered rather than listed. The scale is generated from
+the token files, so the documented numbers cannot drift from the real ones.</p>
+<div class="small"><a href="guidelines/spacing.html">Spacing</a><a href="guidelines/spacing-in-use.html">Spacing in use</a><a href="guidelines/type-ui.html">Type · UI</a><a href="guidelines/type-display.html">Type · display</a><a href="guidelines/type-weights.html">Type · weights</a><a href="guidelines/colors-ink.html">Colour · ink</a><a href="guidelines/colors-bronze.html">Colour · bronze</a><a href="guidelines/colors-surfaces.html">Colour · surfaces</a><a href="guidelines/colors-data.html">Colour · data</a><a href="guidelines/colors-lines.html">Colour · lines</a><a href="guidelines/radius.html">Radius</a><a href="guidelines/shadows.html">Shadows</a><a href="guidelines/texture.html">Texture</a><a href="guidelines/motion.html">Motion</a><a href="guidelines/motion-screens.html">Motion · screens</a><a href="guidelines/dark-cta.html">The dark CTA</a><a href="guidelines/wordmark.html">Wordmark</a>
+<a href="pages/00-Index.html">All component pages</a></div>
+
+<h2>The four rules</h2>
+<p class="sub">Carried into every output, and each one is a gate rather than an intention.</p>
+<ol class="rules"><li><b>Colour never encodes identity</b><span>One bronze hue for magnitude. Rank is length; identity is the label. No pies, no donuts, no multi-hue stacked bars.</span></li><li><b>Bad news is text, never a fill</b><span>It sits on the peach bubble, in words. There is no red panel anywhere in this product.</span></li><li><b>The composer is on every screen</b><span>One documented exception — the confirm sheet, which is commit-or-dismiss with no third path, and holds that exception in its type.</span></li><li><b>Indian grouping, and provenance</b><span>₹1,85,000, and a line under the card saying where the figure came from and how complete it is.</span></li></ol>
+<ul class="rulings"><li>Nothing is pinned above the composer — what a message offers scrolls with that message.</li><li>One ✦ Sentinel signature per turn.</li><li>One door per thing. Two controls opening the same sheet is one too many.</li><li>Plain English an advisor can read aloud to a client.</li><li>A state of a screen is not a screen.</li></ul>
+
+<footer>
+  <p><b>What this is not.</b> It is not an application. There is no data layer and no authentication —
+  every figure comes from one fixture that is labelled as one on every screen that reads it. What this
+  is, is the product's design made executable, so that what gets built can be checked against it rather
+  than described.</p>
+  <p>94 components, every one specified · 144 pages rendering clean · six journeys · one prototype.</p>
+</footer>
+
+</div></body></html>
