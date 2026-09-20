@@ -193,6 +193,144 @@ const managerProvenance = () => `manager tenure is illustrative for design, not 
    may only be shown through a line this file writes. */
 const comparisonProvenance = () => `returns, cost, size and manager tenure · illustrative figures for design, not a scheme record · as of ${PERF_AS_OF}`;
 
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   HOLDINGS, MONTHLY CHANGES, CATEGORY AVERAGES, SWITCH COST — the four feeds the explorer lacked, as
+   FIXTURES on PERF's terms (20 Sep 2026, docs/FUND-EXPLORER-V2-PLAN.md §1).
+
+   Generated at load, deterministically, from a seed per fund — the same way NAV_SERIES got its shape —
+   so the numbers are stable across renders and nobody hand-typed three hundred weights. The COMPANY
+   NAMES are real listed companies chosen to fit each fund's category (an index fund holds the Nifty's
+   largest; a corporate-bond fund holds AAA issuers). THE WEIGHTS ARE OURS. `fixture: true` on every row,
+   and `holdingsProvenance()` writes the only line a card may carry about where they came from.
+
+   Internal consistency is the point: top-ten weights descend; an index fund is more concentrated at the
+   top than a flexi cap; a small cap is flatter; the three months of sector weights drift by fractions,
+   never jump; concentration figures are COMPUTED from the same list the table shows, so the two cannot
+   disagree; and overlap between two funds is computed from the names they actually share. */
+const seeded = (key) => { let h = 2166136261; for (const ch of key) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; }; };
+const HOLDINGS_AS_OF = 'Jun 2026';
+const HOLD_MONTHS = ['Jun 2026', 'May 2026', 'Apr 2026'];
+/* What each category holds, by name and sector. Real companies; invented weights. */
+const NAMES = {
+  /* Fourteen names for the diversified equity funds and each fund draws TEN of them in its own seeded
+     order — so two flexi caps share some of their top ten and not all of it. Measured before this:
+     every 'large' fund read the same list top-down and ppfas↔hdfc-flexi overlapped 98%, which no two
+     real flexi caps do. The index fund is the exception: its top ten IS the index's, in index order. */
+  large:  [['HDFC Bank','Financial services'],['ICICI Bank','Financial services'],['Infosys','IT'],['Reliance Industries','Energy'],['Bharti Airtel','Telecom'],['ITC','Consumer'],['Larsen & Toubro','Industrials'],['TCS','IT'],['Axis Bank','Financial services'],['Coal India','Energy'],['Power Grid','Utilities'],['Maruti Suzuki','Consumer'],['Sun Pharma','Healthcare'],['Bajaj Finance','Financial services']],
+  index:  [['HDFC Bank','Financial services'],['Reliance Industries','Energy'],['ICICI Bank','Financial services'],['Infosys','IT'],['Bharti Airtel','Telecom'],['Larsen & Toubro','Industrials'],['ITC','Consumer'],['TCS','IT'],['Axis Bank','Financial services'],['State Bank of India','Financial services']],
+  mid:    [['Coforge','IT'],['Persistent Systems','IT'],['Polycab India','Industrials'],['Trent','Consumer'],['Dixon Technologies','Industrials'],['Max Healthcare','Healthcare'],['Bharat Electronics','Industrials'],['Indian Hotels','Consumer'],['Voltas','Consumer'],['Kalyan Jewellers','Consumer']],
+  small:  [['RBL Bank','Financial services'],['Aegis Logistics','Energy'],['Bikaji Foods','Consumer'],['Jyothy Labs','Consumer'],['KEI Industries','Industrials'],['Cyient DLM','Industrials'],['Godrej Agrovet','Consumer'],['Welspun Living','Consumer'],['Sun Pharma Advanced','Healthcare'],['CESC','Utilities']],
+  hybrid: [['HDFC Bank','Financial services'],['ICICI Bank','Financial services'],['Govt of India G-Sec 2033','Sovereign'],['Infosys','IT'],['Reliance Industries','Energy'],['Govt of India G-Sec 2030','Sovereign'],['Bharti Airtel','Telecom'],['NABARD 2028 bond','PSU finance'],['ITC','Consumer'],['Larsen & Toubro','Industrials']],
+  debt:   [['HDFC Bank NCD 2028','Housing finance'],['REC 2029 bond','PSU finance'],['PFC 2028 bond','PSU finance'],['NABARD 2027 bond','PSU finance'],['Bajaj Finance NCD 2028','NBFC'],['LIC Housing Finance 2029','Housing finance'],['SIDBI 2027 bond','PSU finance'],['NHAI 2030 bond','Infrastructure'],['IRFC 2029 bond','PSU finance'],['Govt of India G-Sec 2029','Sovereign']],
+};
+const CAT_KEY = { 'Flexi cap': 'large', 'Large cap': 'large', 'Index': 'index', 'Mid cap': 'mid', 'Small cap': 'small', 'Balanced advantage': 'hybrid', 'Corporate bond': 'debt', 'Short duration': 'debt' };
+/* Top-ten shape by category: first weight and the slope down. Index funds are top-heavy; small caps flat. */
+const SHAPE = { large: [8.4, 0.62], index: [12.1, 0.95], mid: [5.6, 0.32], small: [4.1, 0.18], hybrid: [7.2, 0.55], debt: [6.8, 0.45] };
+const CAPS = { large: [65, 20, 6], index: [100, 0, 0], mid: [12, 74, 8], small: [4, 18, 74], hybrid: [58, 8, 4], debt: [0, 0, 0] };
+const round1 = (n) => Math.round(n * 10) / 10;
+const HOLDINGS = {};
+FUNDS.forEach((f) => {
+  const key = CAT_KEY[f.category] || 'large'; const rnd = seeded('hold:' + f.id);
+  const [w0, slope] = SHAPE[key];
+  const pool = key === 'index' ? NAMES[key] : [...NAMES[key]].sort(() => rnd() - 0.5);
+  const top = pool.slice(0, 10).map(([name, sector], i) => ({ name, sector, pct: round1(w0 - slope * i + (rnd() - 0.5) * 0.6) }));
+  const isDebt = key === 'debt';
+  const equity = isDebt ? 0 : key === 'hybrid' ? 70 : key === 'index' ? 99.4 : round1(84 + rnd() * 10);
+  const debtCash = round1(100 - equity);
+  const [L, M, S] = CAPS[key]; const capScale = equity / (L + M + S || 1);
+  const caps = isDebt ? [] : [['Large cap', L], ['Mid cap', M], ['Small cap', S]].filter(([, v]) => v > 0).map(([label, v]) => ({ label, pct: round1(v * capScale) }));
+  /* Sector weights for three months: the newest is summed from the top ten plus a tail; the older two
+     drift back by fractions so a month-over-month reading is real and small. */
+  const bySector = {};
+  top.forEach((h) => { bySector[h.sector] = (bySector[h.sector] || 0) + h.pct; });
+  const tail = 100 - top.reduce((a, h) => a + h.pct, 0);
+  const secNames = Object.keys(bySector);
+  secNames.forEach((n) => { bySector[n] = round1(bySector[n] + tail * (0.5 + rnd()) / secNames.length * 0.9); });
+  const sectors = {};
+  HOLD_MONTHS.forEach((m, mi) => {
+    sectors[m] = secNames.map((n) => ({ name: n, pct: round1(bySector[n] - mi * (rnd() - 0.4) * 1.4) })).sort((a, b) => b.pct - a.pct);
+  });
+  const count = isDebt ? 38 + Math.round(rnd() * 20) : key === 'index' ? 50 : 60 + Math.round(rnd() * 60);
+  const top5 = round1(top.slice(0, 5).reduce((a, h) => a + h.pct, 0));
+  const secNow = sectors[HOLDINGS_AS_OF];
+  HOLDINGS[f.id] = {
+    asOf: HOLDINGS_AS_OF, count, split: { equity, debtCash }, caps, sectors, top,
+    concentration: { top5CompaniesPct: top5, largestCompany: top[0], sectorsCount: secNames.length + (isDebt ? 0 : 3),
+      top5SectorsPct: round1(secNow.slice(0, 5).reduce((a, x) => a + x.pct, 0)), largestSector: secNow[0] },
+    fixture: true,
+  };
+});
+const holdingsOf = (id) => HOLDINGS[id] || null;
+const holdingsProvenance = () => `holdings and sector weights · illustrative for design, not a scheme portfolio · as of ${HOLDINGS_AS_OF}`;
+/* OVERLAP, computed: the weight two funds share in the names their top tens have in common, as a
+   share of the smaller fund's top-ten weight. Null when either side has no holdings on file — an em
+   dash, never a zero, which is OverlapView's own rule. */
+const overlapPct = (a, b) => {
+  const A = HOLDINGS[a], B = HOLDINGS[b]; if (!A || !B) return null;
+  const wb = Object.fromEntries(B.top.map((h) => [h.name, h.pct]));
+  const shared = A.top.reduce((s, h) => s + (wb[h.name] != null ? Math.min(h.pct, wb[h.name]) : 0), 0);
+  const base = Math.min(A.top.reduce((s, h) => s + h.pct, 0), B.top.reduce((s, h) => s + h.pct, 0));
+  return base ? Math.round((shared / base) * 100) : 0;
+};
+
+/* WHAT CHANGED — three months per fund, as facts a sentence can be built from. `aumChangeCr` is
+   scaled to the fund's size; returns are monthly, not annualised, and the benchmark's sits beside. */
+const MONTHLY = {};
+FUNDS.forEach((f) => {
+  const rnd = seeded('month:' + f.id); const p = PERF[f.id]; const h = HOLDINGS[f.id];
+  const vol = { 'Small cap': 4.2, 'Mid cap': 3.4, 'Flexi cap': 2.4, 'Large cap': 2.2, 'Index': 2.2, 'Balanced advantage': 1.4, 'Corporate bond': 0.35, 'Short duration': 0.3 }[f.category] || 2;
+  MONTHLY[f.id] = HOLD_MONTHS.map((month) => {
+    const bench = round1((rnd() - 0.45) * vol * 1.6);
+    const fund = round1(bench + (rnd() - 0.42) * vol * 0.8);
+    const names = h.top.map((x) => x.name);
+    const picks = [...names].sort(() => rnd() - 0.5);
+    return { month, aumChangeCr: Math.round(p.aumCr * (0.004 + rnd() * 0.02) * (rnd() > 0.25 ? 1 : -1)),
+      fundReturn: fund, benchReturn: bench,
+      gainers: picks.slice(0, 3).map((n) => ({ name: n, pct: round1(2 + rnd() * 9) })),
+      losers: picks.slice(3, 6).map((n) => ({ name: n, pct: round1(-(1 + rnd() * 9)) })), fixture: true };
+  });
+});
+const monthlyOf = (id) => MONTHLY[id] || null;
+const monthlyProvenance = () => `monthly changes · illustrative figures for design, not a scheme record · as of ${HOLDINGS_AS_OF}`;
+
+/* CATEGORY AVERAGES — one row per category, so two funds in one category are read against the same
+   number. Set below the good funds and above the index fund's tracking, which is how a category
+   average sits in the real tables this was read from. */
+const CATEGORY_AVG = {
+  'Flexi cap': { r1: 14.9, r3: 18.6, r5: 19.2 }, 'Large cap': { r1: 12.8, r3: 15.1, r5: 15.4 }, 'Index': { r1: 13.5, r3: 15.7, r5: 16.3 },
+  'Mid cap': { r1: 17.2, r3: 25.3, r5: 24.8 }, 'Small cap': { r1: 6.1, r3: 24.9, r5: 29.6 }, 'Balanced advantage': { r1: 10.4, r3: 12.1, r5: 11.9 },
+  'Corporate bond': { r1: 7.4, r3: 6.6, r5: 6.9 }, 'Short duration': { r1: 7.2, r3: 6.4, r5: 6.6 },
+};
+const categoryAvgOf = (id) => { const f = fundById(id); return f ? CATEGORY_AVG[f.category] || null : null; };
+
+/* THE COST OF A SWITCH, line by line. A switch is a redemption plus a purchase, so it is taxable, and
+   the tax depends on when each lot was bought — which is why this returns NULL when the folio has no
+   purchase dates on file: the uncosted case is a missing input with a name, not a zero. For Sharma's
+   one costed move the split reproduces the ₹11,200 the product has stated since Journey B, so the total
+   printed on the confirm and the breakdown printed above it cannot disagree. */
+const SWITCH_LOTS = {
+  /* 42% of the ₹1,85,000 was bought inside the last year (the 2024–25 small-cap run), so the exit load
+     bites only there; the rest is long-term. The three lines sum to the ₹11,200 Journey B has stated. */
+  'quant-small': { forAmountRs: 185000, underYearRs: 77700, gainUnderYearRs: 25865, gainOverYearRs: 42000, datesOnFile: true },
+};
+const switchCost = (fromId, amountRs) => {
+  const f = fundById(fromId); const lots = SWITCH_LOTS[fromId];
+  if (!f || !lots || !lots.datesOnFile) return null;
+  /* The lots are written for the ₹1,85,000 the product has always moved; a different amount scales them
+     pro rata, so a dial that moves less (or the whole holding) costs in proportion. */
+  const k = amountRs / lots.forAmountRs;
+  const loadPct = parseFloat(f.exitLoad) || 0;
+  const exitLoadRs = Math.round(lots.underYearRs * k * loadPct / 100);
+  const stcgRs = Math.round(lots.gainUnderYearRs * k * TAX.stcgPct / 100);
+  const ltcgRs = Math.round(lots.gainOverYearRs * k * TAX.ltcgPct / 100);
+  return { exitLoadRs, stcgRs, ltcgRs, totalRs: exitLoadRs + stcgRs + ltcgRs,
+    lines: [
+      { label: 'Exit load', value: inr(exitLoadRs), rule: `${f.exitLoad} — on the units under a year old` },
+      { label: 'Short-term gains tax', value: inr(stcgRs), rule: `${TAX.stcgPct}% on gains under twelve months` },
+      { label: 'Long-term gains tax', value: inr(ltcgRs), rule: `${TAX.ltcgPct}% above the ₹1.25 L annual allowance` },
+    ] };
+};
+
 const perfProvenance = (period) => `${period ? period + ' returns · ' : ''}illustrative figures for design, not a scheme record · as of ${PERF_AS_OF}`;
 const PERF_PERIODS = [{ key: 'r1', label: '1Y' }, { key: 'r3', label: '3Y' }, { key: 'r5', label: '5Y' }];
 /* Returns are annualised past 1Y, and saying so is not optional — SEBI's own presentation rule, and the
@@ -478,7 +616,7 @@ const driftPoints = (c) => (c.allocation && c.mandate ? c.allocation.equity - c.
 const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.singleFund);
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
-Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, MANAGERS, managerOf, managerLine, managerProvenance, comparisonProvenance, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
+Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, MANAGERS, managerOf, managerLine, managerProvenance, comparisonProvenance, HOLDINGS, HOLDINGS_AS_OF, HOLD_MONTHS, holdingsOf, holdingsProvenance, overlapPct, MONTHLY, monthlyOf, monthlyProvenance, CATEGORY_AVG, categoryAvgOf, switchCost, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
   REVIEW_TOP_RS, REVIEW_TAIL_RS, REVIEW_TAIL_AVG_RS, REVIEW_TINY_CAP_RS, REVIEW_AUDIENCES, REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
   NAV_SERIES, NAV_MONTHS, NAV_BASE, navSeries, tenKAfter, benchCagr,
   driftPoints, overSingleFund, inr });

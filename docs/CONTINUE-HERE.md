@@ -574,11 +574,16 @@ Be honest about these with the owner rather than guessing around them.
 5. **Next phase.** Tier 2 (43 short pages) or screens. The recommendation on record is **screens**:
    everything a screen is assembled from is now page-verified, and the Tier 2 gaps will show up as
    real gaps while building rather than as guesses on a page.
-6. **Three spacing dissents found by `SentinelTurn` (F-54, 20 Sep 2026).** Each is a visible 2–4px, so
-   each needs your word before it moves. `proposal.jsx:141` gaps two sentences at **8** where five
-   other sites use **10**; `answer.jsx:127` gaps a card at **8** where seven use **12**;
-   `answer.jsx:130` gaps provenance at **8** where `rail.jsx`, `InfoCard` and `OverlapView` all use
-   **10**. Say the word and all three become the component's default and stop being sites at all.
+6. ~~**Three spacing dissents (F-54)**~~ — ruled 20 Sep 2026, the owner took the component's vote; all three
+   sites migrated (`9cce54b`).
+7. **`docs/FUND-EXPLORER-V2-PLAN.md` is waiting for three yeses** (20 Sep 2026): ceiling marks on
+   `AllocationCard` for the rebalance's first turn · the rebalance re-sequenced as answer-first with the
+   three rules as dials · the fixture scope (ten funds × three months, generated on PERF's terms — the
+   fixtures themselves are already in `book.jsx` because the owner asked for the holdings feed the same
+   day). Read it before touching Journey C or E.
+8. **The Figma file** (`Centricity-Global-app-design`, node 130-2550) is the other Centricity app's
+   design — read for CONTENT and field names, never for shape. The connector was `pending` at the end
+   of the 20 Sep session; a new session sees its tools.
 
 ## 8 · Publishing the review Artifact from a new account
 
