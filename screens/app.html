@@ -57,15 +57,31 @@
   html, body { margin:0; height:100%; background:var(--color-canvas); font-family:var(--font-ui);
     overscroll-behavior:none; -webkit-tap-highlight-color:transparent; }
   /* The stage fills whatever it is opened on; the frame inside it is always 375x812 and is scaled. */
-  #root { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  /* `inset`, not padding. `clientHeight` INCLUDES padding, so a root padded by the safe-area insets
+     reports the same height as an unpadded one and the scale is computed against space the device
+     has already taken — which is how the top came out cut. Insetting the box makes clientHeight the
+     space that is actually free. */
+  #root { position:fixed; display:flex; align-items:center; justify-content:center;
+    top:env(safe-area-inset-top,0px); bottom:env(safe-area-inset-bottom,0px);
+    left:env(safe-area-inset-left,0px); right:env(safe-area-inset-right,0px); }
   .ds-stage { width:375px; height:812px; overflow:hidden; position:relative;
     transform:scale(var(--ds-fit,1)); transform-origin:center center; }
   /* Installed on a home screen, the device draws its own status bar over the top of the page — and
      the screen then carried two, the real 12:48 above the system's simulated 3:04. The simulated one
      is hidden and the 44px it occupies is kept, so the layout below it does not move by a pixel.
      In a browser tab there is no device status bar and this rule does not apply. */
+  /* INSTALLED ON A HOME SCREEN, the device draws the real status bar and the real home indicator, in
+     exactly the two places this product draws its own simulated ones. Both simulated ones are removed
+     — not hidden, removed — and the stage is shortened by exactly the 68px they occupied, so the
+     layout between them does not move by a pixel and the app ends up the size of the phone.
+
+     The `#root` padding is the part that stops the top being cut: iOS may hand the page the whole
+     screen and paint its status bar over it, or hand it what is left below. Padding by the real
+     safe-area insets is correct either way, and the scale is computed from what is left after them
+     rather than from `window.innerHeight`, which does not know about either. */
   @media (display-mode: standalone) {
-    .ds-statusbar > * { visibility: hidden; }
+    .ds-statusbar, .ds-homeindicator { display: none; }
+    .ds-stage { height: 744px; }
   }
 </style>
 </head><body><script data-ds-file-guard>if (location.protocol === 'file:') {
@@ -90,13 +106,24 @@
    trick: on iOS the visual viewport shrinks when the keyboard opens, and scaling to that would
    shrink the entire app every time someone typed. `innerHeight` does not move for the keyboard. */
 (function () {
+  var root = document.getElementById('root');
+  var standalone = function () {
+    return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  };
   var fit = function () {
-    var s = Math.min(window.innerWidth / 375, window.innerHeight / 812);
-    document.documentElement.style.setProperty('--ds-fit', String(s));
+    /* The box that is actually available — `#root` is inset by the safe areas, so its own size is
+       the free space. The window is not: it counts the device's own bars as usable. */
+    var w = root.clientWidth, h = root.clientHeight;
+    if (!w || !h) { w = window.innerWidth; h = window.innerHeight; }
+    /* 812 less the 44 of the simulated status bar and the 24 of the simulated home indicator, both
+       of which the stylesheet removes when the device is drawing the real ones. */
+    var stage = standalone() ? 744 : 812;
+    document.documentElement.style.setProperty('--ds-fit', String(Math.min(w / 375, h / stage)));
   };
   fit();
   window.addEventListener('resize', fit);
-  window.addEventListener('orientationchange', function () { setTimeout(fit, 80); });
+  window.addEventListener('orientationchange', function () { setTimeout(fit, 120); });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', function () { setTimeout(fit, 0); });
 })();
 </script>
 <script type="text/babel" data-presets="react">

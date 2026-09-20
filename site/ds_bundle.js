@@ -2022,7 +2022,11 @@ var __ds_out = (() => {
 
   // design-system/components/shell/HomeIndicator.jsx
   function HomeIndicator({ tone = "bronze" }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 10, display: "flex", height: 24, width: "100%", flexShrink: 0, alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 5, width: 134, borderRadius: "var(--radius-full)", background: tone === "dark" ? "var(--color-ink)" : "var(--color-bronze)", opacity: tone === "dark" ? 0.8 : 1 } }));
+    return (
+      /* `ds-homeindicator` is a hook, not a style, and its twin is on `StatusSpacer`. A build running on
+         a real phone hides both, because the device draws the real ones in the same two places. */
+      /* @__PURE__ */ react_global_default.createElement("div", { className: "ds-homeindicator", style: { position: "relative", zIndex: 10, display: "flex", height: 24, width: "100%", flexShrink: 0, alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 5, width: 134, borderRadius: "var(--radius-full)", background: tone === "dark" ? "var(--color-ink)" : "var(--color-bronze)", opacity: tone === "dark" ? 0.8 : 1 } }))
+    );
   }
 
   // design-system/components/shell/MotionGuard.jsx
