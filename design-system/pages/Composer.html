@@ -108,7 +108,7 @@ function App() {
 
       <Block n={8} title="Do / Don't">
         <DoDont
-          doNode={<Dock cta={<DarkButton label="Approve all three" arrow full />} composer={<Composer value="" onChange={() => {}} placeholder="Ask about any move" />} />}
+          doNode={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask about any move" />} />}
           doCaption="CTA above, composer below, both present. The advisor approves or asks — and asking does not cost them the approval."
           dontNode={<div style={{ padding: '6px 0' }}>
             <DarkButton label="Approve all three" arrow full />

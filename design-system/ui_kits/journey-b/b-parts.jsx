@@ -1,4 +1,19 @@
-const { Eyebrow, Pill, InlineActionRow, DarkButton, Composer, Dock, HomeIndicator, StatusSpacer, TopBar, ScreenBackdrop, DrawnCheck, Badge, StatTile, Sparkline, Pressable } = window.DS;
+const { Eyebrow, Pill, InlineActionRow, DarkButton, Composer, Dock, HomeIndicator, StatusSpacer, TopBar, ScreenBackdrop, DrawnCheck, Badge, StatTile, Sparkline, Pressable, ChartBar, FigureRow, Surface } = window.DS;
+/* REDRAWN 20 Sep 2026. Three of the parts on this board were hand-drawn copies of devices the system
+   now owns, so every fix to the real component has been invisible here since it was written — which
+   is the exact failure the kit's own standing rule names: "the kit never ships an artboard that
+   contradicts the current component set. Redraw it, or delete it."
+
+   - `AttributionPreview` drew its own 108pt label column, its own bars and its own track. That is
+     `ChartBar density='peek'`, which `screens/journey-b/answer.jsx` has used since it was built, and
+     which enforces rule 1 — one hue, the label carries the identity.
+   - `ComplianceCard` drew label / value rows with a quiet note and an `over` tone by hand. That pair
+     is `FigureRow`, built 20 Sep out of four hand-written instances exactly like these, in a
+     `Surface` rather than a card with its own ring.
+   - `CostBreakdown` drew a rail of dots, its own chevron and its own total row. The product's cost
+     breakdown is FigureRows with the total strong and the lines quiet — `screens/journey-b/moves.jsx`.
+
+   And `ResultDock` no longer takes a `cta`: a decision belongs under the thing it decides about. */
 
 /* Artboard shell — every artboard is a real 375×812 screen. */
 function Artboard({ name, sub, children }) {
@@ -25,70 +40,54 @@ function SkeletonRow({ label, wide }) {
   );
 }
 
-/* Compact attribution preview for the artifact card — 96px, never scrollable. */
+/* Compact attribution preview for the artifact card — 96px, never scrollable.
+   `ChartBar density='peek'` caps at four rows and ranks them; the three the product attributes the
+   drift to are what it draws, and they are the product's own figures rather than the board's older
+   ones. A hand-drawn third row in `--color-data-deemph` with a hollow bar was encoding "this one is
+   different" in two ways the component does not have and the system does not allow. */
 function AttributionPreview() {
-  const rows = [['Small-cap rally', 6.1, 1], ['His July top-up', 3.4, 0.56], ['Your switch out', -1.2, 0.2]];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 2 }}>
-      {rows.map(([l, v, frac], i) => (
-        <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ width: 108, flexShrink: 0, ...f(500, 12, 16, i === 2 ? 'var(--color-data-deemph)' : 'var(--color-ink)') }}>{l}</span>
-          <div style={{ position: 'relative', height: 14, flex: 1 }}>
-            <div style={{ position: 'absolute', inset: '0 auto 0 0', width: (frac * 100) + '%', borderRadius: '2px 5px 5px 2px', background: i === 2 ? 'var(--color-track)' : 'var(--color-bronze)', boxShadow: i === 2 ? 'inset 0 0 0 1px var(--color-data-deemph)' : 'none' }} />
-          </div>
-          <span style={{ width: 34, textAlign: 'right', ...f(700, 12, null, i === 2 ? 'var(--color-data-deemph)' : 'var(--color-bronze-deep)') }}>{v > 0 ? '+' : '−'}{Math.abs(v)}</span>
-        </div>
-      ))}
-    </div>
+    <ChartBar density="peek" run={false}
+      bars={[{ label: 'Small-cap rally', value: 6.1 }, { label: 'His July top-up', value: 2.0 }, { label: 'The funds moved', value: 0.9 }]}
+      valueFormat={(v) => `+${v.toFixed(1)}`} />
   );
 }
 
-/* Compliance status card (Plate 4) — status is stated as a row, never implied. */
+/* Compliance status card (Plate 4) — status is stated as a row, never implied.
+   `FigureRow` is that pair: label and figure on one baseline, the note as the quiet half, and `over`
+   as TEXT colour rather than a fill. `Surface elevation='ring'` is the card it sits in. */
 function ComplianceCard({ rows }) {
   return (
-    <div style={{ ...cardS, boxShadow: '0 0 0 1px var(--color-line)', padding: '0 14px' }}>
-      {rows.map((r, i) => (
-        <div key={r.label} style={{ display: 'flex', minHeight: 'var(--h-row-xl)', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '8px 0', borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none' }}>
-          <div style={{ minWidth: 0 }}>
-            <p style={f(500, 13, 18)}>{r.label}</p>
-            {r.note && <p style={{ ...f(400, 11, 15, 'var(--color-data-deemph)'), marginTop: 2 }}>{r.note}</p>}
-          </div>
-          <span style={{ flexShrink: 0, ...f(700, 13, null, r.tone === 'over' ? 'var(--color-status-over-fg)' : 'var(--color-ink)') }}>{r.value}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* Cost breakdown on the rail — reuses the trace structure (Plate 4, middle). */
-function CostBreakdown({ items }) {
-  return (
-    <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-        <span style={f(500, 13, 18, 'var(--color-ink)')}>What this costs</span>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ transform: 'rotate(180deg)' }}><path d="M3 4.5 6 7.5 9 4.5" stroke="var(--color-muted)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg>
-      </div>
-      <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 12, paddingLeft: 2 }}>
-        <div style={{ position: 'absolute', top: 8, bottom: 8, left: 9, width: 1, background: 'var(--color-line)' }} />
-        {items.map((it) => (
-          <div key={it.label} style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ display: 'flex', width: 16, height: 16, flexShrink: 0, alignItems: 'center', justifyContent: 'center', borderRadius: 9999, background: 'var(--color-canvas)', boxShadow: 'inset 0 0 0 1.4px var(--color-bronze)' }}>
-              {it.dir === 'eq'
-                ? <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 3h5M1.5 5h5" stroke="var(--color-bronze-deep)" strokeWidth="1.2" strokeLinecap="round" /></svg>
-                : <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 1v6M1.8 4.8 4 7l2.2-2.2" stroke="var(--color-bronze-deep)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>}
-            </span>
-            <span style={{ flex: 1, ...f(it.dir === 'eq' ? 600 : 500, 13, 18) }}>{it.label}</span>
-            <span style={f(it.dir === 'eq' ? 700 : 500, 13, 18, it.dir === 'eq' ? 'var(--color-bronze-deep)' : 'var(--color-ink)')}>{it.value}</span>
-          </div>
+    <Surface elevation="ring">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)' }}>
+        {rows.map((r) => (
+          <FigureRow key={r.label} label={r.label} value={r.value} tone={r.tone === 'over' ? 'over' : 'ink'}
+            sub={r.note ? { label: r.note, value: '' } : undefined} />
         ))}
       </div>
+    </Surface>
+  );
+}
+
+/* Cost breakdown on the rail — the product's own shape now (`screens/journey-b/moves.jsx`): the total
+   is the strong row because the total is what an advisor approves, and the lines that produce it are
+   quiet under it. The rail of dots, the ring icons and the rotated chevron were three drawings doing
+   the job of one component's `weight` prop. */
+function CostBreakdown({ items }) {
+  const total = items.find((it) => it.dir === 'eq');
+  const lines = items.filter((it) => it.dir !== 'eq');
+  return (
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+      {total && <FigureRow label={total.label} value={total.value} />}
+      {lines.map((it) => <FigureRow key={it.label} label={it.label} value={it.value} weight="quiet" />)}
     </div>
   );
 }
 
-/* The standing dock for a canvas / result — chips, CTA, composer, disclosure. Composer always last and always present. */
-function ResultDock({ chips, cta, placeholder, value = '', streaming = false }) {
-  return <Dock chips={chips} cta={cta} composer={<Composer value={value} onChange={() => {}} placeholder={placeholder} streaming={streaming} />} />;
+/* The standing dock for a result — the composer, and the disclosure under it. No chips, no CTA: both
+   moved into the turn that offers them (ruling, 18 Sep). */
+function ResultDock({ placeholder, value = '', streaming = false }) {
+  return <Dock composer={<Composer value={value} onChange={() => {}} placeholder={placeholder} streaming={streaming} />} />;
 }
 /* Frozen trace. The kit renders its own static trace rather than relying on ProgressTrace's autoplay gate —
    an artboard must never show a running clock, whatever the bundle carries. */

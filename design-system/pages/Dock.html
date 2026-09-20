@@ -1,4 +1,4 @@
-<!-- @dsCard group="Pages" viewport="1000x1400" name="Dock & Composer" subtitle="Three rows, one law — chips, CTA, composer. The CTA stacks above it and nothing replaces it" -->
+<!-- @dsCard group="Pages" viewport="1000x1400" name="Dock & Composer" subtitle="Two rows, one law — chips on Home, and the composer. Nothing else is ever pinned above it." -->
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>Dock & Composer — Sentinel</title><link rel="stylesheet" href="../styles.css">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -28,23 +28,22 @@ function App() {
       </Specimen>
     </Block>
 
-    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. Three rows with an 8px gap, and the disclosure below them all.">
-      <Anatomy width={375} top="chips → CTA → composer" bottom="padding 6 / 16 / 8" left="composer radius 20" right="send disc 42, CTA 48">
+    <Block n={2} title="Anatomy" sub="Dimensions outside the frame. Two rows with an 8px gap, and the disclosure below them.">
+      <Anatomy width={375} top="chips → composer" bottom="padding 6 / 16 / 8" left="composer radius 20" right="send disc 42">
         <Dock
           chips={<ChipRow><Pill label="Show the 18 holdings" /><Pill label="Why a 25% cap?" tone="tertiary" /></ChipRow>}
-          cta={<DarkButton label="Rebalance to his mandate" arrow full />}
           composer={<Composer value={b} onChange={setB} onSend={()=>setB('')} placeholder="Ask Sentinel" />}
           disclosure />
       </Anatomy>
     </Block>
 
-    <Block n={3} title="The three rows" sub="Each row is optional except the composer. They stack in one order and never swap.">
+    <Block n={3} title="The two rows" sub="The composer is required; the chips are Home's alone. THERE WAS A THIRD ROW AND IT HELD THE DECISION — Approve both moves, Rebalance to his mandate — pinned above the composer. The owner's ruling of 18 Sep 2026 moved it: what an advisor is offered belongs beside the message that offered it, so it scrolls with that message and an advisor scrolling back can tell which answer it belonged to. Pinned, it outlives its turn and the screen reads as a toolbar. The prop survived the ruling for two days because ui_kits/ passed it in six artboards and the kit is not edited lightly; the kits were redrawn on SentinelTurn the same day this row was removed, which is what made the removal possible. A decision is SentinelTurn cta now, under the thing it decides about. The chips row keeps one exception and only one: Home, which has no conversation, so there is no message for its starters to sit under and no scroll for them to outlive.">
       <Grid cols={1} items={[
         {label:'composer only', node:<div style={{width:343}}><Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />} /></div>, note:'Home, and the thread at rest.'},
         {label:'chips + composer', node:<div style={{width:343}}><Dock chips={<ChipRow><AnswerChip label="Use her KYC age — 38" /><AnswerChip label="She isn’t sure yet" tone="muted" /></ChipRow>} composer={<Composer value="" onChange={()=>{}} placeholder="or type your answer" />} /></div>, note:'A pending question. The placeholder changes to “or type your answer” — the chips are the fast path, typing is still open.'},
-        {label:'CTA + composer', node:<div style={{width:343}}><Dock cta={<DarkButton label="Rebalance to his mandate" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} /></div>, note:'The CTA stacks ABOVE. It never takes the composer’s place.'},
-        {label:'all three', node:<div style={{width:343}}><Dock chips={<ChipRow><Pill label="Show the 18 holdings" /></ChipRow>} cta={<DarkButton label="Approve both moves" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} disclosure /></div>, note:'The most a dock ever carries.'},
+        {label:'chips + composer, with the disclosure', node:<div style={{width:343}}><Dock chips={<ChipRow><Pill label="Show the 18 holdings" /></ChipRow>} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} disclosure /></div>, note:'The most a dock ever carries.'},
       ]} />
+
     </Block>
 
     <Block n={4} title="Composer states" sub="Focus is a bronze 1px border plus a 3px 24% ring, 150ms. Send is inert until there is something to send.">
@@ -71,9 +70,9 @@ function App() {
       </p>
     </Block>
 
-    <Block n={6} title="In context" sub="Under the answer, where it always is.">
+    <Block n={6} title="In context" sub="Under the answer, where it always is — and carrying nothing but the composer, because the decision is in the turn above it.">
       <Thread before={<SentinelBlock><SentinelText text="Two moves bring him inside his mandate. I have not placed anything." /></SentinelBlock>}
-        dock={<Dock cta={<DarkButton label="Approve both moves" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} disclosure />}>
+        dock={<Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} disclosure />}>
         <div />
       </Thread>
     </Block>
@@ -83,10 +82,10 @@ function App() {
 
     <Block n={9} title="Do / don't">
       <DoDont
-        doNode={<div style={{width:300}}><Dock cta={<DarkButton label="Rebalance to his mandate" arrow full />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} /></div>}
-        doCaption="The CTA stacks above. The advisor can act, or ask instead."
+        doNode={<div style={{width:300}}><Dock composer={<Composer value="" onChange={()=>{}} placeholder="Ask about this" />} /></div>}
+        doCaption="The composer, and nothing else. Whatever the answer offered is up in the turn, scrolling with it."
         dontNode={<div style={{width:300}}><div style={{position:'relative',zIndex:10,padding:'6px 16px 8px'}}><DarkButton label="Rebalance to his mandate" arrow full /></div></div>}
-        dontCaption="The CTA alone. One path forward, and no way to ask a question first — which is the product." />
+        dontCaption="A decision pinned here. It outlives the turn that offered it, and one path forward with no way to ask a question first is not this product." />
     </Block>
 
     <Block n={10} title="Motion">

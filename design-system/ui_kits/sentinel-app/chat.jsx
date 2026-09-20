@@ -1,4 +1,10 @@
-const { ScreenBackdrop, StatusSpacer, TopBar, UserBubble, SentinelBlock, SentinelText, ProgressTrace, InlineActionRow, AllocationCard, AttributionChart, ArtifactCard, Sparkline, MoveCard, AnswerChip, DarkButton, Composer, Dock, HomeIndicator, DrawnCheck, ExplainerSheet } = window.DS;
+const { ScreenBackdrop, StatusSpacer, TopBar, UserBubble, SentinelBlock, SentinelText, SentinelTurn, ProgressTrace, InlineActionRow, AllocationCard, AttributionChart, ArtifactCard, Sparkline, MoveCard, AnswerChip, ChipRow, Composer, Dock, HomeIndicator, DrawnCheck, ExplainerSheet } = window.DS;
+/* REDRAWN 20 Sep 2026 on the built thread. The attribution turn's two chips and its "Rebalance to his
+   mandate" button, and the rebalance turn's chip and "Approve both moves", used to sit in the Dock —
+   pinned above the composer, keyed off `phase` rather than off the message that offered them. The
+   ruling of 18 Sep puts what a message offers inside that message, and `screens/journey-b/answer.jsx`
+   has drawn it that way since. Each turn now carries its own chips and its own decision, so scrolling
+   back through the thread shows which answer each one belonged to. The Dock keeps the composer. */
 /* The drift thread: seed → trace → attribution → rebalance → approve → success.
    The artifact expands and collapses in place — there is no canvas to open. */
 function ChatScreen({ seed, onMenu, onNew }) {
@@ -34,8 +40,20 @@ function ChatScreen({ seed, onMenu, onNew }) {
               <span style={f(700, 13, 18, 'var(--color-bronze-deep)')}>71%</span>
             </div>}
         </ArtifactCard>
+        {phase === 'attribution' && (
+          <SentinelTurn continued
+            chips={<ChipRow>
+              <AnswerChip label="Why is 71% a problem?" variant="tertiary" onClick={() => setSheet({ title: 'Why is 71% a problem?', body: ['Equity is 11% over the 60% you agreed. In a normal year that barely shows.', 'In a 20% fall it costs him more than the agreed mix would have — the drift only bites when markets drop.'] })} />
+              <AnswerChip label="Show the 18 holdings" onClick={() => setArtifact('expanded')} />
+            </ChipRow>}
+            cta={{ label: 'Rebalance to his mandate', onClick: toRebalance }} />
+        )}
       </div>);
-    if (m === 'rebalance') return <SentinelBlock key={i}><SentinelText text="Two moves, not seven. This alone brings equity from 71% back to 58% and costs ₹11,200." /><div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}><MoveCard n={1} title="Move ₹1,85,000 out of Quant Small Cap" body="Into ICICI Corporate Bond. Brings equity from 67% to 58%." /><MoveCard n={2} title="Redirect her ₹30,000 monthly SIP" body="No exit load, no tax, and it stops the drift returning." /></div></SentinelBlock>;
+    if (m === 'rebalance') return (
+      <SentinelTurn key={i} say="Two moves, not seven. This alone brings equity from 71% back to 58% and costs ₹11,200."
+        body={<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}><MoveCard n={1} title="Move ₹1,85,000 out of Quant Small Cap" body="Into ICICI Corporate Bond. Brings equity from 67% to 58%." /><MoveCard n={2} title="Redirect her ₹30,000 monthly SIP" body="No exit load, no tax, and it stops the drift returning." /></div>}
+        chips={phase === 'rebalance' ? <ChipRow><AnswerChip label="Show the five we skipped" onClick={() => setSheet({ title: 'The five I skipped', body: ['I recommended the two moves that do the most with the least cost and tax.', 'The other candidate trades aren\'t itemised in this build — I won\'t list moves I can\'t cost.'] })} /></ChipRow> : undefined}
+        cta={phase === 'rebalance' ? { label: 'Approve both moves', onClick: approve } : undefined} />);
     if (m === 'success') return <SentinelBlock key={i}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, ...card, padding: '13px 14px' }}><DrawnCheck /><div><p style={f(600, 15)}>Two moves queued</p><p style={{ ...f(500, 12, null, 'var(--color-muted)'), marginTop: 2 }}>Placed 16 Sep, 9:41 · settles T+2</p></div></div>
       <p style={{ ...f(400, 14, 20, 'var(--color-ink-soft)'), marginTop: 10 }}>Sharma gets a note explaining both moves. Nothing else in his book changed.</p>
@@ -50,8 +68,6 @@ function ChatScreen({ seed, onMenu, onNew }) {
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 12, padding: '16px 16px 24px' }}>{msgs.map(render)}</div>
       </div>
       <Dock
-        chips={phase === 'attribution' ? <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}><AnswerChip label="Why is 71% a problem?" variant="tertiary" onClick={() => setSheet({ title: 'Why is 71% a problem?', body: ['Equity is 11% over the 60% you agreed. In a normal year that barely shows.', 'In a 20% fall it costs him more than the agreed mix would have — the drift only bites when markets drop.'] })} /><AnswerChip label="Show the 18 holdings" onClick={() => setArtifact('expanded')} /></div> : phase === 'rebalance' ? <div style={{ display: 'flex', gap: 8 }}><AnswerChip label="Show the five we skipped" onClick={() => setSheet({ title: 'The five I skipped', body: ['I recommended the two moves that do the most with the least cost and tax.', 'The other candidate trades aren\'t itemised in this build — I won\'t list moves I can\'t cost.'] })} /></div> : undefined}
-        cta={phase === 'attribution' ? <DarkButton label="Rebalance to his mandate" onClick={toRebalance} /> : phase === 'rebalance' ? <DarkButton label="Approve both moves" onClick={approve} /> : undefined}
         composer={<Composer value={v} onChange={setV} onSend={send} placeholder="Ask Sentinel" streaming={phase === 'loading'} onStop={() => setPhase('static')} />}
       />
       <HomeIndicator />

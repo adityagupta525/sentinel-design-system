@@ -1,4 +1,11 @@
-const { ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, SentinelBlock, SentinelText, QAPair, ParseNote, Pill, AnswerChip, ChipRow, Composer, MoneyComposer, Dock, HomeIndicator, EyebrowDivider, HeroNumberCard, DarkButton, Provenance } = window.DS;
+const { ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, SentinelTurn, QAPair, ParseNote, Pill, AnswerChip, ChipRow, Composer, MoneyComposer, Dock, HomeIndicator, EyebrowDivider, HeroNumberCard } = window.DS;
+/* REDRAWN 20 Sep 2026 on `screens/journey-a/rail.jsx`. Every question's chips, and the locked result's
+   "Build her a portfolio", sat in the Dock — pinned above the composer, outliving the question that
+   offered them. The ruling of 18 Sep puts them inside the turn, and `SentinelTurn` is the grammar the
+   built rail uses: `say` for the question and its sub-line, `chips` for the answers, `cta` for the one
+   decision, `bodyFirst` for the result whose answer IS the card. Three hand-built blocks went with
+   them — a two-`SentinelText` column with its own 8px gap, a muted `<p>` sub-line, and a `Provenance`
+   placed by hand — all three of which the turn now positions. The Dock keeps the composer. */
 
 function Artboard({ name, sub, children }) {
   return <div className="ab"><div className="ab-name">{name}</div>{sub && <div className="ab-sub">{sub}</div>}<div className="frame">{children}</div></div>;
@@ -43,15 +50,10 @@ function A01() {
   return (
     <Shell><StatusSpacer /><TopBar />
       <Thread>
-        <SentinelBlock>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <SentinelText text={A.intro.lines[0]} />
-            <SentinelText text={A.intro.lines[1]} weight="Regular" />
-          </div>
-          <div style={{ marginTop: 10 }}><Provenance text={A.intro.provenance} /></div>
-        </SentinelBlock>
+        <SentinelTurn say={A.intro.lines} provenance={A.intro.provenance}
+          chips={<ChipRow animate={false}>{A.intro.chips.map(([l, t]) => <Pill key={l} label={l} tone={t} />)}</ChipRow>} />
       </Thread>
-      <Dock chips={<ChipRow animate={false}>{A.intro.chips.map(([l, t]) => <Pill key={l} label={l} tone={t} />)}</ChipRow>} composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.answering} />} />
+      <Dock composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.answering} />} />
       <HomeIndicator />
     </Shell>
   );
@@ -65,11 +67,10 @@ function Question({ i, reflectBefore }) {
       <Thread>
         <History upto={reflectBefore ? i : i} />
         {reflectBefore
-          ? <SentinelBlock><SentinelText text={reflectBefore} /></SentinelBlock>
-          : <SentinelBlock><div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}><SentinelText text={step.sentinel} />{step.sub && <p style={f(400, 13, 18, 'var(--color-muted)')}>{step.sub}</p>}</div></SentinelBlock>}
+          ? <SentinelTurn say={reflectBefore} chips={<ChipRow animate={false}><Pill label="Carry on" tone="primary" /></ChipRow>} />
+          : <SentinelTurn say={step.sub ? [step.sentinel, step.sub] : step.sentinel} chips={<Chips step={step} />} />}
       </Thread>
       <Dock
-        chips={reflectBefore ? <ChipRow animate={false}><Pill label="Carry on" tone="primary" /></ChipRow> : <Chips step={step} />}
         composer={step.money && !reflectBefore ? <MoneyComposer onSend={() => {}} /> : <Composer value="" onChange={() => {}} placeholder={step.composer || PLACEHOLDER.answering} />} />
       <HomeIndicator />
     </Shell>
@@ -79,20 +80,23 @@ function Question({ i, reflectBefore }) {
 function A16() {
   return (
     <Shell><StatusSpacer /><TopBar />
-      <div className="noscroll" style={{ position: 'relative', zIndex: 1, flex: 1, overflowY: 'auto' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '12px 16px 16px' }}>
+      {/* BOTTOM-ANCHORED NOW, like every other artboard here. This one had its own top-anchored
+          scroller, which was fine while the chips and the button were pinned in the Dock and could
+          not scroll anywhere. Once they moved into the turn, a top-anchored frame showed the card and
+          hid the decision — the ruling's real cost, and `Thread` is how the rest of this kit and the
+          built rail both pay it: the newest thing is the thing in view. */}
+      <Thread>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <EyebrowDivider>Risk profile locked</EyebrowDivider>
-          <HeroNumberCard title="Meera's risk number" meta="Locked · 15 Sep 2026" value={54} badge="Moderate" copy="We look at three things and go with the lowest of them. Her money can take more risk than she can." rows={A.result.meters} />
-          <SentinelBlock>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <SentinelText text={A.result.lines[0]} />
-              <SentinelText text={A.result.lines[1]} weight="Regular" />
-            </div>
-            <div style={{ marginTop: 10 }}><Provenance text="As of 15 Sep · from her twelve answers, her ITR and her September statement" /></div>
-          </SentinelBlock>
+          <SentinelTurn bodyFirst
+            body={<HeroNumberCard title="Meera's risk number" meta="Locked · 15 Sep 2026" value={54} badge="Moderate" copy="We look at three things and go with the lowest of them. Her money can take more risk than she can." rows={A.result.meters} />}
+            say={A.result.lines}
+            provenance="As of 15 Sep · from her twelve answers, her ITR and her September statement"
+            chips={<ChipRow animate={false}>{A.result.chips.map(([l, t]) => <Pill key={l} label={l} tone={t} />)}</ChipRow>}
+            cta={{ label: A.result.cta, onClick: () => {} }} />
         </div>
-      </div>
-      <Dock chips={<ChipRow animate={false}>{A.result.chips.map(([l, t]) => <Pill key={l} label={l} tone={t} />)}</ChipRow>} cta={<DarkButton label={A.result.cta} />} composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.result} />} />
+      </Thread>
+      <Dock composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.result} />} />
       <HomeIndicator tone="dark" />
     </Shell>
   );

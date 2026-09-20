@@ -1,4 +1,9 @@
-const { ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, QAPair, ParseNote, SentinelThinking, SentinelBlock, SentinelText, ChipRow, AnswerChip, Composer, MoneyComposer, Dock, HomeIndicator, EyebrowDivider, HeroNumberCard, DarkButton } = window.DS;
+const { ScreenBackdrop, StatusSpacer, TopBar, ProgressRail, QAPair, ParseNote, SentinelThinking, SentinelTurn, ChipRow, AnswerChip, Composer, MoneyComposer, Dock, HomeIndicator, EyebrowDivider, HeroNumberCard } = window.DS;
+/* REDRAWN 20 Sep 2026 on the built rail. The question's chips and the result's button used to sit in
+   the Dock, pinned above the composer; the ruling of 18 Sep moved what a message offers INTO that
+   message, and this artboard was one of the reasons `Dock.cta` could not be deleted. `SentinelTurn`
+   carries both now — the same grammar `screens/journey-a/rail.jsx` uses, so the kit and the screen
+   are one shape rather than two. The Dock keeps the composer and nothing else. */
 /* Journey A · Meera's risk profile (five of the twelve questions, then the result). */
 function JourneyScreen({ onMenu, onNew }) {
   const [cursor, setCursor] = React.useState(0);
@@ -22,17 +27,18 @@ function JourneyScreen({ onMenu, onNew }) {
           {thinking ? <SentinelThinking /> : result ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <EyebrowDivider>Risk profile locked</EyebrowDivider>
-              <HeroNumberCard title="Meera's risk number" meta="Locked · 15 Sep 2026" value={54} badge="Moderate" copy="We look at three things and go with the lowest of them. Her money can take more risk than she can." rows={[{ label: 'What her finances can absorb', value: 71 }, { label: 'What she can sit through calmly', value: 54, binding: true }, { label: 'What her ₹2 crore goal needs', value: 62 }]} />
-              <SentinelBlock><SentinelText text="She is a 54, Moderate. Her finances could carry more, but she would not sleep through it — so 54 is what we build against." /></SentinelBlock>
+              <SentinelTurn bodyFirst
+                body={<HeroNumberCard title="Meera's risk number" meta="Locked · 15 Sep 2026" value={54} badge="Moderate" copy="We look at three things and go with the lowest of them. Her money can take more risk than she can." rows={[{ label: 'What her finances can absorb', value: 71 }, { label: 'What she can sit through calmly', value: 54, binding: true }, { label: 'What her ₹2 crore goal needs', value: 62 }]} />}
+                then="She is a 54, Moderate. Her finances could carry more, but she would not sleep through it — so 54 is what we build against."
+                cta={{ label: 'Build her a portfolio', onClick: onNew }} />
             </div>
           ) : (
-            <SentinelBlock><div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}><SentinelText text={step.q} />{step.sub && <p style={f(400, 13, 18, 'var(--color-muted)')}>{step.sub}</p>}</div></SentinelBlock>
+            <SentinelTurn say={step.sub ? [step.q, step.sub] : [step.q]}
+              chips={<ChipRow>{step.chips.map(([l, vnt]) => <AnswerChip key={l} label={l} variant={vnt || 'outline'} onClick={() => advance(l)} />)}</ChipRow>} />
           )}
         </div>
       </div>
       {!thinking && <Dock
-        chips={!result && <ChipRow>{step.chips.map(([l, vnt]) => <AnswerChip key={l} label={l} variant={vnt || 'outline'} onClick={() => advance(l)} />)}</ChipRow>}
-        cta={result ? <DarkButton label="Build her a portfolio →" onClick={onNew} /> : undefined}
         composer={step && step.money ? <MoneyComposer onSend={(vv) => advance(vv, 'understood as ' + vv)} /> : <Composer value={text} onChange={setText} onSend={() => text.trim() && advance(text.trim())} placeholder={result ? 'Ask about this' : step.composer || 'or type your answer'} />}
       />}
       <HomeIndicator tone={result ? 'dark' : 'bronze'} />

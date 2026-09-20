@@ -1725,3 +1725,60 @@ says both what is absent and that the absence is not a fault.
    same argument and the same safeguard `Dumbbell.min` settled this morning: the figure is the cell's
    content and the bar sits behind it, so a baseline can never leave a number unreadable. The score
    column passes 40, where this book's bands stop calling a number a score.
+
+---
+
+### F-64 · The UI kits redrawn, and `Dock.cta` finally deleted — *20 Sep 2026*
+
+The owner ruled: **redraw the kits.** `design-system/ui_kits/` was the imported record and was not edited,
+and the cost of that had been accumulating in one place the contract named precisely —
+`Dock.d.ts`: *"The two props are deleted the day the kit is redrawn on the built screens; that is one
+decision, not two, and it is open."* It is closed.
+
+**Thirteen pinned chip rows and eight pinned CTAs across five files** moved into the turn that offers
+them, on `SentinelTurn` — the same grammar `screens/journey-a/rail.jsx` and `screens/journey-b/answer.jsx`
+use. The kits and the screens are one shape now rather than two that drift.
+
+**Four hand-drawn devices the system already owned.** Each had been invisible to every fix since it was
+written, which is the failure the kit's own README names: *"the kit never ships an artboard that
+contradicts the current component set."*
+
+| Hand-drawn | What it is |
+|---|---|
+| `AttributionPreview` — its own 108pt label column, bars and track | `ChartBar density='peek'`, which enforces rule 1 |
+| `ComplianceCard` — label/value rows with a quiet note and an over tone | `FigureRow` in a `Surface`, built 20 Sep out of four instances exactly like these |
+| `CostBreakdown` — a rail of dots, ring icons and a rotated chevron | `FigureRow`, total strong and lines quiet, as `moves.jsx` draws it |
+| `home.jsx`'s "Jump back in" — four `<button>`s with their own chevron SVG | `List` + `ListRow variant='nav' trailing='chevron'`, since v9 |
+
+**B/09 hand-drew the entire confirm surface** — scrim at 0.4, a 44pt grabber, a 24px radius, a raw
+`rgba(37,31,27,.28)` shadow, and a `Dock` carrying Approve and no composer. It is `ConfirmSheet` now,
+which holds rule 3's single documented exception **in its type** rather than in a caller's discipline:
+it takes no composer prop at all. The redraw also gave the board the dismiss word the hand-drawn sheet
+never had. The pinned-CTA ruling never reached here and never should have: a modal has no thread, so
+there is no turn for its decision to sit under. The decision IS the surface.
+
+**`Dock.cta` is gone.** Zero consumers in `screens/`, zero in the kits, and the four spec pages that
+still passed it were documenting a slot the product forbids — the Dock page's own do/don't taught the
+opposite of the ruling. The page now teaches the ruling, and `check-previews` keeps its gate, because a
+deleted prop is silently ignored, which is quieter and worse than an error. `Dock.chips` keeps exactly
+one exception: Home, which has no conversation and no scroller.
+
+**And A16 was the one artboard with a top-anchored scroller.** That was invisible while its decision was
+pinned in the Dock and could not scroll anywhere; the moment the decision moved into the turn, the frame
+showed the card and hid the button. Bottom-anchored like the rest — the ruling's real cost, paid the way
+`Thread` and the built rail both pay it: the newest thing is the thing in view.
+
+**Three defects in my own instrument, all found by using it.**
+
+1. **`phone-shot` sized the viewport before the page had mounted.** These pages compile JSX in the
+   browser, so `scrollHeight` right after networkidle is the height of an empty document. Everything
+   about the page's size is read after the polling loop now.
+2. **It only ever grew vertically.** Every `screens/` page stacks its phones down the page; the kits do
+   the opposite — journey-a-risk is ONE ROW of sixteen, 6,632px across. Nobody had shot a kit board past
+   its third phone.
+3. **`documentElement.scrollWidth` reported 1400 on a board whose phones run to x=4182**, because that
+   board's overflow lives on an inner element. The extent is measured from the phones themselves now,
+   with the document's figure kept as a floor.
+
+System adherence falls **62 → 61**: one fewer hardcoded literal, because the hand-drawn devices went.
+The gate is tightened to 61 in the same commit.

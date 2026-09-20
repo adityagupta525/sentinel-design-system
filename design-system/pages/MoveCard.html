@@ -61,7 +61,7 @@ function App() {
             <SentinelBlock><SentinelText text="Three moves. Two inside the equity sleeve, so the debt leg is untouched." /></SentinelBlock>
             <ConstraintCallout eyebrow="Before you approve" body="Move 1 realises ₹38,000 of short-term gain. There is no exit load." />
           </React.Fragment>}
-          dock={<Dock cta={<DarkButton label="Approve all three" arrow full />} composer={<Composer value="" onChange={() => {}} placeholder="Ask about any move" />} />}>
+          dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask about any move" />} />}>
           {MOVES.map((m) => <MoveCard key={m.n} {...m} />)}
           <Provenance text="As of 30 Sep · from his Q3 statement" />
         </Thread>

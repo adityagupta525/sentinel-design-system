@@ -59,7 +59,7 @@ function App() {
       <Block n={5} title="In context" sub="The card carries the number; the thread carries where it came from. Provenance is never inside the card, because the card is what gets exported.">
         <Thread
           before={<UserBubble text="What risk score does Ravi come out at?" />}
-          dock={<Dock cta={<DarkButton label="Build a proposal to the 41" arrow full />} composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
+          dock={<Dock composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" />} />}>
           <SentinelBlock>
             <SentinelText text="41 — moderate. Need is what binds him, not capacity." />
           </SentinelBlock>

@@ -41,28 +41,18 @@ const browser = await chromium.launch({ args: ['--ignore-certificate-errors'] })
    to check the reduced-motion column of a screen's own motion table. */
 const page = await browser.newPage({ viewport: { width: 1400, height: 2600 }, deviceScaleFactor: 1, reducedMotion: REDUCED ? 'reduce' : 'no-preference' });
 await page.goto(`http://127.0.0.1:${PORT}/${rel}`, { waitUntil: 'networkidle' }).catch(() => {});
-/* GROW THE VIEWPORT TO THE PAGE (19 Sep 2026). The viewport was a fixed 1400x2600 and a screen page is
+/* MEASURED AFTER THE PHONES ARE FOUND, NOT BEFORE (20 Sep 2026). These pages compile their JSX in the
+   browser, so `scrollHeight` right after networkidle is the height of an empty document. The viewport
+   was grown to that stale figure and a phone two thirds down the real page then sat outside it, and
+   the screenshot failed with "clipped area is outside the resulting image" — on the risk kit, whose
+   sixteen artboards mount well after the network goes quiet. The polling loop above already waits for
+   a real frame; everything about the page's size is read after it.
+
+   GROW THE VIEWPORT TO THE PAGE (19 Sep 2026). The viewport was a fixed 1400x2600 and a screen page is
    3200 tall, so a clip computed for a phone below the fold fell outside the viewport and Chrome returned
    a rotated, stretched frame — a picture of a defect that is not in the screen. Measured on
    screens/thread/going-back.html, phone 5 of 7. Resize to the document's own height (capped, so a runaway
    page cannot ask for a gigapixel), then let the layout settle before measuring anything. */
-const docH = await page.evaluate(() => Math.ceil(document.documentElement.scrollHeight));
-/* THE CAP WAS 12000 AND A PAGE OUTGREW IT (20 Sep 2026). journey-c/funds is 13,293 tall with the
-   holdings section on it, so the last three phones sat below the viewport and Chrome returned a
-   328px sliver instead of an 812pt phone — a shot that LOOKS like a cropped screen rather than a
-   failure, which is the worst kind. 16000 is under Chrome's own texture limit; past that the shot
-   is refused loudly instead of returning a sliver. */
-/* AND A PAGE OUTGREW 16000 TOO (20 Sep 2026), once the fund page carried the commands. Growing the
-   viewport cannot go on: 16384 is Chrome's own texture limit and past it the shot comes back blank.
-   So above the cap the viewport stays small and the PAGE is scrolled to the phone instead. Measured
-   first, not assumed: Playwright's clip is viewport-relative — a document-coordinate clip on a
-   scrolled page fails with "clipped area is outside the resulting image", which is how this was
-   settled rather than by reading the docs. `PHONE_SHOT_CAP` exists so the scrolled path can be
-   exercised on a short page, where its output can be compared against the grown-viewport one. */
-const CAP = Number(process.env.PHONE_SHOT_CAP || 16000);
-const scrolled = docH + 40 > CAP;
-if (!scrolled && docH > 2600) { await page.setViewportSize({ width: 1400, height: docH + 40 }); await page.waitForTimeout(400); }
-
 /* WAIT FOR THE PHONE, DO NOT SLEEP AT IT. A fixed 500ms was a race: these pages compile JSX in the
    browser with Babel from a CDN, and a slow fetch meant zero frames and a confusing "no phone frame"
    on a page that is perfectly fine. Poll instead — first frame usually inside a second, and a page that
@@ -81,12 +71,42 @@ for (let waited = 0; waited < 20000; waited += 250) {
 
 if (!boxes.length) { console.error(`no 375x812 phone frame on ${rel}`); await browser.close(); process.exit(1); }
 if (idx >= boxes.length) { console.error(`page has ${boxes.length} phone(s); asked for index ${idx}`); await browser.close(); process.exit(1); }
+
+/* MEASURED FROM THE PHONES, NOT FROM THE DOCUMENT. `documentElement.scrollWidth` reported 1400 on
+   journey-b, whose eleven artboards run out to x=4182 — the board's overflow lives on an inner
+   element, so the document never grew. The frames are the thing being shot, so their own extent is
+   what the viewport has to cover; the document's figure is kept as a floor for pages whose content
+   runs past the last phone. */
+const extent = boxes.reduce((m, b) => ({ w: Math.max(m.w, b.x + b.width), h: Math.max(m.h, b.y + b.height) }), { w: 0, h: 0 });
+const docH = Math.max(await page.evaluate(() => Math.ceil(document.documentElement.scrollHeight)), Math.ceil(extent.h) + PAD);
+/* AND THE BOARD IS WIDE, NOT TALL (20 Sep 2026). Every screens/ page stacks its phones down the page,
+   so this tool only ever grew the viewport vertically. The UI kits do the opposite: journey-a-risk is
+   ONE ROW of sixteen artboards, 6,632px across and 2,600 down, and a clip at x=6257 in a 1400-wide
+   viewport fails the same way a clip below the fold does. Nobody had shot a kit board past its third
+   phone. Both axes are read and both are grown.
+
+   THE CAP WAS 12000 AND A PAGE OUTGREW IT. journey-c/funds is past 16,000 tall with the commands and
+   the scores on it, and raising the cap again is not available: 16,384 is Chrome's own texture limit
+   and past it the shot comes back blank. Above the cap the viewport stays put and the PAGE is
+   scrolled to the phone instead. Playwright's `clip` is viewport-relative — settled by measuring,
+   because a document-coordinate clip on a scrolled page fails outright — and the two paths were then
+   proved byte-identical on the same phone. `PHONE_SHOT_CAP` exercises the scrolled path on a short
+   page. */
+const docW = Math.max(await page.evaluate(() => Math.ceil(document.documentElement.scrollWidth)), Math.ceil(extent.w) + PAD);
+const CAP = Number(process.env.PHONE_SHOT_CAP || 16000);
+const scrolled = docH + 40 > CAP || docW + 40 > CAP;
+if (!scrolled && (docH > 2600 || docW > 1400)) {
+  await page.setViewportSize({ width: Math.max(1400, docW + 40), height: Math.max(2600, docH + 40) });
+  await page.waitForTimeout(400);
+}
+
 const b = boxes[idx];
 const clip = { x: Math.max(0, b.x - PAD), y: Math.max(0, b.y - PAD), width: b.width + PAD * 2, height: b.height + PAD * 2 };
 if (scrolled) {
-  const sy = await page.evaluate((y) => { window.scrollTo(0, y); return window.scrollY; }, Math.max(0, clip.y - 200));
+  const at = await page.evaluate(([x, y]) => { window.scrollTo(x, y); return [window.scrollX, window.scrollY]; },
+    [Math.max(0, clip.x - 200), Math.max(0, clip.y - 200)]);
   await page.waitForTimeout(400);
-  clip.y -= sy;
+  clip.x -= at[0]; clip.y -= at[1];
 }
 await page.screenshot({ path: out, clip });
 console.log(`${out}  phone ${idx + 1}/${boxes.length}  ${Math.round(b.width)}x${Math.round(b.height)}${PAD ? ` +${PAD}pt board` : '  tight'}${scrolled ? '  (scrolled)' : ''}${REDUCED ? '  (reduced motion)' : ''}`);

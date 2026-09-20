@@ -180,7 +180,9 @@ for (const [base, prefix] of (SELF_TEST ? [[FIXTURES, 'tools/fixtures/']] : [[DS
       if (seenFile.has(abs)) continue; seenFile.add(abs);
       for (const m of src.matchAll(/<Dock\b[\s\S]{0,600}?\/?>/g)) {
         const tag = m[0];
-        if (/\bcta=/.test(tag)) structure.push(`PINNED CTA — <Dock cta=…> in ${name}. A decision belongs under the thing it decides about (ruling, 18 Sep). Put a DarkButton full inside the turn.`);
+        /* `Dock.cta` was deleted on 20 Sep 2026 once the kits were redrawn, so passing it now does
+           nothing at all — which is quieter, and worse, than the error this gate gives. It stays. */
+        if (/\bcta=/.test(tag)) structure.push(`PINNED CTA — <Dock cta=…> in ${name}. The prop was deleted on 20 Sep 2026 and is silently ignored. A decision belongs under the thing it decides about (ruling, 18 Sep): use SentinelTurn cta.`);
         if (/\bchips=/.test(tag) && !abs.replace(/\\/g, '/').endsWith(HOME_EXCEPTION)) structure.push(`PINNED CHIPS — <Dock chips=…> in ${name}. Chips live in the turn that offered them and scroll with it (ruling, 18 Sep). Only ${HOME_EXCEPTION} may pin them, because Home has no conversation and no scroller.`);
       }
     }

@@ -1,24 +1,21 @@
 export interface DockProps {
-  /** DEAD TO THE PRODUCT, ALIVE ONLY TO THE FROZEN KIT — and a gate now says so rather than a comment.
-   *  On 19 Sep 2026 the owner asked for `chips` and `cta` to be deleted. They could not be: `ui_kits/`
-   *  is the imported record, it passes both in several artboards, and it is not edited. Deleting the
-   *  props would break three pages of the record to tidy a contract. So `check-previews` FAILS any page
-   *  under `screens/` that passes either one — the ruling made mechanical, in the only place it governs.
-   *  The two props are deleted the day the kit is redrawn on the built screens; that is one decision,
-   *  not two, and it is open.
-   *
-   *  DEPRECATED BY A RULING, 18 Sep 2026 — do not use on new screens. The owner: chips and the CTA must
-   *  live IN the conversation and scroll with it, not sit pinned above the composer. What an advisor is
-   *  offered belongs beside the message that offered it; pinned, it outlives the turn it came from and
-   *  the screen reads as a toolbar. Use `InlineActionRow` (or AnswerChips placed in the thread) and a
-   *  `DarkButton full` under the message instead. The slot stays so the journey rail, which asks one
-   *  question at a time and answers it in place, can be migrated deliberately rather than broken.
+  /** DEPRECATED BY A RULING, 18 Sep 2026 — do not use on a screen with a conversation on it. The owner:
+   *  what an advisor is offered must live IN the conversation and scroll with it, not sit pinned above
+   *  the composer. What a message offered belongs beside that message; pinned, it outlives the turn it
+   *  came from and an advisor scrolling back cannot tell which answer it belonged to. Put AnswerChips in
+   *  the turn — `SentinelTurn chips` — instead.
    *
    *  THE ONE EXCEPTION IS A SCREEN WITH NO CONVERSATION ON IT — Home. The ruling moves what a MESSAGE
    *  offered into that message, so a screen that has no message has nothing for its chips to sit under,
    *  and no scroll for them to outlive (Home has no scroller at all — measured). Starters above the
    *  composer there are `readme.md:187`'s "Dock pills act on the current state of the conversation, and
-   *  they persist" in its only remaining case: the current state is "nothing asked yet". */
+   *  they persist" in its only remaining case: the current state is "nothing asked yet". `check-previews`
+   *  fails any other page that passes this.
+   *
+   *  `cta` WAS THE THIRD SLOT AND IT IS DELETED (20 Sep 2026). It had no exception: no screen in this
+   *  product pins a decision, and a decision belongs under the thing it decides about. It outlived the
+   *  ruling by two days only because `ui_kits/` passed it in six artboards and the kit is not edited
+   *  lightly; the kits were redrawn on `SentinelTurn` the same day it went. Use `SentinelTurn cta`. */
   chips?: React.ReactNode;
   /** DEPRECATED BY THE SAME RULING, and it has NO exception: Home's starters are chips, and no screen
    *  in this product pins a decision. `screens/` has zero consumers and the gate keeps it that way.

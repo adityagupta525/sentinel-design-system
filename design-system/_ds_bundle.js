@@ -1837,8 +1837,8 @@ var __ds_out = (() => {
   }
 
   // design-system/components/shell/Dock.jsx
-  function Dock({ chips, cta, composer, disclosure = true }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 10, display: "flex", flexDirection: "column", gap: "var(--space-8)", padding: "6px 16px 8px" } }, chips, cta, composer, disclosure && /* @__PURE__ */ react_global_default.createElement(StandingDisclosure, null));
+  function Dock({ chips, composer, disclosure = true }) {
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 10, display: "flex", flexDirection: "column", gap: "var(--space-8)", padding: "6px 16px 8px" } }, chips, composer, disclosure && /* @__PURE__ */ react_global_default.createElement(StandingDisclosure, null));
   }
 
   // design-system/components/shell/Drawer.jsx

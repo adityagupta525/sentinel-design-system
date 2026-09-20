@@ -1,4 +1,7 @@
-const { ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, SuggestionRow, Eyebrow, EyebrowDivider, Pill, ChipRow, InlineActionRow, DarkButton, Composer, Dock, HomeIndicator, UserBubble, SentinelBlock, SentinelText, ProgressTrace, AllocationCard, AttributionChart, ArtifactCard, MoveCard, ConstraintCallout, DisclosureBlock, StatTile, Sparkline, DrawnCheck, Badge, Provenance, StandingDisclosure, ScrollToBottomButton, Pressable } = window.DS;
+const { ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, SuggestionRow, Eyebrow, EyebrowDivider, Pill, ChipRow, InlineActionRow, Composer, Dock, HomeIndicator, UserBubble, SentinelBlock, SentinelText, SentinelTurn, ProgressTrace, AllocationCard, AttributionChart, ArtifactCard, MoveCard, ConfirmSheet, DisclosureBlock, StatTile, Sparkline, DrawnCheck, Badge, Provenance, StandingDisclosure, ScrollToBottomButton, Pressable } = window.DS;
+/* REDRAWN 20 Sep 2026. Six artboards pinned their chips and their decision in the Dock; the ruling of
+   18 Sep puts both inside the turn that offered them, and `SentinelTurn` is what the built thread
+   uses. B/09 went further — it hand-drew the whole confirm surface, which is `ConfirmSheet`. */
 
 const Shell = ({ children }) => <div style={{ position: 'relative', display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}><ScreenBackdrop />{children}</div>;
 /* Bottom-anchored AND pinned to the newest turn (see journey-a-risk for the reasoning). */
@@ -99,13 +102,12 @@ function B05() {
   return (
     <Shell><StatusSpacer /><TopBar />
       <Thread>
-        <SentinelBlock><SentinelText text={B.answer} /></SentinelBlock>
-        <ArtifactCard eyebrow={B.cardEyebrow} title={B.cardTitle} provenance={B.provenance} onToggle={() => {}} onWhy={() => {}} onShare={() => {}}><AttributionPreview /></ArtifactCard>
+        <SentinelTurn say={B.answer}
+          body={<ArtifactCard eyebrow={B.cardEyebrow} title={B.cardTitle} provenance={B.provenance} onToggle={() => {}} onWhy={() => {}} onShare={() => {}}><AttributionPreview /></ArtifactCard>}
+          chips={<InlineActionRow actions={[{ label: 'Why is 71% a problem at all', tone: 'tertiary' }, { label: 'Show me the 18 holdings' }]} animate={false} />} />
         <p style={f(400, 11, 15, 'var(--color-data-deemph)')}>Share opens the message draft — B / 11.</p>
       </Thread>
-      <Dock
-        chips={<InlineActionRow actions={[{ label: 'Why is 71% a problem at all', tone: 'tertiary' }, { label: 'Show me the 18 holdings' }]} animate={false} />}
-        composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.thread} />} />
+      <Dock composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.thread} />} />
       <HomeIndicator />
     </Shell>
   );
@@ -132,12 +134,12 @@ function B06() {
             <StatTile label="Drift added since 30 Jun" value="+9 points" note="62% to 71% against a 60% target" sparkline={<Sparkline points={[62, 64, 67, 69, 71]} width={120} />} />
           </div>
         </ArtifactCard>
+        <SentinelTurn continued
+          chips={<ChipRow animate={false}><Pill label="Why is 71% a problem at all" tone="tertiary" /><Pill label="Show me the 18 holdings" /></ChipRow>}
+          cta={{ label: 'Fix it', onClick: () => {} }} />
         <p style={f(400, 11, 15, 'var(--color-data-deemph)')}>No nested scroll: the card takes its natural height and the thread carries the scroll. On expand the thread brings this header under the app bar; on collapse it returns to the card. The table view lives in the ⋯.</p>
       </Thread>
-      <ResultDock
-        chips={<ChipRow animate={false}><Pill label="Why is 71% a problem at all" tone="tertiary" /><Pill label="Show me the 18 holdings" /></ChipRow>}
-        cta={<DarkButton label="Fix it" />}
-        placeholder={PLACEHOLDER.expanded} />
+      <ResultDock placeholder={PLACEHOLDER.expanded} />
       <HomeIndicator />
     </Shell>
   );
@@ -171,11 +173,11 @@ function B07() {
           <div style={{ marginTop: 10 }}><Provenance text="As of 30 Sep · exit load from scheme documents, STCG at 20%" /></div>
           <div style={{ marginTop: 12 }}><InlineActionRow actions={[{ label: 'Show the five we skipped' }]} animate={false} /></div>
         </SentinelBlock>
+        <SentinelTurn continued
+          chips={<ChipRow animate={false}><Pill label="Why 20% STCG?" tone="tertiary" /></ChipRow>}
+          cta={{ label: 'Fix it', onClick: () => {} }} />
       </Thread>
-      <ResultDock
-        chips={<ChipRow animate={false}><Pill label="Why 20% STCG?" tone="tertiary" /></ChipRow>}
-        cta={<DarkButton label="Fix it" />}
-        placeholder={PLACEHOLDER.expanded} />
+      <ResultDock placeholder={PLACEHOLDER.expanded} />
       <HomeIndicator />
     </Shell>
   );
@@ -193,42 +195,37 @@ function B08() {
           <div style={{ marginTop: 14 }}><CostBreakdown items={B.costs} /></div>
           <div style={{ marginTop: 12 }}><Provenance text="As of 30 Sep · exit load from scheme documents, STCG at 20%" /></div>
         </SentinelBlock>
+        <SentinelTurn continued
+          chips={<ChipRow animate={false}><Pill label="Show the five we skipped" /></ChipRow>}
+          cta={{ label: 'Approve both moves', onClick: () => {} }} />
       </Thread>
-      <Dock
-        chips={<ChipRow animate={false}><Pill label="Show the five we skipped" /></ChipRow>}
-        cta={<DarkButton label="Approve both moves" />}
-        composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.thread} />} />
+      <Dock composer={<Composer value="" onChange={() => {}} placeholder={PLACEHOLDER.thread} />} />
       <HomeIndicator />
     </Shell>
   );
 }
 
-/* B / 09 — the confirm sheet. Modal, so it keeps the scrim. Disclosure ABOVE the numbers; compliance stated as rows.
-   The one surface with no composer: commit or dismiss, no third path (§ readme, confirm-sheet exception). */
+/* B / 09 — the confirm sheet, and it is `ConfirmSheet` now (redrawn 20 Sep 2026).
+   This artboard hand-drew the whole surface: the scrim at 0.4, the 44pt grabber, a 24px top radius, a
+   raw `rgba(37,31,27,.28)` shadow, and a `Dock` carrying an Approve button and no composer. Every one
+   of those is the component's, and the last one is the product's single documented exception to rule
+   3 — which `ConfirmSheet` holds in its TYPE rather than in a caller's discipline: it takes no
+   composer prop at all. The ruling about pinned CTAs does not reach here and never did: a modal has
+   no thread, so there is no turn for its decision to sit under. The decision IS the surface. */
 function B09() {
   return (
     <Shell><StatusSpacer /><TopBar />
       <Thread pad="16px 16px 10px">
         <div style={{ opacity: 0.5 }}><MoveCard {...B.moves[0]} /></div>
       </Thread>
-      <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: 'var(--scrim)', opacity: 0.4 }} />
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 30, maxHeight: '93%', display: 'flex', flexDirection: 'column', borderRadius: '24px 24px 0 0', background: 'var(--color-canvas)', boxShadow: '0 -8px 40px -12px rgba(37,31,27,.28)' }}>
-        <div style={{ margin: '12px auto 10px', height: 5, width: 44, borderRadius: 9999, background: 'var(--color-line)' }} />
-        <div className="noscroll" style={{ flex: 1, overflowY: 'auto', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <p style={f(600, 18, 24)}>Approve — R. Sharma</p>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, borderRadius: 16, background: 'var(--color-surface)', padding: '9px 12px', boxShadow: '0 0 0 1px var(--color-line)' }}>
-            <span style={f(500, 13, 18)}>2 moves · ₹1,85,000 · equity 71% → 58%</span>
-            <Pill label="Edit" size="sm" tone="filter" />
-          </div>
-          <ConstraintCallout eyebrow="Before you approve" body={B.confirmDisclosure} />
-          <DisclosureBlock />
-          <ComplianceCard rows={B.compliance} />
+      <ConfirmSheet open title="Approve — R. Sharma" disclosure={B.confirmDisclosure}
+        rows={B.compliance.map((r) => ({ label: r.label, value: r.value, tone: r.tone === 'over' ? 'required' : 'ok' }))}
+        commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+          <span style={f(500, 13, 18)}>2 moves · ₹1,85,000 · equity 71% → 58%</span>
+          <Pill label="Edit" size="sm" tone="filter" />
         </div>
-        <Dock
-          chips={<ChipRow animate={false}><Pill label="What Sharma will not see" tone="tertiary" /></ChipRow>}
-          cta={<DarkButton label="Approve both moves" />} />
-        <HomeIndicator tone="dark" />
-      </div>
+      </ConfirmSheet>
     </Shell>
   );
 }
@@ -272,11 +269,11 @@ function B11() {
             </div>
           </div>
         </ArtifactCard>
+        <SentinelTurn continued
+          chips={<ChipRow animate={false}><Pill label="What must the disclosure say?" tone="tertiary" /></ChipRow>}
+          cta={{ label: 'Send to R. Sharma', onClick: () => {} }} />
       </Thread>
-      <ResultDock
-        chips={<ChipRow animate={false}><Pill label="What must the disclosure say?" tone="tertiary" /></ChipRow>}
-        cta={<DarkButton label="Send to R. Sharma" />}
-        placeholder={PLACEHOLDER.expanded} />
+      <ResultDock placeholder={PLACEHOLDER.expanded} />
       <HomeIndicator />
     </Shell>
   );

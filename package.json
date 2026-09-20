@@ -31,7 +31,7 @@
     "lint:adherence": "oxlint --config design-system/_adherence.oxlintrc.json design-system",
     "shot": "node tools/phone-shot.mjs",
     "report:parallel": "node tools/check-parallel.mjs",
-    "lint:adherence:gate": "oxlint --config design-system/_adherence.oxlintrc.json --max-warnings=62 --silent design-system",
+    "lint:adherence:gate": "oxlint --config design-system/_adherence.oxlintrc.json --max-warnings=61 --silent design-system",
     "lint:adherence:screens": "oxlint --config design-system/_adherence.oxlintrc.json screens",
     "check": "npm run build:barrel && npm run build:bundle && npm run build:index && npm run build:scale && npm run check:tokens && npm run check:integrity && npm run lint:adherence",
     "check:tokens": "node tools/check-tokens.mjs"
