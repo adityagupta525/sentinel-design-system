@@ -122,8 +122,43 @@ await mkdir(join(ROOT, 'dist'), { recursive: true });
 await cp(join(OUT, 'bundles', 'sentinel-design-system.js'), join(ROOT, 'dist', 'sentinel-design-system.js'));
 await cp(join(OUT, 'bundles', 'sentinel-screens.jsx'), join(ROOT, 'dist', 'sentinel-screens.jsx'));
 
+/* THE COPY THAT OPENS TRAVELS WITH THE CODE (20 Sep 2026).
+   A handoff of source alone asks the receiving team to install a toolchain before they can see what
+   they are being asked to build. `site/` is precompiled and self-contained — 131 pages that open
+   from a double-click — so it goes in the folder the team is actually sent. It must already be
+   built: this copies, it does not generate, and it says so rather than silently shipping a stale one. */
+if (!existsSync(join(ROOT, 'site', 'index.html'))) {
+  console.error('site/ is not built — run `npm run build:artifact` first, then this again');
+  process.exit(1);
+}
+await cp(join(ROOT, 'site'), join(OUT, 'site'), { recursive: true });
+
+await writeFile(join(OUT, 'START-HERE.md'), `# Sentinel — start here
+
+Two doors, and they are for different people.
+
+**To look at it:** open \`site/index.html\`. Double-click it. No install and no server — every screen,
+every journey and all 94 component specifications are in there, already built. React and the fonts
+come from a CDN, so stay online.
+
+**To build it:** read \`README.md\` in this folder, then \`rules/HANDOVER.md\`. The code is under
+\`design-system/\` and \`screens/\`; \`bundles/\` has the whole system as one file and every screen as
+one file, for a spike with no build step.
+
+Everything here is generated from one repository, which is the source of truth. Do not edit this
+folder expecting the changes to survive.
+`);
+
+/* One archive, because "download karke team ko bhej dunga" is the actual use. */
+const { execFileSync } = await import('node:child_process');
+const zip = join(ROOT, 'sentinel-handoff.zip');
+await rm(zip, { force: true });
+execFileSync('zip', ['-rq', zip, 'handoff', '-x', '*.DS_Store'], { cwd: ROOT });
+
 const jsx = await count('design-system/components', '.jsx');
 const dts = await count('design-system/components', '.d.ts');
 const pages = await count('design-system/pages', '.html');
 const screens = await count('screens', '.jsx');
-console.log(`handoff/: ${jsx} components (${dts} contracts), ${pages} spec pages, ${screens} screen modules, 2 bundles`);
+const { statSync } = await import('node:fs');
+console.log(`handoff/: ${jsx} components (${dts} contracts), ${pages} spec pages, ${screens} screen modules, 2 bundles, 131-page site/`);
+console.log(`sentinel-handoff.zip: ${(statSync(zip).size / 1048576).toFixed(1)} MB — the one file to send`);

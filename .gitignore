@@ -13,6 +13,7 @@ dist/*
 
 # Build output — regenerate with `npm run build:handoff`. The repository is the source of truth.
 handoff/
+sentinel-handoff.zip
 
 # `site/` IS COMMITTED, and the earlier name for it is not. It is build output, so committing it is
 # a deliberate exception: the owner downloaded the repository, opened a page and got a blank one,

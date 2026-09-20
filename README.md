@@ -18,7 +18,7 @@ Pick the row that describes you. Each is a short path, not a tour.
 |---|---|---|
 | **Just looking** — you downloaded this folder and want to see it | **open `site/index.html`** — double-click it. No install and no server. React and the fonts still come from a CDN, so stay online | every screen, every journey, and all 94 component specifications |
 | **Driving the product** — demo, review, or seeing what it does | `npm run preview` → [the prototype](http://localhost:4321/screens/prototype.html) | **[`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md)** — every sentence that reaches every screen |
-| **Building it** — a development team | **[`docs/HANDOVER.md`](docs/HANDOVER.md)** — install, import, the four rules, what gets a PR sent back | `npm run build:handoff` → one folder with the system, the screens and the rules |
+| **Building it** — a development team | **[`docs/HANDOVER.md`](docs/HANDOVER.md)** — install, import, the four rules, what gets a PR sent back | `npm run build:handoff` → `sentinel-handoff.zip`: the system, the screens, the rules, and `site/` so they can look before they build |
 | **Designing on it** | **[`design-system/readme.md`](design-system/readme.md)** — the specification, 43 KB | [the component pages](http://localhost:4321/pages/00-Index.html), and `CLAUDE.md` for the working rules |
 | **Sharing it** — a link for the team | **[`docs/DEPLOY.md`](docs/DEPLOY.md)** — the artifact, a Vercel deployment, and the honest answer on an `.apk` | `npm run build:artifact` rebuilds `site/` |
 
@@ -26,7 +26,7 @@ Pick the row that describes you. Each is a short path, not a tour.
 npm install
 npm run preview          # http://localhost:4321
 npm run check            # barrel · bundle · integrity · adherence
-npm run build:handoff    # handoff/ — the folder you give a development team
+npm run build:handoff    # handoff/ + sentinel-handoff.zip — the one file you send a team
 npm run build:artifact   # rebuilds site/ — the shareable copy, and what Vercel serves
 ```
 
