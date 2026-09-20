@@ -15,7 +15,8 @@
 
    Output: `app/index.html` and `app/vercel.json`. Deploy it by running `npx vercel --prod` from
    inside `app/` — it is its own project, with no build step and nothing to install. */
-import { mkdir, rm, writeFile, readFile } from 'node:fs/promises';
+import { mkdir, rm, writeFile, readFile, readdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -23,8 +24,26 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'app');
 const { precompilePage } = await import('./precompile-jsx.mjs');
 
+/* KEEP `.vercel/`. This script rebuilds the folder from scratch, and the first time it ran after a
+   deployment it deleted `app/.vercel/project.json` with everything else — so the next
+   `npx vercel --prod` had no link and asked which project to deploy to, with the design-system
+   project sitting at the top of the list as the default. A build step that can quietly point a
+   deployment at the wrong project is a defect, not an inconvenience. */
+const LINK = join(OUT, '.vercel');
+const keep = existsSync(LINK) ? await readdir(LINK).then(async (fs) => {
+  const held = [];
+  for (const f of fs) held.push([f, await readFile(join(LINK, f))]);
+  return held;
+}) : null;
+
 await rm(OUT, { recursive: true, force: true });
 await mkdir(OUT, { recursive: true });
+
+if (keep) {
+  await mkdir(LINK, { recursive: true });
+  for (const [f, buf] of keep) await writeFile(join(LINK, f), buf);
+  console.log(`kept app/.vercel/ — ${keep.length} file(s), so the deployment link survives the rebuild`);
+}
 
 let html = await readFile(join(ROOT, 'screens', 'app.html'), 'utf8');
 
@@ -60,7 +79,7 @@ await writeFile(join(OUT, 'index.html'), html);
 /* The home-screen files sit beside the page rather than inside it: a manifest has to be its own
    document for a browser to read it, and an icon has to be a real file for iOS to put on a home
    screen. Four small files; the app is still one HTML document. */
-const { readdir, copyFile } = await import('node:fs/promises');
+const { copyFile } = await import('node:fs/promises');
 const ASSETS = join(ROOT, 'screens', 'app-assets');
 let assets = 0;
 for (const f of await readdir(ASSETS)) {
