@@ -2,26 +2,10 @@
  "generated": "2026-09-20",
  "generator": "scripts/build-index.js",
  "counts": {
-  "building": 43,
-  "shipped": 54
+  "shipped": 54,
+  "building": 40
  },
  "rows": [
-  {
-   "name": "DemoFooter",
-   "group": "Foundations",
-   "status": "building",
-   "page": null,
-   "file": "components/text/DemoFooter.jsx",
-   "tokens": [
-    "--color-muted",
-    "--font-ui",
-    "--leading-16",
-    "--text-11",
-    "--weight-regular"
-   ],
-   "locals": [],
-   "literals": 0
-  },
   {
    "name": "Drawer",
    "group": "Foundations",
@@ -1675,27 +1659,6 @@
    "literals": 2
   },
   {
-   "name": "DecisionsStrip",
-   "group": "Input",
-   "status": "building",
-   "page": null,
-   "file": "components/actions/DecisionsStrip.jsx",
-   "tokens": [
-    "--color-bronze-deep",
-    "--color-chip",
-    "--color-line",
-    "--color-surface",
-    "--font-ui",
-    "--radius-16",
-    "--radius-full",
-    "--space-8",
-    "--text-12",
-    "--weight-bold"
-   ],
-   "locals": [],
-   "literals": 7
-  },
-  {
    "name": "DownloadAction",
    "group": "Input",
    "status": "shipped",
@@ -1911,27 +1874,6 @@
    ],
    "locals": [],
    "literals": 1
-  },
-  {
-   "name": "CanvasHeader",
-   "group": "Navigation",
-   "status": "building",
-   "page": null,
-   "file": "components/shell/CanvasHeader.jsx",
-   "tokens": [
-    "--color-bronze-deep",
-    "--color-ink",
-    "--color-line",
-    "--color-surface",
-    "--font-ui",
-    "--radius-full",
-    "--space-4",
-    "--text-12",
-    "--text-14",
-    "--weight-semibold"
-   ],
-   "locals": [],
-   "literals": 8
   },
   {
    "name": "ExplainerSheet",

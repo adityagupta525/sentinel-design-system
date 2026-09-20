@@ -6,7 +6,7 @@
 <script src="../../_ds_bundle.js"></script>
 <style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.g{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 6px}.col{width:343px}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
 <script type="text/babel">
-const { Eyebrow, EyebrowDivider, Provenance, DemoFooter, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, CanvasHeader, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, ActionCard, DarkButton, SuggestionRow, DecisionsStrip, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
+const { Eyebrow, EyebrowDivider, Provenance, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, ActionCard, DarkButton, SuggestionRow, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
 const L = ({t}) => <p className="lbl">{t}</p>;
 
 const App = () => <div className="row" style={{gap:16,alignItems:'flex-start'}}>
@@ -15,7 +15,7 @@ const App = () => <div className="row" style={{gap:16,alignItems:'flex-start'}}>
     <div style={{position:'absolute',bottom:0,left:0,right:0}}><Dock cta={<DarkButton label="Approve both moves" />} composer={<Composer value="" onChange={()=>{}} placeholder="Ask Sentinel" />} /><HomeIndicator /></div>
   </div>
   <div style={{position:'relative',width:375,height:388,borderRadius:24,overflow:'hidden',boxShadow:'0 0 0 1px var(--ring-frame-soft)'}}>
-    <ScreenBackdrop /><StatusSpacer /><CanvasHeader title="Client review" />
+    <ScreenBackdrop /><StatusSpacer />
     <div style={{position:'relative',zIndex:1,padding:'12px 16px'}}><L t="ScrollToBottomButton · HomeIndicator dark" /></div>
     <div style={{position:'absolute',left:0,right:0,bottom:24,top:0}}><ScrollToBottomButton show onClick={()=>{}} /></div>
     <div style={{position:'absolute',bottom:0,left:0,right:0}}><HomeIndicator tone="dark" /></div>

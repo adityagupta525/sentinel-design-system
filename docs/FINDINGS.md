@@ -1993,3 +1993,39 @@ causes now carries it — the refinements, the holdings turns, the fund page, al
 capabilities list. A turn that is part of a screen's first render still does not, because that would
 fight the screen transition it arrives inside. `enter` is threaded through every turn in
 `funds.jsx` to make that possible.
+
+---
+
+### F-71 · Nothing in the system that is on no screen — three deleted, one built in, eight named — *20 Sep 2026*
+
+The owner's standing rule, measured by `report:parallel`, had twelve components sitting on no screen.
+Answered one at a time rather than as a number.
+
+**Three deleted, each for a reason in its own source.** `CanvasHeader` headed the canvas surface, and
+that surface was removed from the product in v5 — a header for a thing that does not exist is
+documentation nobody can build from. `DemoFooter`'s own header has said since v4 that it is
+*"superseded by Provenance"*, and superseded is not a state a component may stay in. `DecisionsStrip`
+was a pinned read-only strip of settled facts, and the ruling of 18 Sep put settled facts in the turn
+that settled them. Their group boards, the readme lists, the lint globals and the barrel went with
+them; 104 pages still render clean.
+
+**One was a real gap, not dead code.** `ScrollToBottomButton` was built in v9 and had reached no
+screen, so every journey let an advisor scroll back through a long thread with no way down but the
+same swipes again. It belongs to `ScreenScaffold` rather than to a caller, for the reason the Dock
+does: a thread that forgot it would be a thread with a trap in it. Threshold 120px, and it sits on a
+zero-height line directly above the Dock so its own `bottom: 8` clears the composer.
+
+**And the day it first rendered, it turned out to have no accessible name** — a `Pressable` carrying
+an SVG and nothing else, which a screen reader announces as "button". The same defect F-39 found on
+the app bar, and it survived four versions here because nothing had ever rendered it. It says *"Go to
+the newest turn"* now, which is what the advisor wants rather than where the scroll ends, and while
+hidden it leaves the tab order and the accessibility tree — a control that cannot be seen and cannot
+be pressed should not be announced.
+
+**Eight remain, in three kinds, recorded as contradiction 64.** `MotionGuard` renders nothing by
+design, so counting it as absent counts the wrong thing. Three icons are members of a set that is
+delivered whole. And four — `ChartLegend`, `ChartShare`, `ChartTooltip`, `EyebrowDivider` — are the
+real question: rule 1 argues against a legend at all, which is why nothing ever reached for
+`ChartShare`. That one is the owner's.
+
+**94 components, 54 shipped, 86 of 94 on a screen.**

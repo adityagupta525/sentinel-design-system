@@ -3,8 +3,6 @@
    _adherence.oxlintrc.json warns on any import that reaches into components/ directly. */
 
 /* text */
-export type { DemoFooterProps } from './components/text/DemoFooter';
-export { DemoFooter } from './components/text/DemoFooter';
 export type { EyebrowProps } from './components/text/Eyebrow';
 export { Eyebrow } from './components/text/Eyebrow';
 export type { EyebrowDividerProps } from './components/text/EyebrowDivider';
@@ -37,8 +35,6 @@ export { IconSparkle } from './components/icons/IconSparkle';
 export type { IconSpinnerProps } from './components/icons/IconSpinner';
 export { IconSpinner } from './components/icons/IconSpinner';
 /* shell */
-export type { CanvasHeaderProps } from './components/shell/CanvasHeader';
-export { CanvasHeader } from './components/shell/CanvasHeader';
 export type { DockProps } from './components/shell/Dock';
 export { Dock } from './components/shell/Dock';
 export type { DrawerSection, DrawerProps } from './components/shell/Drawer';
@@ -70,8 +66,6 @@ export type { ClientChipProps } from './components/actions/ClientChip';
 export { ClientChip } from './components/actions/ClientChip';
 export type { DarkButtonProps } from './components/actions/DarkButton';
 export { DarkButton } from './components/actions/DarkButton';
-export type { DecisionsStripProps } from './components/actions/DecisionsStrip';
-export { DecisionsStrip } from './components/actions/DecisionsStrip';
 export type { DownloadActionProps } from './components/actions/DownloadAction';
 export { DownloadAction } from './components/actions/DownloadAction';
 export type { InfoDotProps } from './components/actions/InfoDot';

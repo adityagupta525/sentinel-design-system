@@ -3,7 +3,6 @@
    _adherence.oxlintrc.json warns on any import that reaches into components/ directly. */
 
 /* text */
-export { DemoFooter } from './components/text/DemoFooter.jsx';
 export { Eyebrow } from './components/text/Eyebrow.jsx';
 export { EyebrowDivider } from './components/text/EyebrowDivider.jsx';
 export { Provenance } from './components/text/Provenance.jsx';
@@ -21,7 +20,6 @@ export { IconPlus } from './components/icons/IconPlus.jsx';
 export { IconSparkle } from './components/icons/IconSparkle.jsx';
 export { IconSpinner } from './components/icons/IconSpinner.jsx';
 /* shell */
-export { CanvasHeader } from './components/shell/CanvasHeader.jsx';
 export { Dock } from './components/shell/Dock.jsx';
 export { Drawer } from './components/shell/Drawer.jsx';
 export { HomeIndicator } from './components/shell/HomeIndicator.jsx';
@@ -38,7 +36,6 @@ export { AnswerChip } from './components/actions/AnswerChip.jsx';
 export { ChipRow } from './components/actions/ChipRow.jsx';
 export { ClientChip } from './components/actions/ClientChip.jsx';
 export { DarkButton } from './components/actions/DarkButton.jsx';
-export { DecisionsStrip } from './components/actions/DecisionsStrip.jsx';
 export { DownloadAction } from './components/actions/DownloadAction.jsx';
 export { InfoDot } from './components/actions/InfoDot.jsx';
 export { InlineActionRow } from './components/actions/InlineActionRow.jsx';

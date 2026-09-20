@@ -5,6 +5,7 @@ import { TopBar } from './TopBar.jsx';
 import { ProgressRail } from '../data/ProgressRail.jsx';
 import { Dock } from './Dock.jsx';
 import { HomeIndicator } from './HomeIndicator.jsx';
+import { ScrollToBottomButton } from './ScrollToBottomButton.jsx';
 /* THE PHONE, WITH THE COMPOSER GUARANTEED.
    Rule 3 is "the composer is on every screen", and until now it was kept by three hand-built shells
    that happened to agree. Measured 20 Sep 2026: `thread.jsx:45-63`, `rail.jsx:87-105` and
@@ -35,6 +36,12 @@ export function ScreenScaffold({
 }) {
   const own = React.useRef(null);
   const el = () => (scrollRef ? scrollRef.current : own.current);
+  const [away, setAway] = React.useState(false);
+  const onScroll = (e) => {
+    const t = e.currentTarget;
+    setAway(t.scrollHeight - t.scrollTop - t.clientHeight > 120);
+  };
+  const toBottom = () => { const e = el(); if (e) e.scrollTo({ top: e.scrollHeight, behavior: (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth' }); };
   /* WHERE A THREAD RESTS — lifted verbatim from thread.jsx, which is where it was measured.
        'newest'  the newest turn STARTS on screen; if it also fits, it ends on screen too (scroll to
                  the bottom). The rule keeps the first line where the eye already is; the advisor
@@ -79,7 +86,7 @@ export function ScreenScaffold({
       {banner && <div style={{ position: 'relative', zIndex: 1, paddingBottom: 'var(--space-8)' }}>{banner}</div>}
       {body === 'thread' ? (
         /* The screen carries the scroll — never a card inside it, and never a second scroller. */
-        <div ref={scrollRef || own} style={{ position: 'relative', zIndex: 1, display: 'flex', flex: 1, flexDirection: 'column', overflowY: 'auto', minHeight: 0 }}>
+        <div ref={scrollRef || own} onScroll={onScroll} style={{ position: 'relative', zIndex: 1, display: 'flex', flex: 1, flexDirection: 'column', overflowY: 'auto', minHeight: 0 }}>
           <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--stack)', padding: '16px var(--gutter) 24px' }}>
             {children}
           </div>
@@ -92,6 +99,17 @@ export function ScreenScaffold({
           {children}
           <div style={{ flex: 1 }} />
         </React.Fragment>
+      )}
+      {/* SCROLLED UP IN A LONG THREAD, THE NEWEST TURN IS THE ONE YOU CANNOT SEE (20 Sep 2026).
+          `ScrollToBottomButton` was built for exactly this and had been on no screen since v9, so
+          every journey in the product let an advisor scroll back through twelve answered questions
+          with no way down but the same twelve swipes. It is the scaffold's, not the caller's, for
+          the reason the Dock is: a thread that forgot it would be a thread with a trap in it.
+          Threshold 120px — far enough that it does not flicker at the bottom of a settling scroll. */}
+      {body === 'thread' && (
+        /* A zero-height relative line directly above the Dock, so the button's own `bottom: 8`
+           measures from there and it sits 8px clear of the composer rather than behind it. */
+        <div style={{ position: 'relative', height: 0 }}><ScrollToBottomButton show={away} onClick={toBottom} /></div>
       )}
       {/* The Dock is NOT the caller's to place — that is how rule 3 survives the next screen. */}
       <Dock chips={chips} composer={composer} />

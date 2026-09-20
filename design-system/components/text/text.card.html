@@ -6,12 +6,12 @@
 <script src="../../_ds_bundle.js"></script>
 <style>body{margin:0;background:var(--color-canvas);padding:16px;font-family:var(--font-ui)}.g{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.lbl{font:700 10px/1 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin:0 0 6px}.col{width:343px}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}</style></head><body><div id="root"></div>
 <script type="text/babel">
-const { Eyebrow, EyebrowDivider, Provenance, DemoFooter, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, CanvasHeader, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, ActionCard, DarkButton, SuggestionRow, DecisionsStrip, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
+const { Eyebrow, EyebrowDivider, Provenance, StandingDisclosure, ScreenBackdrop, StatusSpacer, HomeIndicator, TopBar, Dock, ScrollToBottomButton, Pressable, AnswerChip, ChipRow, ActionCard, DarkButton, SuggestionRow, Composer, MoneyComposer, UserBubble, SentinelBlock, SentinelText, SentinelThinking, QAPair, ParseNote, DetourBanner, GreetingDivider, ProgressTrace, AllocationCard, HeroNumberCard, MoveCard, ConstraintCallout, RejectCallout, DisclosureBlock, DataTableCard, ExplainerSheet, ProgressRail, ConcentrationBar, Dumbbell, AttributionChart, DrawnCheck, IconPlus, IconMenu, IconChevronRight, IconAttach, IconArrow, IconSparkle, Pill, Badge } = window.SentinelDesignSystem_0682a2;
 const L = ({t}) => <p className="lbl">{t}</p>;
 
 const App = () => <div className="g" style={{gridTemplateColumns:'1fr 1fr',gap:20}}>
   <div className="g"><L t="Eyebrow" /><Eyebrow>Jump back in</Eyebrow><Eyebrow color="var(--color-bronze-deep)">Before you approve</Eyebrow><L t="EyebrowDivider" /><EyebrowDivider>Risk profile locked</EyebrowDivider></div>
-  <div className="g"><L t="Provenance" /><Provenance text="As of 30 Sep · from his Q3 statement and mandate on file" /><L t="StandingDisclosure" /><StandingDisclosure /><L t="DemoFooter" /><DemoFooter /></div>
+  <div className="g"><L t="Provenance" /><Provenance text="As of 30 Sep · from his Q3 statement and mandate on file" /><L t="StandingDisclosure" /><StandingDisclosure /><L t="DemoFooter" /></div>
 </div>;
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script></body></html>
