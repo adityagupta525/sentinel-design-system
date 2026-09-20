@@ -6,3 +6,6 @@ dist/
 .env.*
 !.env.example
 .cache/
+
+# Build output — regenerate with `npm run build:handoff`. The repository is the source of truth.
+handoff/
