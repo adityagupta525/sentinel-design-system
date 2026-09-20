@@ -9,7 +9,10 @@ Two things a team can be given, and they answer different questions.
 
 ## Vercel
 
-`vercel.json` serves the committed `site/` directory and **runs no build**. That is deliberate:
+`vercel.json` serves the committed `site/` directory and **runs no build**. It carries no comments:
+Vercel validates the file against a schema that rejects any property it does not know, including the
+`"//"` key that is the usual JSON comment trick — a first deployment failed on exactly that, with
+*"should NOT have additional property `//`"*. The reasoning lives here instead. That is deliberate:
 `site/` is built and verified before it is pushed — 131 pages that render over `file://` with the
 theme resolved, no console error and no failed request — so rebuilding it on Vercel would add three
 ways to fail (`npm ci`, the esbuild binary, and `python3` for the cover generator) in exchange for

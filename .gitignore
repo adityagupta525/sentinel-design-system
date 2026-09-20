@@ -21,3 +21,4 @@ sentinel-handoff.zip
 # fetch the .jsx to compile. `site/` is precompiled and self-contained — clone, double-click
 # site/index.html, and it opens with no server. Rebuild it with `npm run build:artifact`.
 artifact/
+.vercel
