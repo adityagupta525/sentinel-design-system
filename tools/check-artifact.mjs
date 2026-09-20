@@ -1,0 +1,68 @@
+/* check-artifact — follow every link on the staged cover and prove each destination MOUNTS.
+ *
+ * A published artifact is a link sent to people who cannot ask why a page is blank, so "it returned
+ * 200" is not the test. This opens every page the cover points at and waits for it to render.
+ *
+ * THE TRAP THIS TOOL FELL INTO FIRST, kept because the next version of it will fall in too: these
+ * pages compile their JSX in the browser AFTER the network goes quiet, so `networkidle` is not
+ * "rendered". The first run reported ten pages dead that were perfectly fine — it had sampled once,
+ * immediately. It polls now. A page with no `#root` (the small static guideline pages) is measured on
+ * its body instead, and 200 bytes of real content is enough for one of those.
+ */
+import { spawn } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
+import net from 'node:net';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+if (!existsSync(join(ROOT, 'artifact', 'index.html'))) {
+  console.error('artifact/ is not staged — run `npm run build:artifact` first');
+  process.exit(2);
+}
+const PORT = await new Promise((res, rej) => {
+  const s = net.createServer(); s.once('error', rej);
+  s.listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => res(port)); });
+});
+const srv = spawn(process.execPath, [join(ROOT, 'tools', 'preview-server.mjs')], { env: { ...process.env, PORT: String(PORT) }, stdio: 'ignore' });
+process.on('exit', () => { try { srv.kill(); } catch {} });
+await new Promise((r) => setTimeout(r, 1400));
+
+const require = createRequire(import.meta.url);
+const { chromium } = require(join(ROOT, 'node_modules', 'playwright', 'index.js'));
+const browser = await chromium.launch();
+
+const cover = await browser.newPage();
+await cover.goto(`http://127.0.0.1:${PORT}/artifact/index.html`, { waitUntil: 'domcontentloaded' });
+const links = [...new Set(await cover.evaluate(() => [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'))))];
+await cover.close();
+
+const missing = [];
+const dead = [];
+for (const href of links) {
+  const probe = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
+  const res = await probe.request.get(`http://127.0.0.1:${PORT}/artifact/${href}`);
+  if (!res.ok()) { missing.push(`${res.status()} ${href}`); await probe.close(); continue; }
+  if (!href.endsWith('.html')) { await probe.close(); continue; }
+  const errs = [];
+  probe.on('pageerror', (e) => errs.push(String(e).split('\n')[0]));
+  await probe.goto(`http://127.0.0.1:${PORT}/artifact/${href}`, { waitUntil: 'networkidle' }).catch(() => {});
+  let size = 0;
+  for (let waited = 0; waited < 12000; waited += 250) {
+    size = await probe.evaluate(() => {
+      const r = document.getElementById('root');
+      return r ? r.innerHTML.length : document.body.innerHTML.length;
+    }).catch(() => 0);
+    if (size > 200) break;
+    await probe.waitForTimeout(250);
+  }
+  if (size <= 200 || errs.length) dead.push(`${href}  mounted=${size}  ${errs[0] || ''}`);
+  await probe.close();
+}
+await browser.close();
+
+console.log(`artifact: ${links.length} links on the cover, ${links.length - missing.length - dead.length} resolve and mount`);
+if (missing.length) console.log('\nNOT FOUND:\n  ' + missing.join('\n  '));
+if (dead.length) console.log('\nDID NOT MOUNT:\n  ' + dead.join('\n  '));
+process.exit(missing.length + dead.length ? 1 : 0);

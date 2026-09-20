@@ -29,6 +29,7 @@
     "build:index": "node tools/build-index.mjs",
     "build:scale": "node tools/extract-scale.mjs",
     "check": "npm run build:barrel && npm run build:bundle && npm run build:index && npm run build:scale && npm run check:tokens && npm run check:integrity && npm run lint:adherence",
+    "check:artifact": "node tools/check-artifact.mjs",
     "check:integrity": "node tools/check-integrity.mjs",
     "check:tokens": "node tools/check-tokens.mjs",
     "lint:adherence": "oxlint --config design-system/_adherence.oxlintrc.json design-system",
