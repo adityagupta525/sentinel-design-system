@@ -15,6 +15,11 @@ dist/*
 handoff/
 sentinel-handoff.zip
 
+# `app/` is the product on its own, staged by `npm run build:app` as one self-contained file for a
+# phone. It is its own Vercel project — deployed by running `npx vercel --prod` from inside it — so
+# its `.vercel/` link lives there too. Build output; not committed.
+app/
+
 # `site/` IS COMMITTED, and the earlier name for it is not. It is build output, so committing it is
 # a deliberate exception: the owner downloaded the repository, opened a page and got a blank one,
 # because the repository's own pages compile their JSX in the browser and a `file://` origin cannot

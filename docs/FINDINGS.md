@@ -2329,3 +2329,50 @@ page. Then looked at it.
 **Gates after: 131/131 `site/` pages over `file://` carry text, resolve the theme, and show no console
 error, no failed request and no guard bar · 144/144 preview pages clean · 125/125 cover links under the
 artifact CSP.**
+
+---
+
+## F-78 · The app could not be shipped without the page that documented it — Closed 21 Sep 2026
+
+The owner wanted one more link: the complete mobile app, end to end, to open on a phone — without the
+design system around it. It could not be built, because the app was not a thing. `Proto` — one phone,
+one composer, and the router that decides which journey a sentence enters — lived inside
+`prototype.html`, wrapped in that page's control panel, event log and router tables.
+
+**The move.** `Proto` and what it owns are now `screens/proto.jsx`, which is the move this repository
+has already made three times: the ledger table, the fund shortlist and the live rail were lifted out
+of their pages for the same reason, and the prototype's own page says why — two copies drift, one
+copy cannot. `prototype.html` keeps its documentation and renders `<Proto/>` in a `PhoneFrame` on a
+desk; `screens/app.html` renders the same `Proto` full-bleed at device size. Neither owns it.
+
+`app.html` does **not** re-lay-out the product. It renders at exactly 375 × 812 and scales to the
+device — 1.048 at 393 × 852, 0.96 at 360 × 800 — so no component sees a width it was not built for.
+The scale reads `window.innerHeight` rather than `visualViewport`, because the visual viewport shrinks
+when the keyboard opens and scaling to that would shrink the app every time someone typed.
+
+**What the move surfaced, which is the point of moving it.** 640 lines that had lived inside an HTML
+file had never been linted, because the screens gate lints `.jsx`. On the first run it reported 27
+warnings against a gate that must be 0:
+
+- **Two were real defects.** A `const state = { … }` built on every render of `Proto` and used by
+  nothing — `<Bridge/>` builds its own object inline — and a `UserBubble` destructured and never used.
+- **Twenty-five were the linter telling the truth about something undocumented.** `proto.jsx` uses
+  names that sibling modules declare in the one shared Babel scope, and oxlint reads each file alone.
+  The names are aliased at the top of the file now, through one uniquely-named const each, which is
+  the convention `thread.jsx` already states — and the alias list is the only place in this repository
+  where the module's real dependency surface is written down.
+
+**A weakening I started and backed out of.** Declaring those names as `globals` in the lint config
+made the screens gate pass — and quietly took the design-system gate from 59 warnings to 52, because
+the same config lints both. A gate that drops seven findings as a side effect of an unrelated fix is
+worse than the warning it removed. The config is byte-for-byte unchanged.
+
+**Two of my own test harnesses were wrong before the code was.** A `RegExp` passed through
+`page.evaluate` does not survive the boundary, so a refusal that works read as a failure; and a run
+that typed seven sentences into one session scored the documentation page as passing because the
+words *risk*, *proposal* and *did not follow* are printed in its own router table. Re-run from a fresh
+load per sentence, all seven reach the right journey.
+
+**Gates after: 145/145 preview pages clean · screens adherence 0 · system adherence 59, unchanged ·
+125/125 cover links under the artifact CSP · integrity 449 files · `site/` 255 files, at the limit,
+which is why `screens/app.html` is staged by `build:app` instead.**

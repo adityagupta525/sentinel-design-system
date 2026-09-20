@@ -88,9 +88,16 @@ for (const p of await walk(join(ROOT, 'design-system/components'), (p) => p.ends
 for (const f of ['design-system/readme.md', 'design-system/SKILL.md']) {
   if (existsSync(join(ROOT, f))) await copyText(f, f.split('/').pop());
 }
-/* screens: the pages, their modules, and the one fixture */
+/* screens: the pages, their modules, and the one fixture.
+
+   `screens/app.html` is left out, and the reason is a limit rather than a judgement: an artifact
+   version may carry 255 files and this is 255. app.html is the product with the documentation taken
+   off, for a phone — `npm run build:app` stages it as one self-contained file with its own
+   deployment, so it is not missing, it is elsewhere. `screens/prototype.html` is the same product
+   with its documentation, and that is the one this site is for. */
 for (const p of await walk(join(ROOT, 'screens'), (p) => p.endsWith('.html') || p.endsWith('.jsx'))) {
   const rel = relative(ROOT, p);
+  if (rel === 'screens/app.html') continue;
   await copyText(rel, rel);
 }
 /* the screen pages reach the bundle with ../../design-system/_ds_bundle.js — repoint to the root copy */

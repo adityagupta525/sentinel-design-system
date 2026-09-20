@@ -55,6 +55,34 @@ unreachable on a laptop.
 If that is not wanted, turn on **Settings → Deployment Protection → Vercel Authentication** before
 sharing the link.
 
+## The app on its own, for a phone
+
+`npm run build:app` stages **`app/index.html`** — the product with the documentation taken off. It is
+one self-contained file: the JSX compiled, the theme inlined, the component bundle inlined, React
+minified rather than the development build. Nothing is fetched except React and ReactDOM.
+
+It renders at exactly **375 × 812** and is **scaled** to the device rather than reflowed — 1.048 on a
+393 × 852 phone, 0.96 on a 360 × 800 one. Every component in this system is built at 375pt and that is
+settled, so nothing here sees a width it was not designed for and nothing is restyled to make it fit.
+The scale is computed from `window.innerHeight`, not `visualViewport`, because the visual viewport
+shrinks when the keyboard opens and scaling to that would shrink the whole app every time someone
+typed.
+
+It is a **separate Vercel project**, deployed from inside the folder:
+
+```bash
+npm run build:app
+cd app && npx vercel --prod
+```
+
+`app/` is build output and is not committed; its own `.vercel/` link lives inside it. The
+design-system site is the other project and is unaffected.
+
+Measured before it shipped: it renders at 393 × 852, 375 × 667, 360 × 800 and 430 × 932 with the theme
+resolved, a live composer, no horizontal scroll and no console error; and seven sentences — the fund
+search, a refinement, the drift, the risk profile, the proposal, the rebalance and one refusal — each
+reach the right journey from a fresh load.
+
 ## An `.apk` for demo testing
 
 Not built, and worth saying why rather than leaving it implied. This product is a web build at

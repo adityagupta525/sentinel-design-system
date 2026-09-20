@@ -7771,32 +7771,86 @@ Object.assign(window, {
   MenuFooter: MenuFooter,
   MenuFooterTheme: MenuFooterTheme
 });</script>
-<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
-</head><body><div id="root"></div>
-<script>function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/* THE APP ITSELF, lifted out of the page that documented it (21 Sep 2026).
+   `Proto` is the product: one phone, one composer, and the router that decides which journey a
+   sentence enters. It lived inside `prototype.html`, wrapped in that page's documentation — the
+   control panel, the event log, the router table, the four-questions table. That was right while
+   there was one reader. It stopped being right the moment the app had to ship on its own, to a
+   phone, with none of that around it.
+
+   So it moves here, which is the move this repository has already made three times — the ledger
+   table, the fund shortlist and the live rail were lifted out of their pages for exactly this
+   reason, and the prototype's own page says why: two copies drift, one copy cannot.
+
+   `prototype.html` keeps its documentation and renders `<Proto/>` inside a PhoneFrame on a desk.
+   `app.html` renders the same `Proto` full-bleed at device size. Neither owns it.
+
+   No second destructure: every .jsx a page loads compiles into ONE scope, so the names below are
+   declared once, here, and the page that loads this file reads them from that same scope. */
 /* home.jsx already declares Composer, Dock, Pill and ChipRow in this one Babel scope; only the names
    this file adds are destructured. The preview gate fails the page if both declare one. */
-const {
-  ScreenStack,
-  UserBubble,
-  SentinelBlock,
-  SentinelText,
-  SentinelTurn,
-  AnswerChip,
-  ProgressTrace,
-  ExplainerSheet,
-  ConfirmSheet,
-  MoveCard,
-  ConstraintCallout,
-  Drawer
-} = window.SentinelDesignSystem_0682a2;
-const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const STEP_MS = 850;
-const FILL_MS = 900;
+var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
+  ScreenStack = _window$SentinelDesig.ScreenStack,
+  SentinelBlock = _window$SentinelDesig.SentinelBlock,
+  SentinelText = _window$SentinelDesig.SentinelText,
+  SentinelTurn = _window$SentinelDesig.SentinelTurn,
+  AnswerChip = _window$SentinelDesig.AnswerChip,
+  ProgressTrace = _window$SentinelDesig.ProgressTrace,
+  ExplainerSheet = _window$SentinelDesig.ExplainerSheet,
+  ConfirmSheet = _window$SentinelDesig.ConfirmSheet,
+  MoveCard = _window$SentinelDesig.MoveCard,
+  ConstraintCallout = _window$SentinelDesig.ConstraintCallout,
+  Drawer = _window$SentinelDesig.Drawer;
+
+/* WHAT THIS FILE BORROWS, written down (21 Sep 2026).
+   Every `.jsx` a page loads compiles into ONE scope, so the names below are already declared — by
+   `home.jsx`, by the journey modules, and by the React UMD build — and re-declaring any of them here
+   would be a redeclaration that renders the page blank. They are aliased instead, through a single
+   uniquely-named const each and read through in JSX, which is the convention `thread.jsx` states.
+
+   It also makes the linter's view true. `oxlint` reads each file alone, so a bare `<ReviewResult/>`
+   here is an undefined component to it; that is not a false positive worth silencing in the config,
+   because the coupling is real. A module's borrowings ARE its dependency surface, and this list is
+   that surface — the only place in the repository where it is visible at all. */
+var PROTO_R = React;
+var PROTO_DS = window.SentinelDesignSystem_0682a2;
+var BORROWED = {
+  ComparePicker: ComparePicker,
+  FundCompare: FundCompare,
+  FundInfo: FundInfo,
+  FundVerbs: FundVerbs,
+  HoldingsTurn: HoldingsTurn,
+  PropCarried: PropCarried,
+  RebCarried: RebCarried,
+  RebalanceAnswer: RebalanceAnswer,
+  RevCarried: RevCarried,
+  ReviewEnding: ReviewEnding,
+  ReviewResult: ReviewResult,
+  ShareDraftTurn: ShareDraftTurn
+};
+var reduced = function reduced() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+var STEP_MS = 850;
+var FILL_MS = 900;
 
 /* ─────────────────────────────────────────────────────────────────────────────────────────────────
    THE ROUTER — and it is PATTERNS, not a model. Said plainly here because the whole product rests on
@@ -7808,7 +7862,7 @@ const FILL_MS = 900;
    fund search, because "sell all of Sharma's Quant Small Cap" contains a fund name and matching it as a
    search would turn an instruction into a browse — the failure that costs the most. Bucket 4, "I did not
    follow that", is last and is the default: nothing here guesses at the closest journey. */
-const ROUTES = [{
+var ROUTES = [{
   id: 'caps',
   re: /what can i (ask|do)|help|capabilit/i,
   why: 'asks what the product can do'
@@ -7871,7 +7925,11 @@ const ROUTES = [{
   re: /.*/,
   why: 'nothing matched — and nothing is guessed at'
 }];
-const route = text => ROUTES.find(r => r.re.test(text || ''));
+var route = function route(text) {
+  return ROUTES.find(function (r) {
+    return r.re.test(text || '');
+  });
+};
 
 /* ─────────────────────────────────────────────────────────────────────────────────────────────────
    THE WHO GATE. Six journeys are about a client and cannot start without one. The rule is NOT "always
@@ -7882,7 +7940,7 @@ const route = text => ROUTES.find(r => r.re.test(text || ''));
    The journey each fixture belongs to is also checked: this repository has Sharma's drift, Meera's
    risk profile and Amit's proposal, and nothing for Sunita. Picking a client we have no data for is a
    real state and it says so, rather than opening an empty journey. */
-const NEEDS_CLIENT = {
+var NEEDS_CLIENT = {
   risk: 'meera',
   propose: 'amit',
   rebal: 'sharma',
@@ -7898,8 +7956,16 @@ const NEEDS_CLIENT = {
    AN AMBIGUOUS NAME BINDS NOBODY. Meera Nair and Sunita Nair share a surname, so "review Nair" matches
    two clients — and silently taking the first is worse than asking. Two matches fall through to the
    WHO step, which is exactly the surface for "which one". */
-const namedClient = text => {
-  const hit = CLIENTS.filter(c => c.name.replace(/^(Mr|Ms|Mrs)\.?\s+/i, '').split(/\s+/).map(w => w.replace(/\.$/, '')).filter(w => w.length > 1).some(w => new RegExp(`\\b${w}\\b`, 'i').test(text || '')));
+var namedClient = function namedClient(text) {
+  var hit = CLIENTS.filter(function (c) {
+    return c.name.replace(/^(Mr|Ms|Mrs)\.?\s+/i, '').split(/\s+/).map(function (w) {
+      return w.replace(/\.$/, '');
+    }).filter(function (w) {
+      return w.length > 1;
+    }).some(function (w) {
+      return new RegExp("\\b".concat(w, "\\b"), 'i').test(text || '');
+    });
+  });
   return hit.length === 1 ? hit[0] : null;
 };
 
@@ -7908,21 +7974,21 @@ const namedClient = text => {
    screen changes. This function IS the "intelligent control" the product claims to have: if a control
    is not in here, it is not on the screen. */
 function affordances(s) {
-  const back = [];
-  const next = [];
+  var back = [];
+  var next = [];
   if (s.screen === 'home') {
     next.push('Tap a client row', 'Tap a starter', 'Type anything — the router decides', 'Attach a statement', 'Open the menu');
     back.push('Nothing to go back from — this is the front door');
     return {
-      next,
-      back,
+      next: next,
+      back: back,
       where: 'Home',
       journey: '—',
       step: 'at rest'
     };
   }
   if (s.screen === 'rail') {
-    const J = {
+    var _J = {
       propose: 'D · Amit’s proposal',
       rebal: 'E · Sharma’s rebalance',
       review: 'F · Meera’s review',
@@ -7934,10 +8000,10 @@ function affordances(s) {
       next.push(s.audience ? 'Save it, or take the PDF' : 'Say what the review is for', s.audience ? 'Take what the ending offers' : 'Three audiences, three endings');
       back.push('Edit the answer above — the ending changes, the card does not', 'New thread (the app bar)');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: s.audience ? 'Thread' : 'Journey rail',
-        journey: J,
+        journey: _J,
         step: s.audience ? 'a review, with an ending' : 'one question: what is it for'
       };
     }
@@ -7947,25 +8013,25 @@ function affordances(s) {
       if (s.rebalPicked) next.push('Save the plan, or take the PDF', 'Approve both moves');else if (s.uncosted) next.push('Ask the RTA for the purchase dates', 'Take the one I can cost — the Approve comes back with it');else next.push('Approve both moves', 'Size it by a different rule — two of the three have no cost', 'Move into a different fund', 'Why these two moves?');
       back.push('Edit the prompt above — sending it replaces the plan', 'New thread (the app bar)', 'Open the menu for saved work');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: 'Thread',
-        journey: J,
+        journey: _J,
         step: s.rebalPicked ? 'a plan, costed' : s.uncosted ? 'a rule nobody can cost' : 'answered, with the dials under it'
       };
     }
     back.push('Edit any answer above — the journey reopens there', 'Leave by the menu or a new thread — this product has no back arrow');
-    const isProp = s.railJourney === 'propose';
+    var isProp = s.railJourney === 'propose';
     next.push('Answer the question', 'Ask why this question exists', isProp ? 'Take the ceiling, or raise it first' : 'Skip to the result', 'Type an answer instead');
     return {
-      next,
-      back,
+      next: next,
+      back: back,
       where: 'Journey rail',
-      journey: J,
+      journey: _J,
       step: isProp ? 'one of four' : 'a question at a time'
     };
   }
-  const J = {
+  var J = {
     drift: 'B · Sharma’s drift',
     funds: 'C · the funds',
     ledger: 'The ledger',
@@ -7981,8 +8047,8 @@ function affordances(s) {
     if (s.phase === 'trace') {
       next.push('Stop the trace — it keeps what it has');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: 'Thread',
         journey: J,
         step: 'working'
@@ -7991,8 +8057,8 @@ function affordances(s) {
     if (s.phase === 'stopped') {
       next.push('Continue from where it stopped');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: 'Thread',
         journey: J,
         step: 'stopped'
@@ -8001,8 +8067,8 @@ function affordances(s) {
     if (s.phase === 'answer') {
       next.push(s.artifact === 'expanded' ? 'Collapse the breakdown' : 'Expand the breakdown in place', 'Why is 31% a problem?', 'Show the 18 holdings', 'Rebalance to his mandate');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: 'Thread',
         journey: J,
         step: 'answered'
@@ -8011,8 +8077,8 @@ function affordances(s) {
     if (s.phase === 'moves') {
       next.push('Run the what-if', 'Why was one skipped?', 'Approve — opens the confirm sheet');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: 'Thread',
         journey: J,
         step: 'two moves proposed'
@@ -8021,8 +8087,8 @@ function affordances(s) {
     if (s.phase === 'flight') {
       next.push('Check with the RTA', 'Nothing else — it is in flight');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: 'Thread',
         journey: J,
         step: 'sent, no answer yet'
@@ -8031,8 +8097,8 @@ function affordances(s) {
     if (s.phase === 'done') {
       next.push('Read it back to the client', 'Back to his portfolio', 'Drop a note on the file');
       return {
-        next,
-        back,
+        next: next,
+        back: back,
         where: 'Thread',
         journey: J,
         step: 'placed'
@@ -8046,8 +8112,8 @@ function affordances(s) {
   if (s.journey === 'caps') next.push('Ask any of the five');
   if (['act', 'over', 'outside', 'miss', 'who'].includes(s.journey)) next.push('Take the nearest thing it offered — every refusal names one');
   return {
-    next,
-    back,
+    next: next,
+    back: back,
     where: 'Thread',
     journey: J,
     step: 'answered'
@@ -8055,37 +8121,96 @@ function affordances(s) {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────────────────────── */
-function Proto({
-  onEvent
-}) {
-  const [screen, setScreen] = React.useState('home');
-  const [dir, setDir] = React.useState('forward');
-  const [journey, setJourney] = React.useState(null);
-  const [ask, setAsk] = React.useState('');
-  const [phase, setPhase] = React.useState('trace');
-  const [artifact, setArtifact] = React.useState('filling');
-  const [view, setView] = React.useState('chart');
-  const [stoppedAt, setStoppedAt] = React.useState(0);
-  const [resumeFrom, setResumeFrom] = React.useState(0);
-  const [traceKey, setTraceKey] = React.useState(0);
+function Proto(_ref) {
+  var onEvent = _ref.onEvent;
+  var _React$useState = React.useState('home'),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    screen = _React$useState2[0],
+    setScreen = _React$useState2[1];
+  var _React$useState3 = React.useState('forward'),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    dir = _React$useState4[0],
+    setDir = _React$useState4[1];
+  var _React$useState5 = React.useState(null),
+    _React$useState6 = _slicedToArray(_React$useState5, 2),
+    journey = _React$useState6[0],
+    setJourney = _React$useState6[1];
+  var _React$useState7 = React.useState(''),
+    _React$useState8 = _slicedToArray(_React$useState7, 2),
+    ask = _React$useState8[0],
+    setAsk = _React$useState8[1];
+  var _React$useState9 = React.useState('trace'),
+    _React$useState0 = _slicedToArray(_React$useState9, 2),
+    phase = _React$useState0[0],
+    setPhase = _React$useState0[1];
+  var _React$useState1 = React.useState('filling'),
+    _React$useState10 = _slicedToArray(_React$useState1, 2),
+    artifact = _React$useState10[0],
+    setArtifact = _React$useState10[1];
+  var _React$useState11 = React.useState('chart'),
+    _React$useState12 = _slicedToArray(_React$useState11, 2),
+    view = _React$useState12[0],
+    setView = _React$useState12[1];
+  var _React$useState13 = React.useState(0),
+    _React$useState14 = _slicedToArray(_React$useState13, 2),
+    stoppedAt = _React$useState14[0],
+    setStoppedAt = _React$useState14[1];
+  var _React$useState15 = React.useState(0),
+    _React$useState16 = _slicedToArray(_React$useState15, 2),
+    resumeFrom = _React$useState16[0],
+    setResumeFrom = _React$useState16[1];
+  var _React$useState17 = React.useState(0),
+    _React$useState18 = _slicedToArray(_React$useState17, 2),
+    traceKey = _React$useState18[0],
+    setTraceKey = _React$useState18[1];
   /* WHICH confirm is open, not whether one is: two journeys reach a confirm sheet and they commit to
      completely different things — one places money, the other sends a document that places nothing. */
-  const [confirm, setConfirm] = React.useState(null);
-  const [why, setWhy] = React.useState(null);
-  const [menu, setMenu] = React.useState(false);
+  var _React$useState19 = React.useState(null),
+    _React$useState20 = _slicedToArray(_React$useState19, 2),
+    confirm = _React$useState20[0],
+    setConfirm = _React$useState20[1];
+  var _React$useState21 = React.useState(null),
+    _React$useState22 = _slicedToArray(_React$useState21, 2),
+    why = _React$useState22[0],
+    setWhy = _React$useState22[1];
+  var _React$useState23 = React.useState(false),
+    _React$useState24 = _slicedToArray(_React$useState23, 2),
+    menu = _React$useState24[0],
+    setMenu = _React$useState24[1];
   /* The composer is a REAL controlled field here, not a frozen specimen. Screens that only had to show
      a composer passed value="" with a no-op onChange; this page claims the router reads what you type,
      and a claim you cannot test by typing is a claim the page does not keep. Found by typing into it. */
-  const [draft, setDraft] = React.useState('');
+  var _React$useState25 = React.useState(''),
+    _React$useState26 = _slicedToArray(_React$useState25, 2),
+    draft = _React$useState26[0],
+    setDraft = _React$useState26[1];
   /* WHICH journey the rail is running. The rail is one surface with two journeys on it, per
      SCREENS-PLAN's count of 22 steps across it. */
-  const [railJourney, setRailJourney] = React.useState('risk');
-  const [uncosted, setUncosted] = React.useState(null);
-  const [rebalPicked, setRebalPicked] = React.useState(false);
-  const [audience, setAudience] = React.useState(null);
+  var _React$useState27 = React.useState('risk'),
+    _React$useState28 = _slicedToArray(_React$useState27, 2),
+    railJourney = _React$useState28[0],
+    setRailJourney = _React$useState28[1];
+  var _React$useState29 = React.useState(null),
+    _React$useState30 = _slicedToArray(_React$useState29, 2),
+    uncosted = _React$useState30[0],
+    setUncosted = _React$useState30[1];
+  var _React$useState31 = React.useState(false),
+    _React$useState32 = _slicedToArray(_React$useState31, 2),
+    rebalPicked = _React$useState32[0],
+    setRebalPicked = _React$useState32[1];
+  var _React$useState33 = React.useState(null),
+    _React$useState34 = _slicedToArray(_React$useState33, 2),
+    audience = _React$useState34[0],
+    setAudience = _React$useState34[1];
   /* The bound client, and the journey waiting on it. */
-  const [client, setClient] = React.useState(null);
-  const [pending, setPending] = React.useState(null);
+  var _React$useState35 = React.useState(null),
+    _React$useState36 = _slicedToArray(_React$useState35, 2),
+    client = _React$useState36[0],
+    setClient = _React$useState36[1];
+  var _React$useState37 = React.useState(null),
+    _React$useState38 = _slicedToArray(_React$useState37, 2),
+    pending = _React$useState38[0],
+    setPending = _React$useState38[1];
   /* The share draft and the client note are two states of one thing — a document Sentinel wrote and
      the advisor has not sent. One door per thing (18 Sep): the artifact's Share and the success
      turn's "Read the note to Sharma" both open a draft, and neither sends anything. */
@@ -8093,67 +8218,98 @@ function Proto({
      advisor pressed it and the badge stayed a draft — the one piece of feedback the control exists to
      give. `ResultCard` has carried `state='saved'` with a date since v9. The date is the product's
      own clock, not today's, because every other figure on these screens is dated 30 Sep. */
-  const SAVED_ON = '30 Sep';
-  const [saved, setSaved] = React.useState({});
-  const saveIt = (k, what) => () => {
-    setSaved(m => _objectSpread(_objectSpread({}, m), {}, {
-      [k]: SAVED_ON
-    }));
-    log(`${what} — the badge is a date now, not a draft`, 'the badge changes in place');
+  var SAVED_ON = '30 Sep';
+  var _React$useState39 = React.useState({}),
+    _React$useState40 = _slicedToArray(_React$useState39, 2),
+    saved = _React$useState40[0],
+    setSaved = _React$useState40[1];
+  var saveIt = function saveIt(k, what) {
+    return function () {
+      setSaved(function (m) {
+        return _objectSpread(_objectSpread({}, m), {}, _defineProperty({}, k, SAVED_ON));
+      });
+      log("".concat(what, " \u2014 the badge is a date now, not a draft"), 'the badge changes in place');
+    };
   };
-  const [shared, setShared] = React.useState(false);
-  const [note, setNote] = React.useState(false);
+  var _React$useState41 = React.useState(false),
+    _React$useState42 = _slicedToArray(_React$useState41, 2),
+    shared = _React$useState42[0],
+    setShared = _React$useState42[1];
+  var _React$useState43 = React.useState(false),
+    _React$useState44 = _slicedToArray(_React$useState43, 2),
+    note = _React$useState44[0],
+    setNote = _React$useState44[1];
   /* JOURNEY C, PAST THE SHORTLIST. `list` is the four funds; `fund` is one of them with the four verbs
      under it; `pick` is "compare it with which fund?"; `compare` is the comparison. The fund an advisor
      is looking at is held here rather than in the table, because three of the four verbs hand it to
      another journey and a fund held inside a table row cannot be handed anywhere. */
-  const [fundPhase, setFundPhase] = React.useState('list');
-  const [fundId, setFundId] = React.useState(null);
-  const [compareIds, setCompareIds] = React.useState([]);
+  var _React$useState45 = React.useState('list'),
+    _React$useState46 = _slicedToArray(_React$useState45, 2),
+    fundPhase = _React$useState46[0],
+    setFundPhase = _React$useState46[1];
+  var _React$useState47 = React.useState(null),
+    _React$useState48 = _slicedToArray(_React$useState47, 2),
+    fundId = _React$useState48[0],
+    setFundId = _React$useState48[1];
+  var _React$useState49 = React.useState([]),
+    _React$useState50 = _slicedToArray(_React$useState49, 2),
+    compareIds = _React$useState50[0],
+    setCompareIds = _React$useState50[1];
   /* THE FUND A JOURNEY WAS ENTERED WITH. It survives the WHO step, because the advisor named the fund
      before they named the client and a door that drops what you carried through it is not a hand-off.
      It is cleared by a NEW sentence, never by finishing a journey — an advisor who goes back to the
      rail is still working on the fund they came in with. */
-  const [carried, setCarried] = React.useState(null);
+  var _React$useState51 = React.useState(null),
+    _React$useState52 = _slicedToArray(_React$useState51, 2),
+    carried = _React$useState52[0],
+    setCarried = _React$useState52[1];
   /* THE HOLDINGS TURNS, in the order they were asked. A thread is its own tab history: each ask adds a
      turn and scrolling back IS going back, so this is a list and not a mode. `otherId` is the second
      fund an overlap was asked against; null until the picker answers. */
-  const [asks, setAsks] = React.useState([]);
+  var _React$useState53 = React.useState([]),
+    _React$useState54 = _slicedToArray(_React$useState53, 2),
+    asks = _React$useState54[0],
+    setAsks = _React$useState54[1];
   /* The shortlist's view and its typed refinements. Sort and period are held apart from the query for
      the reason the fund page holds them apart: they never change WHICH funds match, only the order and
      the period every figure is read at, and a view that showed up as a filter chip would make the
      count look negotiable. */
-  const [query, setQuery] = React.useState(FUND_QUERY);
-  const [sort, setSort] = React.useState(null);
-  const [period, setPeriod] = React.useState('r5');
-  const [refines, setRefines] = React.useState([]);
-  const askHoldings = (kind, label) => {
-    setAsks(a => [...a, {
-      kind,
-      otherId: null
-    }]);
-    log(`“${label || kind}” — a holdings question, answered as its own turn`, reduced() ? 'fades in' : 'ds-rise · 240ms');
+  var _React$useState55 = React.useState(FUND_QUERY),
+    _React$useState56 = _slicedToArray(_React$useState55, 2),
+    query = _React$useState56[0],
+    setQuery = _React$useState56[1];
+  var _React$useState57 = React.useState(null),
+    _React$useState58 = _slicedToArray(_React$useState57, 2),
+    sort = _React$useState58[0],
+    setSort = _React$useState58[1];
+  var _React$useState59 = React.useState('r5'),
+    _React$useState60 = _slicedToArray(_React$useState59, 2),
+    period = _React$useState60[0],
+    setPeriod = _React$useState60[1];
+  var _React$useState61 = React.useState([]),
+    _React$useState62 = _slicedToArray(_React$useState61, 2),
+    refines = _React$useState62[0],
+    setRefines = _React$useState62[1];
+  var askHoldings = function askHoldings(kind, label) {
+    setAsks(function (a) {
+      return [].concat(_toConsumableArray(a), [{
+        kind: kind,
+        otherId: null
+      }]);
+    });
+    log("\u201C".concat(label || kind, "\u201D \u2014 a holdings question, answered as its own turn"), reduced() ? 'fades in' : 'ds-rise · 240ms');
   };
-  const scroller = React.useRef(null);
-  const card = React.useRef(null);
-  const savedScroll = React.useRef(0);
-  const traceStart = React.useRef(0);
-  const att = useAttachment();
-  const log = (what, motion) => onEvent && onEvent(what, motion);
-  const state = {
-    screen,
-    journey,
-    phase,
-    artifact,
-    fundPhase,
-    carried,
-    uncosted,
-    rebalPicked,
-    railJourney
+  var scroller = React.useRef(null);
+  var card = React.useRef(null);
+  var savedScroll = React.useRef(0);
+  var traceStart = React.useRef(0);
+  var att = useAttachment();
+  var log = function log(what, motion) {
+    return onEvent && onEvent(what, motion);
   };
 
   /* One entry point for every sentence in the product, typed or tapped. */
-  const send = text => {
+  var send = function send(text) {
     /* EVERY CHIP IS ALSO A SENTENCE. A fund is open and the words are a holdings question, so it is
        answered as one — before the router, which would otherwise read "holdings" as a fund search. */
     if (journey === 'funds' && fundId && holdAsk(text)) {
@@ -8165,28 +8321,32 @@ function Proto({
        0.7%" changes THIS list; sending it back through the router would throw the list away and start
        again, which is the silent rewrite the query chips exist to prevent. */
     if (journey === 'funds' && !fundId) {
-      const r = refine(text, FUND_QUERY);
-      if (r.kind !== 'miss') {
+      var _r = refine(text, FUND_QUERY);
+      if (_r.kind !== 'miss') {
         setDraft('');
         setAsk(text);
-        if (r.kind === 'sort') setSort(r.sort);else if (r.kind === 'period') setPeriod(r.period);else if (r.kind === 'compare') {
-          setFundId(r.ids[0]);
-          setCompareIds([r.ids[1]]);
+        if (_r.kind === 'sort') setSort(_r.sort);else if (_r.kind === 'period') setPeriod(_r.period);else if (_r.kind === 'compare') {
+          setFundId(_r.ids[0]);
+          setCompareIds([_r.ids[1]]);
           setFundPhase('compare');
-        } else if (r.kind !== 'ambiguous') setQuery(q => applyRefine(r, q));
-        setRefines(a => [...a, {
-          text,
-          r
-        }]);
-        log(`“${text}” → ${r.kind} on the shortlist, not a new search`, '');
+        } else if (_r.kind !== 'ambiguous') setQuery(function (q) {
+          return applyRefine(_r, q);
+        });
+        setRefines(function (a) {
+          return [].concat(_toConsumableArray(a), [{
+            text: text,
+            r: _r
+          }]);
+        });
+        log("\u201C".concat(text, "\u201D \u2192 ").concat(_r.kind, " on the shortlist, not a new search"), '');
         return;
       }
     }
-    const r = route(text);
+    var r = route(text);
     setAsk(text);
     /* THE WHO GATE, before anything opens. */
     if (r.id in NEEDS_CLIENT) {
-      const named = namedClient(text) || client;
+      var named = namedClient(text) || client;
       if (!named) {
         setPending(r.id);
         setJourney('who');
@@ -8194,7 +8354,7 @@ function Proto({
           setDir('forward');
           setScreen('thread');
         }
-        log(`“${text}” → ${r.id}, but no client named`, 'the WHO step — asked once, and never for something already said');
+        log("\u201C".concat(text, "\u201D \u2192 ").concat(r.id, ", but no client named"), 'the WHO step — asked once, and never for something already said');
         return;
       }
       setClient(named);
@@ -8212,17 +8372,17 @@ function Proto({
     }
     /* A sentence is a new question. The fund only rides along when a VERB carried it. */
     setCarried(null);
-    log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
+    log("\u201C".concat(text, "\u201D \u2192 ").concat(r.id), "the router matched: ".concat(r.why));
     if (r.id === 'risk' || r.id === 'propose' || r.id === 'rebal' || r.id === 'review') {
       setRailJourney(r.id);
       setDir('forward');
       setScreen('rail');
       /* Journey E is a THREAD now, so it does not "open a rail" — it answers. The other three still do. */
-      log(r.id === 'rebal' ? 'Sentinel answers — where he is, the two moves, what they cost, then the dials; there is no question to ask first' : `The rail opens — ${{
+      log(r.id === 'rebal' ? 'Sentinel answers — where he is, the two moves, what they cost, then the dials; there is no question to ask first' : "The rail opens \u2014 ".concat({
         propose: 'four steps for a proposal',
         review: 'one question: what is it for',
         risk: 'sixteen for a risk profile'
-      }[r.id]}; a journey is its own surface`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+      }[r.id], "; a journey is its own surface"), reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
       return;
     }
     if (screen !== 'thread') {
@@ -8234,22 +8394,24 @@ function Proto({
       setPhase('trace');
       setArtifact('filling');
       setResumeFrom(0);
-      setTraceKey(k => k + 1);
+      setTraceKey(function (k) {
+        return k + 1;
+      });
       traceStart.current = performance.now();
-      log('Trace running — step 1 of 4', `ProgressTrace · ${STEP_MS}ms a step, clock real`);
+      log('Trace running — step 1 of 4', "ProgressTrace \xB7 ".concat(STEP_MS, "ms a step, clock real"));
     }
   };
 
   /* Picking resumes the journey the advisor asked for — it does not start a new one. */
-  const pick = c => {
+  var pick = function pick(c) {
     setClient(c);
-    const j = pending;
-    const want = NEEDS_CLIENT[j];
+    var j = pending;
+    var want = NEEDS_CLIENT[j];
     if (want && c.id !== want) {
       /* `pending` is deliberately NOT cleared: the retry chips resume the same journey, and a journey
          the advisor asked for should survive a wrong client. */
       setJourney('nodata');
-      log(`Picked ${c.name}, and this build has no ${j} data for them`, 'said out loud rather than opening an empty journey');
+      log("Picked ".concat(c.name, ", and this build has no ").concat(j, " data for them"), 'said out loud rather than opening an empty journey');
       return;
     }
     setPending(null);
@@ -8257,7 +8419,7 @@ function Proto({
       setRailJourney(j === 'risk' ? 'risk' : j);
       setDir('forward');
       setScreen('rail');
-      log(`${c.name} bound — the rail opens`, 'ScreenStack forward · 320ms');
+      log("".concat(c.name, " bound \u2014 the rail opens"), 'ScreenStack forward · 320ms');
       return;
     }
     setJourney(j);
@@ -8265,41 +8427,45 @@ function Proto({
       setPhase('trace');
       setArtifact('filling');
       setResumeFrom(0);
-      setTraceKey(k => k + 1);
+      setTraceKey(function (k) {
+        return k + 1;
+      });
       traceStart.current = performance.now();
     }
-    log(`${c.name} bound — ${j} resumes`, 'the chip stays in the composer');
+    log("".concat(c.name, " bound \u2014 ").concat(j, " resumes"), 'the chip stays in the composer');
   };
-  const traceDone = () => {
+  var traceDone = function traceDone() {
     setPhase('answer');
     setArtifact('filling');
     log('Answer in, artifact filling', reduced() ? 'fades · 240ms' : 'ds-rise 240ms; ds-artifact 300ms then shimmer');
-    setTimeout(() => {
+    setTimeout(function () {
       setArtifact('peek');
       log('Breakdown arrived — peek', reduced() ? 'bars drawn full' : 'bars scaleX · 480ms, 60ms stagger');
     }, FILL_MS);
   };
-  const stop = () => {
-    const idx = Math.min(Math.floor((performance.now() - traceStart.current) / STEP_MS), DRIFT_STEPS.length - 1);
+  var stop = function stop() {
+    var idx = Math.min(Math.floor((performance.now() - traceStart.current) / STEP_MS), DRIFT_STEPS.length - 1);
     setStoppedAt(idx);
     setPhase('stopped');
-    log(`Stop — frozen at step ${idx + 1} of 4`, 'immediate; the partial trace stays');
+    log("Stop \u2014 frozen at step ".concat(idx + 1, " of 4"), 'immediate; the partial trace stays');
   };
-  const resume = () => {
+  var resume = function resume() {
     setResumeFrom(stoppedAt);
-    setTraceKey(k => k + 1);
+    setTraceKey(function (k) {
+      return k + 1;
+    });
     traceStart.current = performance.now() - stoppedAt * STEP_MS;
     setPhase('trace');
-    log(`Continue — from step ${stoppedAt + 1}`, 'the clock restarts at 0 — ProgressTrace cannot resume it, and that is logged, not hidden');
+    log("Continue \u2014 from step ".concat(stoppedAt + 1), 'the clock restarts at 0 — ProgressTrace cannot resume it, and that is logged, not hidden');
   };
-  const toggleArtifact = () => {
-    const el = scroller.current,
+  var toggleArtifact = function toggleArtifact() {
+    var el = scroller.current,
       c = card.current;
     if (artifact === 'peek') {
       if (el && c) savedScroll.current = el.scrollTop;
       setArtifact('expanded');
       log('Artifact expands in place', reduced() ? 'height only' : 'natural height; chevron 180°; bars 200ms each');
-      requestAnimationFrame(() => {
+      requestAnimationFrame(function () {
         if (el && c) el.scrollTo({
           top: el.scrollTop + (c.getBoundingClientRect().top - el.getBoundingClientRect().top),
           behavior: reduced() ? 'auto' : 'smooth'
@@ -8307,12 +8473,14 @@ function Proto({
       });
     } else if (artifact === 'expanded') {
       setArtifact('peek');
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        if (el) el.scrollTo({
-          top: savedScroll.current,
-          behavior: reduced() ? 'auto' : 'smooth'
+      requestAnimationFrame(function () {
+        return requestAnimationFrame(function () {
+          if (el) el.scrollTo({
+            top: savedScroll.current,
+            behavior: reduced() ? 'auto' : 'smooth'
+          });
         });
-      }));
+      });
       log('Artifact collapses to its peek', 'the thread scrolls back to the card');
     }
   };
@@ -8325,11 +8493,11 @@ function Proto({
      A bound client is a property of the thread, and this ends the thread. */
   /* The RTA is a real party this build does not talk to, and saying so precisely is the product's own
      discipline: name what the control would do, and what stands between it and doing it. */
-  const RTA_SHEET = {
+  var RTA_SHEET = {
     title: 'Checking with the RTA',
-    body: ['A switch is a redemption and a purchase at the registrar. Checking means asking the RTA whether both legs have settled and what NAV each got.', 'This build has no RTA connection, so the status you see is the instruction\u2019s own — sent, acknowledged — and not the registrar\u2019s. It will say "sent" whatever the registrar does.', 'In the real build this is where a settlement failure would surface, and it is the one thing a placed instruction cannot be trusted about until it does.']
+    body: ['A switch is a redemption and a purchase at the registrar. Checking means asking the RTA whether both legs have settled and what NAV each got.', "This build has no RTA connection, so the status you see is the instruction\u2019s own \u2014 sent, acknowledged \u2014 and not the registrar\u2019s. It will say \"sent\" whatever the registrar does.", 'In the real build this is where a settlement failure would surface, and it is the one thing a placed instruction cannot be trusted about until it does.']
   };
-  const goHome = () => {
+  var goHome = function goHome() {
     setDir('back');
     setScreen('home');
     setJourney(null);
@@ -8349,17 +8517,17 @@ function Proto({
   /* The shortlist as it stands after every typed command — one value, so the list, the count and the
      chips that open a fund can never disagree. Offering a fund by name that the filters have just
      removed is the same defect as a total that is quietly short. */
-  const fundShortlist = sortFunds(fundsFor(query, true), sort, period);
-  const body = () => {
-    if (journey === 'drift') return /*#__PURE__*/React.createElement(React.Fragment, null, phase === 'trace' && /*#__PURE__*/React.createElement(ProgressTrace, {
+  var fundShortlist = sortFunds(fundsFor(query, true), sort, period);
+  var body = function body() {
+    if (journey === 'drift') return /*#__PURE__*/React.createElement(PROTO_R.Fragment, null, phase === 'trace' && /*#__PURE__*/React.createElement(ProgressTrace, {
       key: traceKey,
       steps: DRIFT_STEPS,
       reasoning: DRIFT_REASONING,
       stepMs: STEP_MS,
       initialActive: resumeFrom,
       onDone: traceDone
-    }), phase === 'stopped' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ProgressTrace, {
-      key: `s-${traceKey}`,
+    }), phase === 'stopped' && /*#__PURE__*/React.createElement(PROTO_R.Fragment, null, /*#__PURE__*/React.createElement(ProgressTrace, {
+      key: "s-".concat(traceKey),
       steps: DRIFT_STEPS,
       reasoning: DRIFT_REASONING,
       autoplay: false,
@@ -8375,8 +8543,8 @@ function Proto({
       label: "Continue",
       variant: "primary",
       onClick: resume
-    })))), (phase === 'answer' || phase === 'moves' || phase === 'flight' || phase === 'done') && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ProgressTrace, {
-      key: `d-${traceKey}`,
+    })))), (phase === 'answer' || phase === 'moves' || phase === 'flight' || phase === 'done') && /*#__PURE__*/React.createElement(PROTO_R.Fragment, null, /*#__PURE__*/React.createElement(ProgressTrace, {
+      key: "d-".concat(traceKey),
       steps: DRIFT_STEPS,
       reasoning: DRIFT_REASONING,
       autoplay: false,
@@ -8390,34 +8558,38 @@ function Proto({
       enter: true,
       cardRef: card,
       onToggle: toggleArtifact,
-      onShare: () => {
+      onShare: function onShare() {
         setShared(true);
         log('Share — the draft arrives as an artifact in the thread, not a canvas', reduced() ? 'fades in' : 'ds-rise · 240ms');
       },
-      onMenu: () => {
-        setView(v => v === 'table' ? 'chart' : 'table');
+      onMenu: function onMenu() {
+        setView(function (v) {
+          return v === 'table' ? 'chart' : 'table';
+        });
         log('⋯ — the table view every chart owes, in place', '');
       },
       actions: artifact === 'filling' || phase !== 'answer' ? undefined : /*#__PURE__*/React.createElement(AnswerActions, {
         animate: true,
-        onWhy: () => {
+        onWhy: function onWhy() {
           setWhy(WHY_71);
           log('Explainer opens', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4');
         },
-        onHoldings: () => {
+        onHoldings: function onHoldings() {
           if (artifact === 'peek') toggleArtifact();
           setView('table');
           log('“Show the 18 holdings” — the chart’s own table, because his holdings are not in the book', '');
         },
-        onRebalance: () => {
+        onRebalance: function onRebalance() {
           setPhase('moves');
           log('“Rebalance to his mandate” — two moves, and the what-if', reduced() ? 'fades in' : 'ds-rise · 240ms');
         }
       })
-    })), shared && /*#__PURE__*/React.createElement(ShareDraftTurn, {
+    })), shared && /*#__PURE__*/React.createElement(BORROWED.ShareDraftTurn, {
       enter: true,
-      onEdit: () => log('Change the wording — the draft is editable in the real build; here it is the pattern', ''),
-      onSend: () => {
+      onEdit: function onEdit() {
+        return log('Change the wording — the draft is editable in the real build; here it is the pattern', '');
+      },
+      onSend: function onSend() {
         setShared(false);
         log('Send from WhatsApp — the OS sheet, outside Sentinel. Nothing is sent from here.', '');
       }
@@ -8425,14 +8597,14 @@ function Proto({
       enter: true,
       actions: /*#__PURE__*/React.createElement(MovesActions, {
         animate: true,
-        onSkipped: () => {
+        onSkipped: function onSkipped() {
           setWhy({
             title: 'Why was the third move skipped?',
             body: [SKIPPED]
           });
           log('Why one was skipped', 'ds-sheet 300ms');
         },
-        onApprove: () => {
+        onApprove: function onApprove() {
           setConfirm('moves');
           log('Confirm sheet opens — the one screen with no composer', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4');
         }
@@ -8443,71 +8615,93 @@ function Proto({
     }), phase === 'done' && /*#__PURE__*/React.createElement(SuccessTurn, {
       enter: true,
       note: note,
-      onCheck: () => {
+      onCheck: function onCheck() {
         setWhy(RTA_SHEET);
         log('“Has it settled?” — what checking would do, and why this build cannot', 'ds-sheet 300ms');
       },
-      onRead: () => {
+      onRead: function onRead() {
         setNote(true);
         log('The note to Sharma — drafted, not sent', reduced() ? 'fades in' : 'ds-rise · 240ms');
       },
-      onDrop: () => {
+      onDrop: function onDrop() {
         setNote(false);
         log('Draft dropped — nothing was sent, so nothing is undone', '');
       },
-      onBack: () => send("Review Sharma's portfolio")
+      onBack: function onBack() {
+        return send("Review Sharma's portfolio");
+      }
     }));
-    if (journey === 'funds') return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FundResults, {
+    if (journey === 'funds') return /*#__PURE__*/React.createElement(PROTO_R.Fragment, null, /*#__PURE__*/React.createElement(FundResults, {
       funds: fundShortlist,
       period: period,
       openRow: null,
-      onExplain: () => log('A fund’s own explainer', '')
-    }), refines.map((x, i) => /*#__PURE__*/React.createElement(React.Fragment, {
-      key: i
-    }, /*#__PURE__*/React.createElement(UserTurn, {
-      text: x.text,
-      editable: false,
-      actions: false
-    }), x.r.kind === 'miss' ? /*#__PURE__*/React.createElement(SentinelTurn, {
-      enter: true,
-      say: REFINE_MISS.body,
-      chips: /*#__PURE__*/React.createElement(ChipRow, null, REFINE_MISS.chips.map(c => /*#__PURE__*/React.createElement(AnswerChip, {
-        key: c,
-        label: c,
-        onClick: () => send(c)
-      })))
-    }) : x.r.kind === 'ambiguous' ? /*#__PURE__*/React.createElement(SentinelTurn, {
-      enter: true,
-      say: refineAmbiguous(x.r).body,
-      chips: /*#__PURE__*/React.createElement(ChipRow, null, refineAmbiguous(x.r).chips.map(c => /*#__PURE__*/React.createElement(AnswerChip, {
-        key: c,
-        label: c,
-        onClick: () => send(`add ${c}`)
-      })))
-    }) : /*#__PURE__*/React.createElement(SentinelTurn, {
-      enter: true,
-      say: refineSaid(x.r, period, fundShortlist)
-    }))), fundPhase === 'list' && /*#__PURE__*/React.createElement(ChipRow, null, fundShortlist.slice(0, 2).map(f => /*#__PURE__*/React.createElement(AnswerChip, {
-      key: f.id,
-      label: f.name,
-      onClick: () => {
-        setFundId(f.id);
-        setFundPhase('fund');
-        log(`Opened ${f.name} — the fund's page arrives as a turn, not as a screen`, reduced() ? 'fades in' : 'ds-rise · 240ms');
+      onExplain: function onExplain() {
+        return log('A fund’s own explainer', '');
       }
-    }))), fundPhase === 'fund' && fundId && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FundInfo, {
+    }), refines.map(function (x, i) {
+      return /*#__PURE__*/React.createElement(PROTO_R.Fragment, {
+        key: i
+      }, /*#__PURE__*/React.createElement(UserTurn, {
+        text: x.text,
+        editable: false,
+        actions: false
+      }), x.r.kind === 'miss' ? /*#__PURE__*/React.createElement(SentinelTurn, {
+        enter: true,
+        say: REFINE_MISS.body,
+        chips: /*#__PURE__*/React.createElement(PROTO_DS.ChipRow, null, REFINE_MISS.chips.map(function (c) {
+          return /*#__PURE__*/React.createElement(AnswerChip, {
+            key: c,
+            label: c,
+            onClick: function onClick() {
+              return send(c);
+            }
+          });
+        }))
+      }) : x.r.kind === 'ambiguous' ? /*#__PURE__*/React.createElement(SentinelTurn, {
+        enter: true,
+        say: refineAmbiguous(x.r).body,
+        chips: /*#__PURE__*/React.createElement(PROTO_DS.ChipRow, null, refineAmbiguous(x.r).chips.map(function (c) {
+          return /*#__PURE__*/React.createElement(AnswerChip, {
+            key: c,
+            label: c,
+            onClick: function onClick() {
+              return send("add ".concat(c));
+            }
+          });
+        }))
+      }) : /*#__PURE__*/React.createElement(SentinelTurn, {
+        enter: true,
+        say: refineSaid(x.r, period, fundShortlist)
+      }));
+    }), fundPhase === 'list' && /*#__PURE__*/React.createElement(PROTO_DS.ChipRow, null, fundShortlist.slice(0, 2).map(function (f) {
+      return /*#__PURE__*/React.createElement(AnswerChip, {
+        key: f.id,
+        label: f.name,
+        onClick: function onClick() {
+          setFundId(f.id);
+          setFundPhase('fund');
+          log("Opened ".concat(f.name, " \u2014 the fund's page arrives as a turn, not as a screen"), reduced() ? 'fades in' : 'ds-rise · 240ms');
+        }
+      });
+    })), fundPhase === 'fund' && fundId && /*#__PURE__*/React.createElement(PROTO_R.Fragment, null, /*#__PURE__*/React.createElement(BORROWED.FundInfo, {
       id: fundId,
       enter: true,
-      onExplain: () => log('A figure explains itself', 'ds-sheet 300ms')
-    }), /*#__PURE__*/React.createElement(ChipRow, {
+      onExplain: function onExplain() {
+        return log('A figure explains itself', 'ds-sheet 300ms');
+      }
+    }), /*#__PURE__*/React.createElement(PROTO_DS.ChipRow, {
       animate: true
-    }, FUND_CHIPS.map(c => /*#__PURE__*/React.createElement(AnswerChip, {
-      key: c,
-      label: c,
-      onClick: () => askHoldings(ASK_KINDS[c], c)
-    }))), /*#__PURE__*/React.createElement(FundVerbs, {
+    }, FUND_CHIPS.map(function (c) {
+      return /*#__PURE__*/React.createElement(AnswerChip, {
+        key: c,
+        label: c,
+        onClick: function onClick() {
+          return askHoldings(ASK_KINDS[c], c);
+        }
+      });
+    })), /*#__PURE__*/React.createElement(BORROWED.FundVerbs, {
       animate: true,
-      onVerb: v => {
+      onVerb: function onVerb(v) {
         if (v.id === 'compare') {
           setFundPhase('pick');
           log('“Compare with…” — the same searchable list the WHO step uses', '');
@@ -8520,52 +8714,66 @@ function Proto({
            on a fund, and routing a synthesised sentence back through the router would be the
            product pretending it had been asked. */
         setCarried(fundId);
-        const named = client;
+        var named = client;
         if (!named) {
           setPending(v.journey);
           setJourney('who');
-          log(`“${v.label}” on ${fundById(fundId).name} → ${v.journey}, but no client named — the fund is held and comes with you`, 'the WHO step');
+          log("\u201C".concat(v.label, "\u201D on ").concat(fundById(fundId).name, " \u2192 ").concat(v.journey, ", but no client named \u2014 the fund is held and comes with you"), 'the WHO step');
           return;
         }
         setRailJourney(v.journey);
         setJourney(v.journey);
         setDir('forward');
         setScreen('rail');
-        log(`“${v.label}” on ${fundById(fundId).name} → journey ${v.journey.toUpperCase()}, with ${named.name} already bound`, reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+        log("\u201C".concat(v.label, "\u201D on ").concat(fundById(fundId).name, " \u2192 journey ").concat(v.journey.toUpperCase(), ", with ").concat(named.name, " already bound"), reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
       }
-    })), fundPhase === 'fund' && asks.map((a, i) => /*#__PURE__*/React.createElement(HoldingsTurn, {
-      key: i,
-      enter: true,
-      kind: a.kind,
-      id: fundId,
-      otherId: a.otherId,
+    })), fundPhase === 'fund' && asks.map(function (a, i) {
+      return /*#__PURE__*/React.createElement(BORROWED.HoldingsTurn, {
+        key: i,
+        enter: true,
+        kind: a.kind,
+        id: fundId,
+        otherId: a.otherId,
+        onEvent: log,
+        onChip: function onChip(kind, label) {
+          return askHoldings(kind, label);
+        },
+        onPick: function onPick(other) {
+          setAsks(function (list) {
+            return list.map(function (x, j) {
+              return j === i ? _objectSpread(_objectSpread({}, x), {}, {
+                otherId: other
+              }) : x;
+            });
+          });
+          log("Overlap against ".concat(fundById(other).name), 'the picker becomes the answer, in place');
+        }
+      });
+    }), fundPhase === 'pick' && /*#__PURE__*/React.createElement(BORROWED.ComparePicker, {
+      exclude: [fundId].concat(_toConsumableArray(compareIds)),
       onEvent: log,
-      onChip: (kind, label) => askHoldings(kind, label),
-      onPick: other => {
-        setAsks(list => list.map((x, j) => j === i ? _objectSpread(_objectSpread({}, x), {}, {
-          otherId: other
-        }) : x));
-        log(`Overlap against ${fundById(other).name}`, 'the picker becomes the answer, in place');
-      }
-    })), fundPhase === 'pick' && /*#__PURE__*/React.createElement(ComparePicker, {
-      exclude: [fundId, ...compareIds],
-      onEvent: log,
-      onPick: id => {
-        setCompareIds(c => c.length ? [...c, id] : [id]);
+      onPick: function onPick(id) {
+        setCompareIds(function (c) {
+          return c.length ? [].concat(_toConsumableArray(c), [id]) : [id];
+        });
         setFundPhase('compare');
       }
-    }), fundPhase === 'compare' && /*#__PURE__*/React.createElement(FundCompare, {
+    }), fundPhase === 'compare' && /*#__PURE__*/React.createElement(BORROWED.FundCompare, {
       enter: true,
-      ids: [fundId, ...compareIds],
-      onAdd: () => {
+      ids: [fundId].concat(_toConsumableArray(compareIds)),
+      onAdd: function onAdd() {
         setFundPhase('pick');
         log('Add a third — the picker comes back, minus the two already in', '');
       },
-      onRemove: id => {
-        setCompareIds(c => c.filter(x => x !== id));
+      onRemove: function onRemove(id) {
+        setCompareIds(function (c) {
+          return c.filter(function (x) {
+            return x !== id;
+          });
+        });
         log('Dropped one — the comparison re-lays out; nothing slides', '');
       },
-      onChip: c => {
+      onChip: function onChip(c) {
         if (c === 'Add a third') {
           setFundPhase('pick');
           return;
@@ -8573,21 +8781,23 @@ function Proto({
         /* ANSWERABLE FROM THE BOOK, SO ANSWERED. The riskometer beside the client's number, and
            the rule that follows — never a recommendation. */
         if (/suits a/i.test(c)) {
-          setWhy(suitsBody([fundId, ...compareIds]));
-          log(`“${c}” — the riskometer beside the number`, 'ds-sheet 300ms');
+          setWhy(suitsBody([fundId].concat(_toConsumableArray(compareIds))));
+          log("\u201C".concat(c, "\u201D \u2014 the riskometer beside the number"), 'ds-sheet 300ms');
           return;
         }
         if (/save this comparison/i.test(c)) {
           log('Saving a comparison is not built — the ledger holds instructions, not comparisons', '');
           return;
         }
-        log(`“${c}” — not built in this prototype`, '');
+        log("\u201C".concat(c, "\u201D \u2014 not built in this prototype"), '');
       }
     }));
     if (journey === 'ledger') return /*#__PURE__*/React.createElement(LedgerArtifact, {
-      onDownload: () => {
+      onDownload: function onDownload() {
         log('CSV — the control holds its own loading state, because this product has no toasts', 'DownloadAction, on itself');
-        return new Promise(r => setTimeout(r, 900));
+        return new Promise(function (r) {
+          return setTimeout(r, 900);
+        });
       }
     });
     if (journey === 'who') return CLIENTS.length ? /*#__PURE__*/React.createElement(WhoPicker, {
@@ -8598,7 +8808,7 @@ function Proto({
       journey: pending
     });
     if (journey === 'nodata') return /*#__PURE__*/React.createElement(SentinelBlock, null, /*#__PURE__*/React.createElement(SentinelText, {
-      text: `I have ${client ? client.name : 'that client'} on your book, and not the statement this needs.`
+      text: "I have ".concat(client ? client.name : 'that client', " on your book, and not the statement this needs.")
     }), /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: 'var(--space-10)'
@@ -8610,14 +8820,22 @@ function Proto({
       style: {
         marginTop: 'var(--space-12)'
       }
-    }, /*#__PURE__*/React.createElement(ChipRow, null, ['R. Sharma', 'Meera Nair', 'Mr. Amit Aggrawal'].map(n => /*#__PURE__*/React.createElement(AnswerChip, {
-      key: n,
-      label: n,
-      onClick: () => pick(CLIENTS.find(x => x.name === n))
-    })))));
+    }, /*#__PURE__*/React.createElement(PROTO_DS.ChipRow, null, ['R. Sharma', 'Meera Nair', 'Mr. Amit Aggrawal'].map(function (n) {
+      return /*#__PURE__*/React.createElement(AnswerChip, {
+        key: n,
+        label: n,
+        onClick: function onClick() {
+          return pick(CLIENTS.find(function (x) {
+            return x.name === n;
+          }));
+        }
+      });
+    }))));
     if (journey === 'caps') return /*#__PURE__*/React.createElement(CapabilitiesTurn, {
       enter: true,
-      onAsk: q => send(q)
+      onAsk: function onAsk(q) {
+        return send(q);
+      }
     });
     if (journey === 'who') return /*#__PURE__*/React.createElement(RefusalTurn, {
       enter: true,
@@ -8659,14 +8877,14 @@ function Proto({
     }, /*#__PURE__*/React.createElement(AnswerChip, {
       label: BUCKET_6.chip,
       variant: "primary",
-      onClick: () => {
+      onClick: function onClick() {
         setConfirm('moves');
         log('Even a typed instruction goes through the confirm sheet', 'ds-sheet 300ms');
       }
     })));
     return null;
   };
-  const thread = /*#__PURE__*/React.createElement("div", {
+  var thread = /*#__PURE__*/React.createElement("div", {
     style: {
       position: 'relative',
       height: '100%',
@@ -8674,26 +8892,26 @@ function Proto({
     }
   }, /*#__PURE__*/React.createElement(Thread, {
     scrollRef: scroller,
-    revision: `${journey}-${phase}-${artifact}-${!!att.file}`,
-    onMenu: () => {
+    revision: "".concat(journey, "-").concat(phase, "-").concat(artifact, "-").concat(!!att.file),
+    onMenu: function onMenu() {
       setMenu(true);
       log('Menu opens', reduced() ? 'the panel fades in · 320ms' : 'panel translateX −100% → 0 · 320ms; scrim to 0.25');
     },
     onNew: goHome,
-    composer: /*#__PURE__*/React.createElement(Composer, {
+    composer: /*#__PURE__*/React.createElement(PROTO_DS.Composer, {
       value: draft,
       onChange: setDraft,
       placeholder: "Ask Sentinel",
       streaming: journey === 'drift' && phase === 'trace',
       bound: /*#__PURE__*/React.createElement(WhoBound, {
         client: client,
-        onClear: () => {
+        onClear: function onClear() {
           setClient(null);
           log('Client unbound', 'the next question asks who again');
         }
       }),
       onStop: stop,
-      onSend: t => {
+      onSend: function onSend(t) {
         setDraft('');
         send(t || draft);
       },
@@ -8703,8 +8921,10 @@ function Proto({
     text: ask,
     busy: journey === 'drift' && phase === 'trace',
     costNote: phase === 'answer' || journey !== 'drift' ? 'Sending this replaces the answer below it.' : undefined,
-    onCancel: () => log('Edit cancelled — nothing was discarded', ''),
-    onSave: next => {
+    onCancel: function onCancel() {
+      return log('Edit cancelled — nothing was discarded', '');
+    },
+    onSave: function onSave(next) {
       log('Edit sent — the answer below it is replaced, as the line said', 'the turn re-runs');
       send(next);
     }
@@ -8713,14 +8933,14 @@ function Proto({
     caption: "Here is his Q3 statement.",
     onRemove: att.clear
   })));
-  const home = /*#__PURE__*/React.createElement(Home, {
+  var home = /*#__PURE__*/React.createElement(Home, {
     hour: 15,
     time: "3:04",
-    onMenu: () => {
+    onMenu: function onMenu() {
       setMenu(true);
       log('Menu opens', 'panel 320ms; scrim to 0.25');
     },
-    onAttach: f => {
+    onAttach: function onAttach(f) {
       att.onAttach(f);
       setAsk('Read this and tell me what moved.');
       setJourney('drift');
@@ -8728,10 +8948,14 @@ function Proto({
       setScreen('thread');
       setPhase('answer');
       setArtifact('peek');
-      log(`Attached ${f.name} on Home — it opens a thread with the file in it`, 'ScreenStack forward · 320ms');
+      log("Attached ".concat(f.name, " on Home \u2014 it opens a thread with the file in it"), 'ScreenStack forward · 320ms');
     },
-    onRow: label => send(label),
-    onStarter: c => send(c),
+    onRow: function onRow(label) {
+      return send(label);
+    },
+    onStarter: function onStarter(c) {
+      return send(c);
+    },
     onSend: send
   });
 
@@ -8739,54 +8963,58 @@ function Proto({
      thread. There is no back arrow in this product and the prototype does not invent one. */
   /* ONE RAIL, TWO JOURNEYS. The steps and the result are arguments, so the loop that decides what
      "edit answer 3" does exists once. The way out is the same two doors as every other surface. */
-  const railMenu = () => {
+  var railMenu = function railMenu() {
     setMenu(true);
     log('Menu opens from the rail — the way out is the same door as everywhere else', 'panel 320ms; scrim to 0.25');
   };
-  const rail = railJourney === 'review' ? /*#__PURE__*/React.createElement(LiveRail, {
+  var rail = railJourney === 'review' ? /*#__PURE__*/React.createElement(LiveRail, {
     steps: REV_STEPS,
     total: REV_TOTAL,
     attachCaption: "Here is her September statement.",
-    lead: carried ? /*#__PURE__*/React.createElement(RevCarried, {
+    lead: carried ? /*#__PURE__*/React.createElement(BORROWED.RevCarried, {
       fundId: carried
     }) : null,
     onEvent: log,
     onNew: goHome,
     onMenu: railMenu,
-    onAnswer: (step, chip) => {
+    onAnswer: function onAnswer(step, chip) {
       if (chip.audience) {
         setAudience(chip.audience);
-        log(`Review is for: ${chip.label}`, 'the card does not change — only what follows it');
+        log("Review is for: ".concat(chip.label), 'the card does not change — only what follows it');
       }
     },
-    result: () => /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--stack)'
-      }
-    }, /*#__PURE__*/React.createElement(ReviewResult, {
-      state: saved.review ? 'saved' : 'draft',
-      savedAt: saved.review,
-      onExplain: x => {
-        setWhy(x);
-        log(`“${x.title}” — the figure explains itself`, reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4');
-      },
-      onSave: saveIt('review', 'Saved to her file'),
-      onDownload: () => {
-        log('PDF — no file is written', 'DownloadAction, on itself');
-        return new Promise(r => setTimeout(r, 900));
-      }
-    }), audience && /*#__PURE__*/React.createElement(ReviewEnding, {
-      audience: audience,
-      onChip: l => {
-        if (route(l)) {
-          send(l);
-          return;
+    result: function result() {
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--stack)'
         }
-        log(`“${l}” — not built in this prototype`, '');
-      }
-    }))
+      }, /*#__PURE__*/React.createElement(BORROWED.ReviewResult, {
+        state: saved.review ? 'saved' : 'draft',
+        savedAt: saved.review,
+        onExplain: function onExplain(x) {
+          setWhy(x);
+          log("\u201C".concat(x.title, "\u201D \u2014 the figure explains itself"), reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4');
+        },
+        onSave: saveIt('review', 'Saved to her file'),
+        onDownload: function onDownload() {
+          log('PDF — no file is written', 'DownloadAction, on itself');
+          return new Promise(function (r) {
+            return setTimeout(r, 900);
+          });
+        }
+      }), audience && /*#__PURE__*/React.createElement(BORROWED.ReviewEnding, {
+        audience: audience,
+        onChip: function onChip(l) {
+          if (route(l)) {
+            send(l);
+            return;
+          }
+          log("\u201C".concat(l, "\u201D \u2014 not built in this prototype"), '');
+        }
+      }));
+    }
   }) : railJourney === 'rebal'
   /* JOURNEY E IS A THREAD, NOT A RAIL (20 Sep 2026). It was a rail because it opened with a question —
      how far — and a rail is the surface for a question Sentinel must ask before it can answer. It can
@@ -8794,15 +9022,15 @@ function Proto({
      there is nothing to ask, and nothing for a rail to carry. `railJourney` still routes it, because
      that is how `send` classifies the sentence; only the surface changed. */ ? /*#__PURE__*/React.createElement(Thread, {
     anchor: rebalPicked || uncosted ? 'bottom' : 2,
-    revision: `rebal-${rebalPicked}-${uncosted ? uncosted.id : ''}-${!!att.file}`,
+    revision: "rebal-".concat(rebalPicked, "-").concat(uncosted ? uncosted.id : '', "-").concat(!!att.file),
     scrollRef: scroller,
     onMenu: railMenu,
     onNew: goHome,
-    composer: /*#__PURE__*/React.createElement(Composer, {
+    composer: /*#__PURE__*/React.createElement(PROTO_DS.Composer, {
       value: draft,
       onChange: setDraft,
       placeholder: "Ask Sentinel",
-      onSend: t => {
+      onSend: function onSend(t) {
         setDraft('');
         send(t || draft);
       },
@@ -8811,12 +9039,14 @@ function Proto({
   }, /*#__PURE__*/React.createElement(UserTurn, {
     text: ask,
     costNote: "Sending this replaces the plan below it.",
-    onCancel: () => log('Edit cancelled — nothing was discarded', ''),
-    onSave: next => {
+    onCancel: function onCancel() {
+      return log('Edit cancelled — nothing was discarded', '');
+    },
+    onSave: function onSave(next) {
       log('Edit sent — the plan below it is replaced', 'the turn re-runs');
       send(next);
     }
-  }), carried && /*#__PURE__*/React.createElement(RebCarried, {
+  }), carried && /*#__PURE__*/React.createElement(BORROWED.RebCarried, {
     fundId: carried
   }), rebalPicked
   /* Saved or approved, the plan becomes the ARTIFACT an advisor keeps — ResultCard, with its
@@ -8824,26 +9054,28 @@ function Proto({
     state: saved.rebal ? 'saved' : 'draft',
     savedAt: saved.rebal,
     onSave: saveIt('rebal', 'Saved the plan — it exists; nothing is placed'),
-    onDownload: () => {
+    onDownload: function onDownload() {
       log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself');
-      return new Promise(r => setTimeout(r, 900));
+      return new Promise(function (r) {
+        return setTimeout(r, 900);
+      });
     },
-    onPrimary: () => {
+    onPrimary: function onPrimary() {
       setConfirm('moves');
       log('Approve — the same sheet, the same disclosure and the same three rows as Journey B, because it is the same money', 'ds-sheet 300ms');
     }
-  }) : /*#__PURE__*/React.createElement(RebalanceAnswer
-  /* NO APPROVE WHILE AN UNCOSTED MOVE IS ON SCREEN. The CTA commits the two costed moves,
-     not the dial just asked for — but it sat ABOVE the refusal, so an advisor reading
-     "Inside the band: I cannot cost it" had an Approve in view. Found by driving it.
-     The refusal's own "Take the one I can cost" is the way back, and it brings the CTA
-     with it. The journey's argument is that there is no path from an uncosted move to a
-     confirm sheet; this is the screen keeping it rather than the code claiming it. */, {
-    onApprove: uncosted ? undefined : () => {
+  }) : /*#__PURE__*/React.createElement(BORROWED.RebalanceAnswer, {
+    /* NO APPROVE WHILE AN UNCOSTED MOVE IS ON SCREEN. The CTA commits the two costed moves,
+       not the dial just asked for — but it sat ABOVE the refusal, so an advisor reading
+       "Inside the band: I cannot cost it" had an Approve in view. Found by driving it.
+       The refusal's own "Take the one I can cost" is the way back, and it brings the CTA
+       with it. The journey's argument is that there is no path from an uncosted move to a
+       confirm sheet; this is the screen keeping it rather than the code claiming it. */
+    onApprove: uncosted ? undefined : function () {
       setRebalPicked(true);
       log('Approve — the plan becomes the artifact, then the confirm', reduced() ? 'fades in' : 'ds-rise · 240ms');
     },
-    onDial: d => {
+    onDial: function onDial(d) {
       if (d.id === 'why') {
         setWhy({
           title: 'Why these two moves?',
@@ -8858,17 +9090,19 @@ function Proto({
       }
       /* The two rules Sentinel cannot cost. Sized, refused a figure, and the nearest real
          thing offered — and there is no path from here to a confirm sheet. */
-      const t2 = REBALANCE_TARGETS.find(x => x.id === d.id);
+      var t2 = REBALANCE_TARGETS.find(function (x) {
+        return x.id === d.id;
+      });
       setUncosted(t2);
-      log(`“${d.label}” is sized and not costed — and there is no path from it to a confirm sheet`, '');
+      log("\u201C".concat(d.label, "\u201D is sized and not costed \u2014 and there is no path from it to a confirm sheet"), '');
     }
   }), uncosted && !rebalPicked && /*#__PURE__*/React.createElement(UncostedTurn, {
     target: uncosted,
-    onChip: l => {
+    onChip: function onChip(l) {
       if (/can cost/.test(l)) {
         setUncosted(null);
         log('Back to the one with a cost', '');
-      } else log(`“${l}” — this build has no RTA`, '');
+      } else log("\u201C".concat(l, "\u201D \u2014 this build has no RTA"), '');
     }
   }), /*#__PURE__*/React.createElement(AttachmentTurn, {
     file: att.file,
@@ -8878,25 +9112,29 @@ function Proto({
     steps: PROP_STEPS,
     total: PROP_TOTAL,
     attachCaption: "Here is the mandate he signed.",
-    lead: carried ? /*#__PURE__*/React.createElement(PropCarried, {
+    lead: carried ? /*#__PURE__*/React.createElement(BORROWED.PropCarried, {
       fundId: carried
     }) : null,
     onEvent: log,
     onNew: goHome,
     onMenu: railMenu,
-    result: () => /*#__PURE__*/React.createElement(ProposalResult, {
-      state: saved.propose ? 'saved' : 'draft',
-      savedAt: saved.propose,
-      onSave: saveIt('propose', 'Saved — version 4 exists; nobody has seen it'),
-      onDownload: () => {
-        log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself');
-        return new Promise(r => setTimeout(r, 900));
-      },
-      onPrimary: () => {
-        setConfirm('propose');
-        log('Send opens the confirm — and the disclosure is the whole journey: it places nothing', 'ds-sheet 300ms');
-      }
-    })
+    result: function result() {
+      return /*#__PURE__*/React.createElement(ProposalResult, {
+        state: saved.propose ? 'saved' : 'draft',
+        savedAt: saved.propose,
+        onSave: saveIt('propose', 'Saved — version 4 exists; nobody has seen it'),
+        onDownload: function onDownload() {
+          log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself');
+          return new Promise(function (r) {
+            return setTimeout(r, 900);
+          });
+        },
+        onPrimary: function onPrimary() {
+          setConfirm('propose');
+          log('Send opens the confirm — and the disclosure is the whole journey: it places nothing', 'ds-sheet 300ms');
+        }
+      });
+    }
   }) : /*#__PURE__*/React.createElement(LiveRail, {
     onEvent: log,
     onNew: goHome,
@@ -8911,13 +9149,17 @@ function Proto({
   }, /*#__PURE__*/React.createElement(ScreenStack, {
     screen: screen,
     direction: dir,
-    render: s => s === 'home' ? home : s === 'rail' ? rail : thread,
-    onSettle: (to, from) => log(`Settled on ${to}`, `${from} unmounted after --dur-screen`)
+    render: function render(s) {
+      return s === 'home' ? home : s === 'rail' ? rail : thread;
+    },
+    onSettle: function onSettle(to, from) {
+      return log("Settled on ".concat(to), "".concat(from, " unmounted after --dur-screen"));
+    }
   }), /*#__PURE__*/React.createElement(ExplainerSheet, {
     open: !!why,
     title: (why || {}).title || '',
     body: (why || {}).body || [],
-    onClose: () => {
+    onClose: function onClose() {
       setWhy(null);
       log('Explainer closes — focus returns to the chip', 'immediate');
     }
@@ -8927,7 +9169,7 @@ function Proto({
     disclosure: CONFIRM_DISCLOSURE,
     rows: CONFIRM_ROWS,
     commitLabel: "Approve both moves",
-    onCommit: () => {
+    onCommit: function onCommit() {
       setConfirm(null);
       setPhase('flight');
       setRebalPicked(false);
@@ -8937,32 +9179,34 @@ function Proto({
         setJourney('drift');
       }
       log('Approved — in flight', 'the sheet closes; the thread takes over');
-      setTimeout(() => {
+      setTimeout(function () {
         setPhase('done');
         log('Placed — both moves, with their references', reduced() ? 'the check is drawn' : 'DrawnCheck · ds-draw');
       }, 1400);
     },
-    onClose: () => {
+    onClose: function onClose() {
       setConfirm(null);
       log('Dismissed — nothing was placed', 'the sheet closes');
     }
-  }, MOVES.map(m => /*#__PURE__*/React.createElement(MoveCard, {
-    key: m.n,
-    n: m.n,
-    title: m.title,
-    body: m.body
-  }))), /*#__PURE__*/React.createElement(ConfirmSheet, {
+  }, MOVES.map(function (m) {
+    return /*#__PURE__*/React.createElement(MoveCard, {
+      key: m.n,
+      n: m.n,
+      title: m.title,
+      body: m.body
+    });
+  })), /*#__PURE__*/React.createElement(ConfirmSheet, {
     open: confirm === 'propose',
     title: "Send \xB7 Mr. Amit Aggrawal",
     disclosureEyebrow: "Before you send",
     disclosure: PROP_DISCLOSURE,
     rows: PROP_CONFIRM_ROWS,
     commitLabel: "Send the proposal",
-    onCommit: () => {
+    onCommit: function onCommit() {
       setConfirm(null);
       log('Sent — the document has gone and nothing has been placed', 'the sheet closes; a drawn check in the turn');
     },
-    onClose: () => {
+    onClose: function onClose() {
       setConfirm(null);
       log('Dismissed — nothing was sent', 'the sheet closes');
     }
@@ -8971,11 +9215,11 @@ function Proto({
     text: "He has seen version 2. This is version 3, with the mid-cap trimmed."
   })), /*#__PURE__*/React.createElement(Drawer, {
     open: menu,
-    onClose: () => {
+    onClose: function onClose() {
       setMenu(false);
       log('Menu closes', 'immediate');
     },
-    onNew: () => {
+    onNew: function onNew() {
       setMenu(false);
       goHome();
     },
@@ -8983,36 +9227,54 @@ function Proto({
     recent: MENU_RECENT,
     clients: MENU_CLIENTS,
     footer: /*#__PURE__*/React.createElement(MenuFooter, {
-      onHome: () => {
+      onHome: function onHome() {
         setMenu(false);
         goHome();
       }
     })
   }), /*#__PURE__*/React.createElement(Bridge, {
     state: {
-      screen,
-      journey,
-      phase,
-      artifact,
-      railJourney,
-      rebalPicked,
-      audience
+      screen: screen,
+      journey: journey,
+      phase: phase,
+      artifact: artifact,
+      railJourney: railJourney,
+      rebalPicked: rebalPicked,
+      audience: audience
     }
   }));
 }
 
 /* The phone tells the panel what it knows, without the panel reaching into the phone's state. */
-const StateBus = React.createContext(null);
-function Bridge({
-  state
-}) {
-  const set = React.useContext(StateBus);
-  React.useEffect(() => {
+var StateBus = React.createContext(null);
+function Bridge(_ref2) {
+  var state = _ref2.state;
+  var set = React.useContext(StateBus);
+  React.useEffect(function () {
     if (set) set(state);
   }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney, state.rebalPicked, state.audience]);
   return null;
 }
 
+/* Published on `window` as well as left in scope, so a page can read them either way — the
+   convention every other screen module in here follows. */
+Object.assign(window, {
+  Proto: Proto,
+  StateBus: StateBus,
+  Bridge: Bridge,
+  route: route,
+  ROUTES: ROUTES,
+  affordances: affordances,
+  namedClient: namedClient,
+  NEEDS_CLIENT: NEEDS_CLIENT
+});</script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script>function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* Both panels start on the same line. The log's header carries a 32pt Restart pill and the control
    panel's does not, so the label alone sat higher — one set of edges, per the review order. */
 const panelHead = {

@@ -37,7 +37,8 @@
     "lint:adherence:screens": "oxlint --config design-system/_adherence.oxlintrc.json screens",
     "preview": "node tools/preview-server.mjs",
     "report:parallel": "node tools/check-parallel.mjs",
-    "shot": "node tools/phone-shot.mjs"
+    "shot": "node tools/phone-shot.mjs",
+    "build:app": "node tools/build-app.mjs"
   },
   "peerDependencies": {
     "react": ">=18"

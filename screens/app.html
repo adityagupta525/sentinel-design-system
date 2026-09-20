@@ -1,0 +1,89 @@
+<!-- @dsCard group="Screens" viewport="375x812" name="The app" subtitle="The product on its own — no documentation around it, sized to the phone it is opened on" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, GreetingDivider, Dock, ProgressRail, HomeIndicator, scrim, sheet, drawer" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<title>Sentinel</title>
+<!-- THE APP, ON A PHONE (21 Sep 2026). `prototype.html` is the same product with its documentation
+     around it — a control panel, an event log, the router table. This page is the product and nothing
+     else, for a link someone opens on a real phone.
+
+     It does NOT re-lay-out the product. Every component in this system is built at 375pt and that is
+     a settled decision, so the app renders at exactly 375x812 and the frame is SCALED to the device
+     rather than reflowed. A 393x852 phone scales it to 1.048 and fills; a 360x800 phone to 0.96. No
+     component sees a width it was not designed for, and nothing is restyled to make this work. -->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sentinel">
+<meta name="theme-color" content="#f7f4ef">
+<meta name="color-scheme" content="light">
+<link rel="stylesheet" href="../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="../design-system/_ds_bundle.js"></script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttachmentTurn','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','DisclosureBlock','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FigureRow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','List','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RefusalTurn','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','UserTurn','VersionRow'];</script>
+<script type="text/babel" src="./screen-kit.jsx"></script>
+<script type="text/babel" src="./data/book.jsx"></script>
+<script type="text/babel" src="./journey-b/home.jsx"></script>
+<script type="text/babel" src="./journey-b/thread.jsx"></script>
+<script type="text/babel" src="./journey-b/answer.jsx"></script>
+<script type="text/babel" src="./journey-b/moves.jsx"></script>
+<script type="text/babel" src="./journey-a/rail.jsx"></script>
+<script type="text/babel" src="./journey-c/funds.jsx"></script>
+<script type="text/babel" src="./journey-d/proposal.jsx"></script>
+<script type="text/babel" src="./journey-e/rebalance.jsx"></script>
+<script type="text/babel" src="./journey-f/review.jsx"></script>
+<script type="text/babel" src="./shell/who.jsx"></script>
+<script type="text/babel" src="./thread/refusals.jsx"></script>
+<script type="text/babel" src="./thread/ledger.jsx"></script>
+<script type="text/babel" src="./shell/menu.jsx"></script>
+<script type="text/babel" src="./proto.jsx"></script>
+<style>
+  html, body { margin:0; height:100%; background:var(--color-canvas); font-family:var(--font-ui);
+    overscroll-behavior:none; -webkit-tap-highlight-color:transparent; }
+  /* The stage fills whatever it is opened on; the frame inside it is always 375x812 and is scaled. */
+  #root { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  .ds-stage { width:375px; height:812px; overflow:hidden; position:relative;
+    transform:scale(var(--ds-fit,1)); transform-origin:center center; }
+</style>
+</head><body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../site/index.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script>
+/* The scale is computed from `window.innerHeight`, not `visualViewport`, and that is the whole
+   trick: on iOS the visual viewport shrinks when the keyboard opens, and scaling to that would
+   shrink the entire app every time someone typed. `innerHeight` does not move for the keyboard. */
+(function () {
+  var fit = function () {
+    var s = Math.min(window.innerWidth / 375, window.innerHeight / 812);
+    document.documentElement.style.setProperty('--ds-fit', String(s));
+  };
+  fit();
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', function () { setTimeout(fit, 80); });
+})();
+</script>
+<script type="text/babel" data-presets="react">
+/* No documentation shell, no PhoneFrame: PhoneFrame is a 44px-radius device on a desk, with a bezel
+   shadow and a ring, and on an actual phone that is a picture of a phone inside a phone. The stage
+   below is the same 375x812 box with none of the furniture. */
+function AppRoot() {
+  return <div className="ds-stage"><Proto onEvent={function () {}} /></div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<AppRoot />);
+</script></body></html>
