@@ -52,8 +52,16 @@ const docH = await page.evaluate(() => Math.ceil(document.documentElement.scroll
    328px sliver instead of an 812pt phone — a shot that LOOKS like a cropped screen rather than a
    failure, which is the worst kind. 16000 is under Chrome's own texture limit; past that the shot
    is refused loudly instead of returning a sliver. */
-if (docH + 40 > 16000) { console.error(`phone-shot: page is ${docH}px, past the 16000 viewport limit — split the page or shoot a smaller node`); process.exit(2); }
-if (docH > 2600) { await page.setViewportSize({ width: 1400, height: docH + 40 }); await page.waitForTimeout(400); }
+/* AND A PAGE OUTGREW 16000 TOO (20 Sep 2026), once the fund page carried the commands. Growing the
+   viewport cannot go on: 16384 is Chrome's own texture limit and past it the shot comes back blank.
+   So above the cap the viewport stays small and the PAGE is scrolled to the phone instead. Measured
+   first, not assumed: Playwright's clip is viewport-relative — a document-coordinate clip on a
+   scrolled page fails with "clipped area is outside the resulting image", which is how this was
+   settled rather than by reading the docs. `PHONE_SHOT_CAP` exists so the scrolled path can be
+   exercised on a short page, where its output can be compared against the grown-viewport one. */
+const CAP = Number(process.env.PHONE_SHOT_CAP || 16000);
+const scrolled = docH + 40 > CAP;
+if (!scrolled && docH > 2600) { await page.setViewportSize({ width: 1400, height: docH + 40 }); await page.waitForTimeout(400); }
 
 /* WAIT FOR THE PHONE, DO NOT SLEEP AT IT. A fixed 500ms was a race: these pages compile JSX in the
    browser with Babel from a CDN, and a slow fetch meant zero frames and a confusing "no phone frame"
@@ -75,7 +83,12 @@ if (!boxes.length) { console.error(`no 375x812 phone frame on ${rel}`); await br
 if (idx >= boxes.length) { console.error(`page has ${boxes.length} phone(s); asked for index ${idx}`); await browser.close(); process.exit(1); }
 const b = boxes[idx];
 const clip = { x: Math.max(0, b.x - PAD), y: Math.max(0, b.y - PAD), width: b.width + PAD * 2, height: b.height + PAD * 2 };
+if (scrolled) {
+  const sy = await page.evaluate((y) => { window.scrollTo(0, y); return window.scrollY; }, Math.max(0, clip.y - 200));
+  await page.waitForTimeout(400);
+  clip.y -= sy;
+}
 await page.screenshot({ path: out, clip });
-console.log(`${out}  phone ${idx + 1}/${boxes.length}  ${Math.round(b.width)}x${Math.round(b.height)}${PAD ? ` +${PAD}pt board` : '  tight'}${REDUCED ? '  (reduced motion)' : ''}`);
+console.log(`${out}  phone ${idx + 1}/${boxes.length}  ${Math.round(b.width)}x${Math.round(b.height)}${PAD ? ` +${PAD}pt board` : '  tight'}${scrolled ? '  (scrolled)' : ''}${REDUCED ? '  (reduced motion)' : ''}`);
 await browser.close();
 process.exit(0);

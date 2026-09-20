@@ -17,7 +17,7 @@
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
 /* thread.jsx gives the shell, AskTurn and the real paperclip; funds.jsx owns the data. */
-const { Composer, SentinelBlock, SentinelText, ArtifactCard, DataTable, OverlapView, Pill, ChipRow, AnswerChip, ExplainerSheet, InfoDot } = window.SentinelDesignSystem_0682a2;
+const { Composer, SentinelBlock, SentinelText, SentinelTurn, ArtifactCard, DataTable, OverlapView, Pill, ChipRow, AnswerChip, ExplainerSheet, InfoDot } = window.SentinelDesignSystem_0682a2;
 
 /* A REAL controlled composer for the live scene. A frozen specimen can pass value="" with a no-op
    onChange; a screen that claims you can refine a search by typing cannot. */
@@ -83,14 +83,41 @@ function QueryTurn({ query, onToggle, shelf, onShelf, onOpen, results, continued
 }
 
 
-function Scene({ children, anchor = 'bottom' }) {
+function Scene({ children, anchor = 'bottom', ask = FUND_ASK }) {
   const att = useAttachment();
   return (
     <Thread anchor={anchor} revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
+      <AskTurn text={ask} costNote="Sending this replaces the search below it." />
       {children}
       <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
     </Thread>
+  );
+}
+
+/* A TYPED COMMAND, FROZEN — and it calls the same refine() the live scene calls, so a specimen here
+   can never show an answer the parser does not actually produce. The frozen page is a claim about the
+   product; a hand-written sentence under a command would be a claim nothing checks. */
+const CMD_VIEWS = ['sort', 'period', 'compare', 'miss', 'ambiguous'];
+const SORT_QUERY = [{ label: 'Equity', on: true }, { label: 'Direct plan', on: true }];
+function CmdScene({ text, query = FUND_QUERY, period = 'r5', ask = FUND_ASK }) {
+  const r = refine(text, query);
+  const q2 = CMD_VIEWS.indexOf(r.kind) >= 0 ? query : applyRefine(r, query);
+  const shown = r.kind === 'period' ? r.period : period;
+  const list = sortFunds(fundsFor(q2, true), r.kind === 'sort' ? r.sort : null, shown);
+  return (
+    <Scene anchor={3} ask={ask}>
+      <FundResults funds={list} period={shown} />
+      <AskTurn text={text} editable={false} actions={false} />
+      {r.kind === 'miss'
+        ? <SentinelTurn say={REFINE_MISS.body} chips={<ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} />)}</ChipRow>} />
+        : r.kind === 'ambiguous'
+        ? <SentinelTurn say={refineAmbiguous(r).body} chips={<ChipRow>{refineAmbiguous(r).chips.map((c) => <AnswerChip key={c} label={c} />)}</ChipRow>} />
+        : r.kind === 'sort' || r.kind === 'period'
+        ? <SentinelTurn say={refineSaid(r, shown, list)} />
+        : r.kind === 'compare'
+        ? <FundCompare ids={r.ids} />
+        : <RefineTurn said={refineSaid(r, shown)} query={q2} shelf results={list.length} />}
+    </Scene>
   );
 }
 
@@ -101,43 +128,59 @@ function LiveScene() {
   const [opened, setOpened] = React.useState(false);
   const [sheet, setSheet] = React.useState(null);
   const [draft, setDraft] = React.useState('');
+  /* SORT AND PERIOD ARE VIEWS, NOT FILTERS — they never change which funds match, only how the list is
+     ordered and which return every figure is read at. Held apart from `query` for exactly that reason:
+     a sort that showed up as a filter chip would make the count look negotiable. */
+  const [sort, setSort] = React.useState(null);
+  const [period, setPeriod] = React.useState('r5');
+  const [compare, setCompare] = React.useState(null);
   /* Every typed refinement, in order, so the thread reads as a conversation rather than as a filter
      panel that quietly rewrote itself. Each one is a turn: what was said, and what Sentinel did. */
   const [turns, setTurns] = React.useState([]);
   const att = useAttachment();
-  const funds = fundsFor(query, shelf);
+  const funds = sortFunds(fundsFor(query, shelf), sort, period);
 
   const say = (text) => {
     if (!text.trim()) return;
     const r = refine(text, query);
     setDraft('');
     if (r.kind === 'shelf') setShelf(r.on);
-    else setQuery((q) => applyRefine(r, q));
+    else if (r.kind === 'sort') setSort(r.sort);
+    else if (r.kind === 'period') setPeriod(r.period);
+    else if (r.kind === 'compare') { setCompare(r.ids); setOpened(true); }
+    else if (r.kind !== 'miss' && r.kind !== 'ambiguous') setQuery((q) => applyRefine(r, q));
     setTurns((t) => [...t, { text, r }]);
   };
 
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <Thread anchor="newest" revision={`${query.map((q) => q.label + q.on).join()}-${shelf}-${opened}-${turns.length}-${!!att.file}`}
+      <Thread anchor="newest" revision={`${query.map((q) => q.label + q.on).join()}-${shelf}-${opened}-${turns.length}-${sort ? sort.key : ''}-${period}-${!!att.file}`}
         composer={<LiveAsk value={draft} onChange={setDraft} onSend={() => say(draft)} onAttach={att.onAttach} />}>
         <AskTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
         <QueryTurn query={query} shelf={shelf} onShelf={() => setShelf((v) => !v)}
           onToggle={(label) => setQuery((q) => q.map((x) => (x.label === label ? { ...x, on: false } : x)))}
           onOpen={opened ? undefined : () => setOpened(true)} results={funds.length} />
-        {opened && <FundResults funds={funds} />}
+        {opened && <FundResults funds={funds} period={period} />}
         {/* A typed refinement is the advisor's own turn, on their side, then Sentinel's answer —
             never a silent rewrite of the chips above. */}
         {turns.map((t, i) => (
           <React.Fragment key={i}>
             <AskTurn text={t.text} editable={false} actions={false} />
             {t.r.kind === 'miss'
-              ? <SentinelBlock>
-                  <SentinelText text={REFINE_MISS.body} />
-                  <div style={{ marginTop: 'var(--space-12)' }}>
-                    <ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} onClick={() => say(c)} />)}</ChipRow>
-                  </div>
-                </SentinelBlock>
-              : <RefineTurn said={refineSaid(t.r)} query={query} shelf={shelf}
+              ? <SentinelTurn say={REFINE_MISS.body}
+                  chips={<ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} onClick={() => say(c)} />)}</ChipRow>} />
+              /* TWO FUNDS WITH THE SAME WORD IN THEM IS NOT A CHOICE SENTINEL GETS TO MAKE. It names
+                 them and asks — the same answer the WHO step gives for two clients called Nair. */
+              : t.r.kind === 'ambiguous'
+              ? <SentinelTurn say={refineAmbiguous(t.r).body}
+                  chips={<ChipRow>{refineAmbiguous(t.r).chips.map((c) => <AnswerChip key={c} label={c} onClick={() => say(`add ${c}`)} />)}</ChipRow>} />
+              /* A sort or a period changes the VIEW, so the turn says what changed and does not redraw
+                 the filter chips — they did not move, and redrawing them would imply they had. */
+              : t.r.kind === 'sort' || t.r.kind === 'period'
+              ? <SentinelTurn say={refineSaid(t.r, period, funds)} />
+              : t.r.kind === 'compare'
+              ? <FundCompare ids={t.r.ids} />
+              : <RefineTurn said={refineSaid(t.r, period)} query={query} shelf={shelf}
                   onShelf={() => setShelf((v) => !v)}
                   onToggle={(label) => setQuery((q) => q.map((x) => (x.label === label ? { ...x, on: false } : x)))}
                   results={funds.length} />}
@@ -318,11 +361,38 @@ mountScreen(
       </StateRow>
     </Section>
 
-    <Section title="7 · Motion, and what each one does under reduced motion">
+    <Section title="7 · The commands — what an advisor can type at a shortlist, and what each one is allowed to change" sub="Chips cover the common moves; a command covers the one an advisor has in mind. The line that decides the design: a FILTER changes which funds match and arrives as a removable chip, a VIEW changes only the order or the period every figure is read at and never touches the chips. A view that showed up as a filter chip would make the count look negotiable.">
+      <StateRow>
+        <State label="“under 0.7% TER” — a filter" note="A number out of a sentence becomes a chip the advisor can drop, exactly like the parsed words above it. One TER pill at a time: “under 0.7” then “under 0.5” is a correction, not two filters. The count moves, and the turn states it.">
+          <CmdScene text="under 0.7% TER" />
+        </State>
+        <State label="“sort by cost” — a view" note="The same four funds in a different order — Motilal Oswal moves from fourth to second on 0.66 against HDFC Flexi Cap's 0.74. No chip appears and the count does not move, because nothing was filtered. Three keys are understood — cost, size, return — and the turn names the one it used in words, never an arrow on a column. A shortlist of two, where cheapest-first happens to be the order already, would have been a specimen that proves nothing.">
+          <CmdScene text="sort by cost" ask="Show me equity funds on my shelf" query={SORT_QUERY} />
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="“show 3Y” — a view" note="Every return in the table and in each row's fund page is read at three years from here. The period is not a filter either: the same funds, read differently.">
+          <CmdScene text="show 3Y" />
+        </State>
+        <State label="“add Motilal Oswal” — a fund by name" note="A named fund joins the list whatever the filters say, and its chip says so with a +. The advisor asked for THAT fund; silently dropping it because it fails a filter they set two turns ago would be the shortlist rewriting itself.">
+          <CmdScene text="add Motilal Oswal" />
+        </State>
+      </StateRow>
+      <StateRow>
+        <State label="“add HDFC” — three funds carry that word" tone="under" note="It names all three and asks. This is namedClient's ruling applied to funds: an ambiguous name binds nobody. Guessing the house an advisor meant is the one mistake that is invisible until a client reads the proposal.">
+          <CmdScene text="add HDFC" />
+        </State>
+        <State label="“make it purple” — a miss" tone="under" note="The refusal names the three things a command can do to a shortlist and leaves it exactly where it was. Every refusal in this product keeps that shape: what it cannot do, then what it can.">
+          <CmdScene text="make it purple" />
+        </State>
+      </StateRow>
+    </Section>
+
+    <Section title="8 · Motion, and what each one does under reduced motion">
       <MotionTable rows={MOTION} />
     </Section>
 
-    <Section title="8 · Provenance">
+    <Section title="9 · Provenance">
       <ProvenanceTable rows={PROVENANCE} />
     </Section>
   </ScreenShell>

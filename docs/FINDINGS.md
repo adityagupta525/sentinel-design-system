@@ -1579,3 +1579,52 @@ improves **Journey B too** — same money, same breakdown, one body.
 pixels apart, so the two 10px dots overlapped into one blob and the second row said nothing at all.
 Both rows now share a non-zero domain from `niceDomain` — `Dumbbell.min`, built for exactly this two
 commits ago (F-57), with the same safeguard: both ends direct-labelled.
+
+---
+
+### F-61 · The explorer's commands — and the line between a filter and a view — *20 Sep 2026*
+
+Chips cover the moves an advisor makes often. A command covers the one they have in mind. The parser
+behind the shortlist already understood *add* · *drop* · *only*; it now also understands **a number**
+(*"under 0.7% TER"*), **an order** (*"sort by cost"* · *size* · *return*), **a period** (*"show 3Y"*),
+**a fund by name** (*"add Motilal Oswal"*) and **a comparison** (*"compare Parag Parikh with UTI
+Nifty"*). Each one is driven on the live page and frozen on `screens/journey-c/funds.html` §7.
+
+**The design decision the whole thing turns on: a filter and a view are not the same act.** A filter
+changes *which* funds match and arrives as a removable chip beside the parsed query. A view changes only
+the order, or the period every figure is read at, and never touches the chips. So sort and period are
+held in their own state, apart from the query — a view that showed up as a filter chip would make the
+count look negotiable, and the count is the thing an advisor trusts the chips for.
+
+**Four things the drive and the render corrected, none of them predicted from the source.**
+
+1. **`SentinelTurn` was in neither page's destructure.** The live scene crashed on the first sort and
+   the composer disappeared with it. Twice in one session, on two pages — the cost of a bundle whose
+   names are picked up by hand.
+2. **The prototype said it had filtered and had not.** The shortlist was drawn from the constant
+   `FUND_QUERY`, so *"under 0.7% TER"* answered *"1 fund matches now"* above a list still showing two.
+   The query is state there now, and one value — `fundShortlist` — feeds the table, the count and the
+   chips that open a fund, so they cannot disagree. The chips followed the constant too, offering a
+   fund by name that the filters had just removed.
+3. **"Sorted best return first" sorted on three years while the table showed five.** The rows came back
+   in an order the numbers on screen did not explain. The return key now resolves to whatever period is
+   displayed, and the sentence names it.
+4. **The sort was a claim with nothing on screen to test it against** — cost and return sit off the
+   375 edge behind the table's horizontal scroll. The sentence now carries the span it sorted on
+   (*"Sorted cheapest first — 0.63% to 0.98%."*), which makes the order checkable without moving a
+   column. The same render caught `FundResults` titling a one-fund shortlist **"1 funds match"**.
+
+**An ambiguous fund name binds nobody.** *"add HDFC"* matches three funds, so it names all three and
+asks. This is `namedClient`'s ruling from F-60 applied to the shelf: guessing the house an advisor meant
+is the mistake that stays invisible until a client reads the proposal.
+
+**And the instrument was fixed before it was trusted.** `phone-shot` refused the fund page at 16,214px
+against its 16,000 viewport cap — raising the cap again is not available, because 16,384 is Chrome's own
+texture limit and past it the shot comes back blank. Above the cap it now scrolls the page to the phone
+instead of growing the viewport. Playwright's `clip` turned out to be **viewport-relative**, which was
+settled by measuring — a document-coordinate clip on a scrolled page fails outright — and the two paths
+were then proved byte-identical on the same phone (`PHONE_SHOT_CAP=1000` exists to exercise the scrolled
+path on a short page).
+
+**Still open:** the sort specimen needed a four-fund query to prove anything, because on the default
+two-fund shortlist cheapest-first is the order already. A specimen that cannot fail is not a specimen.

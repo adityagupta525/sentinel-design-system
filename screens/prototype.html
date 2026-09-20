@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','VersionRow'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','VersionRow'];</script>
 <script type="text/babel" src="./screen-kit.jsx"></script>
 <script type="text/babel" src="./data/book.jsx"></script>
 <script type="text/babel" src="./journey-b/home.jsx"></script>
@@ -26,7 +26,7 @@
 <script type="text/babel" data-presets="react">
 /* home.jsx already declares Composer, Dock, Pill and ChipRow in this one Babel scope; only the names
    this file adds are destructured. The preview gate fails the page if both declare one. */
-const { ScreenStack, UserBubble, SentinelBlock, SentinelText, AnswerChip, ProgressTrace, ExplainerSheet, ConfirmSheet, MoveCard, ConstraintCallout, Drawer } = window.SentinelDesignSystem_0682a2;
+const { ScreenStack, UserBubble, SentinelBlock, SentinelText, SentinelTurn, AnswerChip, ProgressTrace, ExplainerSheet, ConfirmSheet, MoveCard, ConstraintCallout, Drawer } = window.SentinelDesignSystem_0682a2;
 
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const STEP_MS = 850;
@@ -146,7 +146,7 @@ function affordances(s) {
     if (s.fundPhase === 'fund') next.push('Ask what it is holding — or type “by sector”, “top 10”, “overlap with…”', 'Compare it with another fund', 'Add it to a proposal — asks which client first', 'Attach it to a rebalance', 'Send it for review');
     else if (s.fundPhase === 'pick') next.push('Pick a fund, or search the shelf');
     else if (s.fundPhase === 'compare') next.push('Add a third — the cap is three', 'Drop one', 'Which suits a 54 Moderate?');
-    else next.push('Open a fund — it arrives as a turn', 'Drop a filter');
+    else next.push('Open a fund — it arrives as a turn', 'Type “sort by cost”, “under 0.7% TER”, “add Motilal”, “show 3Y”', 'Drop a filter');
   }
   if (s.journey === 'ledger') next.push('Open a row for the RTA’s reason', 'Change the period', 'Take the CSV');
   if (s.journey === 'caps') next.push('Ask any of the five');
@@ -200,6 +200,14 @@ function Proto({ onEvent }) {
      turn and scrolling back IS going back, so this is a list and not a mode. `otherId` is the second
      fund an overlap was asked against; null until the picker answers. */
   const [asks, setAsks] = React.useState([]);
+  /* The shortlist's view and its typed refinements. Sort and period are held apart from the query for
+     the reason the fund page holds them apart: they never change WHICH funds match, only the order and
+     the period every figure is read at, and a view that showed up as a filter chip would make the
+     count look negotiable. */
+  const [query, setQuery] = React.useState(FUND_QUERY);
+  const [sort, setSort] = React.useState(null);
+  const [period, setPeriod] = React.useState('r5');
+  const [refines, setRefines] = React.useState([]);
   const askHoldings = (kind, label) => {
     setAsks((a) => [...a, { kind, otherId: null }]);
     log(`“${label || kind}” — a holdings question, answered as its own turn`, reduced() ? 'fades in' : 'ds-rise · 240ms');
@@ -218,6 +226,22 @@ function Proto({ onEvent }) {
     /* EVERY CHIP IS ALSO A SENTENCE. A fund is open and the words are a holdings question, so it is
        answered as one — before the router, which would otherwise read "holdings" as a fund search. */
     if (journey === 'funds' && fundId && holdAsk(text)) { setDraft(''); askHoldings(holdAsk(text), text); return; }
+    /* AND A REFINEMENT IS NOT A NEW SEARCH. With the shortlist on screen, "sort by cost" or "under
+       0.7%" changes THIS list; sending it back through the router would throw the list away and start
+       again, which is the silent rewrite the query chips exist to prevent. */
+    if (journey === 'funds' && !fundId) {
+      const r = refine(text, FUND_QUERY);
+      if (r.kind !== 'miss') {
+        setDraft(''); setAsk(text);
+        if (r.kind === 'sort') setSort(r.sort);
+        else if (r.kind === 'period') setPeriod(r.period);
+        else if (r.kind === 'compare') { setFundId(r.ids[0]); setCompareIds([r.ids[1]]); setFundPhase('compare'); }
+        else if (r.kind !== 'ambiguous') setQuery((q) => applyRefine(r, q));
+        setRefines((a) => [...a, { text, r }]);
+        log(`“${text}” → ${r.kind} on the shortlist, not a new search`, '');
+        return;
+      }
+    }
     const r = route(text);
     setAsk(text);
     /* THE WHO GATE, before anything opens. */
@@ -232,7 +256,7 @@ function Proto({ onEvent }) {
       setClient(named);
     }
     setJourney(r.id);
-    if (r.id === 'funds') { setFundPhase('list'); setFundId(null); setCompareIds([]); setAsks([]); }
+    if (r.id === 'funds') { setFundPhase('list'); setFundId(null); setCompareIds([]); setAsks([]); setRefines([]); setSort(null); setPeriod('r5'); setQuery(FUND_QUERY); }
     /* A sentence is a new question. The fund only rides along when a VERB carried it. */
     setCarried(null);
     log(`“${text}” → ${r.id}`, `the router matched: ${r.why}`);
@@ -306,6 +330,10 @@ function Proto({ onEvent }) {
 
 
   /* The body of the thread is the journey, and nothing else changes. One surface, one composer. */
+  /* The shortlist as it stands after every typed command — one value, so the list, the count and the
+     chips that open a fund can never disagree. Offering a fund by name that the filters have just
+     removed is the same defect as a total that is quietly short. */
+  const fundShortlist = sortFunds(fundsFor(query, true), sort, period);
   const body = () => {
     if (journey === 'drift') return (
       <React.Fragment>
@@ -340,13 +368,26 @@ function Proto({ onEvent }) {
     );
     if (journey === 'funds') return (
       <React.Fragment>
-        <FundResults openRow={null} onExplain={() => log('A fund’s own explainer', '')} />
+        <FundResults funds={fundShortlist} period={period} openRow={null}
+          onExplain={() => log('A fund’s own explainer', '')} />
+        {/* What the advisor typed, and what it did to the list — each one its own turn, because a
+            shortlist that quietly rewrote itself is one nobody can defend. */}
+        {refines.map((x, i) => (
+          <React.Fragment key={i}>
+            <AskTurn text={x.text} editable={false} actions={false} />
+            {x.r.kind === 'miss' ? <SentinelTurn say={REFINE_MISS.body}
+                chips={<ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} onClick={() => send(c)} />)}</ChipRow>} />
+              : x.r.kind === 'ambiguous' ? <SentinelTurn say={refineAmbiguous(x.r).body}
+                chips={<ChipRow>{refineAmbiguous(x.r).chips.map((c) => <AnswerChip key={c} label={c} onClick={() => send(`add ${c}`)} />)}</ChipRow>} />
+              : <SentinelTurn say={refineSaid(x.r, period, fundShortlist)} />}
+          </React.Fragment>
+        ))}
         {/* The shortlist offers the funds by NAME, because in a thread "open a fund" is a question you
             ask, not a row you click into a page. Two, not four: the chips answer the sentence Sentinel
             just said ("two of them clear it comfortably"). */}
         {fundPhase === 'list' && (
           <ChipRow>
-            {FUND_LIST.slice(0, 2).map((f) => (
+            {fundShortlist.slice(0, 2).map((f) => (
               <AnswerChip key={f.id} label={f.name} onClick={() => {
                 setFundId(f.id); setFundPhase('fund');
                 log(`Opened ${f.name} — the fund's page arrives as a turn, not as a screen`, reduced() ? 'fades in' : 'ds-rise · 240ms');

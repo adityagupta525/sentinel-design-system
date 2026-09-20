@@ -463,12 +463,14 @@ const FUND_EMPTY = { title: 'Nothing matches every filter.', body: 'Drop one and
    the two render ONE table rather than two that can drift. `overflow="scroll"` here is deliberate and is
    the opposite call from the ledger's: a fund row carries five facts an advisor compares sideways, and
    the sticky Fund column is what keeps that readable. The ledger has three columns and needs no scroller. */
-function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', onExplain }) {
+/* `period` rides through to the row detail so a typed "show 3Y" changes every figure on the screen,
+   not only the one the advisor happened to have open. */
+function FundResults({ funds = FUND_LIST, openRow = null, state = 'expanded', onExplain, period = 'r3' }) {
   return (
-    <FUNDS_DS.ArtifactCard state={state} eyebrow="Fund search · your shelf" title={`${funds.length} funds match`}
+    <FUNDS_DS.ArtifactCard state={state} eyebrow="Fund search · your shelf" title={funds.length === 1 ? '1 fund matches' : `${funds.length} funds match`}
       provenance="As of 30 Sep · from the scheme record and your own book" onToggle={() => {}} onMenu={() => {}}>
       <FUNDS_DS.DataTable columns={FUND_COLUMNS} rows={fundRows(funds)} emptyState={FUND_EMPTY} overflow="scroll" defaultOpen={openRow}
-        expandable={(row) => <FundInfo id={row.id} defaultPeriod="r3" heldBy onExplain={onExplain || (() => {})} />} />
+        expandable={(row) => <FundInfo id={row.id} defaultPeriod={period} heldBy onExplain={onExplain || (() => {})} />} />
     </FUNDS_DS.ArtifactCard>
   );
 }
@@ -495,9 +497,56 @@ const REFINE_BUCKETS = [...new Set(FUNDS.map((f) => f.bucket))];
 const REFINE_TERMS = [...REFINE_CATEGORIES, ...REFINE_BUCKETS, 'Direct plan', 'Regular plan'];
 
 /* Returns { kind, ... } — never a mutated query, so a caller decides what to do with a refusal. */
+/* A FUND BY NAME, AND AN AMBIGUOUS NAME MATCHES NOTHING. Same discipline the WHO step learned on
+   20 Sep: "Nair" is two clients and taking the first silently is worse than asking. Here "HDFC" is
+   four funds, so it comes back as a miss with the four named, rather than as a guess. */
+const fundByWords = (t) => {
+  const hits = FUND_LIST.filter((f) => {
+    const words = `${f.name} ${f.amc}`.toLowerCase().split(/[\s·]+/).filter((w) => w.length > 2);
+    return words.some((w) => new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(t));
+  });
+  return { one: hits.length === 1 ? hits[0] : null, many: hits.length > 1 ? hits : null };
+};
+const SORT_KEYS = [
+  { key: 'ter', dir: 'asc', re: /\b(cost|cheap|expense|ter|fee)\b/, said: 'cheapest first' },
+  { key: 'aumCr', dir: 'desc', re: /\b(size|aum|biggest|largest)\b/, said: 'biggest first' },
+  /* NOT A FIXED PERIOD. "sort by return" used to sort on r3 while the table might be showing 5Y, so the
+     rows came back in an order the numbers on screen did not explain. The key resolves to whatever
+     period is being displayed, and the sentence names it — a sort the reader cannot verify against the
+     column in front of them is the same defect as a figure with no provenance. */
+  { key: 'return', dir: 'desc', re: /\b(return|performance|best)\b/, said: 'best return first' },
+];
+const PERIOD_WORDS = { '1y': 'r1', '3y': 'r3', '5y': 'r5', 'one year': 'r1', 'three year': 'r3', 'five year': 'r5' };
+
 function refine(text, query) {
   const t = (text || '').trim().toLowerCase();
   if (!t) return { kind: 'miss' };
+
+  /* SORT — a view over the same shortlist, not a filter on it, so it never changes the count. */
+  if (/\bsort\b|\border by\b|\bcheapest\b|\bbiggest\b/.test(t)) {
+    const k = SORT_KEYS.find((x) => x.re.test(t));
+    if (k) return { kind: 'sort', sort: { key: k.key, dir: k.dir }, said: k.said };
+    return { kind: 'miss', why: 'sort' };
+  }
+  /* A NUMBER WITH A DIRECTION. "under 0.7%" is the filter an advisor actually types, and the query had
+     no way to hold one — every pill was a word. */
+  const num = t.match(/\b(under|below|less than|over|above|more than)\s*₹?\s*([\d.]+)\s*%?/);
+  if (num && /\b(ter|expense|cost|fee|charge)\b/.test(t)) {
+    const op = /^(over|above|more)/.test(num[1]) ? 'gt' : 'lt';
+    return { kind: 'ter', op, value: parseFloat(num[2]) };
+  }
+  /* PERIOD — which return every figure on the shortlist is read at. */
+  const per = Object.keys(PERIOD_WORDS).find((w) => t.includes(w));
+  if (per && /\b(show|use|switch|give)\b/.test(t)) return { kind: 'period', period: PERIOD_WORDS[per] };
+  /* COMPARE two funds by name, straight from the composer. */
+  const cmp = t.match(/\bcompare\b(.+?)\b(?:with|and|vs|versus)\b(.+)/);
+  if (cmp) {
+    const a = fundByWords(cmp[1]), b = fundByWords(cmp[2]);
+    if (a.one && b.one && a.one.id !== b.one.id) return { kind: 'compare', ids: [a.one.id, b.one.id] };
+    const amb = a.many || b.many;
+    return amb ? { kind: 'ambiguous', funds: amb } : { kind: 'miss', why: 'compare' };
+  }
+
   const hit = REFINE_TERMS.find((x) => t.includes(x.toLowerCase()));
   const shelfWord = /\bshelf\b|\bon my shelf\b|\bapproved\b/.test(t);
   const dropping = /\b(drop|remove|without|not|no|except|forget)\b/.test(t);
@@ -505,7 +554,17 @@ function refine(text, query) {
 
   if (shelfWord && dropping) return { kind: 'shelf', on: false, said: 'off the shelf filter' };
   if (shelfWord) return { kind: 'shelf', on: true, said: 'the shelf filter' };
-  if (!hit) return { kind: 'miss' };
+
+  /* A FUND BY NAME. "add Motilal" is not a category — it is one scheme the advisor wants in the list
+     whatever the filters say, and "drop HDFC Flexi Cap" is one they want out. Both arrive as visible,
+     removable chips, because a list the system quietly changed is a list nobody can defend. Checked
+     AFTER the category words, so "add small cap" is still a category. */
+  if (!hit) {
+    const f = fundByWords(t);
+    if (f.one) return { kind: dropping ? 'fundDrop' : 'fundAdd', fund: f.one };
+    if (f.many) return { kind: 'ambiguous', funds: f.many };
+    return { kind: 'miss' };
+  }
 
   if (dropping) {
     if (!query.some((q) => q.on && q.label.toLowerCase() === hit.toLowerCase())) return { kind: 'absent', term: hit };
@@ -519,7 +578,12 @@ function refine(text, query) {
 }
 
 /* The query after a refinement. Pure, so the same input always gives the same pills. */
+const terLabel = (op, v) => `TER ${op === 'lt' ? 'under' : 'over'} ${v}%`;
 function applyRefine(r, query) {
+  /* One TER pill at a time: "under 0.7" then "under 0.5" is a correction, not two filters. */
+  if (r.kind === 'ter') return [...query.filter((q) => q.kind !== 'ter'), { label: terLabel(r.op, r.value), on: true, kind: 'ter', op: r.op, value: r.value }];
+  if (r.kind === 'fundAdd') return [...query.filter((q) => q.id !== r.fund.id), { label: `+ ${r.fund.name}`, on: true, kind: 'fund', mode: 'add', id: r.fund.id }];
+  if (r.kind === 'fundDrop') return [...query.filter((q) => q.id !== r.fund.id), { label: `− ${r.fund.name}`, on: true, kind: 'fund', mode: 'drop', id: r.fund.id }];
   if (r.kind === 'drop') return query.map((q) => (q.label.toLowerCase() === r.term.toLowerCase() ? { ...q, on: false } : q));
   if (r.kind === 'add') {
     return query.some((q) => q.label.toLowerCase() === r.term.toLowerCase())
@@ -538,29 +602,81 @@ function applyRefine(r, query) {
 /* What Sentinel says back. The refusal names the three things it can do to a query — the same shape
    every refusal in this product keeps — and never silently leaves the shortlist where it was. */
 const REFINE_MISS = {
-  body: 'I did not follow that as a change to the search. I can add a category, drop one, or turn the shelf filter on and off.',
-  chips: ['Only direct plan', 'Drop the shelf filter', 'Add small cap'],
+  body: 'I did not follow that as a change to the search. I can add a category or drop one, filter on the expense ratio, add or drop a fund by name, sort the list, or turn the shelf filter on and off.',
+  chips: ['Only direct plan', 'Under 0.7% TER', 'Sort by cost', 'Drop the shelf filter'],
 };
-const refineSaid = (r) => ({
-  add: `Added ${r.term}.`,
-  drop: `Dropped ${r.term}.`,
-  only: `Only ${r.term} now — I took the other categories off.`,
-  already: `${r.term} was already on.`,
-  absent: `${r.term} was not on, so there was nothing to drop.`,
-  shelf: r.on ? 'Filtering to your shelf.' : 'Showing funds off your shelf too.',
-}[r.kind]);
+/* TWO FUNDS WITH THE SAME WORD IN THEM IS NOT A CHOICE SENTINEL GETS TO MAKE. It names them and asks,
+   which is the same answer the WHO step gives for two clients called Nair. */
+const refineAmbiguous = (r) => ({
+  body: `${r.funds.length} funds match that: ${r.funds.map((f) => f.name).join(', ')}. Which one?`,
+  chips: r.funds.slice(0, 3).map((f) => f.name),
+});
+/* LAZY, BECAUSE AN OBJECT LITERAL EVALUATES EVERY BRANCH. This was a map built eagerly, so
+   `r.fund.name` ran for a kind that has no fund and threw — found the moment the new grammar was
+   driven, before any of it reached a screen. One arm per kind, and only the taken arm runs. */
+const PERIOD_LABEL = { r1: '1Y', r3: '3Y', r5: '5Y' };
+/* A SORT THE READER CAN CHECK. The table's cost and return columns sit off the 375 edge behind a
+   horizontal scroll, so "sorted cheapest first" was a claim with nothing on screen to test it against —
+   the same shape as a figure with no provenance. The sentence now carries the span it sorted on, first
+   value to last, which is the smallest thing that makes the order verifiable without moving a column. */
+const SORT_UNIT = { ter: (v) => `${v.toFixed(2)}%`, aumCr: (v) => `₹${inr(Math.round(v))} cr`, return: (v) => `${v.toFixed(1)}%` };
+const sortSpan = (r, period, list) => {
+  if (!list || list.length < 2) return '';
+  const key = r.sort.key === 'return' ? period : r.sort.key;
+  const vals = list.map((f) => (perfOf(f.id) || {})[key]).filter((v) => v != null);
+  if (vals.length < 2) return '';
+  const fmt = SORT_UNIT[r.sort.key] || ((v) => String(v));
+  return ` — ${fmt(vals[0])} to ${fmt(vals[vals.length - 1])}.`;
+};
+const refineSaid = (r, period = 'r5', list = null) => {
+  switch (r.kind) {
+    case 'add': return `Added ${r.term}.`;
+    case 'drop': return `Dropped ${r.term}.`;
+    case 'only': return `Only ${r.term} now — I took the other categories off.`;
+    case 'already': return `${r.term} was already on.`;
+    case 'absent': return `${r.term} was not on, so there was nothing to drop.`;
+    case 'shelf': return r.on ? 'Filtering to your shelf.' : 'Showing funds off your shelf too.';
+    case 'ter': return `Only funds with an expense ratio ${r.op === 'lt' ? 'under' : 'over'} ${r.value}%.`;
+    case 'fundAdd': return `Added ${r.fund.name} — it stays in whatever the filters say.`;
+    case 'fundDrop': return `Dropped ${r.fund.name}.`;
+    case 'sort': return `Sorted ${r.sort.key === 'return' ? `best ${PERIOD_LABEL[period]} return first` : r.said}${sortSpan(r, period, list) || '.'} The list is the same funds in a different order.`;
+    case 'period': return `Reading every return at ${PERIOD_LABEL[r.period]} now.`;
+    default: return null;
+  }
+};
 
 /* The shortlist for a query — one function, so the count beside the chips and the rows in the table
    can never disagree. That pair is the whole reason an advisor trusts the chips. */
-const fundsFor = (query, shelf) => FUND_LIST.filter((f) => {
-  if (shelf && !f.onShelf) return false;
-  const on = query.filter((q) => q.on).map((q) => q.label.toLowerCase());
-  return on.every((label) => {
-    if (label === 'direct plan') return f.plan === 'direct';
-    if (label === 'regular plan') return f.plan === 'regular';
-    return f.cat.toLowerCase() === label || f.bucket.toLowerCase() === label;
+const fundsFor = (query, shelf) => {
+  const on = query.filter((q) => q.on);
+  const added = on.filter((q) => q.kind === 'fund' && q.mode === 'add').map((q) => q.id);
+  const dropped = on.filter((q) => q.kind === 'fund' && q.mode === 'drop').map((q) => q.id);
+  const words = on.filter((q) => !q.kind).map((q) => q.label.toLowerCase());
+  const ter = on.find((q) => q.kind === 'ter');
+  return FUND_LIST.filter((f) => {
+    if (dropped.includes(f.id)) return false;
+    /* A fund named by hand is IN, whatever the filters say — that is what naming it means. */
+    if (added.includes(f.id)) return true;
+    if (shelf && !f.onShelf) return false;
+    if (ter) { const p = perfOf(f.id); if (!p) return false; if (ter.op === 'lt' ? !(p.ter < ter.value) : !(p.ter > ter.value)) return false; }
+    return words.every((label) => {
+      if (label === 'direct plan') return f.plan === 'direct';
+      if (label === 'regular plan') return f.plan === 'regular';
+      return f.cat.toLowerCase() === label || f.bucket.toLowerCase() === label;
+    });
   });
-});
+};
+/* SORT IS A VIEW, NOT A FILTER — it never changes the count, which is the pair an advisor trusts. */
+const sortFunds = (list, sort, period = 'r5') => {
+  if (!sort) return list;
+  const key = sort.key === 'return' ? period : sort.key;
+  const val = (f) => { const p = perfOf(f.id); return p ? p[key] : null; };
+  return [...list].sort((a, b) => {
+    const x = val(a), y = val(b);
+    if (x == null || y == null) return x == null ? 1 : -1;
+    return sort.dir === 'asc' ? x - y : y - x;
+  });
+};
 
 
 /* THE FUND, AS THE SYSTEM ALREADY DRAWS IT.
@@ -639,4 +755,4 @@ function FundInfo({ id, period, onPeriod, onExplain, heldBy = false, defaultPeri
   );
 }
 
-Object.assign(window, { FundInfo, FUND_CHIPS, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineSaid, fundsFor, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE });
+Object.assign(window, { FundInfo, FUND_CHIPS, HOLD_CHIPS, HOLD_KINDS, holdAsk, HoldingsTurn, HoldingsShape, HoldingsSectors, HoldingsTop, HoldingsConcentration, HoldingsOverlap, FUND_VERBS, FundVerbs, ComparePicker, FundHandoff, VERB_SAYS, FundCompare, compareEntities, compareRows, compareVerdict, compareProvenance, REFINE_TERMS, refine, applyRefine, REFINE_MISS, refineAmbiguous, refineSaid, fundsFor, sortFunds, fundByWords, SORT_KEYS, FUND_EMPTY, FundResults, FUND_ASK, FUND_LIST, FUND_QUERY, FUND_COLUMNS, fundRows, heldLine, OVERLAP_FUNDS, OVERLAP_PROPERTIES, OVERLAP_CELLS, OVERLAP_FOOTNOTE, PERIOD_LABEL, sortSpan });

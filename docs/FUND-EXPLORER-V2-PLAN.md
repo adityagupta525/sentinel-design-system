@@ -47,23 +47,38 @@ means in a chat, and it is what makes the composer the one control that never fa
 | step | the advisor | Sentinel answers with | built |
 |---|---|---|---|
 | **0 · entry** | types *"flexi cap under 0.7% on my shelf"* or taps the starter | reads the sentence back as **removable chips** (`Flexi cap ✕ · TER < 0.7% ✕ · On your shelf ✕`), counts the matches, and says the one thing worth saying: *"Four clear it. Two clear it comfortably."* | chips ✓ · **numeric filters new** · the sentence new |
-| **1 · shortlist** | reads the table; says *"sort by cost"*, *"only direct"*, *"drop the shelf"*, *"add Motilal"* | the `DataTable` re-sorts or re-filters **as a new turn** that says what changed; a fund added by name joins the list | table ✓ · refine parser ✓ (add/drop/shelf) · **sort · numeric · add-by-name new** |
+| **1 · shortlist** ✓ | reads the table; says *"sort by cost"*, *"only direct"*, *"drop the shelf"*, *"add Motilal"* | the `DataTable` re-sorts or re-filters **as a new turn** that says what changed; a fund added by name joins the list | table ✓ · refine parser ✓ (add/drop/shelf) · **sort · numeric · add-by-name BUILT 20 Sep** |
 | **2 · the fund** | taps a name, or types it | `InfoCard`: ₹10,000 → what it became, the two-line chart, the range row, riskometer · TER · size · exit load · who holds it. Under it two rows of chips: **the four asks** and **the four verbs** | ✓ |
 | **3 · vs category** | *"How has it done against its category?"* | three `Dumbbell`s on one scale — category average · this fund · benchmark — for the chosen period, and the sentence: *"Ahead of its category by 2.1 points and its benchmark by 6.3."* | `Dumbbell` ✓ · **needs `CATEGORY_AVG`** |
 | **4 · holdings** | *"What is it holding?"* | **the shape first, one turn**: `AllocationCard` by cap (large · mid · small · debt & cash) with its sentence — *"Two-thirds large cap. 31.6% is financials — one sector is a third of the fund."* — then chips for the next questions (§3) | `AllocationCard` ✓ · **needs `HOLDINGS`** |
 | **5 · what changed** | *"What changed recently?"* | a `SentinelTurn` of sentences, tone in the words: *"Size rose ₹1,900 cr in May."* · *"May's return was 0.6 points under its benchmark; April's was 1.8 over."* · *"HCL and TCS carried the month; HDFC Bank cost it 10.6%."* · manager change if any | `SentinelTurn` ✓ · **needs `MONTHLY`** |
 | **6 · who holds it** | *"Who of my clients hold it?"* | a `List` of the clients, each with **% of their own book** and whether it sits over a ceiling for them | `holdersOf` ✓ · `List` ✓ · the % new |
 | **7 · verbs** | Compare · Add to a proposal · Attach to a rebalance · Send for review | as built 20 Sep — Compare is two blocks with one signature; the three hand-offs carry the fund into D, E, F | ✓ |
-| **8 · period** | *"show 3Y"*, taps `1Y · 3Y · 5Y` | the card's figure, chart and Dumbbells re-read for that period; the sentence says what changed | pills ✓ · **the command new** |
+| **8 · period** | *"show 3Y"*, taps `1Y · 3Y · 5Y` | the card's figure, chart and Dumbbells re-read for that period; the sentence says what changed | pills ✓ · **the command BUILT 20 Sep** |
 
 **Smart insights are one sentence, built from data, after every artifact** — the discipline
 `compareVerdict()` already follows. A clause with no fact behind it does not appear; when two facts
 conflict (cheapest but off-shelf) both are said. Never a score, never a tick or cross.
 
-**Commands the parser gains** (`refine()` in `funds.jsx`): `sort by <cost|size|return>` · `under|over
-<n>%` on TER · `only <direct|regular>` · `add <fund>` · `drop <fund>` · `compare <a> with <b>` · `show
-<1Y|3Y|5Y>` · `holdings` · `what changed` · `who holds`. Anything else still lands in bucket 4 and says
-so — a search that quietly ignores half of what you typed is worse than one that says it did not follow.
+**Commands the parser gains** (`refine()` in `funds.jsx`) — **BUILT 20 Sep 2026**, frozen on
+`screens/journey-c/funds.html` §7 and live in `screens/prototype.html`: `sort by <cost|size|return>` ·
+`under|over <n>%` on TER · `only <direct|regular>` · `add <fund>` · `drop <fund>` · `compare <a> with
+<b>` · `show <1Y|3Y|5Y>` · `holdings` · `what changed` · `who holds`. Anything else still lands in
+bucket 4 and says so — a search that quietly ignores half of what you typed is worse than one that says
+it did not follow.
+
+**What building them settled, and the plan did not say** (F-61):
+
+- **A filter and a view are different acts, and the state has to say so.** A filter changes which funds
+  match and becomes a removable chip; a sort or a period changes only the order or the period every
+  figure is read at, and touches no chip. Sort and period are held apart from the query for exactly
+  that reason: a view that showed up as a filter chip would make the count look negotiable.
+- **A sort must be checkable against the screen.** Cost and return sit off the 375 edge behind the
+  table's scroll, so the turn carries the span it sorted on — *"Sorted cheapest first — 0.63% to
+  0.98%."* And the return key follows whatever period is displayed, rather than a fixed three years.
+- **An ambiguous fund name binds nobody.** *"add HDFC"* matches three, so it names all three and asks —
+  `namedClient`'s ruling from F-60, applied to the shelf.
+- **A fund added by name stays** whatever the filters say. The advisor asked for that fund.
 
 ---
 
