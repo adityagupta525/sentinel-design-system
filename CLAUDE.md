@@ -93,4 +93,6 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
    researched, with every state and keyframe accounted for. **Journeys A, B and C built** (a state of a screen is not a screen), plus the shell
    drawer, the ledger, the refusals, the going-back layer, **Journey D (the proposal)**, **Journey E (the rebalance)**, **Journey F (the review)** and **the end-to-end prototype** — one phone whose
    router decides which journey a sentence enters. Build order #7 is the last row, and it is done. The owner's standing rule since 18 Sep: **nothing in the system that is on
-   no screen** — `npm run report:parallel` measures it (**80 of 93** today, counted transitively).
+   no screen** — `npm run report:parallel` measures it (**86 of 94** today, counted transitively). The eight
+   that are not are named in contradiction 64 in three kinds: one renders nothing by design, three
+   are members of an icon set delivered whole, and four are the owner's open call.
