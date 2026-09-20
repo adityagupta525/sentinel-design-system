@@ -1,8 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build:bundle && npm run build:index && npm run build:artifact",
+  "//": "NO BUILD. `site/` is committed and verified before it is pushed — 131 pages that render over file:// with no console error, no failed request and the theme resolved. Rebuilding it here would add three ways to fail (npm ci, the esbuild binary, and python3 for the cover generator) in exchange for nothing, and a failed build is a failed deployment. The trade is that a push which changes source without running `npm run build:artifact` deploys a stale site; that is the repository's own discipline and it is written down in docs/DEPLOY.md.",
+  "buildCommand": null,
+  "installCommand": null,
   "outputDirectory": "site",
-  "installCommand": "npm ci",
+  "framework": null,
   "cleanUrls": false,
   "trailingSlash": false,
   "headers": [
