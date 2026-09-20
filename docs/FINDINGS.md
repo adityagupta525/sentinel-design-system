@@ -2144,3 +2144,50 @@ disclaimer, which now has its own reserved row.
 
 **Gates after: 144/144 pages clean · screens adherence 0 · system adherence 63 → 59, gate tightened ·
 tokens 0 undefined · 905 controls at 44pt · 780 with a focus ring · 782 with an accessible name.**
+
+---
+
+## F-74 · The published artifact rendered its cover and nothing else — Closed 20 Sep 2026
+
+The owner opened the artifact and reported it exactly: *"artifacts ka main page dikha raha hai and
+sab cta ke andar blank aa raha hai."* The cover rendered; every one of the 125 pages behind it was
+blank.
+
+**What it was.** Every page loaded React, ReactDOM and Babel standalone from `unpkg.com`. The artifact
+host's Content-Security-Policy admits scripts from four origins, and unpkg is not one of them, so all
+three were refused and nothing mounted. The cover is plain HTML with no scripts at all, which is
+precisely why it was the one page that worked — and why the failure looked like a navigation problem
+rather than a loading one.
+
+**Why no gate saw it.** `check:artifact` served the staged copy from this repository's own dev server,
+which rewrites CDN URLs to `node_modules` when a CDN is unreachable and sends no CSP. It was testing a
+machine, not the environment the artifact runs in. A gate that cannot see the environment it is a gate
+for is not a gate.
+
+**The fix, in three parts.**
+
+1. `tools/build-artifact.mjs` rewrites the three unpkg URLs to `cdnjs.cloudflare.com` — the host the
+   artifact CSP prefers — and drops the `integrity` hashes, which were computed against unpkg's bytes
+   and would have failed against cdnjs's.
+2. `tools/check-artifact.mjs` no longer borrows the repository's server. It serves the staged files
+   verbatim from its own, under the **artifact's own CSP**, and reports refused loads and failed
+   requests alongside pages that do not mount. Verified by poisoning one page back to unpkg: the gate
+   went from `125 resolve and mount` to `124`, naming `pages/Pill.html` and quoting the refusal.
+3. `tools/precompile-jsx.mjs`, new: the pages' JSX is compiled **at build time**, with the exact
+   options `@babel/standalone`'s own script-tag runner uses, and emitted as plain `<script>` in
+   document order — which is what that runner does, so the one global script scope the pages were
+   written against is unchanged. 281 blocks across 111 pages. No compiler ships.
+
+Part 3 is what closes the finding rather than patching it. Babel standalone compiles through
+`new Function`, so the fixed artifact would still have rested on an assumption about `unsafe-eval`
+that cannot be checked from here. With the pages precompiled, the gate's CSP drops `'unsafe-eval'`
+and still reports **125 of 125 resolve and mount** — the assumption is now a measurement. It also
+removes a 3 MB download and one XHR per page.
+
+**Not verified from here:** the published copy itself. The artifact is private and the browser
+available in this session is not signed in, so the live pages were not opened. What is verified is
+that the bytes that were published mount under the artifact's stated CSP, with no compiler and no
+blocked origin.
+
+**Gates after: artifact 125/125 mount under the real CSP, no `unsafe-eval` · 144/144 preview pages
+clean · 254 files staged, limit 255.**

@@ -26,10 +26,32 @@ const walk = async (dir, filter, acc = []) => {
   }
   return acc;
 };
-const rewrite = (s) => s
-  .replace(/_ds_bundle\.js/g, 'ds_bundle.js')
-  .replace(/_ds_manifest\.json/g, 'ds_manifest.json')
-  .replace(/_index\.json/g, 'index-data.json');
+/* THE ARTIFACT CSP DOES NOT ALLOW unpkg, AND EVERY PAGE LOADED REACT FROM IT (20 Sep 2026).
+   The published cover rendered — it is plain HTML with no scripts — and every page behind it came up
+   blank, because React, ReactDOM and Babel were blocked before they ran. Found by the owner opening
+   the link, which is the only place it could be found: `check:artifact` served the staged copy from
+   this repository's own dev server, where those URLs resolve. A gate that cannot see the environment
+   it is a gate for is not a gate, and `check:artifact` runs under the real CSP now.
+
+   `cdnjs.cloudflare.com` is the host the CSP prefers and it carries all three at the same versions.
+   The `integrity` hashes were computed against unpkg's bytes, so they go with the host — a hash for a
+   file you are no longer fetching blocks the file you are. jsdelivr's `/npm/` is allowed, so d3 is
+   untouched. */
+const CDN = [
+  [/https:\/\/unpkg\.com\/react@([\d.]+)\/umd\//g, 'https://cdnjs.cloudflare.com/ajax/libs/react/$1/umd/'],
+  [/https:\/\/unpkg\.com\/react-dom@([\d.]+)\/umd\//g, 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/$1/umd/'],
+  [/https:\/\/unpkg\.com\/@babel\/standalone@([\d.]+)\//g, 'https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/$1/'],
+];
+const rewrite = (s) => {
+  let out = s
+    .replace(/_ds_bundle\.js/g, 'ds_bundle.js')
+    .replace(/_ds_manifest\.json/g, 'ds_manifest.json')
+    .replace(/_index\.json/g, 'index-data.json');
+  for (const [re, to] of CDN) out = out.replace(re, to);
+  /* Drop the integrity + crossorigin pair on the three rewritten script tags only. */
+  out = out.replace(/(<script src="https:\/\/cdnjs\.cloudflare\.com[^"]*")[^>]*?(><\/script>)/g, '$1 crossorigin="anonymous"$2');
+  return out;
+};
 
 await rm(OUT, { recursive: true, force: true });
 await mkdir(OUT, { recursive: true });
@@ -77,6 +99,18 @@ for (const p of await walk(join(OUT, 'screens'), (p) => p.endsWith('.html'))) {
   s = s.replace(/(\.\.\/)+design-system\/styles\.css/g, (m) => '../'.repeat((relative(OUT, p).match(/\//g) || []).length) + 'styles.css');
   await writeFile(p, s);
 }
+/* Now that every path is final, compile the pages' JSX into the pages. See
+   `tools/precompile-jsx.mjs` for why the artifact may not carry a compiler. */
+const { precompilePage } = await import('./precompile-jsx.mjs');
+let tags = 0, pagesTouched = 0;
+for (const p of await walk(OUT, (p) => p.endsWith('.html'))) {
+  const { html, compiled } = precompilePage(await readFile(p, 'utf8'), p);
+  if (!compiled) continue;
+  await writeFile(p, html);
+  tags += compiled; pagesTouched += 1;
+}
+console.log(`precompiled ${tags} JSX blocks across ${pagesTouched} pages — no compiler ships`);
+
 /* THE COVER IS WRITTEN LAST, because this script starts by deleting `artifact/` — the first run
    wrote it before the rebuild and the rebuild ate it. `tools/artifact-cover.py` is the generator; it
    reads the component index from disk, so the cover's counts cannot claim more than exists. */
