@@ -36,6 +36,9 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 - **Never restyle.** The visual language is settled. Fix gaps, spacing, correctness and consistency;
   do not change colour, type, radii, shadow or motion character. See CONTRIBUTING.md.
+- **`design-system/ui_kits/` is no longer frozen.** It was the imported record and "do not touch" was
+  the rule; on 20 Sep 2026 the owner ruled it redrawn, and it is now composed from the same components
+  the screens use. Edit it like any other file under `design-system/` — integrity in the same commit.
 - **`design-system/readme.md` is the specification** (43 KB). Read the relevant section before
   changing a component — most surprising choices are deliberate and explained there.
 - **`design-system/guidelines/contradictions.md`** is the system's own list of known inconsistencies.
@@ -68,18 +71,22 @@ which outside advice was rejected and why. Auditing Sentinel against a generic 4
 
 1. **Import** — done.
 2. **Audit and polish** — close the gaps in `docs/FINDINGS.md` without touching the visual language.
-   F-1 … F-53 recorded; **none open** (F-27 … F-30 closed 18 Sep; F-31 locked row dimming its own selection and F-32 a stopped trace still saying "Working", both found by the review agent, F-33 integrity failing on the date stamp rather than on a change, and F-39 the app bar's two icon buttons with no accessible name — found by driving the end-to-end prototype, which is the only thing that could see it — all closed 19 Sep). `_index.json` reports `literals` — how many raw
-   style values each component still hardcodes — so adherence is measurable per component:
-   **36 of 89** are fully clean.
+   **F-1 … F-66 recorded; none open.** The four that only driving could find are worth remembering:
+   F-39 (the app bar's two icon buttons with no accessible name), F-60 (`namedClient` matching the
+   initial in "R. Sharma"), F-61 (the prototype saying it had filtered a shortlist and not doing it),
+   F-62 (the benchmark reading 42.6% over one year off a curve whose intermediate path was never
+   constrained). `_index.json` reports `literals` — how many raw style values each component still
+   hardcodes — so adherence is measurable per component: **38 of 93** are fully clean, and the
+   `lint:adherence:gate` ceiling is **61**.
 3. **The four components the request spec named and nobody built** — done.
    `ResultCard` · `DataTable` · `OverlapView` · `InfoCard kind='manager'`, each with its contract and
    a spec page. `pages/_index.json` reports **0 specified**: the backlog the system carried since v9
    is empty.
-3b. **Spec pages, Tier 1** — done. **46 of 89 shipped**, 43 building, 96/96 pages render clean.
+3b. **Spec pages, Tier 1** — done. **50 of 93 shipped**, 43 building, 100/100 pages render clean.
    Tier 1 = every component that carries one of the four rules, or that the chat spine is built from.
    Tier 2 is the remaining 44: chips, buttons, marks, icons, shells.
 4. **Screens** — rebuild the Figma Make screens and their journeys on this system: full hi-fi flows,
    researched, with every state and keyframe accounted for. **Journeys A, B and C built** (a state of a screen is not a screen), plus the shell
    drawer, the ledger, the refusals, the going-back layer, **Journey D (the proposal)**, **Journey E (the rebalance)**, **Journey F (the review)** and **the end-to-end prototype** — one phone whose
    router decides which journey a sentence enters. Build order #7 is the last row, and it is done. The owner's standing rule since 18 Sep: **nothing in the system that is on
-   no screen** — `npm run report:parallel` measures it (76 of 89 today, counted transitively).
+   no screen** — `npm run report:parallel` measures it (**80 of 93** today, counted transitively).

@@ -1826,3 +1826,24 @@ thing and this number qualifies it, it is a footnote stat.* Neither treatment ch
 that a screen author can no longer pick wrong by accident.
 
 **Open contradictions: 8.** Was 10.
+
+---
+
+### F-66 · The breaching bar states that it breached — *20 Sep 2026*
+
+The last open owner decision, and the mechanism was already in the contract: `ChartBarDatum.tone` —
+*"per-bar role override — `status` for the one bar that crossed a limit. Never a category colour."* It
+had never been used on a screen.
+
+R1, the rebalance's *where he is* turn, draws Sharma's book by cap. Small cap is **31%**, over the 25%
+single-fund ceiling and the 25% small-cap sleeve at the same time — two different rules, one fund
+(contradiction 32). Three other bars are ordinary. The breaching one now carries `tone='status'`.
+
+**This is not rule 1 being bent.** Rule 1 is that colour never encodes identity: the bars are one hue,
+rank is carried by length, and the sentence above the chart already names the fund, the number and both
+ceilings before the chart is reached. What the tone carries is a **state**, not a name — and exactly one
+bar in this book is ever in it. The label still does the identifying.
+
+**A JSX comment in an attribute list, for the fifth time.** `{/* … */}` between two props is a parse
+error, the page did not mount, and the render said so immediately. It belongs above the function. The
+comment now says so, in the file, where the sixth attempt will read it.

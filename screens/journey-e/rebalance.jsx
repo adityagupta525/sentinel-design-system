@@ -72,6 +72,12 @@ const REB_RECOMMENDED = REBALANCE_TARGETS.find(costed);
    crossed a limit" and it is used on no screen; a danger-coloured FILL would be the first in this
    product and rule 2 reserves that colour for text. So the bar ranks by length like every other bar
    here, and the sentence names the fund, the figure and both ceilings it crosses. */
+/* THE BREACHING BAR IS `tone='status'`, ruled 20 Sep 2026. This is NOT colour encoding identity
+   (rule 1): the bars are one hue and rank by length, and the sentence above the chart already names
+   the fund, the number and BOTH ceilings it crosses. `status` marks the one bar that crossed a limit —
+   the contract's own words, and the mechanism was in ChartBar before any screen used it. The label
+   still carries the identity; what the tone carries is a STATE, and only one bar here is ever in it.
+   (A JSX comment inside an attribute list is a parse error. Fifth time. It lives above the function.) */
 function RebalWhere({ continued = false }) {
   const caps = SHARMA.allocationByCap || [];
   const over = caps.find((c) => c.over);
@@ -82,7 +88,8 @@ function RebalWhere({ continued = false }) {
   if (over) say.push(`The reason is one holding. Quant Small Cap is ${over.pct}% of his book, over the ${LIMITS.singleFund}% single-fund ceiling and the ${LIMITS.smallCapSleeve}% small-cap sleeve at the same time — two rules, one fund.`);
   return (
     <REB_DS.SentinelTurn continued={continued} say={say}
-      body={<REB_DS.ChartBar bars={caps.map((c) => ({ label: c.label, value: c.pct }))} orientation="horizontal" valueFormat={(v) => `${v}%`} run={false} />}
+      body={<REB_DS.ChartBar orientation="horizontal" valueFormat={(v) => `${v}%`} run={false}
+        bars={caps.map((c) => ({ label: c.label, value: c.pct, tone: c.over ? 'status' : undefined }))} />}
       provenance={`As of ${SHARMA.portfolio.asOf} · his ${SHARMA.reporting.reported} of ${SHARMA.reporting.funds} funds reported · the caps are his, the ceilings are yours`} />
   );
 }
