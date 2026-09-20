@@ -100,6 +100,19 @@ for (const p of await walk(join(OUT, 'screens'), (p) => p.endsWith('.html'))) {
   s = s.replace(/(\.\.\/)+design-system\/styles\.css/g, (m) => '../'.repeat((relative(OUT, p).match(/\//g) || []).length) + 'styles.css');
   await writeFile(p, s);
 }
+/* THE TOKENS GO INTO THE PAGE (20 Sep 2026).
+   The owner opened site/index.html and got the cover with no theme at all: serif type, blue default
+   links, no cards. Measured — the page's own inline CSS had applied and `styles.css` had not, so
+   every `var(--color-…)` fell back to nothing. Chromium and WebKit both load it correctly over
+   `file://`, so this is not a browser: it is a viewer that renders one file without its siblings,
+   which macOS Quick Look and an in-app preview pane both do.
+
+   Calling `site/` self-contained while every page still fetched five stylesheets was simply wrong.
+   The five token files are 23 KB, 9 KB without their comments; inlining them in the order
+   `styles.css` imported them costs about 1 MB across 131 pages and removes the last thing a page
+   needs before it can draw itself correctly. `ds_bundle.js` stays external — 239 KB on 111 pages is
+   not worth it, and a page that needs JavaScript wants a browser anyway. */
+
 /* Now that every path is final, compile the pages' JSX into the pages. See
    `tools/precompile-jsx.mjs` for why the artifact may not carry a compiler. */
 /* The staging does not carry `design-system/assets/` — there is no room under the 255-file limit and
@@ -139,6 +152,28 @@ console.log(`inlined ${cached} fetched files, so a downloaded folder opens witho
    reads the component index from disk, so the cover's counts cannot claim more than exists. */
 const { execFileSync } = await import('node:child_process');
 execFileSync('python3', [join(ROOT, 'tools', 'artifact-cover.py')], { cwd: ROOT, stdio: 'inherit' });
+
+/* AFTER the cover, because the cover is generated last and was the one page left still fetching
+   a stylesheet — which is exactly the page the owner opened and found unthemed. */
+const TOKEN_ORDER = ['fonts.css', 'colors.css', 'typography.css', 'spacing.css', 'effects.css'];
+let css = '';
+for (const f of TOKEN_ORDER) {
+  css += (await readFile(join(ROOT, 'design-system', 'tokens', f), 'utf8'))
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^[ \t]+/gm, '')
+    .replace(/\n{2,}/g, '\n')
+    .trim() + '\n';
+}
+let inlinedCss = 0;
+for (const p of await walk(OUT, (p) => p.endsWith('.html'))) {
+  const before = await readFile(p, 'utf8');
+  const after = before.replace(/<link rel="stylesheet" href="[^"]*styles\.css"\s*\/?>/g, () => {
+    inlinedCss += 1;
+    return `<style>${css}</style>`;
+  });
+  if (after !== before) await writeFile(p, after);
+}
+console.log(`inlined the token stylesheet into ${inlinedCss} pages — no page fetches CSS any more`);
 
 const n = (await walk(OUT, () => true)).length;
 console.log(`site/: ${n} files staged (limit 255)`);

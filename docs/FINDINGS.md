@@ -2292,3 +2292,40 @@ and running the whole gate.
 **Gates after: 131/131 `site/` pages render over `file://` with no console error, no failed request
 and no guard bar · 144/144 preview pages clean · 125/125 cover links under the artifact CSP ·
 integrity 449 files · tokens 0 undefined · screens adherence 0.**
+
+---
+
+## F-77 · `site/` was called self-contained and still fetched five stylesheets a page — Closed 20 Sep 2026
+
+*"ye site/index.html aise kyu open ho raha hai ye toh theme b nei hai aapni"* — the cover, with serif
+type, default blue links and no cards.
+
+**What the screenshot proves on its own.** The three-column grid, the spacing and the letterspaced
+eyebrows are all from the cover's own inline `<style>`, so inline CSS applied. The type and the colours
+are not, so every `var(--color-…)` and `var(--font-ui)` fell back to nothing. `styles.css` had not
+loaded — and `styles.css` is where the whole theme lives, behind five `@import`s.
+
+**It is not a browser.** Chromium and WebKit both resolve the tokens over `file://` — measured,
+`--color-desk: #dedbd6`, body font Urbanist, in both. What does not is a viewer that renders one file
+without its siblings, which macOS Quick Look and an in-app preview pane both do.
+
+**The finding is mine.** F-75 called `site/` self-contained. It was not: every page still fetched
+`styles.css`, which fetched five more. The claim was never tested the way it was worded — the sweep
+opened pages from the directory, where siblings are there.
+
+**The fix.** The five token files are inlined into every page, in the order `styles.css` imported them,
+with their comments stripped — 23 KB down to 9 KB, about 1 MB across 131 pages. No page fetches CSS.
+`ds_bundle.js` stays external: 239 KB on 111 pages is not worth it, and a page that needs JavaScript
+wants a browser anyway.
+
+**And the one page that mattered most was the one the pass missed.** The first run inlined 130 of 131.
+The cover is generated last, by `artifact-cover.py`, after the pass had already run — so the one page
+left fetching a stylesheet was exactly the page the owner opened. The CSS pass runs after the cover now.
+
+**Verified by rendering each page with no access to sibling files at all**, which is what a snapshot
+viewer does: `--color-ink: #251f1b`, body `rgb(222, 219, 214)`, Urbanist, on both the cover and a spec
+page. Then looked at it.
+
+**Gates after: 131/131 `site/` pages over `file://` carry text, resolve the theme, and show no console
+error, no failed request and no guard bar · 144/144 preview pages clean · 125/125 cover links under the
+artifact CSP.**
