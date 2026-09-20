@@ -1,0 +1,61 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="UserTurn" subtitle="The advisor's half of a turn — the bubble, and the actions under it" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>UserTurn — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { UserTurn, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble', '--color-bubble-edge', '--color-ink', '--color-muted', '--radius-16', '--type-body-font', '--type-caption-font', '--space-8', '--space-10'];
+
+const ASK = "Why did Sharma's portfolio drift this quarter?";
+function App(){
+  const [sent,setSent] = React.useState(ASK);
+  return (
+  <PageShell name="UserTurn" group="Chat" status="shipped" requires={['UserTurn','SentinelBlock','SentinelText']}
+    summary="The advisor's half of a turn: the bubble they typed and the actions under it. Promoted out of screens/journey-b/thread.jsx on 20 Sep 2026, where the same twelve lines served every journey. Sentinel's half is SentinelTurn — a thread is those two, alternating, and nothing else.">
+    <Block n={1} title="Specimen" sub="What the advisor said, and the one action under it that matters: Edit.">
+      <Specimen width={343}><UserTurn text={ASK} /></Specimen>
+    </Block>
+    <Block n={2} title="Anatomy" sub="The bubble is UserBubble's; the row under it is MessageActions. This component is the pairing, and the edit state that pairing needs.">
+      <Anatomy width={343} top="bubble → actions" bottom="the actions sit on the bubble's side" left="right-aligned" right="44pt targets">
+        <UserTurn text="Rebalance Sharma" />
+      </Anatomy>
+    </Block>
+    <Block n={3} title="States" sub="Four, and each is a rule about when a question may be changed.">
+      <Grid cols={1} items={[
+        {label:'at rest', node:<div style={{width:343}}><UserTurn text={ASK} /></div>, note:'The last prompt is editable wherever editing it is valid.'},
+        {label:'busy — the answer is arriving', node:<div style={{width:343}}><UserTurn text={ASK} busy /></div>, note:'The actions withdraw. Editing a question Sentinel is halfway through answering would leave the answer below it belonging to a sentence that no longer exists.'},
+        {label:'in the history', node:<div style={{width:343}}><UserTurn text="Start Meera’s risk profile" editable={false} /></div>, note:'An answered question is not re-editable in place — going back to it is the journey’s job, not the bubble’s.'},
+        {label:'with a cost note', node:<div style={{width:343}}><UserTurn text="Review Meera’s portfolio" costNote="Sending this replaces the review below it." /></div>, note:'What re-sending costs, said BEFORE it is sent.'},
+      ]} />
+    </Block>
+    <Block n={4} title="Editing, live" sub="Tap Edit. Cancel restores the original and discards nothing, because nothing had changed yet.">
+      <Specimen width={343}><UserTurn text={sent} costNote="Sending this replaces the answer below it." onSave={(t)=>setSent(t)} /></Specimen>
+    </Block>
+    <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={6} title="Props"><Props src="../components/chat/UserTurn.d.ts" /></Block>
+    <Block n={7} title="Do / don't">
+      <DoDont
+        doNode={<div style={{width:300}}><UserTurn text="Rebalance Sharma" /></div>}
+        doCaption="The bubble and its Edit. The advisor can always change what they asked."
+        dontNode={<div style={{width:300}}><SentinelBlock><SentinelText text="Rebalance Sharma" /></SentinelBlock></div>}
+        dontCaption="The advisor's words on Sentinel's side. The two halves of a turn are not interchangeable." />
+    </Block>
+    <Block n={8} title="Motion">
+      <Motion rows={[
+        {name:'The bubble arrives', property:'ds-rise on the turn it belongs to', duration:'240 ms', reduced:'Fades in place.'},
+        {name:'Edit opens', property:'the bubble becomes a textarea in place', duration:'immediate', reduced:'Unchanged — nothing moves around it.'},
+        {name:'Cancel', property:'the original text returns', duration:'immediate', reduced:'Unchanged.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+
+</script>
+</body></html>

@@ -82,20 +82,12 @@ const CAPABILITIES = [
 ];
 const CAPABILITIES_CLOSER = 'Every one of those is a sentence you can type as well as tap. Anything outside them I will say I cannot do, rather than guess at it.';
 
-function RefusalTurn({ body, chips = [], onChip, continued = false }) {
+/* `RefusalTurn` WAS HERE AND IS NOW THE SYSTEM'S (20 Sep 2026). Six refusals shared one shape and
+   differed only in copy, which is the definition of a component. The COPY stays here, because what
+   this product refuses and how it says it is the product's, not the system's. */
+function CapabilitiesTurn({ onAsk, enter = false }) {
   return (
-    <REF_DS.SentinelTurn continued={continued} say={body}
-      chips={chips.length > 0 && (
-        <REF_DS.ChipRow>
-          {chips.map((c) => <REF_DS.AnswerChip key={c} label={c} onClick={() => onChip && onChip(c)} />)}
-        </REF_DS.ChipRow>
-      )} />
-  );
-}
-
-function CapabilitiesTurn({ onAsk }) {
-  return (
-    <REF_DS.SentinelTurn say="Here is everything I can do."
+    <REF_DS.SentinelTurn enter={enter} say="Here is everything I can do."
       body={<REF_DS.FollowUpRow items={CAPABILITIES} label="" onAsk={onAsk} />}
       then={CAPABILITIES_CLOSER} />
   );

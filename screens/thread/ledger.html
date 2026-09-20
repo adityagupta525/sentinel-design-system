@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','SentinelBlock','SentinelText','ArtifactCard','DataTable','Badge','DownloadAction','RangePills','Provenance','AnswerChip','ChipRow','Pill','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['AnswerChip','ArtifactCard','AttachmentTurn','Badge','ChipRow','Composer','DataTable','Dock','DownloadAction','FileUpload','HomeIndicator','MessageActions','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SentinelBlock','SentinelText','StatusSpacer','StepTrace','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
@@ -25,9 +25,9 @@ function Scene({ children, ask = LEDGER_ASK }) {
   const att = useAttachment();
   return (
     <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={ask} costNote="Sending this replaces the ledger below it." />
+      <UserTurn text={ask} costNote="Sending this replaces the ledger below it." />
       {children}
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
@@ -38,12 +38,12 @@ function LiveScene() {
   const att = useAttachment();
   return (
     <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={LEDGER_ASK} costNote="Sending this replaces the ledger below it." />
+      <UserTurn text={LEDGER_ASK} costNote="Sending this replaces the ledger below it." />
       <SentinelBlock>
         <SentinelText text="Five instructions this month. Four are confirmed; one is still out with the RTA, so I have not counted it as done." />
         <div style={{ marginTop: 'var(--space-12)' }}><LedgerArtifact onDownload={() => new Promise((r) => setTimeout(r, 900))} /></div>
       </SentinelBlock>
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }

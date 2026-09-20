@@ -134,6 +134,8 @@ export { ResultCard, ResultActions, ResultPrimary } from './components/cards/Res
 export type { SurfaceElevation, SurfaceTone, SurfaceProps } from './components/cards/Surface';
 export { Surface } from './components/cards/Surface';
 /* chat */
+export type { AttachmentFile, AttachmentTurnProps } from './components/chat/AttachmentTurn';
+export { AttachmentTurn } from './components/chat/AttachmentTurn';
 export type { DetourBannerProps } from './components/chat/DetourBanner';
 export { DetourBanner } from './components/chat/DetourBanner';
 export type { GreetingDividerProps } from './components/chat/GreetingDivider';
@@ -146,6 +148,8 @@ export type { ProgressTraceProps } from './components/chat/ProgressTrace';
 export { ProgressTrace } from './components/chat/ProgressTrace';
 export type { QAPairProps } from './components/chat/QAPair';
 export { QAPair } from './components/chat/QAPair';
+export type { RefusalTurnProps } from './components/chat/RefusalTurn';
+export { RefusalTurn } from './components/chat/RefusalTurn';
 export type { ResponseFeedbackProps } from './components/chat/ResponseFeedback';
 export { ResponseFeedback } from './components/chat/ResponseFeedback';
 export type { SentinelBlockProps } from './components/chat/SentinelBlock';
@@ -160,6 +164,8 @@ export type { StepState, TraceStep, StepTraceProps } from './components/chat/Ste
 export { StepTrace } from './components/chat/StepTrace';
 export type { UserBubbleProps } from './components/chat/UserBubble';
 export { UserBubble } from './components/chat/UserBubble';
+export type { UserTurnProps } from './components/chat/UserTurn';
+export { UserTurn } from './components/chat/UserTurn';
 export type { ArtifactVersion, VersionRowProps } from './components/chat/VersionRow';
 export { VersionRow } from './components/chat/VersionRow';
 /* composer */
@@ -167,6 +173,8 @@ export type { ComposerProps } from './components/composer/Composer';
 export { Composer } from './components/composer/Composer';
 export type { MoneyComposerProps } from './components/composer/MoneyComposer';
 export { formatINR, MoneyComposer } from './components/composer/MoneyComposer';
+export type { StepComposerProps } from './components/composer/StepComposer';
+export { StepComposer } from './components/composer/StepComposer';
 /* data */
 export type { Contribution, AttributionChartProps } from './components/data/AttributionChart';
 export { AttributionChart } from './components/data/AttributionChart';

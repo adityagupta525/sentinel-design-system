@@ -1,0 +1,60 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="RefusalTurn" subtitle="What Sentinel says when it will not do something — and what it offers instead" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>RefusalTurn — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { RefusalTurn, SentinelTurn } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bubble', '--color-bubble-edge', '--color-ink', '--color-muted', '--radius-16', '--type-body-font', '--type-caption-font', '--space-8', '--space-10'];
+
+const ACT = ['I will not act on a typed instruction on its own. Here is exactly what that would do — review it, then confirm.'];
+const OVER = ['₹80,00,000 is above the ₹25,00,000 ceiling on Meera’s mandate. I have not built anything at that size.'];
+const OUTSIDE = ['Filing a return is not something this product does. It reads statements and moves money inside a mandate; it is not a tax filing tool.'];
+const MISS = ['I did not follow that. I can look up a client, profile their risk, explain a drift, or search funds — which is closest?'];
+function App(){
+  const [last,setLast] = React.useState('—');
+  return (
+  <PageShell name="RefusalTurn" group="Chat" status="shipped" requires={['RefusalTurn','SentinelTurn']}
+    summary="Every refusal in this product has the same two parts, and this holds them: what it will not do, then what it can do instead, by name. Promoted out of screens/thread/refusals.jsx on 20 Sep 2026, where six refusals shared one shape and differed only in copy.">
+    <Block n={1} title="Specimen" sub="An instruction that would move money. It states what would run, and offers the route that is allowed.">
+      <Specimen width={343}><RefusalTurn body={ACT} chips={['Review and confirm','Show me his holdings instead']} /></Specimen>
+    </Block>
+    <Block n={2} title="The five refusals this product makes" sub="The shape never changes. Only the copy does — which is the definition of a component.">
+      <Grid cols={1} items={[
+        {label:'an instruction that would act', node:<div style={{width:343}}><RefusalTurn body={ACT} chips={['Review and confirm']} /></div>, note:'Never refuses silently: it prints exactly what the instruction would do first.'},
+        {label:'an amount over a ceiling', node:<div style={{width:343}}><RefusalTurn body={OVER} chips={['Build it at ₹25,00,000','Change her mandate']} /></div>, note:'Names WHICH ceiling and whose. "Over the limit" is not something an advisor can act on.'},
+        {label:'in the domain, outside this product', node:<div style={{width:343}}><RefusalTurn body={OUTSIDE} chips={['What this does do']} /></div>, note:'The honest edge. A product that answers everything is a product that guesses.'},
+        {label:'a sentence it could not follow', node:<div style={{width:343}}><RefusalTurn body={MISS} chips={['Look up a client','Explain a drift','Search funds']} /></div>, note:'Bucket 4. Names the routes rather than saying "try again".'},
+        {label:'a name that matches two clients', node:<div style={{width:343}}><RefusalTurn body={['Two of your clients are called Nair. Which one?']} chips={['Meera Nair','Sunita Nair']} /></div>, note:'An ambiguous name binds nobody. Guessing is worse than asking.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Live" sub="Tap a chip: the caller decides what it means, and the refusal itself never acts.">
+      <Specimen width={343}><RefusalTurn body={MISS} chips={['Look up a client','Explain a drift','Search funds']} onChip={setLast} /></Specimen>
+      <p style={{fontFamily:'var(--font-ui)',fontSize:12.5,color:'var(--color-muted)',marginTop:10}}>Last chip: {last}</p>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/chat/RefusalTurn.d.ts" /></Block>
+    <Block n={6} title="Do / don't">
+      <DoDont
+        doNode={<div style={{width:300}}><RefusalTurn body={MISS} chips={['Look up a client','Explain a drift']} /></div>}
+        doCaption="What it cannot do, then what it can, by name."
+        dontNode={<div style={{width:300}}><RefusalTurn body={['I cannot action that request.']} /></div>}
+        dontCaption="A refusal with no way forward, in language nobody speaks. A dead end is the one thing an advisor cannot work around." />
+    </Block>
+    <Block n={7} title="Motion">
+      <Motion rows={[
+        {name:'The refusal arrives', property:'ds-rise', duration:'240 ms', reduced:'Fades in place.'},
+        {name:'Chips', property:'ChipRow stagger, 40 ms apart', duration:'240 ms', reduced:'All present at once.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+
+</script>
+</body></html>

@@ -122,7 +122,7 @@ const holdChips = (onChip, except) => (
 );
 
 /* H1 · THE SHAPE. Where the weight sits, and the one sector that dominates. */
-function HoldingsShape({ id, onChip }) {
+function HoldingsShape({ id, onChip, enter = false }) {
   const f = fundById(id); const h = holdingsOf(id); if (!f || !h) return null;
   const bars = [...h.caps.map((c) => ({ label: c.label, value: c.pct })), { label: 'Debt & cash', value: h.split.debtCash }].filter((b) => b.value > 0);
   const big = h.sectors[h.asOf][0];
@@ -131,7 +131,7 @@ function HoldingsShape({ id, onChip }) {
     : `${f.name} holds no equity — ${h.count} debt instruments, ${h.split.debtCash}% of it in debt and cash.`;
   const sector = `${big.name} is the biggest sector at ${big.pct}%${big.pct >= 30 ? ' — one sector is more than a third of the fund' : ''}.`;
   return (
-    <FUNDS_DS.SentinelTurn say={[lead, sector]}
+    <FUNDS_DS.SentinelTurn enter={enter} say={[lead, sector]}
       body={<FUNDS_DS.ChartBar bars={bars} orientation="horizontal" valueFormat={pctOf} run={false} />}
       provenance={holdingsProvenance()} chips={holdChips(onChip)} />
   );
@@ -139,7 +139,7 @@ function HoldingsShape({ id, onChip }) {
 
 /* H2 · BY SECTOR, over three months. RangePills' count MATCHES the data (F-46). The sentence names the
    biggest sector's move across the window, in points. */
-function HoldingsSectors({ id, onChip }) {
+function HoldingsSectors({ id, onChip, enter = false }) {
   const h = holdingsOf(id); const [month, setMonth] = React.useState(h ? h.asOf : null);
   if (!h) return null;
   const rows = h.sectors[month] || [];
@@ -149,7 +149,7 @@ function HoldingsSectors({ id, onChip }) {
   const mover = newest.map((x) => ({ name: x.name, d: +(x.pct - (at(oldest, x.name) || x.pct)).toFixed(1) })).sort((a, b) => Math.abs(b.d) - Math.abs(a.d))[0];
   const say = [`${top.name} went ${topThen} → ${top.pct} over three months${mover && mover.name !== top.name ? `; ${mover.name} moved most, ${mover.d > 0 ? 'up' : 'down'} ${Math.abs(mover.d)} points` : ''}.`];
   return (
-    <FUNDS_DS.SentinelTurn say={say}
+    <FUNDS_DS.SentinelTurn enter={enter} say={say}
       body={
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
           <FUNDS_DS.RangePills ranges={HOLD_MONTHS} value={month} onChange={setMonth} label="Month" />
@@ -178,7 +178,7 @@ const TOP_COLUMNS = [
    of the phone. Two columns beside the sticky one is under DataTable's own three-column rule, so
    folding fits them exactly. `maxRows` is ten, because ten IS the answer.
    A JSX comment cannot sit in an attribute list — third time; it goes above the function. */
-function HoldingsTop({ id, onChip }) {
+function HoldingsTop({ id, onChip, enter = false }) {
   const h = holdingsOf(id); if (!h) return null;
   const rows = h.top.map((x) => {
     const d = +(x.pct - x.prevPct).toFixed(1);
@@ -186,7 +186,7 @@ function HoldingsTop({ id, onChip }) {
   });
   const rest = h.count - h.top.length;
   return (
-    <FUNDS_DS.SentinelTurn say={`The top five are ${h.concentration.top5CompaniesPct}% of the fund. ${h.top[0].name} alone is ${h.top[0].pct}%. Change is against last month.`}
+    <FUNDS_DS.SentinelTurn enter={enter} say={`The top five are ${h.concentration.top5CompaniesPct}% of the fund. ${h.top[0].name} alone is ${h.top[0].pct}%. Change is against last month.`}
       body={<FUNDS_DS.DataTable columns={TOP_COLUMNS} rows={rows} maxRows={10} emptyState={{ title: 'No holdings on file for this fund.' }} />}
       then={rest > 0 ? `${rest} more holdings, none above ${Math.max(0.5, +(h.top[9].pct * 0.8).toFixed(1))}%.` : undefined}
       provenance={holdingsProvenance()} chips={holdChips(onChip, 'top')} />
@@ -196,11 +196,11 @@ function HoldingsTop({ id, onChip }) {
 /* H4 · HOW CONCENTRATED. Four figures on one baseline each. No ceiling of the product's applies INSIDE
    a fund — the 25% caps are written against a client's book — so the sentence states the numbers and
    claims nothing about them. */
-function HoldingsConcentration({ id, onChip }) {
+function HoldingsConcentration({ id, onChip, enter = false }) {
   const h = holdingsOf(id); if (!h) return null;
   const c = h.concentration;
   return (
-    <FUNDS_DS.SentinelTurn say={`${h.count} holdings across ${c.sectorsCount} sectors. The top five companies are ${c.top5CompaniesPct}% of the fund, the top five sectors ${c.top5SectorsPct}%.`}
+    <FUNDS_DS.SentinelTurn enter={enter} say={`${h.count} holdings across ${c.sectorsCount} sectors. The top five companies are ${c.top5CompaniesPct}% of the fund, the top five sectors ${c.top5SectorsPct}%.`}
       body={
         <FUNDS_DS.Surface>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
@@ -219,7 +219,7 @@ function HoldingsConcentration({ id, onChip }) {
    rendered "—" ever since, because nothing here knew what any fund held. `overlapPct` is computed from
    the names two top tens actually share. Without a second fund it asks for one, the same way Compare
    does: the picker is `List.search`, one mechanism for picking a thing. */
-function HoldingsOverlap({ id, otherId, onPick, onChip, onEvent }) {
+function HoldingsOverlap({ id, otherId, onPick, onChip, onEvent , enter = false }) {
   const f = fundById(id); if (!f) return null;
   if (!otherId) return <ComparePicker exclude={[id]} onPick={onPick} onEvent={onEvent} lead="Overlap with which fund?" />;
   const g = fundById(otherId); const pct = overlapPct(id, otherId);
@@ -228,7 +228,7 @@ function HoldingsOverlap({ id, otherId, onPick, onChip, onEvent }) {
     : pct === 0 ? `${f.name} and ${g.name} share none of their top ten — they hold different things.`
     : `${pct}% of their top tens are the same ${shared.length} ${shared.length === 1 ? 'stock' : 'stocks'} — ${shared.slice(0, 3).map((x) => x.name).join(', ')}${shared.length > 3 ? ' and more' : ''}.`;
   return (
-    <FUNDS_DS.SentinelTurn say={say}
+    <FUNDS_DS.SentinelTurn enter={enter} say={say}
       body={<FUNDS_DS.OverlapView mode="pairs"
         funds={[{ id, name: f.name, inComparison: true }, { id: otherId, name: g.name, inComparison: true }]}
         properties={[{ id: 'top10', label: 'top 10 holdings', active: true }]}
@@ -272,7 +272,7 @@ const aheadOf = (v) => (v >= 0 ? 'ahead of' : 'behind');
    a meter's label — "One manager, long enough is what holds it back" is not a sentence. */
 const WEAKEST_PHRASE = { 'One manager, long enough': 'How long one manager has run it', 'Beats its category': 'Beating its category' };
 const weakestPhrase = (w) => WEAKEST_PHRASE[w.label] || w.label.charAt(0).toUpperCase() + w.label.slice(1);
-function FundScoreTurn({ id, onChip }) {
+function FundScoreTurn({ id, onChip, enter = false }) {
   const f = fundById(id); const sc = fundScore(id);
   if (!f || !sc) return null;
   const say = [
@@ -297,7 +297,7 @@ function FundScoreTurn({ id, onChip }) {
   const half = (g) => FUND_SCORE_WEIGHTS.filter(([, , , grp]) => grp === g).map(([, w, short]) => `${short} ${w}`).join(' · ');
   const weights = `Its own record — ${half('Its own record')}. How your book holds it — ${half('How your book holds it')}`;
   return (
-    <FUNDS_DS.SentinelTurn say={say}
+    <FUNDS_DS.SentinelTurn enter={enter} say={say}
       body={<FUNDS_DS.HeroNumberCard title="Centricity Fund Score" meta="Placeholder" value={sc.value}
         badge={sc.band} copy={`Out of ${sc.readWeight}. ${weights}.`} rows={sc.rows} />}
       provenance={fundScoreProvenance()} chips={askChips(onChip, 'score')} />
@@ -314,7 +314,7 @@ function FundScoreTurn({ id, onChip }) {
    The domain comes from `niceDomain` over the three values, not from zero: at 5Y the fund is 23.1 and
    its benchmark 16.8, and on a 0–100 track that difference is four pixels. Every figure is
    direct-labelled, which is the safeguard the contract asks for in exchange. */
-function CategoryTurn({ id, onChip, defaultPeriod = 'r5' }) {
+function CategoryTurn({ id, onChip, enter = false, defaultPeriod = 'r5' }) {
   const f = fundById(id); const p = perfOf(id); const cat = categoryAvgOf(id);
   const [key, setKey] = React.useState(defaultPeriod);
   if (!f || !p || !cat) return null;
@@ -337,7 +337,7 @@ function CategoryTurn({ id, onChip, defaultPeriod = 'r5' }) {
   const YRS_WORD = { r1: 'one', r3: 'three', r5: 'five' };
   if (m && m.years != null && m.years < yrs) say.push(`${m.name} has run it for ${m.years} years, so this ${YRS_WORD[key]}-year number is not one person's work.`);
   return (
-    <FUNDS_DS.SentinelTurn say={say}
+    <FUNDS_DS.SentinelTurn enter={enter} say={say}
       body={
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-10)' }}>
           <FUNDS_DS.RangePills ranges={PERF_PERIODS.map((x) => x.label)} value={PERIOD_LABEL[key]}
@@ -365,7 +365,7 @@ function CategoryTurn({ id, onChip, defaultPeriod = 'r5' }) {
    read twice — once for the colour, once for the number. Sentences say it once. The FigureRows under
    them carry the three months' returns with the benchmark's in the quiet half, so nothing in the
    words has to be taken on trust. */
-function ChangedTurn({ id, onChip }) {
+function ChangedTurn({ id, onChip, enter = false }) {
   const f = fundById(id); const rows = monthlyOf(id);
   if (!f || !rows || !rows.length) return null;
   const now = rows[0], prev = rows[1];
@@ -385,7 +385,7 @@ function ChangedTurn({ id, onChip }) {
   const m = MANAGERS[id];
   if (m && m.years != null && m.years < 3) say.push(`${m.name} took it over in ${m.since}.`);
   return (
-    <FUNDS_DS.SentinelTurn say={say}
+    <FUNDS_DS.SentinelTurn enter={enter} say={say}
       body={
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
           {rows.map((r) => (
@@ -419,7 +419,7 @@ const holdersDetail = (fundId) => CLIENTS.map((c) => {
   return 0;
 });
 
-function HoldersTurn({ id, onChip }) {
+function HoldersTurn({ id, onChip, enter = false }) {
   const f = fundById(id); const who = holdersDetail(id);
   if (!f) return null;
   const withPos = who.filter((w) => w.holding);
@@ -446,7 +446,7 @@ function HoldersTurn({ id, onChip }) {
     trailing: 'meta',
   }));
   return (
-    <FUNDS_DS.SentinelTurn say={say}
+    <FUNDS_DS.SentinelTurn enter={enter} say={say}
       body={who.length ? <FUNDS_DS.List items={items} dividers="inset" rowProps={{ variant: 'static' }}
         emptyState={{ title: `None of your clients hold ${f.name}.` }} /> : null}
       provenance="your own book · positions as of 30 Sep 2026 · SIPs from the mandates on file"
@@ -454,16 +454,21 @@ function HoldersTurn({ id, onChip }) {
   );
 }
 
-function HoldingsTurn({ kind, id, otherId, onPick, onChip, onEvent }) {
-  if (kind === 'score') return <FundScoreTurn id={id} onChip={onChip} />;
-  if (kind === 'category') return <CategoryTurn id={id} onChip={onChip} />;
-  if (kind === 'changed') return <ChangedTurn id={id} onChip={onChip} />;
-  if (kind === 'holders') return <HoldersTurn id={id} onChip={onChip} />;
-  if (kind === 'shape') return <HoldingsShape id={id} onChip={onChip} />;
-  if (kind === 'sectors') return <HoldingsSectors id={id} onChip={onChip} />;
-  if (kind === 'top') return <HoldingsTop id={id} onChip={onChip} />;
-  if (kind === 'concentration') return <HoldingsConcentration id={id} onChip={onChip} />;
-  if (kind === 'overlap') return <HoldingsOverlap id={id} otherId={otherId} onPick={onPick} onChip={onChip} onEvent={onEvent} />;
+/* `enter` — A TURN THAT ARRIVES SHOULD ARRIVE (20 Sep 2026). `ds-rise` is the system's one keyframe
+   for a turn appearing in a thread, and the prototype was passing it to three turns out of twenty.
+   Everything an advisor CAUSES now carries it; a turn that is simply part of a screen's first render
+   does not, because that would fight the screen transition it arrives inside. Reduced motion is
+   handled where it always is — inside SentinelTurn. */
+function HoldingsTurn({ kind, id, otherId, onPick, onChip, onEvent, enter = false }) {
+  if (kind === 'score') return <FundScoreTurn id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'category') return <CategoryTurn id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'changed') return <ChangedTurn id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'holders') return <HoldersTurn id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'shape') return <HoldingsShape id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'sectors') return <HoldingsSectors id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'top') return <HoldingsTop id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'concentration') return <HoldingsConcentration id={id} onChip={onChip} enter={enter} />;
+  if (kind === 'overlap') return <HoldingsOverlap id={id} otherId={otherId} onPick={onPick} onChip={onChip} onEvent={onEvent} enter={enter} />;
   return null;
 }
 
@@ -588,12 +593,12 @@ const FundVerbs = ({ onVerb, animate = false }) => (
    picked a client from a searchable list once should not meet a second, different way of picking a
    thing three screens later. It is `List.search` in both places now, so they cannot drift.
    The shelf is the pool, and a fund already in the comparison is not offered again. */
-function ComparePicker({ exclude = [], funds = FUND_LIST, onPick, onEvent, lead: leadProp }) {
+function ComparePicker({ exclude = [], funds = FUND_LIST, onPick, onEvent, lead: leadProp, enter = false }) {
   const [q, setQ] = React.useState('');
   const pool = funds.filter((f) => !exclude.includes(f.id));
   const lead = leadProp || (exclude.length > 1 ? 'Add which third fund?' : 'Compare it with which fund?');
   return (
-    <FUNDS_DS.SentinelTurn say={lead}
+    <FUNDS_DS.SentinelTurn enter={enter} say={lead}
       body={
         <FUNDS_DS.List
           items={pool.map((f) => ({
@@ -656,11 +661,11 @@ const VERB_SAYS = {
   review:  (f) => [`${f.name} it is. A review is written for one client and one audience, so I need the client first.`,
     'Then you pick who it is for — their file, the client, or a fresh investment case.'],
 };
-function FundHandoff({ verb, fundId }) {
+function FundHandoff({ verb, fundId, enter = false }) {
   const f = fundById(fundId);
   const say = f && VERB_SAYS[verb] ? VERB_SAYS[verb](f) : null;
   if (!say) return null;
-  return <FUNDS_DS.SentinelTurn say={say} />;
+  return <FUNDS_DS.SentinelTurn enter={enter} say={say} />;
 }
 
 /* THE BAR IS NEVER THE ONLY PLACE THE GAP IS SAID — ConcentrationBar's rule, applied here. The row's

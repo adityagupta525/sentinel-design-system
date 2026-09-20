@@ -1960,3 +1960,36 @@ Writing it found two real gaps in the parser, both the shorter form an advisor a
 And one claim in the script was wrong before it was driven: a bare `Nair` reaches bucket 4, not the
 client picker. `Review Nair's portfolio` is the sentence that demonstrates an ambiguous surname, and
 that is what the script says now.
+
+---
+
+### F-70 · Four things that were built on a screen and belong to the system — *20 Sep 2026*
+
+The owner's rule: **anything built on a screen that belongs in the design system goes into the design
+system.** So the question had to be answered by measurement rather than by taste. Every function
+defined under `screens/` was scanned for two properties: does it read the book, and is it
+journey-specific? Sixty-three components; **four** were neither.
+
+| Was | Is | Why it was never a screen's |
+|---|---|---|
+| `AskTurn` · `thread.jsx` | **`UserTurn`** | `UserBubble` + `MessageActions` and the edit state that pairing needs. The advisor's half of every turn in the product |
+| `AttachedTurn` · `thread.jsx` | **`AttachmentTurn`** | The caption, the file, and the note that keeps a picked file honest. Every screen used the same ten lines |
+| `RefusalTurn` · `refusals.jsx` | **`RefusalTurn`** | Six refusals shared one shape and differed only in copy, which is the definition of a component |
+| `RailAsk` · `rail.jsx` | **`StepComposer`** | Which composer a question wants is a property of the STEP. Three journeys were each deciding it again |
+
+Each arrived with its contract, its prompt and its spec page, so each one **counts**: the system is
+**97 components, 54 shipped**. The copy stayed on the screens — what this product refuses and how it
+says it is the product's, not the system's — and the 43 renamed call sites were changed rather than
+aliased, because two names for one thing is the door-counting rule broken inside the repository.
+
+**One thing the linter was right about.** Every screen file is linted on its own, so a `const` in
+`screen-kit.jsx` reads as unused and a use three files away reads as undefined. The four names go on
+`window`, which is what the one Babel scope actually shares, and the adherence config lists them as
+screen globals the way it lists every other cross-file name. `lint:adherence:screens` is back to 0.
+
+**And the motion pass that went with it.** `ds-rise` is the system's one keyframe for a turn appearing
+in a thread, and the prototype was passing it to **three turns out of twenty**. Everything an advisor
+causes now carries it — the refinements, the holdings turns, the fund page, all four refusals, the
+capabilities list. A turn that is part of a screen's first render still does not, because that would
+fight the screen transition it arrives inside. `enter` is threaded through every turn in
+`funds.jsx` to make that possible.

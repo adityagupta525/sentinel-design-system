@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','MoneyComposer','UserBubble','MessageActions','SentinelBlock','SentinelText','RejectCallout','ConstraintCallout','ConfirmSheet','FollowUpRow','ParseNote','ChipRow','AnswerChip','Pill','ExplainerSheet','FileUpload','StepTrace','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['AnswerChip','AttachmentTurn','ChipRow','Composer','ConfirmSheet','ConstraintCallout','Dock','ExplainerSheet','FileUpload','FollowUpRow','HomeIndicator','MessageActions','MoneyComposer','ParseNote','PhoneFrame','Pill','RefusalTurn','RejectCallout','ScreenBackdrop','SentinelBlock','SentinelText','StatusSpacer','StepTrace','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
@@ -13,7 +13,7 @@
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
-/* thread.jsx gives the shell, AskTurn and the real paperclip; book.jsx the clients; refusals.jsx the
+/* thread.jsx gives the shell, UserTurn and the real paperclip; book.jsx the clients; refusals.jsx the
    buckets. Only names this file adds are destructured. */
 const { RejectCallout, ConstraintCallout, ConfirmSheet, AnswerChip, ChipRow, SentinelBlock, SentinelText, ParseNote } = window.SentinelDesignSystem_0682a2;
 
@@ -22,9 +22,9 @@ function Scene({ ask, children, money, editable = true }) {
   const att = useAttachment();
   return (
     <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk money={money} onAttach={att.onAttach} />}>
-      <AskTurn text={ask} editable={editable} costNote="Sending this replaces the reply below it." />
+      <UserTurn text={ask} editable={editable} costNote="Sending this replaces the reply below it." />
       {children}
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
@@ -39,7 +39,7 @@ function LiveScene() {
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread anchor="bottom" revision={`${turns.length}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
-        <AskTurn text={BUCKET_4.ask} costNote="Sending this replaces the reply below it." />
+        <UserTurn text={BUCKET_4.ask} costNote="Sending this replaces the reply below it." />
         <RefusalTurn body={BUCKET_4.body} chips={[...BUCKET_4.chips, ...(misses >= 1 ? [BUCKET_4.repeatChip] : [])]}
           onChip={(c) => (c === BUCKET_4.repeatChip ? say('caps') : say('miss'))} />
         {turns.map((t, i) => (
@@ -52,7 +52,7 @@ function LiveScene() {
             {t.kind === 'ok' && <SentinelBlock><SentinelText text="Good — that one I can do. Ask it and I will start." /></SentinelBlock>}
           </React.Fragment>
         ))}
-        <AttachedTurn file={att.file} onRemove={att.clear} />
+        <AttachmentTurn file={att.file} onRemove={att.clear} />
       </Thread>
       <ConfirmSheet open={confirm} title="Approve · R. Sharma" rows={[{ label: 'Compliance shelf', value: 'Passed' }, { label: 'Client consent', value: 'Required', tone: 'required' }]}
         disclosure="This redemption runs under your ARN and cannot be pulled back once it is placed."

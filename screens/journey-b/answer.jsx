@@ -158,4 +158,38 @@ function AnswerTurn({ artifact = 'peek', view = 'chart', run = false, enter = fa
   );
 }
 
-Object.assign(window, { DRIFT_TABLE, DriftTable, DRIFT_ASK, DRIFT_STEPS, DRIFT_REASONING, DRIFT_ANSWER, SHARMA_ALLOC, DRIFT_CONTRIB, DRIFT_PROVENANCE, ALLOC_PROVENANCE, WHY_71, DriftPeek, DriftExpanded, AnswerTurn, AnswerActions });
+/* WHERE SHARE GOES — built 20 Sep 2026, and it was a dead end before ("Share — not in this build").
+   The UI kit's B/11 artboard has documented this pattern since v9 and no screen had it: the message
+   draft arrives as an EXPANDED ArtifactCard in the thread. No canvas, no back pill — there is no
+   second surface in this product, and a draft is a thing Sentinel made, so it is an artifact.
+
+   `DisclosureBlock` sits ABOVE the body and cannot be scrolled away from it. That is the whole point:
+   the advisor is about to put words in front of a client under their own ARN, and the line saying
+   Sentinel drafts and does not send has to be read before the words, not after them. The component
+   was specified, shipped and on no screen until now. */
+const SHARE_DRAFT = `Hi Sharma — your equity had drifted to 71% against the 60% we agreed, mostly because small caps ran. I have moved ₹1,85,000 from Quant Small Cap into ICICI Corporate Bond and redirected your monthly SIP the same way. That brings you to 58%. The switch cost ₹11,200 in exit load and tax, and the SIP change cost nothing.`;
+function ShareDraftTurn({ enter = false, onSend, onEdit }) {
+  return (
+    <ANSWER_DS.SentinelTurn enter={enter} continued
+      say="Here is the note, drafted from the same figures. You send it from your own channel — I do not."
+      body={
+        <ANSWER_DS.ArtifactCard state="expanded" eyebrow="Draft for R. Sharma · not sent" title="What moved, and what you did about it"
+          provenance="As of 30 Sep · drafted from the drift attribution. You send it, not Sentinel.">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+            <ANSWER_DS.DisclosureBlock />
+            <ANSWER_DS.Surface elevation="ring">
+              <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink-soft)' }}>{SHARE_DRAFT}</p>
+            </ANSWER_DS.Surface>
+          </div>
+        </ANSWER_DS.ArtifactCard>
+      }
+      chips={
+        <ANSWER_DS.ChipRow animate={enter}>
+          <ANSWER_DS.AnswerChip label="Change the wording" variant="tertiary" onClick={onEdit || (() => {})} />
+        </ANSWER_DS.ChipRow>
+      }
+      cta={onSend ? { label: 'Send it from WhatsApp', onClick: onSend } : undefined} />
+  );
+}
+
+Object.assign(window, { SHARE_DRAFT, ShareDraftTurn, DRIFT_TABLE, DriftTable, DRIFT_ASK, DRIFT_STEPS, DRIFT_REASONING, DRIFT_ANSWER, SHARMA_ALLOC, DRIFT_CONTRIB, DRIFT_PROVENANCE, ALLOC_PROVENANCE, WHY_71, DriftPeek, DriftExpanded, AnswerTurn, AnswerActions });

@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','ProgressTrace','SentinelBlock','SentinelText','AnswerChip','MessageActions','FileUpload','StepTrace','ParseNote','Pill','AllocationCard','Provenance','ArtifactCard','ChartBar','AttributionChart','DataTableCard','ChipRow','DarkButton','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttachmentTurn','AttributionChart','ChartBar','ChipRow','Composer','DarkButton','DataTableCard','Dock','FileUpload','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','ProgressTrace','Provenance','ScreenBackdrop','SentinelBlock','SentinelText','StatusSpacer','StepTrace','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
 <script type="text/babel" src="./answer.jsx"></script>
@@ -31,11 +31,11 @@ function Scene({ trace, after, streaming }) {
     composer={<Composer value="" onChange={() => {}} placeholder="Ask Sentinel" streaming={streaming} onStop={() => {}} onSend={() => {}} onAttach={att.onAttach} />}
   >
     {/* Mid-run the prompt is NOT editable: Stop is the honest control for “I did not mean that”, and
-        it is already in the send slot. Edit returns the moment the turn finishes — AskTurn's own rule. */}
-    <AskTurn text={ASK} busy={streaming} costNote="Sending this replaces the answer below it." />
+        it is already in the send slot. Edit returns the moment the turn finishes — UserTurn's own rule. */}
+    <UserTurn text={ASK} busy={streaming} costNote="Sending this replaces the answer below it." />
     {trace}
     {after}
-    <AttachedTurn file={att.file} onRemove={att.clear} />
+    <AttachmentTurn file={att.file} onRemove={att.clear} />
   </Thread>
   );
 }

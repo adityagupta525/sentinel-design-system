@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AnswerChip','ChipRow','Composer','ConfirmSheet','ConstraintCallout','DarkButton','Dock','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoveCard','ParseNote','PhoneFrame','Pill','Provenance','ScreenBackdrop','SentinelBlock','SentinelText','StandingDisclosure','StatusSpacer','StepTrace','Surface','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','AttachmentTurn','ChipRow','Composer','ConfirmSheet','ConstraintCallout','DarkButton','Dock','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoveCard','ParseNote','PhoneFrame','Pill','Provenance','ScreenBackdrop','SentinelBlock','SentinelText','StandingDisclosure','StatusSpacer','StepTrace','Surface','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
 <!-- book.jsx before moves.jsx: the cost is worked out in the book, not in the screen, so the figure on
@@ -25,11 +25,11 @@ function Scene({ phase = 'moves', note = false, anchor = 'bottom' }) {
   const exec = ['flight', 'partial', 'unknown'].includes(phase);
   return (
     <Thread anchor={anchor} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
+      <UserTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
       {phase === 'moves' && <MovesTurn actions={<MovesActions />} />}
       {exec && <ExecutionTurn state={phase} />}
       {phase === 'done' && <React.Fragment><ExecutionTurn state="placed" /><SuccessTurn note={note} /></React.Fragment>}
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
@@ -46,14 +46,14 @@ function LiveScene() {
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread anchor="bottom" revision={`${phase}-${note}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
-        <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
+        <UserTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
         {phase === 'moves' && <MovesTurn actions={<MovesActions onSkipped={() => setSkipped(true)} onApprove={() => setConfirm(true)} />} />}
         {phase === 'flight' && <ExecutionTurn state="flight" enter />}
         {phase === 'done' && <React.Fragment>
           <ExecutionTurn state="placed" />
           <SuccessTurn note={note} onRead={() => setNote(true)} onDrop={() => setNote(false)} />
         </React.Fragment>}
-        <AttachedTurn file={att.file} onRemove={att.clear} />
+        <AttachmentTurn file={att.file} onRemove={att.clear} />
       </Thread>
       <ConfirmSheet open={confirm} title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
         commitLabel="Approve both moves" onCommit={() => { setConfirm(false); setPhase('flight'); setTimeout(() => setPhase('done'), 1400); }} onClose={() => setConfirm(false)}>
@@ -70,9 +70,9 @@ function SheetScene({ busy = false }) {
   return (
   <div style={{ position: 'relative', height: '100%', width: '100%' }}>
     <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
+      <UserTurn text={MOVES_ASK} costNote="Sending this replaces the moves below it." />
       <MovesTurn actions={<MovesActions />} />
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
     <ConfirmSheet open busy={busy} busyLabel="Placing both moves…" title="Approve · R. Sharma" disclosure={CONFIRM_DISCLOSURE} rows={CONFIRM_ROWS}
       commitLabel="Approve both moves" onCommit={() => {}} onClose={() => {}}>

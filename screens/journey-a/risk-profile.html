@@ -5,14 +5,14 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','ProgressRail','Dock','Composer','MoneyComposer','SentinelBlock','SentinelText','SentinelThinking','QAPair','ParseNote','MessageActions','ChipRow','AnswerChip','DarkButton','HeroNumberCard','ExplainerSheet','DetourBanner','RejectCallout','Provenance','FileUpload','StepTrace','UserBubble','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['AnswerChip','AttachmentTurn','ChipRow','Composer','DarkButton','DetourBanner','Dock','ExplainerSheet','FileUpload','HeroNumberCard','HomeIndicator','MessageActions','MoneyComposer','ParseNote','PhoneFrame','ProgressRail','Provenance','QAPair','RejectCallout','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="./rail.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
-/* thread.jsx is loaded for useAttachment / AttachedTurn — the paperclip is real on every screen, and a
+/* thread.jsx is loaded for useAttachment / AttachmentTurn — the paperclip is real on every screen, and a
    journey is a screen. rail.jsx owns the steps and the shell. Only new names are destructured here. */
 const { ExplainerSheet, DetourBanner, RejectCallout, SentinelBlock, SentinelText, AnswerChip, ChipRow } = window.SentinelDesignSystem_0682a2;
 
@@ -33,7 +33,7 @@ function Scene({ step, answered = ANSWERED, dim, banner, editable = true, after,
       <AnsweredList items={answered} editable={editable} onEdit={() => {}} />
       <StepTurn step={step} thinking={thinking} />
       {after}
-      <AttachedTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
+      <AttachmentTurn file={att.file} caption="Here is her last ITR." onRemove={att.clear} />
     </Rail>
   );
 }

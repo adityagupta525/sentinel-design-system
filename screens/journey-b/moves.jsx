@@ -207,7 +207,11 @@ function ExecutionTurn({ state = 'flight', enter = false, onRetry, onCheck }) {
    The note to the client is drafted and sits here until the advisor picks a channel and sends it outside
    Sentinel, so it can still be changed or dropped. A success screen that blurs those two is the one place
    in the product where a comfortable word costs real money. */
-function SuccessTurn({ enter = false, onRead, onBack, note = false, onDrop }) {
+/* `onCheck` MOVED HERE FROM THE IN-FLIGHT TURN (20 Sep 2026). It sat on `ExecutionTurn state='flight'`,
+   which lasts 1,400ms — a control on screen for a second and a half is a control nobody presses. And
+   the question it answers is a settlement question: you ask whether something settled AFTER it is
+   placed, not while it is going. */
+function SuccessTurn({ enter = false, onRead, onBack, note = false, onDrop, onCheck }) {
   return (
     <MOVES_DS.SentinelTurn enter={enter} bodyFirst
       body={
@@ -233,6 +237,7 @@ function SuccessTurn({ enter = false, onRead, onBack, note = false, onDrop }) {
         <MOVES_DS.ChipRow animate={enter}>
           <MOVES_DS.AnswerChip label={note ? 'Drop the draft' : 'Read the note to Sharma'} variant={note ? 'muted' : 'primary'} onClick={(note ? onDrop : onRead) || (() => {})} />
           <MOVES_DS.AnswerChip label="Back to his portfolio" onClick={onBack || (() => {})} />
+          {onCheck && <MOVES_DS.AnswerChip label="Has it settled?" variant="tertiary" onClick={onCheck} />}
         </MOVES_DS.ChipRow>
       } />
   );

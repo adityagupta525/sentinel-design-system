@@ -1,7 +1,7 @@
 /* The ledger, as a module — shared by ledger.html and the end-to-end prototype.
 
    It was written inside ledger.html on 19 Sep and lifted out the moment the prototype needed it, for
-   the same reason AskTurn and useAttachment were lifted: a second copy of a table is a second place for
+   the same reason UserTurn and useAttachment were lifted: a second copy of a table is a second place for
    the status words to drift apart, and the whole point of this surface is that a status is a WORD that
    means the same thing everywhere.
 

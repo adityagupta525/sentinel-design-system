@@ -31,7 +31,7 @@ function Thread({ time = '3:04', children, composer, banner, onMenu, onNew, scro
    The owner, 19 Sep: "jaise user jo last apna prompt edit karne ka option ho — wo missing hai,
    consistency nei hai." It was built on the answer screen and nowhere else, because every page rendered
    its own `UserBubble` and each one had to remember. A rule that every page has to remember is a rule
-   that half the pages break, so the rule is a component now: `AskTurn` is the only way a screen renders
+   that half the pages break, so the rule is a component now: `UserTurn` is the only way a screen renders
    what the advisor said.
 
    WHERE IT IS VALID, from the advisor's side:
@@ -43,25 +43,13 @@ function Thread({ time = '3:04', children, composer, banner, onMenu, onNew, scro
        Same component, same gesture, a bigger `costNote`.
      · A file the advisor attached — no. A file is not a sentence to re-word; it is removed and replaced,
        which is what FileUpload's own Remove is for.
-   Home has no prompt at all, so it has no AskTurn — that is not an exception, there is simply nothing
+   Home has no prompt at all, so it has no UserTurn — that is not an exception, there is simply nothing
    there to edit yet. */
-function AskTurn({ text, editable = true, busy = false, costNote, onSave, onCancel, actions = true }) {
-  const [editing, setEditing] = React.useState(false);
-  const [draft, setDraft] = React.useState(text);
-  React.useEffect(() => { if (!editing) setDraft(text); }, [text, editing]);
-  const cancel = () => { setDraft(text); setEditing(false); onCancel && onCancel(); };
-  const save = () => { setEditing(false); onSave && onSave(draft); };
-  return (
-    <>
-      <THREAD_DS.UserBubble text={editing ? draft : text} editing={editing} onChange={setDraft}
-        onCancel={cancel} onSave={save} costNote={costNote} />
-      {actions && editable && !busy && !editing && (
-        <THREAD_DS.MessageActions role="user" onAction={(a) => a === 'edit' && setEditing(true)} />
-      )}
-    </>
-  );
-}
-
+/* `UserTurn` AND `AttachmentTurn` WERE HERE AND ARE NOW THE SYSTEM'S (20 Sep 2026, the owner: anything
+   built on a screen that belongs in the design system goes into the design system). They are
+   `UserTurn` and `AttachmentTurn` — neither read the book, neither was journey-specific, and every
+   journey in the product used the same twelve and ten lines of them. What stays here is what is
+   genuinely this thread's: the attachment STATE, and this product's own parse stages. */
 /* THE PAPERCLIP IS REAL ON EVERY SCREEN, AND WHAT IT PRODUCES IS HONEST.
 
    The owner, 19 Sep: "attachment demo nei real hona chahiye har screen par, and output and prompt ke
@@ -94,18 +82,4 @@ const PARSE_PENDING = PARSE_DONE.map((x) => ({ label: x.label, state: 'pending' 
 /* A file is a message from the ADVISOR: it lands at the end of the thread, on their side, capped like
    their bubble. The caption above it is theirs too — and it is NOT editable, because a file is not a
    sentence to re-word; it is removed and replaced, which is FileUpload's own Remove. */
-function AttachedTurn({ file, caption = 'Here is his Q3 statement.', onRemove }) {
-  if (!file) return null;
-  return (
-    <>
-      <THREAD_DS.UserBubble text={caption} />
-      <THREAD_DS.FileUpload file={file} stages={file.picked ? PARSE_PENDING : PARSE_DONE}
-        state={file.picked ? 'parsing' : 'done'}
-        summary={file.picked ? undefined : 'Read his Q3 statement · 14 pages · 18 holdings'}
-        onRemove={onRemove} />
-      {file.picked && <THREAD_DS.ParseNote text="This specimen does not read the file you picked — in the product these stages fill in and name what was found." />}
-    </>
-  );
-}
-
-Object.assign(window, { Thread, AskTurn, useAttachment, AttachedTurn, PARSE_DONE });
+Object.assign(window, { Thread, useAttachment, PARSE_DONE, PARSE_PENDING });

@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','FileUpload','StepTrace','ParseNote','Pill','SentinelBlock','SentinelText','ResponseFeedback','FollowUpRow','VersionRow','DetourBanner','ArtifactCard','ChartBar','AllocationCard','ConcentrationBar','Provenance','AnswerChip','ChipRow','Provenance','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttachmentTurn','ChartBar','ChipRow','Composer','ConcentrationBar','DetourBanner','Dock','FileUpload','FollowUpRow','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','Provenance','ResponseFeedback','ScreenBackdrop','SentinelBlock','SentinelText','StatusSpacer','StepTrace','TopBar','UserBubble','UserTurn','VersionRow'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../journey-b/answer.jsx"></script>
@@ -40,7 +40,7 @@ const VERSIONS = [
 
 const Answer = ({ feedback, followups, children }) => (
   <React.Fragment>
-    <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
+    <UserTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
     <AnswerTurn artifact="peek" continued={false} />
     {feedback}
     {followups}
@@ -53,7 +53,7 @@ function Scene({ feedback, followups, banner, children, anchor = 'bottom' }) {
   return (
     <Thread anchor={anchor} banner={banner} composer={<FrozenAsk onAttach={att.onAttach} />}>
       <Answer feedback={feedback} followups={followups}>{children}</Answer>
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
@@ -78,14 +78,14 @@ function LiveScene() {
     <Thread anchor="bottom" revision={`${rated}-${asked}-${versions.length}-${paused}-${!!att.file}`}
       banner={paused ? <DetourBanner label="Meera's risk profile · paused at question 7" onResume={() => setPaused(false)} /> : undefined}
       composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
+      <UserTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <AnswerTurn artifact="peek" continued={false} />
       <ResponseFeedback value={rated} onRate={setRated} onReason={setReason} note="Your reason goes to the team that builds Sentinel." />
       {reason && <SentinelBlock><SentinelText text={`Noted — “${reason}”. I have not changed the answer; you can ask it again and I will work it out from scratch.`} /></SentinelBlock>}
       <FollowUpRow items={FOLLOWUPS} onAsk={setAsked} />
       {asked && <UserBubble text={asked} />}
       <VersionRow label="Mr. Amit Aggrawal · ₹25 L proposal" versions={versions} currentId={current} onRevert={revert} onSelect={() => {}} />
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }

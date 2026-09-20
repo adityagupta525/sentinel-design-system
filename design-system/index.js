@@ -72,12 +72,14 @@ export { RejectCallout } from './components/cards/RejectCallout.jsx';
 export { ResultCard, ResultActions, ResultPrimary } from './components/cards/ResultCard.jsx';
 export { Surface } from './components/cards/Surface.jsx';
 /* chat */
+export { AttachmentTurn } from './components/chat/AttachmentTurn.jsx';
 export { DetourBanner } from './components/chat/DetourBanner.jsx';
 export { GreetingDivider } from './components/chat/GreetingDivider.jsx';
 export { MessageActions } from './components/chat/MessageActions.jsx';
 export { ParseNote } from './components/chat/ParseNote.jsx';
 export { ProgressTrace } from './components/chat/ProgressTrace.jsx';
 export { QAPair } from './components/chat/QAPair.jsx';
+export { RefusalTurn } from './components/chat/RefusalTurn.jsx';
 export { ResponseFeedback } from './components/chat/ResponseFeedback.jsx';
 export { SentinelBlock } from './components/chat/SentinelBlock.jsx';
 export { SentinelText } from './components/chat/SentinelText.jsx';
@@ -85,10 +87,12 @@ export { SentinelThinking } from './components/chat/SentinelThinking.jsx';
 export { SentinelTurn } from './components/chat/SentinelTurn.jsx';
 export { StepTrace } from './components/chat/StepTrace.jsx';
 export { UserBubble } from './components/chat/UserBubble.jsx';
+export { UserTurn } from './components/chat/UserTurn.jsx';
 export { VersionRow } from './components/chat/VersionRow.jsx';
 /* composer */
 export { Composer } from './components/composer/Composer.jsx';
 export { formatINR, MoneyComposer } from './components/composer/MoneyComposer.jsx';
+export { StepComposer } from './components/composer/StepComposer.jsx';
 /* data */
 export { AttributionChart } from './components/data/AttributionChart.jsx';
 export { ChartBar } from './components/data/ChartBar.jsx';

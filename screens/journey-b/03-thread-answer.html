@@ -6,7 +6,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['ScreenBackdrop','StatusSpacer','TopBar','Dock','Composer','UserBubble','MessageActions','ProgressTrace','SentinelBlock','SentinelText','AllocationCard','ConcentrationBar','Provenance','ArtifactCard','ChartBar','AttributionChart','DataTableCard','AnswerChip','ChipRow','DarkButton','ExplainerSheet','FileUpload','StepTrace','Pill','HomeIndicator','PhoneFrame'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttachmentTurn','AttributionChart','ChartBar','ChipRow','Composer','ConcentrationBar','DarkButton','DataTableCard','Dock','ExplainerSheet','FileUpload','HomeIndicator','MessageActions','PhoneFrame','Pill','ProgressTrace','Provenance','ScreenBackdrop','SentinelBlock','SentinelText','StatusSpacer','StepTrace','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
 <script type="text/babel" src="./answer.jsx"></script>
@@ -28,11 +28,11 @@ function Scene({ artifact = 'peek', view = 'chart', traceOpen = false, holdings 
   const att = useAttachment();
   return (
     <Thread anchor={atCard ? card : anchor} composer={<FrozenAsk about={artifact === 'expanded'} onAttach={att.onAttach} />}>
-      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
+      <UserTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace open={traceOpen} />
       <AnswerTurn artifact={artifact} view={view} cardRef={card}
         actions={artifact === 'filling' ? undefined : <AnswerActions holdings={holdings} />} />
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
@@ -60,12 +60,12 @@ function LiveScene() {
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread scrollRef={scroller} anchor="bottom" revision={!!att.file} composer={<FrozenAsk about={state === 'expanded'} onAttach={att.onAttach} />}>
-        <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
+        <UserTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
         <Trace />
         <AnswerTurn artifact={state} view={view} run cardRef={card} onToggle={toggle}
           onMenu={() => setView((v) => (v === 'table' ? 'chart' : 'table'))}
           actions={<AnswerActions onWhy={() => setWhy(true)} onHoldings={() => { if (state === 'peek') toggle(); setView('table'); }} />} />
-        <AttachedTurn file={att.file} onRemove={att.clear} />
+        <AttachmentTurn file={att.file} onRemove={att.clear} />
       </Thread>
       <ExplainerSheet open={why} title={WHY_71.title} body={WHY_71.body} onClose={() => setWhy(false)} />
     </div>
@@ -73,31 +73,31 @@ function LiveScene() {
 }
 
 /* Edit is reached the way the product reaches it: by tapping Edit under the bubble. Nothing here is
-   special-cased — it is the same AskTurn every other screen renders, which is the point. */
+   special-cased — it is the same UserTurn every other screen renders, which is the point. */
 function EditScene() {
   const att = useAttachment();
   return (
     <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
+      <UserTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace />
       <AnswerTurn artifact="peek" actions={<AnswerActions />} />
-      <AttachedTurn file={att.file} onRemove={att.clear} />
+      <AttachmentTurn file={att.file} onRemove={att.clear} />
     </Thread>
   );
 }
 
 /* The designed specimen, and a real picker. Attach your own file and the card shows ITS name and size
    with the stages pending, because nothing here parses a PDF and printing "18 holdings" over someone
-   else's file would be a fabricated figure. Same AttachedTurn every other screen uses. */
+   else's file would be a fabricated figure. Same AttachmentTurn every other screen uses. */
 function FileScene() {
   const att = useAttachment();
   const demo = { name: 'Sharma-Q3.pdf', meta: '14 pages · 1.2 MB · just now' };
   return (
     <Thread anchor="bottom" revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
+      <UserTurn text={DRIFT_ASK} costNote="Sending this replaces the answer below it." />
       <Trace />
       <AnswerTurn artifact="peek" actions={<AnswerActions />} />
-      <AttachedTurn file={att.file || demo} onRemove={att.clear} />
+      <AttachmentTurn file={att.file || demo} onRemove={att.clear} />
     </Thread>
   );
 }

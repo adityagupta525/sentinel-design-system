@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConfirmSheet','DarkButton','DataTable','Dock','DownloadAction','DrawnCheck','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoneyComposer','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatusSpacer','StepTrace','TopBar','UserBubble','VersionRow'];</script>
+<script>window.__screenRequires = ['AnswerChip','AttachmentTurn','Badge','ChipRow','Composer','ConfirmSheet','DarkButton','DataTable','Dock','DownloadAction','DrawnCheck','ExplainerSheet','Eyebrow','FileUpload','HomeIndicator','MessageActions','MoneyComposer','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','StandingDisclosure','StatusSpacer','StepComposer','StepTrace','TopBar','UserBubble','UserTurn','VersionRow'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
@@ -22,7 +22,7 @@ function Step({ i, answered = [] }) {
   const step = PROP_STEPS[i];
   return (
     <Rail n={step.progress ? step.progress[0] : undefined} total={PROP_TOTAL} revision={i}
-      composer={<RailAsk step={step} onAttach={() => {}} />}>
+      composer={<StepComposer step={step} onAttach={() => {}} />}>
       <AnsweredList items={answered} onEdit={() => {}} />
       <StepTurn step={step} onChip={() => {}} />
     </Rail>
@@ -35,11 +35,11 @@ function ResultScene({ state = 'draft', savedAt, sentAt, openRow = null, blocker
   const att = useAttachment();
   return (
     <Thread anchor={anchor} revision={`${state}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={PROP_ASK} costNote="Sending this replaces the proposal below it." />
+      <UserTurn text={PROP_ASK} costNote="Sending this replaces the proposal below it." />
       <ProposalResult state={state} savedAt={savedAt} sentAt={sentAt} openRow={openRow} blockers={blockers}
         onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onPrimary={() => {}} />
       {children}
-      <AttachedTurn file={att.file} caption="Here is the mandate he signed." onRemove={att.clear} />
+      <AttachmentTurn file={att.file} caption="Here is the mandate he signed." onRemove={att.clear} />
     </Thread>
   );
 }

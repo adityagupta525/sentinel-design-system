@@ -1,0 +1,45 @@
+<!-- @dsCard group="Pages" viewport="1000x1100" name="StepComposer" subtitle="The composer a question asks for — the other half of rule 3" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>StepComposer — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { StepComposer, Composer, MoneyComposer } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-surface', '--color-line', '--radius-20', '--border-focus', '--focus-ring', '--color-muted', '--type-body-font'];
+
+function App(){
+  const [sent,setSent] = React.useState('—');
+  return (
+  <PageShell name="StepComposer" group="Composer" status="shipped" requires={['StepComposer','Composer','MoneyComposer']}
+    summary="One line where a journey used to branch. Rule 3 says the composer is always there; this says WHICH one, and it says it from the step rather than from the page. Promoted out of screens/journey-a/rail.jsx on 20 Sep 2026, where three journeys were each deciding it again.">
+    <Block n={1} title="Specimen" sub="A text question. The placeholder says the chips are the fast path and typing is still open.">
+      <Specimen width={343}><StepComposer onSend={setSent} /></Specimen>
+    </Block>
+    <Block n={2} title="The two" sub="Which composer a question wants is a property of the STEP. A text composer under a money question accepts &ldquo;two and a half lakh&rdquo; and hands back a string nothing can add up.">
+      <Grid cols={1} items={[
+        {label:'a question in words', node:<div style={{width:343}}><StepComposer placeholder="or type your answer" onSend={setSent} /></div>, note:'Composer, with the paperclip — real on every screen (the owner’s ruling, 19 Sep).'},
+        {label:'a question about money', node:<div style={{width:343}}><StepComposer money onSend={setSent} /></div>, note:'MoneyComposer. It reads what is typed AS MONEY and hands back a formatted rupee string. No paperclip: an amount is typed, not attached.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Live"><Specimen width={343}><StepComposer money={false} onSend={setSent} /></Specimen>
+      <p style={{fontFamily:'var(--font-ui)',fontSize:12.5,color:'var(--color-muted)',marginTop:10}}>Last sent: {sent}</p>
+    </Block>
+    <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={5} title="Props"><Props src="../components/composer/StepComposer.d.ts" /></Block>
+    <Block n={6} title="Motion">
+      <Motion rows={[
+        {name:'Focus', property:'bronze 1px border plus a 3px 24% ring', duration:'150 ms', reduced:'The ring appears without easing.'},
+        {name:'Send', property:'the disc fills; the arrow rotates −15° on press', duration:'120 ms', reduced:'No rotation.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+
+</script>
+</body></html>

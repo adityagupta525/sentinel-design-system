@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
 <script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
-<script>window.__screenRequires = ['AnswerChip','ArtifactCard','Badge','ChartLine','ChipRow','Composer','DarkButton','DataTable','Dock','ExplainerSheet','FileUpload','HomeIndicator','HeroNumberCard','InfoCard','InfoDot','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','CompareTable','Dumbbell','List','ClientChip','ChartBar','FigureRow','Surface','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','ArtifactCard','AttachmentTurn','Badge','ChartBar','ChartLine','ChipRow','ClientChip','CompareTable','Composer','DarkButton','DataTable','Dock','Dumbbell','ExplainerSheet','FigureRow','FileUpload','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','List','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','StatTile','StatusSpacer','StepTrace','Surface','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
@@ -16,7 +16,7 @@
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script type="text/babel" data-presets="react">
-/* thread.jsx gives the shell, AskTurn and the real paperclip; funds.jsx owns the data. */
+/* thread.jsx gives the shell, UserTurn and the real paperclip; funds.jsx owns the data. */
 const { Composer, SentinelBlock, SentinelText, SentinelTurn, ArtifactCard, DataTable, OverlapView, Pill, ChipRow, AnswerChip, ExplainerSheet, InfoDot } = window.SentinelDesignSystem_0682a2;
 
 /* A REAL controlled composer for the live scene. A frozen specimen can pass value="" with a no-op
@@ -87,9 +87,9 @@ function Scene({ children, anchor = 'bottom', ask = FUND_ASK }) {
   const att = useAttachment();
   return (
     <Thread anchor={anchor} revision={!!att.file} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={ask} costNote="Sending this replaces the search below it." />
+      <UserTurn text={ask} costNote="Sending this replaces the search below it." />
       {children}
-      <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
+      <AttachmentTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
     </Thread>
   );
 }
@@ -107,7 +107,7 @@ function CmdScene({ text, query = FUND_QUERY, period = 'r5', ask = FUND_ASK }) {
   return (
     <Scene anchor={3} ask={ask}>
       <FundResults funds={list} period={shown} />
-      <AskTurn text={text} editable={false} actions={false} />
+      <UserTurn text={text} editable={false} actions={false} />
       {r.kind === 'miss'
         ? <SentinelTurn say={REFINE_MISS.body} chips={<ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} />)}</ChipRow>} />
         : r.kind === 'ambiguous'
@@ -156,7 +156,7 @@ function LiveScene() {
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread anchor="newest" revision={`${query.map((q) => q.label + q.on).join()}-${shelf}-${opened}-${turns.length}-${sort ? sort.key : ''}-${period}-${!!att.file}`}
         composer={<LiveAsk value={draft} onChange={setDraft} onSend={() => say(draft)} onAttach={att.onAttach} />}>
-        <AskTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
+        <UserTurn text={FUND_ASK} costNote="Sending this replaces the search below it." />
         <QueryTurn query={query} shelf={shelf} onShelf={() => setShelf((v) => !v)}
           onToggle={(label) => setQuery((q) => q.map((x) => (x.label === label ? { ...x, on: false } : x)))}
           onOpen={opened ? undefined : () => setOpened(true)} results={funds.length} />
@@ -165,7 +165,7 @@ function LiveScene() {
             never a silent rewrite of the chips above. */}
         {turns.map((t, i) => (
           <React.Fragment key={i}>
-            <AskTurn text={t.text} editable={false} actions={false} />
+            <UserTurn text={t.text} editable={false} actions={false} />
             {t.r.kind === 'miss'
               ? <SentinelTurn say={REFINE_MISS.body}
                   chips={<ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} onClick={() => say(c)} />)}</ChipRow>} />
@@ -186,7 +186,7 @@ function LiveScene() {
                   results={funds.length} />}
           </React.Fragment>
         ))}
-        <AttachedTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
+        <AttachmentTurn file={att.file} caption="Here is the factsheet." onRemove={att.clear} />
       </Thread>
       <ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []} onClose={() => setSheet(null)} />
     </div>

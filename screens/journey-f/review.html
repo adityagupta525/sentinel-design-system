@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AnswerChip','Badge','ChipRow','Composer','ConcentrationBar','ConstraintCallout','DarkButton','Dock','DownloadAction','ExplainerSheet','FileUpload','HeroNumberCard','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AnswerChip','AttachmentTurn','Badge','ChipRow','Composer','ConcentrationBar','ConstraintCallout','DarkButton','Dock','DownloadAction','ExplainerSheet','FileUpload','HeroNumberCard','HomeIndicator','MessageActions','ParseNote','PhoneFrame','Pill','ProgressRail','Provenance','QAPair','ResultActions','ResultCard','ScreenBackdrop','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepComposer','StepTrace','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="../data/book.jsx"></script>
 <script type="text/babel" src="../journey-b/thread.jsx"></script>
@@ -20,7 +20,7 @@ const { ExplainerSheet } = window.SentinelDesignSystem_0682a2;
 
 function Step() {
   return (
-    <Rail n={1} total={REV_TOTAL} revision={0} composer={<RailAsk step={REV_STEPS[0]} onAttach={() => {}} />}>
+    <Rail n={1} total={REV_TOTAL} revision={0} composer={<StepComposer step={REV_STEPS[0]} onAttach={() => {}} />}>
       <StepTurn step={REV_STEPS[0]} onChip={() => {}} />
     </Rail>
   );
@@ -35,10 +35,10 @@ function Scene({ audience, state = 'draft', savedAt, anchor = 'bottom' }) {
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Thread anchor={anchor} revision={`${audience}-${state}-${!!att.file}-${sheet ? sheet.title : ''}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
-        <AskTurn text={REV_ASK} costNote="Sending this replaces the review below it." />
+        <UserTurn text={REV_ASK} costNote="Sending this replaces the review below it." />
         <ReviewResult state={state} savedAt={savedAt} onSave={() => {}} onDownload={() => new Promise((r) => setTimeout(r, 700))} onExplain={setSheet} />
         {audience && <ReviewEnding audience={audience} onChip={() => {}} />}
-        <AttachedTurn file={att.file} caption="Here is her September statement." onRemove={att.clear} />
+        <AttachmentTurn file={att.file} caption="Here is her September statement." onRemove={att.clear} />
       </Thread>
       <ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []} onClose={() => setSheet(null)} />
     </div>
@@ -49,9 +49,9 @@ function HealthScene({ clientId, ask }) {
   const att = useAttachment();
   return (
     <Thread anchor={3} revision={`${clientId}-${!!att.file}`} composer={<FrozenAsk onAttach={att.onAttach} />}>
-      <AskTurn text={ask} editable={false} actions={false} />
+      <UserTurn text={ask} editable={false} actions={false} />
       <HealthTurn clientId={clientId} />
-      <AttachedTurn file={att.file} caption="Here is her September statement." onRemove={att.clear} />
+      <AttachmentTurn file={att.file} caption="Here is her September statement." onRemove={att.clear} />
     </Thread>
   );
 }

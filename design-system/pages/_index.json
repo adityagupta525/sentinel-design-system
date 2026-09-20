@@ -3,7 +3,7 @@
  "generator": "scripts/build-index.js",
  "counts": {
   "building": 43,
-  "shipped": 50
+  "shipped": 54
  },
  "rows": [
   {
@@ -403,6 +403,16 @@
    "literals": 21
   },
   {
+   "name": "AttachmentTurn",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "AttachmentTurn.html",
+   "file": "components/chat/AttachmentTurn.jsx",
+   "tokens": [],
+   "locals": [],
+   "literals": 0
+  },
+  {
    "name": "Composer",
    "group": "Chat",
    "status": "shipped",
@@ -759,6 +769,16 @@
    "literals": 8
   },
   {
+   "name": "RefusalTurn",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "RefusalTurn.html",
+   "file": "components/chat/RefusalTurn.jsx",
+   "tokens": [],
+   "locals": [],
+   "literals": 0
+  },
+  {
    "name": "RejectCallout",
    "group": "Chat",
    "status": "building",
@@ -904,6 +924,16 @@
    "literals": 0
   },
   {
+   "name": "StepComposer",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "StepComposer.html",
+   "file": "components/composer/StepComposer.jsx",
+   "tokens": [],
+   "locals": [],
+   "literals": 0
+  },
+  {
    "name": "StepTrace",
    "group": "Chat",
    "status": "shipped",
@@ -986,6 +1016,16 @@
    ],
    "locals": [],
    "literals": 8
+  },
+  {
+   "name": "UserTurn",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "UserTurn.html",
+   "file": "components/chat/UserTurn.jsx",
+   "tokens": [],
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "VersionRow",

@@ -1,4 +1,4 @@
-/* global AttachedTurn, useAttachment -- thread.jsx declares both in the one Babel scope every page
+/* global AttachmentTurn, useAttachment -- thread.jsx declares both in the one Babel scope every page
    loads it into, before this file. The lint cannot see across files; the preview gate can, and fails a
    page that loads this one without thread.jsx. */
 /* Journey A — Meera's risk profile. The rail: one question at a time, twelve of them, two interjections
@@ -171,17 +171,8 @@ function RiskResult({ onChip, chips, cta }) {
    and the gate only knew to look at the paperclip.
    The state lives HERE rather than in every caller: what an advisor types into a rail step is an
    answer to that step, and nothing else on the page needs it. */
-function RailAsk({ step, onAttach, onSend }) {
-  const [value, setValue] = React.useState('');
-  const send = () => { const t = value.trim(); if (!t) return; setValue(''); if (onSend) onSend(t); };
-  /* MoneyComposer owns its own value and hands back a formatted rupee string, so it takes only onSend
-     — passing it value/onChange would be inventing a contract it does not have. */
-  return step && step.money
-    ? <RAIL_DS.MoneyComposer onSend={(v) => onSend && onSend(v)} placeholder="or type the amount" />
-    : <RAIL_DS.Composer value={value} onChange={setValue} placeholder={(step && step.composer) || 'or type your answer'}
-        onSend={send} onAttach={onAttach} />;
-}
-
+/* `StepComposer` WAS HERE AND IS NOW `StepComposer` IN THE SYSTEM (20 Sep 2026). Which composer a
+   question wants is a property of the STEP, and three journeys were each deciding it again. */
 const SHARE_SHEET = {
   title: 'Share with Meera',
   body: ['This build prepares the summary and hands it to your own share sheet — it does not send anything on its own.',
@@ -240,7 +231,7 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, o
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <Rail n={step && step.progress ? step.progress[0] : undefined} total={total} revision={`${cursor}-${answered.length}-${!!att.file}`}
-        onMenu={onMenu} onNew={onNew} composer={<RailAsk step={step} onAttach={att.onAttach}
+        onMenu={onMenu} onNew={onNew} composer={<StepComposer step={step} onAttach={att.onAttach}
           onSend={(t) => { log(`Typed \u201c${t}\u201d`, 'the same path a chip takes \u2014 typing is never a second-class answer'); advance(t); }} />}>
         {lead}
         <AnsweredList items={answered} onEdit={editAt} />
@@ -253,7 +244,7 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, o
              the advisor has spoken in between. */
           : <StepTurn step={step} thinking={thinking} onChip={onChip} continued={!!lead && answered.length === 0}
               extra={stepExtra ? stepExtra({ step, advance, onChip }) : undefined} />}
-        <AttachedTurn file={att.file} caption={attachCaption} onRemove={att.clear} />
+        <AttachmentTurn file={att.file} caption={attachCaption} onRemove={att.clear} />
       </Rail>
       <RAIL_DS.ExplainerSheet open={!!sheet} title={(sheet || {}).title || ''} body={(sheet || {}).body || []}
         onClose={() => { setSheet(null); log('Explainer closes — the rail comes back to full', 'immediate'); }} />
@@ -261,4 +252,4 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, o
   );
 }
 
-Object.assign(window, { RailAsk, SHARE_SHEET, LiveRail, RAIL_STEPS, RAIL_TOTAL, RISK_RESULT, Rail, AnsweredList, StepTurn, RiskResult });
+Object.assign(window, { StepComposer, SHARE_SHEET, LiveRail, RAIL_STEPS, RAIL_TOTAL, RISK_RESULT, Rail, AnsweredList, StepTurn, RiskResult });

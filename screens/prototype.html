@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FigureRow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','List','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','VersionRow'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttachmentTurn','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','DisclosureBlock','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FigureRow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','List','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RefusalTurn','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','UserTurn','VersionRow'];</script>
 <script type="text/babel" src="./screen-kit.jsx"></script>
 <script type="text/babel" src="./data/book.jsx"></script>
 <script type="text/babel" src="./journey-b/home.jsx"></script>
@@ -184,6 +184,18 @@ function Proto({ onEvent }) {
   /* The bound client, and the journey waiting on it. */
   const [client, setClient] = React.useState(null);
   const [pending, setPending] = React.useState(null);
+  /* The share draft and the client note are two states of one thing — a document Sentinel wrote and
+     the advisor has not sent. One door per thing (18 Sep): the artifact's Share and the success
+     turn's "Read the note to Sharma" both open a draft, and neither sends anything. */
+  /* SAVE HAS TO SAVE. Three result cards drew a Save that logged and left the card in `draft`, so an
+     advisor pressed it and the badge stayed a draft — the one piece of feedback the control exists to
+     give. `ResultCard` has carried `state='saved'` with a date since v9. The date is the product's
+     own clock, not today's, because every other figure on these screens is dated 30 Sep. */
+  const SAVED_ON = '30 Sep';
+  const [saved, setSaved] = React.useState({});
+  const saveIt = (k, what) => () => { setSaved((m) => ({ ...m, [k]: SAVED_ON })); log(`${what} — the badge is a date now, not a draft`, 'the badge changes in place'); };
+  const [shared, setShared] = React.useState(false);
+  const [note, setNote] = React.useState(false);
   /* JOURNEY C, PAST THE SHORTLIST. `list` is the four funds; `fund` is one of them with the four verbs
      under it; `pick` is "compare it with which fund?"; `compare` is the comparison. The fund an advisor
      is looking at is held here rather than in the table, because three of the four verbs hand it to
@@ -332,7 +344,13 @@ function Proto({ onEvent }) {
      of Sharma's Quant Small Cap" put the refusal on screen with **Meera Nair** bound above it — a
      sentence about one client carrying another client's name into the next thing the advisor types.
      A bound client is a property of the thread, and this ends the thread. */
-  const goHome = () => { setDir('back'); setScreen('home'); setJourney(null); setAsk(''); setPhase('trace'); setArtifact('filling'); setClient(null); setPending(null); att.clear && att.clear(); log('Back to Home — the thread ends, and the bound client goes with it', reduced() ? 'a fade · 320ms' : 'ScreenStack BACK: the same two keyframes, reversed — you came out, not in'); };
+  /* The RTA is a real party this build does not talk to, and saying so precisely is the product's own
+     discipline: name what the control would do, and what stands between it and doing it. */
+  const RTA_SHEET = { title: 'Checking with the RTA', body: [
+    'A switch is a redemption and a purchase at the registrar. Checking means asking the RTA whether both legs have settled and what NAV each got.',
+    'This build has no RTA connection, so the status you see is the instruction\u2019s own — sent, acknowledged — and not the registrar\u2019s. It will say "sent" whatever the registrar does.',
+    'In the real build this is where a settlement failure would surface, and it is the one thing a placed instruction cannot be trusted about until it does.'] };
+  const goHome = () => { setDir('back'); setScreen('home'); setJourney(null); setAsk(''); setPhase('trace'); setArtifact('filling'); setClient(null); setPending(null); setShared(false); setNote(false); setSaved({}); att.clear && att.clear(); log('Back to Home — the thread ends, and the bound client goes with it', reduced() ? 'a fade · 320ms' : 'ScreenStack BACK: the same two keyframes, reversed — you came out, not in'); };
 
 
   /* The body of the thread is the journey, and nothing else changes. One surface, one composer. */
@@ -357,7 +375,7 @@ function Proto({ onEvent }) {
           <React.Fragment>
             <ProgressTrace key={`d-${traceKey}`} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} autoplay={false} initialActive={DRIFT_STEPS.length} seconds={Math.round(DRIFT_STEPS.length * STEP_MS / 1000)} initialCollapsed />
             <AnswerTurn artifact={artifact} view={view} run enter cardRef={card} onToggle={toggleArtifact}
-              onShare={() => log('Share — not in this build', '')}
+              onShare={() => { setShared(true); log('Share — the draft arrives as an artifact in the thread, not a canvas', reduced() ? 'fades in' : 'ds-rise · 240ms'); }}
               onMenu={() => { setView((v) => (v === 'table' ? 'chart' : 'table')); log('⋯ — the table view every chart owes, in place', ''); }}
               actions={artifact === 'filling' || phase !== 'answer' ? undefined : <AnswerActions animate
                 onWhy={() => { setWhy(WHY_71); log('Explainer opens', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }}
@@ -365,11 +383,20 @@ function Proto({ onEvent }) {
                 onRebalance={() => { setPhase('moves'); log('“Rebalance to his mandate” — two moves, and the what-if', reduced() ? 'fades in' : 'ds-rise · 240ms'); }} />} />
           </React.Fragment>
         )}
+        {/* THE DRAFT IS A TURN, not a second surface. It sits after the answer it was drafted from,
+            and it scrolls with it. */}
+        {shared && <ShareDraftTurn enter
+          onEdit={() => log('Change the wording — the draft is editable in the real build; here it is the pattern', '')}
+          onSend={() => { setShared(false); log('Send from WhatsApp — the OS sheet, outside Sentinel. Nothing is sent from here.', ''); }} />}
         {phase === 'moves' && <MovesTurn enter actions={<MovesActions animate
           onSkipped={() => { setWhy({ title: 'Why was the third move skipped?', body: [SKIPPED] }); log('Why one was skipped', 'ds-sheet 300ms'); }}
           onApprove={() => { setConfirm('moves'); log('Confirm sheet opens — the one screen with no composer', reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }} />} />}
-        {phase === 'flight' && <ExecutionTurn state="flight" enter onCheck={() => log('Check with the RTA — this build has no RTA', '')} />}
-        {phase === 'done' && <SuccessTurn enter onRead={() => log('Read it back to the client', '')} onBack={() => log('Back to his portfolio — not built', '')} onDrop={() => log('Note dropped on the file', '')} />}
+        {phase === 'flight' && <ExecutionTurn state="flight" enter />}
+        {phase === 'done' && <SuccessTurn enter note={note}
+          onCheck={() => { setWhy(RTA_SHEET); log('“Has it settled?” — what checking would do, and why this build cannot', 'ds-sheet 300ms'); }}
+          onRead={() => { setNote(true); log('The note to Sharma — drafted, not sent', reduced() ? 'fades in' : 'ds-rise · 240ms'); }}
+          onDrop={() => { setNote(false); log('Draft dropped — nothing was sent, so nothing is undone', ''); }}
+          onBack={() => send("Review Sharma's portfolio")} />}
       </React.Fragment>
     );
     if (journey === 'funds') return (
@@ -377,15 +404,17 @@ function Proto({ onEvent }) {
         <FundResults funds={fundShortlist} period={period} openRow={null}
           onExplain={() => log('A fund’s own explainer', '')} />
         {/* What the advisor typed, and what it did to the list — each one its own turn, because a
-            shortlist that quietly rewrote itself is one nobody can defend. */}
+            shortlist that quietly rewrote itself is one nobody can defend. Each ARRIVES, so each
+            carries `ds-rise`: the system has one keyframe for a turn appearing and this thread was
+            using it on three turns out of twenty. */}
         {refines.map((x, i) => (
           <React.Fragment key={i}>
-            <AskTurn text={x.text} editable={false} actions={false} />
-            {x.r.kind === 'miss' ? <SentinelTurn say={REFINE_MISS.body}
+            <UserTurn text={x.text} editable={false} actions={false} />
+            {x.r.kind === 'miss' ? <SentinelTurn enter say={REFINE_MISS.body}
                 chips={<ChipRow>{REFINE_MISS.chips.map((c) => <AnswerChip key={c} label={c} onClick={() => send(c)} />)}</ChipRow>} />
-              : x.r.kind === 'ambiguous' ? <SentinelTurn say={refineAmbiguous(x.r).body}
+              : x.r.kind === 'ambiguous' ? <SentinelTurn enter say={refineAmbiguous(x.r).body}
                 chips={<ChipRow>{refineAmbiguous(x.r).chips.map((c) => <AnswerChip key={c} label={c} onClick={() => send(`add ${c}`)} />)}</ChipRow>} />
-              : <SentinelTurn say={refineSaid(x.r, period, fundShortlist)} />}
+              : <SentinelTurn enter say={refineSaid(x.r, period, fundShortlist)} />}
           </React.Fragment>
         ))}
         {/* The shortlist offers the funds by NAME, because in a thread "open a fund" is a question you
@@ -403,7 +432,7 @@ function Proto({ onEvent }) {
         )}
         {fundPhase === 'fund' && fundId && (
           <React.Fragment>
-            <FundInfo id={fundId} onExplain={() => log('A figure explains itself', 'ds-sheet 300ms')} />
+            <FundInfo id={fundId} enter onExplain={() => log('A figure explains itself', 'ds-sheet 300ms')} />
             {/* THE FOUR ASKS are questions ABOUT the fund; the four verbs below DO something with it.
                 Two rows, so an advisor reads four to find either. All four open a turn now — the
                 three that used to answer "not built yet" are the last of plan §2. */}
@@ -438,7 +467,7 @@ function Proto({ onEvent }) {
           </React.Fragment>
         )}
         {fundPhase === 'fund' && asks.map((a, i) => (
-          <HoldingsTurn key={i} kind={a.kind} id={fundId} otherId={a.otherId} onEvent={log}
+          <HoldingsTurn key={i} enter kind={a.kind} id={fundId} otherId={a.otherId} onEvent={log}
             onChip={(kind, label) => askHoldings(kind, label)}
             onPick={(other) => { setAsks((list) => list.map((x, j) => (j === i ? { ...x, otherId: other } : x))); log(`Overlap against ${fundById(other).name}`, 'the picker becomes the answer, in place'); }} />
         ))}
@@ -481,11 +510,11 @@ function Proto({ onEvent }) {
         </div>
       </SentinelBlock>
     );
-    if (journey === 'caps') return <CapabilitiesTurn onAsk={(q) => send(q)} />;
-    if (journey === 'who') return <RefusalTurn body={DISAMBIGUATE.body} chips={DISAMBIGUATE.chips} onChip={send} />;
-    if (journey === 'over') return <RefusalTurn body={BUCKET_2.body} chips={BUCKET_2.chips} onChip={send} />;
-    if (journey === 'outside') return <RefusalTurn body={BUCKET_5.body} chips={BUCKET_5.chips} onChip={send} />;
-    if (journey === 'miss') return <RefusalTurn body={BUCKET_4.body} chips={BUCKET_4.chips} onChip={send} />;
+    if (journey === 'caps') return <CapabilitiesTurn enter onAsk={(q) => send(q)} />;
+    if (journey === 'who') return <RefusalTurn enter body={DISAMBIGUATE.body} chips={DISAMBIGUATE.chips} onChip={send} />;
+    if (journey === 'over') return <RefusalTurn enter body={BUCKET_2.body} chips={BUCKET_2.chips} onChip={send} />;
+    if (journey === 'outside') return <RefusalTurn enter body={BUCKET_5.body} chips={BUCKET_5.chips} onChip={send} />;
+    if (journey === 'miss') return <RefusalTurn enter body={BUCKET_4.body} chips={BUCKET_4.chips} onChip={send} />;
     if (journey === 'act') return (
       <SentinelBlock>
         <SentinelText text={BUCKET_6.body} />
@@ -504,15 +533,15 @@ function Proto({ onEvent }) {
         composer={<Composer value={draft} onChange={setDraft} placeholder="Ask Sentinel" streaming={journey === 'drift' && phase === 'trace'}
           bound={<WhoBound client={client} onClear={() => { setClient(null); log('Client unbound', 'the next question asks who again'); }} />}
           onStop={stop} onSend={(t) => { setDraft(''); send(t || draft); }} onAttach={att.onAttach} />}>
-        {/* The same AskTurn on every screen in the product: the last prompt is editable wherever editing
+        {/* The same UserTurn on every screen in the product: the last prompt is editable wherever editing
             it is a real thing to do, and sending the edit replaces what is below it — which the cost line
             says out loud before it happens. */}
-        <AskTurn text={ask} busy={journey === 'drift' && phase === 'trace'}
+        <UserTurn text={ask} busy={journey === 'drift' && phase === 'trace'}
           costNote={phase === 'answer' || journey !== 'drift' ? 'Sending this replaces the answer below it.' : undefined}
           onCancel={() => log('Edit cancelled — nothing was discarded', '')}
           onSave={(next) => { log('Edit sent — the answer below it is replaced, as the line said', 'the turn re-runs'); send(next); }} />
         {body()}
-        <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+        <AttachmentTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
       </Thread>
     </div>
   );
@@ -534,9 +563,9 @@ function Proto({ onEvent }) {
         onAnswer={(step, chip) => { if (chip.audience) { setAudience(chip.audience); log(`Review is for: ${chip.label}`, 'the card does not change — only what follows it'); } }}
         result={() => (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack)' }}>
-            <ReviewResult
+            <ReviewResult state={saved.review ? 'saved' : 'draft'} savedAt={saved.review}
               onExplain={(x) => { setWhy(x); log(`“${x.title}” — the figure explains itself`, reduced() ? 'a fade · 300ms' : 'ds-sheet 300ms; scrim to 0.4'); }}
-              onSave={() => log('Saved to her file — the badge becomes a date', '')}
+              onSave={saveIt('review', 'Saved to her file')}
               onDownload={() => { log('PDF — no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }} />
             {/* A REVIEW'S ENDING CHIPS ARE SENTENCES, so they go through the router like any other.
                 One that reaches a journey opens it; one that does not says so, by name. */}
@@ -552,15 +581,15 @@ function Proto({ onEvent }) {
     ? <Thread anchor={rebalPicked || uncosted ? 'bottom' : 2} revision={`rebal-${rebalPicked}-${uncosted ? uncosted.id : ''}-${!!att.file}`}
         scrollRef={scroller} onMenu={railMenu} onNew={goHome}
         composer={<Composer value={draft} onChange={setDraft} placeholder="Ask Sentinel" onSend={(t) => { setDraft(''); send(t || draft); }} onAttach={att.onAttach} />}>
-        <AskTurn text={ask} costNote="Sending this replaces the plan below it."
+        <UserTurn text={ask} costNote="Sending this replaces the plan below it."
           onCancel={() => log('Edit cancelled — nothing was discarded', '')}
           onSave={(next) => { log('Edit sent — the plan below it is replaced', 'the turn re-runs'); send(next); }} />
         {carried && <RebCarried fundId={carried} />}
         {rebalPicked
           /* Saved or approved, the plan becomes the ARTIFACT an advisor keeps — ResultCard, with its
              provenance, a Save, a Download and exactly ONE approve. */
-          ? <RebalanceResult
-              onSave={() => log('Saved the plan — it exists; nothing is placed', 'the badge becomes a date')}
+          ? <RebalanceResult state={saved.rebal ? 'saved' : 'draft'} savedAt={saved.rebal}
+              onSave={saveIt('rebal', 'Saved the plan — it exists; nothing is placed')}
               onDownload={() => { log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }}
               onPrimary={() => { setConfirm('moves'); log('Approve — the same sheet, the same disclosure and the same three rows as Journey B, because it is the same money', 'ds-sheet 300ms'); }} />
           : <RebalanceAnswer
@@ -584,14 +613,14 @@ function Proto({ onEvent }) {
           <UncostedTurn target={uncosted}
             onChip={(l) => { if (/can cost/.test(l)) { setUncosted(null); log('Back to the one with a cost', ''); } else log(`“${l}” — this build has no RTA`, ''); }} />
         )}
-        <AttachedTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
+        <AttachmentTurn file={att.file} caption="Here is his Q3 statement." onRemove={att.clear} />
       </Thread>
     : railJourney === 'propose'
     ? <LiveRail steps={PROP_STEPS} total={PROP_TOTAL} attachCaption="Here is the mandate he signed."
         lead={carried ? <PropCarried fundId={carried} /> : null}
         onEvent={log} onNew={goHome} onMenu={railMenu}
-        result={() => <ProposalResult state="draft"
-          onSave={() => log('Saved — version 4 exists; nobody has seen it', 'the badge becomes a date')}
+        result={() => <ProposalResult state={saved.propose ? 'saved' : 'draft'} savedAt={saved.propose}
+          onSave={saveIt('propose', 'Saved — version 4 exists; nobody has seen it')}
           onDownload={() => { log('PDF — the control holds its own loading state; no file is written', 'DownloadAction, on itself'); return new Promise((r) => setTimeout(r, 900)); }}
           onPrimary={() => { setConfirm('propose'); log('Send opens the confirm — and the disclosure is the whole journey: it places nothing', 'ds-sheet 300ms'); }} />} />
     : <LiveRail onEvent={log} onNew={goHome} onMenu={railMenu} />;

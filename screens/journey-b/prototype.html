@@ -5,7 +5,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../../design-system/_ds_bundle.js"></script>
-<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','ChartBar','ChipRow','Composer','ConcentrationBar','DarkButton','Dock','Drawer','ExplainerSheet','FileUpload','GreetingDivider','HomeIndicator','MessageActions','PhoneFrame','Pill','Pressable','ProgressTrace','Provenance','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble'];</script>
+<script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttributionChart','ChartBar','ChipRow','Composer','ConcentrationBar','DarkButton','Dock','Drawer','ExplainerSheet','FileUpload','GreetingDivider','HomeIndicator','MessageActions','PhoneFrame','Pill','Pressable','ProgressTrace','Provenance','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','UserTurn'];</script>
 <script type="text/babel" src="../screen-kit.jsx"></script>
 <script type="text/babel" src="./home.jsx"></script>
 <script type="text/babel" src="./thread.jsx"></script>
@@ -92,9 +92,9 @@ function Proto({ onEvent }) {
         onNew={() => { setScreen('home'); setPhase('trace'); setArtifact('filling'); setQuestion(DRIFT_ASK); setFile(null); setView('chart'); log('New — back to Home', 'ds-screen-in'); }}
         composer={<Composer value="" onChange={() => {}} placeholder={artifact === 'expanded' ? 'Ask about this' : 'Ask Sentinel'} streaming={phase === 'trace'} onStop={stop} onSend={() => {}}
           onAttach={(f) => { setFile({ name: f.name, meta: `${Math.max(1, Math.round(f.size / 1024))} KB · added just now` }); log(`Attached ${f.name}`, 'FileUpload arrives in the thread; the stages ARE the summary'); }} />}>
-        {/* One component, every screen: AskTurn owns the bubble, the Edit affordance and the cost line.
+        {/* One component, every screen: UserTurn owns the bubble, the Edit affordance and the cost line.
             It is not offered while the trace runs — Stop is the control for that, and it is in the slot. */}
-        <AskTurn text={question} busy={phase === 'trace'} costNote={phase === 'answer' ? 'Sending this replaces the answer below it.' : undefined}
+        <UserTurn text={question} busy={phase === 'trace'} costNote={phase === 'answer' ? 'Sending this replaces the answer below it.' : undefined}
           onCancel={() => log('Edit cancelled — nothing was discarded', '')}
           onSave={(next) => { setQuestion(next); setPhase('trace'); setArtifact('filling'); setTraceKey((k) => k + 1); setResumeFrom(0); traceStart.current = performance.now(); log('Edit sent — the answer below it is replaced, as the line said it would be', 'the turn re-runs; ds-rise on the new answer'); }} />
         {phase === 'trace' && <ProgressTrace key={traceKey} steps={DRIFT_STEPS} reasoning={DRIFT_REASONING} stepMs={STEP_MS} initialActive={resumeFrom} onDone={traceDone} />}

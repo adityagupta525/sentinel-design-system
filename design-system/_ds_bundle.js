@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DecisionsStrip","sourcePath":"components/actions/DecisionsStrip.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"CanvasHeader","sourcePath":"components/shell/CanvasHeader.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"DemoFooter","sourcePath":"components/text/DemoFooter.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -25,6 +25,7 @@ var __ds_out = (() => {
     AllocationCard: () => AllocationCard,
     AnswerChip: () => AnswerChip,
     ArtifactCard: () => ArtifactCard,
+    AttachmentTurn: () => AttachmentTurn,
     AttributionChart: () => AttributionChart,
     Badge: () => Badge,
     CHART_RAMP: () => CHART_RAMP,
@@ -97,6 +98,7 @@ var __ds_out = (() => {
     QAPair: () => QAPair,
     REDUCED_MOTION_CSS: () => REDUCED_MOTION_CSS,
     RangePills: () => RangePills,
+    RefusalTurn: () => RefusalTurn,
     RejectCallout: () => RejectCallout,
     ResponseFeedback: () => ResponseFeedback,
     ResultActions: () => ResultActions,
@@ -118,11 +120,13 @@ var __ds_out = (() => {
     StandingDisclosure: () => StandingDisclosure,
     StatTile: () => StatTile,
     StatusSpacer: () => StatusSpacer,
+    StepComposer: () => StepComposer,
     StepTrace: () => StepTrace,
     SuggestionRow: () => SuggestionRow,
     Surface: () => Surface,
     TopBar: () => TopBar,
     UserBubble: () => UserBubble,
+    UserTurn: () => UserTurn,
     VersionRow: () => VersionRow,
     areaPath: () => areaPath,
     band: () => band,
@@ -1051,6 +1055,106 @@ var __ds_out = (() => {
     );
   }
 
+  // design-system/components/chat/UserBubble.jsx
+  var rowsFor = (text) => Math.min(6, String(text).split("\n").length + Math.ceil(String(text).length / 38));
+  function UserBubble({ text, editing = false, onChange, onCancel, onSave, saveLabel = "Send", cancelLabel = "Cancel", costNote, editLabel = "Edit your question" }) {
+    const bubble = { borderRadius: editing ? "var(--radius-20)" : "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "10px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)", boxSizing: "border-box" };
+    const type = { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-14)", lineHeight: "var(--leading-19)", color: "var(--color-ink)", overflowWrap: "anywhere" };
+    const action = (label, strong, onClick) => /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick, style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", minHeight: "var(--h-touch)", padding: "var(--space-12) var(--space-2)", font: "var(--type-meta-font)", color: strong ? "var(--color-bronze-deep)" : "var(--color-muted)" } }, label);
+    if (editing) {
+      return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", flexDirection: "column", alignItems: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...bubble, width: "100%" } }, /* @__PURE__ */ react_global_default.createElement(
+        "textarea",
+        {
+          value: text,
+          onChange: (e) => onChange && onChange(e.target.value),
+          rows: rowsFor(text),
+          "aria-label": editLabel,
+          autoFocus: true,
+          style: { ...type, display: "block", width: "100%", resize: "none", border: "none", outline: "none", background: "transparent", padding: 0, boxSizing: "border-box" }
+        }
+      )), costNote && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-6) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)", textAlign: "right" } }, costNote), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", gap: "var(--space-16)", margin: "calc(-1 * var(--space-8)) 0 calc(-1 * var(--space-10))" } }, action(cancelLabel, false, onCancel), action(saveLabel, true, onSave)));
+    }
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end", animation: "ds-rise var(--dur-enter) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...bubble, maxWidth: 280 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...type } }, text)));
+  }
+
+  // design-system/components/chat/StepTrace.jsx
+  var NODE = 16;
+  function Node({ state }) {
+    const done = state === "done", failed = state === "failed", running = state === "running";
+    return /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", left: 0, top: 3, display: "flex", width: NODE, height: NODE, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: done ? "var(--color-bronze)" : failed ? "var(--color-status-over-bg)" : "var(--color-canvas)", boxShadow: done ? "none" : `inset 0 0 0 var(--border-1) ${failed ? "var(--color-status-over-fg)" : running ? "var(--color-bronze)" : "var(--color-line)"}` } }, done && /* @__PURE__ */ react_global_default.createElement("svg", { width: "9", height: "9", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "3.4", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M20 6 9 17l-5-5" })), failed && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-eyebrow-font)", color: "var(--color-status-over-fg)", lineHeight: 1 } }, "!"), running && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 6, height: 6, borderRadius: "var(--radius-full)", background: "var(--color-bronze)", animation: "dot-pulse 1200ms var(--ease) infinite" } }));
+  }
+  function StepTrace({ steps = [], summary, open: openProp, defaultOpen = false, onToggle, id = "steptrace", dense = false }) {
+    const [openState, setOpenState] = react_global_default.useState(defaultOpen);
+    const open = openProp == null ? openState : openProp;
+    const toggle = () => {
+      if (openProp == null) setOpenState((v) => !v);
+      if (onToggle) onToggle(!open);
+    };
+    const done = steps.filter((s) => s.state === "done").length;
+    const failed = steps.some((s) => s.state === "failed");
+    const running = steps.find((s) => s.state === "running");
+    const head = summary || (failed ? "Could not finish" : running ? running.label : `Read ${done} ${done === 1 ? "source" : "sources"}`);
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: toggle,
+        expanded: open,
+        controls: id,
+        label: `${head}. ${open ? "Collapse" : "Expand"} what Sentinel did.`,
+        style: { display: "flex", alignItems: "center", gap: "var(--space-6)" }
+      },
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", color: failed ? "var(--color-status-over-fg)" : "var(--color-muted)" } }, head),
+      /* @__PURE__ */ react_global_default.createElement("svg", { width: "10", height: "10", viewBox: "0 0 24 24", fill: "none", "aria-hidden": "true", style: { display: "block", transform: open ? "rotate(180deg)" : "none", transition: "transform var(--dur-fast) var(--ease)" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M6 9.5l6 6 6-6", stroke: failed ? "var(--color-status-over-fg)" : "var(--color-muted)", strokeWidth: "2.4", strokeLinecap: "round", strokeLinejoin: "round" }))
+    ), open && /* @__PURE__ */ react_global_default.createElement("div", { id, role: "list", style: { position: "relative", marginTop: "var(--space-8)", display: "flex", flexDirection: "column", gap: dense ? "var(--space-8)" : "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", left: 9, top: "var(--space-8)", bottom: "var(--space-8)", width: "var(--border-1)", background: "var(--color-line)" } }), steps.map((s, i) => {
+      const inactive = s.state === "pending";
+      return /* @__PURE__ */ react_global_default.createElement("div", { key: s.label + i, role: "listitem", style: { position: "relative", paddingLeft: "var(--space-24)", opacity: inactive ? 0.4 : 1, transition: "opacity var(--dur-fast) var(--ease)" } }, /* @__PURE__ */ react_global_default.createElement(Node, { state: s.state || "pending" }), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, font: "var(--type-row-font)", color: s.state === "failed" ? "var(--color-status-over-fg)" : "var(--color-ink-soft)" } }, s.label), s.meta && /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, s.meta)), s.detail && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-2) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)" } }, s.detail), s.state === "failed" && s.retry && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-6)" } }, s.retry));
+    })));
+  }
+
+  // design-system/components/icons/IconFile.jsx
+  function IconFile({ stroke = "var(--color-muted)", size = 20 }) {
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", alignItems: "center", justifyContent: "center", width: size, height: size, flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M14 2v4a2 2 0 0 0 2 2h4" })));
+  }
+
+  // design-system/components/forms/FileUpload.jsx
+  function FileUpload({ file, stages = [], state = "parsing", summary, onRetry, onRemove, actions, side = "advisor" }) {
+    const failed = state === "failed" || stages.some((s) => s.state === "failed");
+    const done = state === "done";
+    const withRetry = stages.map((s) => s.state === "failed" && onRetry ? { ...s, retry: /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Retry this step", size: "sm", tone: "tertiary", onClick: () => onRetry(s.label) }) } : s);
+    const mine = side === "advisor";
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: mine ? "flex-end" : "stretch" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", maxWidth: mine ? 300 : void 0, borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexShrink: 0, width: 32, height: 32, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-8)", background: "var(--color-chip)" } }, /* @__PURE__ */ react_global_default.createElement(IconFile, { size: 16 })), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", font: "var(--type-body-strong-font)", color: "var(--color-ink)" } }, file.name), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, file.meta)), onRemove && /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Remove", size: "sm", tone: "muted", onClick: onRemove })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement(
+      StepTrace,
+      {
+        dense: true,
+        id: `parse-${file.name.replace(/\W+/g, "-")}`,
+        defaultOpen: !done,
+        steps: withRetry,
+        summary: done ? summary || "Read it" : failed ? "Could not read all of it" : void 0
+      }
+    )), actions && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, actions)));
+  }
+
+  // design-system/components/chat/ParseNote.jsx
+  function ParseNote({ text }) {
+    return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, width: "100%", paddingRight: "var(--space-2)", textAlign: "right", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)", animation: "ds-fade 300ms var(--ease) both" } }, text);
+  }
+
+  // design-system/components/chat/AttachmentTurn.jsx
+  function AttachmentTurn({ file, caption = "Here is the statement.", stages, pendingStages, summary, note, onRemove }) {
+    if (!file) return null;
+    const picked = !!file.picked;
+    return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement(UserBubble, { text: caption }), /* @__PURE__ */ react_global_default.createElement(
+      FileUpload,
+      {
+        file,
+        state: picked ? "parsing" : "done",
+        stages: picked ? pendingStages || stages : stages,
+        summary: picked ? void 0 : summary,
+        onRemove
+      }
+    ), picked && /* @__PURE__ */ react_global_default.createElement(ParseNote, { text: note || "This specimen does not read the file you picked \u2014 in the product these stages fill in and name what was found." }));
+  }
+
   // design-system/components/chat/DetourBanner.jsx
   function DetourBanner({ label, onResume }) {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 10, margin: "0 16px", display: "flex", height: 32, alignItems: "center", justifyContent: "space-between", borderRadius: "var(--radius-10)", background: "var(--color-chip)", padding: "0 12px", boxShadow: "0 0 0 1px var(--color-line)", animation: "ds-rise var(--dur-enter) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } }, label), /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onResume, style: { borderRadius: "var(--radius-full)", padding: "0 6px" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", color: "var(--color-bronze-deep)" } }, "Resume")));
@@ -1078,11 +1182,6 @@ var __ds_out = (() => {
       },
       LABELS[a] || a
     )));
-  }
-
-  // design-system/components/chat/ParseNote.jsx
-  function ParseNote({ text }) {
-    return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, width: "100%", paddingRight: "var(--space-2)", textAlign: "right", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)", animation: "ds-fade 300ms var(--ease) both" } }, text);
   }
 
   // design-system/components/icons/IconSparkle.jsx
@@ -1142,59 +1241,6 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", flexDirection: "column", gap: "var(--space-6)" } }, question && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, question), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { maxWidth: 280, borderRadius: "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "8px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-13)", lineHeight: "var(--leading-18)", color: "var(--color-ink)", overflowWrap: "anywhere" } }, answer))));
   }
 
-  // design-system/components/chat/ResponseFeedback.jsx
-  var Thumb = ({ down, active }) => /* @__PURE__ */ react_global_default.createElement("svg", { width: "15", height: "15", viewBox: "0 0 24 24", fill: "none", "aria-hidden": "true", style: { display: "block", transform: down ? "rotate(180deg)" : "none" } }, /* @__PURE__ */ react_global_default.createElement(
-    "path",
-    {
-      d: "M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3zm0 0 4.5-7a2 2 0 0 1 3.6 1.5L14 10h4.8a2 2 0 0 1 2 2.5l-1.7 7A2 2 0 0 1 17.1 21H7",
-      stroke: active ? "var(--color-bronze-deep)" : "var(--color-muted)",
-      fill: active ? "var(--color-selected)" : "none",
-      strokeWidth: "1.5",
-      strokeLinecap: "round",
-      strokeLinejoin: "round"
-    }
-  ));
-  var REASONS = ["The number is wrong", "Not what I asked", "Missing a holding", "Too long"];
-  function ResponseFeedback({ value, onRate, onReason, reasons = REASONS, note }) {
-    const [rating, setRating] = react_global_default.useState(value || null);
-    const [reason, setReason] = react_global_default.useState(null);
-    const rate = (v) => {
-      setRating(v);
-      if (onRate) onRate(v);
-    };
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-6)", margin: `calc(-1 * var(--space-4)) 0 calc(-1 * var(--space-6))` } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement(
-      Pressable,
-      {
-        onClick: () => rate(rating === "up" ? null : "up"),
-        pressed: rating === "up",
-        label: "This answer was right",
-        style: { display: "flex", alignItems: "center", justifyContent: "center", width: "var(--h-chip-sm)", height: "var(--h-chip-sm)" }
-      },
-      /* @__PURE__ */ react_global_default.createElement(Thumb, { active: rating === "up" })
-    ), /* @__PURE__ */ react_global_default.createElement(
-      Pressable,
-      {
-        onClick: () => rate(rating === "down" ? null : "down"),
-        pressed: rating === "down",
-        label: "Something is wrong with this answer",
-        style: { display: "flex", alignItems: "center", justifyContent: "center", width: "var(--h-chip-sm)", height: "var(--h-chip-sm)" }
-      },
-      /* @__PURE__ */ react_global_default.createElement(Thumb, { down: true, active: rating === "down" })
-    ), rating && /* @__PURE__ */ react_global_default.createElement("span", { role: "status", style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, rating === "up" ? "Noted" : reason ? "Noted \xB7 " + reason : "Noted \u2014 what was wrong?")), rating === "down" && !reason && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, reasons.map((r) => /* @__PURE__ */ react_global_default.createElement(
-      Pressable,
-      {
-        key: r,
-        onClick: () => {
-          setReason(r);
-          if (onReason) onReason(r);
-        },
-        label: `Reason: ${r}`,
-        style: { display: "inline-flex", height: "var(--h-filter-chip)", alignItems: "center", padding: `0 var(--space-12)`, borderRadius: "var(--radius-full)", background: "var(--color-chip)", boxShadow: `0 0 0 var(--border-1) var(--color-line)` }
-      },
-      /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", color: "var(--color-bronze-deep)", whiteSpace: "nowrap" } }, r)
-    ))), note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-data-deemph)" } }, note));
-  }
-
   // design-system/components/chat/SentinelText.jsx
   function SentinelText({ text, weight = "Medium" }) {
     return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, fontFamily: "var(--font-ui)", fontWeight: weight === "Regular" ? 400 : 500, fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink-soft)", animation: "ds-fade 300ms var(--ease) both" } }, text);
@@ -1248,60 +1294,99 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--stack)", animation: enter ? "ds-rise var(--dur-enter) var(--ease) both" : "none" } }, thinking ? /* @__PURE__ */ react_global_default.createElement(SentinelThinking, { verb: typeof thinking === "string" ? thinking : void 0 }) : /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement(SentinelBlock, { continued, label }, stack), chips ? /* @__PURE__ */ react_global_default.createElement("div", null, chips) : null, cta ? /* @__PURE__ */ react_global_default.createElement("div", null, /* @__PURE__ */ react_global_default.createElement(DarkButton, { full: true, arrow: cta.arrow !== false, label: cta.label, onClick: cta.onClick })) : null, actions ? /* @__PURE__ */ react_global_default.createElement("div", null, actions) : null));
   }
 
-  // design-system/components/chat/StepTrace.jsx
-  var NODE = 16;
-  function Node({ state }) {
-    const done = state === "done", failed = state === "failed", running = state === "running";
-    return /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", left: 0, top: 3, display: "flex", width: NODE, height: NODE, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: done ? "var(--color-bronze)" : failed ? "var(--color-status-over-bg)" : "var(--color-canvas)", boxShadow: done ? "none" : `inset 0 0 0 var(--border-1) ${failed ? "var(--color-status-over-fg)" : running ? "var(--color-bronze)" : "var(--color-line)"}` } }, done && /* @__PURE__ */ react_global_default.createElement("svg", { width: "9", height: "9", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "3.4", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M20 6 9 17l-5-5" })), failed && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-eyebrow-font)", color: "var(--color-status-over-fg)", lineHeight: 1 } }, "!"), running && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 6, height: 6, borderRadius: "var(--radius-full)", background: "var(--color-bronze)", animation: "dot-pulse 1200ms var(--ease) infinite" } }));
-  }
-  function StepTrace({ steps = [], summary, open: openProp, defaultOpen = false, onToggle, id = "steptrace", dense = false }) {
-    const [openState, setOpenState] = react_global_default.useState(defaultOpen);
-    const open = openProp == null ? openState : openProp;
-    const toggle = () => {
-      if (openProp == null) setOpenState((v) => !v);
-      if (onToggle) onToggle(!open);
-    };
-    const done = steps.filter((s) => s.state === "done").length;
-    const failed = steps.some((s) => s.state === "failed");
-    const running = steps.find((s) => s.state === "running");
-    const head = summary || (failed ? "Could not finish" : running ? running.label : `Read ${done} ${done === 1 ? "source" : "sources"}`);
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement(
-      Pressable,
+  // design-system/components/chat/RefusalTurn.jsx
+  function RefusalTurn({ body, chips = [], onChip, continued = false, enter = false }) {
+    return /* @__PURE__ */ react_global_default.createElement(
+      SentinelTurn,
       {
-        onClick: toggle,
-        expanded: open,
-        controls: id,
-        label: `${head}. ${open ? "Collapse" : "Expand"} what Sentinel did.`,
-        style: { display: "flex", alignItems: "center", gap: "var(--space-6)" }
-      },
-      /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", color: failed ? "var(--color-status-over-fg)" : "var(--color-muted)" } }, head),
-      /* @__PURE__ */ react_global_default.createElement("svg", { width: "10", height: "10", viewBox: "0 0 24 24", fill: "none", "aria-hidden": "true", style: { display: "block", transform: open ? "rotate(180deg)" : "none", transition: "transform var(--dur-fast) var(--ease)" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M6 9.5l6 6 6-6", stroke: failed ? "var(--color-status-over-fg)" : "var(--color-muted)", strokeWidth: "2.4", strokeLinecap: "round", strokeLinejoin: "round" }))
-    ), open && /* @__PURE__ */ react_global_default.createElement("div", { id, role: "list", style: { position: "relative", marginTop: "var(--space-8)", display: "flex", flexDirection: "column", gap: dense ? "var(--space-8)" : "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", left: 9, top: "var(--space-8)", bottom: "var(--space-8)", width: "var(--border-1)", background: "var(--color-line)" } }), steps.map((s, i) => {
-      const inactive = s.state === "pending";
-      return /* @__PURE__ */ react_global_default.createElement("div", { key: s.label + i, role: "listitem", style: { position: "relative", paddingLeft: "var(--space-24)", opacity: inactive ? 0.4 : 1, transition: "opacity var(--dur-fast) var(--ease)" } }, /* @__PURE__ */ react_global_default.createElement(Node, { state: s.state || "pending" }), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, font: "var(--type-row-font)", color: s.state === "failed" ? "var(--color-status-over-fg)" : "var(--color-ink-soft)" } }, s.label), s.meta && /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, s.meta)), s.detail && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-2) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)" } }, s.detail), s.state === "failed" && s.retry && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-6)" } }, s.retry));
-    })));
+        continued,
+        enter,
+        say: body,
+        chips: chips.length > 0 && /* @__PURE__ */ react_global_default.createElement(ChipRow, null, chips.map((c) => /* @__PURE__ */ react_global_default.createElement(AnswerChip, { key: c, label: c, onClick: () => onChip && onChip(c) })))
+      }
+    );
   }
 
-  // design-system/components/chat/UserBubble.jsx
-  var rowsFor = (text) => Math.min(6, String(text).split("\n").length + Math.ceil(String(text).length / 38));
-  function UserBubble({ text, editing = false, onChange, onCancel, onSave, saveLabel = "Send", cancelLabel = "Cancel", costNote, editLabel = "Edit your question" }) {
-    const bubble = { borderRadius: editing ? "var(--radius-20)" : "20px 20px 6px 20px", background: "var(--color-bubble)", padding: "10px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)", boxSizing: "border-box" };
-    const type = { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-14)", lineHeight: "var(--leading-19)", color: "var(--color-ink)", overflowWrap: "anywhere" };
-    const action = (label, strong, onClick) => /* @__PURE__ */ react_global_default.createElement("button", { type: "button", onClick, style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", minHeight: "var(--h-touch)", padding: "var(--space-12) var(--space-2)", font: "var(--type-meta-font)", color: strong ? "var(--color-bronze-deep)" : "var(--color-muted)" } }, label);
-    if (editing) {
-      return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", flexDirection: "column", alignItems: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...bubble, width: "100%" } }, /* @__PURE__ */ react_global_default.createElement(
-        "textarea",
-        {
-          value: text,
-          onChange: (e) => onChange && onChange(e.target.value),
-          rows: rowsFor(text),
-          "aria-label": editLabel,
-          autoFocus: true,
-          style: { ...type, display: "block", width: "100%", resize: "none", border: "none", outline: "none", background: "transparent", padding: 0, boxSizing: "border-box" }
-        }
-      )), costNote && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-6) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)", textAlign: "right" } }, costNote), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", gap: "var(--space-16)", margin: "calc(-1 * var(--space-8)) 0 calc(-1 * var(--space-10))" } }, action(cancelLabel, false, onCancel), action(saveLabel, true, onSave)));
+  // design-system/components/chat/ResponseFeedback.jsx
+  var Thumb = ({ down, active }) => /* @__PURE__ */ react_global_default.createElement("svg", { width: "15", height: "15", viewBox: "0 0 24 24", fill: "none", "aria-hidden": "true", style: { display: "block", transform: down ? "rotate(180deg)" : "none" } }, /* @__PURE__ */ react_global_default.createElement(
+    "path",
+    {
+      d: "M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3zm0 0 4.5-7a2 2 0 0 1 3.6 1.5L14 10h4.8a2 2 0 0 1 2 2.5l-1.7 7A2 2 0 0 1 17.1 21H7",
+      stroke: active ? "var(--color-bronze-deep)" : "var(--color-muted)",
+      fill: active ? "var(--color-selected)" : "none",
+      strokeWidth: "1.5",
+      strokeLinecap: "round",
+      strokeLinejoin: "round"
     }
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end", animation: "ds-rise var(--dur-enter) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { ...bubble, maxWidth: 280 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...type } }, text)));
+  ));
+  var REASONS = ["The number is wrong", "Not what I asked", "Missing a holding", "Too long"];
+  function ResponseFeedback({ value, onRate, onReason, reasons = REASONS, note }) {
+    const [rating, setRating] = react_global_default.useState(value || null);
+    const [reason, setReason] = react_global_default.useState(null);
+    const rate = (v) => {
+      setRating(v);
+      if (onRate) onRate(v);
+    };
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-6)", margin: `calc(-1 * var(--space-4)) 0 calc(-1 * var(--space-6))` } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: () => rate(rating === "up" ? null : "up"),
+        pressed: rating === "up",
+        label: "This answer was right",
+        style: { display: "flex", alignItems: "center", justifyContent: "center", width: "var(--h-chip-sm)", height: "var(--h-chip-sm)" }
+      },
+      /* @__PURE__ */ react_global_default.createElement(Thumb, { active: rating === "up" })
+    ), /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: () => rate(rating === "down" ? null : "down"),
+        pressed: rating === "down",
+        label: "Something is wrong with this answer",
+        style: { display: "flex", alignItems: "center", justifyContent: "center", width: "var(--h-chip-sm)", height: "var(--h-chip-sm)" }
+      },
+      /* @__PURE__ */ react_global_default.createElement(Thumb, { down: true, active: rating === "down" })
+    ), rating && /* @__PURE__ */ react_global_default.createElement("span", { role: "status", style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, rating === "up" ? "Noted" : reason ? "Noted \xB7 " + reason : "Noted \u2014 what was wrong?")), rating === "down" && !reason && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, reasons.map((r) => /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        key: r,
+        onClick: () => {
+          setReason(r);
+          if (onReason) onReason(r);
+        },
+        label: `Reason: ${r}`,
+        style: { display: "inline-flex", height: "var(--h-filter-chip)", alignItems: "center", padding: `0 var(--space-12)`, borderRadius: "var(--radius-full)", background: "var(--color-chip)", boxShadow: `0 0 0 var(--border-1) var(--color-line)` }
+      },
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", color: "var(--color-bronze-deep)", whiteSpace: "nowrap" } }, r)
+    ))), note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-data-deemph)" } }, note));
+  }
+
+  // design-system/components/chat/UserTurn.jsx
+  function UserTurn({ text, editable = true, busy = false, costNote, onSave, onCancel, actions = true }) {
+    const [editing, setEditing] = react_global_default.useState(false);
+    const [draft, setDraft] = react_global_default.useState(text);
+    react_global_default.useEffect(() => {
+      if (!editing) setDraft(text);
+    }, [text, editing]);
+    const cancel = () => {
+      setDraft(text);
+      setEditing(false);
+      onCancel && onCancel();
+    };
+    const save = () => {
+      setEditing(false);
+      onSave && onSave(draft);
+    };
+    return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement(
+      UserBubble,
+      {
+        text: editing ? draft : text,
+        editing,
+        onChange: setDraft,
+        onCancel: cancel,
+        onSave: save,
+        costNote
+      }
+    ), actions && editable && !busy && !editing && /* @__PURE__ */ react_global_default.createElement(MessageActions, { role: "user", onAction: (a) => a === "edit" && setEditing(true) }));
   }
 
   // design-system/components/chat/VersionRow.jsx
@@ -1378,6 +1463,27 @@ var __ds_out = (() => {
         style: { width: "100%", border: "none", background: "transparent", outline: "none", padding: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-16)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" }
       }
     )), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", display: "flex", justifyContent: "flex-end" } }, /* @__PURE__ */ react_global_default.createElement("button", { type: "button", disabled: !canSend, onClick: () => canSend && onSend && onSend("\u20B9" + formatted), style: { appearance: "none", border: "none", display: "flex", width: 42, height: 42, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: "var(--gradient-dark-cta)", opacity: canSend ? 1 : 0.4, cursor: canSend ? "pointer" : "default", padding: 0 } }, /* @__PURE__ */ react_global_default.createElement(IconArrow, null))));
+  }
+
+  // design-system/components/composer/StepComposer.jsx
+  function StepComposer({ money = false, placeholder, moneyPlaceholder, onSend, onAttach }) {
+    const [value, setValue] = react_global_default.useState("");
+    const send = () => {
+      const t = value.trim();
+      if (!t) return;
+      setValue("");
+      if (onSend) onSend(t);
+    };
+    return money ? /* @__PURE__ */ react_global_default.createElement(MoneyComposer, { onSend: (v) => onSend && onSend(v), placeholder: moneyPlaceholder || "or type the amount" }) : /* @__PURE__ */ react_global_default.createElement(
+      Composer,
+      {
+        value,
+        onChange: setValue,
+        placeholder: placeholder || "or type your answer",
+        onSend: send,
+        onAttach
+      }
+    );
   }
 
   // design-system/components/data/AttributionChart.jsx
@@ -1684,29 +1790,6 @@ var __ds_out = (() => {
     const min = Math.min(...points), max = Math.max(...points), span = max - min || 1;
     const d = points.map((p, i) => `${i / (points.length - 1) * width},${height - (p - min) / span * height}`).join(" L ");
     return /* @__PURE__ */ react_global_default.createElement("svg", { width, height, viewBox: `0 0 ${width} ${height}`, fill: "none", style: { display: "block", marginTop: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: `M ${d}`, stroke: "var(--color-bronze-deep)", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }));
-  }
-
-  // design-system/components/icons/IconFile.jsx
-  function IconFile({ stroke = "var(--color-muted)", size = 20 }) {
-    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", alignItems: "center", justifyContent: "center", width: size, height: size, flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M14 2v4a2 2 0 0 0 2 2h4" })));
-  }
-
-  // design-system/components/forms/FileUpload.jsx
-  function FileUpload({ file, stages = [], state = "parsing", summary, onRetry, onRemove, actions, side = "advisor" }) {
-    const failed = state === "failed" || stages.some((s) => s.state === "failed");
-    const done = state === "done";
-    const withRetry = stages.map((s) => s.state === "failed" && onRetry ? { ...s, retry: /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Retry this step", size: "sm", tone: "tertiary", onClick: () => onRetry(s.label) }) } : s);
-    const mine = side === "advisor";
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", justifyContent: mine ? "flex-end" : "stretch" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", maxWidth: mine ? 300 : void 0, borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexShrink: 0, width: 32, height: 32, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-8)", background: "var(--color-chip)" } }, /* @__PURE__ */ react_global_default.createElement(IconFile, { size: 16 })), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", font: "var(--type-body-strong-font)", color: "var(--color-ink)" } }, file.name), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, file.meta)), onRemove && /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Remove", size: "sm", tone: "muted", onClick: onRemove })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement(
-      StepTrace,
-      {
-        dense: true,
-        id: `parse-${file.name.replace(/\W+/g, "-")}`,
-        defaultOpen: !done,
-        steps: withRetry,
-        summary: done ? summary || "Read it" : failed ? "Could not read all of it" : void 0
-      }
-    )), actions && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, actions)));
   }
 
   // design-system/components/forms/SearchField.jsx
