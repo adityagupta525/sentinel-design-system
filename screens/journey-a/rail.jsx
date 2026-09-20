@@ -211,7 +211,15 @@ function LiveRail({ steps = RAIL_STEPS, total = RAIL_TOTAL, result, stepExtra, o
      label the advisor sees, and a journey that branches on the answer needs the chip. Journey F is the
      first to branch — its one question picks who the review is for. */
   const advance = (label, goto, chip) => {
+    /* PAST THE LAST QUESTION THERE IS NO STEP, and a chip in the RESULT turn comes through here too —
+       "Build her a portfolio", "Share with Meera on WhatsApp". `step.short` on an undefined step threw
+       and took the whole prototype down with it: React unmounted, the composer went, and nothing after
+       it worked. Found by driving the prototype end to end on 20 Sep 2026, which is the only thing
+       that could reach a result chip after twelve answers. A result's chip is not an answer to a
+       question, so it records nothing and advances nothing; the caller's `onAnswer` still fires,
+       because that is how a journey learns what was taken. */
     if (onAnswer) onAnswer(step, chip || { label });
+    if (!step) { log(`“${label}” — the rail is finished, so this is not an answer to anything`, ''); return; }
     setAnswered((a) => [...a, { q: step.short, a: label }]);
     setThinking(true);
     const next = goto != null ? goto : cursor + 1;

@@ -1883,3 +1883,35 @@ call that fund excellent and be no help at all to the advisor holding it.
 **Three things the render caught.** The lead sentence said *"out of 100"* while the card said *"Out of
 70"*. Two rows missing for the same reason produced two near-identical paragraphs — one sentence per
 reason now, not per row. And joining two labels mid-sentence put a capital H in the middle of it.
+
+---
+
+### F-68 · Driving the whole prototype end to end — two defects only that could find — *20 Sep 2026*
+
+Twenty-four steps through every journey in one session: Home → the drift, expanded, rebalanced,
+approved and placed → the risk rail, all twelve questions, to the locked number → the fund explorer,
+its typed commands, a fund opened and three of its asks → the proposal → the rebalance → the review →
+and the three refusals. One phone shot per step, no page errors at the end. Journey F stops at its
+one question — *what is this review for?* — because that is what it asks before it writes anything;
+the frame shows the question, not the review.
+
+**1 · A new thread kept the previous thread's client.** `goHome` cleared the journey, the ask, the
+phase, the artifact and the attachment, and left the bound client chip in the composer. So: review
+Meera's book, press New thread, type *"Sell all of Sharma's Quant Small Cap"* — and the refusal
+appeared with **Meera Nair** bound above it. A sentence about one client carrying another client's name
+into the next thing the advisor types, on the one screen in the product whose entire job is to be
+careful. A bound client is a property of the thread, and New thread ends the thread.
+
+**2 · A chip on the risk result crashed the rail, and the crash took the prototype with it.** Past the
+last question there is no `step`, and a chip in the RESULT turn — *"Build her a portfolio"*, *"Share
+with Meera on WhatsApp"* — comes through the same `onChip`. `step.short` on an undefined step threw,
+React unmounted, the composer went, and nothing after it worked. Twelve answers stand between the rail
+opening and a result chip existing, which is why nothing before this reached it. A result's chip is not
+an answer to a question: it records nothing and advances nothing, and the caller's `onAnswer` still
+fires, because that is how a journey learns what was taken.
+
+**And one thing that looked like a defect and was the product being right.** After the risk result the
+app bar stopped responding. The result's own chip had opened *"How is 54 worked out?"*, and a sheet is
+modal — the bar is behind its scrim, exactly as it should be. The driver presses Escape now. Worth
+writing down because the log said "New thread not reachable" three times and the honest reading of that
+line was a bug.

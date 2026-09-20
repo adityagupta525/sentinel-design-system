@@ -326,7 +326,13 @@ function Proto({ onEvent }) {
     }
   };
 
-  const goHome = () => { setDir('back'); setScreen('home'); setJourney(null); setAsk(''); setPhase('trace'); setArtifact('filling'); att.clear && att.clear(); log('Back to Home', reduced() ? 'a fade · 320ms' : 'ScreenStack BACK: the same two keyframes, reversed — you came out, not in'); };
+  /* NEW THREAD UNBINDS THE CLIENT — found by driving the whole prototype end to end, 20 Sep 2026.
+     Home cleared the journey, the ask, the phase, the artifact and the attachment, and left the bound
+     client chip sitting in the composer. So a review of Meera's book, then New thread, then "Sell all
+     of Sharma's Quant Small Cap" put the refusal on screen with **Meera Nair** bound above it — a
+     sentence about one client carrying another client's name into the next thing the advisor types.
+     A bound client is a property of the thread, and this ends the thread. */
+  const goHome = () => { setDir('back'); setScreen('home'); setJourney(null); setAsk(''); setPhase('trace'); setArtifact('filling'); setClient(null); setPending(null); att.clear && att.clear(); log('Back to Home — the thread ends, and the bound client goes with it', reduced() ? 'a fade · 320ms' : 'ScreenStack BACK: the same two keyframes, reversed — you came out, not in'); };
 
 
   /* The body of the thread is the journey, and nothing else changes. One surface, one composer. */
