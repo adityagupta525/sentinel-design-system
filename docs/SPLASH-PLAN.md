@@ -428,3 +428,88 @@ so the two do not both claim port 9876.
 
 **Not blocked meanwhile.** `scratchpad/blender_exec.py` drives the running addon directly over the
 socket; `execute_code` works and returns output.
+
+---
+
+# Part 4 — the reference set changed the direction
+
+21 Sep 2026. The owner sent ten new references and said the copper dome is not what he wants.
+
+## What the new references actually share
+
+Voxel Claude-Code mascot · a blue speech bubble with two rounded-rect eyes · a geometric bubble/robot
+built from overlapping rounded squares · a logo-construction grid · a petal spinner · a minimal robot
+head with an antenna · a dot-matrix "1" · the ARTIFACT splash with a pixel asterisk · a single black
+pill on red.
+
+They agree on four things and disagree with the copper renders on all four:
+
+| | The new set | The copper renders |
+|---|---|---|
+| Construction | **Geometric** — boxes, grids, pixels | Organic, sculpted |
+| Eyes | **Squares or rounded rectangles** | Round, glowing |
+| Colour | **One, flat** — or none at all | Photoreal metal, many values |
+| Medium | **Drawn** | Rendered |
+
+**This matters more than it looks.** The new set is much closer to what Sentinel already is — flat,
+token-driven, no photography, no illustration. The photoreal mascot was the thing that could not ship
+inside the product. A voxel or pixel mascot can be *drawn* from tokens at any size.
+
+## The video, read at 150 ms
+
+Frames pulled every 0.15 s across 26.60–29.20 s. The mark is a **plus built from a grid of dots**, and
+the loop is about **1.8 s**:
+
+- **26.60 → 27.52 s** — dots fill in and darken. The plus densifies into a diamond.
+- **27.52 s** — densest and darkest.
+- **27.67 → 28.28 s** — it thins back out, and a **second, far fainter copy drifts in from the left**.
+- **28.44 s** — the cycle restarts.
+
+**Nothing changes position. No rotation, no spinner, no bounce.** The whole animation is *dot density
+and opacity*, and the label under it never moves. The pastel haze seen at coarse sampling is that
+faint second copy, not a glow.
+
+That is the idea worth taking, and Sentinel is already most of the way there: `SentinelThinking` is
+three bronze dots pulsing on opacity at 1.2 s with a 150 ms stagger. Same family — theirs makes a
+glyph out of the dots, Sentinel makes a row.
+
+## What the field does — Mobbin, iOS splash screens
+
+Eight AI apps: [Character AI](https://mobbin.com/screens/dbb4400a-b951-4e03-ba32-c91d672466b7) ·
+[Ultrahuman](https://mobbin.com/screens/da5f6ed4-3d11-46f7-b9fb-872a68c15a73) ·
+[Amazon Lens AI](https://mobbin.com/screens/ba9e74a4-9352-428c-9295-a1b3fa1f4ec8) ·
+[Tolan](https://mobbin.com/screens/cb09c2a9-96ad-426c-ab29-9db0c43a06c2) ·
+[Cal AI](https://mobbin.com/screens/2faf5056-f041-4378-bde4-105eaaeb9efd) ·
+[Wispr Flow](https://mobbin.com/screens/2c0a3028-3997-488b-8bcd-2fe78590228a) ·
+[Comet](https://mobbin.com/screens/ef1aba25-dda8-4a02-a895-ac1af7abbc5b) ·
+[Photoroom](https://mobbin.com/screens/ac9502fe-fd1e-4c7b-b9e4-21df91643547).
+
+Seven of the eight are **one small mark, centred, on a flat dark ground**, and several have no mark at
+all — Character AI ships its wordmark and nothing else. Only **Tolan** puts a rendered 3D object on
+the splash, and it is a character app.
+
+So the convention supports the plan in Part 1 exactly. The choice in front of us is a *style* inside
+that convention, not a different structure.
+
+## The voxel build
+
+Built in Blender 5.1.2: one body block, two side nubs, four stubby legs, two square eyes. **Neutral
+clay, no colour** — the owner said not to take the real mascot's colour, and a silhouette is easier to
+judge without one. Saved as `~/Downloads/sentinel-mascot/sentinel-voxel-v2.blend`.
+
+**Three failed passes before it was right, all mine:**
+
+1. Eyes at roughness 0.30 read as **white** panels — the key light landed on them as a mirror.
+2. Moving them "flush" put them **inside** the body: the front face is at y = −1.30 and I placed their
+   centres at −1.27 with a depth of 0.16, so they spanned −1.35…−1.19 and were buried.
+3. Then the model stopped matching my mental picture entirely — a listing showed four legs reporting
+   location (0,0,0) while rendering correctly, because `transform_apply` acts on **everything
+   selected**, not the object just added.
+
+The fix was to stop patching and rebuild by writing mesh data directly, with every box's world-space
+bounding box printed and checked before rendering. That is the pass that came out right.
+
+## Not done, and said rather than implied
+
+- **Grok's bot and its agent mascot were not researched.** The owner asked; this turn did not get to it.
+- **Higgsfield was not used.** It spends credits, so it gets a quote before a batch rather than after.
