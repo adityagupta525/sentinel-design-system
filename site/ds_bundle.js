@@ -622,14 +622,16 @@ var __ds_out = (() => {
       return () => clearTimeout(t);
     }, [phase]);
     react_global_default.useEffect(() => {
-      if (!(phase === "solid" && untilSettled && solidReady)) return;
-      setPhase("leaving");
+      if (phase === "solid" && untilSettled && solidReady) setPhase("leaving");
+    }, [phase, untilSettled, solidReady]);
+    react_global_default.useEffect(() => {
+      if (phase !== "leaving") return;
       const t = setTimeout(() => {
         setPhase("gone");
         onDone && onDone();
       }, ms("--dur-screen", 320));
       return () => clearTimeout(t);
-    }, [phase, untilSettled, solidReady, onDone]);
+    }, [phase, onDone]);
     if (phase === "gone") return null;
     const showDots = phase === "dots" || phase === "solid" && !solidReady;
     const showSolid = phase !== "dots";
@@ -648,6 +650,7 @@ var __ds_out = (() => {
           alignItems: "center",
           justifyContent: "center",
           background: "var(--color-ink)",
+          pointerEvents: phase === "leaving" ? "none" : void 0,
           animation: phase === "leaving" ? "ds-screen-out var(--dur-screen) var(--ease) both, ds-splash-leave var(--dur-screen) var(--ease) both" : void 0
         }
       },

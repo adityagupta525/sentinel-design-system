@@ -48,11 +48,18 @@ export function SplashScreen({ until, onDone, mascotSize = 168, label = 'Sentine
   }, [phase]);
 
   React.useEffect(() => {
-    if (!(phase === 'solid' && untilSettled && solidReady)) return;
-    setPhase('leaving');
+    if (phase === 'solid' && untilSettled && solidReady) setPhase('leaving');
+  }, [phase, untilSettled, solidReady]);
+
+  // Its own effect, keyed on 'leaving' alone. Folded into the one above, the transition to
+  // 'leaving' re-ran that effect, its cleanup cleared this timer, and the guard then returned:
+  // the splash stayed mounted at opacity 0, z-index 40, over the whole app — invisible and
+  // swallowing every tap. Found on the live URL, not in any frame strip (F-80).
+  React.useEffect(() => {
+    if (phase !== 'leaving') return;
     const t = setTimeout(() => { setPhase('gone'); onDone && onDone(); }, ms('--dur-screen', 320));
     return () => clearTimeout(t);
-  }, [phase, untilSettled, solidReady, onDone]);
+  }, [phase, onDone]);
 
   if (phase === 'gone') return null;
   const showDots = phase === 'dots' || (phase === 'solid' && !solidReady);
@@ -60,6 +67,7 @@ export function SplashScreen({ until, onDone, mascotSize = 168, label = 'Sentine
   return (
     <div className="ds-splash" data-phase={phase} role="status" aria-label={label}
       style={{ position: 'absolute', inset: 0, zIndex: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-ink)',
+        pointerEvents: phase === 'leaving' ? 'none' : undefined,
         animation: phase === 'leaving' ? 'ds-screen-out var(--dur-screen) var(--ease) both, ds-splash-leave var(--dur-screen) var(--ease) both' : undefined }}>
       <div style={{ position: 'relative', width: mascotSize, height: mascotSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {showDots && (

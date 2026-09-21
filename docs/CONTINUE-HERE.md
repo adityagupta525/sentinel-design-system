@@ -21,7 +21,7 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 | Integrity | 450 files pinned |
 | Adherence | system **61** (the gate ceiling, tightened from 62) · screens **0** · tokens **0 undefined** |
 | Parallel | **86 of 94** on a screen. The eight are named in contradiction 64, in three kinds |
-| Findings | **F-1 … F-72, none open** |
+| Findings | **F-1 … F-80, none open** — F-80 (21 Sep) is the one only `npm run check:app` finds |
 | Contradictions | **9 open**, every one dated and triggered |
 | Artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — **version 33**, a grouped cover rather than a file tree, 254 files. Rebuild with `npm run build:artifact`, then republish with `url` |
 | Deployment | `vercel.json` builds the same staged site. `docs/DEPLOY.md` covers it, and answers the `.apk` question honestly |

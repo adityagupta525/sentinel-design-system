@@ -38,7 +38,8 @@
     "preview": "node tools/preview-server.mjs",
     "report:parallel": "node tools/check-parallel.mjs",
     "shot": "node tools/phone-shot.mjs",
-    "build:app": "node tools/build-app.mjs"
+    "build:app": "node tools/build-app.mjs",
+    "check:app": "node tools/check-app-boot.mjs"
   },
   "peerDependencies": {
     "react": ">=18"

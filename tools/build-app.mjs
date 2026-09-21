@@ -108,4 +108,5 @@ const bad = left.filter(([, present]) => present).map(([what]) => what);
 if (bad.length) { console.error(`app/index.html still carries ${bad.join(', ')}`); process.exit(1); }
 
 console.log(`app/index.html: ${(html.length / 1024).toFixed(0)} KB, ${n} JSX blocks compiled in, plus ${assets} home-screen files`);
+console.log('check it boots:  npm run check:app');
 console.log('deploy it with:  cd app && npx vercel --prod');

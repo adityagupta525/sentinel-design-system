@@ -2394,3 +2394,36 @@ working splash look absent.
 
 **Gates after: 148/148 preview pages clean · system adherence 59, unchanged · screens adherence 0 ·
 tokens 0 undefined · integrity updated · artifact cover links all mount.**
+
+---
+
+## F-80 · The splash faded out and stayed — invisible, at z-index 40, over the whole app — Closed 21 Sep 2026
+
+**What happened.** On the deployed phone build the splash played exactly as the frame strips showed
+— dots, solid, fade — and then nothing on the home screen could be tapped. The `.ds-splash` root was
+still in the document with `data-phase="leaving"`, opacity 0 from the `both` fill of `ds-splash-leave`,
+`z-index: 40`, `inset: 0`. `document.elementFromPoint(187, 300)` returned it. Playwright's own
+refusal names it: *`<div class="ds-splash" data-phase="leaving">` intercepts pointer events*.
+
+**Why.** One effect did two jobs: it moved the phase to `leaving` and armed the 320 ms timer that
+moves it to `gone`. `phase` was in that effect's dependency list, so the transition it caused re-ran
+it — the cleanup cleared the timer, the guard `phase === 'solid'` failed, and the timer was never
+re-armed. `SplashScreen.jsx:50–55` before the fix.
+
+**Why nobody saw it.** Every check was visual. The keyframe harness recorded the fade and stopped;
+`check-previews` reports console errors, 404s and empty mounts, none of which this is. An element at
+opacity 0 is not in a screenshot. This is the fourth finding in the record that only driving could
+find (after F-39, F-60, F-61, F-62), and the first that a screenshot could not have found at all.
+
+**Fix.** Two effects: one that decides `solid → leaving`, one keyed on `leaving` alone that owns the
+timer and `onDone`. `pointer-events: none` on the root during `leaving`, so the 320 ms fade does not
+hold the app hostage either. No visual change.
+
+**Gate added.** `npm run check:app` (`tools/check-app-boot.mjs`) boots `app/index.html` — or a URL —
+on a 375×812 phone and asserts what a frame strip cannot: the splash mounts, the splash *unmounts*,
+the element under the centre of the screen is not the splash, and the composer takes a keystroke.
+Run against the old live build it fails on three of four rows; against the fix it passes at
+~1.6–1.9 s. `build:app` prints it as the step before deploying.
+
+**Gates after: `check:app` OK local · 3/3 brand spec pages clean · system adherence unchanged ·
+integrity updated · redeployed and re-checked on the live URL.**
