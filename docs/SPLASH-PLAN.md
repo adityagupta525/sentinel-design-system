@@ -652,3 +652,65 @@ That is where it stands, and it is not solved by another guess at proportions.
 **Worth asking before more work goes into it:** his own expression board is **all head**, and the
 splash needs a head. The full body exists on the character sheet but no surface in this product has
 asked for a chest yet.
+
+---
+
+# Part 8 — the chosen mascot, in Sentinel's palette, and what the splash does with it
+
+21 Sep 2026. The owner picked a specific mascot and asked for it built exactly, in our palette, and
+for the splash's colour plan.
+
+**Said once, because it is a real risk and then it is his call:** an exact copy of another designer's
+character becomes this brand's face, and that is an IP exposure a logo review would flag. Changing the
+palette and owning the proportions reduces it. Built as asked.
+
+## The form, and the two bugs worth remembering
+
+`~/Downloads/sentinel-mascot/sentinel-bot-v4.blend` — a rounded-box head as the dominant mass, a dark
+face plate proud of the front with a generous margin, **two small rounded-square eyes low and right
+of centre** (that offset is the reference's signature; centred eyes lose the character), a tab on the
+left side, and a tiny body tucked under.
+
+1. **The plate was 0.03 proud of the head and therefore invisible.** Measured rather than eyeballed:
+   head front at y −1.00, plate front at −1.03.
+2. **Then it shot 1.06 proud**, because these meshes have their location baked into the mesh data, so
+   setting `.location` double-counted it. Fixed by *solving* placement from a measurement —
+   `put_front(o, target)` reads the evaluated bounds and moves by the difference — instead of
+   computing it from assumed dimensions.
+
+Still not right, and not claimed as right: the head reads as a box where the reference is a pillow,
+and the plate is flat where the reference's is softly domed.
+
+## Colour, from the system's own tokens
+
+| Part | Token | Why |
+|---|---|---|
+| Shell | `--color-desk` `#dedbd6` | A pale mass reads as one silhouette against ink |
+| Face plate | `--color-ink` `#251f1b` | Same value as the splash ground, so the face reads as **depth** rather than as a panel |
+| Eyes | `--color-bronze` `#b69377`, lit | The only chromatic thing on the screen |
+| Side tab | `--color-bronze-deep` `#715035` | One accent, stated once |
+
+**Emission had to come down from 10 to 2.2.** At 10 the bronze clipped to white and the hue was gone —
+a lit element still has to be the colour it claims to be.
+
+A dark variant swaps the shell to `--color-ink` for light grounds. Same four tokens either way; no
+colour enters the system for the mascot.
+
+## The splash, with the mascot in it
+
+Ground is `--color-ink`. This obeys rule 1 without being asked to: **one hue, in one place, on the
+whole screen** — the eyes. Everything else is ink and desk.
+
+| # | Beat | Duration | Token | What happens |
+|---|---|---|---|---|
+| 1 | Ink | 0 ms | — | The screen is `--color-ink`. Nothing else |
+| 2 | **The eyes come on** | 240 ms | `--dur-enter` | Two bronze rounded squares appear in the dark. **The mascot is not visible yet — only its eyes** |
+| 3 | The shell resolves | 480 ms | `--dur-bar` | The pale head fades up around them, the plate staying ink so the face reads as a hole |
+| 4 | Hold | as long as the work takes | — | If it runs long the eyes pulse — 1.2 s, 150 ms stagger, the rhythm `SentinelThinking` already uses |
+| 5 | Hand off | 320 ms | `--dur-screen` | `ds-screen-out` → `ds-screen-in` into Home |
+
+**The story is one line: the eyes open before the face exists.** It costs no new token, no new easing
+and no new colour — beat 2 is `--dur-enter`, beat 3 is `--dur-bar`, beat 5 is `--dur-screen`, and the
+hold borrows a rhythm the product already performs.
+
+Reduced motion: the whole thing arrives at full opacity with no stagger, and beat 5 is a crossfade.
