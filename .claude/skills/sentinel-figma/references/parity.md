@@ -26,30 +26,51 @@ no legacy to carry.
 
 ## Gate B · Visual parity — measured, not eyeballed
 
-Both sides are rendered to PNG at the same box and compared numerically.
+Both sides are rendered to PNG **at the same box, the same bleed and the same ground**, then
+compared numerically.
 
 ```bash
-# the product side — the existing harness, already used for every spec page
-node tools/phone-shot.mjs <page.html> <n> /tmp/web.png
+# the product side
+node tools/component-shot.mjs Badge /tmp/w.png --scale 1 \
+  --props '{"variant":"status","tone":"over"}' --children 'OVER CEILING'
 
-# the Figma side — export the node through the MCP, then
-node tools/figma-parity.mjs /tmp/web.png /tmp/figma.png --label SentinelBlock
+# the Figma side: build a stage — a frame of (w + 2·bleed) × (h + 2·bleed), filled with the same
+# ground, holding the instance inset by the bleed — then get_screenshot it and curl the PNG.
+
+node tools/figma-parity.mjs /tmp/w.png /tmp/f.png --label Badge-status-over
 ```
 
-`tools/figma-parity.mjs` reports the differing-pixel percentage, the worst row and column, and
-writes a side-by-side plus a difference image. It exits non-zero above the threshold.
+Three things had to be true before the number meant anything, and each was found by running it:
 
-**The threshold is 2% of pixels, and it is not zero on purpose.** The browser and Figma rasterise
-text with different hinting, so identical type differs on the glyph edges by a pixel or two. What 2%
-does *not* absorb is a wrong colour, a wrong radius, a 2px spacing error or a missing element —
-every one of those moves whole regions, not edges. If a diff is under 2% but the difference image
-shows a solid block rather than a halo of edges, that is a failure whatever the number says.
+**1. The same ground.** A shadow is only visible against something. A transparent PNG compared with
+a composited one fails on every shadowed pixel for a reason that has nothing to do with the
+component. `--ground` defaults to `var(--color-canvas)`.
 
-**The probe must be shown able to fail.** Before trusting a pass, run the tool once with one side
-deliberately wrong — a component exported at the wrong variant, or the web shot taken at a different
-width — and confirm it reports the failure. A gate nobody has seen fail is not a gate; this
-repository has already shipped one of those (F-80, where every visual check passed on a splash that
-was swallowing every tap).
+**2. The same bleed.** Every drop shadow and the `meta` badge's ring live *outside* the border box,
+and an element screenshot clips exactly there. `--bleed 8` on both sides. The first version clamped
+the clip at zero, which put the whole bleed on the right and bottom while Figma inset the instance
+on all four sides — a 21% failure with the entire perimeter differing, and nothing wrong with the
+component.
+
+**3. The right question.** A fixed percentage is meaningless across sizes: the *same* glyph
+rasterisation difference scored 0.34% on a 359×88 card and 10% on an 87×18 badge, because on the
+badge the text is most of the image. So the gate asks three questions instead of one:
+
+| Check | Passes when | Catches |
+| --- | --- | --- |
+| **Inked box** | every edge within `--slack` (default 1px) | a shifted, mis-sized or mis-padded component — the thing a percentage cannot see on a solid shape, where a 3px displacement scored 1.98% |
+| **Interior differences** | at or under `--threshold` (2%) | a wrong fill, a missing element, a wrong colour. A pixel is *interior* when it has no differently-coloured neighbour in the same image, so it is not an antialiased edge |
+| **Dense rows** | at most 2 rows differ by more than half | a recoloured or shifted band that slips under the threshold |
+
+Edge pixels are reported but do not fail: at 10px the two rasterisers disagree about the
+antialiasing of every glyph, which no component can fix. Surface passed with 72 edge pixels and
+**0 interior**; Badge with 160 edge pixels and **0 interior**, box exact at 87×18.
+
+**The probe must be shown able to fail.** `npm run check:figma-parity` runs seven checks: an
+identical pair scores 0.00, one token wrong scores 53%, a one-channel difference is ignored, a
+1px shift is forgiven in pixels and reported in the box, and a 3px shift is caught *by the box*.
+A gate nobody has seen fail is not a gate — this repository has already shipped one of those
+(F-80, where every visual check passed on a splash that was swallowing every tap).
 
 ## What Gate B is not allowed to be used for
 
@@ -59,6 +80,14 @@ was swallowing every tap).
   illustrates the timing; it is not the timing.
 - **Not at the glyph.** Parity is measured at the component box. A line that breaks one word earlier
   in Figma at the same width is a text-layout difference, recorded, not a defect to chase.
+
+## Type: the register, not an exemption
+
+A text node passes Gate A when it uses one of the 14 roles **or** its exact combination — weight,
+size, leading, tracking — appears in `type-register.md`. Fifty-eight declarations across the
+components compose type from primitives rather than using a role, and the owner's ruling of
+21 Sep is to build those faithfully and register them. Registered is not excused: the font size
+must still be a bound variable, and the register is generated, so it cannot quietly grow.
 
 ## Recording it
 

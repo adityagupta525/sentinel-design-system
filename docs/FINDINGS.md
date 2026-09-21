@@ -2464,3 +2464,40 @@ mechanical, touches many files, and makes Figma and code agree; (b) delete the u
 the palette be the only layer, which loses the semantics; or (c) leave it and accept that Figma
 names the meaning while the code names the value. **Nothing should be changed before that ruling** —
 this is a visible-behaviour-neutral refactor, but it is a large one.
+
+---
+
+## F-82 · Half the components compose type from primitives instead of using a role — Open, for the owner
+
+Found while building the Figma library, 21 Sep 2026, and it is F-81's twin in typography.
+
+The system has **14 type roles** — `body`, `row`, `label`, `meta` and the rest — each a composite of
+weight, size, leading and family. **80 declarations across 38 components do not use one.** They write
+`fontWeight: var(--weight-medium)` and `fontSize: var(--text-12)` inline, which CSS allows and which
+keeps the tokens, but bypasses the ramp.
+
+`npm run build:figma-map` generates the full register at
+`.claude/skills/sentinel-figma/references/type-register.md`. Two groups:
+
+- **22 uses, 8 combinations, identical to a role** on weight, size, leading and tracking —
+  `medium/14/20` is `body-strong`, `regular/11/15` is `caption`, `medium/16/24` is `title`. These
+  are pure duplication: the role exists and says the same thing.
+- **58 uses, 29 combinations with no role at all** — `medium/12`, `regular/12/17`, `semibold/14`,
+  `bold/16`, `regular/13/19`, and twenty-four more, most used once or twice. Several set **no line
+  height**, so the browser's default applies: an unset line height on a 16px bold heading is not a
+  decision anybody made.
+
+Tracking is part of the combination and matters: `Badge` draws bold/10 at **0.04em** where the
+`eyebrow` role is bold/10 at **0.08em**. Matching on weight and size alone would have called them
+the same and Gate B would have failed on a difference the register had hidden.
+
+**What it costs.** A change to the ramp moves 28 components and misses 38. And in Figma those text
+nodes cannot attach to a style, so the type is written out node by node.
+
+**The owner's ruling, 21 Sep, and it is already in force:** build Figma faithfully and register the
+gaps — inventing 29 more styles would turn a 14-step ramp into a 43-step list, and normalising the
+code to the nearest role would be a restyle. Gate A's type rule is therefore: **a role, or a
+registered combination**, with the font size still a bound variable. Nothing in the code changed.
+
+**Still the owner's to rule on later:** the 22 uses that duplicate an existing role are a free
+migration — same pixels, one-line change each — and worth doing before the ramp is ever touched.

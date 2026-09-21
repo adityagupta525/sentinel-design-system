@@ -13,17 +13,17 @@ Read from each `.d.ts`, and the type decides — this is not a judgement call at
 
 | `.d.ts` type | Figma | Count |
 | --- | --- | --- |
-| a string union (`'outline' \| 'smart'`) | **variant set**, one variant per member | 46 |
-| `boolean` | **BOOLEAN property** | 60 |
+| a string union (`'outline' \| 'smart'`) | **variant set**, one variant per member | 48 |
+| `boolean` | **BOOLEAN property** | 61 |
 | `string` | **TEXT property** | 158 |
-| `ReactNode` / `JSX.Element` | **INSTANCE_SWAP** | 34 |
+| `ReactNode` / `JSX.Element` | **INSTANCE_SWAP** | 35 |
 | a function | an **interaction** — a prototype link, never a variant | 71 |
-| anything else (data, objects, arrays) | **not a property.** It is content: fill the instance and move on | 95 |
+| anything else (data, objects, arrays) | **not a property.** It is content: fill the instance and move on | 97 |
 
 **Never a variant per icon** — that is what `INSTANCE_SWAP` is for. And a component whose variant
 matrix would exceed 30 gets split, not built.
 
-95 of 98 components declare props; the rest take none and are a single
+96 of 98 components declare props; the rest take none and are a single
 component with no variants.
 
 Variant values are shown in **bold** below with their members, because those are the variant sets
@@ -54,7 +54,7 @@ that have to exist and nobody should have to re-read a `.d.ts` to find them.
 | `Mascot` | `size` · **`state`**=waking｜attentive｜working · **`tone`**=light｜dark · `label` | 1 other, 2 VARIANT, 1 TEXT |
 | `SplashScreen` | `until` · `onDone` · `mascotSize` · `label` | 2 other, 1 interaction, 1 TEXT |
 
-## `cards` — 15 components, 10 variant sets
+## `cards` — 15 components, 12 variant sets
 
 | Component | Props | Figma |
 | --- | --- | --- |
@@ -72,7 +72,7 @@ that have to exist and nobody should have to re-read a `.d.ts` to find them.
 | `MoveCard` | `n` · `title` · `body` | 1 other, 2 TEXT |
 | `RejectCallout` | `eyebrow` · `body` · `chips` · `onChip` | 3 TEXT, 1 interaction |
 | `ResultCard` | **`journey`**=proposal｜review｜rebalance · **`state`**=draft｜saved｜sent · `title` · `provenance` · `summary` · `savedAt` · `children` | 2 VARIANT, 4 TEXT, 1 INSTANCE_SWAP |
-| `Surface` | — | — |
+| `Surface` | `children` · **`elevation`**=raised｜soft｜ring｜flat · **`tone`**=surface｜canvas｜bubble · `radius` · `padding` · `grow` | 1 INSTANCE_SWAP, 2 VARIANT, 2 other, 1 BOOLEAN |
 
 ## `chat` — 17 components, 3 variant sets
 
