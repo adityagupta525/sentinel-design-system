@@ -331,3 +331,100 @@ start its server, and it is reachable.
 4. The 11 × 7 face, placed by hand against that view. Three states.
 5. `MascotFace`, `SplashScreen`, the haptic contract — in that order, each with its spec page.
 6. The two call sites swap. `IconSparkle` stays in the set; it stops being the signature.
+
+---
+
+# Part 3 — the marks, drawn and looked at
+
+21 Sep 2026. Six candidates drawn on a 24 × 24 grid at 1.5 stroke, rendered at 13 / 18 / 24 / 64 px
+and then placed in a real turn at 375 pt. Renders in `scratchpad/marks.png`, `marks2.png`,
+`turn.png`, `sizes.png`.
+
+## What the renders said, including where I was wrong
+
+**My prediction in Part 2 was that A (the visor) would survive and C (the dome) would not. Both were
+wrong.**
+
+| Candidate | At 13 px |
+|---|---|
+| A · visor, stroke | Reads as a **plug socket**. Not a face |
+| A2 · visor, filled | Better, still a socket or a domino |
+| B · eyes alone | Two dots. Legible, calm — but punctuation, not a creature |
+| C · dome, stroke | Mush, as predicted |
+| C3 · dome, filled | **The best face of the six** — and still a blob at 13 px |
+| D · dome + visor slot | A bridge, or a handbag |
+| E · dome + eye band | The band and the eyes merge into a grey slot |
+| F · dome, squarer eyes | Reads, marginally heavier and more machine than C3 |
+
+**Stroke does not survive 13 px. That settles RULING 6: the mark is filled.** It will be the only
+filled glyph in the set, and that is defensible because it is a signature rather than an icon.
+
+## The finding that matters, and it is uncomfortable
+
+Placed in a real turn beside a real sentence, **at 13 px the mascot does not read as a mascot.** The
+two eyes merge into the mass and it becomes a small dark thumbprint. Next to it, the sparkle is
+lighter, more open and simply better at that size.
+
+Sizes were then tested in situ — 13, 16, 18:
+
+- **13 px** — blob.
+- **16 px** — the eyes begin to separate. A small head.
+- **18 px** — clearly a head with two eyes. **This is the floor at which the mascot exists.**
+
+**So the decision "the mascot replaces the sparkle" forces a second change: the turn signature grows
+from 13 px to 18 px.** That is visible on every turn in the product. It is not a like-for-like swap
+and it should not be presented as one.
+
+## The two honest routes
+
+**Route 1 — the mascot replaces the sparkle, and the signature grows to 18 px.**
+Faithful to the decision. Costs: every turn's header gets heavier, and the mascot is a filled shape
+where the sparkle was an outline, so the thread reads slightly more insistent. Recommended if the
+mascot is meant to be the product's face.
+
+**Route 2 — the mascot takes every surface that has room, and the turn keeps ✦.**
+Splash, app bar, drawer header, app icon — all of them at 18 px or larger, where the mascot works.
+The turn signature, the one place with only 13 px, keeps the sparkle. Costs: two marks in the system,
+which is the thing the "one door per thing" ruling dislikes. Recommended if the thread's weight
+matters more than uniformity.
+
+**My call: Route 1, at 18 px, with C3.** The mascot is worth having as the face or it is not worth
+having; a mascot that appears everywhere except the one surface the advisor looks at all day is the
+worse of the two compromises. But the 18 px growth is a visible change to every screen and therefore
+the owner's to accept — it is the one thing in Part 3 that is not mine to decide.
+
+## The rest of the rulings, taken
+
+**RULING 6 — filled or stroked.** **Filled.** Measured, not preferred.
+
+**RULING 7 — does `working` replace `SentinelThinking`'s three dots.** **No, not now.** The signature
+swap is already a visible change on every turn. Two at once and a regression cannot be attributed to
+either. The three dots stay; revisit once the mark has shipped and been lived with.
+
+**RULING 8 — pay contradiction 38.** **Half of it.** The mascot is drawn on the 24 px / 1.5 px grid,
+which is 38's stated end state, so it never needs redrawing. The other six glyphs are **not**
+normalised in this pass — the contradictions file says that changes every screen, and this change is
+already touching every turn. 38 stays open with one fewer glyph to convert.
+
+**The splash.** Read as **yes**.
+
+## Blender — the real state of it
+
+The tools were timing out, and it was not Blender. Measured:
+
+- `/Applications/Blender.app` is installed; **Blender 5.1.2 is now running** and its server is
+  listening on `127.0.0.1:9876`.
+- A raw socket client gets a reply in **0.01s** — the addon is healthy.
+- **The addon and the Claude extension speak different protocols.** Installed is the community
+  *Blender MCP v1.2 by BlenderMCP*, whose commands are `get_scene_info` / `execute_code` and whose
+  replies are plain JSON. The Claude extension is **Blender Lab's** `blender_mcp`, which sends
+  `{"type":"execute", "code":…, "strict_json":…}` terminated by a null byte and waits for a reply
+  containing one. The addon has no `execute` handler and never sends the null byte, so the bridge
+  waits its full 300s and times out.
+
+**The fix, in Blender:** Preferences → Get Extensions → Repositories → add remote repository
+`https://lab.blender.org/`, install and enable its **MCP** add-on, and disable the old *Blender MCP*
+so the two do not both claim port 9876.
+
+**Not blocked meanwhile.** `scratchpad/blender_exec.py` drives the running addon directly over the
+socket; `execute_code` works and returns output.
