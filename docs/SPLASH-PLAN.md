@@ -180,3 +180,154 @@ implementation waits.
 4. `screens/app.html` mounts the splash ahead of `Proto`, and `build:app` inlines it — the phone build
    is where a splash is actually worth having.
 5. Nothing in the design-system site changes. A splash on a spec page is a splash nobody asked for.
+
+---
+
+# Part 2 — decisions taken, and the mark's design problem
+
+21 Sep 2026. Rulings answered by the owner; nothing implemented, and nothing will be until the design
+is approved.
+
+## What was decided
+
+| # | Ruling | Answer |
+|---|---|---|
+| 1 | Where the mascot appears | **Splash, and it replaces the ✦ sparkle** as Sentinel's signature |
+| 2 | How many states | **Three.** `waking` · `attentive` · `working` |
+| 3 | Open the no-shared-element rule | **My call — see below. My vote is no** |
+| 4 | Native shell | **Yes.** So the haptic contract is real work, not paper |
+| 5 | Is a mascot wanted | **Yes, as the replacement for ✦**, not as an addition |
+
+**One reading to confirm.** *"1. splash n and wo sentinel ke saath jo star aata hai usko replace kare"*
+is read as **splash yes, AND the star is replaced** — "n" as "and". The other reading is "splash: no".
+Everything below assumes the first. One word corrects it and costs nothing yet.
+
+## The blast radius is two files
+
+Measured, not estimated. `IconSparkle` renders in the product in exactly two places:
+
+- `design-system/components/chat/SentinelBlock.jsx:14` — the signature on every Sentinel turn. This
+  is the one that matters.
+- `design-system/components/shell/Drawer.jsx:78` — the drawer header.
+
+Everything else is the component itself, its contract, its spec page, seven `*.card.html` kit boards,
+`assets/icons/sparkle.svg`, and the three home-screen icons built on 21 Sep. The change is small
+because the system routed the signature through one component instead of drawing it per screen.
+
+## The constraint that decides the whole design
+
+**The signature renders at 13 px.** `IconSparkle` takes `size = 18` and draws its svg at
+`Math.round(size * 0.72)` — thirteen pixels.
+
+An 11 × 7 dot matrix in a 13 px box gives dots of about 1.2 px. **The face cannot be the signature.**
+
+So the mascot is **one character at two resolutions**, and they are different drawings:
+
+| | Where | Size | How it is drawn |
+|---|---|---|---|
+| **The mark** | Turn signature, drawer header, app icon | 13–18 px | A glyph, in the icon set's language |
+| **The face** | Splash, and nowhere else yet | ~200 px | The 11 × 7 dot matrix from Part 1 |
+
+They must read as the same creature. That is the actual design problem, and it is the one to solve
+before Blender is opened — because what Blender produces has to survive being reduced to nine legible
+pixels.
+
+## Three directions for the 13 px mark
+
+Each is derived from features the reference renders actually have — a dome head, a dark visor, two
+round eyes, small side discs — and each is drawn in the icon set's own stroke language so it sits in
+the family rather than beside it.
+
+**A · The visor.** A rounded-square outline, two filled dots inside. The most face-like of the three
+at small size. *Risk: at 13 px a box with two dots can read as a die, or a socket.*
+
+**B · The eyes alone.** Two filled dots, no container. The simplest possible mark, and it inherits
+`SentinelThinking`'s vocabulary directly — that component is already three bronze dots. *Risk: two
+dots with nothing around them is a colon; it may not read as a creature at all.*
+
+**C · The dome.** The head's silhouette — a half-dome over a flat base — with two eye dots inside.
+The most characterful and the closest to the renders. *Risk: three strokes plus two dots in a 9 px
+usable field is the classic recipe for mush.*
+
+**The honest prediction is that A survives and C does not**, but a prediction is not a finding. All
+three get drawn and rendered at 13, 18 and 24 px against the existing eleven icons before any of them
+is called right.
+
+**One question the three share.** The icon set is entirely **stroke**. A signature mark may be better
+**filled** — a solid visor with the eyes knocked out reads far better at 13 px than any stroke can. It
+would be the only filled glyph in the set. That is defensible, because it is a signature and not an
+icon, but it is a visible change and therefore a ruling.
+
+**RULING 6 — may the signature mark be filled rather than stroked?**
+
+## My vote on ruling 3, and why it changed
+
+**No. Do not open the no-shared-element rule.** The reason is no longer just rule-compliance.
+
+Once the mascot is the permanent signature, the splash face and the mark in the app bar are **the same
+object**. A crossfade that lands the mark at the size and position it already occupies reads as one
+thing persisting — which is the feeling the shared-element transition was going to buy. The rule would
+be opened to build an effect the new identity gives for free.
+
+Keep beat 5 as `ds-screen-out` → `ds-screen-in`, and get the continuity from the mark being in both
+frames.
+
+## A second idea the decision unlocks
+
+`SentinelThinking` today is three bronze dots pulsing on opacity, 1.2s, staggered 150ms, beside the
+signature. With the mascot as the signature, **the `working` state could live in the mark's own eyes**
+— the same rhythm, the same tokens, one element instead of two.
+
+It is the better idea and it is a visible change to a settled component, so it is not taken here.
+
+**RULING 7 — does `working` replace the three dots, or sit beside them?**
+
+## Contradiction 38's trigger has arrived
+
+The system's own contradictions file, item 38, is **open debt deliberately unpaid**:
+
+> Icon grid: six source glyphs on six grids (17.33 / 18 / 15 / 12.37 / 13.33 / 12.58) with 1.33–1.5px
+> strokes… **Trigger: at the app's next visual refresh, redraw all six onto the 24px grid at 1.5px
+> stroke and collapse the set to one origin.**
+
+Replacing the product's signature glyph **is** the app's next visual refresh. Measured now: four icons
+at 1.33, seven at 1.5 — the drift is real and it is the set the mascot has to join.
+
+**Recommendation: pay 38 in the same pass.** Drawing a new signature onto a grid the set is about to
+abandon means drawing it twice.
+
+**RULING 8 — pay contradiction 38 with the mascot, or leave it open?**
+
+## What Blender is for, and what it is not
+
+Blender is **not** where the in-product asset comes from — the product ships no images, and that has
+not changed. It is worth opening for two things:
+
+1. **The brand renders.** Deck covers, the website, App Store screenshots, the handover's front page.
+   The three images already produced are close; they live outside the product, where no rule applies.
+2. **The orthographic front view of the head, as reference.** Render the head flat-on with no
+   perspective and no lighting, and use it to *place* the dot matrix deliberately — read the drawing,
+   decide each of the 77 dots. **Not to sample it.** A quantised photo is a picture of a face; a
+   placed grid is a drawn one, and only the second survives at three different sizes.
+
+**Blender is not connected right now** — `localhost:9876` refuses. Open Blender, enable the MCP addon,
+start its server, and it is reachable.
+
+## The skills, re-checked now that the work is different
+
+| Skill | Then | Now |
+|---|---|---|
+| `fable-iconography` | Not used | **The directly useful one.** Icon families on a keyline grid, one stroke and radius, optical sizing, legibility at small size — which is exactly the 13 px problem |
+| `brandkit` | Not used | **Useful later**, for the brand board and the deck, once the mark exists |
+| `fable-motion-design` | Not used | **Useful at beat 3**, and it renders motion as a GIF rather than describing it |
+| `gustavo-fior/craft` | Rejected | **Still rejected** — but its one idea with nothing equivalent here, *optical alignment*, stops being theoretical at 13 px, where a mathematically centred glyph reads off-centre |
+| `cube-motion` | Rejected | **Still rejected.** 0.1.0, two days old, its repository 404s, and `morph` is the transition this system does not have |
+
+## Order of work, once approved
+
+1. Draw A, B and C. Render each at 13, 18 and 24 px beside the existing eleven icons. Look at them.
+2. Owner picks one. Rulings 6, 7 and 8 answered against a real drawing rather than a description.
+3. Blender: the head, then the orthographic front view.
+4. The 11 × 7 face, placed by hand against that view. Three states.
+5. `MascotFace`, `SplashScreen`, the haptic contract — in that order, each with its spec page.
+6. The two call sites swap. `IconSparkle` stays in the set; it stops being the signature.
