@@ -2,6 +2,10 @@
    The public entry point of the Sentinel design system. Consumers import components from here;
    _adherence.oxlintrc.json warns on any import that reaches into components/ directly. */
 
+/* brand */
+export { DotField } from './components/brand/DotField.jsx';
+export { Mascot } from './components/brand/Mascot.jsx';
+export { SplashScreen } from './components/brand/SplashScreen.jsx';
 /* text */
 export { Eyebrow } from './components/text/Eyebrow.jsx';
 export { EyebrowDivider } from './components/text/EyebrowDivider.jsx';

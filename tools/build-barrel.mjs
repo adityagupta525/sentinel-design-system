@@ -10,7 +10,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const DS = join(dirname(fileURLToPath(import.meta.url)), '..', 'design-system');
-const DIRS = ['text', 'icons', 'shell', 'actions', 'forms', 'lists', 'cards', 'chat', 'composer', 'data'];
+/* `brand` added 21 Sep 2026 — the mascot, the dot field and the splash. This list is the gate: a group
+   missing here is missing from the barrel, therefore from the bundle, therefore from every page,
+   which fail with "Element type is invalid… got: undefined" rather than naming the cause. */
+const DIRS = ['brand', 'text', 'icons', 'shell', 'actions', 'forms', 'lists', 'cards', 'chat', 'composer', 'data'];
 const NAMED = /^export\s+(?:async\s+)?(?:function|const|class)\s+([A-Za-z_$][\w$]*)/gm;
 const TYPES = /^export\s+(?:type|interface)\s+([A-Za-z_$][\w$]*)/gm;
 

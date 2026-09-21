@@ -182,6 +182,9 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 @keyframes ds-screen-in{from{transform:translateX(100%);opacity:.6}to{transform:none;opacity:1}}
 @keyframes ds-screen-out{from{transform:translateX(0)}to{transform:translateX(-30%)}}
 @keyframes ds-table-nudge{0%{transform:translateX(0)}35%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+@keyframes ds-splash-leave{from{opacity:1}to{opacity:0}}
+.ds-splash .ds-splash-solid{animation:ds-fade var(--dur-enter) var(--ease) both}
+.ds-splash .ds-splash-dots{animation:ds-splash-leave var(--dur-enter) var(--ease) both}
 .ds-table-nudge>*{animation:ds-table-nudge 640ms var(--ease) both}
 .ds-pressable{outline:none}
 .ds-pressable:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
@@ -199,6 +202,7 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 @keyframes ds-screen-out{from{transform:none}to{transform:none}}
 *,*::before,*::after{transition-duration:1ms!important;scroll-behavior:auto!important}
 @keyframes ds-table-nudge { 0%, 100% { transform: none; } }
+@keyframes ds-splash-leave { from { opacity: 1; } to { opacity: 0; } }
 }
 </style>
 <style>

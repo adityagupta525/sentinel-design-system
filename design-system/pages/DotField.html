@@ -1,0 +1,59 @@
+<!-- @dsCard group="Pages" viewport="1000x1180" name="DotField" subtitle="Bronze dots on tilted orbits that settle onto the mascot’s geometry — eyes first" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DotField — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/index.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { DotField } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze','--color-ink','--dur-enter','--dur-bar','--ease'];
+function App() {
+  return (
+  <PageShell name="DotField" group="Brand" status="shipped" requires={['DotField']}
+    summary="The splash's reveal, and the one place this system draws with a canvas. Every dot starts on a tilted orbit and settles onto the same rounded rectangles Mascot draws, sampled evenly by arc length — eyes first, then plate, then head — so the eyes open before the face exists and the settled field IS the mascot. The method is thinking-orbs' (Jakub Antalik, MIT); the dependency is not taken, and the record of what was and was not is in sentinel-craft/references/borrowed.md. One colour, read from --color-bronze at mount; depth is alpha alone.">
+    <Block n={1} title="Specimen" sub="Settled. Reload the page to watch it arrive — the settle runs once, on mount.">
+      <Specimen width={343}><div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><DotField size={168} /></div></Specimen>
+    </Block>
+    <Block n={2} title="States" sub="The three moments a field can be in. `in orbit` is held open here with a long settle so the orbits can be seen; in the splash it lasts --dur-enter + --dur-bar.">
+      <Grid cols={3} itemWidth={311} items={[
+        {label:'in orbit', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><DotField size={140} settleMs={600000} /></div>, note:'Tilted orbits, depth as alpha. The library\'s working state, in one bronze.'},
+        {label:'settled', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><DotField size={140} settleMs={1} /></div>, note:'The mascot, in dots. Nothing moves.'},
+        {label:'working', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><DotField size={140} settleMs={1} working /></div>, note:'Settled dots breathe at 1.2s — SentinelThinking\'s rhythm.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={4} title="Props"><Props src="../components/brand/DotField.d.ts" /></Block>
+    <Block n={5} title="Motion">
+      <Motion rows={[
+        {name:'Orbit', property:'position on a tilted orbit; alpha .32–.82 by depth', duration:'continuous, until the settle', reduced:'Not shown — the field draws its settled frame once.'},
+        {name:'Settle', property:'orbit → target, smoothstep; eyes 0–38%, plate 18–72%, head 40–100% of the window', duration:'--dur-enter + --dur-bar, 720 ms', reduced:'Skipped — settled frame, once.'},
+        {name:'working', property:'alpha × .62–1, sinusoidal, per-dot phase', duration:'1200 ms, looping', reduced:'Still.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+
+</script>
+</body></html>

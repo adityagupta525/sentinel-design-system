@@ -9,7 +9,7 @@
    Usage: paste into the project's script runner (it uses ls / readFile / saveFile), or adapt the three
    helpers to node:fs. Scanning + reading 70 sources exceeds a 30s budget in one pass, so it runs in
    three steps and writes pages/_index.json at the end. */
-const DIRS = ['actions', 'cards', 'chat', 'composer', 'data', 'forms', 'icons', 'lists', 'shell', 'text'];
+const DIRS = ['actions', 'brand', 'cards', 'chat', 'composer', 'data', 'forms', 'icons', 'lists', 'shell', 'text']; // brand added 21 Sep 2026 — the third copy of this list
 const GROUP_BY_DIR = { actions: 'Input', forms: 'Input', cards: 'Chat', chat: 'Chat', composer: 'Chat', data: 'Data', icons: 'Foundations', lists: 'Navigation', shell: 'Foundations', text: 'Foundations' };
 /* Where the directory is the wrong answer. Groups are v10 §2.4: Foundations (tokens, type, motion) ·
    Chat (thread, composer, dock, artifact card) · Data (charts, table, overlap, stat tiles) ·

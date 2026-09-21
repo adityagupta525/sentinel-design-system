@@ -8,6 +8,7 @@ for _r in _idx['rows']:
     _k = (_r.get('file') or '').split('/')[1] if _r.get('file') else '?'
     g.setdefault(_k, []).append({'n': _r['name'], 'p': _r.get('page')})
 GROUP_NOTE = {
+ 'brand': 'The character. The one thing in the system that is not a control — drawn from the same tokens as everything that is, and the reveal that brings it in.',
  'chat': 'The thread. Sentinel’s half of a turn, the advisor’s half, and everything that arrives between them.',
  'cards': 'What an answer becomes — the artifact, the result, the sheet an advisor decides in.',
  'data': 'Figures, and the three devices allowed to draw them. One hue, always direct-labelled.',
@@ -19,7 +20,7 @@ GROUP_NOTE = {
  'forms': 'Search, selection, and a file the advisor attached.',
  'lists': 'A row, a card of rows, and the follow-up row a turn offers.',
 }
-ORDER = ['chat','cards','data','actions','shell','composer','forms','lists','text','icons']
+ORDER = ['brand','chat','cards','data','actions','shell','composer','forms','lists','text','icons']
 JOURNEYS = [
  ('A','Risk','What is this client’s risk number?','screens/journey-a/risk-profile.html','Twelve questions, mostly one tap, ending in a number you can build against.'),
  ('B','Drift','Why did this portfolio drift, and what would fixing it cost?','screens/journey-b/03-thread-answer.html','The trace, the answer, the artifact that expands in place, two moves and their cost.'),

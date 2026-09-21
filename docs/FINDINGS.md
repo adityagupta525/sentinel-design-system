@@ -2376,3 +2376,21 @@ load per sentence, all seven reach the right journey.
 **Gates after: 145/145 preview pages clean · screens adherence 0 · system adherence 59, unchanged ·
 125/125 cover links under the artifact CSP · integrity 449 files · `site/` 255 files, at the limit,
 which is why `screens/app.html` is staged by `build:app` instead.**
+
+---
+
+## F-79 · The mascot, the dot field and the splash — built, and the four things that broke first — Closed 21 Sep 2026
+
+Full account in `docs/SPLASH-PLAN.md` Part 9. Three components in a new `brand` group; the splash wired
+into the phone build over the product, covering `document.fonts.ready`; motion captured frame by
+frame and matching the plan — the eyes land at ~245 ms while the rest of the field still orbits.
+
+The four defects met on the way are the ones worth keeping: **three separate hardcoded group lists**
+(barrel, bundle, index) that fail a new group with an error pointing at the wrong place; **named hook
+imports** that the `react-global` alias cannot resolve; a **generator that produced triple braces**
+because a constant already carried doubled ones; and a **screenshot harness whose timestamps were
+requested times, not capture times**, because `screenshot()` waits for pending fonts — which made a
+working splash look absent.
+
+**Gates after: 148/148 preview pages clean · system adherence 59, unchanged · screens adherence 0 ·
+tokens 0 undefined · integrity updated · artifact cover links all mount.**

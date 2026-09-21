@@ -16,6 +16,7 @@
         "patterns": [
           {
             "group": [
+              "components/brand/**",
               "components/actions/**",
               "components/cards/**",
               "components/chat/**",

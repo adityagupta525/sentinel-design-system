@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -49,6 +49,7 @@ var __ds_out = (() => {
     DetourBanner: () => DetourBanner,
     DisclosureBlock: () => DisclosureBlock,
     Dock: () => Dock,
+    DotField: () => DotField,
     DownloadAction: () => DownloadAction,
     Drawer: () => Drawer,
     DrawnCheck: () => DrawnCheck,
@@ -79,6 +80,7 @@ var __ds_out = (() => {
     List: () => List,
     ListRow: () => ListRow,
     MOTION_CSS: () => MOTION_CSS,
+    Mascot: () => Mascot,
     MessageActions: () => MessageActions,
     MoneyComposer: () => MoneyComposer,
     MotionGuard: () => MotionGuard,
@@ -114,6 +116,7 @@ var __ds_out = (() => {
     SentinelThinking: () => SentinelThinking,
     SentinelTurn: () => SentinelTurn,
     Sparkline: () => Sparkline,
+    SplashScreen: () => SplashScreen,
     StandingDisclosure: () => StandingDisclosure,
     StatTile: () => StatTile,
     StatusSpacer: () => StatusSpacer,
@@ -410,6 +413,245 @@ var __ds_out = (() => {
       },
       /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-semibold)", fontSize: "var(--text-12)", lineHeight: "var(--leading-18)", color: "var(--color-ink)" } }, label),
       /* @__PURE__ */ react_global_default.createElement(IconChevronRight, null)
+    );
+  }
+
+  // design-system/components/brand/DotField.jsx
+  var GEO = {
+    // Mascot.jsx's geometry, 100 × 74
+    head: { x: 4, y: 4, w: 92, h: 66, rx: 18 },
+    plate: { x: 27, y: 17, w: 46, h: 40, rx: 8 },
+    eyes: [{ x: 51, y: 42, w: 8, h: 8 }, { x: 61, y: 42, w: 8, h: 8 }]
+  };
+  var smooth = (x) => {
+    const t = Math.max(0, Math.min(1, x));
+    return t * t * (3 - 2 * t);
+  };
+  var hash = (a, b) => {
+    const s = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  function roundedRectPoints(r, n) {
+    const pts = [];
+    const seg = 10;
+    const corners = [
+      [r.x + r.w - r.rx, r.y + r.rx, -Math.PI / 2, 0],
+      [r.x + r.w - r.rx, r.y + r.h - r.rx, 0, Math.PI / 2],
+      [r.x + r.rx, r.y + r.h - r.rx, Math.PI / 2, Math.PI],
+      [r.x + r.rx, r.y + r.rx, Math.PI, Math.PI * 1.5]
+    ];
+    for (const [cx, cy, a0, a1] of corners) {
+      for (let i = 0; i <= seg; i++) {
+        const a = a0 + (a1 - a0) * (i / seg);
+        pts.push([cx + Math.cos(a) * r.rx, cy + Math.sin(a) * r.rx]);
+      }
+    }
+    const L = [0];
+    for (let i = 1; i <= pts.length; i++) {
+      const p = pts[i - 1], q = pts[i % pts.length];
+      L.push(L[i - 1] + Math.hypot(q[0] - p[0], q[1] - p[1]));
+    }
+    const total = L[L.length - 1], out = [];
+    for (let k = 0; k < n; k++) {
+      const target = k / n * total;
+      let i = 0;
+      while (L[i + 1] < target) i++;
+      const p = pts[i], q = pts[(i + 1) % pts.length], f = (target - L[i]) / Math.max(1e-6, L[i + 1] - L[i]);
+      out.push([p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f]);
+    }
+    return out;
+  }
+  function filledGrid(r, cols, rows) {
+    const out = [];
+    for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) out.push([r.x + (i + 0.5) * (r.w / cols), r.y + (j + 0.5) * (r.h / rows)]);
+    return out;
+  }
+  function buildField() {
+    const dots = [];
+    const add = (pts, group, win, weight) => pts.forEach(([tx, ty], i) => {
+      const h1 = hash(i, group), h2 = hash(i + 7, group * 3 + 1), h3 = hash(i + 13, group * 5 + 2);
+      const th = h1 * Math.PI * 2, phi = Math.acos(2 * h2 - 1);
+      const nx = Math.sin(phi) * Math.cos(th), ny = Math.cos(phi), nz = Math.sin(phi) * Math.sin(th);
+      let ux = -ny, uy = nx;
+      const ul = Math.max(1e-6, Math.hypot(ux, uy));
+      ux /= ul;
+      uy /= ul;
+      const vx = -nz * uy, vy = nz * ux, vz = nx * uy - ny * ux;
+      dots.push({
+        tx,
+        ty,
+        weight,
+        win,
+        orbit: { ux, uy, vx, vy, vz, ro: 0.55 + 0.5 * h3, a0: h1 * 6.283, speed: (0.25 + 0.55 * h3) * (h2 > 0.5 ? 1 : -1) },
+        jitter: (h3 - 0.5) * 0.35
+      });
+    });
+    add(filledGrid(GEO.eyes[0], 3, 3), 1, [0, 0.38], 1);
+    add(filledGrid(GEO.eyes[1], 3, 3), 2, [0.04, 0.42], 1);
+    add(roundedRectPoints(GEO.plate, 48), 3, [0.18, 0.72], 0.85);
+    add(roundedRectPoints(GEO.head, 92), 4, [0.4, 1], 0.72);
+    return dots;
+  }
+  function DotField({ size = 168, settleMs, delayMs = 0, working = false, label = "Sentinel", onSettled }) {
+    const ref = react_global_default.useRef(null);
+    const field = react_global_default.useRef(null);
+    react_global_default.useEffect(() => {
+      const canvas = ref.current;
+      if (!canvas) return;
+      const css = getComputedStyle(canvas);
+      const ink = css.getPropertyValue("--color-bronze").trim() || "currentColor";
+      const readMs = (name, fb) => {
+        const v = css.getPropertyValue(name).trim();
+        const n = parseFloat(v);
+        return Number.isFinite(n) ? v.endsWith("ms") ? n : n * 1e3 : fb;
+      };
+      const dur = settleMs != null ? settleMs : readMs("--dur-bar", 480) + readMs("--dur-enter", 240);
+      const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(size * dpr);
+      canvas.height = Math.round(size * dpr);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      if (!field.current) field.current = buildField();
+      const dots = field.current;
+      const S = size * 0.78 / 100, ox = (size - 100 * S) / 2, oy = (size - 74 * S) / 2;
+      const cx = size / 2, cy = size / 2, R = size * 0.42;
+      const rBase = 1.6 * Math.pow(size / 168, 0.6);
+      const t0 = performance.now() + delayMs;
+      let raf = 0, settledFired = false, running = true;
+      const frame = (now) => {
+        const t = (now - t0) / 1e3;
+        const p = Math.max(0, Math.min(1, (now - t0) / dur));
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, size, size);
+        ctx.fillStyle = ink;
+        const yaw = t * 0.12, tilt = 0.3;
+        for (const d of dots) {
+          const e = smooth((p - d.win[0]) / (d.win[1] - d.win[0]));
+          const a = d.orbit.a0 + t * d.orbit.speed;
+          const ro = R * d.orbit.ro;
+          let x3 = (d.orbit.ux * Math.cos(a) + d.orbit.vx * Math.sin(a)) * ro;
+          let y3 = (d.orbit.uy * Math.cos(a) + d.orbit.vy * Math.sin(a)) * ro;
+          let z3 = d.orbit.vz * Math.sin(a) * ro;
+          const cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
+          const xr = x3 * cyaw - z3 * syaw, zr = x3 * syaw + z3 * cyaw;
+          const ct = Math.cos(tilt), st = Math.sin(tilt);
+          const yr = y3 * ct - zr * st, zz = y3 * st + zr * ct;
+          const depth = (zz / ro + 1) / 2;
+          const ox0 = cx + xr, oy0 = cy + yr;
+          const txp = ox + d.tx * S, typ = oy + d.ty * S;
+          const x = ox0 + (txp - ox0) * e, y = oy0 + (typ - oy0) * e;
+          let alpha = (0.32 + 0.5 * depth) * (1 - e) + d.weight * e;
+          if (working && e >= 1) alpha *= 0.62 + 0.38 * (0.5 + 0.5 * Math.sin((t + d.jitter) * (Math.PI * 2 / 1.2)));
+          const r = rBase * ((0.7 + 0.5 * depth) * (1 - e) + (d.weight >= 1 ? 1.35 : 1) * e);
+          ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        if (p >= 1 && !settledFired) {
+          settledFired = true;
+          onSettled && onSettled();
+        }
+        if (running && !(p >= 1 && !working)) raf = requestAnimationFrame(frame);
+      };
+      if (reduced) {
+        frame(t0 + dur);
+        return;
+      }
+      const onVis = () => {
+        if (document.hidden) {
+          running = false;
+          cancelAnimationFrame(raf);
+        } else if (!running) {
+          running = true;
+          raf = requestAnimationFrame(frame);
+        }
+      };
+      document.addEventListener("visibilitychange", onVis);
+      raf = requestAnimationFrame(frame);
+      return () => {
+        running = false;
+        cancelAnimationFrame(raf);
+        document.removeEventListener("visibilitychange", onVis);
+      };
+    }, [size, settleMs, delayMs, working, onSettled]);
+    return /* @__PURE__ */ react_global_default.createElement("canvas", { ref, className: "ds-dotfield", role: "img", "aria-label": label, style: { width: size, height: size, display: "block" } });
+  }
+
+  // design-system/components/brand/Mascot.jsx
+  var TONE = {
+    light: { shell: "var(--color-desk)", plate: "var(--color-ink)", eye: "var(--color-bronze)", tab: "var(--color-bronze-deep)" },
+    dark: { shell: "var(--color-ink)", plate: "var(--color-desk)", eye: "var(--color-bronze)", tab: "var(--color-bronze)" }
+  };
+  var pulse = (i) => `dot-pulse 1200ms var(--ease) ${i * 150}ms infinite`;
+  function Mascot({ size = 96, state = "attentive", tone = "light", label = "Sentinel" }) {
+    const c = TONE[tone] || TONE.light;
+    const eyesOn = state !== "waking";
+    const working = state === "working";
+    const h = Math.round(size * 0.74);
+    return /* @__PURE__ */ react_global_default.createElement("svg", { className: "ds-mascot", width: size, height: h, viewBox: "0 0 100 74", role: "img", "aria-label": label, style: { display: "block", flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("g", { className: "ds-mascot-shell" }, /* @__PURE__ */ react_global_default.createElement("rect", { x: "0", y: "28", width: "6", height: "14", rx: "2", fill: c.tab }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "4", y: "4", width: "92", height: "66", rx: "18", fill: c.shell }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "27", y: "17", width: "46", height: "40", rx: "8", fill: c.plate })), /* @__PURE__ */ react_global_default.createElement("g", { className: "ds-mascot-eyes", style: { opacity: eyesOn ? 1 : 0, transition: `opacity var(--dur-enter) var(--ease)` } }, /* @__PURE__ */ react_global_default.createElement("rect", { x: "51", y: "42", width: "8", height: "8", rx: "2", fill: c.eye, style: working ? { animation: pulse(0) } : void 0 }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "61", y: "42", width: "8", height: "8", rx: "2", fill: c.eye, style: working ? { animation: pulse(1) } : void 0 })));
+  }
+
+  // design-system/components/brand/SplashScreen.jsx
+  var ms = (name, fb) => {
+    if (typeof window === "undefined") return fb;
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    const n = parseFloat(v);
+    return Number.isFinite(n) ? v.endsWith("ms") ? n : n * 1e3 : fb;
+  };
+  function SplashScreen({ until, onDone, mascotSize = 168, label = "Sentinel is starting" }) {
+    const [phase, setPhase] = react_global_default.useState("dots");
+    const [untilSettled, setUntilSettled] = react_global_default.useState(false);
+    const [solidReady, setSolidReady] = react_global_default.useState(false);
+    react_global_default.useEffect(() => {
+      let alive = true;
+      const done = () => {
+        if (alive) setUntilSettled(true);
+      };
+      Promise.resolve(until).then(done, done);
+      return () => {
+        alive = false;
+      };
+    }, [until]);
+    const onSettled = react_global_default.useCallback(() => setPhase((p) => p === "dots" ? "solid" : p), []);
+    react_global_default.useEffect(() => {
+      if (phase !== "solid") return;
+      const t = setTimeout(() => setSolidReady(true), ms("--dur-enter", 240));
+      return () => clearTimeout(t);
+    }, [phase]);
+    react_global_default.useEffect(() => {
+      if (!(phase === "solid" && untilSettled && solidReady)) return;
+      setPhase("leaving");
+      const t = setTimeout(() => {
+        setPhase("gone");
+        onDone && onDone();
+      }, ms("--dur-screen", 320));
+      return () => clearTimeout(t);
+    }, [phase, untilSettled, solidReady, onDone]);
+    if (phase === "gone") return null;
+    const showDots = phase === "dots" || phase === "solid" && !solidReady;
+    const showSolid = phase !== "dots";
+    return /* @__PURE__ */ react_global_default.createElement(
+      "div",
+      {
+        className: "ds-splash",
+        "data-phase": phase,
+        role: "status",
+        "aria-label": label,
+        style: {
+          position: "absolute",
+          inset: 0,
+          zIndex: 40,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--color-ink)",
+          animation: phase === "leaving" ? "ds-screen-out var(--dur-screen) var(--ease) both, ds-splash-leave var(--dur-screen) var(--ease) both" : void 0
+        }
+      },
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", width: mascotSize, height: mascotSize, display: "flex", alignItems: "center", justifyContent: "center" } }, showDots && /* @__PURE__ */ react_global_default.createElement("div", { className: phase === "solid" ? "ds-splash-dots" : void 0, style: { position: "absolute", inset: 0 } }, /* @__PURE__ */ react_global_default.createElement(DotField, { size: mascotSize, onSettled, label: "" })), showSolid && /* @__PURE__ */ react_global_default.createElement("div", { className: "ds-splash-solid" }, /* @__PURE__ */ react_global_default.createElement(Mascot, { size: Math.round(mascotSize * 0.78), tone: "light", state: untilSettled ? "attentive" : "working", label: "Sentinel" })))
     );
   }
 
@@ -721,7 +963,7 @@ var __ds_out = (() => {
   }
 
   // design-system/components/cards/HeroNumberCard.jsx
-  function useCountUp(target, ms, run = true) {
+  function useCountUp(target, ms2, run = true) {
     const [v, setV] = react_global_default.useState(0);
     react_global_default.useEffect(() => {
       if (!run) return;
@@ -732,13 +974,13 @@ var __ds_out = (() => {
       let raf = 0;
       const start = performance.now();
       const tick = (t) => {
-        const p = Math.min(1, (t - start) / ms);
+        const p = Math.min(1, (t - start) / ms2);
         setV(Math.round((1 - Math.pow(1 - p, 3)) * target));
         if (p < 1) raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
       return () => cancelAnimationFrame(raf);
-    }, [target, ms, run]);
+    }, [target, ms2, run]);
     return v;
   }
   function HeroNumberCard({ title, meta, value, badge, copy, rows }) {
@@ -1022,7 +1264,7 @@ var __ds_out = (() => {
     ring: "inset 0 0 0 var(--border-1) var(--color-line)",
     flat: "none"
   };
-  var TONE = { surface: "var(--color-surface)", canvas: "var(--color-canvas)", bubble: "var(--color-bubble)" };
+  var TONE2 = { surface: "var(--color-surface)", canvas: "var(--color-canvas)", bubble: "var(--color-bubble)" };
   function Surface({
     children,
     elevation = "raised",
@@ -1034,7 +1276,7 @@ var __ds_out = (() => {
     ...rest
   }) {
     const e = ELEVATION[elevation] || ELEVATION.raised;
-    const bg = TONE[tone] || TONE.surface;
+    const bg = TONE2[tone] || TONE2.surface;
     const r = [8, 12, 16, 20, 24].includes(radius) ? `var(--radius-${radius})` : "var(--radius-16)";
     const p = padding === 0 ? 0 : [6, 8, 10, 12, 14, 16, 20].includes(padding) ? `var(--space-${padding})` : "var(--space-14)";
     return /* @__PURE__ */ react_global_default.createElement(
@@ -2174,11 +2416,11 @@ var __ds_out = (() => {
       last.current = screen;
       setDir(direction);
       setPrev(from);
-      const ms = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dur-screen")) || 0;
+      const ms2 = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dur-screen")) || 0;
       const t = setTimeout(() => {
         setPrev(null);
         if (settle.current) settle.current(screen, from);
-      }, ms);
+      }, ms2);
       return () => clearTimeout(t);
     }, [screen]);
     const k = dir === "back" ? BACK : FORWARD;

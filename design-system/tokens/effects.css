@@ -54,6 +54,13 @@
    it lives here rather than as a <style> inside the component — the same correction Pressable and Pill
    both took. Under reduced motion the fade carries the same fact on its own. */
 @keyframes ds-table-nudge{0%{transform:translateX(0)}35%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+/* The splash (21 Sep 2026). `ds-splash-leave` is the one keyframe the splash adds — opacity only —
+   and it does two jobs: the dot field fading out under the solid mascot, and the whole splash
+   leaving. The solid mascot arrives on `ds-fade`, which already exists. Both rules live here rather
+   than in the component because an inline style cannot reach the field and the mascot separately. */
+@keyframes ds-splash-leave{from{opacity:1}to{opacity:0}}
+.ds-splash .ds-splash-solid{animation:ds-fade var(--dur-enter) var(--ease) both}
+.ds-splash .ds-splash-dots{animation:ds-splash-leave var(--dur-enter) var(--ease) both}
 .ds-table-nudge>*{animation:ds-table-nudge 640ms var(--ease) both}
 /* Pressable's two guarantees live here rather than inside the component, because a <style> tag
    rendered as a child of <button> is an invalid content model (metadata inside phrasing content) and
@@ -100,4 +107,8 @@
      10px sideways under reduce — and the comment beside it claimed "the fade carries the same fact
      on its own", which it did not because the fade was never the thing moving. */
   @keyframes ds-table-nudge { 0%, 100% { transform: none; } }
+  /* ds-splash-leave is opacity only, so it is left as it is — it is listed so the rule that every
+     keyframe states its reduced-motion answer holds here too. The splash's exit under reduce is a
+     plain fade, because ds-screen-out above is already a no-transform keyframe. */
+  @keyframes ds-splash-leave { from { opacity: 1; } to { opacity: 0; } }
 }

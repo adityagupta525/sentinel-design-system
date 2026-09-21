@@ -1,0 +1,86 @@
+<!-- @dsCard group="Pages" viewport="1000x1560" name="Mascot" subtitle="The product’s character as one token-drawn SVG — the 3D model’s front view at any size" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Mascot — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/index.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { Mascot, IconSparkle, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-desk','--color-ink','--color-bronze','--color-bronze-deep','--dur-enter','--ease'];
+function Sig({ mark }) {
+  return <div style={{ display:'flex', alignItems:'center', gap:'var(--space-8)' }}>{mark}<span style={{ fontFamily:'var(--font-ui)', fontWeight:'var(--weight-bold)', fontSize:'var(--text-12)', lineHeight:'var(--leading-16)', color:'var(--color-bronze-deep)' }}>Sentinel</span></div>;
+}
+function App() {
+  return (
+  <PageShell name="Mascot" group="Brand" status="shipped" requires={['Mascot','IconSparkle','SentinelBlock','SentinelText']}
+    summary="The character that exists as a 3D model in Blender exists here as one SVG built from tokens, so the drawing and the model are the same creature at two resolutions. Head only — the body is noise at every size this is used at. Two neutrals from the surface set and the one bronze: rule 1 holds, and no colour enters the system for it. Three states, because a state is a claim about what the product is doing.">
+    <Block n={1} title="Specimen" sub="At the splash's size, on the ground the splash uses.">
+      <Specimen width={343}><div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={168} /></div></Specimen>
+    </Block>
+    <Block n={2} title="Anatomy" sub="Proportions read off the model's orthographic front view, not designed here.">
+      <Anatomy width={311} top="head 100 × 74, rx 18 — wider than tall" bottom="body omitted on purpose" left="tab 6 × 14, bronze-deep" right="eyes 8 × 8, LOW and RIGHT of the plate's centre">
+        <div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={200} /></div>
+      </Anatomy>
+    </Block>
+    <Block n={3} title="Variants" sub="Which neutral is the shell and which is the plate. The eyes are bronze in both.">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'tone="light" — for ink grounds', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={120} tone="light" /></div>, note:'The splash.'},
+        {label:'tone="dark" — for the canvas', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-canvas)', borderRadius:'var(--radius-16)', boxShadow:'0 0 0 1px var(--color-line)' }}><Mascot size={120} tone="dark" /></div>, note:'Inverted, same four tokens.'},
+      ]} />
+    </Block>
+    <Block n={4} title="States" sub="Three, and deliberately no more. There is no happy, confused or empathetic — a wealth-management tool should not claim a mood about a figure it is about to show.">
+      <Grid cols={3} itemWidth={311} items={[
+        {label:'waking', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={120} state="waking" /></div>, note:'Eyes off. Cold start only.'},
+        {label:'attentive', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={120} state="attentive" /></div>, note:'The resting face, and the default.'},
+        {label:'working', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={120} state="working" /></div>, note:'Eyes on dot-pulse — 1.2s, the second trailing 150ms. SentinelThinking\'s own rhythm.'},
+      ]} />
+    </Block>
+    <Block n={5} title="At the signature size" sub="SentinelBlock renders its mark at 13px today. Part 3 of docs/SPLASH-PLAN.md measured that a face is a thumbprint there and that 18 is the floor. This block is that measurement, live — look, do not decide from the description.">
+      <Grid cols={3} itemWidth={311} items={[
+        {label:'today — IconSparkle at 13', node:<Sig mark={<IconSparkle />} />},
+        {label:'Mascot at 13', node:<Sig mark={<Mascot size={13} tone="dark" />} />, note:'The eyes merge into the plate.'},
+        {label:'Mascot at 18', node:<Sig mark={<Mascot size={18} tone="dark" />} />, note:'The floor. Swapping the signature means growing it to this.'},
+      ]} />
+    </Block>
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/brand/Mascot.d.ts" /></Block>
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={120} /></div>}
+        doCaption="Large, on ink, eyes low and right. This is the character."
+        dontNode={<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-canvas)', borderRadius:'var(--radius-16)', boxShadow:'0 0 0 1px var(--color-line)' }}><Sig mark={<Mascot size={13} tone="dark" />} /></div>}
+        dontCaption="Where it has 13px. Not wrong in kind — wrong in size: the expression is gone and only the plate is left." />
+    </Block>
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'Eyes on / off (state change)', property:'opacity 0 ↔ 1', duration:'--dur-enter, 240 ms', reduced:'Unchanged — opacity only.'},
+        {name:'working', property:'opacity .28 → 1 per eye (dot-pulse), second eye +150 ms', duration:'1200 ms, looping', reduced:'Holds at full opacity — dot-pulse already resolves to that in tokens/effects.css.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+
+</script>
+</body></html>

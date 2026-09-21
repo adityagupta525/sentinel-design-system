@@ -152,6 +152,12 @@ for (const p of await walk(OUT, (p) => p.endsWith('.html'))) {
   tags += compiled; cached += withCache.inlined; if (compiled) pagesTouched += 1;
 }
 console.log(`precompiled ${tags} JSX blocks across ${pagesTouched} pages — no compiler ships`);
+/* Once compiled in, the .jsx sources have no reader here: no page fetches them (precompile inlined
+   them) and the Props block reads .d.ts, not .jsx. They stay in the repository and the handoff zip.
+   Sixteen files, and the artifact has 255 slots — the brand group needed three of them. */
+let dropped = 0;
+for (const p of await walk(OUT, (p) => p.endsWith('.jsx'))) { await rm(p); dropped += 1; }
+console.log(`dropped ${dropped} compiled-in .jsx sources from the staging`);
 console.log(`inlined ${cached} fetched files, so a downloaded folder opens without a server`);
 
 /* THE COVER IS WRITTEN LAST, because this script starts by deleting `artifact/` — the first run

@@ -19,6 +19,7 @@ that were rejected on purpose.
 | `break` | An **owner** per finding, so the fix starts in the right place | `scenarios.md` |
 | `break` | "A predicted failure is still not a finding" | `SKILL.md` |
 | `better-interface` | Match the project's styling system; never introduce a second approach to apply a fix | `SKILL.md` → Changing something |
+| `thinking-orbs` (Jakub Antalik, MIT, 21 Sep 2026) | The dotted-orb **method**: a dot is `{x,y,z,r,a}`; an outline is sampled evenly by arc length so spacing holds through a morph; motion is a smoothstep; radius scales sub-linearly with size; one shared clock, paused when hidden; reduced motion is one static frame | `components/brand/DotField.jsx` |
 
 ## Rejected, and why
 
@@ -36,6 +37,8 @@ Sentinel's token layer.
 | Dark-mode token pairs | One visual world. There is no dark mode, and inventing one would describe a system that does not exist |
 | The Figma annotation machinery — cards, connectors, `figma.loadFontAsync` | Belongs to a Figma plugin context. Sentinel's review surface is the rendered preview page |
 | Concentric radius maths, `outer = inner + padding` | Useful, but Sentinel's radii are a fixed named set (6/8/10/12/16/20/24/44/full) where 16 and 20 are load-bearing. Derive a radius and you leave the set |
+| `thinking-orbs` as a dependency | This system has **no runtime dependency** and did not take one for a splash. The method fit in 150 lines from tokens; the library's nine tuned states are six more than this product can honestly claim, and its grayscale/`data-theme` machinery describes a two-mode world this system does not have |
+| `liquid-gooey`, `metal-fx`, `border-beam`, `img-fx` (same repository) | Gooey is blur + contrast + springs — **"no blur anywhere"** and no spring; metal-fx is WebGL liquid metal, a material this product does not have; border-beam is a travelling glow with no surface here to travel; img-fx animates images, and the product ships none |
 | `text-wrap: balance` / `pretty` as defaults | Fine where it applies, but the product is 375pt with hand-tuned line-heights per size; wrapping changes are visual changes and need a decision first |
 
 ## Licence

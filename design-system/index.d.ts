@@ -2,6 +2,13 @@
    The public entry point of the Sentinel design system. Consumers import components and their prop types from here;
    _adherence.oxlintrc.json warns on any import that reaches into components/ directly. */
 
+/* brand */
+export type { DotFieldProps } from './components/brand/DotField';
+export { DotField } from './components/brand/DotField';
+export type { MascotProps } from './components/brand/Mascot';
+export { Mascot } from './components/brand/Mascot';
+export type { SplashScreenProps } from './components/brand/SplashScreen';
+export { SplashScreen } from './components/brand/SplashScreen';
 /* text */
 export type { EyebrowProps } from './components/text/Eyebrow';
 export { Eyebrow } from './components/text/Eyebrow';

@@ -184,6 +184,9 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 @keyframes ds-screen-in{from{transform:translateX(100%);opacity:.6}to{transform:none;opacity:1}}
 @keyframes ds-screen-out{from{transform:translateX(0)}to{transform:translateX(-30%)}}
 @keyframes ds-table-nudge{0%{transform:translateX(0)}35%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+@keyframes ds-splash-leave{from{opacity:1}to{opacity:0}}
+.ds-splash .ds-splash-solid{animation:ds-fade var(--dur-enter) var(--ease) both}
+.ds-splash .ds-splash-dots{animation:ds-splash-leave var(--dur-enter) var(--ease) both}
 .ds-table-nudge>*{animation:ds-table-nudge 640ms var(--ease) both}
 .ds-pressable{outline:none}
 .ds-pressable:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
@@ -201,6 +204,7 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 @keyframes ds-screen-out{from{transform:none}to{transform:none}}
 *,*::before,*::after{transition-duration:1ms!important;scroll-behavior:auto!important}
 @keyframes ds-table-nudge { 0%, 100% { transform: none; } }
+@keyframes ds-splash-leave { from { opacity: 1; } to { opacity: 0; } }
 }
 </style>
 <style>
@@ -335,10 +339,14 @@ Sentinel will not do.</p>
     </a>
 </div>
 
-<h2>The system — 94 components</h2>
+<h2>The system — 97 components</h2>
 <p class="sub">Every one of them is a contract, a prompt and a rendered specification — Tier 2 closed
 on 20 September. Each chip opens its own page.</p>
 <section class="grp">
+      <h3>brand <span class="count">3, all specified</span></h3>
+      <p class="gn">The character. The one thing in the system that is not a control — drawn from the same tokens as everything that is, and the reveal that brings it in.</p>
+      <div class="chips"><a class="chip" href="pages/DotField.html">DotField</a> <a class="chip" href="pages/Mascot.html">Mascot</a> <a class="chip" href="pages/SplashScreen.html">SplashScreen</a></div>
+    </section><section class="grp">
       <h3>chat <span class="count">17, all specified</span></h3>
       <p class="gn">The thread. Sentinel’s half of a turn, the advisor’s half, and everything that arrives between them.</p>
       <div class="chips"><a class="chip" href="pages/AttachmentTurn.html">AttachmentTurn</a> <a class="chip" href="pages/DetourBanner.html">DetourBanner</a> <a class="chip" href="pages/GreetingDivider.html">GreetingDivider</a> <a class="chip" href="pages/MessageActions.html">MessageActions</a> <a class="chip" href="pages/ParseNote.html">ParseNote</a> <a class="chip" href="pages/ProgressTrace.html">ProgressTrace</a> <a class="chip" href="pages/QAPair.html">QAPair</a> <a class="chip" href="pages/RefusalTurn.html">RefusalTurn</a> <a class="chip" href="pages/ResponseFeedback.html">ResponseFeedback</a> <a class="chip" href="pages/SentinelBlock.html">SentinelBlock</a> <a class="chip" href="pages/SentinelText.html">SentinelText</a> <a class="chip" href="pages/SentinelThinking.html">SentinelThinking</a> <a class="chip" href="pages/SentinelTurn.html">SentinelTurn</a> <a class="chip" href="pages/StepTrace.html">StepTrace</a> <a class="chip" href="pages/UserBubble.html">UserBubble</a> <a class="chip" href="pages/UserTurn.html">UserTurn</a> <a class="chip" href="pages/VersionRow.html">VersionRow</a></div>
@@ -396,7 +404,7 @@ the token files, so the documented numbers cannot drift from the real ones.</p>
   every figure comes from one fixture that is labelled as one on every screen that reads it. What this
   is, is the product's design made executable, so that what gets built can be checked against it rather
   than described.</p>
-  <p>94 components, every one specified · 144 pages rendering clean · six journeys · one prototype.</p>
+  <p>97 components, every one specified · 144 pages rendering clean · six journeys · one prototype.</p>
 </footer>
 
 </div></body></html>

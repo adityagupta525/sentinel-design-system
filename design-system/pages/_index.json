@@ -1,10 +1,48 @@
 {
- "generated": "2026-09-20",
+ "generated": "2026-09-21",
  "generator": "scripts/build-index.js",
  "counts": {
-  "shipped": 94
+  "shipped": 97
  },
  "rows": [
+  {
+   "name": "DotField",
+   "status": "shipped",
+   "page": "DotField.html",
+   "file": "components/brand/DotField.jsx",
+   "tokens": [],
+   "locals": [],
+   "literals": 19
+  },
+  {
+   "name": "Mascot",
+   "status": "shipped",
+   "page": "Mascot.html",
+   "file": "components/brand/Mascot.jsx",
+   "tokens": [
+    "--color-bronze",
+    "--color-bronze-deep",
+    "--color-desk",
+    "--color-ink",
+    "--dur-enter",
+    "--ease"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
+   "name": "SplashScreen",
+   "status": "shipped",
+   "page": "SplashScreen.html",
+   "file": "components/brand/SplashScreen.jsx",
+   "tokens": [
+    "--color-ink",
+    "--dur-screen",
+    "--ease"
+   ],
+   "locals": [],
+   "literals": 1
+  },
   {
    "name": "Drawer",
    "group": "Foundations",

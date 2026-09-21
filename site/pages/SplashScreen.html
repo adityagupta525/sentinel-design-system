@@ -1,0 +1,1027 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="SplashScreen" subtitle="Covers real work with the mascot arriving as dots and resolving into itself; leaves when the work does" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SplashScreen — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:'Darker Grotesque';src:url('https://fonts.gstatic.com/s/darkergrotesque/v10/U9MK6cuh-mLQlC4BKCtayOfARkSVgb381b-W8-QDqXwFqn7y.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
+:root{
+--color-ink:#251f1b;
+--color-ink-soft:#3d3630;
+--color-muted:#605954;
+--color-bronze:#b69377;
+--color-bronze-deep:#715035;
+--color-bronze-edge:#a07d5f;
+--color-canvas:#f6f4f1;
+--color-line:#e1deda;
+--color-line-soft:#e9e6e2;
+--color-bubble:#f9eee6;
+--color-bubble-edge:#ebd4c3;
+--color-chip:#fbf6f1;
+--color-alloc-debt:#d9bb9e;
+--color-track:#edebe7;
+--color-alloc-equity:var(--color-bronze);
+--color-alloc-cash:var(--color-bubble-edge);
+--color-alloc-track:var(--color-track);
+--color-selected:#ebd4c3;
+--color-cta:#1a1614;
+--color-cta-top:#3b3531;
+--color-cta-bottom:#111111;
+--color-danger:#b4552f;
+--color-status-over-bg:#f3e2da;
+--color-status-over-fg:var(--color-danger);
+--color-status-under-bg:var(--color-chip);
+--color-status-under-fg:var(--color-bronze-deep);
+--color-status-ok-bg:#e4ecdf;
+--color-status-ok-fg:#4b6141;
+--color-data-deemph:#a39a91;
+--color-surface:#ffffff;
+--text-primary:var(--color-ink);
+--text-body:var(--color-ink-soft);
+--text-muted:var(--color-muted);
+--text-deemph:var(--color-data-deemph);
+--text-accent:var(--color-bronze-deep);
+--text-danger:var(--color-danger);
+--text-on-dark:var(--color-surface);
+--surface-canvas:var(--color-canvas);
+--surface-card:var(--color-surface);
+--surface-chip:var(--color-chip);
+--surface-bubble:var(--color-bubble);
+--surface-selected:var(--color-selected);
+--surface-sheet:var(--color-surface);
+--border-line:var(--color-line);
+--border-line-soft:var(--color-line-soft);
+--border-bubble:var(--color-bubble-edge);
+--border-focus:var(--color-bronze-deep);
+--data-magnitude:var(--color-bronze);
+--data-secondary:var(--color-alloc-debt);
+--data-tertiary:var(--color-bubble-edge);
+--data-track:var(--color-track);
+--surface-avatar:rgba(182,147,119,0.20);
+--tint-bronze-06:rgba(182,147,119,0.06);
+--tint-bronze-focus:rgba(182,147,119,0.24);
+--tint-bronze-dashed:rgba(182,147,119,0.6);
+--scrim:var(--color-ink);
+--color-desk:#dedbd6;
+--ring-frame:rgba(0,0,0,0.10);
+--ring-frame-soft:rgba(0,0,0,0.08);
+--gradient-dark-cta:linear-gradient(to bottom,var(--color-cta-top) 0%,var(--color-cta) 48%,var(--color-cta-bottom) 100%);
+--gradient-rail:linear-gradient(to right,#715035 0%,#b69377 60%,#ebd4c3 100%);
+--aura-bronze:radial-gradient(circle,rgba(182,147,119,0.26) 0%,rgba(182,147,119,0) 66%);
+--aura-shadow:radial-gradient(circle,rgba(17,17,17,0.06) 0%,rgba(17,17,17,0) 66%);
+}
+:root{
+--font-ui:'Urbanist',sans-serif;
+--font-display:'Darker Grotesque',sans-serif;
+--weight-regular:400;
+--weight-medium:500;
+--weight-semibold:600;
+--weight-bold:700;
+--weight-display:500;
+--text-10:10px;   
+--text-11:11px;   
+--text-11-5:11.5px; 
+--text-12:12px;   
+--text-13:13px;   
+--text-14:14px;   
+--text-15:15px;   
+--text-16:16px;   
+--text-18:18px;   
+--display-24:24px; 
+--display-27:27px; 
+--display-40:40px; 
+--display-64:64px; 
+--leading-14:14px;
+--leading-15:15px;
+--leading-16:16px;
+--leading-17:17px;
+--leading-18:18px;
+--leading-19:19px;
+--leading-20:20px;
+--leading-22:22px;
+--leading-24:24px;
+--tracking-eyebrow:0.08em;
+--tracking-pill:0.04em;
+--type-display-font:var(--weight-display) var(--display-64)/1 var(--font-display);
+--type-total-font:var(--weight-display) var(--display-40)/1 var(--font-display);
+--type-greeting-font:var(--weight-display) var(--display-27)/1 var(--font-display);
+--type-figure-font:var(--weight-display) var(--display-24)/1 var(--font-display);
+--type-sheet-title-font:var(--weight-semibold) var(--text-18)/var(--leading-24) var(--font-ui);
+--type-title-font:var(--weight-medium) var(--text-16)/var(--leading-24) var(--font-ui);
+--type-body-font:var(--weight-regular) var(--text-14)/var(--leading-20) var(--font-ui);
+--type-body-strong-font:var(--weight-medium) var(--text-14)/var(--leading-20) var(--font-ui);
+--type-row-font:var(--weight-medium) var(--text-13)/var(--leading-18) var(--font-ui);
+--type-row-strong-font:var(--weight-semibold) var(--text-13)/var(--leading-18) var(--font-ui);
+--type-label-font:var(--weight-bold) var(--text-12)/var(--leading-16) var(--font-ui);
+--type-caption-font:var(--weight-regular) var(--text-11)/var(--leading-15) var(--font-ui);
+--type-meta-font:var(--weight-medium) var(--text-11-5)/var(--leading-16) var(--font-ui);
+--type-eyebrow-font:var(--weight-bold) var(--text-10)/var(--leading-14) var(--font-ui);
+}
+body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.ds-tabular,[data-tabular]{font-variant-numeric:tabular-nums}
+:root{
+--space-4:4px;--space-8:8px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;
+--space-6:6px;--space-10:10px;
+--space-2:2px;--space-3:3px;--space-5:5px;--space-13:13px;--space-14:14px;
+--screen-w:375px;--screen-h:812px;
+--gutter:16px;            
+--stack:12px;             
+--chip-gap:8px;
+--h-status:44px;--h-topbar:44px;--h-home:24px;
+--h-touch:44px;           
+--h-row:42px;             
+--h-row-md:56px;          
+--h-row-lg:46px;          
+--h-row-xl:52px;          
+--h-row-2l:72px;          
+--h-chip:36px;--h-filter-chip:32px;--h-cta:48px;--h-icon-btn:42px;
+--h-chip-sm:28px;
+--w-drawer:300px;         
+--z-scrim:20;--z-modal:30;
+--scrim-sheet:0.4;--scrim-drawer:0.25;         
+--radius-6:6px;           
+--radius-8:8px;           
+--radius-10:10px;         
+--radius-12:12px;         
+--radius-16:16px;         
+--radius-20:20px;         
+--radius-24:24px;         
+--radius-44:44px;         
+--radius-full:9999px;
+--border-hairline:0.5px;  
+--border-1:1px;
+--border-focus-width:2px; 
+}
+:root{
+--shadow-card:0px 1px 2px 0px rgba(37,31,27,0.05);
+--shadow-card-soft:0px 1px 2px 0px rgba(37,31,27,0.04);
+--shadow-composer:0px 16px 30px -18px rgba(37,31,27,0.24),0px 2px 4px 0px rgba(37,31,27,0.05);
+--shadow-float:0px 4px 12px -4px rgba(37,31,27,0.24);
+--shadow-bar:0px 2px 8px -2px rgba(37,31,27,0.12);
+--shadow-drawer:24px 0px 60px -24px rgba(37,31,27,0.4);
+--shadow-phone:0px 40px 80px -24px rgba(37,31,27,0.45);
+--shadow-key:0px 1px 1px rgba(37,31,27,0.08);
+--focus-ring:0 0 0 3px rgba(182,147,119,0.24);
+--ease:cubic-bezier(0.2,0.8,0.2,1);
+--dur-press:150ms;
+--dur-fast:200ms;
+--dur-enter:240ms;
+--dur-screen:320ms;
+--dur-bar:480ms;
+--dur-count:600ms;
+--press-scale:0.98;
+--press-scale-icon:0.94;
+--paper-texture:radial-gradient(rgba(37,31,27,0.045) 1px,transparent 1px);
+--paper-texture-size:3px 3px;
+}
+@keyframes sentinel-shimmer{0%{opacity:.35}50%{opacity:1}100%{opacity:.35}}
+@keyframes dot-pulse{0%,100%{opacity:.28}50%{opacity:1}}
+@keyframes ds-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ds-fade{from{opacity:0}to{opacity:1}}
+@keyframes ds-scrim{from{opacity:0}}
+@keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ds-screen-in{from{transform:translateX(100%);opacity:.6}to{transform:none;opacity:1}}
+@keyframes ds-screen-out{from{transform:translateX(0)}to{transform:translateX(-30%)}}
+@keyframes ds-table-nudge{0%{transform:translateX(0)}35%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+@keyframes ds-splash-leave{from{opacity:1}to{opacity:0}}
+.ds-splash .ds-splash-solid{animation:ds-fade var(--dur-enter) var(--ease) both}
+.ds-splash .ds-splash-dots{animation:ds-splash-leave var(--dur-enter) var(--ease) both}
+.ds-table-nudge>*{animation:ds-table-nudge 640ms var(--ease) both}
+.ds-pressable{outline:none}
+.ds-pressable:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+.ds-pressable[data-hit]::before{content:"";position:absolute;left:calc(-1 * var(--hit-x));right:calc(-1 * var(--hit-x));top:calc(-1 * var(--hit-y));bottom:calc(-1 * var(--hit-y))}
+.ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}
+.ds-pill:focus-visible,
+.ds-listrow:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+.ds-composer-input::placeholder{color:var(--color-muted)}
+@media (prefers-reduced-motion:reduce){
+@keyframes sentinel-shimmer{0%,100%{opacity:1}}
+@keyframes dot-pulse{0%,100%{opacity:1}}
+@keyframes ds-rise{from{opacity:0}to{opacity:1}}
+@keyframes ds-grow{from{transform:scaleX(1)}to{transform:scaleX(1)}}
+@keyframes ds-screen-in{from{opacity:0;transform:none}to{opacity:1;transform:none}}
+@keyframes ds-screen-out{from{transform:none}to{transform:none}}
+*,*::before,*::after{transition-duration:1ms!important;scroll-behavior:auto!important}
+@keyframes ds-table-nudge { 0%, 100% { transform: none; } }
+@keyframes ds-splash-leave { from { opacity: 1; } to { opacity: 0; } }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script>(function(){var M={"../components/brand/SplashScreen.d.ts":"export interface SplashScreenProps {\n  /** The work this screen covers — fonts, the book, a restored thread. It leaves when this settles,\n   *  resolved or rejected alike; a splash is not where a failure is reported. Pass something that is\n   *  genuinely pending: `document.fonts.ready` is honest, `new Promise(r => setTimeout(r, 2000))` is\n   *  the tax this component exists to refuse. */\n  until: Promise<unknown>;\n  /** Called once the exit has finished and the screen has unmounted itself. */\n  onDone?: () => void;\n  /** The mascot's width. 168 fills a 375pt phone the way the splash was designed; do not go small\n   *  here — small is the signature's job. */\n  mascotSize?: number;\n  /** Accessible status text. The screen is role=\"status\" so a screen reader hears that something is\n   *  starting rather than meeting silence. */\n  label?: string;\n}\n/** Covers real work with the mascot arriving as dots and resolving into itself, and leaves when the\n *  work does. The floor is DotField's settle (--dur-enter + --dur-bar), the crossfade to the solid\n *  Mascot (--dur-enter) and the exit (--dur-screen), because the eyes cannot half-open; the hold is\n *  only what `until` adds. Positioned absolute, so it fills whatever frame it is mounted in — the\n *  phone stage in app.html, a PhoneFrame on a spec page. */\nexport function SplashScreen(props: SplashScreenProps): JSX.Element | null;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* The component-page kit — the nine blocks, in the one order, so every page reads identically and a
+   reviewer builds a habit instead of hunting. Blocks, in order:
+   1 Specimen · 2 Anatomy · 3 Variants · 4 States · 5 In context · 6 Tokens · 7 Props · 8 Do/Don't · 9 Motion
+   Rules the kit enforces rather than asks for: the specimen sits alone on the product background;
+   anatomy annotates OUTSIDE the frame (B/05's rule); the Tokens block resolves each name against the
+   live stylesheet, so a value that is not a token shows up as missing; Props prints the real .d.ts. */
+var _React = React,
+  useState = _React.useState,
+  useEffect = _React.useEffect;
+var FONT = 'var(--font-ui)';
+var lbl = {
+  fontFamily: FONT,
+  fontWeight: 700,
+  fontSize: 10,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+var note = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12,
+  lineHeight: '17px',
+  color: 'var(--color-muted)',
+  margin: '6px 0 0',
+  maxWidth: 560
+};
+function PageShell(_ref) {
+  var name = _ref.name,
+    group = _ref.group,
+    status = _ref.status,
+    summary = _ref.summary,
+    _ref$requires = _ref.requires,
+    requires = _ref$requires === void 0 ? [] : _ref$requires,
+    children = _ref.children;
+  var tone = status === 'shipped' ? 'ok' : status === 'building' ? 'under' : 'over';
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = requires.filter(function (n) {
+    return !ns[n];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 980,
+      margin: '0 auto',
+      padding: '28px 24px 64px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 28
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 9999,
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, status), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 500,
+      fontSize: 11.5,
+      color: 'var(--color-muted)'
+    }
+  }, group), /*#__PURE__*/React.createElement("a", {
+    href: "./00-Index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "00 Index \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      margin: 0,
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)'
+    })
+  }, summary)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle yet"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, note), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This page needs ", missing.map(function (n, i) {
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: n
+    }, i ? ', ' : '', /*#__PURE__*/React.createElement("code", null, n));
+  }), ", which ", /*#__PURE__*/React.createElement("code", null, "ds_bundle.js"), " does not carry yet. The bundle recompiles from source at the end of a turn \u2014 reload then. The page is not broken; the build is behind it.")) : /*#__PURE__*/React.createElement(PageBoundary, null, children));
+}
+/* A page whose component has gone says so, the way the index does — never a blank screen. */
+var PageBoundary = /*#__PURE__*/function (_React$Component) {
+  function PageBoundary(p) {
+    var _this;
+    _classCallCheck(this, PageBoundary);
+    _this = _callSuper(this, PageBoundary, [p]);
+    _this.state = {
+      err: null
+    };
+    return _this;
+  }
+  _inherits(PageBoundary, _React$Component);
+  return _createClass(PageBoundary, [{
+    key: "render",
+    value: function render() {
+      if (!this.state.err) return this.props.children;
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          borderRadius: 12,
+          background: 'var(--color-status-over-bg)',
+          padding: 16
+        }
+      }, /*#__PURE__*/React.createElement("p", {
+        style: {
+          margin: 0,
+          fontFamily: FONT,
+          fontWeight: 700,
+          fontSize: 11,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          color: 'var(--color-status-over-fg)'
+        }
+      }, "This page failed to render"), /*#__PURE__*/React.createElement("p", {
+        style: _objectSpread(_objectSpread({}, note), {}, {
+          color: 'var(--color-ink-soft)'
+        })
+      }, String(this.state.err.message || this.state.err)));
+    }
+  }], [{
+    key: "getDerivedStateFromError",
+    value: function getDerivedStateFromError(err) {
+      return {
+        err: err
+      };
+    }
+  }]);
+}(React.Component);
+function Block(_ref2) {
+  var n = _ref2.n,
+    title = _ref2.title,
+    sub = _ref2.sub,
+    children = _ref2.children,
+    _ref2$frame = _ref2.frame,
+    frame = _ref2$frame === void 0 ? false : _ref2$frame;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    style: lbl
+  }, String(n).padStart(2, '0'), " \xB7 ", title), sub && /*#__PURE__*/React.createElement("p", {
+    style: note
+  }, sub)), /*#__PURE__*/React.createElement("div", {
+    style: frame ? {
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: 24
+    } : undefined
+  }, children));
+}
+/* 1 — the component alone, at real size, on the product background. Nothing else in frame. */
+function Specimen(_ref3) {
+  var children = _ref3.children,
+    _ref3$width = _ref3.width,
+    width = _ref3$width === void 0 ? 375 : _ref3$width;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: '32px 24px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children));
+}
+/* 2 — the same specimen with dimensions annotated OUTSIDE the frame, per B/05.
+   Side tags are anchored at left:100% / right:100% so they grow AWAY from the specimen. Anchoring them
+   with right:-90 (the first version) pins the tag's right edge 90px outside the frame and lets the box
+   grow leftwards instead — measured, a 245px annotation computed left:156px and laid 155px of itself
+   across a 311px specimen, over the legend's own value column. Any annotation wider than the gutter
+   did it; this one was just long enough to be seen. Tags wrap inside a fixed gutter width rather than
+   nowrapping, so length cannot push them anywhere. */
+var GUTTER = 128;
+function Anatomy(_ref4) {
+  var children = _ref4.children,
+    _ref4$width = _ref4.width,
+    width = _ref4$width === void 0 ? 343 : _ref4$width,
+    top = _ref4.top,
+    bottom = _ref4.bottom,
+    left = _ref4.left,
+    right = _ref4.right;
+  var tick = {
+    position: 'absolute',
+    background: 'var(--color-bronze)',
+    opacity: 0.5
+  };
+  var tag = {
+    position: 'absolute',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    lineHeight: '14px',
+    color: 'var(--color-bronze-deep)'
+  };
+  var side = _objectSpread(_objectSpread({}, tag), {}, {
+    width: GUTTER - 24,
+    textWrap: 'pretty'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      borderRadius: 16,
+      background: 'var(--color-canvas)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      padding: "44px ".concat(GUTTER, "px 40px")
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: width,
+      maxWidth: '100%'
+    }
+  }, children, top && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      top: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      bottom: '100%',
+      marginBottom: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, top)), bottom && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      left: 0,
+      right: 0,
+      bottom: -14,
+      height: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tag), {}, {
+      top: '100%',
+      marginTop: 18,
+      left: 0,
+      maxWidth: '100%',
+      textWrap: 'pretty'
+    })
+  }, bottom)), left && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      left: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      right: '100%',
+      marginRight: 22,
+      top: '50%',
+      transform: 'translateY(-50%)',
+      textAlign: 'right'
+    })
+  }, left)), right && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, tick), {}, {
+      top: 0,
+      bottom: 0,
+      right: -14,
+      width: 1
+    })
+  }), /*#__PURE__*/React.createElement("span", {
+    style: _objectSpread(_objectSpread({}, side), {}, {
+      left: '100%',
+      marginLeft: 22,
+      top: '50%',
+      transform: 'translateY(-50%)'
+    })
+  }, right))));
+}
+/* 3 / 4 — labelled grid; States takes only the states that genuinely exist. */
+function Grid(_ref5) {
+  var items = _ref5.items,
+    _ref5$cols = _ref5.cols,
+    cols = _ref5$cols === void 0 ? 2 : _ref5$cols,
+    itemWidth = _ref5.itemWidth;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: "repeat(".concat(cols, ", minmax(0, 1fr))"),
+      gap: 20
+    }
+  }, items.map(function (it) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: it.label,
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)',
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: lbl
+    }, it.label), /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: itemWidth,
+        maxWidth: '100%'
+      }
+    }, it.node), it.note && /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11
+      })
+    }, it.note));
+  }));
+}
+/* 5 — inside a 375pt thread fragment: real width, real neighbours. Catches anything that only works alone. */
+function Thread(_ref6) {
+  var children = _ref6.children,
+    before = _ref6.before,
+    after = _ref6.after,
+    dock = _ref6.dock;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: 375,
+      borderRadius: 24,
+      background: 'var(--color-canvas)',
+      boxShadow: '0 0 0 1px var(--ring-frame)',
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12,
+      padding: '20px 16px 16px'
+    }
+  }, before, children, after), dock && /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: '1px solid var(--color-line-soft)',
+      padding: '8px 16px 12px'
+    }
+  }, dock)));
+}
+/* 6 — every token the component consumes, resolved against the live stylesheet. A name that does not
+   resolve renders as MISSING, which is the page failing loudly instead of quietly. */
+function Tokens(_ref7) {
+  var names = _ref7.names;
+  var _useState = useState({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    vals = _useState2[0],
+    setVals = _useState2[1];
+  useEffect(function () {
+    var cs = getComputedStyle(document.documentElement);
+    var out = {};
+    names.forEach(function (n) {
+      out[n] = cs.getPropertyValue(n).trim();
+    });
+    setVals(out);
+  }, [names.join()]);
+  var isColor = function isColor(v) {
+    return /^(#|rgb|hsl)/.test(v);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+      gap: '8px 20px'
+    }
+  }, names.map(function (n) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: n,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        flexShrink: 0,
+        width: 14,
+        height: 14,
+        borderRadius: 4,
+        background: isColor(vals[n]) ? vals[n] : 'transparent',
+        boxShadow: 'inset 0 0 0 1px var(--color-line)'
+      }
+    }), /*#__PURE__*/React.createElement("code", {
+      style: {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11,
+        color: 'var(--color-ink)',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }
+    }, n), /*#__PURE__*/React.createElement("span", {
+      style: {
+        marginLeft: 'auto',
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: 10.5,
+        color: vals[n] ? 'var(--color-muted)' : 'var(--color-status-over-fg)',
+        whiteSpace: 'nowrap'
+      }
+    }, vals[n] || 'MISSING'));
+  }));
+}
+/* 7 — the .d.ts, printed. Fetched, never retyped, so the page cannot drift from the contract. */
+function Props(_ref8) {
+  var src = _ref8.src;
+  var _useState3 = useState('loading…'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    text = _useState4[0],
+    setText = _useState4[1];
+  useEffect(function () {
+    fetch(src).then(function (r) {
+      return r.ok ? r.text() : Promise.reject(r.status);
+    }).then(setText)["catch"](function (e) {
+      return setText("could not read ".concat(src, " (").concat(e, ")"));
+    });
+  }, [src]);
+  return /*#__PURE__*/React.createElement("pre", {
+    style: {
+      margin: 0,
+      padding: 16,
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      fontFamily: 'ui-monospace, monospace',
+      fontSize: 11.5,
+      lineHeight: '17px',
+      color: 'var(--color-ink-soft)',
+      overflowX: 'auto',
+      whiteSpace: 'pre-wrap'
+    }
+  }, text);
+}
+/* 8 — one pair, the sharpest one. A page of eight don'ts teaches nothing. */
+function DoDont(_ref9) {
+  var doNode = _ref9.doNode,
+    doCaption = _ref9.doCaption,
+    dontNode = _ref9.dontNode,
+    dontCaption = _ref9.dontCaption;
+  var cell = function cell(ok, caption, node) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        borderRadius: 12,
+        background: 'var(--color-canvas)',
+        boxShadow: "inset 0 0 0 1px ".concat(ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'),
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: 0,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        fontFamily: FONT,
+        fontWeight: 700,
+        fontSize: 11,
+        color: ok ? 'var(--color-status-ok-fg)' : 'var(--color-status-over-fg)'
+      }
+    }, ok ? 'Do' : "Don't"), /*#__PURE__*/React.createElement("div", null, node), /*#__PURE__*/React.createElement("p", {
+      style: _objectSpread(_objectSpread({}, note), {}, {
+        margin: 0,
+        fontSize: 11.5
+      })
+    }, caption));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 20
+    }
+  }, cell(true, doCaption, doNode), cell(false, dontCaption, dontNode));
+}
+/* 9 — the motion rows that apply, each with what it does under reduced motion. */
+function Motion(_ref0) {
+  var rows = _ref0.rows;
+  var th = {
+    textAlign: 'left',
+    padding: '8px 12px',
+    fontFamily: FONT,
+    fontWeight: 700,
+    fontSize: 10,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: 'var(--color-muted)',
+    borderBottom: '1px solid var(--color-line)'
+  };
+  var td = {
+    padding: '9px 12px',
+    fontFamily: FONT,
+    fontWeight: 500,
+    fontSize: 11.5,
+    lineHeight: '16px',
+    color: 'var(--color-ink)',
+    borderBottom: '0.5px solid var(--color-line-soft)',
+    verticalAlign: 'top'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 12,
+      background: 'var(--color-surface)',
+      boxShadow: 'inset 0 0 0 1px var(--color-line)',
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      width: '100%',
+      borderCollapse: 'collapse'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Motion"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Property"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Duration"), /*#__PURE__*/React.createElement("th", {
+    style: th
+  }, "Under reduced motion"))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: r.name
+    }, /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.name), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 11
+      })
+    }, r.property), /*#__PURE__*/React.createElement("td", {
+      style: td
+    }, r.duration), /*#__PURE__*/React.createElement("td", {
+      style: _objectSpread(_objectSpread({}, td), {}, {
+        color: 'var(--color-muted)'
+      })
+    }, r.reduced));
+  }))));
+}
+/* Pages mount after d3-scale / d3-shape land, so a chart never renders its fallback maths here. */
+function mountPage(App) {
+  var go = function go() {
+    return ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+  };
+  if (window.d3 && window.d3.scaleLinear) go();else {
+    var done = false;
+    var once = function once() {
+      if (!done) {
+        done = true;
+        go();
+      }
+    };
+    window.addEventListener('d3ready', once);
+    setTimeout(once, 2500);
+  }
+}
+Object.assign(window, {
+  PageShell: PageShell,
+  PageBoundary: PageBoundary,
+  Block: Block,
+  Specimen: Specimen,
+  Anatomy: Anatomy,
+  Grid: Grid,
+  Thread: Thread,
+  Tokens: Tokens,
+  Props: Props,
+  DoDont: DoDont,
+  Motion: Motion,
+  mountPage: mountPage,
+  pageLbl: lbl,
+  pageNote: note
+});</script>
+<script>"use strict";
+
+var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
+  SplashScreen = _window$SentinelDesig.SplashScreen,
+  PhoneFrame = _window$SentinelDesig.PhoneFrame,
+  DotField = _window$SentinelDesig.DotField,
+  Mascot = _window$SentinelDesig.Mascot;
+var TOK = ['--color-ink', '--color-bronze', '--color-desk', '--dur-enter', '--dur-bar', '--dur-screen', '--ease'];
+var NEVER = new Promise(function () {});
+function App() {
+  return /*#__PURE__*/React.createElement(PageShell, {
+    name: "SplashScreen",
+    group: "Brand",
+    status: "shipped",
+    requires: ['SplashScreen', 'DotField', 'Mascot', 'PhoneFrame'],
+    summary: "A splash that exists to be looked at is a tax. This one covers whatever must be true before Home can be \u2014 the fonts, a book \u2014 and leaves when that settles, never on a timer. The floor is the reveal plus the exit, because the eyes cannot half-open; the hold is only what the work adds. Every duration is a token the system already had; the one keyframe it adds is opacity-only and answers reduced motion in the same file."
+  }, /*#__PURE__*/React.createElement(Block, {
+    n: 1,
+    title: "Specimen",
+    sub: "Held in its working state \u2014 the promise here never resolves, so the mascot waits with its eyes breathing. In the app the promise is document.fonts.ready."
+  }, /*#__PURE__*/React.createElement(Specimen, {
+    width: 375
+  }, /*#__PURE__*/React.createElement(PhoneFrame, null, /*#__PURE__*/React.createElement(SplashScreen, {
+    until: NEVER
+  })))), /*#__PURE__*/React.createElement(Block, {
+    n: 2,
+    title: "The beats",
+    sub: "One line of story: the eyes open before the face exists. Read left to right."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 3,
+    itemWidth: 311,
+    items: [{
+      label: '2 · dots in orbit → eyes land',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 'var(--space-24)',
+          background: 'var(--color-ink)',
+          borderRadius: 'var(--radius-16)'
+        }
+      }, /*#__PURE__*/React.createElement(DotField, {
+        size: 140,
+        settleMs: 600000
+      })),
+      note: '--dur-enter into the settle, the two eye clusters are down; the rest is still flying.'
+    }, {
+      label: '3 · plate, then head',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 'var(--space-24)',
+          background: 'var(--color-ink)',
+          borderRadius: 'var(--radius-16)'
+        }
+      }, /*#__PURE__*/React.createElement(DotField, {
+        size: 140,
+        settleMs: 1
+      })),
+      note: 'By --dur-enter + --dur-bar the field is the mascot.'
+    }, {
+      label: '3b · resolves into the solid',
+      node: /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 'var(--space-24)',
+          background: 'var(--color-ink)',
+          borderRadius: 'var(--radius-16)'
+        }
+      }, /*#__PURE__*/React.createElement(Mascot, {
+        size: 110
+      })),
+      note: 'ds-fade in, ds-splash-leave out, --dur-enter. Nothing moves.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "Tokens"
+  }, /*#__PURE__*/React.createElement(Tokens, {
+    names: TOK
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 4,
+    title: "Props"
+  }, /*#__PURE__*/React.createElement(Props, {
+    src: "../components/brand/SplashScreen.d.ts"
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 5,
+    title: "Do / Don't"
+  }, /*#__PURE__*/React.createElement(DoDont, {
+    doNode: /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: 'var(--font-ui)',
+        fontSize: 'var(--text-13)',
+        lineHeight: 'var(--leading-20)',
+        color: 'var(--color-ink)',
+        padding: 'var(--space-16)'
+      }
+    }, /*#__PURE__*/React.createElement("code", null, "until={document.fonts.ready}")),
+    doCaption: "Work that is genuinely pending. The splash leaves the instant it settles.",
+    dontNode: /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: 'var(--font-ui)',
+        fontSize: 'var(--text-13)',
+        lineHeight: 'var(--leading-20)',
+        color: 'var(--color-ink)',
+        padding: 'var(--space-16)'
+      }
+    }, /*#__PURE__*/React.createElement("code", null, "until={new Promise(r => setTimeout(r, 2000))}")),
+    dontCaption: "A timer. Two seconds of the advisor's day spent looking at a logo, which is the tax this component exists to refuse."
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 6,
+    title: "Motion"
+  }, /*#__PURE__*/React.createElement(Motion, {
+    rows: [{
+      name: '1 · Ink',
+      property: '—',
+      duration: '0',
+      reduced: '—'
+    }, {
+      name: '2–3 · Dots settle, eyes → plate → head',
+      property: 'DotField: orbit → target, smoothstep',
+      duration: '--dur-enter + --dur-bar, 720 ms',
+      reduced: 'Settled frame drawn once; no orbit.'
+    }, {
+      name: '3b · Resolve into the solid mascot',
+      property: '.ds-splash-solid ds-fade in · .ds-splash-dots ds-splash-leave out',
+      duration: '--dur-enter, 240 ms',
+      reduced: 'Unchanged — both are opacity only.'
+    }, {
+      name: '4 · Hold',
+      property: 'Mascot state="working" while `until` is pending',
+      duration: 'as long as the work takes',
+      reduced: 'Eyes hold at full opacity (dot-pulse\'s reduced form).'
+    }, {
+      name: '5 · Leave',
+      property: 'ds-screen-out + ds-splash-leave on the root',
+      duration: '--dur-screen, 320 ms',
+      reduced: 'Fade only — ds-screen-out is already a no-transform keyframe under reduce.'
+    }]
+  })));
+}
+mountPage(App);</script>
+</body></html>

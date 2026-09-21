@@ -714,3 +714,63 @@ and no new colour — beat 2 is `--dur-enter`, beat 3 is `--dur-bar`, beat 5 is 
 hold borrows a rhythm the product already performs.
 
 Reduced motion: the whole thing arrives at full opacity with no stagger, and beat 5 is a crossfade.
+
+---
+
+# Part 9 — built, and watched running
+
+21 Sep 2026. Three components in a new `brand` group, the splash wired into the phone build, every
+gate green, and the motion captured frame by frame rather than described.
+
+## What shipped
+
+| | Where | What |
+|---|---|---|
+| `Mascot` | `components/brand/Mascot.jsx` | The character as one token-drawn SVG — the model's front view. Head only. Three states, two tones, four tokens |
+| `DotField` | `components/brand/DotField.jsx` | Bronze dots on tilted orbits settling onto the mascot's own geometry, eyes first. Canvas, one colour read from `--color-bronze`, ~150 lines, **no dependency** |
+| `SplashScreen` | `components/brand/SplashScreen.jsx` | Covers `until`, leaves when it settles. Dots → solid → hold → `ds-screen-out` |
+| Spec pages | `pages/Mascot.html`, `DotField.html`, `SplashScreen.html` | Specimen · anatomy · states · the 13/18 measurement live · tokens · props · do/don't · motion with reduced-motion answers |
+| The app | `screens/app.html` | `<SplashScreen until={document.fonts.ready}>` over `<Proto>`. The fonts are the one thing genuinely pending on a phone |
+
+**One new keyframe** in the whole exercise — `ds-splash-leave`, opacity only, with its reduced-motion
+entry beside it. Everything else is `ds-fade`, `dot-pulse`, `ds-screen-out` and the duration tokens
+the system already had.
+
+## What the frames show (`scratchpad/splash-app-strip.png`, `splash-spec-strip.png`)
+
+Labelled with the **actual** capture time, not the requested one — see below for why that matters.
+
+- **129 ms** — ink; dots in orbit, depth as alpha.
+- **245 ms** — **the eyes have landed**: two bright clusters at rest while every other dot still orbits.
+- **500–750 ms** — the plate outline forms, then the head. By 750 the dots *are* the mascot.
+- **932 ms** — the solid mascot, crossfaded in over the dotted one.
+- **1159 ms** — leaving: the ink slides out on `ds-screen-out`, Home already beneath it.
+
+On the specimen, whose promise never resolves: dots → solid at 803 ms, then **held**, eyes breathing.
+
+## What went wrong on the way, in order
+
+1. **Three hardcoded group lists.** `tools/build-barrel.mjs`, `tools/build-bundle.mjs` and
+   `design-system/scripts/build-index.js` each carry their own `DIRS`. A new group missing from one
+   fails every page that names its components with *"Element type is invalid… got: undefined"* — an
+   error that points at the page, not at the list. All three now carry `brand`; they are still three.
+2. **Named React hook imports.** The bundle aliases `react` to `tools/react-global.js`, which exports
+   only the default. `import { useEffect } from 'react'` fails at bundle time. House convention is
+   `React.useEffect`; the two new components follow it now.
+3. **A generator bug of my own.** The spec pages were written through a Python f-string, and a style
+   constant that already carried doubled braces was interpolated inside another pair — `style={{{ … }}}`,
+   three braces, in 16 places across three pages. Babel's *Unexpected token (15:66)* was exactly right.
+4. **A harness that lied about time.** The first keyframe strip blocked Google Fonts so the splash
+   would have work to cover, then took screenshots at 60…2400 ms. Every frame showed Home. Playwright's
+   `screenshot()` **waits for pending fonts**, so every capture actually happened after the gate
+   released at 1500 ms — after the splash had left. The labels were the requested times. The DOM probe
+   that followed showed the splash present, on top, ink-backed and covering the stage; the corrected
+   strip records `Date.now()` after each capture resolves.
+
+## Not done
+
+- The turn signature is **not** swapped. `SentinelBlock` still renders `IconSparkle` at 13 px. The
+  Mascot page's block 5 shows the live measurement; growing every turn to 18 px is the owner's call and
+  is one line once made.
+- `tone="dark"`: bronze eyes on a desk plate are legible but faint. A token constraint, not a bug;
+  noted for when the canvas variant is actually needed.

@@ -1,0 +1,69 @@
+<!-- @dsCard group="Pages" viewport="1000x1500" name="SplashScreen" subtitle="Covers real work with the mascot arriving as dots and resolving into itself; leaves when the work does" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SplashScreen — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/index.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { SplashScreen, PhoneFrame, DotField, Mascot } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-ink','--color-bronze','--color-desk','--dur-enter','--dur-bar','--dur-screen','--ease'];
+const NEVER = new Promise(() => {});
+function App() {
+  return (
+  <PageShell name="SplashScreen" group="Brand" status="shipped" requires={['SplashScreen','DotField','Mascot','PhoneFrame']}
+    summary="A splash that exists to be looked at is a tax. This one covers whatever must be true before Home can be — the fonts, a book — and leaves when that settles, never on a timer. The floor is the reveal plus the exit, because the eyes cannot half-open; the hold is only what the work adds. Every duration is a token the system already had; the one keyframe it adds is opacity-only and answers reduced motion in the same file.">
+    <Block n={1} title="Specimen" sub="Held in its working state — the promise here never resolves, so the mascot waits with its eyes breathing. In the app the promise is document.fonts.ready.">
+      <Specimen width={375}><PhoneFrame><SplashScreen until={NEVER} /></PhoneFrame></Specimen>
+    </Block>
+    <Block n={2} title="The beats" sub="One line of story: the eyes open before the face exists. Read left to right.">
+      <Grid cols={3} itemWidth={311} items={[
+        {label:'2 · dots in orbit → eyes land', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><DotField size={140} settleMs={600000} /></div>, note:'--dur-enter into the settle, the two eye clusters are down; the rest is still flying.'},
+        {label:'3 · plate, then head', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><DotField size={140} settleMs={1} /></div>, note:'By --dur-enter + --dur-bar the field is the mascot.'},
+        {label:'3b · resolves into the solid', node:<div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'var(--space-24)', background:'var(--color-ink)', borderRadius:'var(--radius-16)' }}><Mascot size={110} /></div>, note:'ds-fade in, ds-splash-leave out, --dur-enter. Nothing moves.'},
+      ]} />
+    </Block>
+    <Block n={3} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={4} title="Props"><Props src="../components/brand/SplashScreen.d.ts" /></Block>
+    <Block n={5} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{ fontFamily:'var(--font-ui)', fontSize:'var(--text-13)', lineHeight:'var(--leading-20)', color:'var(--color-ink)', padding:'var(--space-16)' }}><code>until=&#123;document.fonts.ready&#125;</code></div>}
+        doCaption="Work that is genuinely pending. The splash leaves the instant it settles."
+        dontNode={<div style={{ fontFamily:'var(--font-ui)', fontSize:'var(--text-13)', lineHeight:'var(--leading-20)', color:'var(--color-ink)', padding:'var(--space-16)' }}><code>until=&#123;new Promise(r =&gt; setTimeout(r, 2000))&#125;</code></div>}
+        dontCaption="A timer. Two seconds of the advisor's day spent looking at a logo, which is the tax this component exists to refuse." />
+    </Block>
+    <Block n={6} title="Motion">
+      <Motion rows={[
+        {name:'1 · Ink', property:'—', duration:'0', reduced:'—'},
+        {name:'2–3 · Dots settle, eyes → plate → head', property:'DotField: orbit → target, smoothstep', duration:'--dur-enter + --dur-bar, 720 ms', reduced:'Settled frame drawn once; no orbit.'},
+        {name:'3b · Resolve into the solid mascot', property:'.ds-splash-solid ds-fade in · .ds-splash-dots ds-splash-leave out', duration:'--dur-enter, 240 ms', reduced:'Unchanged — both are opacity only.'},
+        {name:'4 · Hold', property:'Mascot state="working" while `until` is pending', duration:'as long as the work takes', reduced:'Eyes hold at full opacity (dot-pulse\'s reduced form).'},
+        {name:'5 · Leave', property:'ds-screen-out + ds-splash-leave on the root', duration:'--dur-screen, 320 ms', reduced:'Fade only — ds-screen-out is already a no-transform keyframe under reduce.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+
+</script>
+</body></html>

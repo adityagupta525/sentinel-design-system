@@ -18,7 +18,11 @@ import { build } from 'esbuild';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DS = join(HERE, '..', 'design-system');
 const NS = 'SentinelDesignSystem_0682a2';
-const DIRS = ['actions', 'cards', 'chat', 'composer', 'data', 'forms', 'icons', 'lists', 'shell', 'text'];
+/* `brand` added 21 Sep 2026. This list is duplicated from build-barrel.mjs and has to move with it: the
+   barrel picked the group up and the bundle stayed at 95 modules, so every page that named a brand
+   component failed with "Element type is invalid… got: undefined" — an error that points at the
+   page, not at the list. */
+const DIRS = ['actions', 'brand', 'cards', 'chat', 'composer', 'data', 'forms', 'icons', 'lists', 'shell', 'text'];
 const NAMED = /^export\s+(?:async\s+)?(?:function|const|class)\s+([A-Za-z_$][\w$]*)/gm;
 
 const modules = [];
