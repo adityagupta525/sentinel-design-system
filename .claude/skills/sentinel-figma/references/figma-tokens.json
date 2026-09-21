@@ -21,12 +21,9 @@
       "value": "#251f1b",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
-        "TEXT_FILL",
-        "WIDTH_HEIGHT",
-        "FONT_WEIGHT"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-ink)",
       "measuredIn": [
         "margin×21",
@@ -57,12 +54,9 @@
       "value": "#3d3630",
       "aliasOf": null,
       "scopes": [
-        "TEXT_FILL",
-        "FONT_FAMILY",
-        "GAP",
-        "FONT_WEIGHT",
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-ink-soft)",
       "measuredIn": [
         "color×8",
@@ -83,13 +77,9 @@
       "value": "#605954",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
-        "TEXT_FILL",
-        "FRAME_FILL",
-        "WIDTH_HEIGHT",
-        "FONT_WEIGHT"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-muted)",
       "measuredIn": [
         "margin×31",
@@ -117,11 +107,9 @@
       "value": "#b69377",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS",
-        "TEXT_FILL",
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-bronze)",
       "measuredIn": [
         "width×7",
@@ -147,13 +135,9 @@
       "value": "#715035",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "TEXT_FILL",
-        "STROKE_COLOR",
-        "GAP",
-        "WIDTH_HEIGHT",
-        "FONT_WEIGHT"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-bronze-deep)",
       "measuredIn": [
         "font×14",
@@ -183,6 +167,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-bronze-edge)",
       "measuredIn": []
     },
@@ -195,11 +180,9 @@
       "value": "#f6f4f1",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL",
-        "WIDTH_HEIGHT",
-        "GAP",
-        "CORNER_RADIUS"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-canvas)",
       "measuredIn": [
         "position×6",
@@ -220,12 +203,9 @@
       "value": "#e1deda",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS",
-        "GAP",
-        "FRAME_FILL",
-        "FONT_WEIGHT"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-line)",
       "measuredIn": [
         "display×11",
@@ -256,11 +236,9 @@
       "value": "#e9e6e2",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "STROKE_COLOR",
-        "WIDTH_HEIGHT",
-        "FONT_WEIGHT"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-line-soft)",
       "measuredIn": [
         "display×13",
@@ -282,10 +260,9 @@
       "value": "#f9eee6",
       "aliasOf": null,
       "scopes": [
-        "CORNER_RADIUS",
-        "WIDTH_HEIGHT",
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-bubble)",
       "measuredIn": [
         "borderRadius×3",
@@ -306,10 +283,9 @@
       "value": "#ebd4c3",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS",
-        "GAP"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-bubble-edge)",
       "measuredIn": [
         "bg×4",
@@ -331,8 +307,9 @@
       "value": "#fbf6f1",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-chip)",
       "measuredIn": [
         "display×8",
@@ -351,9 +328,9 @@
       "value": "#d9bb9e",
       "aliasOf": null,
       "scopes": [
-        "CORNER_RADIUS",
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-alloc-debt)",
       "measuredIn": [
         "label×2",
@@ -370,9 +347,9 @@
       "value": "#edebe7",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-track)",
       "measuredIn": [
         "display×6",
@@ -391,8 +368,12 @@
       "value": "var(--color-bronze)",
       "aliasOf": "--color-bronze",
       "scopes": [
-        "__UNUSED__"
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "TEXT_FILL",
+        "STROKE_COLOR"
       ],
+      "scopeSource": "indeterminate",
       "codeSyntax": "var(--color-alloc-equity)",
       "measuredIn": [
         "label×1"
@@ -407,8 +388,12 @@
       "value": "var(--color-bubble-edge)",
       "aliasOf": "--color-bubble-edge",
       "scopes": [
-        "__UNUSED__"
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "TEXT_FILL",
+        "STROKE_COLOR"
       ],
+      "scopeSource": "indeterminate",
       "codeSyntax": "var(--color-alloc-cash)",
       "measuredIn": [
         "label×1"
@@ -425,6 +410,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--color-alloc-track)",
       "measuredIn": []
     },
@@ -437,9 +423,9 @@
       "value": "#ebd4c3",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-selected)",
       "measuredIn": [
         "display×3",
@@ -458,11 +444,11 @@
       "value": "#1a1614",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-cta)",
       "measuredIn": [
-        "appearance×3",
         "background×1"
       ]
     },
@@ -477,10 +463,9 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-cta-top)",
-      "measuredIn": [
-        "appearance×3"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--color-cta-bottom",
@@ -493,10 +478,9 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-cta-bottom)",
-      "measuredIn": [
-        "appearance×3"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--color-danger",
@@ -507,10 +491,9 @@
       "value": "#b4552f",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL",
-        "TEXT_FILL",
-        "GAP"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-danger)",
       "measuredIn": [
         "font×6",
@@ -531,9 +514,9 @@
       "value": "#f3e2da",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL",
-        "CORNER_RADIUS"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-status-over-bg)",
       "measuredIn": [
         "bg×1",
@@ -552,9 +535,9 @@
       "aliasOf": "--color-danger",
       "scopes": [
         "FRAME_FILL",
-        "TEXT_FILL",
-        "GAP"
+        "TEXT_FILL"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--color-status-over-fg)",
       "measuredIn": [
         "font×6",
@@ -576,6 +559,7 @@
       "scopes": [
         "FRAME_FILL"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--color-status-under-bg)",
       "measuredIn": [
         "bg×1",
@@ -591,8 +575,12 @@
       "value": "var(--color-bronze-deep)",
       "aliasOf": "--color-bronze-deep",
       "scopes": [
-        "__UNUSED__"
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "TEXT_FILL",
+        "STROKE_COLOR"
       ],
+      "scopeSource": "indeterminate",
       "codeSyntax": "var(--color-status-under-fg)",
       "measuredIn": [
         "bg×1"
@@ -607,8 +595,9 @@
       "value": "#e4ecdf",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-status-ok-bg)",
       "measuredIn": [
         "background×2",
@@ -624,8 +613,9 @@
       "value": "#4b6141",
       "aliasOf": null,
       "scopes": [
-        "TEXT_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-status-ok-fg)",
       "measuredIn": [
         "color×2",
@@ -641,11 +631,9 @@
       "value": "#a39a91",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "TEXT_FILL",
-        "CORNER_RADIUS",
-        "FONT_FAMILY"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-data-deemph)",
       "measuredIn": [
         "margin×5",
@@ -667,13 +655,9 @@
       "value": "#ffffff",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS",
-        "FRAME_FILL",
-        "FONT_FAMILY",
-        "GAP",
-        "TEXT_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-surface)",
       "measuredIn": [
         "width×19",
@@ -698,8 +682,9 @@
       "value": "var(--color-ink)",
       "aliasOf": "--color-ink",
       "scopes": [
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--text-primary)",
       "measuredIn": []
     },
@@ -712,8 +697,9 @@
       "value": "var(--color-ink-soft)",
       "aliasOf": "--color-ink-soft",
       "scopes": [
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--text-body)",
       "measuredIn": []
     },
@@ -726,8 +712,9 @@
       "value": "var(--color-muted)",
       "aliasOf": "--color-muted",
       "scopes": [
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--text-muted)",
       "measuredIn": []
     },
@@ -740,8 +727,9 @@
       "value": "var(--color-data-deemph)",
       "aliasOf": "--color-data-deemph",
       "scopes": [
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--text-deemph)",
       "measuredIn": []
     },
@@ -754,8 +742,9 @@
       "value": "var(--color-bronze-deep)",
       "aliasOf": "--color-bronze-deep",
       "scopes": [
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--text-accent)",
       "measuredIn": []
     },
@@ -768,8 +757,9 @@
       "value": "var(--color-danger)",
       "aliasOf": "--color-danger",
       "scopes": [
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--text-danger)",
       "measuredIn": []
     },
@@ -782,8 +772,9 @@
       "value": "var(--color-surface)",
       "aliasOf": "--color-surface",
       "scopes": [
-        "FONT_SIZE"
+        "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--text-on-dark)",
       "measuredIn": []
     },
@@ -798,6 +789,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--surface-canvas)",
       "measuredIn": []
     },
@@ -812,6 +804,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--surface-card)",
       "measuredIn": []
     },
@@ -826,6 +819,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--surface-chip)",
       "measuredIn": []
     },
@@ -840,6 +834,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--surface-bubble)",
       "measuredIn": []
     },
@@ -854,6 +849,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--surface-selected)",
       "measuredIn": []
     },
@@ -868,6 +864,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--surface-sheet)",
       "measuredIn": []
     },
@@ -882,6 +879,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--border-line)",
       "measuredIn": []
     },
@@ -896,6 +894,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--border-line-soft)",
       "measuredIn": []
     },
@@ -910,6 +909,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--border-bubble)",
       "measuredIn": []
     },
@@ -924,6 +924,7 @@
       "scopes": [
         "STROKE_COLOR"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--border-focus)",
       "measuredIn": [
         "outline×3"
@@ -940,6 +941,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--data-magnitude)",
       "measuredIn": []
     },
@@ -954,6 +956,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--data-secondary)",
       "measuredIn": []
     },
@@ -968,6 +971,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--data-tertiary)",
       "measuredIn": []
     },
@@ -982,6 +986,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--data-track)",
       "measuredIn": []
     },
@@ -996,6 +1001,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--surface-avatar)",
       "measuredIn": [
         "display×3"
@@ -1010,8 +1016,9 @@
       "value": "rgba(182,147,119,0.06)",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--tint-bronze-06)",
       "measuredIn": [
         "background×2",
@@ -1029,6 +1036,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--tint-bronze-focus)",
       "measuredIn": []
     },
@@ -1041,8 +1049,9 @@
       "value": "rgba(182,147,119,0.6)",
       "aliasOf": null,
       "scopes": [
-        "STROKE_COLOR"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--tint-bronze-dashed)",
       "measuredIn": [
         "outline×1"
@@ -1057,8 +1066,12 @@
       "value": "var(--color-ink)",
       "aliasOf": "--color-ink",
       "scopes": [
-        "__UNUSED__"
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "TEXT_FILL",
+        "STROKE_COLOR"
       ],
+      "scopeSource": "indeterminate",
       "codeSyntax": "var(--scrim)",
       "measuredIn": [
         "position×4"
@@ -1073,8 +1086,9 @@
       "value": "#dedbd6",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL"
+        "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--color-desk)",
       "measuredIn": [
         "background×19",
@@ -1092,6 +1106,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--ring-frame)",
       "measuredIn": [
         "box-shadow×2",
@@ -1109,6 +1124,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "hidden-primitive",
       "codeSyntax": "var(--ring-frame-soft)",
       "measuredIn": []
     },
@@ -1121,8 +1137,10 @@
       "value": "4px",
       "aliasOf": null,
       "scopes": [
-        "GAP"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-4)",
       "measuredIn": [
         "display×6",
@@ -1144,6 +1162,7 @@
         "GAP",
         "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-8)",
       "measuredIn": [
         "display×39",
@@ -1169,9 +1188,9 @@
       "aliasOf": null,
       "scopes": [
         "GAP",
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-12)",
       "measuredIn": [
         "marginTop×48",
@@ -1197,6 +1216,7 @@
         "GAP",
         "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-16)",
       "measuredIn": [
         "padding×2",
@@ -1213,8 +1233,10 @@
       "value": "20px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-20)",
       "measuredIn": [
         "display×4",
@@ -1231,8 +1253,10 @@
       "value": "24px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-24)",
       "measuredIn": [
         "position×2"
@@ -1250,6 +1274,7 @@
         "GAP",
         "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-6)",
       "measuredIn": [
         "display×27",
@@ -1271,9 +1296,9 @@
       "aliasOf": null,
       "scopes": [
         "GAP",
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-10)",
       "measuredIn": [
         "display×25",
@@ -1299,8 +1324,10 @@
       "value": "2px",
       "aliasOf": null,
       "scopes": [
-        "GAP"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-2)",
       "measuredIn": [
         "display×12",
@@ -1320,8 +1347,10 @@
       "value": "3px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-3)",
       "measuredIn": [
         "appearance×1"
@@ -1336,8 +1365,10 @@
       "value": "5px",
       "aliasOf": null,
       "scopes": [
-        "GAP"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-5)",
       "measuredIn": [
         "display×4",
@@ -1355,8 +1386,10 @@
       "value": "13px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-13)",
       "measuredIn": []
     },
@@ -1369,10 +1402,10 @@
       "value": "14px",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
         "GAP",
-        "CORNER_RADIUS"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--space-14)",
       "measuredIn": [
         "width×6",
@@ -1391,8 +1424,10 @@
       "value": "16px",
       "aliasOf": null,
       "scopes": [
-        "GAP"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--gutter)",
       "measuredIn": [
         "position×2",
@@ -1410,8 +1445,10 @@
       "value": "12px",
       "aliasOf": null,
       "scopes": [
-        "GAP"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--stack)",
       "measuredIn": [
         "display×5",
@@ -1427,8 +1464,10 @@
       "value": "8px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "GAP",
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--chip-gap)",
       "measuredIn": [
         "display×3"
@@ -1443,8 +1482,9 @@
       "value": "44px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-status)",
       "measuredIn": [
         "display×1"
@@ -1459,8 +1499,9 @@
       "value": "44px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-topbar)",
       "measuredIn": [
         "position×1"
@@ -1475,8 +1516,9 @@
       "value": "24px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-home)",
       "measuredIn": []
     },
@@ -1489,8 +1531,9 @@
       "value": "44px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-touch)",
       "measuredIn": [
         "flexShrink×1",
@@ -1507,8 +1550,9 @@
       "value": "42px",
       "aliasOf": null,
       "scopes": [
-        "GAP"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-row)",
       "measuredIn": [
         "padding×1",
@@ -1524,8 +1568,9 @@
       "value": "56px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-row-md)",
       "measuredIn": [
         "display×2"
@@ -1540,8 +1585,9 @@
       "value": "46px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-row-lg)",
       "measuredIn": [
         "display×3"
@@ -1556,8 +1602,9 @@
       "value": "52px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-row-xl)",
       "measuredIn": [
         "display×2"
@@ -1572,8 +1619,9 @@
       "value": "72px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-row-2l)",
       "measuredIn": []
     },
@@ -1586,8 +1634,9 @@
       "value": "36px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-chip)",
       "measuredIn": [
         "display×2"
@@ -1604,6 +1653,7 @@
       "scopes": [
         "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-filter-chip)",
       "measuredIn": [
         "display×3",
@@ -1619,8 +1669,9 @@
       "value": "48px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-cta)",
       "measuredIn": [
         "display×1"
@@ -1635,8 +1686,9 @@
       "value": "42px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-icon-btn)",
       "measuredIn": []
     },
@@ -1649,8 +1701,9 @@
       "value": "28px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--h-chip-sm)",
       "measuredIn": [
         "display×6"
@@ -1665,8 +1718,9 @@
       "value": "300px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "WIDTH_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--w-drawer)",
       "measuredIn": [
         "position×1"
@@ -1683,6 +1737,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--z-scrim)",
       "measuredIn": [
         "position×3"
@@ -1699,6 +1754,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--z-modal)",
       "measuredIn": [
         "position×2"
@@ -1715,6 +1771,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--scrim-sheet)",
       "measuredIn": [
         "position×2"
@@ -1731,6 +1788,7 @@
       "scopes": [
         "__UNUSED__"
       ],
+      "scopeSource": "measured",
       "codeSyntax": "var(--scrim-drawer)",
       "measuredIn": [
         "position×1"
@@ -1745,10 +1803,9 @@
       "value": "6px",
       "aliasOf": null,
       "scopes": [
-        "FRAME_FILL",
-        "CORNER_RADIUS",
-        "WIDTH_HEIGHT"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-6)",
       "measuredIn": [
         "background×2",
@@ -1766,8 +1823,9 @@
       "value": "8px",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-8)",
       "measuredIn": [
         "position×1",
@@ -1784,8 +1842,9 @@
       "value": "10px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-10)",
       "measuredIn": [
         "position×1"
@@ -1800,10 +1859,9 @@
       "value": "12px",
       "aliasOf": null,
       "scopes": [
-        "CORNER_RADIUS",
-        "WIDTH_HEIGHT",
-        "GAP"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-12)",
       "measuredIn": [
         "borderRadius×4",
@@ -1824,10 +1882,9 @@
       "value": "16px",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
-        "CORNER_RADIUS",
-        "GAP"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-16)",
       "measuredIn": [
         "width×13",
@@ -1847,9 +1904,9 @@
       "value": "20px",
       "aliasOf": null,
       "scopes": [
-        "WIDTH_HEIGHT",
         "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-20)",
       "measuredIn": [
         "width×2",
@@ -1866,8 +1923,9 @@
       "value": "24px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-24)",
       "measuredIn": [
         "position×2"
@@ -1882,8 +1940,9 @@
       "value": "44px",
       "aliasOf": null,
       "scopes": [
-        "__UNUSED__"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-44)",
       "measuredIn": [
         "position×1"
@@ -1898,10 +1957,9 @@
       "value": "9999px",
       "aliasOf": null,
       "scopes": [
-        "CORNER_RADIUS",
-        "WIDTH_HEIGHT",
-        "GAP"
+        "CORNER_RADIUS"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--radius-full)",
       "measuredIn": [
         "display×21",
@@ -1925,10 +1983,9 @@
       "value": "0.5px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "WIDTH_HEIGHT",
-        "STROKE_COLOR"
+        "STROKE_FLOAT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--border-hairline)",
       "measuredIn": [
         "display×5",
@@ -1949,9 +2006,9 @@
       "value": "1px",
       "aliasOf": null,
       "scopes": [
-        "CORNER_RADIUS",
-        "GAP"
+        "STROKE_FLOAT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--border-1)",
       "measuredIn": [
         "display×9",
@@ -1970,8 +2027,9 @@
       "value": "2px",
       "aliasOf": null,
       "scopes": [
-        "STROKE_COLOR"
+        "STROKE_FLOAT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--border-focus-width)",
       "measuredIn": [
         "outline×3"
@@ -1986,26 +2044,23 @@
       "value": "'Urbanist',sans-serif",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
-        "WIDTH_HEIGHT"
+        "FONT_FAMILY"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--font-ui)",
       "measuredIn": [
-        "margin×59",
-        "font×56",
         "fontFamily×39",
+        "margin×25",
         "font-family×23",
-        "flexShrink×7",
-        "flex×5",
-        "display×4",
-        "minWidth×4",
-        "overflow×3",
-        "appearance×3",
+        "font×4",
+        "display×3",
+        "flex×3",
+        "minWidth×2",
         "width×2",
-        "strong×2",
+        "flexShrink×2",
         "whiteSpace×1",
-        "declaration×1"
+        "overflow×1",
+        "appearance×1"
       ]
     },
     {
@@ -2017,14 +2072,12 @@
       "value": "'Darker Grotesque',sans-serif",
       "aliasOf": null,
       "scopes": [
-        "GAP",
         "FONT_FAMILY"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--font-display)",
       "measuredIn": [
-        "font×5",
-        "font-family×2",
-        "margin×2"
+        "font-family×2"
       ]
     },
     {
@@ -2036,18 +2089,14 @@
       "value": "400",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
         "FONT_WEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--weight-regular)",
       "measuredIn": [
-        "margin×31",
-        "font×21",
+        "margin×11",
         "fontFamily×8",
-        "flexShrink×2",
-        "overflow×1",
-        "strong×1"
+        "overflow×1"
       ]
     },
     {
@@ -2059,27 +2108,20 @@
       "value": "500",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
-        "WIDTH_HEIGHT",
-        "FRAME_FILL",
         "FONT_WEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--weight-medium)",
       "measuredIn": [
-        "font×20",
         "fontFamily×15",
-        "margin×14",
-        "flex×6",
-        "minWidth×3",
+        "margin×4",
+        "flex×4",
+        "minWidth×2",
         "width×2",
-        "overflow×2",
-        "appearance×2",
-        "flexShrink×2",
+        "font×2",
         "background×1",
         "position×1",
-        "display×1",
-        "declaration×1"
+        "display×1"
       ]
     },
     {
@@ -2091,18 +2133,14 @@
       "value": "600",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
         "FONT_WEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--weight-semibold)",
       "measuredIn": [
         "fontFamily×6",
-        "font×6",
-        "margin×5",
-        "display×1",
-        "flexShrink×1",
-        "strong×1"
+        "margin×3",
+        "display×1"
       ]
     },
     {
@@ -2114,23 +2152,19 @@
       "value": "700",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
-        "FRAME_FILL",
-        "WIDTH_HEIGHT",
         "FONT_WEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--weight-bold)",
       "measuredIn": [
         "fontFamily×11",
-        "font×8",
-        "margin×7",
+        "margin×5",
         "flexShrink×3",
-        "display×2",
+        "display×1",
         "whiteSpace×1",
         "background×1",
-        "appearance×1",
-        "minWidth×1"
+        "font×1",
+        "appearance×1"
       ]
     },
     {
@@ -2142,14 +2176,11 @@
       "value": "500",
       "aliasOf": null,
       "scopes": [
-        "GAP",
         "FONT_WEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--weight-display)",
-      "measuredIn": [
-        "font×5",
-        "margin×2"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--text-10",
@@ -2160,14 +2191,12 @@
       "value": "10px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FRAME_FILL",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-10)",
       "measuredIn": [
         "display×2",
-        "margin×2",
         "background×1"
       ]
     },
@@ -2180,22 +2209,16 @@
       "value": "11px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
-        "FRAME_FILL",
-        "WIDTH_HEIGHT",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-11)",
       "measuredIn": [
-        "margin×27",
-        "font×21",
+        "margin×10",
         "fontFamily×3",
-        "flexShrink×2",
         "background×1",
         "position×1",
-        "minWidth×1",
-        "strong×1"
+        "minWidth×1"
       ]
     },
     {
@@ -2207,18 +2230,12 @@
       "value": "11.5px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-11-5)",
       "measuredIn": [
-        "font×5",
-        "appearance×2",
-        "flexShrink×2",
-        "fontFamily×1",
-        "flex×1",
-        "margin×1"
+        "fontFamily×1"
       ]
     },
     {
@@ -2230,19 +2247,15 @@
       "value": "12px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
-        "WIDTH_HEIGHT",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-12)",
       "measuredIn": [
         "fontFamily×15",
-        "font×7",
         "margin×5",
-        "minWidth×2",
-        "overflow×1",
-        "display×1"
+        "minWidth×1",
+        "overflow×1"
       ]
     },
     {
@@ -2254,22 +2267,15 @@
       "value": "13px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
-        "WIDTH_HEIGHT",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-13)",
       "measuredIn": [
-        "font×16",
         "fontFamily×10",
-        "margin×7",
-        "flexShrink×3",
-        "flex×2",
-        "minWidth×1",
-        "overflow×1",
-        "declaration×1",
-        "strong×1"
+        "margin×4",
+        "flexShrink×2",
+        "flex×1"
       ]
     },
     {
@@ -2281,20 +2287,16 @@
       "value": "14px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
-        "WIDTH_HEIGHT",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-14)",
       "measuredIn": [
-        "margin×9",
         "fontFamily×8",
+        "margin×3",
         "flex×2",
-        "font×2",
         "display×1",
-        "width×1",
-        "overflow×1"
+        "width×1"
       ]
     },
     {
@@ -2306,9 +2308,9 @@
       "value": "15px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-15)",
       "measuredIn": [
         "fontFamily×1"
@@ -2323,15 +2325,13 @@
       "value": "16px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
-        "WIDTH_HEIGHT",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-16)",
       "measuredIn": [
-        "margin×5",
         "fontFamily×5",
+        "margin×1",
         "width×1",
         "appearance×1"
       ]
@@ -2345,14 +2345,11 @@
       "value": "18px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--text-18)",
-      "measuredIn": [
-        "margin×1",
-        "font×1"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--display-24",
@@ -2363,14 +2360,11 @@
       "value": "24px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--display-24)",
-      "measuredIn": [
-        "font×2",
-        "margin×1"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--display-27",
@@ -2381,13 +2375,11 @@
       "value": "27px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--display-27)",
-      "measuredIn": [
-        "margin×1"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--display-40",
@@ -2400,10 +2392,9 @@
       "scopes": [
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--display-40)",
-      "measuredIn": [
-        "font×2"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--display-64",
@@ -2416,10 +2407,9 @@
       "scopes": [
         "FONT_SIZE"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--display-64)",
-      "measuredIn": [
-        "font×1"
-      ]
+      "measuredIn": []
     },
     {
       "css": "--leading-14",
@@ -2430,14 +2420,12 @@
       "value": "14px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-14)",
       "measuredIn": [
         "fontFamily×3",
-        "margin×2",
         "display×1"
       ]
     },
@@ -2450,17 +2438,13 @@
       "value": "15px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-15)",
       "measuredIn": [
-        "margin×24",
-        "font×21",
-        "flexShrink×2",
-        "fontFamily×1",
-        "strong×1"
+        "margin×7",
+        "fontFamily×1"
       ]
     },
     {
@@ -2472,22 +2456,15 @@
       "value": "16px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "WIDTH_HEIGHT",
-        "FONT_FAMILY",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-16)",
       "measuredIn": [
-        "font×12",
-        "margin×4",
-        "minWidth×3",
-        "appearance×2",
-        "flexShrink×2",
+        "margin×3",
+        "minWidth×2",
         "fontFamily×1",
-        "overflow×1",
-        "display×1",
-        "flex×1"
+        "overflow×1"
       ]
     },
     {
@@ -2499,10 +2476,9 @@
       "value": "17px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-17)",
       "measuredIn": [
         "fontFamily×2",
@@ -2518,22 +2494,15 @@
       "value": "18px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
-        "WIDTH_HEIGHT",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-18)",
       "measuredIn": [
-        "font×16",
         "fontFamily×5",
-        "margin×5",
-        "flex×2",
-        "flexShrink×2",
-        "minWidth×1",
-        "overflow×1",
-        "declaration×1",
-        "strong×1"
+        "margin×2",
+        "flex×1",
+        "flexShrink×1"
       ]
     },
     {
@@ -2545,10 +2514,9 @@
       "value": "19px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
-        "GAP",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-19)",
       "measuredIn": [
         "fontFamily×3",
@@ -2565,19 +2533,15 @@
       "value": "20px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
-        "WIDTH_HEIGHT",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-20)",
       "measuredIn": [
-        "margin×8",
         "fontFamily×4",
+        "margin×2",
         "width×2",
-        "flex×2",
-        "font×2",
-        "overflow×1"
+        "flex×2"
       ]
     },
     {
@@ -2589,9 +2553,9 @@
       "value": "22px",
       "aliasOf": null,
       "scopes": [
-        "FONT_FAMILY",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-22)",
       "measuredIn": [
         "fontFamily×2"
@@ -2606,15 +2570,13 @@
       "value": "24px",
       "aliasOf": null,
       "scopes": [
-        "GAP",
-        "FONT_FAMILY",
         "LINE_HEIGHT"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--leading-24)",
       "measuredIn": [
-        "margin×6",
-        "fontFamily×1",
-        "font×1"
+        "margin×1",
+        "fontFamily×1"
       ]
     },
     {
@@ -2626,9 +2588,9 @@
       "value": "0.08em",
       "aliasOf": null,
       "scopes": [
-        "GAP",
         "LETTER_SPACING"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--tracking-eyebrow)",
       "measuredIn": [
         "margin×3"
@@ -2645,6 +2607,7 @@
       "scopes": [
         "LETTER_SPACING"
       ],
+      "scopeSource": "family",
       "codeSyntax": "var(--tracking-pill)",
       "measuredIn": [
         "font×2"

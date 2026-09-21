@@ -2427,3 +2427,40 @@ Run against the old live build it fails on three of four rows; against the fix i
 
 **Gates after: `check:app` OK local · 3/3 brand spec pages clean · system adherence unchanged ·
 integrity updated · redeployed and re-checked on the live URL.**
+
+---
+
+## F-81 · The colour role layer is complete, and almost nothing uses it — Open, for the owner
+
+Found while building the Figma library, 21 Sep 2026. `design-system/tokens/colors.css` defines a full
+semantic role layer — `--text-primary`, `--text-body`, `--text-muted`, `--surface-canvas`,
+`--surface-card`, `--surface-sheet`, `--border-line`, `--data-magnitude` and the rest, **28 roles that
+alias 31 literals**. It is a good layer. **21 of the 28 are referenced by no component.** The
+components reach straight past the role to the literal: `color: var(--color-ink)` rather than
+`var(--text-primary)`.
+
+`npm run check:tokens` has always counted these as debt ("30 defined and referenced nowhere") without
+saying what they were. They are not dead weight — they are the layer the system is supposed to be
+built on, bypassed.
+
+**Why it surfaced now.** A Figma variable's scope decides which picker it appears in. Scoped by
+measurement, 21 roles would have been hidden and a designer would choose a fill from seven tokens.
+The Figma file therefore scopes the roles by their own names, which is recorded in
+`.claude/skills/sentinel-figma/SKILL.md` as the one deliberate override of the generated map.
+
+**What it costs today.** Nothing renders wrong. The cost is that a colour change has to be made in
+the palette, where it moves everything that aliases it, instead of at the role, where it would move
+one meaning. It also means Figma and the code disagree about which token a component "uses" — the
+Figma component will bind `text/primary` and the JSX will say `--color-ink`, so Code Connect will
+show a mismatch that is real.
+
+**Three smaller things in the same family**, all inside the existing adherence count of 59:
+`Badge.jsx`, `AttributionChart.jsx` and `Eyebrow.jsx` write `letterSpacing: '0.08em'` / `'0.04em'`
+as literals while `--tracking-eyebrow` and `--tracking-pill` exist and are used correctly by five
+other components.
+
+**The owner's call, and it is not urgent.** Either (a) migrate the components onto the role layer —
+mechanical, touches many files, and makes Figma and code agree; (b) delete the unused roles and let
+the palette be the only layer, which loses the semantics; or (c) leave it and accept that Figma
+names the meaning while the code names the value. **Nothing should be changed before that ruling** —
+this is a visible-behaviour-neutral refactor, but it is a large one.

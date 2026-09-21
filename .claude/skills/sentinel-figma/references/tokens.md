@@ -34,19 +34,19 @@ deliberate.
 
 | Figma name | Type | Value | Measured scopes | Code syntax |
 | --- | --- | --- | --- | --- |
-| `color/alloc/equity` | COLOR | → `color/bronze` | — | `var(--color-alloc-equity)` |
-| `color/alloc/cash` | COLOR | → `color/bubble/edge` | — | `var(--color-alloc-cash)` |
+| `color/alloc/equity` | COLOR | → `color/bronze` | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR | `var(--color-alloc-equity)` |
+| `color/alloc/cash` | COLOR | → `color/bubble/edge` | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR | `var(--color-alloc-cash)` |
 | `color/alloc/track` | COLOR | → `color/track` | — | `var(--color-alloc-track)` |
-| `color/status/over/fg` | COLOR | → `color/danger` | FRAME_FILL, TEXT_FILL, GAP | `var(--color-status-over-fg)` |
+| `color/status/over/fg` | COLOR | → `color/danger` | FRAME_FILL, TEXT_FILL | `var(--color-status-over-fg)` |
 | `color/status/under/bg` | COLOR | → `color/chip` | FRAME_FILL | `var(--color-status-under-bg)` |
-| `color/status/under/fg` | COLOR | → `color/bronze/deep` | — | `var(--color-status-under-fg)` |
-| `text/primary` | COLOR | → `color/ink` | FONT_SIZE | `var(--text-primary)` |
-| `text/body` | COLOR | → `color/ink/soft` | FONT_SIZE | `var(--text-body)` |
-| `text/muted` | COLOR | → `color/muted` | FONT_SIZE | `var(--text-muted)` |
-| `text/deemph` | COLOR | → `color/data/deemph` | FONT_SIZE | `var(--text-deemph)` |
-| `text/accent` | COLOR | → `color/bronze/deep` | FONT_SIZE | `var(--text-accent)` |
-| `text/danger` | COLOR | → `color/danger` | FONT_SIZE | `var(--text-danger)` |
-| `text/on/dark` | COLOR | → `color/surface` | FONT_SIZE | `var(--text-on-dark)` |
+| `color/status/under/fg` | COLOR | → `color/bronze/deep` | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR | `var(--color-status-under-fg)` |
+| `text/primary` | COLOR | → `color/ink` | — | `var(--text-primary)` |
+| `text/body` | COLOR | → `color/ink/soft` | — | `var(--text-body)` |
+| `text/muted` | COLOR | → `color/muted` | — | `var(--text-muted)` |
+| `text/deemph` | COLOR | → `color/data/deemph` | — | `var(--text-deemph)` |
+| `text/accent` | COLOR | → `color/bronze/deep` | — | `var(--text-accent)` |
+| `text/danger` | COLOR | → `color/danger` | — | `var(--text-danger)` |
+| `text/on/dark` | COLOR | → `color/surface` | — | `var(--text-on-dark)` |
 | `surface/canvas` | COLOR | → `color/canvas` | — | `var(--surface-canvas)` |
 | `surface/card` | COLOR | → `color/surface` | — | `var(--surface-card)` |
 | `surface/chip` | COLOR | → `color/chip` | — | `var(--surface-chip)` |
@@ -61,43 +61,43 @@ deliberate.
 | `data/secondary` | COLOR | → `color/alloc/debt` | — | `var(--data-secondary)` |
 | `data/tertiary` | COLOR | → `color/bubble/edge` | — | `var(--data-tertiary)` |
 | `data/track` | COLOR | → `color/track` | — | `var(--data-track)` |
-| `scrim` | COLOR | → `color/ink` | — | `var(--scrim)` |
+| `scrim` | COLOR | → `color/ink` | FRAME_FILL, SHAPE_FILL, TEXT_FILL, STROKE_COLOR | `var(--scrim)` |
 
 ## Collection `Layout` — 35 variables
 
 | Figma name | Type | Value | Measured scopes | Code syntax |
 | --- | --- | --- | --- | --- |
-| `space/4` | FLOAT | `4px` | GAP | `var(--space-4)` |
+| `space/4` | FLOAT | `4px` | GAP, WIDTH_HEIGHT | `var(--space-4)` |
 | `space/8` | FLOAT | `8px` | GAP, WIDTH_HEIGHT | `var(--space-8)` |
-| `space/12` | FLOAT | `12px` | GAP, WIDTH_HEIGHT, CORNER_RADIUS | `var(--space-12)` |
+| `space/12` | FLOAT | `12px` | GAP, WIDTH_HEIGHT | `var(--space-12)` |
 | `space/16` | FLOAT | `16px` | GAP, WIDTH_HEIGHT | `var(--space-16)` |
-| `space/20` | FLOAT | `20px` | — | `var(--space-20)` |
-| `space/24` | FLOAT | `24px` | — | `var(--space-24)` |
+| `space/20` | FLOAT | `20px` | GAP, WIDTH_HEIGHT | `var(--space-20)` |
+| `space/24` | FLOAT | `24px` | GAP, WIDTH_HEIGHT | `var(--space-24)` |
 | `space/6` | FLOAT | `6px` | GAP, WIDTH_HEIGHT | `var(--space-6)` |
-| `space/10` | FLOAT | `10px` | GAP, WIDTH_HEIGHT, CORNER_RADIUS | `var(--space-10)` |
-| `space/2` | FLOAT | `2px` | GAP | `var(--space-2)` |
-| `space/3` | FLOAT | `3px` | — | `var(--space-3)` |
-| `space/5` | FLOAT | `5px` | GAP | `var(--space-5)` |
-| `space/13` | FLOAT | `13px` | — | `var(--space-13)` |
-| `space/14` | FLOAT | `14px` | WIDTH_HEIGHT, GAP, CORNER_RADIUS | `var(--space-14)` |
-| `gutter` | FLOAT | `16px` | GAP | `var(--gutter)` |
-| `stack` | FLOAT | `12px` | GAP | `var(--stack)` |
-| `chip/gap` | FLOAT | `8px` | — | `var(--chip-gap)` |
-| `h/status` | FLOAT | `44px` | — | `var(--h-status)` |
-| `h/topbar` | FLOAT | `44px` | — | `var(--h-topbar)` |
-| `h/home` | FLOAT | `24px` | — | `var(--h-home)` |
-| `h/touch` | FLOAT | `44px` | — | `var(--h-touch)` |
-| `h/row` | FLOAT | `42px` | GAP | `var(--h-row)` |
-| `h/row/md` | FLOAT | `56px` | — | `var(--h-row-md)` |
-| `h/row/lg` | FLOAT | `46px` | — | `var(--h-row-lg)` |
-| `h/row/xl` | FLOAT | `52px` | — | `var(--h-row-xl)` |
-| `h/row/2l` | FLOAT | `72px` | — | `var(--h-row-2l)` |
-| `h/chip` | FLOAT | `36px` | — | `var(--h-chip)` |
+| `space/10` | FLOAT | `10px` | GAP, WIDTH_HEIGHT | `var(--space-10)` |
+| `space/2` | FLOAT | `2px` | GAP, WIDTH_HEIGHT | `var(--space-2)` |
+| `space/3` | FLOAT | `3px` | GAP, WIDTH_HEIGHT | `var(--space-3)` |
+| `space/5` | FLOAT | `5px` | GAP, WIDTH_HEIGHT | `var(--space-5)` |
+| `space/13` | FLOAT | `13px` | GAP, WIDTH_HEIGHT | `var(--space-13)` |
+| `space/14` | FLOAT | `14px` | GAP, WIDTH_HEIGHT | `var(--space-14)` |
+| `gutter` | FLOAT | `16px` | GAP, WIDTH_HEIGHT | `var(--gutter)` |
+| `stack` | FLOAT | `12px` | GAP, WIDTH_HEIGHT | `var(--stack)` |
+| `chip/gap` | FLOAT | `8px` | GAP, WIDTH_HEIGHT | `var(--chip-gap)` |
+| `h/status` | FLOAT | `44px` | WIDTH_HEIGHT | `var(--h-status)` |
+| `h/topbar` | FLOAT | `44px` | WIDTH_HEIGHT | `var(--h-topbar)` |
+| `h/home` | FLOAT | `24px` | WIDTH_HEIGHT | `var(--h-home)` |
+| `h/touch` | FLOAT | `44px` | WIDTH_HEIGHT | `var(--h-touch)` |
+| `h/row` | FLOAT | `42px` | WIDTH_HEIGHT | `var(--h-row)` |
+| `h/row/md` | FLOAT | `56px` | WIDTH_HEIGHT | `var(--h-row-md)` |
+| `h/row/lg` | FLOAT | `46px` | WIDTH_HEIGHT | `var(--h-row-lg)` |
+| `h/row/xl` | FLOAT | `52px` | WIDTH_HEIGHT | `var(--h-row-xl)` |
+| `h/row/2l` | FLOAT | `72px` | WIDTH_HEIGHT | `var(--h-row-2l)` |
+| `h/chip` | FLOAT | `36px` | WIDTH_HEIGHT | `var(--h-chip)` |
 | `h/filter/chip` | FLOAT | `32px` | WIDTH_HEIGHT | `var(--h-filter-chip)` |
-| `h/cta` | FLOAT | `48px` | — | `var(--h-cta)` |
-| `h/icon/btn` | FLOAT | `42px` | — | `var(--h-icon-btn)` |
-| `h/chip/sm` | FLOAT | `28px` | — | `var(--h-chip-sm)` |
-| `w/drawer` | FLOAT | `300px` | — | `var(--w-drawer)` |
+| `h/cta` | FLOAT | `48px` | WIDTH_HEIGHT | `var(--h-cta)` |
+| `h/icon/btn` | FLOAT | `42px` | WIDTH_HEIGHT | `var(--h-icon-btn)` |
+| `h/chip/sm` | FLOAT | `28px` | WIDTH_HEIGHT | `var(--h-chip-sm)` |
+| `w/drawer` | FLOAT | `300px` | WIDTH_HEIGHT | `var(--w-drawer)` |
 | `z/scrim` | FLOAT | `20` | — | `var(--z-scrim)` |
 | `z/modal` | FLOAT | `30` | — | `var(--z-modal)` |
 | `scrim/sheet` | FLOAT | `0.4` | — | `var(--scrim-sheet)` |
@@ -107,35 +107,35 @@ deliberate.
 
 | Figma name | Type | Value | Measured scopes | Code syntax |
 | --- | --- | --- | --- | --- |
-| `color/ink` | COLOR | `#251f1b` | GAP, FONT_FAMILY, TEXT_FILL, WIDTH_HEIGHT, FONT_WEIGHT | `var(--color-ink)` |
-| `color/ink/soft` | COLOR | `#3d3630` | TEXT_FILL, FONT_FAMILY, GAP, FONT_WEIGHT, FONT_SIZE | `var(--color-ink-soft)` |
-| `color/muted` | COLOR | `#605954` | GAP, FONT_FAMILY, TEXT_FILL, FRAME_FILL, WIDTH_HEIGHT, FONT_WEIGHT | `var(--color-muted)` |
-| `color/bronze` | COLOR | `#b69377` | WIDTH_HEIGHT, CORNER_RADIUS, TEXT_FILL, FRAME_FILL | `var(--color-bronze)` |
-| `color/bronze/deep` | COLOR | `#715035` | FONT_FAMILY, TEXT_FILL, STROKE_COLOR, GAP, WIDTH_HEIGHT, FONT_WEIGHT | `var(--color-bronze-deep)` |
+| `color/ink` | COLOR | `#251f1b` | — | `var(--color-ink)` |
+| `color/ink/soft` | COLOR | `#3d3630` | — | `var(--color-ink-soft)` |
+| `color/muted` | COLOR | `#605954` | — | `var(--color-muted)` |
+| `color/bronze` | COLOR | `#b69377` | — | `var(--color-bronze)` |
+| `color/bronze/deep` | COLOR | `#715035` | — | `var(--color-bronze-deep)` |
 | `color/bronze/edge` | COLOR | `#a07d5f` | — | `var(--color-bronze-edge)` |
-| `color/canvas` | COLOR | `#f6f4f1` | FRAME_FILL, WIDTH_HEIGHT, GAP, CORNER_RADIUS | `var(--color-canvas)` |
-| `color/line` | COLOR | `#e1deda` | WIDTH_HEIGHT, CORNER_RADIUS, GAP, FRAME_FILL, FONT_WEIGHT | `var(--color-line)` |
-| `color/line/soft` | COLOR | `#e9e6e2` | GAP, STROKE_COLOR, WIDTH_HEIGHT, FONT_WEIGHT | `var(--color-line-soft)` |
-| `color/bubble` | COLOR | `#f9eee6` | CORNER_RADIUS, WIDTH_HEIGHT, FRAME_FILL | `var(--color-bubble)` |
-| `color/bubble/edge` | COLOR | `#ebd4c3` | WIDTH_HEIGHT, CORNER_RADIUS, GAP | `var(--color-bubble-edge)` |
-| `color/chip` | COLOR | `#fbf6f1` | FRAME_FILL | `var(--color-chip)` |
-| `color/alloc/debt` | COLOR | `#d9bb9e` | CORNER_RADIUS, FRAME_FILL | `var(--color-alloc-debt)` |
-| `color/track` | COLOR | `#edebe7` | WIDTH_HEIGHT, CORNER_RADIUS | `var(--color-track)` |
-| `color/selected` | COLOR | `#ebd4c3` | GAP, FRAME_FILL | `var(--color-selected)` |
-| `color/cta` | COLOR | `#1a1614` | FRAME_FILL | `var(--color-cta)` |
+| `color/canvas` | COLOR | `#f6f4f1` | — | `var(--color-canvas)` |
+| `color/line` | COLOR | `#e1deda` | — | `var(--color-line)` |
+| `color/line/soft` | COLOR | `#e9e6e2` | — | `var(--color-line-soft)` |
+| `color/bubble` | COLOR | `#f9eee6` | — | `var(--color-bubble)` |
+| `color/bubble/edge` | COLOR | `#ebd4c3` | — | `var(--color-bubble-edge)` |
+| `color/chip` | COLOR | `#fbf6f1` | — | `var(--color-chip)` |
+| `color/alloc/debt` | COLOR | `#d9bb9e` | — | `var(--color-alloc-debt)` |
+| `color/track` | COLOR | `#edebe7` | — | `var(--color-track)` |
+| `color/selected` | COLOR | `#ebd4c3` | — | `var(--color-selected)` |
+| `color/cta` | COLOR | `#1a1614` | — | `var(--color-cta)` |
 | `color/cta/top` | COLOR | `#3b3531` | — | `var(--color-cta-top)` |
 | `color/cta/bottom` | COLOR | `#111111` | — | `var(--color-cta-bottom)` |
-| `color/danger` | COLOR | `#b4552f` | FRAME_FILL, TEXT_FILL, GAP | `var(--color-danger)` |
-| `color/status/over/bg` | COLOR | `#f3e2da` | FRAME_FILL, CORNER_RADIUS | `var(--color-status-over-bg)` |
-| `color/status/ok/bg` | COLOR | `#e4ecdf` | FRAME_FILL | `var(--color-status-ok-bg)` |
-| `color/status/ok/fg` | COLOR | `#4b6141` | TEXT_FILL | `var(--color-status-ok-fg)` |
-| `color/data/deemph` | COLOR | `#a39a91` | GAP, TEXT_FILL, CORNER_RADIUS, FONT_FAMILY | `var(--color-data-deemph)` |
-| `color/surface` | COLOR | `#ffffff` | WIDTH_HEIGHT, CORNER_RADIUS, FRAME_FILL, FONT_FAMILY, GAP, TEXT_FILL | `var(--color-surface)` |
+| `color/danger` | COLOR | `#b4552f` | — | `var(--color-danger)` |
+| `color/status/over/bg` | COLOR | `#f3e2da` | — | `var(--color-status-over-bg)` |
+| `color/status/ok/bg` | COLOR | `#e4ecdf` | — | `var(--color-status-ok-bg)` |
+| `color/status/ok/fg` | COLOR | `#4b6141` | — | `var(--color-status-ok-fg)` |
+| `color/data/deemph` | COLOR | `#a39a91` | — | `var(--color-data-deemph)` |
+| `color/surface` | COLOR | `#ffffff` | — | `var(--color-surface)` |
 | `surface/avatar` | COLOR | `rgba(182,147,119,0.20)` | — | `var(--surface-avatar)` |
-| `tint/bronze/06` | COLOR | `rgba(182,147,119,0.06)` | FRAME_FILL | `var(--tint-bronze-06)` |
+| `tint/bronze/06` | COLOR | `rgba(182,147,119,0.06)` | — | `var(--tint-bronze-06)` |
 | `tint/bronze/focus` | COLOR | `rgba(182,147,119,0.24)` | — | `var(--tint-bronze-focus)` |
-| `tint/bronze/dashed` | COLOR | `rgba(182,147,119,0.6)` | STROKE_COLOR | `var(--tint-bronze-dashed)` |
-| `color/desk` | COLOR | `#dedbd6` | FRAME_FILL | `var(--color-desk)` |
+| `tint/bronze/dashed` | COLOR | `rgba(182,147,119,0.6)` | — | `var(--tint-bronze-dashed)` |
+| `color/desk` | COLOR | `#dedbd6` | — | `var(--color-desk)` |
 | `ring/frame` | COLOR | `rgba(0,0,0,0.10)` | — | `var(--ring-frame)` |
 | `ring/frame/soft` | COLOR | `rgba(0,0,0,0.08)` | — | `var(--ring-frame-soft)` |
 
@@ -143,58 +143,58 @@ deliberate.
 
 | Figma name | Type | Value | Measured scopes | Code syntax |
 | --- | --- | --- | --- | --- |
-| `radius/6` | FLOAT | `6px` | FRAME_FILL, CORNER_RADIUS, WIDTH_HEIGHT | `var(--radius-6)` |
-| `radius/8` | FLOAT | `8px` | WIDTH_HEIGHT | `var(--radius-8)` |
-| `radius/10` | FLOAT | `10px` | — | `var(--radius-10)` |
-| `radius/12` | FLOAT | `12px` | CORNER_RADIUS, WIDTH_HEIGHT, GAP | `var(--radius-12)` |
-| `radius/16` | FLOAT | `16px` | WIDTH_HEIGHT, CORNER_RADIUS, GAP | `var(--radius-16)` |
-| `radius/20` | FLOAT | `20px` | WIDTH_HEIGHT, CORNER_RADIUS | `var(--radius-20)` |
-| `radius/24` | FLOAT | `24px` | — | `var(--radius-24)` |
-| `radius/44` | FLOAT | `44px` | — | `var(--radius-44)` |
-| `radius/full` | FLOAT | `9999px` | CORNER_RADIUS, WIDTH_HEIGHT, GAP | `var(--radius-full)` |
+| `radius/6` | FLOAT | `6px` | CORNER_RADIUS | `var(--radius-6)` |
+| `radius/8` | FLOAT | `8px` | CORNER_RADIUS | `var(--radius-8)` |
+| `radius/10` | FLOAT | `10px` | CORNER_RADIUS | `var(--radius-10)` |
+| `radius/12` | FLOAT | `12px` | CORNER_RADIUS | `var(--radius-12)` |
+| `radius/16` | FLOAT | `16px` | CORNER_RADIUS | `var(--radius-16)` |
+| `radius/20` | FLOAT | `20px` | CORNER_RADIUS | `var(--radius-20)` |
+| `radius/24` | FLOAT | `24px` | CORNER_RADIUS | `var(--radius-24)` |
+| `radius/44` | FLOAT | `44px` | CORNER_RADIUS | `var(--radius-44)` |
+| `radius/full` | FLOAT | `9999px` | CORNER_RADIUS | `var(--radius-full)` |
 
 ## Collection `Stroke` — 3 variables
 
 | Figma name | Type | Value | Measured scopes | Code syntax |
 | --- | --- | --- | --- | --- |
-| `border/hairline` | FLOAT | `0.5px` | GAP, WIDTH_HEIGHT, STROKE_COLOR | `var(--border-hairline)` |
-| `border/1` | FLOAT | `1px` | CORNER_RADIUS, GAP | `var(--border-1)` |
-| `border/focus/width` | FLOAT | `2px` | STROKE_COLOR | `var(--border-focus-width)` |
+| `border/hairline` | FLOAT | `0.5px` | STROKE_FLOAT | `var(--border-hairline)` |
+| `border/1` | FLOAT | `1px` | STROKE_FLOAT | `var(--border-1)` |
+| `border/focus/width` | FLOAT | `2px` | STROKE_FLOAT | `var(--border-focus-width)` |
 
 ## Collection `Type` — 31 variables
 
 | Figma name | Type | Value | Measured scopes | Code syntax |
 | --- | --- | --- | --- | --- |
-| `font/ui` | STRING | `'Urbanist',sans-serif` | GAP, FONT_FAMILY, WIDTH_HEIGHT | `var(--font-ui)` |
-| `font/display` | STRING | `'Darker Grotesque',sans-serif` | GAP, FONT_FAMILY | `var(--font-display)` |
-| `weight/regular` | FLOAT | `400` | GAP, FONT_FAMILY, FONT_WEIGHT | `var(--weight-regular)` |
-| `weight/medium` | FLOAT | `500` | FONT_FAMILY, GAP, WIDTH_HEIGHT, FRAME_FILL, FONT_WEIGHT | `var(--weight-medium)` |
-| `weight/semibold` | FLOAT | `600` | FONT_FAMILY, GAP, FONT_WEIGHT | `var(--weight-semibold)` |
-| `weight/bold` | FLOAT | `700` | FONT_FAMILY, GAP, FRAME_FILL, WIDTH_HEIGHT, FONT_WEIGHT | `var(--weight-bold)` |
-| `weight/display` | FLOAT | `500` | GAP, FONT_WEIGHT | `var(--weight-display)` |
-| `text/10` | FLOAT | `10px` | GAP, FRAME_FILL, FONT_SIZE | `var(--text-10)` |
-| `text/11` | FLOAT | `11px` | GAP, FONT_FAMILY, FRAME_FILL, WIDTH_HEIGHT, FONT_SIZE | `var(--text-11)` |
-| `text/11/5` | FLOAT | `11.5px` | FONT_FAMILY, GAP, FONT_SIZE | `var(--text-11-5)` |
-| `text/12` | FLOAT | `12px` | FONT_FAMILY, GAP, WIDTH_HEIGHT, FONT_SIZE | `var(--text-12)` |
-| `text/13` | FLOAT | `13px` | FONT_FAMILY, GAP, WIDTH_HEIGHT, FONT_SIZE | `var(--text-13)` |
-| `text/14` | FLOAT | `14px` | GAP, FONT_FAMILY, WIDTH_HEIGHT, FONT_SIZE | `var(--text-14)` |
-| `text/15` | FLOAT | `15px` | FONT_FAMILY, FONT_SIZE | `var(--text-15)` |
-| `text/16` | FLOAT | `16px` | GAP, FONT_FAMILY, WIDTH_HEIGHT, FONT_SIZE | `var(--text-16)` |
-| `text/18` | FLOAT | `18px` | GAP, FONT_SIZE | `var(--text-18)` |
-| `display/24` | FLOAT | `24px` | GAP, FONT_SIZE | `var(--display-24)` |
-| `display/27` | FLOAT | `27px` | GAP, FONT_SIZE | `var(--display-27)` |
+| `font/ui` | STRING | `'Urbanist',sans-serif` | FONT_FAMILY | `var(--font-ui)` |
+| `font/display` | STRING | `'Darker Grotesque',sans-serif` | FONT_FAMILY | `var(--font-display)` |
+| `weight/regular` | FLOAT | `400` | FONT_WEIGHT | `var(--weight-regular)` |
+| `weight/medium` | FLOAT | `500` | FONT_WEIGHT | `var(--weight-medium)` |
+| `weight/semibold` | FLOAT | `600` | FONT_WEIGHT | `var(--weight-semibold)` |
+| `weight/bold` | FLOAT | `700` | FONT_WEIGHT | `var(--weight-bold)` |
+| `weight/display` | FLOAT | `500` | FONT_WEIGHT | `var(--weight-display)` |
+| `text/10` | FLOAT | `10px` | FONT_SIZE | `var(--text-10)` |
+| `text/11` | FLOAT | `11px` | FONT_SIZE | `var(--text-11)` |
+| `text/11/5` | FLOAT | `11.5px` | FONT_SIZE | `var(--text-11-5)` |
+| `text/12` | FLOAT | `12px` | FONT_SIZE | `var(--text-12)` |
+| `text/13` | FLOAT | `13px` | FONT_SIZE | `var(--text-13)` |
+| `text/14` | FLOAT | `14px` | FONT_SIZE | `var(--text-14)` |
+| `text/15` | FLOAT | `15px` | FONT_SIZE | `var(--text-15)` |
+| `text/16` | FLOAT | `16px` | FONT_SIZE | `var(--text-16)` |
+| `text/18` | FLOAT | `18px` | FONT_SIZE | `var(--text-18)` |
+| `display/24` | FLOAT | `24px` | FONT_SIZE | `var(--display-24)` |
+| `display/27` | FLOAT | `27px` | FONT_SIZE | `var(--display-27)` |
 | `display/40` | FLOAT | `40px` | FONT_SIZE | `var(--display-40)` |
 | `display/64` | FLOAT | `64px` | FONT_SIZE | `var(--display-64)` |
-| `leading/14` | FLOAT | `14px` | FONT_FAMILY, GAP, LINE_HEIGHT | `var(--leading-14)` |
-| `leading/15` | FLOAT | `15px` | GAP, FONT_FAMILY, LINE_HEIGHT | `var(--leading-15)` |
-| `leading/16` | FLOAT | `16px` | GAP, WIDTH_HEIGHT, FONT_FAMILY, LINE_HEIGHT | `var(--leading-16)` |
-| `leading/17` | FLOAT | `17px` | FONT_FAMILY, GAP, LINE_HEIGHT | `var(--leading-17)` |
-| `leading/18` | FLOAT | `18px` | FONT_FAMILY, GAP, WIDTH_HEIGHT, LINE_HEIGHT | `var(--leading-18)` |
-| `leading/19` | FLOAT | `19px` | FONT_FAMILY, GAP, LINE_HEIGHT | `var(--leading-19)` |
-| `leading/20` | FLOAT | `20px` | GAP, FONT_FAMILY, WIDTH_HEIGHT, LINE_HEIGHT | `var(--leading-20)` |
-| `leading/22` | FLOAT | `22px` | FONT_FAMILY, LINE_HEIGHT | `var(--leading-22)` |
-| `leading/24` | FLOAT | `24px` | GAP, FONT_FAMILY, LINE_HEIGHT | `var(--leading-24)` |
-| `tracking/eyebrow` | FLOAT | `0.08em` | GAP, LETTER_SPACING | `var(--tracking-eyebrow)` |
+| `leading/14` | FLOAT | `14px` | LINE_HEIGHT | `var(--leading-14)` |
+| `leading/15` | FLOAT | `15px` | LINE_HEIGHT | `var(--leading-15)` |
+| `leading/16` | FLOAT | `16px` | LINE_HEIGHT | `var(--leading-16)` |
+| `leading/17` | FLOAT | `17px` | LINE_HEIGHT | `var(--leading-17)` |
+| `leading/18` | FLOAT | `18px` | LINE_HEIGHT | `var(--leading-18)` |
+| `leading/19` | FLOAT | `19px` | LINE_HEIGHT | `var(--leading-19)` |
+| `leading/20` | FLOAT | `20px` | LINE_HEIGHT | `var(--leading-20)` |
+| `leading/22` | FLOAT | `22px` | LINE_HEIGHT | `var(--leading-22)` |
+| `leading/24` | FLOAT | `24px` | LINE_HEIGHT | `var(--leading-24)` |
+| `tracking/eyebrow` | FLOAT | `0.08em` | LETTER_SPACING | `var(--tracking-eyebrow)` |
 | `tracking/pill` | FLOAT | `0.04em` | LETTER_SPACING | `var(--tracking-pill)` |
 
 ## Text styles — 14 roles
@@ -263,18 +263,27 @@ somewhere else, and the skill states where so nobody adds them as loose numbers.
 | `--paper-texture` | `radial-gradient(rgba(37,31,27,0.045) 1px,transpa…` | a radial-gradient pattern. Figma renders it as an image fill on the canvas frame. |
 | `--paper-texture-size` | `3px 3px` | as --paper-texture |
 
-## Variables with no scope — 50, in two kinds
+## Variables with no scope — 56, in two kinds
 
 Both are created with `scopes = []` — present in the library for completeness, hidden from every
 picker — but they are hidden for different reasons, and collapsing them would hide real debt.
 
-### Referenced nowhere — 21
+### Referenced nowhere — 26
 
 Dead tokens. `npm run check:tokens` already counts these as debt, not as a defect. The Figma
 library must not offer a designer a token the product never uses.
 
 - `color/bronze/edge`
 - `color/alloc/track`
+- `color/cta/top`
+- `color/cta/bottom`
+- `text/primary`
+- `text/body`
+- `text/muted`
+- `text/deemph`
+- `text/accent`
+- `text/danger`
+- `text/on/dark`
 - `surface/canvas`
 - `surface/card`
 - `surface/chip`
@@ -290,12 +299,8 @@ library must not offer a designer a token the product never uses.
 - `data/track`
 - `tint/bronze/focus`
 - `ring/frame/soft`
-- `space/13`
-- `h/home`
-- `h/row/2l`
-- `h/icon/btn`
 
-### Used, but only where Figma cannot bind — 29
+### Used, but only where Figma cannot bind — 30
 
 These are live tokens consumed by `animation`, `transition`, `zIndex`, `opacity` and the
 like. Figma has no variable scope for those properties, so the value is carried by the prototype
@@ -303,32 +308,33 @@ interaction or set directly on the node, and the variable exists as the record o
 
 | Token | Measured in |
 | --- | --- |
-| `color/alloc/equity` | label×1 |
-| `color/alloc/cash` | label×1 |
-| `color/cta/top` | appearance×3 |
-| `color/cta/bottom` | appearance×3 |
-| `color/status/under/fg` | bg×1 |
+| `color/ink` | margin×21 · fontFamily×15 · font×11 · color×10 |
+| `color/ink/soft` | color×8 · font×6 · fontFamily×5 · margin×5 |
+| `color/muted` | margin×31 · font×23 · fontFamily×18 · color×18 |
+| `color/bronze` | width×7 · display×6 · borderRadius×4 · color×4 |
+| `color/bronze/deep` | font×14 · fontFamily×10 · color×10 · bg×6 |
+| `color/canvas` | position×6 · background×5 · width×2 · marginTop×1 |
+| `color/line` | display×11 · position×8 · height×6 · borderRadius×5 |
+| `color/line/soft` | display×13 · margin×3 · padding×2 · borderBottom×2 |
+| `color/bubble` | borderRadius×3 · width×2 · background×2 · appearance×1 |
+| `color/bubble/edge` | bg×4 · width×2 · borderRadius×2 · display×2 |
+| `color/chip` | display×8 · background×5 · bg×4 · appearance×1 |
+| `color/alloc/debt` | label×2 · borderRadius×1 · background×1 |
+| `color/track` | display×6 · height×6 · position×2 · borderRadius×1 |
+| `color/selected` | display×3 · bg×2 · appearance×1 · marginBottom×1 |
+| `color/cta` | background×1 |
+| `color/danger` | font×6 · flexShrink×1 · bg×1 · flex×1 |
+| `color/status/over/bg` | bg×1 · position×1 · background×1 · borderRadius×1 |
+| `color/status/ok/bg` | background×2 · bg×1 |
+| `color/status/ok/fg` | color×2 · bg×1 |
+| `color/data/deemph` | margin×5 · font×4 · flexShrink×2 · color×2 |
+| `color/surface` | width×19 · display×7 · borderRadius×7 · position×4 |
 | `surface/avatar` | display×3 |
-| `scrim` | position×4 |
+| `tint/bronze/06` | background×2 · appearance×1 |
+| `tint/bronze/dashed` | outline×1 |
+| `color/desk` | background×19 · shell×2 |
 | `ring/frame` | box-shadow×2 · position×1 |
-| `space/20` | display×4 · flexShrink×2 · flex×1 |
-| `space/24` | position×2 |
-| `space/3` | appearance×1 |
-| `chip/gap` | display×3 |
-| `h/status` | display×1 |
-| `h/topbar` | position×1 |
-| `h/touch` | flexShrink×1 · display×1 · appearance×1 |
-| `h/row/md` | display×2 |
-| `h/row/lg` | display×3 |
-| `h/row/xl` | display×2 |
-| `h/chip` | display×2 |
-| `h/cta` | display×1 |
-| `h/chip/sm` | display×6 |
-| `w/drawer` | position×1 |
 | `z/scrim` | position×3 |
 | `z/modal` | position×2 |
 | `scrim/sheet` | position×2 |
 | `scrim/drawer` | position×1 |
-| `radius/10` | position×1 |
-| `radius/24` | position×2 |
-| `radius/44` | position×1 |

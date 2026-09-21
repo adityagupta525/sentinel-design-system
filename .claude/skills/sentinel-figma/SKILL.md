@@ -114,6 +114,41 @@ These are the ones that will actually cost a day.
    fill, it did not come from this system. The one exception is the canvas paper texture, which is a
    3px radial-gradient pattern and is an image fill in Figma by necessity.
 
+## Seven things that actually broke, building Phase 1 and 2
+
+Found by doing it on 21 Sep 2026, not predicted. Each one cost a call.
+
+1. **`figma.createAutoLayout()` returns a frame with an opaque white fill.** On the ink cover every
+   inner container painted a white band across the layout. Only the outermost frame carries a fill;
+   clear `fills = []` on every container inside it.
+
+2. **Urbanist's 600 is `SemiBold`, one word.** The common footgun is Inter's `Semi Bold` with a
+   space, and the Figma skill warns about that one. Verify with `listAvailableFontsAsync()` before
+   writing a text style — a wrong style string fails the font load, and a missing weight falls back
+   silently so the whole ramp reads a half-step light.
+
+3. **A `LETTER_SPACING` variable is pixel-valued.** Binding `tracking/eyebrow` (0.08em, stored as 8)
+   turned into **8px** on 10px type — eight times the tracking. An em is a ratio of the font size and
+   no Figma variable keeps the unit. Set `{ unit: 'PERCENT', value: 8 }` on the **style** and name
+   the token in the description.
+
+4. **Setting a text property on a node detaches its style.** Two eyebrows came back with no
+   `textStyleId` because the tracking was an override. Anything a role needs belongs on the role.
+   When re-attaching, match each node to the style whose **font, size and leading it already has** —
+   a blanket re-apply silently restyled a `label` specimen into an `eyebrow`.
+
+5. **Figma will not delete the page you are standing on.** `Removing this node is not allowed` on the
+   default `Page 1`. `await figma.setCurrentPageAsync(otherPage)` first.
+
+6. **`search_design_system` clamps a batch to one query.** Five queries came back as one with a
+   warning and four silently unprocessed. Send them one at a time and read the warning field.
+
+7. **The colour role layer is complete in CSS and 21 of its 28 roles are referenced by nothing** —
+   components reach straight past `text/primary` to `--color-ink`. Following the measurement would
+   have hidden every well-named role from the picker and left a designer choosing between seven
+   tokens. The roles are therefore scoped by their own name, and the code debt is recorded in
+   `docs/FINDINGS.md` rather than hidden by the Figma file.
+
 ## What cannot be 100%, stated up front
 
 Say this before building, not after someone measures it.
@@ -128,6 +163,17 @@ Say this before building, not after someone measures it.
 Everything else — colour, spacing, radius, type ramp, shadow, structure, every component and every
 screen — is reproducible exactly, and `references/parity.md` is how that gets proven rather than
 claimed.
+
+## The file
+
+**[Sentinel — Design System](https://www.figma.com/design/F0pP5GN6I5YUJkoWVOLu4E)** — file key
+`F0pP5GN6I5YUJkoWVOLu4E`, in the Centricity WealthTech org. Phases 0–2 are done: 137 variables in 6
+collections, 14 text styles, 9 effect styles, 4 paint styles, and the Cover, Getting started and six
+Foundations pages. Components are Phase 3. A second file, `Sentinel — Screens`, is created at Phase 4.
+
+The org's other library, **Centricity Design System**, is a different product (obsidian, copper,
+frosted glass) and the owner ruled on 21 Sep that it is **ignored** — not subscribed, not reused, its
+conventions not adopted.
 
 ## Changing something
 

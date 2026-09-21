@@ -1,6 +1,13 @@
 # Sentinel in Figma — the plan
 
-**Status: written 21 Sep 2026, waiting on the owner. Nothing has been created in Figma.**
+**Status: Phases 0–2 built, 21 Sep 2026.** The file is
+[Sentinel — Design System](https://www.figma.com/design/F0pP5GN6I5YUJkoWVOLu4E) in the Centricity
+WealthTech org. Foundations are complete; components are Phase 3 and have not started.
+
+The owner's rulings on 21 Sep: **two files** (library + screens) · the CLI account switched to
+`ashish@centricity.co.in` · **foundations first, in full** — variables, naming, layers, styles, cover
+and foundation pages — before any component · the turn signature **stays `✦`**, no Mascot swap ·
+the org's existing *Centricity Design System* library is **ignored**, being a different product.
 
 `docs/CONTINUE-HERE.md:507` recorded the ruling: *"Figma export comes last. The owner is the
 designer and wants Figma only after the design system and the screens are both complete."* Both are

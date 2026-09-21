@@ -75,16 +75,20 @@ for (const p of consumers) {
     }
   }
 }
-/* A token referenced by another token inherits that token's consumption — --color-alloc-equity is
-   never written in a component, it is aliased by one that is. */
+/* A COLOUR ALIAS inherits its consumption from the token that aliases it: --color-bronze is
+   written as `color:` nowhere, but --color-alloc-equity aliases it and is. Restricted to a pure
+   alias (`--a: var(--b);`, nothing else) so it cannot cross kinds — an earlier version let a type
+   role push its own `font:` consumption onto all four primitives it binds, which put FRAME_FILL on
+   a font weight. */
 for (const d of decls) {
-  for (const r of d.value.matchAll(/var\((--[a-z0-9-]+)\)/g)) {
-    if (!usage.has(r[1])) usage.set(r[1], new Map());
-    const from = usage.get(d.name);
-    if (!from) continue;
-    const to = usage.get(r[1]);
-    for (const [prop, n] of from) to.set(prop, (to.get(prop) || 0) + n);
-  }
+  const pure = d.value.match(/^var\((--[a-z0-9-]+)\)$/);
+  if (!pure) continue;
+  const target = pure[1];
+  if (!usage.has(target)) usage.set(target, new Map());
+  const from = usage.get(d.name);
+  if (!from) continue;
+  const to = usage.get(target);
+  for (const [prop, n] of from) to.set(prop, (to.get(prop) || 0) + n);
 }
 
 /* property → Figma variable scope. Only properties Figma can actually bind appear here. */
@@ -145,17 +149,48 @@ const unclassified = [];
 for (const d of decls) {
   const { name, value } = d;
   const props = [...(usage.get(name) || new Map()).entries()].sort((a, b) => b[1] - a[1]);
-  const scopes = [...new Set(props.map(([p]) => SCOPE[p]).filter(Boolean))];
-  /* The type primitives are bound by the 14 text styles, and the CSS reaches them through the
-     `font:` shorthand — which hides the size, leading, weight and family from a property
-     measurement. Measured alone, --text-14 came back with ONE bindable scope out of 82 uses. The
-     scope is therefore derived from the structure (a text style binds exactly these four slots),
-     which is a fact about Figma, not a guess about intent. */
-  const TYPE_SCOPE = [[/^--(text|display)-/, 'FONT_SIZE'], [/^--leading-/, 'LINE_HEIGHT'],
-    [/^--weight-/, 'FONT_WEIGHT'], [/^--font-/, 'FONT_FAMILY'], [/^--tracking-/, 'LETTER_SPACING']];
-  for (const [re, sc] of TYPE_SCOPE) if (re.test(name) && !scopes.includes(sc)) scopes.push(sc);
+  /* SCOPES. Two rules, and which one applies depends on whether the family is ambiguous.
+
+     A COLOUR is ambiguous — the same hex can be a fill, a text colour or a stroke, and only the
+     CSS says which. So a colour's scopes are MEASURED from the properties that consume it.
+
+     Everything else is not ambiguous: a radius token is a corner radius, a leading token is a line
+     height. Measuring those adds nothing and subtracts a lot, because the CSS reaches most of them
+     through the `font:` shorthand, which a property measurement cannot see — measured alone,
+     --text-14 returned one bindable scope out of 82 uses. So the family determines the scope, and
+     that is a fact about the token layer, not a guess about intent. */
+  const FAMILY = [
+    [/^--(space|gutter|stack|chip-gap)/, ['GAP', 'WIDTH_HEIGHT']],
+    [/^--(h|w)-/, ['WIDTH_HEIGHT']],
+    [/^--radius-/, ['CORNER_RADIUS']],
+    [/^--border-(hairline|1|focus-width)/, ['STROKE_FLOAT']],
+    [/^--(text|display)-/, ['FONT_SIZE']],
+    [/^--leading-/, ['LINE_HEIGHT']],
+    [/^--weight-/, ['FONT_WEIGHT']],
+    [/^--font-/, ['FONT_FAMILY']],
+    [/^--tracking-/, ['LETTER_SPACING']],
+  ];
+  /* Only for non-colours. Sentinel names nine COLOUR tokens `--text-primary`, `--text-muted`,
+     `--text-danger` and so on — the family regex read those as font sizes and put FONT_SIZE on a
+     hex. A colour is decided by measurement, whatever it is called. */
+  const looksColour = HEX.test(value) || RGBA.test(value)
+    || (ALIAS.test(value) && (() => { const b = byName.get(value.match(ALIAS)[1]); return b && (HEX.test(b.value) || RGBA.test(b.value)); })());
+  const family = looksColour ? null : FAMILY.find(([re]) => re.test(name));
+  const measured = [...new Set(props.map(([p]) => SCOPE[p]).filter(Boolean))];
+  const COLOUR_SCOPES = ['FRAME_FILL', 'SHAPE_FILL', 'TEXT_FILL', 'STROKE_COLOR', 'EFFECT_COLOR'];
+  let scopes = family ? family[1] : measured.filter((x) => COLOUR_SCOPES.includes(x));
+  let scopeSource = family ? 'family' : 'measured';
+  /* A colour that IS referenced but whose consuming property cannot be resolved. Sentinel passes
+     several colours as DATA — `{ label: 'Equity', color: 'var(--color-alloc-equity)' }` — and a
+     property measurement sees the object key, not the eventual fill. Empty scopes would hide the
+     token from every picker, which is worse than a broad one, so it gets all four colour scopes
+     and is labelled as undetermined rather than measured. */
+  if (looksColour && !scopes.length && props.length) {
+    scopes = ['FRAME_FILL', 'SHAPE_FILL', 'TEXT_FILL', 'STROKE_COLOR'];
+    scopeSource = 'indeterminate';
+  }
   const aliasOf = (value.match(ALIAS) || [])[1] || null;
-  const row = { ...d, props: props.map(([p, n]) => `${p}×${n}`), scopes, aliasOf };
+  const row = { ...d, props: props.map(([p, n]) => `${p}×${n}`), scopes, scopeSource, aliasOf };
 
   if (DOCUMENTED_ONLY[name]) { documented.push({ ...row, why: DOCUMENTED_ONLY[name] }); continue; }
 
@@ -200,6 +235,13 @@ const collection = (v) => {
 };
 for (const v of variables) v.collection = collection(v);
 
+/* THE ONE DELIBERATE OVERRIDE. A palette entry is a raw literal; a designer picks the role, never
+   the literal. Empty scopes keep every palette variable out of every picker while still existing
+   for the roles to alias. See tokens.md. */
+for (const v of variables) {
+  if (v.collection === 'Palette') { v.scopes = []; v.scopeSource = 'hidden-primitive'; }
+}
+
 const figmaName = (n) => n.replace(/^--/, '').replace(/-/g, '/').replace(/^(color|space|radius|text|display|leading|weight|font|tracking|border|h|w)\//, '$1/');
 
 /* ── write the machine map ────────────────────────────────────────────────── */
@@ -212,6 +254,7 @@ const json = {
   variables: variables.map((v) => ({
     css: v.name, figma: figmaName(v.name), collection: v.collection, layer: v.layer, kind: v.kind,
     value: v.value, aliasOf: v.aliasOf, scopes: v.scopes.length ? v.scopes : ['__UNUSED__'],
+    scopeSource: v.scopeSource,
     codeSyntax: `var(${v.name})`, measuredIn: v.props,
   })),
   textStyles: typeRoles.map((t) => ({ name: `${t.role}`, css: t.name, weight: t.weight, size: t.size, leading: t.leading, family: t.family })),
@@ -222,6 +265,7 @@ await writeFile(join(OUT, 'figma-tokens.json'), JSON.stringify(json, null, 2) + 
 
 /* ── write the human map ──────────────────────────────────────────────────── */
 
+const byFamily = variables.filter((v) => v.scopeSource === 'family');
 const unused = variables.filter((v) => !v.scopes.length);
 const neverUsed = unused.filter((v) => !v.props.length);
 const nonBindable = unused.filter((v) => v.props.length);
@@ -423,7 +467,22 @@ await writeFile(join(OUT, 'inventory.md'), inv);
 console.log(`figma-tokens.json + tokens.md: ${variables.length} variables in ${groups.length} collections ` +
   `(${groups.join(', ')}), ${typeRoles.length} text styles, ${effects.length} effect styles, ${documented.length} documented-only`);
 console.log(`inventory.md: ${sources.length} components in ${order.length} groups, ${withProps} with props, ${variantProps.length} variant sets`);
+console.log(`  scopes: ${byFamily.length} from the token family, ${variables.length - byFamily.length} measured from consumption (colours)`);
 if (unused.length) console.log(`  ${unused.length} with no scope: ${neverUsed.length} referenced nowhere (debt), ${nonBindable.length} used only where Figma cannot bind`);
+/* Figma rejects a scope that does not match the variable's type, and a rejected scope is a silent
+   ALL_SCOPES in practice. Asserted here rather than discovered when a designer opens a picker. */
+const COLOUR_ONLY = ['FRAME_FILL', 'SHAPE_FILL', 'TEXT_FILL', 'STROKE_COLOR', 'EFFECT_COLOR'];
+const mismatched = variables.filter((v) => {
+  const s = v.scopes;
+  if (!s.length) return false;
+  return v.kind === 'COLOR' ? !s.every((x) => COLOUR_ONLY.includes(x)) : s.some((x) => COLOUR_ONLY.includes(x));
+});
+if (mismatched.length) {
+  console.error(`\n${mismatched.length} variable(s) carry a scope their type cannot hold:`);
+  for (const m of mismatched) console.error(`  ${m.name} (${m.kind}): ${m.scopes.join(', ')}`);
+  process.exit(1);
+}
+
 if (unclassified.length) {
   console.error(`\n${unclassified.length} token(s) could not be classified — a guess here reaches a designer's picker:`);
   for (const u of unclassified) console.error(`  ${u.name}: ${u.why}`);
