@@ -1,0 +1,2902 @@
+{
+  "generated": "tools/build-figma-map.mjs — do not edit",
+  "modes": [
+    "Value"
+  ],
+  "collections": [
+    "Colour",
+    "Layout",
+    "Palette",
+    "Radius",
+    "Stroke",
+    "Type"
+  ],
+  "variables": [
+    {
+      "css": "--color-ink",
+      "figma": "color/ink",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#251f1b",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "TEXT_FILL",
+        "WIDTH_HEIGHT",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--color-ink)",
+      "measuredIn": [
+        "margin×21",
+        "fontFamily×15",
+        "font×11",
+        "color×10",
+        "position×7",
+        "flex×4",
+        "width×3",
+        "display×2",
+        "minWidth×2",
+        "bg×2",
+        "shell×2",
+        "flexShrink×2",
+        "overflow×2",
+        "strong×1",
+        "appearance×1",
+        "height×1",
+        "fontWeight×1"
+      ]
+    },
+    {
+      "css": "--color-ink-soft",
+      "figma": "color/ink/soft",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#3d3630",
+      "aliasOf": null,
+      "scopes": [
+        "TEXT_FILL",
+        "FONT_FAMILY",
+        "GAP",
+        "FONT_WEIGHT",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--color-ink-soft)",
+      "measuredIn": [
+        "color×8",
+        "font×6",
+        "fontFamily×5",
+        "margin×5",
+        "fontWeight×2",
+        "flex×1",
+        "fontSize×1"
+      ]
+    },
+    {
+      "css": "--color-muted",
+      "figma": "color/muted",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#605954",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "TEXT_FILL",
+        "FRAME_FILL",
+        "WIDTH_HEIGHT",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--color-muted)",
+      "measuredIn": [
+        "margin×31",
+        "font×23",
+        "fontFamily×18",
+        "color×18",
+        "flexShrink×3",
+        "display×3",
+        "appearance×2",
+        "fontVariantNumeric×2",
+        "background×1",
+        "minWidth×1",
+        "strong×1",
+        "overflow×1",
+        "flex×1",
+        "fontWeight×1"
+      ]
+    },
+    {
+      "css": "--color-bronze",
+      "figma": "color/bronze",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#b69377",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS",
+        "TEXT_FILL",
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-bronze)",
+      "measuredIn": [
+        "width×7",
+        "display×6",
+        "borderRadius×4",
+        "color×4",
+        "shell×3",
+        "height×2",
+        "left×2",
+        "label×2",
+        "bg×1",
+        "background×1",
+        "position×1",
+        "box-shadow×1"
+      ]
+    },
+    {
+      "css": "--color-bronze-deep",
+      "figma": "color/bronze/deep",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#715035",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "TEXT_FILL",
+        "STROKE_COLOR",
+        "GAP",
+        "WIDTH_HEIGHT",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--color-bronze-deep)",
+      "measuredIn": [
+        "font×14",
+        "fontFamily×10",
+        "color×10",
+        "bg×6",
+        "outline×5",
+        "display×2",
+        "margin×2",
+        "flexShrink×2",
+        "shell×1",
+        "appearance×1",
+        "minWidth×1",
+        "flex×1",
+        "fontWeight×1",
+        "marginLeft×1"
+      ]
+    },
+    {
+      "css": "--color-bronze-edge",
+      "figma": "color/bronze/edge",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#a07d5f",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--color-bronze-edge)",
+      "measuredIn": []
+    },
+    {
+      "css": "--color-canvas",
+      "figma": "color/canvas",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#f6f4f1",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL",
+        "WIDTH_HEIGHT",
+        "GAP",
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": "var(--color-canvas)",
+      "measuredIn": [
+        "position×6",
+        "background×5",
+        "width×2",
+        "marginTop×1",
+        "borderRadius×1",
+        "surface×1",
+        "left×1"
+      ]
+    },
+    {
+      "css": "--color-line",
+      "figma": "color/line",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#e1deda",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS",
+        "GAP",
+        "FRAME_FILL",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--color-line)",
+      "measuredIn": [
+        "display×11",
+        "position×8",
+        "height×6",
+        "borderRadius×5",
+        "margin×4",
+        "marginTop×4",
+        "width×3",
+        "box-shadow×3",
+        "background×2",
+        "boxShadow×2",
+        "border-bottom×2",
+        "bg×1",
+        "flexShrink×1",
+        "appearance×1",
+        "ring×1",
+        "border-top×1",
+        "fontWeight×1"
+      ]
+    },
+    {
+      "css": "--color-line-soft",
+      "figma": "color/line/soft",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#e9e6e2",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "STROKE_COLOR",
+        "WIDTH_HEIGHT",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--color-line-soft)",
+      "measuredIn": [
+        "display×13",
+        "margin×3",
+        "padding×2",
+        "borderBottom×2",
+        "height×2",
+        "marginTop×1",
+        "border-bottom×1",
+        "fontWeight×1"
+      ]
+    },
+    {
+      "css": "--color-bubble",
+      "figma": "color/bubble",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#f9eee6",
+      "aliasOf": null,
+      "scopes": [
+        "CORNER_RADIUS",
+        "WIDTH_HEIGHT",
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-bubble)",
+      "measuredIn": [
+        "borderRadius×3",
+        "width×2",
+        "background×2",
+        "appearance×1",
+        "bg×1",
+        "surface×1",
+        "maxWidth×1"
+      ]
+    },
+    {
+      "css": "--color-bubble-edge",
+      "figma": "color/bubble/edge",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#ebd4c3",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS",
+        "GAP"
+      ],
+      "codeSyntax": "var(--color-bubble-edge)",
+      "measuredIn": [
+        "bg×4",
+        "width×2",
+        "borderRadius×2",
+        "display×2",
+        "label×2",
+        "marginBottom×1",
+        "maxWidth×1",
+        "box-shadow×1"
+      ]
+    },
+    {
+      "css": "--color-chip",
+      "figma": "color/chip",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#fbf6f1",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-chip)",
+      "measuredIn": [
+        "display×8",
+        "background×5",
+        "bg×4",
+        "appearance×1",
+        "position×1"
+      ]
+    },
+    {
+      "css": "--color-alloc-debt",
+      "figma": "color/alloc/debt",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#d9bb9e",
+      "aliasOf": null,
+      "scopes": [
+        "CORNER_RADIUS",
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-alloc-debt)",
+      "measuredIn": [
+        "label×2",
+        "borderRadius×1",
+        "background×1"
+      ]
+    },
+    {
+      "css": "--color-track",
+      "figma": "color/track",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#edebe7",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": "var(--color-track)",
+      "measuredIn": [
+        "display×6",
+        "height×6",
+        "position×2",
+        "borderRadius×1",
+        "width×1"
+      ]
+    },
+    {
+      "css": "--color-alloc-equity",
+      "figma": "color/alloc/equity",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bronze)",
+      "aliasOf": "--color-bronze",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--color-alloc-equity)",
+      "measuredIn": [
+        "label×1"
+      ]
+    },
+    {
+      "css": "--color-alloc-cash",
+      "figma": "color/alloc/cash",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bubble-edge)",
+      "aliasOf": "--color-bubble-edge",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--color-alloc-cash)",
+      "measuredIn": [
+        "label×1"
+      ]
+    },
+    {
+      "css": "--color-alloc-track",
+      "figma": "color/alloc/track",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-track)",
+      "aliasOf": "--color-track",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--color-alloc-track)",
+      "measuredIn": []
+    },
+    {
+      "css": "--color-selected",
+      "figma": "color/selected",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#ebd4c3",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-selected)",
+      "measuredIn": [
+        "display×3",
+        "bg×2",
+        "appearance×1",
+        "marginBottom×1",
+        "background×1"
+      ]
+    },
+    {
+      "css": "--color-cta",
+      "figma": "color/cta",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#1a1614",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-cta)",
+      "measuredIn": [
+        "appearance×3",
+        "background×1"
+      ]
+    },
+    {
+      "css": "--color-cta-top",
+      "figma": "color/cta/top",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#3b3531",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--color-cta-top)",
+      "measuredIn": [
+        "appearance×3"
+      ]
+    },
+    {
+      "css": "--color-cta-bottom",
+      "figma": "color/cta/bottom",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#111111",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--color-cta-bottom)",
+      "measuredIn": [
+        "appearance×3"
+      ]
+    },
+    {
+      "css": "--color-danger",
+      "figma": "color/danger",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#b4552f",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL",
+        "TEXT_FILL",
+        "GAP"
+      ],
+      "codeSyntax": "var(--color-danger)",
+      "measuredIn": [
+        "font×6",
+        "flexShrink×1",
+        "bg×1",
+        "flex×1",
+        "background×1",
+        "color×1",
+        "margin×1"
+      ]
+    },
+    {
+      "css": "--color-status-over-bg",
+      "figma": "color/status/over/bg",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#f3e2da",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL",
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": "var(--color-status-over-bg)",
+      "measuredIn": [
+        "bg×1",
+        "position×1",
+        "background×1",
+        "borderRadius×1"
+      ]
+    },
+    {
+      "css": "--color-status-over-fg",
+      "figma": "color/status/over/fg",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-danger)",
+      "aliasOf": "--color-danger",
+      "scopes": [
+        "FRAME_FILL",
+        "TEXT_FILL",
+        "GAP"
+      ],
+      "codeSyntax": "var(--color-status-over-fg)",
+      "measuredIn": [
+        "font×6",
+        "bg×1",
+        "flex×1",
+        "background×1",
+        "color×1",
+        "margin×1"
+      ]
+    },
+    {
+      "css": "--color-status-under-bg",
+      "figma": "color/status/under/bg",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-chip)",
+      "aliasOf": "--color-chip",
+      "scopes": [
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-status-under-bg)",
+      "measuredIn": [
+        "bg×1",
+        "background×1"
+      ]
+    },
+    {
+      "css": "--color-status-under-fg",
+      "figma": "color/status/under/fg",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bronze-deep)",
+      "aliasOf": "--color-bronze-deep",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--color-status-under-fg)",
+      "measuredIn": [
+        "bg×1"
+      ]
+    },
+    {
+      "css": "--color-status-ok-bg",
+      "figma": "color/status/ok/bg",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#e4ecdf",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-status-ok-bg)",
+      "measuredIn": [
+        "background×2",
+        "bg×1"
+      ]
+    },
+    {
+      "css": "--color-status-ok-fg",
+      "figma": "color/status/ok/fg",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#4b6141",
+      "aliasOf": null,
+      "scopes": [
+        "TEXT_FILL"
+      ],
+      "codeSyntax": "var(--color-status-ok-fg)",
+      "measuredIn": [
+        "color×2",
+        "bg×1"
+      ]
+    },
+    {
+      "css": "--color-data-deemph",
+      "figma": "color/data/deemph",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#a39a91",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "TEXT_FILL",
+        "CORNER_RADIUS",
+        "FONT_FAMILY"
+      ],
+      "codeSyntax": "var(--color-data-deemph)",
+      "measuredIn": [
+        "margin×5",
+        "font×4",
+        "flexShrink×2",
+        "color×2",
+        "flex×1",
+        "borderRadius×1",
+        "fontFamily×1",
+        "display×1"
+      ]
+    },
+    {
+      "css": "--color-surface",
+      "figma": "color/surface",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#ffffff",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS",
+        "FRAME_FILL",
+        "FONT_FAMILY",
+        "GAP",
+        "TEXT_FILL"
+      ],
+      "codeSyntax": "var(--color-surface)",
+      "measuredIn": [
+        "width×19",
+        "display×7",
+        "borderRadius×7",
+        "position×4",
+        "background×3",
+        "left×2",
+        "fontFamily×1",
+        "marginTop×1",
+        "surface×1",
+        "color×1",
+        "borderCollapse×1"
+      ]
+    },
+    {
+      "css": "--text-primary",
+      "figma": "text/primary",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-ink)",
+      "aliasOf": "--color-ink",
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-primary)",
+      "measuredIn": []
+    },
+    {
+      "css": "--text-body",
+      "figma": "text/body",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-ink-soft)",
+      "aliasOf": "--color-ink-soft",
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-body)",
+      "measuredIn": []
+    },
+    {
+      "css": "--text-muted",
+      "figma": "text/muted",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-muted)",
+      "aliasOf": "--color-muted",
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-muted)",
+      "measuredIn": []
+    },
+    {
+      "css": "--text-deemph",
+      "figma": "text/deemph",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-data-deemph)",
+      "aliasOf": "--color-data-deemph",
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-deemph)",
+      "measuredIn": []
+    },
+    {
+      "css": "--text-accent",
+      "figma": "text/accent",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bronze-deep)",
+      "aliasOf": "--color-bronze-deep",
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-accent)",
+      "measuredIn": []
+    },
+    {
+      "css": "--text-danger",
+      "figma": "text/danger",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-danger)",
+      "aliasOf": "--color-danger",
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-danger)",
+      "measuredIn": []
+    },
+    {
+      "css": "--text-on-dark",
+      "figma": "text/on/dark",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-surface)",
+      "aliasOf": "--color-surface",
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-on-dark)",
+      "measuredIn": []
+    },
+    {
+      "css": "--surface-canvas",
+      "figma": "surface/canvas",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-canvas)",
+      "aliasOf": "--color-canvas",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--surface-canvas)",
+      "measuredIn": []
+    },
+    {
+      "css": "--surface-card",
+      "figma": "surface/card",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-surface)",
+      "aliasOf": "--color-surface",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--surface-card)",
+      "measuredIn": []
+    },
+    {
+      "css": "--surface-chip",
+      "figma": "surface/chip",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-chip)",
+      "aliasOf": "--color-chip",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--surface-chip)",
+      "measuredIn": []
+    },
+    {
+      "css": "--surface-bubble",
+      "figma": "surface/bubble",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bubble)",
+      "aliasOf": "--color-bubble",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--surface-bubble)",
+      "measuredIn": []
+    },
+    {
+      "css": "--surface-selected",
+      "figma": "surface/selected",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-selected)",
+      "aliasOf": "--color-selected",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--surface-selected)",
+      "measuredIn": []
+    },
+    {
+      "css": "--surface-sheet",
+      "figma": "surface/sheet",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-surface)",
+      "aliasOf": "--color-surface",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--surface-sheet)",
+      "measuredIn": []
+    },
+    {
+      "css": "--border-line",
+      "figma": "border/line",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-line)",
+      "aliasOf": "--color-line",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--border-line)",
+      "measuredIn": []
+    },
+    {
+      "css": "--border-line-soft",
+      "figma": "border/line/soft",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-line-soft)",
+      "aliasOf": "--color-line-soft",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--border-line-soft)",
+      "measuredIn": []
+    },
+    {
+      "css": "--border-bubble",
+      "figma": "border/bubble",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bubble-edge)",
+      "aliasOf": "--color-bubble-edge",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--border-bubble)",
+      "measuredIn": []
+    },
+    {
+      "css": "--border-focus",
+      "figma": "border/focus",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bronze-deep)",
+      "aliasOf": "--color-bronze-deep",
+      "scopes": [
+        "STROKE_COLOR"
+      ],
+      "codeSyntax": "var(--border-focus)",
+      "measuredIn": [
+        "outline×3"
+      ]
+    },
+    {
+      "css": "--data-magnitude",
+      "figma": "data/magnitude",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bronze)",
+      "aliasOf": "--color-bronze",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--data-magnitude)",
+      "measuredIn": []
+    },
+    {
+      "css": "--data-secondary",
+      "figma": "data/secondary",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-alloc-debt)",
+      "aliasOf": "--color-alloc-debt",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--data-secondary)",
+      "measuredIn": []
+    },
+    {
+      "css": "--data-tertiary",
+      "figma": "data/tertiary",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-bubble-edge)",
+      "aliasOf": "--color-bubble-edge",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--data-tertiary)",
+      "measuredIn": []
+    },
+    {
+      "css": "--data-track",
+      "figma": "data/track",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-track)",
+      "aliasOf": "--color-track",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--data-track)",
+      "measuredIn": []
+    },
+    {
+      "css": "--surface-avatar",
+      "figma": "surface/avatar",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "rgba(182,147,119,0.20)",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--surface-avatar)",
+      "measuredIn": [
+        "display×3"
+      ]
+    },
+    {
+      "css": "--tint-bronze-06",
+      "figma": "tint/bronze/06",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "rgba(182,147,119,0.06)",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--tint-bronze-06)",
+      "measuredIn": [
+        "background×2",
+        "appearance×1"
+      ]
+    },
+    {
+      "css": "--tint-bronze-focus",
+      "figma": "tint/bronze/focus",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "rgba(182,147,119,0.24)",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--tint-bronze-focus)",
+      "measuredIn": []
+    },
+    {
+      "css": "--tint-bronze-dashed",
+      "figma": "tint/bronze/dashed",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "rgba(182,147,119,0.6)",
+      "aliasOf": null,
+      "scopes": [
+        "STROKE_COLOR"
+      ],
+      "codeSyntax": "var(--tint-bronze-dashed)",
+      "measuredIn": [
+        "outline×1"
+      ]
+    },
+    {
+      "css": "--scrim",
+      "figma": "scrim",
+      "collection": "Colour",
+      "layer": "semantic",
+      "kind": "COLOR",
+      "value": "var(--color-ink)",
+      "aliasOf": "--color-ink",
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--scrim)",
+      "measuredIn": [
+        "position×4"
+      ]
+    },
+    {
+      "css": "--color-desk",
+      "figma": "color/desk",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "#dedbd6",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL"
+      ],
+      "codeSyntax": "var(--color-desk)",
+      "measuredIn": [
+        "background×19",
+        "shell×2"
+      ]
+    },
+    {
+      "css": "--ring-frame",
+      "figma": "ring/frame",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "rgba(0,0,0,0.10)",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--ring-frame)",
+      "measuredIn": [
+        "box-shadow×2",
+        "position×1"
+      ]
+    },
+    {
+      "css": "--ring-frame-soft",
+      "figma": "ring/frame/soft",
+      "collection": "Palette",
+      "layer": "base",
+      "kind": "COLOR",
+      "value": "rgba(0,0,0,0.08)",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--ring-frame-soft)",
+      "measuredIn": []
+    },
+    {
+      "css": "--space-4",
+      "figma": "space/4",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "4px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP"
+      ],
+      "codeSyntax": "var(--space-4)",
+      "measuredIn": [
+        "display×6",
+        "position×4",
+        "marginTop×2",
+        "margin×2",
+        "flexShrink×2"
+      ]
+    },
+    {
+      "css": "--space-8",
+      "figma": "space/8",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "8px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "WIDTH_HEIGHT"
+      ],
+      "codeSyntax": "var(--space-8)",
+      "measuredIn": [
+        "display×39",
+        "position×7",
+        "marginTop×4",
+        "width×3",
+        "appearance×2",
+        "flex×2",
+        "marginBottom×2",
+        "flexShrink×1",
+        "gap×1",
+        "paddingBottom×1",
+        "margin×1"
+      ]
+    },
+    {
+      "css": "--space-12",
+      "figma": "space/12",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "12px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": "var(--space-12)",
+      "measuredIn": [
+        "marginTop×48",
+        "display×21",
+        "width×3",
+        "position×2",
+        "flexShrink×1",
+        "marginBottom×1",
+        "gap×1",
+        "appearance×1",
+        "borderRadius×1"
+      ]
+    },
+    {
+      "css": "--space-16",
+      "figma": "space/16",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "16px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "WIDTH_HEIGHT"
+      ],
+      "codeSyntax": "var(--space-16)",
+      "measuredIn": [
+        "padding×2",
+        "display×2",
+        "width×1"
+      ]
+    },
+    {
+      "css": "--space-20",
+      "figma": "space/20",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "20px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--space-20)",
+      "measuredIn": [
+        "display×4",
+        "flexShrink×2",
+        "flex×1"
+      ]
+    },
+    {
+      "css": "--space-24",
+      "figma": "space/24",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "24px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--space-24)",
+      "measuredIn": [
+        "position×2"
+      ]
+    },
+    {
+      "css": "--space-6",
+      "figma": "space/6",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "6px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "WIDTH_HEIGHT"
+      ],
+      "codeSyntax": "var(--space-6)",
+      "measuredIn": [
+        "display×27",
+        "margin×12",
+        "marginTop×3",
+        "marginBottom×2",
+        "position×1",
+        "flexShrink×1",
+        "width×1"
+      ]
+    },
+    {
+      "css": "--space-10",
+      "figma": "space/10",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "10px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": "var(--space-10)",
+      "measuredIn": [
+        "display×25",
+        "marginTop×17",
+        "marginBottom×3",
+        "flex×3",
+        "maxHeight×2",
+        "margin×2",
+        "appearance×2",
+        "width×2",
+        "flexShrink×1",
+        "padding×1",
+        "borderRadius×1",
+        "position×1"
+      ]
+    },
+    {
+      "css": "--space-2",
+      "figma": "space/2",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "2px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP"
+      ],
+      "codeSyntax": "var(--space-2)",
+      "measuredIn": [
+        "display×12",
+        "margin×6",
+        "flex×4",
+        "marginTop×2",
+        "position×1",
+        "appearance×1"
+      ]
+    },
+    {
+      "css": "--space-3",
+      "figma": "space/3",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "3px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--space-3)",
+      "measuredIn": [
+        "appearance×1"
+      ]
+    },
+    {
+      "css": "--space-5",
+      "figma": "space/5",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "5px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP"
+      ],
+      "codeSyntax": "var(--space-5)",
+      "measuredIn": [
+        "display×4",
+        "marginBottom×3",
+        "flexShrink×1",
+        "marginTop×1"
+      ]
+    },
+    {
+      "css": "--space-13",
+      "figma": "space/13",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "13px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--space-13)",
+      "measuredIn": []
+    },
+    {
+      "css": "--space-14",
+      "figma": "space/14",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "14px",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "GAP",
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": "var(--space-14)",
+      "measuredIn": [
+        "width×6",
+        "marginTop×2",
+        "display×2",
+        "borderRadius×2",
+        "flex×1"
+      ]
+    },
+    {
+      "css": "--gutter",
+      "figma": "gutter",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "16px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP"
+      ],
+      "codeSyntax": "var(--gutter)",
+      "measuredIn": [
+        "position×2",
+        "flex×1",
+        "display×1",
+        "marginTop×1"
+      ]
+    },
+    {
+      "css": "--stack",
+      "figma": "stack",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "12px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP"
+      ],
+      "codeSyntax": "var(--stack)",
+      "measuredIn": [
+        "display×5",
+        "marginTop×1"
+      ]
+    },
+    {
+      "css": "--chip-gap",
+      "figma": "chip/gap",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "8px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--chip-gap)",
+      "measuredIn": [
+        "display×3"
+      ]
+    },
+    {
+      "css": "--h-status",
+      "figma": "h/status",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "44px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-status)",
+      "measuredIn": [
+        "display×1"
+      ]
+    },
+    {
+      "css": "--h-topbar",
+      "figma": "h/topbar",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "44px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-topbar)",
+      "measuredIn": [
+        "position×1"
+      ]
+    },
+    {
+      "css": "--h-home",
+      "figma": "h/home",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "24px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-home)",
+      "measuredIn": []
+    },
+    {
+      "css": "--h-touch",
+      "figma": "h/touch",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "44px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-touch)",
+      "measuredIn": [
+        "flexShrink×1",
+        "display×1",
+        "appearance×1"
+      ]
+    },
+    {
+      "css": "--h-row",
+      "figma": "h/row",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "42px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP"
+      ],
+      "codeSyntax": "var(--h-row)",
+      "measuredIn": [
+        "padding×1",
+        "display×1"
+      ]
+    },
+    {
+      "css": "--h-row-md",
+      "figma": "h/row/md",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "56px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-row-md)",
+      "measuredIn": [
+        "display×2"
+      ]
+    },
+    {
+      "css": "--h-row-lg",
+      "figma": "h/row/lg",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "46px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-row-lg)",
+      "measuredIn": [
+        "display×3"
+      ]
+    },
+    {
+      "css": "--h-row-xl",
+      "figma": "h/row/xl",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "52px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-row-xl)",
+      "measuredIn": [
+        "display×2"
+      ]
+    },
+    {
+      "css": "--h-row-2l",
+      "figma": "h/row/2l",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "72px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-row-2l)",
+      "measuredIn": []
+    },
+    {
+      "css": "--h-chip",
+      "figma": "h/chip",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "36px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-chip)",
+      "measuredIn": [
+        "display×2"
+      ]
+    },
+    {
+      "css": "--h-filter-chip",
+      "figma": "h/filter/chip",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "32px",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "codeSyntax": "var(--h-filter-chip)",
+      "measuredIn": [
+        "display×3",
+        "width×1"
+      ]
+    },
+    {
+      "css": "--h-cta",
+      "figma": "h/cta",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "48px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-cta)",
+      "measuredIn": [
+        "display×1"
+      ]
+    },
+    {
+      "css": "--h-icon-btn",
+      "figma": "h/icon/btn",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "42px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-icon-btn)",
+      "measuredIn": []
+    },
+    {
+      "css": "--h-chip-sm",
+      "figma": "h/chip/sm",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "28px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--h-chip-sm)",
+      "measuredIn": [
+        "display×6"
+      ]
+    },
+    {
+      "css": "--w-drawer",
+      "figma": "w/drawer",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "300px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--w-drawer)",
+      "measuredIn": [
+        "position×1"
+      ]
+    },
+    {
+      "css": "--z-scrim",
+      "figma": "z/scrim",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "20",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--z-scrim)",
+      "measuredIn": [
+        "position×3"
+      ]
+    },
+    {
+      "css": "--z-modal",
+      "figma": "z/modal",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "30",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--z-modal)",
+      "measuredIn": [
+        "position×2"
+      ]
+    },
+    {
+      "css": "--scrim-sheet",
+      "figma": "scrim/sheet",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "0.4",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--scrim-sheet)",
+      "measuredIn": [
+        "position×2"
+      ]
+    },
+    {
+      "css": "--scrim-drawer",
+      "figma": "scrim/drawer",
+      "collection": "Layout",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "0.25",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--scrim-drawer)",
+      "measuredIn": [
+        "position×1"
+      ]
+    },
+    {
+      "css": "--radius-6",
+      "figma": "radius/6",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "6px",
+      "aliasOf": null,
+      "scopes": [
+        "FRAME_FILL",
+        "CORNER_RADIUS",
+        "WIDTH_HEIGHT"
+      ],
+      "codeSyntax": "var(--radius-6)",
+      "measuredIn": [
+        "background×2",
+        "display×2",
+        "borderRadius×1",
+        "height×1"
+      ]
+    },
+    {
+      "css": "--radius-8",
+      "figma": "radius/8",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "8px",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "codeSyntax": "var(--radius-8)",
+      "measuredIn": [
+        "position×1",
+        "width×1",
+        "display×1"
+      ]
+    },
+    {
+      "css": "--radius-10",
+      "figma": "radius/10",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "10px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--radius-10)",
+      "measuredIn": [
+        "position×1"
+      ]
+    },
+    {
+      "css": "--radius-12",
+      "figma": "radius/12",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "12px",
+      "aliasOf": null,
+      "scopes": [
+        "CORNER_RADIUS",
+        "WIDTH_HEIGHT",
+        "GAP"
+      ],
+      "codeSyntax": "var(--radius-12)",
+      "measuredIn": [
+        "borderRadius×4",
+        "height×2",
+        "appearance×1",
+        "marginTop×1",
+        "display×1",
+        "border-radius×1",
+        "borderCollapse×1"
+      ]
+    },
+    {
+      "css": "--radius-16",
+      "figma": "radius/16",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "16px",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS",
+        "GAP"
+      ],
+      "codeSyntax": "var(--radius-16)",
+      "measuredIn": [
+        "width×13",
+        "borderRadius×5",
+        "border-radius×3",
+        "appearance×2",
+        "marginTop×1",
+        "display×1"
+      ]
+    },
+    {
+      "css": "--radius-20",
+      "figma": "radius/20",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "20px",
+      "aliasOf": null,
+      "scopes": [
+        "WIDTH_HEIGHT",
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": "var(--radius-20)",
+      "measuredIn": [
+        "width×2",
+        "borderRadius×1",
+        "display×1"
+      ]
+    },
+    {
+      "css": "--radius-24",
+      "figma": "radius/24",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "24px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--radius-24)",
+      "measuredIn": [
+        "position×2"
+      ]
+    },
+    {
+      "css": "--radius-44",
+      "figma": "radius/44",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "44px",
+      "aliasOf": null,
+      "scopes": [
+        "__UNUSED__"
+      ],
+      "codeSyntax": "var(--radius-44)",
+      "measuredIn": [
+        "position×1"
+      ]
+    },
+    {
+      "css": "--radius-full",
+      "figma": "radius/full",
+      "collection": "Radius",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "9999px",
+      "aliasOf": null,
+      "scopes": [
+        "CORNER_RADIUS",
+        "WIDTH_HEIGHT",
+        "GAP"
+      ],
+      "codeSyntax": "var(--radius-full)",
+      "measuredIn": [
+        "display×21",
+        "borderRadius×5",
+        "width×5",
+        "position×4",
+        "height×4",
+        "border-radius×4",
+        "flexShrink×2",
+        "appearance×2",
+        "margin×1",
+        "marginBottom×1"
+      ]
+    },
+    {
+      "css": "--border-hairline",
+      "figma": "border/hairline",
+      "collection": "Stroke",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "0.5px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "WIDTH_HEIGHT",
+        "STROKE_COLOR"
+      ],
+      "codeSyntax": "var(--border-hairline)",
+      "measuredIn": [
+        "display×5",
+        "margin×4",
+        "height×3",
+        "borderBottom×2",
+        "padding×1",
+        "position×1",
+        "boxShadow×1"
+      ]
+    },
+    {
+      "css": "--border-1",
+      "figma": "border/1",
+      "collection": "Stroke",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "1px",
+      "aliasOf": null,
+      "scopes": [
+        "CORNER_RADIUS",
+        "GAP"
+      ],
+      "codeSyntax": "var(--border-1)",
+      "measuredIn": [
+        "display×9",
+        "borderRadius×4",
+        "position×4",
+        "marginTop×1",
+        "ring×1"
+      ]
+    },
+    {
+      "css": "--border-focus-width",
+      "figma": "border/focus/width",
+      "collection": "Stroke",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "2px",
+      "aliasOf": null,
+      "scopes": [
+        "STROKE_COLOR"
+      ],
+      "codeSyntax": "var(--border-focus-width)",
+      "measuredIn": [
+        "outline×3"
+      ]
+    },
+    {
+      "css": "--font-ui",
+      "figma": "font/ui",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "STRING",
+      "value": "'Urbanist',sans-serif",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "WIDTH_HEIGHT"
+      ],
+      "codeSyntax": "var(--font-ui)",
+      "measuredIn": [
+        "margin×59",
+        "font×56",
+        "fontFamily×39",
+        "font-family×23",
+        "flexShrink×7",
+        "flex×5",
+        "display×4",
+        "minWidth×4",
+        "overflow×3",
+        "appearance×3",
+        "width×2",
+        "strong×2",
+        "whiteSpace×1",
+        "declaration×1"
+      ]
+    },
+    {
+      "css": "--font-display",
+      "figma": "font/display",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "STRING",
+      "value": "'Darker Grotesque',sans-serif",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY"
+      ],
+      "codeSyntax": "var(--font-display)",
+      "measuredIn": [
+        "font×5",
+        "font-family×2",
+        "margin×2"
+      ]
+    },
+    {
+      "css": "--weight-regular",
+      "figma": "weight/regular",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "400",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--weight-regular)",
+      "measuredIn": [
+        "margin×31",
+        "font×21",
+        "fontFamily×8",
+        "flexShrink×2",
+        "overflow×1",
+        "strong×1"
+      ]
+    },
+    {
+      "css": "--weight-medium",
+      "figma": "weight/medium",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "500",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "WIDTH_HEIGHT",
+        "FRAME_FILL",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--weight-medium)",
+      "measuredIn": [
+        "font×20",
+        "fontFamily×15",
+        "margin×14",
+        "flex×6",
+        "minWidth×3",
+        "width×2",
+        "overflow×2",
+        "appearance×2",
+        "flexShrink×2",
+        "background×1",
+        "position×1",
+        "display×1",
+        "declaration×1"
+      ]
+    },
+    {
+      "css": "--weight-semibold",
+      "figma": "weight/semibold",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "600",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--weight-semibold)",
+      "measuredIn": [
+        "fontFamily×6",
+        "font×6",
+        "margin×5",
+        "display×1",
+        "flexShrink×1",
+        "strong×1"
+      ]
+    },
+    {
+      "css": "--weight-bold",
+      "figma": "weight/bold",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "700",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "FRAME_FILL",
+        "WIDTH_HEIGHT",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--weight-bold)",
+      "measuredIn": [
+        "fontFamily×11",
+        "font×8",
+        "margin×7",
+        "flexShrink×3",
+        "display×2",
+        "whiteSpace×1",
+        "background×1",
+        "appearance×1",
+        "minWidth×1"
+      ]
+    },
+    {
+      "css": "--weight-display",
+      "figma": "weight/display",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "500",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_WEIGHT"
+      ],
+      "codeSyntax": "var(--weight-display)",
+      "measuredIn": [
+        "font×5",
+        "margin×2"
+      ]
+    },
+    {
+      "css": "--text-10",
+      "figma": "text/10",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "10px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FRAME_FILL",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-10)",
+      "measuredIn": [
+        "display×2",
+        "margin×2",
+        "background×1"
+      ]
+    },
+    {
+      "css": "--text-11",
+      "figma": "text/11",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "11px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "FRAME_FILL",
+        "WIDTH_HEIGHT",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-11)",
+      "measuredIn": [
+        "margin×27",
+        "font×21",
+        "fontFamily×3",
+        "flexShrink×2",
+        "background×1",
+        "position×1",
+        "minWidth×1",
+        "strong×1"
+      ]
+    },
+    {
+      "css": "--text-11-5",
+      "figma": "text/11/5",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "11.5px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-11-5)",
+      "measuredIn": [
+        "font×5",
+        "appearance×2",
+        "flexShrink×2",
+        "fontFamily×1",
+        "flex×1",
+        "margin×1"
+      ]
+    },
+    {
+      "css": "--text-12",
+      "figma": "text/12",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "12px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "WIDTH_HEIGHT",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-12)",
+      "measuredIn": [
+        "fontFamily×15",
+        "font×7",
+        "margin×5",
+        "minWidth×2",
+        "overflow×1",
+        "display×1"
+      ]
+    },
+    {
+      "css": "--text-13",
+      "figma": "text/13",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "13px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "WIDTH_HEIGHT",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-13)",
+      "measuredIn": [
+        "font×16",
+        "fontFamily×10",
+        "margin×7",
+        "flexShrink×3",
+        "flex×2",
+        "minWidth×1",
+        "overflow×1",
+        "declaration×1",
+        "strong×1"
+      ]
+    },
+    {
+      "css": "--text-14",
+      "figma": "text/14",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "14px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "WIDTH_HEIGHT",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-14)",
+      "measuredIn": [
+        "margin×9",
+        "fontFamily×8",
+        "flex×2",
+        "font×2",
+        "display×1",
+        "width×1",
+        "overflow×1"
+      ]
+    },
+    {
+      "css": "--text-15",
+      "figma": "text/15",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "15px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-15)",
+      "measuredIn": [
+        "fontFamily×1"
+      ]
+    },
+    {
+      "css": "--text-16",
+      "figma": "text/16",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "16px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "WIDTH_HEIGHT",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-16)",
+      "measuredIn": [
+        "margin×5",
+        "fontFamily×5",
+        "width×1",
+        "appearance×1"
+      ]
+    },
+    {
+      "css": "--text-18",
+      "figma": "text/18",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "18px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--text-18)",
+      "measuredIn": [
+        "margin×1",
+        "font×1"
+      ]
+    },
+    {
+      "css": "--display-24",
+      "figma": "display/24",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "24px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--display-24)",
+      "measuredIn": [
+        "font×2",
+        "margin×1"
+      ]
+    },
+    {
+      "css": "--display-27",
+      "figma": "display/27",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "27px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--display-27)",
+      "measuredIn": [
+        "margin×1"
+      ]
+    },
+    {
+      "css": "--display-40",
+      "figma": "display/40",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "40px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--display-40)",
+      "measuredIn": [
+        "font×2"
+      ]
+    },
+    {
+      "css": "--display-64",
+      "figma": "display/64",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "64px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "codeSyntax": "var(--display-64)",
+      "measuredIn": [
+        "font×1"
+      ]
+    },
+    {
+      "css": "--leading-14",
+      "figma": "leading/14",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "14px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-14)",
+      "measuredIn": [
+        "fontFamily×3",
+        "margin×2",
+        "display×1"
+      ]
+    },
+    {
+      "css": "--leading-15",
+      "figma": "leading/15",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "15px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-15)",
+      "measuredIn": [
+        "margin×24",
+        "font×21",
+        "flexShrink×2",
+        "fontFamily×1",
+        "strong×1"
+      ]
+    },
+    {
+      "css": "--leading-16",
+      "figma": "leading/16",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "16px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "WIDTH_HEIGHT",
+        "FONT_FAMILY",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-16)",
+      "measuredIn": [
+        "font×12",
+        "margin×4",
+        "minWidth×3",
+        "appearance×2",
+        "flexShrink×2",
+        "fontFamily×1",
+        "overflow×1",
+        "display×1",
+        "flex×1"
+      ]
+    },
+    {
+      "css": "--leading-17",
+      "figma": "leading/17",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "17px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-17)",
+      "measuredIn": [
+        "fontFamily×2",
+        "margin×2"
+      ]
+    },
+    {
+      "css": "--leading-18",
+      "figma": "leading/18",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "18px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "WIDTH_HEIGHT",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-18)",
+      "measuredIn": [
+        "font×16",
+        "fontFamily×5",
+        "margin×5",
+        "flex×2",
+        "flexShrink×2",
+        "minWidth×1",
+        "overflow×1",
+        "declaration×1",
+        "strong×1"
+      ]
+    },
+    {
+      "css": "--leading-19",
+      "figma": "leading/19",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "19px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "GAP",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-19)",
+      "measuredIn": [
+        "fontFamily×3",
+        "display×1",
+        "margin×1"
+      ]
+    },
+    {
+      "css": "--leading-20",
+      "figma": "leading/20",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "20px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "WIDTH_HEIGHT",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-20)",
+      "measuredIn": [
+        "margin×8",
+        "fontFamily×4",
+        "width×2",
+        "flex×2",
+        "font×2",
+        "overflow×1"
+      ]
+    },
+    {
+      "css": "--leading-22",
+      "figma": "leading/22",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "22px",
+      "aliasOf": null,
+      "scopes": [
+        "FONT_FAMILY",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-22)",
+      "measuredIn": [
+        "fontFamily×2"
+      ]
+    },
+    {
+      "css": "--leading-24",
+      "figma": "leading/24",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "24px",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "FONT_FAMILY",
+        "LINE_HEIGHT"
+      ],
+      "codeSyntax": "var(--leading-24)",
+      "measuredIn": [
+        "margin×6",
+        "fontFamily×1",
+        "font×1"
+      ]
+    },
+    {
+      "css": "--tracking-eyebrow",
+      "figma": "tracking/eyebrow",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "0.08em",
+      "aliasOf": null,
+      "scopes": [
+        "GAP",
+        "LETTER_SPACING"
+      ],
+      "codeSyntax": "var(--tracking-eyebrow)",
+      "measuredIn": [
+        "margin×3"
+      ]
+    },
+    {
+      "css": "--tracking-pill",
+      "figma": "tracking/pill",
+      "collection": "Type",
+      "layer": "base",
+      "kind": "FLOAT",
+      "value": "0.04em",
+      "aliasOf": null,
+      "scopes": [
+        "LETTER_SPACING"
+      ],
+      "codeSyntax": "var(--tracking-pill)",
+      "measuredIn": [
+        "font×2"
+      ]
+    }
+  ],
+  "textStyles": [
+    {
+      "name": "display",
+      "css": "--type-display-font",
+      "weight": "--weight-display",
+      "size": "--display-64",
+      "leading": "1",
+      "family": "--font-display"
+    },
+    {
+      "name": "total",
+      "css": "--type-total-font",
+      "weight": "--weight-display",
+      "size": "--display-40",
+      "leading": "1",
+      "family": "--font-display"
+    },
+    {
+      "name": "greeting",
+      "css": "--type-greeting-font",
+      "weight": "--weight-display",
+      "size": "--display-27",
+      "leading": "1",
+      "family": "--font-display"
+    },
+    {
+      "name": "figure",
+      "css": "--type-figure-font",
+      "weight": "--weight-display",
+      "size": "--display-24",
+      "leading": "1",
+      "family": "--font-display"
+    },
+    {
+      "name": "sheet-title",
+      "css": "--type-sheet-title-font",
+      "weight": "--weight-semibold",
+      "size": "--text-18",
+      "leading": "--leading-24",
+      "family": "--font-ui"
+    },
+    {
+      "name": "title",
+      "css": "--type-title-font",
+      "weight": "--weight-medium",
+      "size": "--text-16",
+      "leading": "--leading-24",
+      "family": "--font-ui"
+    },
+    {
+      "name": "body",
+      "css": "--type-body-font",
+      "weight": "--weight-regular",
+      "size": "--text-14",
+      "leading": "--leading-20",
+      "family": "--font-ui"
+    },
+    {
+      "name": "body-strong",
+      "css": "--type-body-strong-font",
+      "weight": "--weight-medium",
+      "size": "--text-14",
+      "leading": "--leading-20",
+      "family": "--font-ui"
+    },
+    {
+      "name": "row",
+      "css": "--type-row-font",
+      "weight": "--weight-medium",
+      "size": "--text-13",
+      "leading": "--leading-18",
+      "family": "--font-ui"
+    },
+    {
+      "name": "row-strong",
+      "css": "--type-row-strong-font",
+      "weight": "--weight-semibold",
+      "size": "--text-13",
+      "leading": "--leading-18",
+      "family": "--font-ui"
+    },
+    {
+      "name": "label",
+      "css": "--type-label-font",
+      "weight": "--weight-bold",
+      "size": "--text-12",
+      "leading": "--leading-16",
+      "family": "--font-ui"
+    },
+    {
+      "name": "caption",
+      "css": "--type-caption-font",
+      "weight": "--weight-regular",
+      "size": "--text-11",
+      "leading": "--leading-15",
+      "family": "--font-ui"
+    },
+    {
+      "name": "meta",
+      "css": "--type-meta-font",
+      "weight": "--weight-medium",
+      "size": "--text-11-5",
+      "leading": "--leading-16",
+      "family": "--font-ui"
+    },
+    {
+      "name": "eyebrow",
+      "css": "--type-eyebrow-font",
+      "weight": "--weight-bold",
+      "size": "--text-10",
+      "leading": "--leading-14",
+      "family": "--font-ui"
+    }
+  ],
+  "effectStyles": [
+    {
+      "name": "shadow-card",
+      "css": "--shadow-card",
+      "value": "0px 1px 2px 0px rgba(37,31,27,0.05)"
+    },
+    {
+      "name": "shadow-card-soft",
+      "css": "--shadow-card-soft",
+      "value": "0px 1px 2px 0px rgba(37,31,27,0.04)"
+    },
+    {
+      "name": "shadow-composer",
+      "css": "--shadow-composer",
+      "value": "0px 16px 30px -18px rgba(37,31,27,0.24),0px 2px 4px 0px rgba(37,31,27,0.05)"
+    },
+    {
+      "name": "shadow-float",
+      "css": "--shadow-float",
+      "value": "0px 4px 12px -4px rgba(37,31,27,0.24)"
+    },
+    {
+      "name": "shadow-bar",
+      "css": "--shadow-bar",
+      "value": "0px 2px 8px -2px rgba(37,31,27,0.12)"
+    },
+    {
+      "name": "shadow-drawer",
+      "css": "--shadow-drawer",
+      "value": "24px 0px 60px -24px rgba(37,31,27,0.4)"
+    },
+    {
+      "name": "shadow-phone",
+      "css": "--shadow-phone",
+      "value": "0px 40px 80px -24px rgba(37,31,27,0.45)"
+    },
+    {
+      "name": "shadow-key",
+      "css": "--shadow-key",
+      "value": "0px 1px 1px rgba(37,31,27,0.08)"
+    },
+    {
+      "name": "focus-ring",
+      "css": "--focus-ring",
+      "value": "0 0 0 3px rgba(182,147,119,0.24)"
+    }
+  ],
+  "documentedOnly": [
+    {
+      "css": "--gradient-dark-cta",
+      "value": "linear-gradient(to bottom,var(--color-cta-top) 0%,var(--color-cta) 48%,var(--color-cta-bottom) 100%)",
+      "why": "a gradient. Figma holds gradients in a paint STYLE, not a variable."
+    },
+    {
+      "css": "--gradient-rail",
+      "value": "linear-gradient(to right,#715035 0%,#b69377 60%,#ebd4c3 100%)",
+      "why": "as --gradient-dark-cta"
+    },
+    {
+      "css": "--aura-bronze",
+      "value": "radial-gradient(circle,rgba(182,147,119,0.26) 0%,rgba(182,147,119,0) 66%)",
+      "why": "a radial-gradient. Figma holds it as a radial paint style, not a variable."
+    },
+    {
+      "css": "--aura-shadow",
+      "value": "radial-gradient(circle,rgba(17,17,17,0.06) 0%,rgba(17,17,17,0) 66%)",
+      "why": "as --aura-bronze"
+    },
+    {
+      "css": "--screen-w",
+      "value": "375px",
+      "why": "the frame width. Set on the frame, not bound."
+    },
+    {
+      "css": "--screen-h",
+      "value": "812px",
+      "why": "the frame height. Set on the frame, not bound."
+    },
+    {
+      "css": "--ease",
+      "value": "cubic-bezier(0.2,0.8,0.2,1)",
+      "why": "Figma has no easing variable. The one curve is set per prototype interaction."
+    },
+    {
+      "css": "--dur-press",
+      "value": "150ms",
+      "why": "Figma has no duration variable. Prototype interactions carry the ms."
+    },
+    {
+      "css": "--dur-fast",
+      "value": "200ms",
+      "why": "as --dur-press"
+    },
+    {
+      "css": "--dur-enter",
+      "value": "240ms",
+      "why": "as --dur-press"
+    },
+    {
+      "css": "--dur-screen",
+      "value": "320ms",
+      "why": "as --dur-press"
+    },
+    {
+      "css": "--dur-bar",
+      "value": "480ms",
+      "why": "as --dur-press"
+    },
+    {
+      "css": "--dur-count",
+      "value": "600ms",
+      "why": "as --dur-press"
+    },
+    {
+      "css": "--press-scale",
+      "value": "0.98",
+      "why": "a transform, applied in the pressed variant, not a variable."
+    },
+    {
+      "css": "--press-scale-icon",
+      "value": "0.94",
+      "why": "as --press-scale"
+    },
+    {
+      "css": "--paper-texture",
+      "value": "radial-gradient(rgba(37,31,27,0.045) 1px,transparent 1px)",
+      "why": "a radial-gradient pattern. Figma renders it as an image fill on the canvas frame."
+    },
+    {
+      "css": "--paper-texture-size",
+      "value": "3px 3px",
+      "why": "as --paper-texture"
+    }
+  ]
+}

@@ -39,7 +39,9 @@
     "report:parallel": "node tools/check-parallel.mjs",
     "shot": "node tools/phone-shot.mjs",
     "build:app": "node tools/build-app.mjs",
-    "check:app": "node tools/check-app-boot.mjs"
+    "check:app": "node tools/check-app-boot.mjs",
+    "build:figma-map": "node tools/build-figma-map.mjs",
+    "check:figma-parity": "node tools/figma-parity.mjs --self-test"
   },
   "peerDependencies": {
     "react": ">=18"

@@ -26,6 +26,12 @@ the work, the rulings that were made in conversation and are not visible in the 
 what is deliberately not in this repository.
 
 
+**Going to Figma? Read `docs/FIGMA-PLAN.md` and load the `sentinel-figma` skill.** Figma's own
+`figma-use` and `figma-generate-library` are the engine; `sentinel-figma` sits on top of them and
+carries this system's truth — a token map and component inventory **generated** by
+`npm run build:figma-map` so they cannot drift, plus the parity gate that proves a Figma component
+matches the rendered one instead of claiming it.
+
 **Load the `sentinel-craft` skill before touching anything in `design-system/`, and before judging
 whether spacing, alignment or craft is wrong.** It carries this system's own scale — generated from
 `tokens/*.css`, so it cannot drift — its four hard rules, its real motion values, and the record of
