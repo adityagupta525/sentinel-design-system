@@ -602,3 +602,53 @@ more worth seeing before anything is chosen:
 - **Flat geometric** — the one that can actually ship inside the product, drawn from tokens, no
   render at all.
 - **Low-poly faceted** — sculpted silhouette, flat shaded, between the two.
+
+---
+
+# Part 7 — the art search, and the head landing before the body
+
+21 Sep 2026. *"boxs wala pasand nahi aaya… acha art craft dhundo… pinterest par ache keywords."*
+
+## The keywords that actually returned the right thing
+
+Searched on Pinterest, logged in, and looked at the results rather than the titles:
+
+| Keyword string | What it returns | Worth it |
+|---|---|---|
+| `soft 3d robot mascot clay render` | Matte rounded bots, dome heads, dark visors, studio light | **Yes — closest to his mascot** |
+| `designer vinyl toy robot character studio product render soft light` | Crafted toy-like robots, pastel and neutral grounds, premium | **Yes — the craft level he is after** |
+| `robot head visor industrial design concept matte` | Glossy black helmets, harder and colder | Useful for the visor only |
+
+Vocabulary worth reusing in any further search: **soft inflated proportions · matte clay finish · subsurface shading · studio three-point light · soft drop shadow on a gradient backdrop · panel lines · touchable**. The one word to avoid is *glossy* — it produced chrome every time.
+
+**Two art directions came out of it**, both of his character rather than a new one:
+
+1. **Soft matte** — rounded, matte, studio-lit, form read through shading rather than highlights. Friendly without being cute.
+2. **Industrial visor** — darker, harder, glossy face plate against a matte shell. More instrument than companion.
+
+Voxel is dropped on the owner's word.
+
+## Built: head and chest, soft matte
+
+`~/Downloads/sentinel-mascot/sentinel-bust-v3.blend`
+
+**The visor edge is finally right, and the fix is worth recording.** Every earlier attempt assigned
+the visor as a *material per face*, so its boundary could only follow the quad grid and came out as a
+staircase — three times. It is now an **analytic mask in the shader**: object coordinates →
+`(x/0.72)² + ((z−0.02)/0.42)² < 1`, with a 0.04-wide soft shoulder and a second gate on the surface
+normal so it only paints the front of the head. Exact ellipse at any resolution, and one material
+instead of two.
+
+**The head is landing. The chest is not.** Three forms tried, each wrong in its own way:
+
+1. A sphere — read as a **snowman**.
+2. A tapered box — tapered the **wrong way**, narrow at the shoulders and wide at the cut, so it read
+   as a **lampshade**.
+3. Taper inverted with shoulder caps — now a **slab with shoulder pads**, like a toaster. The shoulders
+   sit *on* the torso instead of being part of it.
+
+That is where it stands, and it is not solved by another guess at proportions.
+
+**Worth asking before more work goes into it:** his own expression board is **all head**, and the
+splash needs a head. The full body exists on the character sheet but no surface in this product has
+asked for a chest yet.
