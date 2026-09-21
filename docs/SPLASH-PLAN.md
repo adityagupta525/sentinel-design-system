@@ -513,3 +513,52 @@ bounding box printed and checked before rendering. That is the pass that came ou
 
 - **Grok's bot and its agent mascot were not researched.** The owner asked; this turn did not get to it.
 - **Higgsfield was not used.** It spends credits, so it gets a quote before a batch rather than after.
+
+---
+
+# Part 5 — the clone problem, and what fixed it
+
+21 Sep 2026. The owner looked at the voxel build and said it reads as a Claude clone. He is right,
+and the diagnosis matters more than the fix.
+
+**The voxel *style* was never the problem. The *skeleton* was.** What I built copied Claude Code's
+mascot anatomy item for item: a wide horizontal body block, two small square eyes set high and wide,
+four stubby legs, two side nubs. Change the colour and it is still their creature.
+
+## The fix had to come from Sentinel's own meaning, not from nudged proportions
+
+Four things were already pointing at the same shape and I had not put them together:
+
+- Sentinel's existing signature is the **✦ four-point star** — which is a **plus**.
+- The reference video's loading mark is a **plus built from a dot grid**.
+- ARTIFACT's splash, in the owner's own reference set, is a **pixel asterisk** — a plus.
+- The rest of his references are grids of squares.
+
+**So the mascot is not a robot. The mascot is the sparkle, voxelised.**
+
+## Why this is the strongest option on the table
+
+**It dissolves the 13 px problem that killed the dome.** Part 3 measured that a mascot face becomes a
+thumbprint at 13 px, which forced a choice between growing every turn's signature to 18 px or keeping
+two marks. The star has no such choice to make: **at 13 px it reduces to the sparkle, which is what is
+already there.** The mark does not change at small size — it only gains a face as it grows. One
+object, two resolutions, and nothing in the thread moves.
+
+It also settles Route 1 versus Route 2 by making the question disappear. There is no second mark to
+keep outside the product, because the mascot *is* the mark.
+
+And it cannot be confused with Claude's: no legs, no box, a star standing on its lower point.
+
+## Built
+
+`~/Downloads/sentinel-mascot/sentinel-star-v2.blend` — 57 voxels on a 13 × 13 grid, arms tapering in
+depth so the points read as points rather than as a flat cut-out. Neutral clay; colour is still a
+separate decision.
+
+**v1 was wrong and the render said so:** two-voxel arms against a five-voxel centre read as a
+**diamond**, not a star — the mass swallowed the points. The grid went to 13 and the arms got their
+length back.
+
+**Still rough, and not hidden:** the arms are spindly in three dimensions and would look fragile as a
+physical object; the eyes are small against the central mass; and at some angles the outermost arm
+voxel reads as detached, because its depth taper is doing its job a little too well.
