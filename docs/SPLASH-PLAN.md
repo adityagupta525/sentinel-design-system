@@ -562,3 +562,43 @@ length back.
 **Still rough, and not hidden:** the arms are spindly in three dimensions and would look fragile as a
 physical object; the eyes are small against the central mass; and at some angles the outermost arm
 voxel reads as detached, because its depth taper is doing its job a little too well.
+
+---
+
+# Part 6 — I invented a creature when the brief was to re-art an existing one
+
+21 Sep 2026. The owner: *"mera real mascot dekho… usko hi art change karo."*
+
+**The star was the wrong answer to the right criticism.** He said the voxel build read as a Claude
+clone, and instead of re-arting his mascot I designed a different one. The mascot is not an open
+question — it is the copper robot in the character sheet and the expression board: a dome head, a
+dark visor across it, two eyes, small side discs. What is open is its **art**.
+
+## The same character, built rather than sculpted
+
+`~/Downloads/sentinel-mascot/sentinel-voxelhead-v2.blend` — the dome head on a 15 × 16 voxel grid,
+the visor as a band of near-black cells across it, two 2 × 2 emissive eyes inside the band, the side
+discs kept. Depth follows the dome's curve, so the grid is bent into a rounded mass rather than left
+as a slab — that is what keeps it his character and not a cube with a face.
+
+Neutral clay again: the instruction not to take the real mascot's colour still stands, and the
+question on the table is form and treatment.
+
+**Two passes, and the first was wrong in a way the render showed plainly.** At roughness 0.42 under
+three lights the visor came out **grey**, not black, and the eyes read as **holes punched through
+it** rather than lights — an emissive face contributes nothing when it sits flush and faces away.
+Fixed by taking the visor to near-black at 0.85 roughness with specular almost off, and by sitting
+the eyes **proud** of the visor at emission 14 so they light themselves.
+
+**Still rough:** the eyes read as white squares rather than glowing ones, because bloom is not
+enabled in the render; the lower half of the dome is heavy and flat-bottomed; and the side discs are
+small enough to read as stubs.
+
+## This is one art treatment, not the answer
+
+Voxel is the direction the owner's first reference pointed at. The same character has at least two
+more worth seeing before anything is chosen:
+
+- **Flat geometric** — the one that can actually ship inside the product, drawn from tokens, no
+  render at all.
+- **Low-poly faceted** — sculpted silhouette, flat shaded, between the two.
