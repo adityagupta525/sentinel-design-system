@@ -1,8 +1,8 @@
 {
- "generated": "2026-09-21",
+ "generated": "2026-09-22",
  "generator": "scripts/build-index.js",
  "counts": {
-  "shipped": 97
+  "shipped": 105
  },
  "rows": [
   {
@@ -82,6 +82,36 @@
     "--weight-regular",
     "--z-modal",
     "--z-scrim"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
+   "name": "ExplorerSheet",
+   "group": "Foundations",
+   "status": "shipped",
+   "page": "ExplorerSheet.html",
+   "file": "components/shell/ExplorerSheet.jsx",
+   "tokens": [
+    "--color-bronze-deep",
+    "--color-canvas",
+    "--color-ink",
+    "--color-line",
+    "--color-muted",
+    "--dur-screen",
+    "--ease",
+    "--h-touch",
+    "--radius-24",
+    "--radius-full",
+    "--shadow-bar",
+    "--space-16",
+    "--space-20",
+    "--space-5",
+    "--space-8",
+    "--type-caption-font",
+    "--type-meta-font",
+    "--type-title-font",
+    "--z-sheet"
    ],
    "locals": [],
    "literals": 0
@@ -353,6 +383,35 @@
    "literals": 0
   },
   {
+   "name": "SectionStrip",
+   "group": "Foundations",
+   "status": "shipped",
+   "page": "SectionStrip.html",
+   "file": "components/shell/SectionStrip.jsx",
+   "tokens": [
+    "--border-1",
+    "--color-bronze",
+    "--color-bronze-deep",
+    "--color-canvas",
+    "--color-chip",
+    "--color-ink",
+    "--color-line",
+    "--color-line-soft",
+    "--color-selected",
+    "--h-filter-chip",
+    "--radius-full",
+    "--space-12",
+    "--space-16",
+    "--space-6",
+    "--space-8",
+    "--tracking-pill",
+    "--type-label-font",
+    "--z-sticky"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
    "name": "StandingDisclosure",
    "group": "Foundations",
    "status": "shipped",
@@ -618,6 +677,43 @@
    "literals": 4
   },
   {
+   "name": "FilterSheet",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "FilterSheet.html",
+   "file": "components/cards/FilterSheet.jsx",
+   "tokens": [
+    "--color-bronze-deep",
+    "--color-canvas",
+    "--color-ink",
+    "--color-line",
+    "--color-muted",
+    "--dur-screen",
+    "--ease",
+    "--h-touch",
+    "--radius-24",
+    "--radius-full",
+    "--scrim",
+    "--scrim-sheet",
+    "--space-10",
+    "--space-12",
+    "--space-16",
+    "--space-20",
+    "--space-5",
+    "--space-6",
+    "--space-8",
+    "--tracking-eyebrow",
+    "--type-caption-font",
+    "--type-label-font",
+    "--type-meta-font",
+    "--type-sheet-title-font",
+    "--z-modal",
+    "--z-scrim"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
    "name": "GreetingDivider",
    "group": "Chat",
    "status": "shipped",
@@ -670,6 +766,33 @@
     "--type-title-font",
     "--type-total-font",
     "--weight-bold"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
+   "name": "IntentTile",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "IntentTile.html",
+   "file": "components/cards/IntentTile.jsx",
+   "tokens": [
+    "--border-1",
+    "--color-bronze",
+    "--color-bronze-deep",
+    "--color-ink",
+    "--color-line",
+    "--color-muted",
+    "--color-selected",
+    "--color-surface",
+    "--h-touch",
+    "--radius-16",
+    "--space-12",
+    "--space-2",
+    "--space-8",
+    "--type-caption-font",
+    "--type-meta-font",
+    "--type-title-font"
    ],
    "locals": [],
    "literals": 0
@@ -945,6 +1068,33 @@
    "literals": 0
   },
   {
+   "name": "ShortlistCard",
+   "group": "Chat",
+   "status": "shipped",
+   "page": "ShortlistCard.html",
+   "file": "components/cards/ShortlistCard.jsx",
+   "tokens": [
+    "--color-bronze-deep",
+    "--color-ink",
+    "--color-muted",
+    "--color-status-over-bg",
+    "--color-surface",
+    "--h-touch",
+    "--radius-16",
+    "--shadow-card",
+    "--space-10",
+    "--space-14",
+    "--space-2",
+    "--space-6",
+    "--space-8",
+    "--type-caption-font",
+    "--type-meta-font",
+    "--type-title-font"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
    "name": "StepComposer",
    "group": "Chat",
    "status": "shipped",
@@ -1195,6 +1345,36 @@
    "literals": 5
   },
   {
+   "name": "ChartDonut",
+   "group": "Data",
+   "status": "shipped",
+   "page": "ChartDonut.html",
+   "file": "components/data/ChartDonut.jsx",
+   "tokens": [
+    "--border-hairline",
+    "--color-chip",
+    "--color-ink",
+    "--color-line-soft",
+    "--color-muted",
+    "--color-track",
+    "--dur-bar",
+    "--dur-fast",
+    "--ease",
+    "--font-ui",
+    "--h-row",
+    "--radius-full",
+    "--space-12",
+    "--space-8",
+    "--type-caption-font",
+    "--type-figure-font",
+    "--type-meta-font",
+    "--type-row-font",
+    "--type-row-strong-font"
+   ],
+   "locals": [],
+   "literals": 1
+  },
+  {
    "name": "ChartLegend",
    "group": "Data",
    "status": "shipped",
@@ -1209,7 +1389,7 @@
     "--type-meta-font"
    ],
    "locals": [],
-   "literals": 4
+   "literals": 5
   },
   {
    "name": "ChartLine",
@@ -1271,7 +1451,6 @@
    "file": "components/data/ChartShare.jsx",
    "tokens": [
     "--border-hairline",
-    "--color-alloc-debt",
     "--color-bronze-deep",
     "--color-line",
     "--color-muted",
@@ -1289,7 +1468,17 @@
     "--weight-medium"
    ],
    "locals": [],
-   "literals": 1
+   "literals": 2
+  },
+  {
+   "name": "ChartSpark",
+   "group": "Data",
+   "status": "shipped",
+   "page": "ChartSpark.html",
+   "file": "components/data/ChartSpark.jsx",
+   "tokens": [],
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "ChartTooltip",
@@ -1577,6 +1766,21 @@
    ],
    "locals": [],
    "literals": 1
+  },
+  {
+   "name": "PeerLine",
+   "group": "Data",
+   "status": "shipped",
+   "page": "PeerLine.html",
+   "file": "components/data/PeerLine.jsx",
+   "tokens": [
+    "--color-ink",
+    "--color-muted",
+    "--type-caption-font",
+    "--type-meta-font"
+   ],
+   "locals": [],
+   "literals": 0
   },
   {
    "name": "StatTile",

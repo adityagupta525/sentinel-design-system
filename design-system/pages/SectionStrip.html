@@ -1,0 +1,92 @@
+<!-- @dsCard group="Pages" viewport="1100x1500" name="SectionStrip" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SectionStrip — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/SectionStrip.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { SectionStrip, Surface, FigureRow } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--h-filter-chip','--color-chip','--color-selected','--color-bronze','--radius-full','--type-label-font','--tracking-pill'];
+
+const SECTIONS = [
+  { id: 'perf', label: 'Performance' }, { id: 'stats', label: 'Key stats' },
+  { id: 'hold', label: 'Holdings' }, { id: 'sector', label: 'Sectors' },
+  { id: 'clients', label: 'Your clients' }, { id: 'risk', label: 'Risk' }, { id: 'about', label: 'About' },
+];
+
+function Live() {
+  const [active, setActive] = React.useState('perf');
+  return (
+    <div style={{ width: 375, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)', boxShadow: '0 0 0 1px var(--ring-frame)' }}>
+      <div style={{ padding: '16px 16px 8px' }}>
+        <p style={{ margin: 0, font: 'var(--type-sheet-title-font)', color: 'var(--color-ink)' }}>Parag Parikh Flexi Cap</p>
+      </div>
+      <SectionStrip sections={SECTIONS} active={active} onJump={setActive} />
+      <div style={{ padding: '16px' }}>
+        <Surface>
+          <FigureRow label={SECTIONS.find((s) => s.id === active).label} value="the section below the strip" />
+        </Surface>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="SectionStrip" group="Shell" status="shipped" requires={['SectionStrip']}
+      summary="A fund page is a CROSS-REFERENCE task — the expense ratio read against the three-year return, the riskometer against what the client already holds — and NN/g is explicit that tabs are wrong for exactly that: switching back and forth to compare taxes short-term memory and interaction cost. Groww's four-tab fund page is the Indian convention that makes an advisor remember the number they left behind. So the page is ONE SCROLL, and this is how it stays navigable: a mini table of contents that stays in place and shows where the reader currently is.">
+
+      <Block n={1} title="Specimen" sub="Live. Tap a section; the active pill scrolls itself into view, because a current-location indicator the advisor cannot see is not an indicator.">
+        <Specimen width={375}><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="It is NOT tabs, and must not read as them" sub="Tabs change WHAT you are looking at; this changes WHERE you are in one thing. So it borrows the filter-pill vocabulary at 32px — the same shape RangePills uses for a window over one series — and takes button roles, not tablist/tab, which would promise arrow-key movement between panels that do not exist.">
+        <Grid cols={2} itemWidth={343} items={[
+          {label:'section strip', node:<div style={{background:'var(--color-canvas)'}}><SectionStrip sections={SECTIONS.slice(0,4)} active="stats" onJump={() => {}} /></div>,
+           note:'One page, seven places in it. Selection is the sand fill and the bronze ring.'},
+          {label:'why not tabs', node:<div style={{padding:'var(--space-12)'}}><p style={{margin:0, font:'var(--type-caption-font)', color:'var(--color-muted)'}}>Four tabs would hide the expense ratio while the advisor reads the return, and hide the return while they read the risk — then ask them to remember both.</p></div>,
+           note:'The usability evidence against tabs is about cross-reference specifically, which is what a fund page is.'},
+        ]} />
+      </Block>
+
+      <Block n={3} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={4} title="Props"><Props src="../components/shell/SectionStrip.d.ts" /></Block>
+
+      <Block n={5} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{background:'var(--color-canvas)'}}><SectionStrip sections={SECTIONS} active="hold" onJump={() => {}} /></div>}
+          doCaption="One or two words per pill. The row scrolls, and the active pill brings itself into view."
+          dontNode={<div style={{background:'var(--color-canvas)'}}><SectionStrip sections={[{id:'a',label:'Performance and returns'},{id:'b',label:'Portfolio holdings and sectors'},{id:'c',label:'How your clients hold it'}]} active="a" onJump={() => {}} /></div>}
+          dontCaption="Sentences in pills. The strip now scrolls twice as far to show half as many places, and no pill can be scanned at a glance." />
+      </Block>
+
+      <Block n={6} title="Motion">
+        <Motion rows={[
+          { name: 'Active pill into view', property: 'scrollIntoView, inline nearest', duration: 'browser smooth', reduced: 'The browser honours prefers-reduced-motion for smooth scrolling; the pill still ends up in view.' },
+          { name: 'Press', property: 'transform: scale(--press-scale)', duration: '--dur-press 150ms', reduced: 'Pressable drops the scale.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

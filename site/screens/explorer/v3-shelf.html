@@ -1,0 +1,3353 @@
+<!-- @dsCard group="Screens" viewport="1500x3800" name="Fund explorer · V3 the auditable shelf" subtitle="The shortlist becomes a named, dated, versioned object that survives the thread — entry and composer untouched" -->
+<!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, scrim, sheet" truncation="allowed" -->
+<!-- truncation="allowed" is for ONE thing: DataTable's sticky Fund column is 148pt and a fund name is longer. That is the component's documented behaviour — a sticky column keeps the table readable sideways — and the row expands in place to show the name in full. -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Fund explorer · V3 the auditable shelf — Sentinel screens</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:'Darker Grotesque';src:url('https://fonts.gstatic.com/s/darkergrotesque/v10/U9MK6cuh-mLQlC4BKCtayOfARkSVgb381b-W8-QDqXwFqn7y.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
+:root{
+--color-ink:#251f1b;
+--color-ink-soft:#3d3630;
+--color-muted:#605954;
+--color-bronze:#b69377;
+--color-bronze-deep:#715035;
+--color-bronze-edge:#a07d5f;
+--color-canvas:#f6f4f1;
+--color-line:#e1deda;
+--color-line-soft:#e9e6e2;
+--color-bubble:#f9eee6;
+--color-bubble-edge:#ebd4c3;
+--color-chip:#fbf6f1;
+--color-alloc-debt:#d9bb9e;
+--color-track:#edebe7;
+--color-alloc-equity:var(--color-bronze);
+--color-alloc-cash:var(--color-bubble-edge);
+--color-alloc-track:var(--color-track);
+--color-selected:#ebd4c3;
+--color-series-1:#d9a693;
+--color-series-2:#c0c8a8;
+--color-series-3:#d0ae7e;
+--color-series-4:#b6b5ac;
+--color-series-5:#dac2a5;
+--color-series-1-edge:#c47457;
+--color-series-2-edge:#878f6d;
+--color-series-3-edge:#b68036;
+--color-series-4-edge:#605f4b;
+--color-series-5-edge:#a08768;
+--color-cta:#1a1614;
+--color-cta-top:#3b3531;
+--color-cta-bottom:#111111;
+--color-danger:#b4552f;
+--color-status-over-bg:#f3e2da;
+--color-status-over-fg:var(--color-danger);
+--color-status-under-bg:var(--color-chip);
+--color-status-under-fg:var(--color-bronze-deep);
+--color-status-ok-bg:#e4ecdf;
+--color-status-ok-fg:#4b6141;
+--color-data-deemph:#a39a91;
+--color-surface:#ffffff;
+--text-primary:var(--color-ink);
+--text-body:var(--color-ink-soft);
+--text-muted:var(--color-muted);
+--text-deemph:var(--color-data-deemph);
+--text-accent:var(--color-bronze-deep);
+--text-danger:var(--color-danger);
+--text-on-dark:var(--color-surface);
+--surface-canvas:var(--color-canvas);
+--surface-card:var(--color-surface);
+--surface-chip:var(--color-chip);
+--surface-bubble:var(--color-bubble);
+--surface-selected:var(--color-selected);
+--surface-sheet:var(--color-surface);
+--border-line:var(--color-line);
+--border-line-soft:var(--color-line-soft);
+--border-bubble:var(--color-bubble-edge);
+--border-focus:var(--color-bronze-deep);
+--data-magnitude:var(--color-bronze);
+--data-secondary:var(--color-alloc-debt);
+--data-tertiary:var(--color-bubble-edge);
+--data-track:var(--color-track);
+--surface-avatar:rgba(182,147,119,0.20);
+--tint-bronze-06:rgba(182,147,119,0.06);
+--tint-bronze-focus:rgba(182,147,119,0.24);
+--tint-bronze-dashed:rgba(182,147,119,0.6);
+--scrim:var(--color-ink);
+--color-desk:#dedbd6;
+--ring-frame:rgba(0,0,0,0.10);
+--ring-frame-soft:rgba(0,0,0,0.08);
+--gradient-dark-cta:linear-gradient(to bottom,var(--color-cta-top) 0%,var(--color-cta) 48%,var(--color-cta-bottom) 100%);
+--gradient-rail:linear-gradient(to right,#715035 0%,#b69377 60%,#ebd4c3 100%);
+--aura-bronze:radial-gradient(circle,rgba(182,147,119,0.26) 0%,rgba(182,147,119,0) 66%);
+--aura-shadow:radial-gradient(circle,rgba(17,17,17,0.06) 0%,rgba(17,17,17,0) 66%);
+}
+:root{
+--font-ui:'Urbanist',sans-serif;
+--font-display:'Darker Grotesque',sans-serif;
+--weight-regular:400;
+--weight-medium:500;
+--weight-semibold:600;
+--weight-bold:700;
+--weight-display:500;
+--text-10:10px;   
+--text-11:11px;   
+--text-11-5:11.5px; 
+--text-12:12px;   
+--text-13:13px;   
+--text-14:14px;   
+--text-15:15px;   
+--text-16:16px;   
+--text-18:18px;   
+--display-24:24px; 
+--display-27:27px; 
+--display-40:40px; 
+--display-64:64px; 
+--leading-14:14px;
+--leading-15:15px;
+--leading-16:16px;
+--leading-17:17px;
+--leading-18:18px;
+--leading-19:19px;
+--leading-20:20px;
+--leading-22:22px;
+--leading-24:24px;
+--tracking-eyebrow:0.08em;
+--tracking-pill:0.04em;
+--type-display-font:var(--weight-display) var(--display-64)/1 var(--font-display);
+--type-total-font:var(--weight-display) var(--display-40)/1 var(--font-display);
+--type-greeting-font:var(--weight-display) var(--display-27)/1 var(--font-display);
+--type-figure-font:var(--weight-display) var(--display-24)/1 var(--font-display);
+--type-sheet-title-font:var(--weight-semibold) var(--text-18)/var(--leading-24) var(--font-ui);
+--type-title-font:var(--weight-medium) var(--text-16)/var(--leading-24) var(--font-ui);
+--type-body-font:var(--weight-regular) var(--text-14)/var(--leading-20) var(--font-ui);
+--type-body-strong-font:var(--weight-medium) var(--text-14)/var(--leading-20) var(--font-ui);
+--type-row-font:var(--weight-medium) var(--text-13)/var(--leading-18) var(--font-ui);
+--type-row-strong-font:var(--weight-semibold) var(--text-13)/var(--leading-18) var(--font-ui);
+--type-label-font:var(--weight-bold) var(--text-12)/var(--leading-16) var(--font-ui);
+--type-caption-font:var(--weight-regular) var(--text-11)/var(--leading-15) var(--font-ui);
+--type-meta-font:var(--weight-medium) var(--text-11-5)/var(--leading-16) var(--font-ui);
+--type-eyebrow-font:var(--weight-bold) var(--text-10)/var(--leading-14) var(--font-ui);
+}
+body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.ds-tabular,[data-tabular]{font-variant-numeric:tabular-nums}
+:root{
+--space-4:4px;--space-8:8px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;
+--space-6:6px;--space-10:10px;
+--space-2:2px;--space-3:3px;--space-5:5px;--space-13:13px;--space-14:14px;
+--screen-w:375px;--screen-h:812px;
+--gutter:16px;            
+--stack:12px;             
+--chip-gap:8px;
+--h-status:44px;--h-topbar:44px;--h-home:24px;
+--h-touch:44px;           
+--h-row:42px;             
+--h-row-md:56px;          
+--h-row-lg:46px;          
+--h-row-xl:52px;          
+--h-row-2l:72px;          
+--h-chip:36px;--h-filter-chip:32px;--h-cta:48px;--h-icon-btn:42px;
+--h-chip-sm:28px;
+--w-drawer:300px;         
+--z-scrim:20;--z-modal:30;--z-sticky:10;--z-sheet:25;
+--scrim-sheet:0.4;--scrim-drawer:0.25;         
+--radius-6:6px;           
+--radius-8:8px;           
+--radius-10:10px;         
+--radius-12:12px;         
+--radius-16:16px;         
+--radius-20:20px;         
+--radius-24:24px;         
+--radius-44:44px;         
+--radius-full:9999px;
+--border-hairline:0.5px;  
+--border-1:1px;
+--border-focus-width:2px; 
+}
+:root{
+--shadow-card:0px 1px 2px 0px rgba(37,31,27,0.05);
+--shadow-card-soft:0px 1px 2px 0px rgba(37,31,27,0.04);
+--shadow-composer:0px 16px 30px -18px rgba(37,31,27,0.24),0px 2px 4px 0px rgba(37,31,27,0.05);
+--shadow-float:0px 4px 12px -4px rgba(37,31,27,0.24);
+--shadow-bar:0px 2px 8px -2px rgba(37,31,27,0.12);
+--shadow-drawer:24px 0px 60px -24px rgba(37,31,27,0.4);
+--shadow-phone:0px 40px 80px -24px rgba(37,31,27,0.45);
+--shadow-key:0px 1px 1px rgba(37,31,27,0.08);
+--focus-ring:0 0 0 3px rgba(182,147,119,0.24);
+--ease:cubic-bezier(0.2,0.8,0.2,1);
+--dur-press:150ms;
+--dur-fast:200ms;
+--dur-enter:240ms;
+--dur-screen:320ms;
+--dur-bar:480ms;
+--dur-count:600ms;
+--press-scale:0.98;
+--press-scale-icon:0.94;
+--paper-texture:radial-gradient(rgba(37,31,27,0.045) 1px,transparent 1px);
+--paper-texture-size:3px 3px;
+}
+@keyframes sentinel-shimmer{0%{opacity:.35}50%{opacity:1}100%{opacity:.35}}
+@keyframes dot-pulse{0%,100%{opacity:.28}50%{opacity:1}}
+@keyframes ds-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ds-fade{from{opacity:0}to{opacity:1}}
+@keyframes ds-scrim{from{opacity:0}}
+@keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ds-screen-in{from{transform:translateX(100%);opacity:.6}to{transform:none;opacity:1}}
+@keyframes ds-screen-out{from{transform:translateX(0)}to{transform:translateX(-30%)}}
+@keyframes ds-table-nudge{0%{transform:translateX(0)}35%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+@keyframes ds-splash-leave{from{opacity:1}to{opacity:0}}
+.ds-splash .ds-splash-solid{animation:ds-fade var(--dur-enter) var(--ease) both}
+.ds-splash .ds-splash-dots{animation:ds-splash-leave var(--dur-enter) var(--ease) both}
+.ds-table-nudge>*{animation:ds-table-nudge 640ms var(--ease) both}
+.ds-pressable{outline:none}
+.ds-pressable:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+.ds-pressable[data-hit]::before{content:"";position:absolute;left:calc(-1 * var(--hit-x));right:calc(-1 * var(--hit-x));top:calc(-1 * var(--hit-y));bottom:calc(-1 * var(--hit-y))}
+.ds-pill::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * var(--hit));bottom:calc(-1 * var(--hit))}
+.ds-pill:focus-visible,
+.ds-listrow:focus-visible{outline:var(--border-focus-width) solid var(--border-focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+.ds-composer-input::placeholder{color:var(--color-muted)}
+@media (prefers-reduced-motion:reduce){
+@keyframes sentinel-shimmer{0%,100%{opacity:1}}
+@keyframes dot-pulse{0%,100%{opacity:1}}
+@keyframes ds-rise{from{opacity:0}to{opacity:1}}
+@keyframes ds-grow{from{transform:scaleX(1)}to{transform:scaleX(1)}}
+@keyframes ds-screen-in{from{opacity:0;transform:none}to{opacity:1;transform:none}}
+@keyframes ds-screen-out{from{transform:none}to{transform:none}}
+*,*::before,*::after{transition-duration:1ms!important;scroll-behavior:auto!important}
+@keyframes ds-table-nudge { 0%, 100% { transform: none; } }
+@keyframes ds-splash-leave { from { opacity: 1; } to { opacity: 0; } }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="../../ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<script>window.__screenRequires = ['AnswerChip','ArtifactCard','AttachmentTurn','Badge','ChartBar','ChartLine','ChipRow','ClientChip','CompareTable','Composer','DarkButton','DataTable','Dock','Dumbbell','ExplainerSheet','FigureRow','FileUpload','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','List','MessageActions','OverlapView','PhoneFrame','Pill','Provenance','RangePills','ScreenBackdrop','SearchField','SentinelBlock','SentinelText','SentinelTurn','StatTile','StatusSpacer','StepTrace','Surface','TopBar','UserBubble','UserTurn'];</script>
+<script>window.__screenRequires = ["ArtifactCard", "Badge", "ChartLine", "ChipRow", "ClientChip", "CompareTable", "Composer", "DarkButton", "DataTable", "DisclosureBlock", "Dock", "Drawer", "Dumbbell", "ExplorerSheet", "Eyebrow", "FigureRow", "FilterSheet", "HomeIndicator", "InfoCard", "InfoDot", "IntentGrid", "IntentTile", "List", "ListRow", "OverlapView", "PeerLine", "PhoneFrame", "Pill", "Pressable", "Provenance", "RangePills", "RejectCallout", "ScreenBackdrop", "ScreenScaffold", "SectionStrip", "SegmentedRow", "SentinelBlock", "SentinelText", "SentinelTurn", "ShortlistCard", "StandingDisclosure", "StatTile", "StatusSpacer", "SuggestionRow", "Surface", "TopBar", "UserBubble", "UserTurn"];</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* screens/ own page shell. Deliberately not design-system/pages/page-kit.jsx: that kit is built for
+   component spec pages and links back to 00-Index.html, which does not exist from here.
+
+   What it gives a screen page: a header that states the screen's job, a State frame that puts a real
+   375x812 PhoneFrame under a caption, and two tables — motion with its reduced-motion answer, and
+   provenance for every figure on the screen. Tokens only; no raw colour or type value. */
+/* THE FOUR TURN COMPONENTS THE SCREENS WERE CARRYING THEMSELVES, destructured once here because
+   screen-kit is the one file every screen page loads (20 Sep 2026). `UserTurn`, `AttachmentTurn`,
+   `RefusalTurn` and `StepComposer` were defined inside `screens/` until today and are the system's
+   now — the owner's rule: anything built on a screen that belongs in the design system goes into the
+   design system. Every page compiles into ONE Babel scope, so this is the only place they may be
+   named; a second `const UserTurn` anywhere under screens/ renders nothing at all. */
+var _ref = window.SentinelDesignSystem_0682a2 || {},
+  PhoneFrame = _ref.PhoneFrame;
+/* Named on `window` rather than destructured into a const, for the reason the linter states plainly:
+   every screen file is linted on its own, so a const here reads as unused and a use over there reads
+   as undefined. `window` is what the one Babel scope actually shares, and the adherence config lists
+   these four as screen globals — the same way it lists every other cross-file name. */
+Object.assign(window, {
+  UserTurn: (window.SentinelDesignSystem_0682a2 || {}).UserTurn,
+  AttachmentTurn: (window.SentinelDesignSystem_0682a2 || {}).AttachmentTurn,
+  RefusalTurn: (window.SentinelDesignSystem_0682a2 || {}).RefusalTurn,
+  StepComposer: (window.SentinelDesignSystem_0682a2 || {}).StepComposer
+});
+var FONT = 'var(--font-ui)';
+var muted = {
+  fontFamily: FONT,
+  fontWeight: 400,
+  fontSize: 12.5,
+  lineHeight: '18px',
+  color: 'var(--color-muted)',
+  margin: 0
+};
+function ScreenShell(_ref2) {
+  var journey = _ref2.journey,
+    n = _ref2.n,
+    name = _ref2.name,
+    job = _ref2.job,
+    without = _ref2.without,
+    children = _ref2.children;
+  var ns = window.SentinelDesignSystem_0682a2 || {};
+  var missing = (window.__screenRequires || []).filter(function (c) {
+    return !ns[c];
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 1360,
+      margin: '0 auto',
+      padding: '28px 24px 72px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 26
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, journey, " \xB7 ", n), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 26,
+      lineHeight: '32px',
+      color: 'var(--color-ink)'
+    }
+  }, name), /*#__PURE__*/React.createElement("a", {
+    href: "../index.html",
+    style: {
+      marginLeft: 'auto',
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11.5,
+      color: 'var(--color-bronze-deep)',
+      textDecoration: 'none'
+    }
+  }, "Screens \u203A")), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      fontSize: 13,
+      lineHeight: '19px',
+      color: 'var(--color-ink-soft)',
+      maxWidth: '70ch'
+    })
+  }, job), without && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '70ch'
+    })
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      fontWeight: 600,
+      color: 'var(--color-ink-soft)'
+    }
+  }, "Without this screen"), " the advisor ", without)), missing.length ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-12)',
+      background: 'var(--color-status-over-bg)',
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em',
+      color: 'var(--color-status-over-fg)'
+    }
+  }, "Not in the bundle"), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, "This screen needs ", missing.join(', '), ". Run ", /*#__PURE__*/React.createElement("code", null, "npm run build:bundle"), " and reload \u2014 the screen is not broken, the build is behind it.")) : children);
+}
+function Section(_ref3) {
+  var title = _ref3.title,
+    sub = _ref3.sub,
+    children = _ref3.children;
+  return /*#__PURE__*/React.createElement("section", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4,
+      borderBottom: '1px solid var(--color-line)',
+      paddingBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 600,
+      fontSize: 15,
+      lineHeight: '20px',
+      color: 'var(--color-ink)'
+    }
+  }, title), sub && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      maxWidth: '78ch'
+    })
+  }, sub)), children);
+}
+
+/* One state: the caption says which state, the note says why it looks like that. The phone is the
+   real component tree at the real 375x812, never a picture of one. */
+function State(_ref4) {
+  var label = _ref4.label,
+    _ref4$tone = _ref4.tone,
+    tone = _ref4$tone === void 0 ? 'ok' : _ref4$tone,
+    note = _ref4.note,
+    children = _ref4.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 8,
+      width: 375
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      borderRadius: 'var(--radius-full)',
+      padding: '3px 8px',
+      background: "var(--color-status-".concat(tone, "-bg)"),
+      color: "var(--color-status-".concat(tone, "-fg)"),
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 10,
+      textTransform: 'uppercase',
+      letterSpacing: '0.04em'
+    }
+  }, label)), /*#__PURE__*/React.createElement(PhoneFrame, null, children), note && /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      width: 375
+    })
+  }, note));
+}
+function StateRow(_ref5) {
+  var children = _ref5.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 28,
+      alignItems: 'flex-start'
+    }
+  }, children);
+}
+function Note(_ref6) {
+  var title = _ref6.title,
+    children = _ref6.children;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderRadius: 'var(--radius-16)',
+      background: 'var(--color-bubble)',
+      padding: 14,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 5,
+      maxWidth: '82ch'
+    }
+  }, title && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 11,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: 'var(--color-bronze-deep)'
+    }
+  }, title), /*#__PURE__*/React.createElement("p", {
+    style: _objectSpread(_objectSpread({}, muted), {}, {
+      color: 'var(--color-ink-soft)'
+    })
+  }, children));
+}
+function Table(_ref7) {
+  var head = _ref7.head,
+    rows = _ref7.rows;
+  var cell = {
+    fontFamily: FONT,
+    fontSize: 12,
+    lineHeight: '17px',
+    padding: '9px 12px',
+    verticalAlign: 'top',
+    textAlign: 'left'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      borderCollapse: 'collapse',
+      width: '100%',
+      minWidth: 640,
+      background: 'var(--color-surface)',
+      borderRadius: 'var(--radius-12)'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, head.map(function (h) {
+    return /*#__PURE__*/React.createElement("th", {
+      key: h,
+      style: _objectSpread(_objectSpread({}, cell), {}, {
+        fontWeight: 700,
+        fontSize: 10.5,
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+        color: 'var(--color-muted)',
+        borderBottom: '1px solid var(--color-line)'
+      })
+    }, h);
+  }))), /*#__PURE__*/React.createElement("tbody", null, rows.map(function (r, i) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, r.map(function (c, j) {
+      return /*#__PURE__*/React.createElement("td", {
+        key: j,
+        style: _objectSpread(_objectSpread({}, cell), {}, {
+          fontWeight: j === 0 ? 600 : 400,
+          color: j === 0 ? 'var(--color-ink)' : 'var(--color-ink-soft)',
+          borderBottom: i < rows.length - 1 ? '0.5px solid var(--color-line-soft)' : 'none'
+        })
+      }, c);
+    }));
+  }))));
+}
+
+/* THE INERT COMPOSER A FROZEN SPECIMEN DRAWS — written once (20 Sep 2026).
+
+   `const Ask = …` was declared TEN times across ten screen pages, seven of them byte-for-byte:
+   05-decide:19 · funds:21 · rebalance:20 · proposal:19 · review:19 · ledger:22 · going-back:24, with
+   03-thread-answer:23 differing by a placeholder and risk-profile:20 / refusals:20 branching to
+   MoneyComposer. Ten copies of one decision, and the decision is rule 3 — every screen has a
+   composer — drawn rather than wired, because a frozen specimen has nothing to send to.
+
+   IT BELONGS HERE AND NOT IN design-system/. The system already ships `Composer`; a "pretend
+   composer" beside it would be a one-off component in a system that has a rule against those. This
+   is the screens' own shared layer, which exists for exactly this.
+
+   Read through a namespaced const, never destructured: every .jsx and inline script a page loads
+   compiles into ONE Babel scope, and ten of these pages already declare `const { Composer, … }` at
+   their top level. A second declaration of that name here renders the page blank. */
+var KIT_DS = window.SentinelDesignSystem_0682a2 || {};
+function FrozenAsk(_ref8) {
+  var _ref8$about = _ref8.about,
+    about = _ref8$about === void 0 ? false : _ref8$about,
+    _ref8$money = _ref8.money,
+    money = _ref8$money === void 0 ? false : _ref8$money,
+    placeholder = _ref8.placeholder,
+    onAttach = _ref8.onAttach;
+  /* Money is a different control, not a different placeholder: MoneyComposer owns its own value and
+     hands back a formatted rupee string, which is why it takes no value/onChange even when wired. */
+  if (money) return /*#__PURE__*/React.createElement(KIT_DS.MoneyComposer, {
+    onSend: function onSend() {},
+    placeholder: "or type the amount"
+  });
+  return /*#__PURE__*/React.createElement(KIT_DS.Composer, {
+    value: "",
+    onChange: function onChange() {},
+    onSend: function onSend() {},
+    onAttach: onAttach,
+    placeholder: placeholder || (about ? 'Ask about this' : 'Ask Sentinel')
+  });
+}
+var MotionTable = function MotionTable(_ref9) {
+  var rows = _ref9.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Motion', 'Property', 'Duration', 'Under reduced motion'],
+    rows: rows
+  });
+};
+var ProvenanceTable = function ProvenanceTable(_ref0) {
+  var rows = _ref0.rows;
+  return /*#__PURE__*/React.createElement(Table, {
+    head: ['Figure on screen', 'Where it comes from', 'Shown to the advisor as'],
+    rows: rows
+  });
+};
+function mountScreen(node) {
+  var el = document.getElementById('root');
+  if (el) ReactDOM.createRoot(el).render(node);
+}
+Object.assign(window, {
+  ScreenShell: ScreenShell,
+  Section: Section,
+  State: State,
+  StateRow: StateRow,
+  Note: Note,
+  Table: Table,
+  MotionTable: MotionTable,
+  ProvenanceTable: ProvenanceTable,
+  FrozenAsk: FrozenAsk,
+  mountScreen: mountScreen,
+  screenMuted: muted
+});</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+/* THE ADVISOR'S BOOK — one dummy data set for every screen in this repository.
+
+   Why it exists: until now each screen carried its own figures, and the same client could hold 43 funds
+   on one page and 31 on another. This is the single source: every number already rendered on a built
+   screen is either IN here or DERIVABLE from what is in here, and the derivations are written down.
+
+   WHAT IS REAL AND WHAT IS ILLUSTRATIVE — the line matters more than the data:
+     · REAL (structural, checked against the market on 19 Sep 2026): SEBI's scheme categories and the
+       large/mid/small definitions (1st–100th, 101st–250th, 251st onward by full market capitalisation,
+       SEBI/HO/IMD/DF3/CIR/P/2017/114; flexi cap added Nov 2020); one scheme per category per AMC;
+       equity taxation — STCG 20% under twelve months, LTCG 12.5% on aggregate gains above ₹1.25 L a
+       financial year, no indexation; the shape of a KYC record, a NACH mandate, an ARN/EUIN, a folio,
+       a riskometer band and an exit load.
+     · ILLUSTRATIVE: every rupee figure, every holding, every date. They are internally consistent and
+       they are not anybody's real money.
+     · UNKNOWN, AND LEFT UNKNOWN: fund performance, TER and AUM have no confirmed source in this
+       project, so this file carries none. A screen that needs them renders locked and says why
+       (InfoCard `locked`, RangePills `locked`, OverlapView's null cell). Adding them here later fills
+       those cards in without redesigning anything.
+
+   No top-level destructuring: every .jsx a page loads compiles into ONE scope. */
+
+/* The advisor, and the two numbers every execution runs under. An ARN is the distributor's registration
+   and an EUIN identifies the individual who advised the transaction — both appear on the confirm sheet's
+   "runs under your ARN" line, which is the one place the product states whose authority is being used. */
+var ADVISOR = {
+  name: 'Ashish',
+  firm: 'Centricity WealthTech',
+  arn: "ARN-[PLACEHOLDER — the firm’s own registration]",
+  euin: 'E[PLACEHOLDER]',
+  clients: 512,
+  // the book's real size; the drawer shows eight and says "See all"
+  asOf: '30 Sep 2026'
+};
+
+/* THE SHELF — the funds this firm will transact in, with the facts a compliance shelf actually holds.
+   `category` is SEBI's, not a marketing name. `plan: 'direct'` matters because a regular plan pays the
+   distributor and a direct one does not, and an advisor has to be able to say which they put a client in.
+   No performance, TER or AUM: see the header. */
+var FUNDS = [{
+  id: 'ppfas-flexi',
+  name: 'Parag Parikh Flexi Cap',
+  amc: 'PPFAS',
+  category: 'Flexi cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '2% within 365 days',
+  onShelf: true
+}, {
+  id: 'hdfc-flexi',
+  name: 'HDFC Flexi Cap',
+  amc: 'HDFC',
+  category: 'Flexi cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: true
+}, {
+  id: 'quant-small',
+  name: 'Quant Small Cap',
+  amc: 'Quant',
+  category: 'Small cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: false,
+  shelfNote: 'Off the shelf since Jun 2026 — concentration in the scheme, not a view on the house'
+}, {
+  id: 'icici-corp',
+  name: 'ICICI Corporate Bond',
+  amc: 'ICICI',
+  category: 'Corporate bond',
+  bucket: 'Debt',
+  plan: 'direct',
+  riskometer: 'Moderate',
+  exitLoad: 'Nil',
+  onShelf: true
+}, {
+  id: 'sbi-corp',
+  name: 'SBI Corporate Bond',
+  amc: 'SBI',
+  category: 'Corporate bond',
+  bucket: 'Debt',
+  plan: 'direct',
+  riskometer: 'Moderate',
+  exitLoad: 'Nil',
+  onShelf: true
+}, {
+  id: 'icici-baf',
+  name: 'ICICI Balanced Advantage',
+  amc: 'ICICI',
+  category: 'Balanced advantage',
+  bucket: 'Hybrid',
+  plan: 'direct',
+  riskometer: 'High',
+  exitLoad: '1% above 10% units in 12m',
+  onShelf: true
+}, {
+  id: 'uti-nifty',
+  name: 'UTI Nifty 50 Index',
+  amc: 'UTI',
+  category: 'Index',
+  bucket: 'Index',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: 'Nil',
+  onShelf: true
+}, {
+  id: 'hdfc-large',
+  name: 'HDFC Large Cap',
+  amc: 'HDFC',
+  category: 'Large cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: true
+}, {
+  id: 'motilal-mid',
+  name: 'Motilal Oswal Midcap',
+  amc: 'Motilal Oswal',
+  category: 'Mid cap',
+  bucket: 'Equity',
+  plan: 'direct',
+  riskometer: 'Very high',
+  exitLoad: '1% within 365 days',
+  onShelf: true
+}, {
+  id: 'hdfc-stdebt',
+  name: 'HDFC Short Term Debt',
+  amc: 'HDFC',
+  category: 'Short duration',
+  bucket: 'Debt',
+  plan: 'direct',
+  riskometer: 'Moderate',
+  exitLoad: 'Nil',
+  onShelf: true
+}];
+var fundById = function fundById(id) {
+  return FUNDS.find(function (f) {
+    return f.id === id;
+  });
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   PERFORMANCE, TER AND AUM — A DESIGN FIXTURE, AND THE BOOK SAYS SO.
+
+   Journeys C and F have been shipping `InfoCard locked` and an em-dash where a return should be,
+   because this repository had no confirmed source for any of it. The owner has now asked for the data
+   so the screens can be finished. It is INVENTED, and that fact lives here rather than in a footnote
+   nobody reads:
+
+     · The RETURNS are made up. They are not any real scheme's record and must not be read as one.
+     · The TERs and AUMs are plausible rather than invented at random — direct-plan equity TERs sit
+       roughly 0.3–1.2%, debt 0.2–0.6%, index 0.1–0.3%, and a large AMC's flagship runs to tens of
+       thousands of crore. Those bands are public and general; the exact figures here are still ours.
+     · `fixture: true` is on every row. A screen may use these numbers; it may NOT print a provenance
+       line claiming they came from a scheme record. `perfProvenance()` below writes the only line this
+       data is allowed to carry, and it says what it is.
+
+   INTERNAL CONSISTENCY IS THE POINT, because that is what a design has to survive. Small cap beats
+   flexi beats large over three years and swings hardest over one; debt is flat and boring; the index
+   fund's TER is the lowest on the shelf and its return tracks the large-cap band. A designer who sorts
+   this table must get an order that looks like a real one. */
+var PERF_AS_OF = '30 Sep 2026';
+var PERF = {
+  'ppfas-flexi': {
+    nav: 82.14,
+    ter: 0.63,
+    aumCr: 89400,
+    r1: 18.2,
+    r3: 21.4,
+    r5: 23.1,
+    benchmark: 'Nifty 500 TRI',
+    fixture: true
+  },
+  'hdfc-flexi': {
+    nav: 1842.60,
+    ter: 0.74,
+    aumCr: 71230,
+    r1: 16.9,
+    r3: 22.8,
+    r5: 21.6,
+    benchmark: 'Nifty 500 TRI',
+    fixture: true
+  },
+  'quant-small': {
+    nav: 271.38,
+    ter: 0.71,
+    aumCr: 26840,
+    r1: 9.4,
+    r3: 27.6,
+    r5: 34.2,
+    benchmark: 'Nifty Smallcap 250 TRI',
+    fixture: true
+  },
+  'icici-corp': {
+    nav: 29.86,
+    ter: 0.34,
+    aumCr: 31570,
+    r1: 7.8,
+    r3: 6.9,
+    r5: 7.2,
+    benchmark: 'CRISIL Corporate Bond A-II',
+    fixture: true
+  },
+  'sbi-corp': {
+    nav: 15.42,
+    ter: 0.31,
+    aumCr: 24110,
+    r1: 7.6,
+    r3: 6.7,
+    r5: 7.0,
+    benchmark: 'CRISIL Corporate Bond A-II',
+    fixture: true
+  },
+  'icici-baf': {
+    nav: 74.93,
+    ter: 0.86,
+    aumCr: 62480,
+    r1: 12.1,
+    r3: 13.8,
+    r5: 13.2,
+    benchmark: 'CRISIL Hybrid 50+50',
+    fixture: true
+  },
+  'uti-nifty': {
+    nav: 168.27,
+    ter: 0.17,
+    aumCr: 22960,
+    r1: 13.7,
+    r3: 15.9,
+    r5: 16.4,
+    benchmark: 'Nifty 50 TRI',
+    fixture: true
+  },
+  'hdfc-large': {
+    nav: 1094.55,
+    ter: 0.98,
+    aumCr: 38720,
+    r1: 14.3,
+    r3: 16.2,
+    r5: 16.8,
+    benchmark: 'Nifty 100 TRI',
+    fixture: true
+  },
+  'motilal-mid': {
+    nav: 108.71,
+    ter: 0.66,
+    aumCr: 29340,
+    r1: 21.8,
+    r3: 29.1,
+    r5: 28.4,
+    benchmark: 'Nifty Midcap 150 TRI',
+    fixture: true
+  },
+  'hdfc-stdebt': {
+    nav: 31.05,
+    ter: 0.29,
+    aumCr: 15680,
+    r1: 7.4,
+    r3: 6.5,
+    r5: 6.8,
+    benchmark: 'CRISIL Short Duration A-II',
+    fixture: true
+  }
+};
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE NAV SERIES — the curve the whole fund page rests on, and a FIXTURE like PERF above.
+
+   Sixty monthly points, five years, and every one of them is **what ₹10,000 invested at the start
+   would be worth on that date**. Not a NAV, not an index level — the figure an advisor reads to a
+   client. `f` is the fund, `b` is its own benchmark.
+
+   THE ENDPOINT IS FORCED TO THE STATED CAGR. A seeded random walk gives the shape, and then a
+   geometric correction is distributed across every point so the last one lands exactly on PERF's
+   five-year figure. Checked at generation: all ten agree to two decimals. A chart that disagrees with
+   the number printed beside it is the defect this whole product exists to avoid.
+
+   Volatility is by category, not by taste: small cap swings hardest, mid cap next, flexi/large/index
+   together, hybrid less, debt almost not at all. And UTI Nifty 50 Index ends at ₹21,368 against its
+   benchmark's ₹21,552 — an index fund TRAILING its index by about its expense ratio, which is the one
+   relationship a reader would notice if we got it wrong.
+
+   Invented, deterministic, and only ever shown through `perfProvenance()`. */
+var NAV_MONTHS = 60;
+var NAV_BASE = 10000;
+var NAV_SERIES = {
+  'ppfas-flexi': {
+    f: [10000, 10332, 10967, 10926, 11405, 11904, 11244, 11334, 11372, 12158, 12624, 12393, 12562, 12974, 13311, 14216, 13827, 13865, 13940, 13787, 14715, 14217, 15009, 14934, 14753, 14902, 15441, 16277, 17224, 16587, 17054, 16596, 16453, 17588, 18946, 18772, 20439, 19950, 21148, 22599, 22115, 23104, 23097, 22631, 23933, 23782, 25531, 25232, 25664, 25409, 27346, 28963, 28708, 28065, 26939, 27621, 27710, 28792, 28753, 28622, 28268],
+    b: [10000, 10105, 10215, 10002, 10052, 10002, 10239, 10309, 10678, 10409, 10350, 10546, 10927, 11287, 11372, 11694, 11841, 12341, 12263, 11973, 11741, 11832, 12304, 12850, 13497, 14261, 13719, 14694, 15315, 14976, 14905, 14944, 15122, 15808, 14888, 14098, 14232, 13903, 14098, 15055, 15520, 15430, 15436, 15449, 15228, 15282, 15341, 15022, 15240, 16349, 17255, 17506, 18611, 18835, 19316, 20003, 21153, 21638, 21180, 20902, 21738]
+  },
+  'hdfc-flexi': {
+    f: [10000, 9954, 10238, 10882, 10053, 9790, 9961, 10896, 10944, 10512, 10295, 10370, 9918, 9652, 9166, 9430, 9060, 9177, 9499, 9807, 10050, 10808, 10894, 10298, 11198, 10608, 10977, 10685, 11016, 11331, 11949, 12502, 12981, 13834, 14020, 13715, 14540, 14596, 14084, 15049, 16171, 17685, 17336, 18542, 19651, 19729, 21126, 21659, 23977, 25687, 25291, 25328, 27486, 26643, 25484, 25939, 26053, 25806, 27185, 27061, 26587],
+    b: [10000, 9590, 9399, 9176, 8810, 9437, 9412, 10212, 9983, 9416, 9378, 9262, 9681, 10013, 10119, 10038, 9996, 9793, 9686, 9795, 9931, 9895, 10436, 10905, 10921, 11167, 11299, 11727, 11166, 11421, 11553, 11696, 11902, 12754, 13437, 13124, 13624, 14439, 14590, 14244, 14175, 14708, 14902, 14793, 15189, 14759, 14909, 14851, 14850, 15765, 16004, 15555, 16067, 17158, 18180, 18475, 19787, 20741, 20500, 19832, 21738]
+  },
+  'quant-small': {
+    f: [10000, 10701, 10563, 10938, 11969, 12795, 12703, 12391, 12627, 13679, 14396, 15448, 17310, 16691, 17159, 18463, 20973, 19248, 18485, 18033, 20482, 23131, 23854, 27694, 23188, 26091, 28448, 30902, 29619, 30842, 30897, 29154, 32743, 33108, 35378, 39472, 37874, 35053, 38374, 37964, 35811, 38651, 41646, 42085, 39189, 41960, 39287, 38954, 39248, 38611, 44102, 42673, 41508, 42475, 41272, 42872, 46728, 43806, 47599, 45410, 43527],
+    b: [10000, 10179, 10706, 10239, 10218, 9405, 9685, 10658, 11204, 11388, 11541, 12766, 12924, 14052, 15559, 15148, 14354, 13921, 13084, 12411, 11874, 12895, 13448, 14452, 16175, 14821, 16466, 16043, 14463, 15220, 16034, 16891, 17108, 17580, 17904, 19147, 20843, 21280, 20332, 20428, 21708, 22868, 21420, 22079, 22693, 22469, 21651, 23828, 23321, 22924, 22848, 23795, 24981, 24634, 25247, 27268, 27350, 30496, 28963, 31051, 29435]
+  },
+  'icici-corp': {
+    f: [10000, 10008, 10119, 10179, 10183, 10384, 10388, 10453, 10495, 10590, 10720, 10705, 10663, 10763, 10766, 10878, 10995, 11119, 11211, 11243, 11188, 11215, 11374, 11462, 11545, 11667, 11704, 11760, 11779, 11797, 11916, 11941, 12028, 12170, 12160, 12235, 12211, 12171, 12332, 12407, 12568, 12641, 12802, 12920, 12919, 12958, 13027, 13150, 13182, 13291, 13456, 13623, 13736, 13780, 13889, 13906, 13959, 13974, 14008, 14153, 14157],
+    b: [10000, 9974, 9949, 10026, 10158, 10150, 10212, 10280, 10336, 10405, 10443, 10535, 10619, 10681, 10713, 10792, 10904, 10955, 11053, 11131, 11209, 11292, 11300, 11298, 11311, 11305, 11264, 11290, 11424, 11555, 11619, 11649, 11746, 11741, 11845, 11881, 11952, 12059, 12091, 12162, 12298, 12374, 12427, 12479, 12512, 12654, 12780, 12867, 13018, 13093, 13151, 13176, 13128, 13146, 13286, 13317, 13358, 13409, 13536, 13702, 13765]
+  },
+  'sbi-corp': {
+    f: [10000, 10123, 10127, 10169, 10175, 10179, 10156, 10111, 10205, 10246, 10162, 10258, 10295, 10368, 10489, 10612, 10678, 10793, 10789, 10898, 10834, 10936, 10920, 10968, 11059, 11071, 11238, 11197, 11278, 11413, 11531, 11548, 11721, 11705, 11858, 11927, 11925, 12097, 12003, 11972, 11974, 12139, 12251, 12346, 12402, 12623, 12723, 12806, 12889, 12912, 12882, 12979, 13022, 13197, 13341, 13422, 13513, 13533, 13647, 13851, 14026],
+    b: [10000, 10016, 9995, 10156, 10189, 10181, 10282, 10260, 10364, 10434, 10504, 10572, 10519, 10592, 10513, 10655, 10700, 10728, 10766, 10803, 10824, 10918, 10997, 11037, 11111, 11206, 11208, 11350, 11363, 11461, 11582, 11627, 11707, 11745, 11854, 11955, 12033, 12119, 12193, 12198, 12294, 12309, 12277, 12309, 12401, 12571, 12666, 12724, 12803, 12942, 12961, 12980, 13084, 13260, 13318, 13482, 13583, 13704, 13619, 13695, 13765]
+  },
+  'icici-baf': {
+    f: [10000, 9583, 10102, 9802, 9349, 9722, 10261, 10572, 10846, 10418, 10430, 10357, 10065, 10644, 11056, 11461, 11764, 11730, 11934, 11615, 12507, 12833, 12993, 13245, 13125, 12860, 12459, 12510, 13307, 13221, 13401, 12863, 12987, 12884, 12772, 12851, 12626, 12676, 12802, 13011, 13234, 13019, 13076, 13083, 13688, 14567, 14378, 14371, 14688, 15398, 16079, 15989, 15930, 16699, 17302, 17117, 16954, 17144, 16855, 17702, 18588],
+    b: [10000, 10539, 10450, 10434, 10268, 10326, 10104, 10031, 10138, 10211, 10578, 11030, 11326, 11306, 11395, 11946, 11877, 12214, 12163, 12061, 12221, 12140, 12049, 11987, 11558, 11629, 11567, 11274, 11503, 11383, 11748, 12081, 12173, 12711, 13246, 13165, 13710, 13797, 13985, 14231, 14870, 14475, 14523, 14556, 14958, 15432, 15868, 16289, 15996, 16331, 15822, 15864, 16369, 16202, 16100, 16565, 16609, 17266, 17860, 17941, 17940]
+  },
+  'uti-nifty': {
+    f: [10000, 9926, 10078, 10487, 10868, 11202, 10249, 10821, 10213, 9610, 9689, 9802, 9703, 10143, 10017, 9694, 10288, 10617, 10663, 11029, 11385, 11262, 11650, 12240, 12342, 12675, 12019, 11504, 11249, 11131, 11883, 12361, 12953, 12621, 11760, 11888, 11748, 11061, 11559, 12276, 13009, 12147, 12286, 12662, 12735, 12505, 12808, 13298, 14271, 15013, 15084, 15286, 15611, 16794, 18527, 18465, 19941, 20227, 20800, 20462, 21368],
+    b: [10000, 10310, 10287, 10304, 10743, 11038, 10564, 10634, 10737, 11093, 11006, 11095, 10674, 10878, 11190, 11157, 11494, 12125, 11278, 11607, 11631, 11977, 11643, 11107, 11346, 11370, 11800, 11598, 11725, 12166, 12754, 12867, 13751, 13823, 14006, 14631, 14333, 14727, 15427, 15604, 16617, 16560, 17377, 18104, 19489, 19346, 18984, 19713, 19124, 20947, 20819, 20672, 20039, 19897, 19854, 18661, 19609, 19506, 20337, 20358, 21552]
+  },
+  'hdfc-large': {
+    f: [10000, 10522, 10181, 10000, 10031, 10271, 10525, 9666, 9704, 10148, 10476, 11141, 11421, 11318, 11217, 11327, 11920, 12804, 12763, 12944, 13497, 13757, 13885, 13005, 13018, 13183, 13438, 12820, 13597, 13228, 14404, 15660, 15115, 15098, 14779, 14678, 14493, 16000, 16882, 16523, 16033, 16734, 17244, 16670, 17851, 19235, 19530, 19590, 20801, 20603, 21190, 20857, 22674, 23259, 22573, 23349, 23372, 22465, 22357, 22377, 21738],
+    b: [10000, 10184, 10801, 11159, 11699, 12432, 11993, 12683, 12817, 12696, 13201, 13124, 12787, 13179, 12959, 13240, 12513, 12234, 11856, 11761, 11565, 12104, 12171, 12317, 13145, 12737, 12776, 12848, 12909, 12260, 12270, 12535, 12438, 12992, 13859, 13155, 13753, 13949, 13585, 13910, 14218, 14026, 14922, 15615, 16360, 17222, 16543, 17611, 18870, 19820, 19417, 19412, 19084, 18923, 18868, 19893, 20921, 21354, 20897, 21173, 20289]
+  },
+  'motilal-mid': {
+    f: [10000, 10322, 10536, 9514, 9253, 9236, 9321, 9308, 9950, 10441, 10805, 10860, 10852, 11594, 12224, 12650, 12722, 13209, 13567, 14668, 15151, 15732, 15098, 15498, 14670, 15551, 16485, 16909, 16549, 17065, 17821, 17067, 18416, 20822, 20507, 21220, 21322, 21285, 20375, 20617, 22276, 21161, 22757, 25138, 25265, 29179, 30330, 32461, 33798, 32620, 33466, 36909, 40539, 36908, 36532, 36420, 35052, 36187, 32268, 32813, 34900],
+    b: [10000, 9774, 10137, 10529, 11010, 10554, 11143, 11649, 11468, 10940, 11458, 11961, 11920, 11444, 11739, 12339, 12643, 12395, 13157, 13581, 13746, 14060, 13109, 12938, 12322, 12542, 11551, 12050, 12651, 12619, 13390, 13030, 12852, 13184, 14331, 15169, 16386, 15581, 17499, 20019, 21991, 21431, 20855, 21740, 23561, 23853, 25598, 24372, 25269, 23622, 27171, 26950, 27111, 26096, 25148, 26910, 28145, 29267, 28792, 27689, 30886]
+  },
+  'hdfc-stdebt': {
+    f: [10000, 10104, 10252, 10252, 10309, 10356, 10388, 10560, 10518, 10549, 10661, 10688, 10754, 10732, 10744, 10901, 10895, 10942, 11155, 11219, 11281, 11329, 11436, 11529, 11601, 11498, 11498, 11479, 11445, 11393, 11506, 11594, 11703, 11741, 11748, 11834, 11945, 12067, 12107, 12106, 12149, 12256, 12397, 12676, 12700, 12830, 12916, 12867, 12856, 12937, 12883, 12909, 13112, 13046, 13163, 13203, 13432, 13511, 13480, 13765, 13895],
+    b: [10000, 9960, 9996, 10036, 10000, 10025, 10172, 10182, 10171, 10258, 10355, 10489, 10657, 10651, 10757, 10726, 10759, 10812, 10873, 10829, 10773, 10781, 10843, 10926, 10931, 10953, 10952, 11062, 11132, 11109, 11197, 11281, 11372, 11396, 11517, 11713, 11819, 11911, 11881, 11951, 11958, 11933, 11971, 12157, 12386, 12444, 12489, 12512, 12646, 12793, 12775, 12716, 12823, 12906, 13014, 13052, 13142, 13236, 13328, 13515, 13573]
+  }
+};
+/* ONE INDEX, ONE LINE (20 Sep 2026, found by measuring). Parag Parikh and HDFC Flexi Cap both quote
+   **Nifty 500 TRI**, and the table above gave them two different benchmark paths — same endpoint, so
+   the five-year headline agreed, but every month in between disagreed. It never showed, because until
+   now only the endpoint was ever read. The moment the "against its category" turn asked the benchmark
+   for a one-year figure it printed 42.6% for one fund and 46.4% for the other, off the same index.
+
+   Two funds cannot see different histories of the same index. The first fund in FUNDS that names a
+   benchmark owns its series and every other fund quoting that name reads the same array — derived,
+   not hand-listed, so a fund arriving tomorrow joins the right line by naming it. Both shared groups
+   already had equal endpoints (21738 for Nifty 500 TRI, 13765 for CRISIL Corporate Bond A-II), so no
+   headline moved; the warning fires if that ever stops being true. */
+var BENCH_CANON = {};
+FUNDS.forEach(function (f) {
+  var name = (PERF[f.id] || {}).benchmark;
+  var own = NAV_SERIES[f.id];
+  if (!name || !own) return;
+  if (!BENCH_CANON[name]) {
+    BENCH_CANON[name] = f.id;
+    return;
+  }
+  var src = NAV_SERIES[BENCH_CANON[name]];
+  if (src.b[NAV_MONTHS] !== own.b[NAV_MONTHS] && typeof console !== 'undefined') {
+    console.warn("book: ".concat(f.id, " and ").concat(BENCH_CANON[name], " both quote ").concat(name, " but end at different values \u2014 the headline will move"));
+  }
+  own.b = src.b;
+});
+
+/* Points for ChartLine: x is the month index, y is the rupee value. */
+var navSeries = function navSeries(id) {
+  var s = NAV_SERIES[id];
+  if (!s) return null;
+  return {
+    fund: s.f.map(function (y, x) {
+      return {
+        x: x,
+        y: y
+      };
+    }),
+    bench: s.b.map(function (y, x) {
+      return {
+        x: x,
+        y: y
+      };
+    })
+  };
+};
+/* THE HEADLINE. The best idea in the whole reference set: not "23.1% CAGR" but "₹10,000 would be
+   ₹28,268". A percentage has to be translated before an advisor can say it to a client; a rupee figure
+   does not. The benchmark is quoted beside it, because a number with nothing to sit against is a claim. */
+var tenKAfter = function tenKAfter(id) {
+  var s = NAV_SERIES[id];
+  var p = PERF[id];
+  if (!s || !p) return null;
+  return {
+    fund: s.f[NAV_MONTHS],
+    bench: s.b[NAV_MONTHS],
+    base: NAV_BASE,
+    years: 5,
+    cagr: p.r5,
+    benchmark: p.benchmark
+  };
+};
+
+/* THE BENCHMARK'S OWN CAGR, derived rather than stored — the series already holds both endpoints, so
+   writing the benchmark's return down separately would give it a second place to drift from the line
+   the chart draws. One decimal, because that is the product's rule for a rate. */
+var benchCagr = function benchCagr(id) {
+  var t = tenKAfter(id);
+  return t ? +((Math.pow(t.bench / t.base, 1 / t.years) - 1) * 100).toFixed(1) : null;
+};
+/* AND AT ONE AND THREE YEARS — as a table, not from the series, and the difference was found by
+   measuring (20 Sep 2026). The "against its category" turn puts three marks on one scale — category
+   average · this fund · its benchmark — at a period the advisor chooses, so the benchmark needs a
+   figure at each one. The obvious move was to read the same series over a shorter window. It returned
+   **42.6% for Nifty 500 TRI over one year**, because the series' intermediate path was never
+   constrained: only its endpoint was ever read, so only its endpoint is trustworthy.
+
+   So the benchmark's shorter periods are a fixture, one row per index, exactly the shape CATEGORY_AVG
+   already has. FIVE YEARS IS STILL DERIVED from the series, so the number under the chart and the line
+   in it cannot disagree — the one figure that has a second source keeps the source it always had. */
+var BENCH_SHORT = {
+  'Nifty 500 TRI': {
+    r1: 13.1,
+    r3: 15.4
+  },
+  'Nifty 50 TRI': {
+    r1: 12.9,
+    r3: 14.8
+  },
+  'Nifty 100 TRI': {
+    r1: 12.2,
+    r3: 14.1
+  },
+  'Nifty Midcap 150 TRI': {
+    r1: 16.4,
+    r3: 27.2
+  },
+  'Nifty Smallcap 250 TRI': {
+    r1: 4.2,
+    r3: 22.5
+  },
+  'CRISIL Hybrid 50+50': {
+    r1: 9.8,
+    r3: 11.3
+  },
+  'CRISIL Corporate Bond A-II': {
+    r1: 6.9,
+    r3: 6.4
+  },
+  'CRISIL Short Duration A-II': {
+    r1: 6.8,
+    r3: 6.1
+  }
+};
+var benchReturnAt = function benchReturnAt(id) {
+  var key = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'r5';
+  if (key === 'r5') return benchCagr(id);
+  var name = (PERF[id] || {}).benchmark;
+  var row = name ? BENCH_SHORT[name] : null;
+  return row && row[key] != null ? row[key] : null;
+};
+var benchProvenance = function benchProvenance(key) {
+  return key === 'r5' ? 'benchmark · derived from the same five-year series the chart draws' : 'benchmark · illustrative index figures for design, not an index record';
+};
+var perfOf = function perfOf(id) {
+  return PERF[id] || null;
+};
+/* THE ONLY PROVENANCE LINE THIS DATA MAY CARRY. A screen that prints anything else about where these
+   numbers came from is lying, and the lie would be in the one place this product promises never to. */
+/* WHO HAS RUN IT, AND FOR HOW LONG — a FIXTURE, on the same terms as PERF above (20 Sep 2026).
+
+   The manager is the sharpest sentence a comparison can make: "HDFC beat its benchmark by more, but it
+   changed managers in 2024, so its three-year record is not one person's work." The v2 spec names it
+   as a compare row and `InfoCard kind='manager'` was built for it and has been on no screen since v12,
+   because nothing in this repository knew who runs a fund.
+
+   The NAMES here are invented. They are not the real managers of these schemes and must not be read as
+   one; `fixture: true` is on every row and `managerProvenance()` writes the only line this data may
+   carry. `fundYears` is how long the SCHEME has run, which is what makes the tenure share mean
+   something — three years under a manager who arrived last year is not that manager's record. */
+var MANAGERS = {
+  'ppfas-flexi': {
+    name: 'R. Thakkar',
+    since: 'May 2013',
+    years: 13.4,
+    fundYears: 13.4,
+    fixture: true
+  },
+  'hdfc-flexi': {
+    name: 'S. Iyer',
+    since: 'Jul 2024',
+    years: 2.2,
+    fundYears: 31.0,
+    fixture: true
+  },
+  'quant-small': {
+    name: 'A. Mohanty',
+    since: 'Nov 2020',
+    years: 5.9,
+    fundYears: 29.0,
+    fixture: true
+  },
+  'icici-corp': {
+    name: 'R. Lakhotia',
+    since: 'Jan 2019',
+    years: 7.7,
+    fundYears: 16.0,
+    fixture: true
+  },
+  'sbi-corp': {
+    name: 'P. Deshmukh',
+    since: 'Feb 2022',
+    years: 4.6,
+    fundYears: 12.0,
+    fixture: true
+  },
+  'icici-baf': {
+    name: 'S. Naren',
+    since: 'Dec 2015',
+    years: 10.8,
+    fundYears: 19.0,
+    fixture: true
+  },
+  'uti-nifty': {
+    name: 'Index, not a manager',
+    since: null,
+    years: null,
+    fundYears: 26.0,
+    fixture: true
+  },
+  'hdfc-large': {
+    name: 'M. Bhandari',
+    since: 'Mar 2024',
+    years: 2.5,
+    fundYears: 30.0,
+    fixture: true
+  },
+  'motilal-mid': {
+    name: 'N. Agrawal',
+    since: 'Feb 2018',
+    years: 8.6,
+    fundYears: 12.0,
+    fixture: true
+  },
+  'hdfc-stdebt': {
+    name: 'A. Pathak',
+    since: 'Jun 2017',
+    years: 9.3,
+    fundYears: 15.0,
+    fixture: true
+  }
+};
+var managerOf = function managerOf(id) {
+  return MANAGERS[id] || null;
+};
+/* "R. Thakkar · 13.4 yr", or the honest answer for a fund that has no manager to name. */
+var managerLine = function managerLine(id) {
+  var m = MANAGERS[id];
+  if (!m) return null;
+  return m.years == null ? m.name : "".concat(m.name, " \xB7 ").concat(m.years, " yr");
+};
+var managerProvenance = function managerProvenance() {
+  return "manager tenure is illustrative for design, not a scheme record \xB7 as of ".concat(PERF_AS_OF);
+};
+/* ONE LINE FOR A CARD THAT CARRIES BOTH FIXTURES. Concatenating perfProvenance() and
+   managerProvenance() printed "illustrative for design, not a scheme record · as of 30 Sep 2026"
+   TWICE on the comparison, which reads as a stutter and makes the disclosure easier to skip rather
+   than harder. Named here, beside the data, because the rule this file states is that these numbers
+   may only be shown through a line this file writes. */
+var comparisonProvenance = function comparisonProvenance() {
+  return "returns, cost, size and manager tenure \xB7 illustrative figures for design, not a scheme record \xB7 as of ".concat(PERF_AS_OF);
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   HOLDINGS, MONTHLY CHANGES, CATEGORY AVERAGES, SWITCH COST — the four feeds the explorer lacked, as
+   FIXTURES on PERF's terms (20 Sep 2026, docs/FUND-EXPLORER-V2-PLAN.md §1).
+
+   Generated at load, deterministically, from a seed per fund — the same way NAV_SERIES got its shape —
+   so the numbers are stable across renders and nobody hand-typed three hundred weights. The COMPANY
+   NAMES are real listed companies chosen to fit each fund's category (an index fund holds the Nifty's
+   largest; a corporate-bond fund holds AAA issuers). THE WEIGHTS ARE OURS. `fixture: true` on every row,
+   and `holdingsProvenance()` writes the only line a card may carry about where they came from.
+
+   Internal consistency is the point: top-ten weights descend; an index fund is more concentrated at the
+   top than a flexi cap; a small cap is flatter; the three months of sector weights drift by fractions,
+   never jump; concentration figures are COMPUTED from the same list the table shows, so the two cannot
+   disagree; and overlap between two funds is computed from the names they actually share. */
+var seeded = function seeded(key) {
+  var h = 2166136261;
+  var _iterator = _createForOfIteratorHelper(key),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var ch = _step.value;
+      h ^= ch.charCodeAt(0);
+      h = Math.imul(h, 16777619);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return function () {
+    h ^= h << 13;
+    h ^= h >>> 17;
+    h ^= h << 5;
+    return (h >>> 0) % 10000 / 10000;
+  };
+};
+var HOLDINGS_AS_OF = 'Jun 2026';
+var HOLD_MONTHS = ['Jun 2026', 'May 2026', 'Apr 2026'];
+/* What each category holds, by name and sector. Real companies; invented weights. */
+var NAMES = {
+  /* Fourteen names for the diversified equity funds and each fund draws TEN of them in its own seeded
+     order — so two flexi caps share some of their top ten and not all of it. Measured before this:
+     every 'large' fund read the same list top-down and ppfas↔hdfc-flexi overlapped 98%, which no two
+     real flexi caps do. The index fund is the exception: its top ten IS the index's, in index order. */
+  large: [['HDFC Bank', 'Financial services'], ['ICICI Bank', 'Financial services'], ['Infosys', 'IT'], ['Reliance Industries', 'Energy'], ['Bharti Airtel', 'Telecom'], ['ITC', 'Consumer'], ['Larsen & Toubro', 'Industrials'], ['TCS', 'IT'], ['Axis Bank', 'Financial services'], ['Coal India', 'Energy'], ['Power Grid', 'Utilities'], ['Maruti Suzuki', 'Consumer'], ['Sun Pharma', 'Healthcare'], ['Bajaj Finance', 'Financial services']],
+  index: [['HDFC Bank', 'Financial services'], ['Reliance Industries', 'Energy'], ['ICICI Bank', 'Financial services'], ['Infosys', 'IT'], ['Bharti Airtel', 'Telecom'], ['Larsen & Toubro', 'Industrials'], ['ITC', 'Consumer'], ['TCS', 'IT'], ['Axis Bank', 'Financial services'], ['State Bank of India', 'Financial services']],
+  mid: [['Coforge', 'IT'], ['Persistent Systems', 'IT'], ['Polycab India', 'Industrials'], ['Trent', 'Consumer'], ['Dixon Technologies', 'Industrials'], ['Max Healthcare', 'Healthcare'], ['Bharat Electronics', 'Industrials'], ['Indian Hotels', 'Consumer'], ['Voltas', 'Consumer'], ['Kalyan Jewellers', 'Consumer']],
+  small: [['RBL Bank', 'Financial services'], ['Aegis Logistics', 'Energy'], ['Bikaji Foods', 'Consumer'], ['Jyothy Labs', 'Consumer'], ['KEI Industries', 'Industrials'], ['Cyient DLM', 'Industrials'], ['Godrej Agrovet', 'Consumer'], ['Welspun Living', 'Consumer'], ['Sun Pharma Advanced', 'Healthcare'], ['CESC', 'Utilities']],
+  hybrid: [['HDFC Bank', 'Financial services'], ['ICICI Bank', 'Financial services'], ['Govt of India G-Sec 2033', 'Sovereign'], ['Infosys', 'IT'], ['Reliance Industries', 'Energy'], ['Govt of India G-Sec 2030', 'Sovereign'], ['Bharti Airtel', 'Telecom'], ['NABARD 2028 bond', 'PSU finance'], ['ITC', 'Consumer'], ['Larsen & Toubro', 'Industrials']],
+  debt: [['HDFC Bank NCD 2028', 'Housing finance'], ['REC 2029 bond', 'PSU finance'], ['PFC 2028 bond', 'PSU finance'], ['NABARD 2027 bond', 'PSU finance'], ['Bajaj Finance NCD 2028', 'NBFC'], ['LIC Housing Finance 2029', 'Housing finance'], ['SIDBI 2027 bond', 'PSU finance'], ['NHAI 2030 bond', 'Infrastructure'], ['IRFC 2029 bond', 'PSU finance'], ['Govt of India G-Sec 2029', 'Sovereign']]
+};
+var CAT_KEY = {
+  'Flexi cap': 'large',
+  'Large cap': 'large',
+  'Index': 'index',
+  'Mid cap': 'mid',
+  'Small cap': 'small',
+  'Balanced advantage': 'hybrid',
+  'Corporate bond': 'debt',
+  'Short duration': 'debt'
+};
+/* Top-ten shape by category: first weight and the slope down. Index funds are top-heavy; small caps flat. */
+var SHAPE = {
+  large: [8.4, 0.62],
+  index: [12.1, 0.95],
+  mid: [5.6, 0.32],
+  small: [4.1, 0.18],
+  hybrid: [7.2, 0.55],
+  debt: [6.8, 0.45]
+};
+var CAPS = {
+  large: [65, 20, 6],
+  index: [100, 0, 0],
+  mid: [12, 74, 8],
+  small: [4, 18, 74],
+  hybrid: [58, 8, 4],
+  debt: [0, 0, 0]
+};
+var round1 = function round1(n) {
+  return Math.round(n * 10) / 10;
+};
+var HOLDINGS = {};
+FUNDS.forEach(function (f) {
+  var key = CAT_KEY[f.category] || 'large';
+  var rnd = seeded('hold:' + f.id);
+  var _SHAPE$key = _slicedToArray(SHAPE[key], 2),
+    w0 = _SHAPE$key[0],
+    slope = _SHAPE$key[1];
+  var pool = key === 'index' ? NAMES[key] : _toConsumableArray(NAMES[key]).sort(function () {
+    return rnd() - 0.5;
+  });
+  var top = pool.slice(0, 10).map(function (_ref, i) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      name = _ref2[0],
+      sector = _ref2[1];
+    var pct = round1(w0 - slope * i + (rnd() - 0.5) * 0.6);
+    /* Last month's weight drifts by fractions of a point, so H3's change column reads as a real month. */
+    return {
+      name: name,
+      sector: sector,
+      pct: pct,
+      prevPct: round1(pct - (rnd() - 0.5) * 0.9)
+    };
+  });
+  var isDebt = key === 'debt';
+  var equity = isDebt ? 0 : key === 'hybrid' ? 70 : key === 'index' ? 99.4 : round1(84 + rnd() * 10);
+  var debtCash = round1(100 - equity);
+  var _CAPS$key = _slicedToArray(CAPS[key], 3),
+    L = _CAPS$key[0],
+    M = _CAPS$key[1],
+    S = _CAPS$key[2];
+  var capScale = equity / (L + M + S || 1);
+  var caps = isDebt ? [] : [['Large cap', L], ['Mid cap', M], ['Small cap', S]].filter(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+      v = _ref4[1];
+    return v > 0;
+  }).map(function (_ref5) {
+    var _ref6 = _slicedToArray(_ref5, 2),
+      label = _ref6[0],
+      v = _ref6[1];
+    return {
+      label: label,
+      pct: round1(v * capScale)
+    };
+  });
+  /* Sector weights for three months: the newest is summed from the top ten plus a tail; the older two
+     drift back by fractions so a month-over-month reading is real and small. */
+  var bySector = {};
+  top.forEach(function (h) {
+    bySector[h.sector] = (bySector[h.sector] || 0) + h.pct;
+  });
+  var tail = 100 - top.reduce(function (a, h) {
+    return a + h.pct;
+  }, 0);
+  var secNames = Object.keys(bySector);
+  secNames.forEach(function (n) {
+    bySector[n] = round1(bySector[n] + tail * (0.5 + rnd()) / secNames.length * 0.9);
+  });
+  var sectors = {};
+  HOLD_MONTHS.forEach(function (m, mi) {
+    sectors[m] = secNames.map(function (n) {
+      return {
+        name: n,
+        pct: round1(bySector[n] - mi * (rnd() - 0.4) * 1.4)
+      };
+    }).sort(function (a, b) {
+      return b.pct - a.pct;
+    });
+  });
+  var count = isDebt ? 38 + Math.round(rnd() * 20) : key === 'index' ? 50 : 60 + Math.round(rnd() * 60);
+  var top5 = round1(top.slice(0, 5).reduce(function (a, h) {
+    return a + h.pct;
+  }, 0));
+  var secNow = sectors[HOLDINGS_AS_OF];
+  HOLDINGS[f.id] = {
+    asOf: HOLDINGS_AS_OF,
+    count: count,
+    split: {
+      equity: equity,
+      debtCash: debtCash
+    },
+    caps: caps,
+    sectors: sectors,
+    top: top,
+    concentration: {
+      top5CompaniesPct: top5,
+      largestCompany: top[0],
+      sectorsCount: secNames.length + (isDebt ? 0 : 3),
+      top5SectorsPct: round1(secNow.slice(0, 5).reduce(function (a, x) {
+        return a + x.pct;
+      }, 0)),
+      largestSector: secNow[0]
+    },
+    fixture: true
+  };
+});
+var holdingsOf = function holdingsOf(id) {
+  return HOLDINGS[id] || null;
+};
+var holdingsProvenance = function holdingsProvenance() {
+  return "holdings and sector weights \xB7 illustrative for design, not a scheme portfolio \xB7 as of ".concat(HOLDINGS_AS_OF);
+};
+/* OVERLAP, computed: the weight two funds share in the names their top tens have in common, as a
+   share of the smaller fund's top-ten weight. Null when either side has no holdings on file — an em
+   dash, never a zero, which is OverlapView's own rule. */
+var overlapPct = function overlapPct(a, b) {
+  var A = HOLDINGS[a],
+    B = HOLDINGS[b];
+  if (!A || !B) return null;
+  var wb = Object.fromEntries(B.top.map(function (h) {
+    return [h.name, h.pct];
+  }));
+  var shared = A.top.reduce(function (s, h) {
+    return s + (wb[h.name] != null ? Math.min(h.pct, wb[h.name]) : 0);
+  }, 0);
+  var base = Math.min(A.top.reduce(function (s, h) {
+    return s + h.pct;
+  }, 0), B.top.reduce(function (s, h) {
+    return s + h.pct;
+  }, 0));
+  return base ? Math.round(shared / base * 100) : 0;
+};
+
+/* WHAT CHANGED — three months per fund, as facts a sentence can be built from. `aumChangeCr` is
+   scaled to the fund's size; returns are monthly, not annualised, and the benchmark's sits beside. */
+var MONTHLY = {};
+FUNDS.forEach(function (f) {
+  var rnd = seeded('month:' + f.id);
+  var p = PERF[f.id];
+  var h = HOLDINGS[f.id];
+  var vol = {
+    'Small cap': 4.2,
+    'Mid cap': 3.4,
+    'Flexi cap': 2.4,
+    'Large cap': 2.2,
+    'Index': 2.2,
+    'Balanced advantage': 1.4,
+    'Corporate bond': 0.35,
+    'Short duration': 0.3
+  }[f.category] || 2;
+  MONTHLY[f.id] = HOLD_MONTHS.map(function (month) {
+    var bench = round1((rnd() - 0.45) * vol * 1.6);
+    var fund = round1(bench + (rnd() - 0.42) * vol * 0.8);
+    var names = h.top.map(function (x) {
+      return x.name;
+    });
+    var picks = _toConsumableArray(names).sort(function () {
+      return rnd() - 0.5;
+    });
+    return {
+      month: month,
+      aumChangeCr: Math.round(p.aumCr * (0.004 + rnd() * 0.02) * (rnd() > 0.25 ? 1 : -1)),
+      fundReturn: fund,
+      benchReturn: bench,
+      gainers: picks.slice(0, 3).map(function (n) {
+        return {
+          name: n,
+          pct: round1(2 + rnd() * 9)
+        };
+      }),
+      losers: picks.slice(3, 6).map(function (n) {
+        return {
+          name: n,
+          pct: round1(-(1 + rnd() * 9))
+        };
+      }),
+      fixture: true
+    };
+  });
+});
+var monthlyOf = function monthlyOf(id) {
+  return MONTHLY[id] || null;
+};
+var monthlyProvenance = function monthlyProvenance() {
+  return "monthly changes \xB7 illustrative figures for design, not a scheme record \xB7 as of ".concat(HOLDINGS_AS_OF);
+};
+
+/* CATEGORY AVERAGES — one row per category, so two funds in one category are read against the same
+   number. Set below the good funds and above the index fund's tracking, which is how a category
+   average sits in the real tables this was read from. */
+var CATEGORY_AVG = {
+  'Flexi cap': {
+    r1: 14.9,
+    r3: 18.6,
+    r5: 19.2
+  },
+  'Large cap': {
+    r1: 12.8,
+    r3: 15.1,
+    r5: 15.4
+  },
+  'Index': {
+    r1: 13.5,
+    r3: 15.7,
+    r5: 16.3
+  },
+  'Mid cap': {
+    r1: 17.2,
+    r3: 25.3,
+    r5: 24.8
+  },
+  'Small cap': {
+    r1: 6.1,
+    r3: 24.9,
+    r5: 29.6
+  },
+  'Balanced advantage': {
+    r1: 10.4,
+    r3: 12.1,
+    r5: 11.9
+  },
+  'Corporate bond': {
+    r1: 7.4,
+    r3: 6.6,
+    r5: 6.9
+  },
+  'Short duration': {
+    r1: 7.2,
+    r3: 6.4,
+    r5: 6.6
+  }
+};
+var categoryAvgOf = function categoryAvgOf(id) {
+  var f = fundById(id);
+  return f ? CATEGORY_AVG[f.category] || null : null;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   RISK STATISTICS — COMPUTED FROM THE NAV SERIES, NOT INVENTED (22 Sep 2026).
+
+   The Fund Discovery PRD asks every fund one-pager for five statistics — Sharpe, Max Drawdown,
+   Standard Deviation, Up/Down Capture and Beta — and the compare card for five more. None of them was
+   on file, and the honest options were to invent ten numbers per fund or to DERIVE them from the
+   curve this book already draws.
+
+   Deriving is strictly better and it is what the rest of this file already does: `NAV_SERIES` is
+   sixty monthly points whose endpoint is forced to PERF's five-year CAGR, so a statistic computed from
+   it cannot disagree with the return printed beside it. Invented statistics can, and that is exactly
+   the class of defect F-62 was (a benchmark reading 42.6% off a curve nobody constrained).
+
+   The arithmetic is the textbook definition in each case, on MONTHLY log-free simple returns:
+     · Std dev  — sample standard deviation, annualised by √12.
+     · Sharpe   — (CAGR − risk-free) / annualised std dev. Risk-free is 6.5%, India's approximate
+                  short-tenor government rate; it is a stated assumption, not a fact, and lives here.
+     · Max DD   — the deepest peak-to-trough fall in the wealth curve, as a negative percentage.
+     · Beta     — covariance(fund, benchmark) / variance(benchmark), monthly.
+     · Capture  — mean fund return in the months the benchmark rose, over the benchmark's own mean in
+                  those months; and the same for the months it fell.
+   Every one is a fixture in the same sense PERF is — the INPUT is invented, so the output is too, and
+   `perfProvenance()` remains the only line a card may carry about where any of it came from. */
+var RISK_FREE = 6.5;
+var _mret = function _mret(a) {
+  var out = [];
+  for (var i = 1; i < a.length; i++) out.push(a[i] / a[i - 1] - 1);
+  return out;
+};
+var _mean = function _mean(a) {
+  return a.reduce(function (x, y) {
+    return x + y;
+  }, 0) / (a.length || 1);
+};
+var _sd = function _sd(a) {
+  var m = _mean(a);
+  return Math.sqrt(a.reduce(function (x, y) {
+    return x + (y - m) * (y - m);
+  }, 0) / (a.length - 1 || 1));
+};
+var _maxDD = function _maxDD(a) {
+  var peak = a[0],
+    worst = 0;
+  var _iterator2 = _createForOfIteratorHelper(a),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var v = _step2.value;
+      if (v > peak) peak = v;
+      var d = v / peak - 1;
+      if (d < worst) worst = d;
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+  return worst * 100;
+};
+var RISK = {};
+FUNDS.forEach(function (f) {
+  var s = NAV_SERIES[f.id],
+    p = PERF[f.id];
+  if (!s || !p) return;
+  var rf = _mret(s.f),
+    rb = _mret(s.b);
+  var sd = _sd(rf) * Math.sqrt(12) * 100;
+  var mf = _mean(rf),
+    mb = _mean(rb);
+  var cov = rf.reduce(function (acc, v, i) {
+    return acc + (v - mf) * (rb[i] - mb);
+  }, 0) / (rf.length - 1 || 1);
+  var varb = rb.reduce(function (acc, v) {
+    return acc + (v - mb) * (v - mb);
+  }, 0) / (rb.length - 1 || 1);
+  var up = [],
+    dn = [];
+  rf.forEach(function (v, i) {
+    (rb[i] >= 0 ? up : dn).push([v, rb[i]]);
+  });
+  var cap = function cap(rows) {
+    return rows.length ? _mean(rows.map(function (r) {
+      return r[0];
+    })) / (_mean(rows.map(function (r) {
+      return r[1];
+    })) || 1e-9) * 100 : null;
+  };
+  /* BETA AND CAPTURE ARE NULL, AND THAT IS A FINDING ABOUT THE FIXTURE, NOT A GAP IN THE ARITHMETIC.
+     Computed here first and then withheld: the numbers came out at beta 0.03, −0.02, −0.26 and a
+     down-capture of −512%, which are not near-misses — they are what you get when the two series have
+     no relationship at all. NAV_SERIES draws the fund and its benchmark as SEPARATE seeded random
+     walks with only the five-year endpoint forced, so month to month they are uncorrelated by
+     construction, and every statistic that measures the fund AGAINST the benchmark is therefore
+     undefined here. Real equity funds run a beta near 0.85–1.05.
+     Fund-only statistics survive this and are kept: volatility, Sharpe and max drawdown read off one
+     curve and need no second one.
+     To get beta and capture honestly, either the fixture is regenerated so a fund is its benchmark
+     plus an idiosyncratic part — which changes every chart already on screen, so it needs the owner's
+     word — or a real feed arrives. Until then the card says so in words, which is this product's rule
+     and the whole reason F-62 is in the findings log. */
+  RISK[f.id] = {
+    sd: +sd.toFixed(1),
+    sharpe: +((p.r5 - RISK_FREE) / (sd || 1e-9)).toFixed(2),
+    maxDD: +_maxDD(s.f).toFixed(1),
+    beta: null,
+    upCapture: null,
+    downCapture: null,
+    unavailable: ['beta', 'upCapture', 'downCapture'],
+    unavailableReason: 'The fixture draws a fund and its benchmark as separate paths, so anything measured against the benchmark is undefined until a real series arrives.',
+    fixture: true
+  };
+});
+var riskOf = function riskOf(id) {
+  return RISK[id] || null;
+};
+var riskProvenance = function riskProvenance() {
+  return "risk statistics computed from the same five-year curve shown above \xB7 risk-free ".concat(RISK_FREE, "% \xB7 illustrative for design, not a scheme record");
+};
+/* What each statistic MEANS, because the PRD asks for an info icon that answers "if this is
+   lower/higher, how do I judge the fund" rather than repeating the definition. */
+var RISK_META = {
+  sharpe: {
+    label: 'Sharpe ratio',
+    help: 'Return earned for each unit of volatility. Higher is better; below 1 means the ride was rough for what it paid.'
+  },
+  sd: {
+    label: 'Volatility',
+    unit: '%',
+    help: 'How far monthly returns swing from their average, annualised. Higher means a bumpier ride, not a worse fund.'
+  },
+  maxDD: {
+    label: 'Max drawdown',
+    unit: '%',
+    help: 'The deepest fall from a peak in this window. This is the loss a client would have had to sit through.'
+  },
+  beta: {
+    label: 'Beta',
+    help: 'Movement against its benchmark. Above 1 amplifies the index both ways; below 1 dampens it.'
+  },
+  upCapture: {
+    label: 'Up capture',
+    unit: '%',
+    help: 'Share of the benchmark rise the fund caught. Above 100 means it beat the index in rising months.'
+  },
+  downCapture: {
+    label: 'Down capture',
+    unit: '%',
+    help: 'Share of the benchmark fall the fund took. Below 100 means it fell less than the index.'
+  }
+};
+
+/* THE COST OF A SWITCH, line by line. A switch is a redemption plus a purchase, so it is taxable, and
+   the tax depends on when each lot was bought — which is why this returns NULL when the folio has no
+   purchase dates on file: the uncosted case is a missing input with a name, not a zero. For Sharma's
+   one costed move the split reproduces the ₹11,200 the product has stated since Journey B, so the total
+   printed on the confirm and the breakdown printed above it cannot disagree. */
+var SWITCH_LOTS = {
+  /* 42% of the ₹1,85,000 was bought inside the last year (the 2024–25 small-cap run), so the exit load
+     bites only there; the rest is long-term. The three lines sum to the ₹11,200 Journey B has stated. */
+  'quant-small': {
+    forAmountRs: 185000,
+    underYearRs: 77700,
+    gainUnderYearRs: 25865,
+    gainOverYearRs: 42000,
+    datesOnFile: true
+  }
+};
+var switchCost = function switchCost(fromId, amountRs) {
+  var f = fundById(fromId);
+  var lots = SWITCH_LOTS[fromId];
+  if (!f || !lots || !lots.datesOnFile) return null;
+  /* The lots are written for the ₹1,85,000 the product has always moved; a different amount scales them
+     pro rata, so a dial that moves less (or the whole holding) costs in proportion. */
+  var k = amountRs / lots.forAmountRs;
+  var loadPct = parseFloat(f.exitLoad) || 0;
+  var exitLoadRs = Math.round(lots.underYearRs * k * loadPct / 100);
+  var stcgRs = Math.round(lots.gainUnderYearRs * k * TAX.stcgPct / 100);
+  var ltcgRs = Math.round(lots.gainOverYearRs * k * TAX.ltcgPct / 100);
+  return {
+    exitLoadRs: exitLoadRs,
+    stcgRs: stcgRs,
+    ltcgRs: ltcgRs,
+    totalRs: exitLoadRs + stcgRs + ltcgRs,
+    lines: [{
+      label: 'Exit load',
+      value: inr(exitLoadRs),
+      rule: "".concat(f.exitLoad, " \u2014 on the units under a year old")
+    }, {
+      label: 'Short-term gains tax',
+      value: inr(stcgRs),
+      rule: "".concat(TAX.stcgPct, "% on gains under twelve months")
+    }, {
+      label: 'Long-term gains tax',
+      value: inr(ltcgRs),
+      rule: "".concat(TAX.ltcgPct, "% above the \u20B91.25 L annual allowance")
+    }]
+  };
+};
+var perfProvenance = function perfProvenance(period) {
+  return "".concat(period ? period + ' returns · ' : '', "illustrative figures for design, not a scheme record \xB7 as of ").concat(PERF_AS_OF);
+};
+var PERF_PERIODS = [{
+  key: 'r1',
+  label: '1Y'
+}, {
+  key: 'r3',
+  label: '3Y'
+}, {
+  key: 'r5',
+  label: '5Y'
+}];
+/* Returns are annualised past 1Y, and saying so is not optional — SEBI's own presentation rule, and the
+   difference between 27.6 meaning "a year like that" and "every year for three". */
+var perfNote = function perfNote(key) {
+  return key === 'r1' ? 'Last 12 months' : "".concat(key === 'r3' ? 'Three' : 'Five', "-year CAGR");
+};
+
+/* THE RULES THIS BOOK IS CHECKED AGAINST. Two of them carry the number 25 and they are NOT the same rule
+   (contradiction 32): one caps a single fund, the other caps the small-cap sleeve. */
+var LIMITS = {
+  singleFund: 25,
+  // % of a portfolio in one scheme
+  smallCapSleeve: 25,
+  // % of a portfolio in small cap overall
+  driftBand: 5 // points either side of the mandate before a review is raised
+};
+
+/* TAX, as it stands for equity-oriented schemes on 19 Sep 2026. Checked, not remembered: STCG 20% under
+   twelve months (s.111A, from 23 Jul 2024), LTCG 12.5% on aggregate equity gains above ₹1.25 L in a
+   financial year, no indexation. A switch is a redemption plus a purchase, so it is taxable — which is
+   why "no exit load, no tax" on Sharma's SIP redirect is a claim the book has to support. */
+var TAX = {
+  stcgPct: 20,
+  ltcgPct: 12.5,
+  ltcgExemptionRs: 125000,
+  equityHoldingMonths: 12
+};
+
+/* ───────────────────────────── THE CLIENTS ─────────────────────────────
+   Four are carried in full because four journeys are built on them. The rest are the drawer's book:
+   name, city and enough to be reached, which is what the drawer actually shows. */
+var CLIENTS = [{
+  id: 'meera',
+  name: 'Meera Nair',
+  age: 38,
+  city: 'Kochi',
+  since: 2019,
+  pan: 'ABCPN••••K',
+  kyc: {
+    status: 'Valid',
+    mode: 'CKYC',
+    updated: '11 Feb 2026'
+  },
+  nominee: {
+    name: 'Rahul Nair',
+    relation: 'Spouse',
+    share: 100
+  },
+  income: {
+    monthly: 180000,
+    source: 'Salary plus bonus',
+    evidence: 'ITR, AY 2025-26'
+  },
+  spendMonthly: 95000,
+  emergencyFund: 600000,
+  goal: {
+    label: 'Corpus',
+    amountRs: 20000000,
+    byYear: 2041
+  },
+  // ₹2 crore — the journey's own goal
+  /* The risk profile the rail produces. Three scores, and the rule is the LOWEST of them. */
+  risk: {
+    score: 54,
+    band: 'Moderate',
+    lockedOn: '15 Sep 2026',
+    rows: [{
+      label: 'What her finances can absorb',
+      value: 71
+    }, {
+      label: 'What she can sit through calmly',
+      value: 54,
+      binding: true
+    }, {
+      label: 'What her ₹2 crore goal needs',
+      value: 62
+    }]
+  },
+  mandate: {
+    equity: 55,
+    debt: 30,
+    cash: 15
+  },
+  portfolio: {
+    valueRs: 1840000,
+    funds: 43,
+    asOf: '30 Sep 2026'
+  },
+  // ₹18.4 L across 43 funds
+  /* The long tail is the point of her review: 14 funds hold 80% and the other 29 are under 1.5% each. */
+  tail: {
+    topFunds: 14,
+    topSharePct: 80,
+    tinyFunds: 29,
+    tinyUnderPct: 1.5
+  },
+  sips: [{
+    fundId: 'ppfas-flexi',
+    amountRs: 15000,
+    day: 5,
+    mandate: 'NACH'
+  }],
+  flags: ['Review due — 43 funds, 29 of them under 1.5%']
+}, {
+  id: 'sharma',
+  name: 'R. Sharma',
+  age: 46,
+  city: 'Pune',
+  since: 2017,
+  pan: 'AXSPS••••M',
+  kyc: {
+    status: 'Valid',
+    mode: 'KRA',
+    updated: '3 Aug 2025'
+  },
+  nominee: {
+    name: 'Anita Sharma',
+    relation: 'Spouse',
+    share: 100
+  },
+  income: {
+    monthly: 240000,
+    source: 'Own business',
+    evidence: 'ITR, AY 2025-26'
+  },
+  spendMonthly: 130000,
+  emergencyFund: 1200000,
+  goal: {
+    label: 'Retirement',
+    amountRs: 40000000,
+    byYear: 2040
+  },
+  risk: {
+    score: 58,
+    band: 'Moderate',
+    lockedOn: '22 Mar 2026',
+    rows: [{
+      label: 'What his finances can absorb',
+      value: 74
+    }, {
+      label: 'What he can sit through calmly',
+      value: 58,
+      binding: true
+    }, {
+      label: 'What his retirement needs',
+      value: 66
+    }]
+  },
+  mandate: {
+    equity: 60,
+    debt: 30,
+    cash: 10
+  },
+  /* ₹14.2 L IS DERIVED, NOT INVENTED. The product says the switch of ₹1,85,000 moves equity from 71%
+     to 58% — thirteen points — and a switch changes today's allocation while a SIP redirect does not.
+     ₹1,85,000 ÷ 0.13 = ₹14,23,077, so the portfolio is ₹14.2 L and every percentage on the drift
+     screens resolves against it. If the portfolio figure is ever changed, the ₹1,85,000 has to move
+     with it or screen 5 starts lying. */
+  portfolio: {
+    valueRs: 1423000,
+    funds: 18,
+    asOf: '30 Sep 2026'
+  },
+  allocation: {
+    equity: 71,
+    debt: 24,
+    cash: 5
+  },
+  // today, from his Q3 statement
+  /* R4, from the research: "only a part of asset allocation shown that too it says equity no mention of
+     mid large or small" — an MFD's own words. Equity / Debt / Cash is one level too coarse to act on,
+     and BOTH of this product's 25% ceilings are written against caps the three-row card never showed.
+     Split from his holdings: small 31 + flexi 14 + large 11 + 15 across the thirteen funds under 5%. */
+  allocationByCap: [{
+    label: 'Small cap',
+    pct: 31,
+    over: 'smallCapSleeve'
+  }, {
+    label: 'Other equity',
+    pct: 15
+  }, {
+    label: 'Flexi cap',
+    pct: 14
+  }, {
+    label: 'Large cap',
+    pct: 11
+  }],
+  /* R1, from the research: the top theme was a total that was silently short because one AMC had not
+     reported. Provenance says WHERE a figure came from; this says HOW COMPLETE it is. */
+  reporting: {
+    funds: 18,
+    reported: 18,
+    asOf: '30 Sep 2026'
+  },
+  allocationPrior: {
+    equity: 62
+  },
+  // Q2 — the drift is 62 → 71
+  /* Quant Small Cap at 31% breaches the single-fund ceiling of 25%: 31% of ₹14.2 L is ₹4,41,130, and
+     taking ₹1,85,000 out leaves ₹2,56,130 — 18% — which is why the confirm sheet can state "No fund
+     over 25%" after the moves and not before. */
+  holdings: [{
+    fundId: 'quant-small',
+    pct: 31,
+    valueRs: 441130,
+    folio: '9142/28',
+    over: 'single-fund ceiling'
+  }, {
+    fundId: 'ppfas-flexi',
+    pct: 14,
+    valueRs: 199220,
+    folio: '9142/29'
+  }, {
+    fundId: 'hdfc-large',
+    pct: 11,
+    valueRs: 156530,
+    folio: '9142/31'
+  }, {
+    fundId: 'icici-corp',
+    pct: 10,
+    valueRs: 142300,
+    folio: '7761/04'
+  }, {
+    fundId: 'hdfc-stdebt',
+    pct: 8,
+    valueRs: 113840,
+    folio: '7761/05'
+  }],
+  holdingsShown: 5,
+  // of 18 — the rest are under 5% each
+  holdingsTailNote: '13 more, each under 5%',
+  sips: [{
+    fundId: 'quant-small',
+    amountRs: 30000,
+    day: 7,
+    mandate: 'NACH',
+    note: 'the redirect in move 2'
+  }],
+  /* The rebalance the built screens decide on. The cost is stated on the simulation and again on the
+     sheet, and it is a switch — a redemption plus a purchase — so it is taxable by definition. */
+  rebalance: {
+    moves: [{
+      n: 1,
+      kind: 'switch',
+      fromId: 'quant-small',
+      toId: 'icici-corp',
+      amountRs: 185000
+    }, {
+      n: 2,
+      kind: 'sip-redirect',
+      fromId: 'quant-small',
+      toId: 'hdfc-large',
+      amountRs: 30000
+    }],
+    equityAfter: 58,
+    costRs: 11200,
+    /* The split is no longer a placeholder: `switchCost` produces it from SWITCH_LOTS, which
+       carries the purchase dates for this folio. ₹777 exit load + ₹5,173 short-term + ₹5,250
+       long-term = the ₹11,200 this book has stated since Journey B. */
+    costParts: 'exit load ₹777 · short-term ₹5,173 · long-term ₹5,250',
+    settles: 'T+2'
+  },
+  flags: ['Equity 11 points over mandate', 'Quant Small Cap over the single-fund ceiling']
+}, {
+  id: 'amit',
+  name: 'Mr. Amit Aggrawal',
+  age: 52,
+  city: 'Delhi',
+  since: 2026,
+  pan: 'AGGPA••••R',
+  kyc: {
+    status: 'In process',
+    mode: 'CKYC',
+    updated: '—',
+    note: 'PAN–Aadhaar seeding pending'
+  },
+  nominee: null,
+  income: {
+    monthly: 400000,
+    source: 'Own business',
+    evidence: 'Declared — no ITR on file yet'
+  },
+  spendMonthly: 180000,
+  emergencyFund: 2500000,
+  goal: {
+    label: 'Wealth',
+    amountRs: 50000000,
+    byYear: 2045
+  },
+  risk: {
+    score: null,
+    band: null,
+    lockedOn: null,
+    note: 'Not profiled — the proposal is built against the mandate he stated'
+  },
+  /* ceilingRs is the most he has agreed to commit, and it is part of the mandate he STATED rather
+     than a number anyone scored. It is what the refusal in thread/refusals.jsx holds the line at
+     (₹60,00,000 is above it), and it is why the proposal is headed "Where ₹25 lakh would go"
+     when the advisor answered ₹50,00,000 — which is SCREENS-PLAN open question 2, answered:
+     both numbers are real, one is the ask and the other is the ceiling. */
+  mandate: {
+    equity: 65,
+    debt: 30,
+    cash: 5,
+    ceilingRs: 2500000
+  },
+  portfolio: {
+    valueRs: 0,
+    funds: 0,
+    asOf: '30 Sep 2026'
+  },
+  proposal: {
+    amountRs: 2500000,
+    funds: 6,
+    drafted: '14 Sep 2026',
+    versions: 3,
+    sentVersion: 2
+  },
+  sips: [],
+  flags: ['KYC in process — nothing can be executed until it clears', 'No risk profile']
+}, {
+  id: 'sunita',
+  name: 'Sunita Nair',
+  age: 41,
+  city: 'Kochi',
+  since: 2020,
+  pan: 'BNSPS••••J',
+  kyc: {
+    status: 'Valid',
+    mode: 'CKYC',
+    updated: '19 Jan 2026'
+  },
+  nominee: {
+    name: 'Meera Nair',
+    relation: 'Sister',
+    share: 100
+  },
+  income: {
+    monthly: 150000,
+    source: 'Fixed salary',
+    evidence: 'Form 16, FY 2025-26'
+  },
+  spendMonthly: 80000,
+  emergencyFund: 500000,
+  goal: {
+    label: "Daughter's education",
+    amountRs: 6000000,
+    byYear: 2034
+  },
+  risk: {
+    score: 47,
+    band: 'Moderately conservative',
+    lockedOn: '8 Jul 2026',
+    rows: [{
+      label: 'What her finances can absorb',
+      value: 61
+    }, {
+      label: 'What she can sit through calmly',
+      value: 47,
+      binding: true
+    }, {
+      label: 'What her goal needs',
+      value: 55
+    }]
+  },
+  mandate: {
+    equity: 45,
+    debt: 45,
+    cash: 10
+  },
+  portfolio: {
+    valueRs: 920000,
+    funds: 31,
+    asOf: '30 Sep 2026'
+  },
+  holdings: [{
+    fundId: 'hdfc-flexi',
+    pct: 12,
+    valueRs: 110400,
+    folio: '5520/11'
+  }, {
+    fundId: 'icici-baf',
+    pct: 10,
+    valueRs: 92000,
+    folio: '5520/12'
+  }],
+  sips: [{
+    fundId: 'icici-baf',
+    amountRs: 10000,
+    day: 10,
+    mandate: 'NACH'
+  }],
+  /* The exit-load question in her thread: units bought inside twelve months carry the load AND short-term
+     tax, which is the pair an advisor has to state together. */
+  flags: ['Exit load on the Jun 2026 purchase until 12 Jun 2027']
+},
+/* The rest of the drawer's book. Enough to be reached and named; no portfolio detail, because none of
+   the built screens shows any and inventing it would be inventing. */
+{
+  id: 'kavita',
+  name: 'Kavita Rao',
+  city: 'Bengaluru',
+  since: 2021,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'anil',
+  name: 'Anil Menon',
+  city: 'Chennai',
+  since: 2018,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'priya',
+  name: 'Priya Deshpande',
+  city: 'Pune',
+  since: 2022,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'vikram',
+  name: 'Vikram Shah',
+  city: 'Ahmedabad',
+  since: 2019,
+  kyc: {
+    status: 'Re-KYC due'
+  }
+}, {
+  id: 'lakshmi',
+  name: 'Lakshmi Iyer',
+  city: 'Coimbatore',
+  since: 2023,
+  kyc: {
+    status: 'Valid'
+  }
+}, {
+  id: 'rohan',
+  name: 'Rohan Gupta',
+  city: 'Gurugram',
+  since: 2024,
+  kyc: {
+    status: 'Valid'
+  }
+}];
+var clientById = function clientById(id) {
+  return CLIENTS.find(function (x) {
+    return x.id === id;
+  });
+};
+
+/* ── R3 · WHAT ACTUALLY HAPPENED ───────────────────────────────────────────────────────────────────
+   The research asked for this in almost every app: "There is no option check all transactions day wise
+   & type wise" · "Could not download statement" · "monthly sip Reports not available". The drawer is the
+   history of CONVERSATIONS; this is the history of MONEY, and they are not the same thing.
+
+   Every row is one instruction and its outcome. `status` is the honest set, and it is the same set the
+   in-flight states use (R2) — placed · settled · rejected · sent (no confirmation yet). A row never says
+   "done" for something the RTA has not confirmed. Illustrative figures, consistent with the journeys:
+   the two Sharma moves are the ones screens 5 to 7 decide on. */
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE TWO SCORES — CENTRICITY FUND SCORE AND CLIENT HEALTH SCORE · 20 Sep 2026
+
+   THESE ARE DESIGN PLACEHOLDERS AND THE SCREEN SAYS SO IN WORDS. The Fund Discovery PRD leads with a
+   "Centricity Score" and this repository has never seen its definition. Inventing one quietly is the
+   single worst thing this product could do: a score is the one number an advisor has to defend in
+   front of a client, and a number with a hidden methodology cannot be defended at all.
+
+   So the placeholder is built the only way a placeholder may be: **every input is a field already in
+   this book, every weight is stated on the card, and the card names the component dragging the score
+   down.** Nothing is a black box. When Centricity's real definition arrives, the weights and the five
+   mappings below are what change — the card, the band words and the turn do not.
+
+   Two rules the maths obeys:
+   - **A missing input is reported, never assumed.** Sharma is the only client with a current
+     allocation on file, so the other two score on the inputs that exist and the card says which one
+     it could not read. A score quietly computed over four of five components is the "total AUM shown
+     is less" defect (docs/RESEARCH.md R1) wearing a different hat.
+   - **The band is a word, never a colour** (rule 1). Strong · Sound · Mixed · Weak. */
+var clamp100 = function clamp100(v) {
+  return Math.max(0, Math.min(100, Math.round(v)));
+};
+var SCORE_BANDS = [[75, 'Strong'], [60, 'Sound'], [45, 'Mixed'], [0, 'Weak']];
+var scoreBand = function scoreBand(v) {
+  return (SCORE_BANDS.find(function (_ref7) {
+    var _ref8 = _slicedToArray(_ref7, 1),
+      floor = _ref8[0];
+    return v >= floor;
+  }) || [0, 'Weak'])[1];
+};
+
+/* One weighted mean over the components that could be read, plus the list of the ones that could not.
+   `weakest` is the lowest component that carries weight — the card distinguishes it, and the sentence
+   names it, because "78" on its own tells an advisor nothing they can act on. */
+var rollUp = function rollUp(rows) {
+  var read = rows.filter(function (r) {
+    return r.value != null;
+  });
+  var missing = rows.filter(function (r) {
+    return r.value == null;
+  });
+  var w = read.reduce(function (t, r) {
+    return t + r.weight;
+  }, 0);
+  var value = clamp100(read.reduce(function (t, r) {
+    return t + r.value * r.weight;
+  }, 0) / (w || 1));
+  var weakest = read.slice().sort(function (a, b) {
+    return a.value - b.value;
+  })[0] || null;
+  /* AND A SCORE OVER A THIRD OF ITS INPUTS IS NOT A SCORE. Meera has a fund count and clean records
+     and nothing else on file: 30 of the 100 points of weight. Printing "62" from that is the same
+     defect as a total that is quietly short — it reads as confident and it is not. Under half the
+     weight the number is withheld and the turn says what is missing instead. Above it, the number
+     stands and the card names what it could not read. */
+  var coverage = w / 100;
+  return {
+    value: value,
+    band: scoreBand(value),
+    rows: read.map(function (r) {
+      return _objectSpread(_objectSpread({}, r), {}, {
+        binding: weakest && r.label === weakest.label
+      });
+    }),
+    missing: missing,
+    weakest: weakest,
+    coverage: coverage,
+    readWeight: w,
+    enough: w >= 50
+  };
+};
+
+/* `short` is what the card's weights line prints — the full label names the meter, and repeating five
+   full labels in a sentence above five meters that already carry them is the repetition this product
+   gets pulled up on. */
+/* TWO HALVES, ON THE OWNER'S WORD (20 Sep 2026): "centricity score ki definition abhi nei hai, fund
+   performance and client holding par hai." The methodology is still not written down anywhere, so the
+   weights below remain invented and the card still says PLACEHOLDER — but the BASIS is now the
+   owner's rather than mine, and the two halves are named on the card so the difference is visible.
+
+   **The trap this shape walks into, stated rather than hidden:** a fund does not become better
+   because more of an advisor's clients hold it. Scoring popularity would make every new fund look
+   weak and every crowded one look strong, which is the opposite of useful. So the second half does
+   not measure popularity — it measures HOW THIS BOOK ALREADY SITS IN THE FUND: the weight it already
+   carries, and the headroom left under the ceilings. And when no client holds it at all, those two
+   rows are MISSING rather than zero: the fund is scored on its own record, out of 70, and the card
+   says so. A fund nobody holds yet is not a bad fund. */
+var FUND_SCORE_WEIGHTS = [['Return against its category', 30, 'return', 'Its own record'], ['Beats its category', 20, 'consistency', 'Its own record'], ['Cost', 20, 'cost', 'Its own record'], ['Share of your whole book', 15, 'share', 'How your book holds it'], ['Headroom under the ceilings', 15, 'headroom', 'How your book holds it']];
+var fundScore = function fundScore(id) {
+  var f = fundById(id);
+  var p = perfOf(id);
+  var cat = categoryAvgOf(id);
+  if (!f || !p) return null;
+  /* Six points of score per point of three-year lead, centred at 50 — so matching the category is a
+     50 and beating it by eight points is a 98. The slope is a guess; it is written here rather than
+     buried so that replacing it is a one-line edit. */
+  var ret = cat ? 50 + (p.r3 - cat.r3) * 6 : null;
+  /* 1.2% is the practical top of a direct-plan expense ratio in this book; 0 is free. */
+  var cost = 100 - p.ter / 1.2 * 100;
+  /* How many of the three periods clear the category average — the plainest reading of "consistent". */
+  var beats = cat ? ['r1', 'r3', 'r5'].filter(function (k) {
+    return p[k] >= cat[k];
+  }).length / 3 * 100 : null;
+  /* HOW YOUR BOOK HOLDS IT. Positions on file only; a SIP running in with no position yet is counted
+     as a holder for the count on the fund card and NOT here, because there is no weight to measure.
+     A fund no client holds leaves both rows null and is scored on its own record, out of 70. */
+  var pos = CLIENTS.flatMap(function (c) {
+    return (c.holdings || []).filter(function (h) {
+      return h.fundId === id;
+    }).map(function (h) {
+      return {
+        c: c,
+        h: h
+      };
+    });
+  });
+  /* WEIGHT IS ACROSS THE PRACTICE, NOT INSIDE ONE CLIENT — the two rows have to say different
+     things or the second is decoration. This one is the advisor's own concentration: how much of
+     every rupee they advise sits in this one scheme. Under 10% is unremarkable and scores full;
+     it falls to zero at 30%, where a single scheme moving badly moves the whole practice.
+      A FIRST ATTEMPT SCORED THE AVERAGE CLIENT POSITION AGAINST AN 8% IDEAL and marked a fund down
+     for being held at 14%, which is a perfectly ordinary weight in a twelve-fund book. It also made
+     every unheld fund outscore every held one — the popularity trap running backwards. Being small
+     in a book is not a fault; being most of one is. */
+  var totalBook = CLIENTS.reduce(function (t, c) {
+    return t + (c.portfolio && c.portfolio.valueRs || 0);
+  }, 0);
+  var heldRs = pos.reduce(function (t, x) {
+    return t + x.h.valueRs;
+  }, 0);
+  var sharePct = pos.length && totalBook ? heldRs / totalBook * 100 : null;
+  var weight = sharePct == null ? null : 100 - Math.max(0, sharePct - 10) / 20 * 100;
+  /* The heaviest holder against the single-fund ceiling. At the ceiling there is no headroom left and
+     this fund cannot take another rupee of theirs without a rule being broken — which is a fact about
+     what an advisor can DO with it, and the reason this half belongs in a score at all. */
+  var big = pos.length ? Math.max.apply(Math, _toConsumableArray(pos.map(function (x) {
+    return x.h.pct;
+  }))) : null;
+  var headroom = big == null ? null : Math.max(0, (LIMITS.singleFund - big) / LIMITS.singleFund) * 100;
+  var vals = {
+    'Return against its category': ret,
+    'Cost': cost,
+    'Beats its category': beats,
+    'Share of your whole book': weight,
+    'Headroom under the ceilings': headroom
+  };
+  /* A MISSING INPUT CARRIES ITS REASON. "Could not be read" is not something an advisor can act on;
+     "no client of yours holds it yet, so there is no weight to read" is, and it also says the absence
+     is not a fault. */
+  var noneHeld = 'no client of yours holds it yet, so there is nothing of yours to measure';
+  var why = {
+    'Share of your whole book': noneHeld,
+    'Headroom under the ceilings': noneHeld,
+    'Return against its category': 'no category average on file for this one',
+    'Beats its category': 'no category average on file for this one'
+  };
+  return rollUp(FUND_SCORE_WEIGHTS.map(function (_ref9) {
+    var _ref0 = _slicedToArray(_ref9, 4),
+      label = _ref0[0],
+      weight2 = _ref0[1],
+      _short = _ref0[2],
+      group = _ref0[3];
+    return {
+      label: label,
+      weight: weight2,
+      "short": _short,
+      group: group,
+      why: why[label],
+      value: vals[label] == null ? null : clamp100(vals[label])
+    };
+  }));
+};
+var fundScoreProvenance = function fundScoreProvenance() {
+  return 'Centricity Fund Score · a DESIGN PLACEHOLDER, not Centricity’s methodology · every input is on this card';
+};
+var HEALTH_WEIGHTS = [['Sticking to the mandate', 30, 'mandate'], ['Concentration', 25, 'concentration'], ['Cost of what they hold', 15, 'cost'], ['Spread across funds', 15, 'spread'], ['Records in order', 15, 'records']];
+var clientHealth = function clientHealth(clientId) {
+  var c = clientById(clientId);
+  if (!c || !c.portfolio || !c.portfolio.valueRs) return null;
+  /* Drift is measured on equity, which is the leg every mandate in this book states and the one the
+     drift band is written against. Fifteen points out is a zero; on the band is a hundred. */
+  var drift = c.allocation && c.mandate ? Math.abs(c.allocation.equity - c.mandate.equity) : null;
+  var mandate = drift == null ? null : 100 - Math.max(0, drift - LIMITS.driftBand) / 15 * 100;
+  var big = (c.holdings || []).reduce(function (t, h) {
+    return Math.max(t, h.pct);
+  }, 0) || null;
+  var conc = big == null ? null : 100 - Math.max(0, big - LIMITS.singleFund) / LIMITS.singleFund * 100;
+  /* Weighted by what they actually hold, so one large cheap fund counts for more than three small
+     expensive ones. Only the holdings on file are read, and the card says how much of the book that
+     is when it is not all of it. */
+  var held = (c.holdings || []).map(function (h) {
+    return {
+      pct: h.pct,
+      ter: (perfOf(h.fundId) || {}).ter
+    };
+  }).filter(function (h) {
+    return h.ter != null;
+  });
+  var heldPct = held.reduce(function (t, h) {
+    return t + h.pct;
+  }, 0);
+  var wTer = heldPct ? held.reduce(function (t, h) {
+    return t + h.ter * h.pct;
+  }, 0) / heldPct : null;
+  var cost = wTer == null ? null : 100 - wTer / 1.2 * 100;
+  /* Twelve to twenty funds is a book somebody is managing; forty-three is a book nobody is. */
+  var n = c.portfolio.funds;
+  var spread = n == null ? null : n <= 20 ? 100 : 100 - (n - 20) / 30 * 100;
+  var records = clamp100([c.kyc && c.kyc.status === 'Valid' ? 50 : 0, c.nominee ? 35 : 0, (c.holdings || []).every(function (h) {
+    return h.folio;
+  }) ? 15 : 0].reduce(function (a, b) {
+    return a + b;
+  }, 0));
+  var vals = {
+    'Sticking to the mandate': mandate,
+    'Concentration': conc,
+    'Cost of what they hold': cost,
+    'Spread across funds': spread,
+    'Records in order': records
+  };
+  var why = {
+    'Sticking to the mandate': 'the current equity / debt / cash split is not on file',
+    'Concentration': 'no holdings on file, only the fund count',
+    'Cost of what they hold': 'no holdings on file, so nothing to weigh the expense ratios by'
+  };
+  var out = rollUp(HEALTH_WEIGHTS.map(function (_ref1) {
+    var _ref10 = _slicedToArray(_ref1, 3),
+      label = _ref10[0],
+      weight = _ref10[1],
+      _short2 = _ref10[2];
+    return {
+      label: label,
+      weight: weight,
+      "short": _short2,
+      why: why[label],
+      value: vals[label] == null ? null : clamp100(vals[label])
+    };
+  }));
+  return _objectSpread(_objectSpread({}, out), {}, {
+    heldPct: heldPct || 0,
+    funds: n,
+    drift: drift,
+    big: big
+  });
+};
+var healthProvenance = function healthProvenance(c) {
+  return "Client Health Score \xB7 a DESIGN PLACEHOLDER, not Centricity\u2019s methodology \xB7 from ".concat(c && c.portfolio ? c.portfolio.asOf : '30 Sep 2026', " holdings and the mandate on file");
+};
+var LEDGER = [{
+  id: 'l1',
+  date: '19 Sep 2026',
+  client: 'sharma',
+  kind: 'Switch',
+  detail: '₹1,85,000 · Quant Small Cap → ICICI Corporate Bond',
+  amountRs: 185000,
+  status: 'placed',
+  ref: 'ord 8841/22',
+  settles: '23 Sep'
+}, {
+  id: 'l2',
+  date: '19 Sep 2026',
+  client: 'sharma',
+  kind: 'SIP change',
+  detail: 'Redirect ₹30,000 SIP → HDFC Large Cap',
+  amountRs: 30000,
+  status: 'rejected',
+  ref: '—',
+  note: 'NACH mandate registered for the old amount'
+}, {
+  id: 'l3',
+  date: '12 Sep 2026',
+  client: 'meera',
+  kind: 'SIP',
+  detail: '₹15,000 · Parag Parikh Flexi Cap',
+  amountRs: 15000,
+  status: 'settled',
+  ref: 'ord 8712/09',
+  settles: '16 Sep'
+}, {
+  id: 'l4',
+  date: '10 Sep 2026',
+  client: 'sunita',
+  kind: 'Purchase',
+  detail: '₹50,000 · ICICI Balanced Advantage',
+  amountRs: 50000,
+  status: 'settled',
+  ref: 'ord 8698/41',
+  settles: '12 Sep'
+}, {
+  id: 'l5',
+  date: '5 Sep 2026',
+  client: 'meera',
+  kind: 'Redemption',
+  detail: '₹1,20,000 · UTI Nifty 50 Index',
+  amountRs: 120000,
+  status: 'sent',
+  ref: '—',
+  note: 'No confirmation from the RTA yet'
+}];
+var LEDGER_PERIOD = 'Sep 2026';
+/* What an export would carry, named so a screen never implies more than the file holds. */
+var LEDGER_EXPORT = {
+  formats: ['CSV', 'PDF'],
+  columns: ['Date', 'Client', 'Type', 'Detail', 'Amount', 'Status', 'Reference']
+};
+
+/* MEERA'S REVIEW — and the shape of it is decided by what the book DOES NOT have.
+
+   Her record carries the value, the fund count, the as-of date, the long tail, her SIP, her mandate,
+   her risk number and her goal. It does NOT carry her 43 holdings, and it does not carry her actual
+   equity / debt / cash split. So a review of Meera can describe the SHAPE of her book exactly and
+   cannot say whether she is on her mandate — which is the single most useful thing a review would say.
+
+   That is not a gap to paper over with a plausible 57%. It is the finding: the statement was loaded
+   fund-wise and nobody has mapped the 29 tail funds to categories, so the split is a figure to supply.
+   `StatTile locked` exists for exactly this and had been on no screen since v9.
+
+   Every figure below is derived from `portfolio.valueRs` and `tail`, so changing either moves all of
+   them together and none of them can drift. */
+var REVIEW_TOP_RS = Math.round(1840000 * 0.80); // 14 funds hold 80% → ₹14,72,000
+var REVIEW_TAIL_RS = 1840000 - REVIEW_TOP_RS; // 29 funds hold the rest → ₹3,68,000
+var REVIEW_TAIL_AVG_RS = Math.round(REVIEW_TAIL_RS / 29); // ₹12,690 each, on average
+var REVIEW_TINY_CAP_RS = Math.round(1840000 * 0.015); // 1.5% of her book is ₹27,600
+
+/* WHAT A REVIEW IS FOR, and it is the one thing Sentinel cannot infer. The facts are identical in all
+   three; what changes is what is left out and what is proposed. A product that quietly turns a record
+   into a proposal has sold something, and the advisor is the one who signed it. */
+var REVIEW_AUDIENCES = [{
+  id: 'record',
+  label: 'Her annual record',
+  chip: 'Her annual record',
+  ending: 'A record, not a proposal. Dated, with what I could not check stated on it, and nothing suggested.',
+  note: 'This is the one you file.'
+}, {
+  id: 'meeting',
+  label: 'A meeting with her',
+  chip: 'A meeting with her',
+  ending: 'Plain words she would use, the tail explained, and the one question worth asking her.',
+  note: 'This is the one you read aloud.'
+}, {
+  id: 'invest',
+  label: 'Before she invests more',
+  chip: 'Before she invests more',
+  ending: 'Headroom against her mandate — which I cannot work out until her split is on file.',
+  note: 'This is the one I cannot finish yet.'
+}];
+
+/* HOW FAR TO TAKE A REBALANCE — the one question the rail asks, and the three answers are three
+   different RULES rather than three appetites.
+
+     · to the mandate   equity 71 → 60. The number he agreed to. 11 points of ₹14,23,000 = ₹1,56,530.
+     · inside the band  equity 71 → 65. LIMITS.driftBand is 5 either side, so 65 is the edge at which a
+                        review stops being raised. 6 points = ₹85,380. The cheapest thing that ends the
+                        breach, and it leaves him at the edge rather than at the middle.
+     · clear the fund   equity 71 → 58. NOT an appetite: Quant Small Cap is 31% of the book and is the
+                        WHOLE small-cap sleeve, so one holding breaches the single-fund ceiling and the
+                        sleeve ceiling at once, both 25 and both different rules (contradiction 32).
+                        Taking ₹1,85,000 out leaves it at 18%, and the equity lands at 58 — past the
+                        mandate — because the ceiling sized the move, not the drift did.
+
+   COST IS WHERE THIS STOPS BEING A MENU. Only the third is costed. `sharma.rebalance.costRs` is a
+   figure the book carries and `switchCost` now produces its three-line split from SWITCH_LOTS, which
+   holds the purchase dates for folio 9142/28. The other two targets have no lots on file, so they can
+   be SIZED and cannot be COSTED, and the screen says so rather than printing a zero or a guess.
+
+   The first two amounts are exactly points × ₹14,23,000. The third is ₹1,85,000 and NOT ₹1,84,990,
+   because ₹1,85,000 is the anchor the whole drift story is derived from and 13 points is the figure
+   derived from it — see the portfolio comment above. Do not "correct" it. */
+var REBALANCE_TARGETS = [{
+  id: 'mandate',
+  label: 'To the mandate',
+  equityAfter: 60,
+  points: 11,
+  amountRs: 156530,
+  why: 'The mix he agreed to. The furthest of the three, and the one you can read to him in his own words.',
+  rule: 'His mandate',
+  costRs: null
+}, {
+  id: 'band',
+  label: 'Inside the band',
+  equityAfter: 65,
+  points: 6,
+  amountRs: 85380,
+  why: 'The cheapest thing that ends the breach. It leaves him at the edge of the band, so a small move next quarter puts him back outside it.',
+  rule: "The \xB1".concat(LIMITS.driftBand, "-point drift band"),
+  costRs: null
+}, {
+  id: 'ceiling',
+  label: 'Clear the fund ceiling',
+  equityAfter: 58,
+  points: 13,
+  amountRs: 185000,
+  why: 'Sized by the ceiling rather than by the drift: it takes Quant Small Cap from 31% to 18%. Equity lands past the mandate as a consequence, not as a choice.',
+  rule: "The ".concat(LIMITS.singleFund, "% single-fund ceiling"),
+  costRs: 11200
+}];
+
+/* THE PROPOSAL FOR AMIT — ₹25,00,000 split six ways, and every line of it is checked against something
+   in this file rather than chosen. The mandate he stated is equity 65 / debt 30 / cash 5, so the sleeves
+   are ₹16,25,000 / ₹7,50,000 / ₹1,25,000 and they add to the whole. Cash is not a fund and is not given
+   one: it is the 5% he asked to keep liquid, and a proposal that quietly invested it would be answering
+   a question he did not ask. Six funds, which is what his record already said (`proposal.funds: 6`).
+
+   THE CEILING IS LIVE, NOT DECORATIVE. LIMITS.singleFund is 25%, and the largest line here is 24% —
+   deliberately just under, so the card can state the headroom instead of claiming there is none. Every
+   fund is on the shelf; Quant Small Cap is not, and does not appear. */
+var PROPOSAL_AMOUNT = 2500000;
+var PROPOSAL_ASKED = 5000000; /* what the advisor typed before the ceiling was stated */
+var PROPOSAL_SPLIT = [{
+  fund: 'ppfas-flexi',
+  amountRs: 600000,
+  pct: 24.0,
+  why: 'The core. Flexi cap, so the manager moves between sizes rather than you doing it.'
+}, {
+  fund: 'hdfc-large',
+  amountRs: 500000,
+  pct: 20.0,
+  why: 'Large cap ballast — the part of the equity he is least likely to flinch at.'
+}, {
+  fund: 'motilal-mid',
+  amountRs: 300000,
+  pct: 12.0,
+  why: 'The only mid-cap line. Small cap is absent on purpose: he has no risk profile yet.'
+}, {
+  fund: 'hdfc-flexi',
+  amountRs: 225000,
+  pct: 9.0,
+  why: 'A second flexi cap under a different house, so one AMC does not hold the whole core.'
+}, {
+  fund: 'icici-corp',
+  amountRs: 450000,
+  pct: 18.0,
+  why: 'Corporate bond, nil exit load — the debt he can reach without a penalty.'
+}, {
+  fund: 'hdfc-stdebt',
+  amountRs: 300000,
+  pct: 12.0,
+  why: 'Short duration, to keep the debt sleeve from taking a rate view.'
+}];
+var PROPOSAL_CASH = {
+  amountRs: 125000,
+  pct: 5.0,
+  why: 'Left in cash, because that is the 5% he asked to keep liquid.'
+};
+/* Three versions, and version 2 is the one the client has seen. The going-back layer is not a demo here:
+   an advisor who sends a proposal and then edits it has two documents in the world, and only one of them
+   is the one being discussed on the phone. */
+/* The summaries are SHORT because VersionRow's column is 235px and the preview gate measures it: the
+   first cut said "Mid-cap trimmed from ₹4,00,000 to ₹3,00,000" and needed 269. What changed goes here in
+   the advisor's words; the rupees are in the table the version produced. */
+var PROPOSAL_VERSIONS = [{
+  v: 3,
+  at: '19 Sep 2026, 11:20 am',
+  note: 'Mid-cap trimmed by ₹1,00,000',
+  state: 'draft'
+}, {
+  v: 2,
+  at: '16 Sep 2026, 4:05 pm',
+  note: 'Sent to Mr. Aggrawal',
+  state: 'sent'
+}, {
+  v: 1,
+  at: '14 Sep 2026, 6:40 pm',
+  note: 'Draft, before the ceiling',
+  state: 'superseded'
+}];
+/* WHAT STOPS THIS BEING PLACED, and it is not a design state — it is his record. KYC is in process and he
+   has no nominee, so the proposal can be built, saved and SENT, and nothing in it can be executed. Every
+   row is a fact from CLIENTS, so a screen cannot show a green tick the book does not support. */
+var PROPOSAL_BLOCKERS = [{
+  label: 'KYC',
+  value: 'In process · CKYC',
+  blocking: true,
+  note: 'PAN–Aadhaar seeding pending. Nothing can be placed until it clears.'
+}, {
+  label: 'Nominee',
+  value: 'Not on file',
+  blocking: true,
+  note: 'An AMC will not accept a folio without a nominee or a signed opt-out.'
+}, {
+  label: 'Risk profile',
+  value: 'Not done',
+  blocking: false,
+  note: 'Built against the mandate he stated, not against a score. Say so when you send it.'
+}, {
+  label: 'Mandate',
+  value: 'Equity 65 / Debt 30 / Cash 5',
+  blocking: false,
+  note: 'Stated by him on 14 Sep. The split matches it to the rupee.'
+}];
+
+/* Derived, so a screen never hand-computes a figure the book can answer. */
+var driftPoints = function driftPoints(c) {
+  return c.allocation && c.mandate ? c.allocation.equity - c.mandate.equity : null;
+};
+var overSingleFund = function overSingleFund(c) {
+  return (c.holdings || []).filter(function (h) {
+    return h.pct > LIMITS.singleFund;
+  });
+};
+var inr = function inr(n) {
+  return '₹' + Number(n).toLocaleString('en-IN');
+};
+Object.assign(window, {
+  ADVISOR: ADVISOR,
+  FUNDS: FUNDS,
+  fundById: fundById,
+  PERF: PERF,
+  PERF_AS_OF: PERF_AS_OF,
+  PERF_PERIODS: PERF_PERIODS,
+  perfOf: perfOf,
+  perfProvenance: perfProvenance,
+  perfNote: perfNote,
+  MANAGERS: MANAGERS,
+  managerOf: managerOf,
+  managerLine: managerLine,
+  managerProvenance: managerProvenance,
+  comparisonProvenance: comparisonProvenance,
+  HOLDINGS: HOLDINGS,
+  HOLDINGS_AS_OF: HOLDINGS_AS_OF,
+  HOLD_MONTHS: HOLD_MONTHS,
+  holdingsOf: holdingsOf,
+  holdingsProvenance: holdingsProvenance,
+  overlapPct: overlapPct,
+  MONTHLY: MONTHLY,
+  monthlyOf: monthlyOf,
+  monthlyProvenance: monthlyProvenance,
+  CATEGORY_AVG: CATEGORY_AVG,
+  categoryAvgOf: categoryAvgOf,
+  RISK: RISK,
+  riskOf: riskOf,
+  riskProvenance: riskProvenance,
+  RISK_META: RISK_META,
+  RISK_FREE: RISK_FREE,
+  switchCost: switchCost,
+  LIMITS: LIMITS,
+  TAX: TAX,
+  CLIENTS: CLIENTS,
+  clientById: clientById,
+  LEDGER: LEDGER,
+  LEDGER_PERIOD: LEDGER_PERIOD,
+  LEDGER_EXPORT: LEDGER_EXPORT,
+  REVIEW_TOP_RS: REVIEW_TOP_RS,
+  REVIEW_TAIL_RS: REVIEW_TAIL_RS,
+  REVIEW_TAIL_AVG_RS: REVIEW_TAIL_AVG_RS,
+  REVIEW_TINY_CAP_RS: REVIEW_TINY_CAP_RS,
+  REVIEW_AUDIENCES: REVIEW_AUDIENCES,
+  REBALANCE_TARGETS: REBALANCE_TARGETS,
+  PROPOSAL_AMOUNT: PROPOSAL_AMOUNT,
+  PROPOSAL_ASKED: PROPOSAL_ASKED,
+  PROPOSAL_SPLIT: PROPOSAL_SPLIT,
+  PROPOSAL_CASH: PROPOSAL_CASH,
+  PROPOSAL_VERSIONS: PROPOSAL_VERSIONS,
+  PROPOSAL_BLOCKERS: PROPOSAL_BLOCKERS,
+  clamp100: clamp100,
+  scoreBand: scoreBand,
+  SCORE_BANDS: SCORE_BANDS,
+  FUND_SCORE_WEIGHTS: FUND_SCORE_WEIGHTS,
+  fundScore: fundScore,
+  fundScoreProvenance: fundScoreProvenance,
+  HEALTH_WEIGHTS: HEALTH_WEIGHTS,
+  clientHealth: clientHealth,
+  healthProvenance: healthProvenance,
+  NAV_SERIES: NAV_SERIES,
+  NAV_MONTHS: NAV_MONTHS,
+  NAV_BASE: NAV_BASE,
+  BENCH_CANON: BENCH_CANON,
+  navSeries: navSeries,
+  tenKAfter: tenKAfter,
+  benchCagr: benchCagr,
+  BENCH_SHORT: BENCH_SHORT,
+  benchReturnAt: benchReturnAt,
+  benchProvenance: benchProvenance,
+  driftPoints: driftPoints,
+  overSingleFund: overSingleFund,
+  inr: inr
+});</script>
+<script>"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* SHARED PARTS FOR THE THREE EXPLORER VARIATIONS.
+
+   These are SCREEN functions, not components, and the test is the owner's own (20 Sep): a function that
+   reads the book or is journey-specific stays on the screen; one that is neither is a component. Every
+   function here reads `book.jsx` — the fund list, the reverse lookup, the category averages — so none
+   of them belongs in the design system. What they compose IS the system: `PeerLine`, `ClientChip`,
+   `IntentTile`, `Pill`, `Surface`.
+
+   They live in one file rather than three because V1, V2 and V3 are three surfaces over ONE answer.
+   If the fund row read differently in each, the comparison the owner asked for would be a comparison of
+   three different products rather than three ways into the same one. */
+
+/* The system's components come off the published namespace, the way every other screen reaches them
+   (`funds.jsx:14`) — a `text/babel` script has no import. */
+var EX_DS = window.SentinelDesignSystem_0682a2;
+var ArtifactCard = EX_DS.ArtifactCard,
+  Badge = EX_DS.Badge,
+  ChartBar = EX_DS.ChartBar,
+  ChartDonut = EX_DS.ChartDonut,
+  ChartLine = EX_DS.ChartLine,
+  ChartSpark = EX_DS.ChartSpark,
+  ChipRow = EX_DS.ChipRow,
+  ClientChip = EX_DS.ClientChip,
+  CompareTable = EX_DS.CompareTable,
+  Composer = EX_DS.Composer,
+  ConstraintCallout = EX_DS.ConstraintCallout,
+  DarkButton = EX_DS.DarkButton,
+  DataTable = EX_DS.DataTable,
+  DisclosureBlock = EX_DS.DisclosureBlock,
+  Drawer = EX_DS.Drawer,
+  Dumbbell = EX_DS.Dumbbell,
+  ExplainerSheet = EX_DS.ExplainerSheet,
+  ExplorerSheet = EX_DS.ExplorerSheet,
+  Eyebrow = EX_DS.Eyebrow,
+  FigureRow = EX_DS.FigureRow,
+  FilterSheet = EX_DS.FilterSheet,
+  FollowUpRow = EX_DS.FollowUpRow,
+  InfoCard = EX_DS.InfoCard,
+  InfoDot = EX_DS.InfoDot,
+  InlineActionRow = EX_DS.InlineActionRow,
+  IntentGrid = EX_DS.IntentGrid,
+  IntentTile = EX_DS.IntentTile,
+  List = EX_DS.List,
+  ListRow = EX_DS.ListRow,
+  OverlapView = EX_DS.OverlapView,
+  PeerLine = EX_DS.PeerLine,
+  Pill = EX_DS.Pill,
+  Pressable = EX_DS.Pressable,
+  Provenance = EX_DS.Provenance,
+  RangePills = EX_DS.RangePills,
+  RejectCallout = EX_DS.RejectCallout,
+  ScreenScaffold = EX_DS.ScreenScaffold,
+  SearchField = EX_DS.SearchField,
+  SectionStrip = EX_DS.SectionStrip,
+  SegmentedRow = EX_DS.SegmentedRow,
+  SelectionMark = EX_DS.SelectionMark,
+  SentinelBlock = EX_DS.SentinelBlock,
+  SentinelText = EX_DS.SentinelText,
+  ShortlistCard = EX_DS.ShortlistCard,
+  StandingDisclosure = EX_DS.StandingDisclosure,
+  StatTile = EX_DS.StatTile,
+  Surface = EX_DS.Surface,
+  UserBubble = EX_DS.UserBubble;
+var holdersOf = function holdersOf(fundId) {
+  return CLIENTS.filter(function (c) {
+    return (c.holdings || []).some(function (h) {
+      return h.fundId === fundId;
+    }) || (c.sips || []).some(function (sp) {
+      return sp.fundId === fundId;
+    });
+  }).map(function (c) {
+    return c.name;
+  });
+};
+
+/* ONE fund row, used by all three variations, carrying the three things the research said a shortlist
+   row must carry and the rejected one did not:
+     1. the peer line — a fund shown alone is a number, a fund shown beside its category is a judgement;
+     2. who already holds it, on the FIRST line and not in column three — the one facet no product in
+        the market ships, and the only one Sentinel can compute today;
+     3. the unit, next to the number, because "21.4%" without "three-year CAGR" is not defensible. */
+function FundRow(_ref) {
+  var id = _ref.id,
+    _ref$period = _ref.period,
+    period = _ref$period === void 0 ? 'r3' : _ref$period,
+    onOpen = _ref.onOpen,
+    trailing = _ref.trailing,
+    _ref$compact = _ref.compact,
+    compact = _ref$compact === void 0 ? false : _ref$compact;
+  var f = fundById(id);
+  var p = perfOf(id);
+  var cat = categoryAvgOf(id);
+  var held = holdersOf(id);
+  var periodWords = period === 'r1' ? '1 year' : period === 'r3' ? '3 years' : '5 years';
+  var body = /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-4)',
+      minWidth: 0,
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'baseline',
+      justifyContent: 'space-between',
+      gap: 'var(--space-8)'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      font: 'var(--type-title-font)',
+      color: 'var(--color-ink)'
+    }
+  }, f.name), p && /*#__PURE__*/React.createElement("span", {
+    style: {
+      flexShrink: 0,
+      font: 'var(--type-row-strong-font)',
+      color: 'var(--color-ink)',
+      fontVariantNumeric: 'tabular-nums'
+    }
+  }, p.ter.toFixed(2), "%")), p && cat ? /*#__PURE__*/React.createElement(PeerLine, {
+    value: p[period],
+    peer: cat[period],
+    period: periodWords,
+    peerLabel: "".concat(f.category, " average")
+  }) : /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-muted)'
+    }
+  }, "No performance on file for this scheme yet."), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      font: 'var(--type-caption-font)',
+      color: held.length ? 'var(--color-bronze-deep)' : 'var(--color-muted)'
+    }
+  }, held.length ? "Held by ".concat(held.join(' · ')) : 'None of your clients hold it', !f.onShelf && ' · off your shelf'), !compact && f.shelfNote && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-muted)'
+    }
+  }, f.shelfNote));
+  var inner = /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: 'var(--space-10)',
+      width: '100%'
+    }
+  }, body, trailing);
+  if (!onOpen) return /*#__PURE__*/React.createElement(Surface, {
+    padding: 12
+  }, inner);
+  return /*#__PURE__*/React.createElement(Pressable, {
+    onClick: onOpen,
+    label: "Open ".concat(f.name),
+    style: {
+      display: 'block',
+      width: '100%',
+      textAlign: 'left',
+      borderRadius: 'var(--radius-16)',
+      background: 'var(--color-surface)',
+      boxShadow: 'var(--shadow-card)',
+      padding: 'var(--space-12)',
+      boxSizing: 'border-box'
+    }
+  }, inner);
+}
+
+/* The provenance line every one of these surfaces carries, written by the book rather than by a screen,
+   so no screen can claim a source the data does not have. */
+var explorerProvenance = function explorerProvenance() {
+  return "".concat(perfProvenance(), " \xB7 expense and category averages as of ").concat(PERF_AS_OF);
+};
+
+/* THE FILTER VOCABULARY, AS BANDS — the shape the bond explorers proved on a phone, applied to what
+   this book actually knows. Counts are COMPUTED from the list, never typed, so an option can never
+   promise rows it does not have. */
+var bandFns = {
+  bucket: function bucket(f, v) {
+    return f.bucket === v;
+  },
+  category: function category(f, v) {
+    return f.category === v;
+  },
+  amc: function amc(f, v) {
+    return f.amc === v;
+  },
+  ter: function ter(f, v) {
+    var p = perfOf(f.id);
+    return p && p.ter < Number(v);
+  },
+  risk: function risk(f, v) {
+    return f.riskometer === v;
+  },
+  shelf: function shelf(f, v) {
+    return v === 'on' ? f.onShelf : !f.onShelf;
+  }
+};
+function matches(f, value) {
+  return Object.keys(value || {}).every(function (k) {
+    var v = value[k];
+    if (v == null || Array.isArray(v) && !v.length) return true;
+    var fn = bandFns[k];
+    if (!fn) return true;
+    return Array.isArray(v) ? v.some(function (one) {
+      return fn(f, one);
+    }) : fn(f, v);
+  });
+}
+var applyFilters = function applyFilters(value) {
+  return FUNDS.filter(function (f) {
+    return matches(f, value);
+  });
+};
+/* A count beside an option is what that option would leave WITH the rest of the selection still on —
+   not how many rows exist in the book. The second is a bigger number and a lie. */
+var countFor = function countFor(value, key, optValue) {
+  var next = _objectSpread(_objectSpread({}, value), {}, _defineProperty({}, key, optValue));
+  return FUNDS.filter(function (f) {
+    return matches(f, next);
+  }).length;
+};
+function filterGroups(value) {
+  var c = function c(k, v) {
+    return countFor(value, k, v);
+  };
+  return [{
+    key: 'bucket',
+    label: 'Asset',
+    mode: 'multi',
+    options: [{
+      value: 'Equity',
+      label: 'Equity',
+      count: c('bucket', ['Equity'])
+    }, {
+      value: 'Debt',
+      label: 'Debt',
+      count: c('bucket', ['Debt'])
+    }, {
+      value: 'Hybrid',
+      label: 'Hybrid',
+      count: c('bucket', ['Hybrid'])
+    }, {
+      value: 'Index',
+      label: 'Index',
+      count: c('bucket', ['Index'])
+    }]
+  }, {
+    key: 'ter',
+    label: 'Expense ratio',
+    note: 'Bands an advisor says aloud, not a slider they cannot hit mid-call.',
+    options: [{
+      value: '0.3',
+      label: 'Under 0.3%',
+      count: c('ter', '0.3')
+    }, {
+      value: '0.7',
+      label: 'Under 0.7%',
+      count: c('ter', '0.7')
+    }, {
+      value: '1.0',
+      label: 'Under 1.0%',
+      count: c('ter', '1.0')
+    }]
+  }, {
+    key: 'risk',
+    label: 'Riskometer',
+    mode: 'multi',
+    options: [{
+      value: 'Moderate',
+      label: 'Moderate',
+      count: c('risk', ['Moderate'])
+    }, {
+      value: 'High',
+      label: 'High',
+      count: c('risk', ['High'])
+    }, {
+      value: 'Very high',
+      label: 'Very high',
+      count: c('risk', ['Very high'])
+    }]
+  }, {
+    key: 'shelf',
+    label: 'Your shelf',
+    options: [{
+      value: 'on',
+      label: 'On your shelf',
+      count: c('shelf', 'on')
+    }, {
+      value: 'off',
+      label: 'Off the shelf',
+      count: c('shelf', 'off')
+    }]
+  }];
+}
+/* What the advisor reads aloud. Derived from the same `value` the list is derived from — one truth. */
+function filterLabels(value) {
+  var out = [];
+  filterGroups(value).forEach(function (g) {
+    var v = value[g.key];
+    var vals = Array.isArray(v) ? v : v == null ? [] : [v];
+    vals.forEach(function (one) {
+      var o = g.options.find(function (x) {
+        return x.value === one;
+      });
+      if (o) out.push(o.label);
+    });
+  });
+  return out;
+}
+
+/* THE ASSET CLASSES CENTRICITY SELLS, and the honest state of each. Four of the five have no rows in
+   the book at all, and the tile says which feed is missing rather than showing a zero — the whole
+   reason `IntentTile` has an `unavailable` state. */
+var ASSET_TILES = [{
+  key: 'mf',
+  label: 'Mutual funds',
+  count: FUNDS.length,
+  note: 'Direct plans, on and off your shelf'
+}, {
+  key: 'bonds',
+  label: 'Bonds',
+  unavailable: true,
+  unavailableNote: 'No feed yet — rating, yield and tenure are not on file.'
+}, {
+  key: 'pms',
+  label: 'PMS',
+  unavailable: true,
+  unavailableNote: 'No feed yet — strategy, manager and benchmark are not on file.'
+}, {
+  key: 'aif',
+  label: 'AIF',
+  unavailable: true,
+  unavailableNote: 'No feed yet — category, lock-in and PPM terms are not on file.'
+}];
+
+/* Published to `window` because each `text/babel` script is compiled and run on its own, so a top-level
+   binding here is not visible to the variation files. Journey C does the same at the foot of funds.jsx. */
+Object.assign(window, {
+  EX_DS: EX_DS,
+  ArtifactCard: ArtifactCard,
+  Badge: Badge,
+  ChartBar: ChartBar,
+  ChartDonut: ChartDonut,
+  ChartLine: ChartLine,
+  ChartSpark: ChartSpark,
+  ChipRow: ChipRow,
+  ClientChip: ClientChip,
+  CompareTable: CompareTable,
+  Composer: Composer,
+  ConstraintCallout: ConstraintCallout,
+  DarkButton: DarkButton,
+  DataTable: DataTable,
+  DisclosureBlock: DisclosureBlock,
+  Drawer: Drawer,
+  Dumbbell: Dumbbell,
+  ExplainerSheet: ExplainerSheet,
+  ExplorerSheet: ExplorerSheet,
+  Eyebrow: Eyebrow,
+  FigureRow: FigureRow,
+  FilterSheet: FilterSheet,
+  FollowUpRow: FollowUpRow,
+  InfoCard: InfoCard,
+  InfoDot: InfoDot,
+  InlineActionRow: InlineActionRow,
+  IntentGrid: IntentGrid,
+  IntentTile: IntentTile,
+  List: List,
+  ListRow: ListRow,
+  OverlapView: OverlapView,
+  PeerLine: PeerLine,
+  Pill: Pill,
+  Pressable: Pressable,
+  Provenance: Provenance,
+  RangePills: RangePills,
+  RejectCallout: RejectCallout,
+  ScreenScaffold: ScreenScaffold,
+  SearchField: SearchField,
+  SectionStrip: SectionStrip,
+  SegmentedRow: SegmentedRow,
+  SelectionMark: SelectionMark,
+  SentinelBlock: SentinelBlock,
+  SentinelText: SentinelText,
+  ShortlistCard: ShortlistCard,
+  StandingDisclosure: StandingDisclosure,
+  StatTile: StatTile,
+  Surface: Surface,
+  UserBubble: UserBubble,
+  holdersOf: holdersOf,
+  FundRow: FundRow,
+  explorerProvenance: explorerProvenance,
+  applyFilters: applyFilters,
+  countFor: countFor,
+  filterGroups: filterGroups,
+  filterLabels: filterLabels,
+  matches: matches,
+  ASSET_TILES: ASSET_TILES
+});</script>
+<style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
+</head><body><div id="root"></div>
+<script>"use strict";
+
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/* VARIATION 3 — THE AUDITABLE SHELF. Change what a sentence PRODUCES, not where the advisor stands.
+
+   This variation is built on the largest finding in the research, which neither of the other two is
+   centred on: the biggest theme across 231 mined verbatims is not people who got NO recommendation —
+   it is people who GOT one and did not trust it (29 verbatims, severity 4, the top of the ranked list,
+   and the low point of the journey map is Decide rather than Search). So the stakeholder's
+   "recommendation nahi aa raha" is the wrong diagnosis of a real problem. Answering it with a louder
+   "Recommended for you" reproduces the complaint — and an AMFI-registered distributor may not display
+   an auto-ranked list anyway.
+
+   WHAT REPLACES IT: a shortlist that shows its work and stays put. Named by the advisor, dated,
+   versioned, tied to a client, carrying the filters that produced it on its face and a peer line on
+   every row. Every serious advisor tool has this durable object and Sentinel had none — Tickertape
+   saves a screen with a note, Wealthy Select is a monthly playbook, NJ ships a Recommended Portfolio.
+
+   ENTRY IS UNCHANGED, DELIBERATELY. No new funnel, no new surface: the composer, the same router
+   bucket, the same parsed chips. The one new place is a section in the Drawer where saved shortlists
+   live, because a thing you keep needs somewhere to be kept.
+
+   THE SCORE IS NOT THE TRUST MECHANISM, and cannot be until compliance rules on it: a proprietary
+   ranking is a research report needing a registered owner and a published methodology, and Sentinel's
+   weights are invented with PLACEHOLDER on the card twice. Peer context and provenance carry the
+   burden instead — both are factual comparisons, and neither waits on that answer. */
+
+var _React = React,
+  useState3 = _React.useState;
+var SHELF_FILTERS = ['Flexi cap', 'Under 0.7%', 'On your shelf'];
+var SHELF_IDS = ['ppfas-flexi', 'hdfc-flexi'];
+function ShelfThread(_ref) {
+  var _ref$mode = _ref.mode,
+    mode = _ref$mode === void 0 ? 'mfd' : _ref$mode,
+    _ref$stale = _ref.stale,
+    stale = _ref$stale === void 0 ? false : _ref$stale,
+    _ref$saved = _ref.saved,
+    saved = _ref$saved === void 0 ? true : _ref$saved;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(UserBubble, {
+    text: "flexi cap under 0.7% for Sharma"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(SentinelBlock, null, /*#__PURE__*/React.createElement(SentinelText, {
+    text: mode === 'ria' ? 'Two funds match, and both suit his profile on file. I have recorded why.' : 'Two funds match your filters. Saved as a shortlist you can come back to.'
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(ShortlistCard, {
+    name: "Sharma \u2014 flexi cap",
+    client: "R. Sharma",
+    count: SHELF_IDS.length,
+    savedAt: saved ? '22 Sep' : undefined,
+    version: saved ? 2 : 1,
+    filters: SHELF_FILTERS,
+    stale: stale ? {
+      text: 'HDFC Flexi Cap changed category on 26 Feb.'
+    } : null,
+    onOpen: function onOpen() {},
+    onRefresh: stale ? function () {} : undefined
+  }, SHELF_IDS.map(function (id) {
+    return /*#__PURE__*/React.createElement(FundRow, {
+      key: id,
+      id: id,
+      compact: true
+    });
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-8)'
+    }
+  }, /*#__PURE__*/React.createElement(Provenance, {
+    text: mode === 'ria' ? "Suggested for R. Sharma \xB7 suitability on file 11 Feb 2026 \xB7 generated with AI assistance, reviewed by ".concat(ADVISOR.name) : explorerProvenance()
+  })))));
+}
+function V3(_ref2) {
+  var _ref2$mode = _ref2.mode,
+    mode = _ref2$mode === void 0 ? 'mfd' : _ref2$mode,
+    _ref2$stale = _ref2.stale,
+    stale = _ref2$stale === void 0 ? false : _ref2$stale,
+    _ref2$saved = _ref2.saved,
+    saved = _ref2$saved === void 0 ? true : _ref2$saved,
+    _ref2$drawer = _ref2.drawer,
+    drawer = _ref2$drawer === void 0 ? false : _ref2$drawer;
+  var _useState = useState3(drawer),
+    _useState2 = _slicedToArray(_useState, 2),
+    open = _useState2[0],
+    setOpen = _useState2[1];
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ScreenScaffold, {
+    title: "Sentinel",
+    body: "thread",
+    onMenu: function onMenu() {
+      return setOpen(true);
+    },
+    composer: /*#__PURE__*/React.createElement(Composer, {
+      placeholder: "Ask Sentinel",
+      onAttach: function onAttach() {}
+    })
+  }, /*#__PURE__*/React.createElement(ShelfThread, {
+    mode: mode,
+    stale: stale,
+    saved: saved
+  })), /*#__PURE__*/React.createElement(Drawer, {
+    open: open,
+    onClose: function onClose() {
+      return setOpen(false);
+    },
+    onNew: function onNew() {},
+    saved: [{
+      title: 'Sharma — flexi cap',
+      subtitle: '2 funds · 22 Sep · v2'
+    }, {
+      title: 'Short duration cash',
+      subtitle: '4 funds · 12 Aug · v3 · one moved'
+    }, {
+      title: 'Nobody holds it yet',
+      subtitle: '4 funds · 19 Sep'
+    }],
+    recent: [{
+      title: "Meera's review",
+      subtitle: 'Yesterday'
+    }],
+    clients: [{
+      title: 'R. Sharma',
+      subtitle: '9 funds'
+    }]
+  }));
+}
+function App_V3() {
+  return /*#__PURE__*/React.createElement(ScreenShell, {
+    journey: "Fund explorer",
+    n: "Variation 3",
+    name: "The auditable shelf",
+    job: "Change what a sentence produces rather than where the advisor stands. The shortlist becomes a named, dated, versioned object tied to a client, carrying the filters that made it and a peer line on every row \u2014 and it survives the thread, in a section of the Drawer. Entry, composer and router are untouched.",
+    without: "gets a fresh table every turn that dies with the conversation, so an eight-turn session leaves eight stale tables and nothing to return to \u2014 which is what '2\u20133 funds, bas' was actually describing."
+  }, /*#__PURE__*/React.createElement(Section, {
+    title: "Live",
+    sub: "The shortlist arrives named and saved, with its filters on its face and a peer line under every fund. Open the menu to see where it is kept."
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'flex-start'
+    }
+  }, /*#__PURE__*/React.createElement(PhoneFrame, null, /*#__PURE__*/React.createElement(V3, null)))), /*#__PURE__*/React.createElement(Section, {
+    title: "What the card carries, and why each part is there",
+    sub: "The name the ADVISOR gave it, so next week it still means something. The count, the client, the date and the version, because every one of those is a thing they get asked. The filters, because an advisor reads them aloud to a client and Google AI Mode's invisible filter state is the anti-pattern the whole product is built against. And the peer line on every row, because a fund shown alone is a number."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "Saved",
+    note: "v2 \u2014 it has been re-run once since it was first made."
+  }, /*#__PURE__*/React.createElement(V3, null)), /*#__PURE__*/React.createElement(State, {
+    label: "Not yet saved",
+    note: "A first shortlist carries no version; 'v1' on a first save is noise."
+  }, /*#__PURE__*/React.createElement(V3, {
+    saved: false
+  })))), /*#__PURE__*/React.createElement(Section, {
+    title: "Stale is a sentence, not a dot",
+    sub: "A saved list whose data has moved says WHAT moved and offers to re-run. A coloured dot would say something is wrong; nothing is wrong, the world moved \u2014 and colour never encodes in this system. The re-run is the advisor's call: a list that changed silently between opening it and reading it aloud is the defect the card exists to prevent."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "Stale",
+    tone: "over",
+    note: "Rule 2's shape \u2014 text on the peach surface with the offer beside it, never a badge and never an automatic refresh."
+  }, /*#__PURE__*/React.createElement(V3, {
+    stale: true
+  })))), /*#__PURE__*/React.createElement(Section, {
+    title: "Where it is kept",
+    sub: "The one new place this variation asks for: a Saved section in the Drawer, beside Recent and Clients. No funnel, no browse canvas, no sixth surface \u2014 a thing you keep needs somewhere to be kept, and the Drawer already had the shelf for it."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "Drawer",
+    note: "Each row says how many, when, which version, and whether anything moved \u2014 enough to choose without opening."
+  }, /*#__PURE__*/React.createElement(V3, {
+    drawer: true
+  })))), /*#__PURE__*/React.createElement(Section, {
+    title: "The same object, two registrations",
+    sub: "A client is either advisory or distribution within the group, never both, so this is a per-client mode rather than a setting. The data underneath is identical; the copy and the CTA are not \u2014 and the distributor version never uses the word the regulation reserves."
+  }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
+    label: "Distributor",
+    note: "'Two funds match your filters.' Regular plan, no auto-ranking, no 'recommended'. The provenance line is the data's."
+  }, /*#__PURE__*/React.createElement(V3, {
+    mode: "mfd"
+  })), /*#__PURE__*/React.createElement(State, {
+    label: "Adviser",
+    tone: "under",
+    note: "'Suggested for R. Sharma', allowed only once the suitability record exists \u2014 and the AI-use disclosure the adviser regulation requires is on the card, not in a footer."
+  }, /*#__PURE__*/React.createElement(V3, {
+    mode: "ria"
+  })))), /*#__PURE__*/React.createElement(Note, {
+    title: "What this variation is honest about"
+  }, "It changes the ", /*#__PURE__*/React.createElement("strong", null, "object model"), ", not the surface \u2014 so at a glance it reads like the thread the product already has, and the saved card has to carry the difference on its own face. That is its real risk and the first thing to test. It is also the variation that needs the least new data: everything on the card is already in the book. And a shortlist that survives sessions and re-runs its filters on a cadence is new product ", /*#__PURE__*/React.createElement("em", null, "behaviour"), ", closer to a data-layer commitment than a screen \u2014 which is a cost worth naming before it is chosen, not after."));
+}
+/* The prototype page loads all three variation files to put their phones side by side, so each one
+   publishes its component and mounts its own board ONLY when it is the page being opened. */
+Object.assign(window, {
+  V3: V3
+});
+if (!window.__EXPLORER_PROTOTYPE) mountScreen(/*#__PURE__*/React.createElement(App_V3, null));</script>
+</body></html>

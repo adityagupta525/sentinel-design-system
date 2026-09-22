@@ -8,6 +8,12 @@ export interface DataTableColumn {
   key: string;
   label: string;
   kind: ColumnKind;
+  /** `kind='sparkline'` only: the tone the line takes — 'ramp' (default) the row's own series,
+   *  'muted' a benchmark or prior period, 'status' a crossed limit. Never a colour. */
+  tone?: 'ramp' | 'muted' | 'status';
+  /** `kind='sparkline'` only: the accessible name each spark takes. Defaults to the point count and
+   *  the final value. Pass it when the column header does not say what the series is. */
+  sparkLabel?: string;
   /** `kind='bar'` only: the low end of the bar's scale. **Default 0**, so every bar column written
    *  before this draws what it drew — a holding weight, where 0% is a real position. Pass it when the
    *  zero is not meaningful for the quantity: ten fund scores between 58 and 80 scaled from zero are

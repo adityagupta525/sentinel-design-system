@@ -1,0 +1,194 @@
+{
+  "_about": "Re-runnable queries for the Fund Explorer pattern hunt. One intent per query. Mobbin: mode deep, platform ios, hold task_intent constant. Written by Noor, 22 Sep 2026, from a session without a browser — none of these has been run yet; files[] fill in when the main session saves the images to studio/fund-explorer/refs/.",
+  "task_intent": "Patterns for a chat-led, advisor-facing fund explorer: how a typed sentence and a visible browse surface (list, filters, compare, fund page) stay in sync on a 375pt phone.",
+  "queries": [
+    {
+      "id": "A1-rufus-sheet",
+      "tool": "search_flows",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Amazon app: tap Rufus in bottom nav, ask a question, chat sheet rises over results, swipe down to dismiss back to search results",
+      "why": "The exact bottom-sheet-over-a-surface gesture V2 needs, mirrored (chat over browse)",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "A2-maps-detents",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Google Maps search results bottom sheet at peek height showing count and top results, map visible behind, no scrim",
+      "why": "Three-detent sheet grammar: peek / half / full over a live canvas",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "A3-redfin-relax",
+      "tool": "search_flows",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Redfin conversational home search: describe a home in words, assistant reports no matches, user relaxes a criterion, list updates beside the map",
+      "why": "Zero-result recovery in words while the browse surface stays on screen",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "A4-zillow-chips",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Zillow search results after typing a natural language query, showing how the parsed criteria appear above the listing list",
+      "why": "Does typing produce visible, removable filter chips",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "A5-spotify-refine",
+      "tool": "search_flows",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Spotify Prompted Playlist: describe what to hear, generate playlist, tap Refine, tap Edit prompt, playlist updates",
+      "why": "Two refine doors (edit the sentence vs edit the list) and whether the list stays visible while typing",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "A6-perplexity-sources",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Perplexity answer screen with numbered source chips inline and a collapsed Sources expander above the answer",
+      "why": "Mobile collapse of a parallel region into a count",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "A7-perplexity-shopping",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Perplexity shopping answer with product cards showing price, pros and cons, and a View more button opening a detail panel",
+      "why": "Card-in-thread that opens to a panel without leaving the thread",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "A8-booking-ai-filter",
+      "tool": "search_flows",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Booking.com hotel results filter sheet with an AI text box at the top, type a request, filter options check themselves, apply button shows count",
+      "why": "A typed field living inside a conventional filter sheet — the cheapest V1/V2 bridge",
+      "section": "A/E",
+      "files": []
+    },
+    {
+      "id": "A9-kayak-ai-mode",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "KAYAK Ask AI chat panel with flight results list updating beside the conversation on a phone",
+      "why": "The V2 spine (chat + live real results page); no written source described the mobile layout",
+      "section": "A",
+      "files": []
+    },
+    {
+      "id": "E1-airbnb-live-count",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Airbnb filters sheet with price histogram, amenity checkboxes and a sticky bottom button reading Show N places",
+      "why": "Live-count apply button, exact copy and placement",
+      "section": "E",
+      "files": []
+    },
+    {
+      "id": "E2-coin-filter-sheet",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Zerodha Coin mutual fund filters full screen: sort by, categories, risk, ratings, fund house, index funds only toggle, View funds button with count",
+      "why": "The Indian convention for a filter sheet with a counted apply button (owner has board #05; this pulls the rest of the flow)",
+      "section": "E",
+      "files": []
+    },
+    {
+      "id": "C1-coin-fund-page",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Zerodha Coin mutual fund detail page: NAV chart with range chips, sticky header on scroll, returns table, holdings section, invest button",
+      "why": "A one-scroll fund page to set beside Groww's tabbed one (board #10–15)",
+      "section": "C",
+      "files": []
+    },
+    {
+      "id": "D1-indmoney-compare",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "INDmoney compare mutual funds screen with Pros and Cons block above a side by side table of returns, expense ratio and risk ratios",
+      "why": "Verdict-before-grid on a phone; how many columns survive at 375",
+      "section": "D",
+      "files": []
+    },
+    {
+      "id": "B1-nike-finder",
+      "tool": "search_flows",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "Nike Running Shoe Finder: eight single-choice questions, progress indicator, results page with up to three shoes and compare",
+      "why": "A stepped funnel that ends in a shortlist, and how a step is revised",
+      "section": "B",
+      "files": []
+    },
+    {
+      "id": "B2-smallcase-discover",
+      "tool": "search_screens",
+      "platform": "ios",
+      "mode": "deep",
+      "query": "smallcase Discover screen with collections row, filter chips for volatility, minimum investment and strategy, sort control, portfolio cards with CAGR",
+      "why": "Collections plus facet chips on one screen — a V1 list head",
+      "section": "B",
+      "files": []
+    },
+    {
+      "id": "P1-pinterest-sticky-strip",
+      "tool": "pinterest",
+      "platform": "ios",
+      "query": "sticky section navigation mobile fund detail page",
+      "why": "Aesthetic seed for the scroll strip on the fund page",
+      "section": "C",
+      "files": []
+    },
+    {
+      "id": "P2-pinterest-dumbbell",
+      "tool": "pinterest",
+      "platform": "ios",
+      "query": "dumbbell chart two series mobile finance",
+      "why": "Aesthetic seed for the two-fund compare chart, one accent",
+      "section": "D",
+      "files": []
+    },
+    {
+      "id": "R1-dribbble-compare",
+      "tool": "dribbble",
+      "platform": "ios",
+      "query": "mutual fund compare mobile",
+      "filter": "last 12 months",
+      "why": "Aesthetic signal only; not usability evidence",
+      "section": "D",
+      "files": []
+    },
+    {
+      "id": "R2-dribbble-filter-sheet",
+      "tool": "dribbble",
+      "platform": "ios",
+      "query": "filter bottom sheet apply button result count",
+      "filter": "last 12 months",
+      "why": "Aesthetic signal only; not usability evidence",
+      "section": "E",
+      "files": []
+    }
+  ]
+}

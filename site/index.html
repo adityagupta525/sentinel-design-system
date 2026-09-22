@@ -25,6 +25,16 @@
 --color-alloc-cash:var(--color-bubble-edge);
 --color-alloc-track:var(--color-track);
 --color-selected:#ebd4c3;
+--color-series-1:#d9a693;
+--color-series-2:#c0c8a8;
+--color-series-3:#d0ae7e;
+--color-series-4:#b6b5ac;
+--color-series-5:#dac2a5;
+--color-series-1-edge:#c47457;
+--color-series-2-edge:#878f6d;
+--color-series-3-edge:#b68036;
+--color-series-4-edge:#605f4b;
+--color-series-5-edge:#a08768;
 --color-cta:#1a1614;
 --color-cta-top:#3b3531;
 --color-cta-bottom:#111111;
@@ -138,7 +148,7 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 --h-chip:36px;--h-filter-chip:32px;--h-cta:48px;--h-icon-btn:42px;
 --h-chip-sm:28px;
 --w-drawer:300px;         
---z-scrim:20;--z-modal:30;
+--z-scrim:20;--z-modal:30;--z-sticky:10;--z-sheet:25;
 --scrim-sheet:0.4;--scrim-drawer:0.25;         
 --radius-6:6px;           
 --radius-8:8px;           
@@ -339,7 +349,7 @@ Sentinel will not do.</p>
     </a>
 </div>
 
-<h2>The system — 97 components</h2>
+<h2>The system — 105 components</h2>
 <p class="sub">Every one of them is a contract, a prompt and a rendered specification — Tier 2 closed
 on 20 September. Each chip opens its own page.</p>
 <section class="grp">
@@ -351,21 +361,21 @@ on 20 September. Each chip opens its own page.</p>
       <p class="gn">The thread. Sentinel’s half of a turn, the advisor’s half, and everything that arrives between them.</p>
       <div class="chips"><a class="chip" href="pages/AttachmentTurn.html">AttachmentTurn</a> <a class="chip" href="pages/DetourBanner.html">DetourBanner</a> <a class="chip" href="pages/GreetingDivider.html">GreetingDivider</a> <a class="chip" href="pages/MessageActions.html">MessageActions</a> <a class="chip" href="pages/ParseNote.html">ParseNote</a> <a class="chip" href="pages/ProgressTrace.html">ProgressTrace</a> <a class="chip" href="pages/QAPair.html">QAPair</a> <a class="chip" href="pages/RefusalTurn.html">RefusalTurn</a> <a class="chip" href="pages/ResponseFeedback.html">ResponseFeedback</a> <a class="chip" href="pages/SentinelBlock.html">SentinelBlock</a> <a class="chip" href="pages/SentinelText.html">SentinelText</a> <a class="chip" href="pages/SentinelThinking.html">SentinelThinking</a> <a class="chip" href="pages/SentinelTurn.html">SentinelTurn</a> <a class="chip" href="pages/StepTrace.html">StepTrace</a> <a class="chip" href="pages/UserBubble.html">UserBubble</a> <a class="chip" href="pages/UserTurn.html">UserTurn</a> <a class="chip" href="pages/VersionRow.html">VersionRow</a></div>
     </section><section class="grp">
-      <h3>cards <span class="count">15, all specified</span></h3>
+      <h3>cards <span class="count">18, all specified</span></h3>
       <p class="gn">What an answer becomes — the artifact, the result, the sheet an advisor decides in.</p>
-      <div class="chips"><a class="chip" href="pages/AllocationCard.html">AllocationCard</a> <a class="chip" href="pages/ArtifactCard.html">ArtifactCard</a> <a class="chip" href="pages/Badge.html">Badge</a> <a class="chip" href="pages/ConfirmSheet.html">ConfirmSheet</a> <a class="chip" href="pages/ConstraintCallout.html">ConstraintCallout</a> <a class="chip" href="pages/DataTable.html">DataTable</a> <a class="chip" href="pages/DataTableCard.html">DataTableCard</a> <a class="chip" href="pages/DisclosureBlock.html">DisclosureBlock</a> <a class="chip" href="pages/ExplainerSheet.html">ExplainerSheet</a> <a class="chip" href="pages/HeroNumberCard.html">HeroNumberCard</a> <a class="chip" href="pages/InfoCard.html">InfoCard</a> <a class="chip" href="pages/MoveCard.html">MoveCard</a> <a class="chip" href="pages/RejectCallout.html">RejectCallout</a> <a class="chip" href="pages/ResultCard.html">ResultCard</a> <a class="chip" href="pages/Surface.html">Surface</a></div>
+      <div class="chips"><a class="chip" href="pages/AllocationCard.html">AllocationCard</a> <a class="chip" href="pages/ArtifactCard.html">ArtifactCard</a> <a class="chip" href="pages/Badge.html">Badge</a> <a class="chip" href="pages/ConfirmSheet.html">ConfirmSheet</a> <a class="chip" href="pages/ConstraintCallout.html">ConstraintCallout</a> <a class="chip" href="pages/DataTable.html">DataTable</a> <a class="chip" href="pages/DataTableCard.html">DataTableCard</a> <a class="chip" href="pages/DisclosureBlock.html">DisclosureBlock</a> <a class="chip" href="pages/ExplainerSheet.html">ExplainerSheet</a> <a class="chip" href="pages/FilterSheet.html">FilterSheet</a> <a class="chip" href="pages/HeroNumberCard.html">HeroNumberCard</a> <a class="chip" href="pages/InfoCard.html">InfoCard</a> <a class="chip" href="pages/IntentTile.html">IntentTile</a> <a class="chip" href="pages/MoveCard.html">MoveCard</a> <a class="chip" href="pages/RejectCallout.html">RejectCallout</a> <a class="chip" href="pages/ResultCard.html">ResultCard</a> <a class="chip" href="pages/ShortlistCard.html">ShortlistCard</a> <a class="chip" href="pages/Surface.html">Surface</a></div>
     </section><section class="grp">
-      <h3>data <span class="count">15, all specified</span></h3>
+      <h3>data <span class="count">18, all specified</span></h3>
       <p class="gn">Figures, and the three devices allowed to draw them. One hue, always direct-labelled.</p>
-      <div class="chips"><a class="chip" href="pages/AttributionChart.html">AttributionChart</a> <a class="chip" href="pages/ChartBar.html">ChartBar</a> <a class="chip" href="pages/ChartLegend.html">ChartLegend</a> <a class="chip" href="pages/ChartLine.html">ChartLine</a> <a class="chip" href="pages/ChartReadout.html">ChartReadout</a> <a class="chip" href="pages/ChartShare.html">ChartShare</a> <a class="chip" href="pages/ChartTooltip.html">ChartTooltip</a> <a class="chip" href="pages/CompareTable.html">CompareTable</a> <a class="chip" href="pages/ConcentrationBar.html">ConcentrationBar</a> <a class="chip" href="pages/DrawnCheck.html">DrawnCheck</a> <a class="chip" href="pages/Dumbbell.html">Dumbbell</a> <a class="chip" href="pages/FigureRow.html">FigureRow</a> <a class="chip" href="pages/OverlapView.html">OverlapView</a> <a class="chip" href="pages/ProgressRail.html">ProgressRail</a> <a class="chip" href="pages/StatTile.html">StatTile</a></div>
+      <div class="chips"><a class="chip" href="pages/AttributionChart.html">AttributionChart</a> <a class="chip" href="pages/ChartBar.html">ChartBar</a> <a class="chip" href="pages/ChartDonut.html">ChartDonut</a> <a class="chip" href="pages/ChartLegend.html">ChartLegend</a> <a class="chip" href="pages/ChartLine.html">ChartLine</a> <a class="chip" href="pages/ChartReadout.html">ChartReadout</a> <a class="chip" href="pages/ChartShare.html">ChartShare</a> <a class="chip" href="pages/ChartSpark.html">ChartSpark</a> <a class="chip" href="pages/ChartTooltip.html">ChartTooltip</a> <a class="chip" href="pages/CompareTable.html">CompareTable</a> <a class="chip" href="pages/ConcentrationBar.html">ConcentrationBar</a> <a class="chip" href="pages/DrawnCheck.html">DrawnCheck</a> <a class="chip" href="pages/Dumbbell.html">Dumbbell</a> <a class="chip" href="pages/FigureRow.html">FigureRow</a> <a class="chip" href="pages/OverlapView.html">OverlapView</a> <a class="chip" href="pages/PeerLine.html">PeerLine</a> <a class="chip" href="pages/ProgressRail.html">ProgressRail</a> <a class="chip" href="pages/StatTile.html">StatTile</a></div>
     </section><section class="grp">
       <h3>actions <span class="count">12, all specified</span></h3>
       <p class="gn">What the advisor is offered. Chips inside a turn, never pinned above the composer.</p>
       <div class="chips"><a class="chip" href="pages/AnswerChip.html">AnswerChip</a> <a class="chip" href="pages/ChipRow.html">ChipRow</a> <a class="chip" href="pages/ClientChip.html">ClientChip</a> <a class="chip" href="pages/DarkButton.html">DarkButton</a> <a class="chip" href="pages/DownloadAction.html">DownloadAction</a> <a class="chip" href="pages/InfoDot.html">InfoDot</a> <a class="chip" href="pages/InlineActionRow.html">InlineActionRow</a> <a class="chip" href="pages/Pill.html">Pill</a> <a class="chip" href="pages/Pressable.html">Pressable</a> <a class="chip" href="pages/RangePills.html">RangePills</a> <a class="chip" href="pages/SegmentedRow.html">SegmentedRow</a> <a class="chip" href="pages/SuggestionRow.html">SuggestionRow</a></div>
     </section><section class="grp">
-      <h3>shell <span class="count">11, all specified</span></h3>
+      <h3>shell <span class="count">13, all specified</span></h3>
       <p class="gn">The phone: the bar, the dock, the scroller, the screen transition.</p>
-      <div class="chips"><a class="chip" href="pages/Dock.html">Dock</a> <a class="chip" href="pages/Drawer.html">Drawer</a> <a class="chip" href="pages/HomeIndicator.html">HomeIndicator</a> <a class="chip" href="pages/MotionGuard.html">MotionGuard</a> <a class="chip" href="pages/PhoneFrame.html">PhoneFrame</a> <a class="chip" href="pages/ScreenBackdrop.html">ScreenBackdrop</a> <a class="chip" href="pages/ScreenScaffold.html">ScreenScaffold</a> <a class="chip" href="pages/ScreenStack.html">ScreenStack</a> <a class="chip" href="pages/ScrollToBottomButton.html">ScrollToBottomButton</a> <a class="chip" href="pages/StatusSpacer.html">StatusSpacer</a> <a class="chip" href="pages/TopBar.html">TopBar</a></div>
+      <div class="chips"><a class="chip" href="pages/Dock.html">Dock</a> <a class="chip" href="pages/Drawer.html">Drawer</a> <a class="chip" href="pages/ExplorerSheet.html">ExplorerSheet</a> <a class="chip" href="pages/HomeIndicator.html">HomeIndicator</a> <a class="chip" href="pages/MotionGuard.html">MotionGuard</a> <a class="chip" href="pages/PhoneFrame.html">PhoneFrame</a> <a class="chip" href="pages/ScreenBackdrop.html">ScreenBackdrop</a> <a class="chip" href="pages/ScreenScaffold.html">ScreenScaffold</a> <a class="chip" href="pages/ScreenStack.html">ScreenStack</a> <a class="chip" href="pages/ScrollToBottomButton.html">ScrollToBottomButton</a> <a class="chip" href="pages/SectionStrip.html">SectionStrip</a> <a class="chip" href="pages/StatusSpacer.html">StatusSpacer</a> <a class="chip" href="pages/TopBar.html">TopBar</a></div>
     </section><section class="grp">
       <h3>composer <span class="count">3, all specified</span></h3>
       <p class="gn">The one control on every screen, and the money variant a question can ask for.</p>
@@ -404,7 +414,7 @@ the token files, so the documented numbers cannot drift from the real ones.</p>
   every figure comes from one fixture that is labelled as one on every screen that reads it. What this
   is, is the product's design made executable, so that what gets built can be checked against it rather
   than described.</p>
-  <p>97 components, every one specified · 144 pages rendering clean · six journeys · one prototype.</p>
+  <p>105 components, every one specified · 144 pages rendering clean · six journeys · one prototype.</p>
 </footer>
 
 </div></body></html>

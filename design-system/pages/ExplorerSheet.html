@@ -1,0 +1,153 @@
+<!-- @dsCard group="Pages" viewport="1100x1500" name="ExplorerSheet" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ExplorerSheet — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/ExplorerSheet.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ExplorerSheet, DataTable, Composer, SentinelBlock, SentinelText, UserBubble, Pill, PeerLine } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--radius-24','--shadow-bar','--dur-screen','--space-16','--h-touch','--type-title-font','--type-caption-font'];
+
+const COLS = [
+  { key: 'name', label: 'Fund', kind: 'text', sticky: true, min: 150 },
+  { key: 'ter', label: 'Expense', kind: 'percent', align: 'end' },
+  { key: 'r3', label: '3Y', kind: 'percent', align: 'end' },
+];
+const ROWS = [
+  { id: 'ppfas', name: 'Parag Parikh Flexi Cap', ter: '0.63', r3: '21.4' },
+  { id: 'hdfc', name: 'HDFC Flexi Cap', ter: '0.74', r3: '22.8' },
+  { id: 'motilal', name: 'Motilal Oswal Midcap', ter: '0.66', r3: '29.1' },
+  { id: 'hdfclarge', name: 'HDFC Large Cap', ter: '0.98', r3: '16.2' },
+  { id: 'uti', name: 'UTI Nifty 50 Index', ter: '0.17', r3: '15.9' },
+];
+const RAIL = (
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-6)' }}>
+    <Pill tone="filter" size="sm" selected removable label="Equity" />
+    <Pill tone="filter" size="sm" selected removable label="Under 0.7%" />
+    <Pill tone="filter" size="sm" label="On your shelf" />
+    <Pill tone="filter" size="sm" label="Very high risk" />
+  </div>
+);
+
+/* The composer is REAL and stays live behind the sheet — that is the whole argument for a sheet
+   rather than a screen, so a specimen that fakes it would be proving nothing. */
+const COMPOSER_H = 76;
+function Frame({ children, sheet, height = 560 }) {
+  return (
+    <div style={{ position: 'relative', width: 375, height, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)', backgroundImage: 'var(--paper-texture)', backgroundSize: 'var(--paper-texture-size)', boxShadow: '0 0 0 1px var(--ring-frame)' }}>
+      <div style={{ padding: '16px 16px 0' }}>{children}</div>
+      {sheet}
+      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '0 16px 16px', background: 'var(--color-canvas)' }}>
+        <Composer placeholder="Ask Sentinel" />
+      </div>
+    </div>
+  );
+}
+
+function Thread() {
+  return (
+    <React.Fragment>
+      <UserBubble text="flexi cap under 0.7% on our shelf" />
+      <div style={{ marginTop: 12 }}>
+        <SentinelBlock><SentinelText text="Five funds match. The list is open below — keep typing to narrow it." /></SentinelBlock>
+      </div>
+    </React.Fragment>
+  );
+}
+
+function Live() {
+  const [detent, setDetent] = React.useState('half');
+  const [open, setOpen] = React.useState(true);
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Frame sheet={<ExplorerSheet open={open} detent={detent} onDetentChange={setDetent} onClose={() => setOpen(false)}
+        count={5} title="Flexi cap · under 0.7% · on your shelf" bottom={COMPOSER_H} rail={RAIL}
+        summary={<SentinelText text="Parag Parikh leads on cost, HDFC on three-year return." />}>
+        <DataTable columns={COLS} rows={ROWS} density="compact" />
+      </ExplorerSheet>}>
+        <Thread />
+      </Frame>
+    </div>
+  );
+}
+
+function At({ detent, height }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Frame height={height} sheet={<ExplorerSheet open detent={detent} count={5} title="Flexi cap · under 0.7% · on your shelf"
+        bottom={COMPOSER_H} rail={RAIL} summary={<SentinelText text="Parag Parikh leads on cost, HDFC on three-year return." />} onClose={() => {}}>
+        <DataTable columns={COLS} rows={ROWS} density="compact" />
+      </ExplorerSheet>}>
+        <Thread />
+      </Frame>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="ExplorerSheet" group="Shell" status="shipped" requires={['ExplorerSheet','DataTable','Composer']}
+      summary="The one mechanic in the fund explorer with no incumbent: forty-two reference screens were read and the union does not exist anywhere. Amazon Rufus raises a CHAT sheet over a STORE — the mirror of this. Google Maps gives three detents over a live canvas, not over a conversation. Spotify's Prompted Playlists mutate one object inside a thread rather than layering over it. Every half is proven; the seam is the risk. Non-modal by contract — no scrim, no aria-modal, no focus trap — because the composer must stay live underneath, which is the entire argument for a sheet rather than a screen.">
+
+      <Block n={1} title="Specimen" sub="Live at half. Tap the grabber to step down — full → half → peek → gone — and the composer underneath stays live the whole way. Reload the page to bring it back.">
+        <Live />
+      </Block>
+
+      <Block n={2} title="Three detents, three questions" sub="peek answers 'how many?'. half answers 'which ones?'. full answers 'narrow it'. Google Maps' three states, measured — a summary height, a list height, a full height, with what is behind alive at all three.">
+        <Grid cols={3} itemWidth={375} items={[
+          {label:'peek — how many', node:<At detent="peek" height={520} />, note:'The count and one sentence. The thread keeps almost all of its height.'},
+          {label:'half — which ones', node:<At detent="half" height={520} />, note:'The shortlist, in the sheet\'s own scroll region.'},
+          {label:'full — narrow it', node:<At detent="full" height={520} />, note:'The list plus the filter rail. Carrying the rail is what full IS.'},
+        ]} />
+      </Block>
+
+      <Block n={3} title="It cannot cover the composer, and that is structural" sub="The owner's ruling of 22 Sep: the 18 Sep rule removed chrome that sat above the composer UNASKED (Dock.chips, Dock.cta). This opens only on a funds query, always carries a visible dismiss, and stops at `bottom` — which the screen sets to its composer's height, so no detent can reach it. Not a caller's discipline; there is no height at which it reaches.">
+        <Specimen width={375}><At detent="full" height={560} /></Specimen>
+      </Block>
+
+      <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={5} title="Props"><Props src="../components/shell/ExplorerSheet.d.ts" /></Block>
+
+      <Block n={6} title="Do / Don't">
+        <DoDont
+          doNode={<At detent="peek" height={420} />}
+          doCaption="Non-modal: no scrim, thread readable behind, composer live. An advisor mid-client-call keeps talking to Sentinel while the list is open."
+          dontNode={<div style={{position:'relative', width:375, height:420, borderRadius:24, overflow:'hidden', background:'var(--color-canvas)', boxShadow:'0 0 0 1px var(--ring-frame)'}}>
+            <div style={{padding:'16px'}}><Thread /></div>
+            <div style={{position:'absolute', inset:0, background:'var(--scrim)', opacity:'var(--scrim-sheet)'}} />
+            <div style={{position:'absolute', left:0, right:0, bottom:0, height:'70%', borderRadius:'var(--radius-24) var(--radius-24) 0 0', background:'var(--color-canvas)'}} />
+          </div>}
+          dontCaption="A scrim and a sheet to the floor. Now it is a dialog: the thread is dimmed, the composer is gone, and the reason to prefer a sheet over a screen has been thrown away." />
+      </Block>
+
+      <Block n={7} title="Motion">
+        <Motion rows={[
+          { name: 'Sheet in', property: 'transform: translateY(100% → 0)', duration: '--dur-screen 320ms', reduced: 'Opacity only; no translate.' },
+          { name: 'Detent change', property: 'height, via the container', duration: '--dur-screen 320ms', reduced: 'Unchanged — a height change is not a motion effect.' },
+          { name: 'Scrim', property: 'NONE. There is no scrim, deliberately', duration: '—', reduced: '—' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

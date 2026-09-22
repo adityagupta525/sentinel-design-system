@@ -1,5 +1,5 @@
 import React from 'react';
-import { CHART_RAMP, tabular, SEGMENT_GAP } from './chartMath.jsx';
+import { CHART_RAMP, CHART_EDGE, tabular, SEGMENT_GAP } from './chartMath.jsx';
 import { ChartLegend } from './ChartLegend.jsx';
 /* The pie, answered. A 100% stacked bar with a ranked legend beneath — the same information, and it
    reads at 375pt, in greyscale and in print, which a pie in this palette does not (the validator
@@ -54,7 +54,8 @@ export function ChartShare({ segments = [], density = 'expanded', height, legend
       <div role="img" aria-label={ranked.map((s) => `${s.label} ${valueFormat(s.value, (s.value / total) * 100)}`).join(', ')}
         style={{ display: 'flex', width: '100%', height: h, gap: SEGMENT_GAP, borderRadius: 'var(--radius-full)', overflow: 'hidden', background: 'var(--color-track)', boxShadow: 'inset 0 0 0 var(--border-hairline) var(--color-line)', transformOrigin: 'left', transform: on ? 'none' : 'scaleX(0)', transition: run ? 'transform var(--dur-bar) var(--ease)' : 'none' }}>
         {ranked.map((s, i) => (
-          <span key={s.label} style={{ width: `calc(${(s.value / total) * 100}% - ${i ? 'var(--space-2)' : '0px'})`, background: s.tone === 'status' ? 'var(--color-status-over-fg)' : s.other ? 'var(--color-alloc-debt)' : CHART_RAMP[Math.min(i, CHART_RAMP.length - 1)] }} />
+          <span key={s.label} style={{ width: `calc(${(s.value / total) * 100}% - ${i ? 'var(--space-2)' : '0px'})`, background: s.tone === 'status' ? 'var(--color-status-over-fg)' : s.other ? 'var(--color-track)' : CHART_RAMP[Math.min(i, CHART_RAMP.length - 1)],
+            boxShadow: s.tone === 'status' ? 'none' : `inset 0 0 0 1px ${s.other ? 'var(--color-muted)' : CHART_EDGE[Math.min(i, CHART_EDGE.length - 1)]}` }} />
         ))}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-8)', marginTop: 'var(--space-6)' }}>

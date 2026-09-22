@@ -358,6 +358,84 @@ const CATEGORY_AVG = {
 };
 const categoryAvgOf = (id) => { const f = fundById(id); return f ? CATEGORY_AVG[f.category] || null : null; };
 
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   RISK STATISTICS — COMPUTED FROM THE NAV SERIES, NOT INVENTED (22 Sep 2026).
+
+   The Fund Discovery PRD asks every fund one-pager for five statistics — Sharpe, Max Drawdown,
+   Standard Deviation, Up/Down Capture and Beta — and the compare card for five more. None of them was
+   on file, and the honest options were to invent ten numbers per fund or to DERIVE them from the
+   curve this book already draws.
+
+   Deriving is strictly better and it is what the rest of this file already does: `NAV_SERIES` is
+   sixty monthly points whose endpoint is forced to PERF's five-year CAGR, so a statistic computed from
+   it cannot disagree with the return printed beside it. Invented statistics can, and that is exactly
+   the class of defect F-62 was (a benchmark reading 42.6% off a curve nobody constrained).
+
+   The arithmetic is the textbook definition in each case, on MONTHLY log-free simple returns:
+     · Std dev  — sample standard deviation, annualised by √12.
+     · Sharpe   — (CAGR − risk-free) / annualised std dev. Risk-free is 6.5%, India's approximate
+                  short-tenor government rate; it is a stated assumption, not a fact, and lives here.
+     · Max DD   — the deepest peak-to-trough fall in the wealth curve, as a negative percentage.
+     · Beta     — covariance(fund, benchmark) / variance(benchmark), monthly.
+     · Capture  — mean fund return in the months the benchmark rose, over the benchmark's own mean in
+                  those months; and the same for the months it fell.
+   Every one is a fixture in the same sense PERF is — the INPUT is invented, so the output is too, and
+   `perfProvenance()` remains the only line a card may carry about where any of it came from. */
+const RISK_FREE = 6.5;
+const _mret = (a) => { const out = []; for (let i = 1; i < a.length; i++) out.push((a[i] / a[i - 1]) - 1); return out; };
+const _mean = (a) => a.reduce((x, y) => x + y, 0) / (a.length || 1);
+const _sd = (a) => { const m = _mean(a); return Math.sqrt(a.reduce((x, y) => x + (y - m) * (y - m), 0) / ((a.length - 1) || 1)); };
+const _maxDD = (a) => { let peak = a[0], worst = 0; for (const v of a) { if (v > peak) peak = v; const d = (v / peak) - 1; if (d < worst) worst = d; } return worst * 100; };
+const RISK = {};
+FUNDS.forEach((f) => {
+  const s = NAV_SERIES[f.id], p = PERF[f.id];
+  if (!s || !p) return;
+  const rf = _mret(s.f), rb = _mret(s.b);
+  const sd = _sd(rf) * Math.sqrt(12) * 100;
+  const mf = _mean(rf), mb = _mean(rb);
+  const cov = rf.reduce((acc, v, i) => acc + (v - mf) * (rb[i] - mb), 0) / ((rf.length - 1) || 1);
+  const varb = rb.reduce((acc, v) => acc + (v - mb) * (v - mb), 0) / ((rb.length - 1) || 1);
+  const up = [], dn = [];
+  rf.forEach((v, i) => { (rb[i] >= 0 ? up : dn).push([v, rb[i]]); });
+  const cap = (rows) => (rows.length ? (_mean(rows.map((r) => r[0])) / (_mean(rows.map((r) => r[1])) || 1e-9)) * 100 : null);
+  /* BETA AND CAPTURE ARE NULL, AND THAT IS A FINDING ABOUT THE FIXTURE, NOT A GAP IN THE ARITHMETIC.
+     Computed here first and then withheld: the numbers came out at beta 0.03, −0.02, −0.26 and a
+     down-capture of −512%, which are not near-misses — they are what you get when the two series have
+     no relationship at all. NAV_SERIES draws the fund and its benchmark as SEPARATE seeded random
+     walks with only the five-year endpoint forced, so month to month they are uncorrelated by
+     construction, and every statistic that measures the fund AGAINST the benchmark is therefore
+     undefined here. Real equity funds run a beta near 0.85–1.05.
+     Fund-only statistics survive this and are kept: volatility, Sharpe and max drawdown read off one
+     curve and need no second one.
+     To get beta and capture honestly, either the fixture is regenerated so a fund is its benchmark
+     plus an idiosyncratic part — which changes every chart already on screen, so it needs the owner's
+     word — or a real feed arrives. Until then the card says so in words, which is this product's rule
+     and the whole reason F-62 is in the findings log. */
+  RISK[f.id] = {
+    sd: +sd.toFixed(1),
+    sharpe: +((p.r5 - RISK_FREE) / (sd || 1e-9)).toFixed(2),
+    maxDD: +_maxDD(s.f).toFixed(1),
+    beta: null,
+    upCapture: null,
+    downCapture: null,
+    unavailable: ['beta', 'upCapture', 'downCapture'],
+    unavailableReason: 'The fixture draws a fund and its benchmark as separate paths, so anything measured against the benchmark is undefined until a real series arrives.',
+    fixture: true,
+  };
+});
+const riskOf = (id) => RISK[id] || null;
+const riskProvenance = () => `risk statistics computed from the same five-year curve shown above · risk-free ${RISK_FREE}% · illustrative for design, not a scheme record`;
+/* What each statistic MEANS, because the PRD asks for an info icon that answers "if this is
+   lower/higher, how do I judge the fund" rather than repeating the definition. */
+const RISK_META = {
+  sharpe: { label: 'Sharpe ratio', help: 'Return earned for each unit of volatility. Higher is better; below 1 means the ride was rough for what it paid.' },
+  sd: { label: 'Volatility', unit: '%', help: 'How far monthly returns swing from their average, annualised. Higher means a bumpier ride, not a worse fund.' },
+  maxDD: { label: 'Max drawdown', unit: '%', help: 'The deepest fall from a peak in this window. This is the loss a client would have had to sit through.' },
+  beta: { label: 'Beta', help: 'Movement against its benchmark. Above 1 amplifies the index both ways; below 1 dampens it.' },
+  upCapture: { label: 'Up capture', unit: '%', help: 'Share of the benchmark rise the fund caught. Above 100 means it beat the index in rising months.' },
+  downCapture: { label: 'Down capture', unit: '%', help: 'Share of the benchmark fall the fund took. Below 100 means it fell less than the index.' },
+};
+
 /* THE COST OF A SWITCH, line by line. A switch is a redemption plus a purchase, so it is taxable, and
    the tax depends on when each lot was bought — which is why this returns NULL when the folio has no
    purchase dates on file: the uncosted case is a missing input with a name, not a zero. For Sharma's
@@ -819,7 +897,7 @@ const driftPoints = (c) => (c.allocation && c.mandate ? c.allocation.equity - c.
 const overSingleFund = (c) => (c.holdings || []).filter((h) => h.pct > LIMITS.singleFund);
 const inr = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
-Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, MANAGERS, managerOf, managerLine, managerProvenance, comparisonProvenance, HOLDINGS, HOLDINGS_AS_OF, HOLD_MONTHS, holdingsOf, holdingsProvenance, overlapPct, MONTHLY, monthlyOf, monthlyProvenance, CATEGORY_AVG, categoryAvgOf, switchCost, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
+Object.assign(window, { ADVISOR, FUNDS, fundById, PERF, PERF_AS_OF, PERF_PERIODS, perfOf, perfProvenance, perfNote, MANAGERS, managerOf, managerLine, managerProvenance, comparisonProvenance, HOLDINGS, HOLDINGS_AS_OF, HOLD_MONTHS, holdingsOf, holdingsProvenance, overlapPct, MONTHLY, monthlyOf, monthlyProvenance, CATEGORY_AVG, categoryAvgOf, RISK, riskOf, riskProvenance, RISK_META, RISK_FREE, switchCost, LIMITS, TAX, CLIENTS, clientById, LEDGER, LEDGER_PERIOD, LEDGER_EXPORT,
   REVIEW_TOP_RS, REVIEW_TAIL_RS, REVIEW_TAIL_AVG_RS, REVIEW_TINY_CAP_RS, REVIEW_AUDIENCES, REBALANCE_TARGETS, PROPOSAL_AMOUNT, PROPOSAL_ASKED, PROPOSAL_SPLIT, PROPOSAL_CASH, PROPOSAL_VERSIONS, PROPOSAL_BLOCKERS,
   clamp100, scoreBand, SCORE_BANDS, FUND_SCORE_WEIGHTS, fundScore, fundScoreProvenance, HEALTH_WEIGHTS, clientHealth, healthProvenance,
   NAV_SERIES, NAV_MONTHS, NAV_BASE, BENCH_CANON, navSeries, tenKAfter, benchCagr, BENCH_SHORT, benchReturnAt, benchProvenance,

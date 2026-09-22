@@ -1,0 +1,20 @@
+# SCRAPED REFERENCE IMAGES ARE NOT COMMITTED — 116 files, 37 MB.
+#
+# What sits in this folder is other people's work: Pinterest pins, Mobbin captures of Groww, Kuvera,
+# INDmoney and the rest, and palette boards. They were downloaded to be LOOKED AT, which is the one
+# thing a research note cannot do for you, and the findings drawn from them are written down in
+# ../research/ and ../debate/ and in index.md beside this file. Committing the images themselves
+# would republish someone else's screens and pins from a Centricity repository and carry 37 MB of
+# binaries for the life of the history, and neither is needed to read or re-run the work.
+#
+# TO GET THEM BACK: ../research/queries.json holds every Mobbin query verbatim, and index.md records
+# the Pinterest search terms with their dates. Re-running those is the intended path.
+#
+# OUR OWN renders are committed, here and under studio/audit-2026-09-19/ — that is the existing line
+# in this repository and this file keeps it.
+mobbin/
+pinterest/
+palettes/
+board-retail.png
+board-mobbin.png
+one-digital-explore.webp

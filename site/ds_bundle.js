@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -28,13 +28,16 @@ var __ds_out = (() => {
     AttachmentTurn: () => AttachmentTurn,
     AttributionChart: () => AttributionChart,
     Badge: () => Badge,
+    CHART_EDGE: () => CHART_EDGE,
     CHART_RAMP: () => CHART_RAMP,
     ChartBar: () => ChartBar,
+    ChartDonut: () => ChartDonut,
     ChartLegend: () => ChartLegend,
     ChartLine: () => ChartLine,
     ChartLineMultiples: () => ChartLineMultiples,
     ChartReadout: () => ChartReadout,
     ChartShare: () => ChartShare,
+    ChartSpark: () => ChartSpark,
     ChartTooltip: () => ChartTooltip,
     ChipRow: () => ChipRow,
     ClientChip: () => ClientChip,
@@ -55,10 +58,12 @@ var __ds_out = (() => {
     DrawnCheck: () => DrawnCheck,
     Dumbbell: () => Dumbbell,
     ExplainerSheet: () => ExplainerSheet,
+    ExplorerSheet: () => ExplorerSheet,
     Eyebrow: () => Eyebrow,
     EyebrowDivider: () => EyebrowDivider,
     FigureRow: () => FigureRow,
     FileUpload: () => FileUpload,
+    FilterSheet: () => FilterSheet,
     FollowUpRow: () => FollowUpRow,
     GreetingDivider: () => GreetingDivider,
     HeroNumberCard: () => HeroNumberCard,
@@ -77,6 +82,8 @@ var __ds_out = (() => {
     InfoCard: () => InfoCard,
     InfoDot: () => InfoDot,
     InlineActionRow: () => InlineActionRow,
+    IntentGrid: () => IntentGrid,
+    IntentTile: () => IntentTile,
     List: () => List,
     ListRow: () => ListRow,
     MOTION_CSS: () => MOTION_CSS,
@@ -88,6 +95,7 @@ var __ds_out = (() => {
     OverlapView: () => OverlapView,
     PLOT: () => PLOT,
     ParseNote: () => ParseNote,
+    PeerLine: () => PeerLine,
     PhoneFrame: () => PhoneFrame,
     Pill: () => Pill,
     Pressable: () => Pressable,
@@ -109,12 +117,14 @@ var __ds_out = (() => {
     ScreenStack: () => ScreenStack,
     ScrollToBottomButton: () => ScrollToBottomButton,
     SearchField: () => SearchField,
+    SectionStrip: () => SectionStrip,
     SegmentedRow: () => SegmentedRow,
     SelectionMark: () => SelectionMark,
     SentinelBlock: () => SentinelBlock,
     SentinelText: () => SentinelText,
     SentinelThinking: () => SentinelThinking,
     SentinelTurn: () => SentinelTurn,
+    ShortlistCard: () => ShortlistCard,
     Sparkline: () => Sparkline,
     SplashScreen: () => SplashScreen,
     StandingDisclosure: () => StandingDisclosure,
@@ -130,6 +140,7 @@ var __ds_out = (() => {
     VersionRow: () => VersionRow,
     areaPath: () => areaPath,
     band: () => band,
+    edgeColor: () => edgeColor,
     formatINR: () => formatINR,
     hasD3: () => hasD3,
     installReducedMotion: () => installReducedMotion,
@@ -773,6 +784,115 @@ var __ds_out = (() => {
     ));
   }
 
+  // design-system/components/data/chartMath.jsx
+  var d3 = () => typeof window !== "undefined" && window.d3 ? window.d3 : null;
+  function hasD3() {
+    return !!(d3() && d3().scaleLinear && d3().line);
+  }
+  function step125(raw) {
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const norm = raw / mag;
+    return (norm >= 5 ? 10 : norm >= 2 ? 5 : norm >= 1 ? 2 : 1) * mag;
+  }
+  function niceDomain(min, max, count = 4) {
+    const lib = d3();
+    if (lib && lib.scaleLinear) {
+      const s2 = lib.scaleLinear().domain([min, max]).nice(count);
+      return s2.domain();
+    }
+    if (max === min) return [min - 1, max + 1];
+    const s = step125((max - min) / count);
+    return [Math.floor(min / s) * s, Math.ceil(max / s) * s];
+  }
+  function ticks(min, max, count = 4) {
+    const lib = d3();
+    if (lib && lib.ticks) return lib.ticks(min, max, count);
+    const s = step125((max - min) / count);
+    const out = [];
+    for (let v = Math.ceil(min / s) * s; v <= max + 1e-9; v += s) out.push(Math.round(v * 1e6) / 1e6);
+    return out;
+  }
+  function linear(domain, range) {
+    const lib = d3();
+    if (lib && lib.scaleLinear) return lib.scaleLinear().domain(domain).range(range);
+    const [d0, d1] = domain, [r0, r1] = range;
+    const f = (v) => d1 === d0 ? r0 : r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+    f.domain = () => domain;
+    f.range = () => range;
+    return f;
+  }
+  function band(labels, range, padding = 0.34) {
+    const lib = d3();
+    if (lib && lib.scaleBand) return lib.scaleBand().domain(labels).range(range).padding(padding);
+    const [r0, r1] = range;
+    const stepSize = (r1 - r0) / Math.max(labels.length, 1);
+    const w = stepSize * (1 - padding);
+    const f = (l) => r0 + labels.indexOf(l) * stepSize + (stepSize - w) / 2;
+    f.bandwidth = () => w;
+    f.step = () => stepSize;
+    return f;
+  }
+  function linePath(pts) {
+    const lib = d3();
+    if (lib && lib.line) return lib.line().x((p) => p[0]).y((p) => p[1]).curve(lib.curveMonotoneX)(pts);
+    return pts.map((p, i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join("");
+  }
+  function areaPath(pts, y0) {
+    const lib = d3();
+    if (lib && lib.area) return lib.area().x((p) => p[0]).y0(y0).y1((p) => p[1]).curve(lib.curveMonotoneX)(pts);
+    return `${pts.map((p, i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join("")}L${pts[pts.length - 1][0]},${y0}L${pts[0][0]},${y0}Z`;
+  }
+  var CHART_RAMP = ["var(--color-series-1)", "var(--color-series-2)", "var(--color-series-3)", "var(--color-series-4)", "var(--color-series-5)"];
+  var CHART_EDGE = ["var(--color-series-1-edge)", "var(--color-series-2-edge)", "var(--color-series-3-edge)", "var(--color-series-4-edge)", "var(--color-series-5-edge)"];
+  function edgeColor(tone, rank = 0) {
+    if (tone === "muted") return "var(--color-muted)";
+    if (tone === "status") return "var(--color-status-over-fg)";
+    return CHART_EDGE[Math.min(rank, CHART_EDGE.length - 1)];
+  }
+  function toneColor(tone, rank = 0) {
+    if (tone === "muted") return "var(--color-muted)";
+    if (tone === "status") return "var(--color-status-over-fg)";
+    return CHART_RAMP[Math.min(rank, CHART_RAMP.length - 1)];
+  }
+  function markColor(tone) {
+    if (tone === "muted") return "var(--color-muted)";
+    if (tone === "status") return "var(--color-status-over-fg)";
+    return "var(--color-bronze-deep)";
+  }
+  var SEGMENT_GAP = "var(--space-2)";
+  var trackInset = { boxShadow: "inset 0 0 0 var(--border-hairline) var(--color-line)" };
+  var PLOT = { peek: 72, expanded: 180 };
+  var AXIS_BAND = 14;
+  var tabular = { fontVariantNumeric: "tabular-nums" };
+
+  // design-system/components/data/ChartSpark.jsx
+  function ChartSpark({ points = [], width = 56, height = 18, tone = "ramp", endDot = true, label }) {
+    const vals = points.filter((v) => typeof v === "number");
+    if (vals.length < 2) return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-block", width, height }, "aria-hidden": "true" });
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    const span = hi - lo || 1;
+    const pad = 2;
+    const x = (i) => i / (vals.length - 1) * (width - pad * 2) + pad;
+    const y = (v) => height - pad - (v - lo) / span * (height - pad * 2);
+    const pts = vals.map((v, i) => [x(i), y(v)]);
+    const d = linePath(pts);
+    const last = pts[pts.length - 1];
+    const color = markColor(tone);
+    return /* @__PURE__ */ react_global_default.createElement(
+      "svg",
+      {
+        width,
+        height,
+        viewBox: `0 0 ${width} ${height}`,
+        role: "img",
+        "aria-label": label || `${vals.length} points, ending ${vals[vals.length - 1]}`,
+        style: { display: "block", overflow: "visible" }
+      },
+      /* @__PURE__ */ react_global_default.createElement("path", { d, fill: "none", stroke: color, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }),
+      endDot && /* @__PURE__ */ react_global_default.createElement("circle", { cx: last[0], cy: last[1], r: "2", fill: color })
+    );
+  }
+
   // design-system/components/cards/DataTable.jsx
   var ALIGN = { text: "start", badge: "start", number: "end", percent: "end", currency: "end", bar: "end", sparkline: "end" };
   var NUDGE = "ds-table-nudge";
@@ -819,6 +939,9 @@ var __ds_out = (() => {
       const span = max - lo;
       const pct = span > 0 ? Math.max(0, Math.min(1, (n - lo) / span)) : 0;
       return /* @__PURE__ */ react_global_default.createElement("div", { style: { ...base, position: "relative", paddingRight: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { position: "absolute", inset: 0, transformOrigin: "right center", transform: `scaleX(${pct})`, background: "var(--tint-bronze-06)", borderRadius: "var(--radius-6)" } }), /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative" }, className: "ds-tabular" }, v));
+    }
+    if (col.kind === "sparkline" && Array.isArray(v)) {
+      return /* @__PURE__ */ react_global_default.createElement("div", { style: { ...base, display: "flex", justifyContent: align === "end" ? "flex-end" : "flex-start" } }, /* @__PURE__ */ react_global_default.createElement(ChartSpark, { points: v, tone: col.tone, label: col.sparkLabel }));
     }
     const tabular2 = col.kind && col.kind !== "text" && col.kind !== "badge";
     return /* @__PURE__ */ react_global_default.createElement("div", { style: base, className: tabular2 ? "ds-tabular" : void 0 }, v);
@@ -965,6 +1088,128 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { onClick: onClose, "aria-hidden": "true", style: { position: "absolute", inset: 0, zIndex: "var(--z-scrim)", background: "var(--scrim)", opacity: "var(--scrim-sheet)", animation: "ds-scrim var(--dur-screen) var(--ease) both" } }), /* @__PURE__ */ react_global_default.createElement("div", { ref, role: "dialog", "aria-modal": "true", "aria-label": title, tabIndex: -1, style: { position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 30, borderRadius: "24px 24px 0 0", background: "var(--color-surface)", padding: "12px 20px 28px", animation: "ds-sheet 300ms var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("style", null, "@keyframes ds-sheet{from{transform:translateY(100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-sheet{from{opacity:0;transform:none}to{opacity:1;transform:none}}}"), /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "0 auto 14px", height: 5, width: 44, borderRadius: "var(--radius-full)", background: "var(--color-line)" } }), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...{ font: "var(--type-sheet-title-font)", color: "var(--color-ink)" } } }, title), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)", display: "flex", flexDirection: "column", gap: "var(--space-10)" } }, body.map((p, i) => /* @__PURE__ */ react_global_default.createElement("p", { key: i, style: { margin: 0, ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink-soft)" } } }, p))), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: 18 } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Got it", tone: "primary", onClick: onClose }))));
   }
 
+  // design-system/components/cards/FilterSheet.jsx
+  function FilterSheet({
+    open,
+    title = "Filters",
+    groups = [],
+    value = {},
+    onChange,
+    resultCount = null,
+    unit = "funds",
+    onApply,
+    onClose,
+    onClearAll
+  }) {
+    const ref = react_global_default.useRef(null);
+    const armed = react_global_default.useRef(false);
+    const wasOpen = react_global_default.useRef(open);
+    const opener = react_global_default.useRef(null);
+    react_global_default.useEffect(() => {
+      if (open && !wasOpen.current) {
+        opener.current = document.activeElement;
+        armed.current = true;
+        if (ref.current) ref.current.focus();
+      } else if (!open && wasOpen.current) {
+        if (opener.current && opener.current.focus) opener.current.focus();
+        opener.current = null;
+        armed.current = false;
+      }
+      wasOpen.current = open;
+    }, [open]);
+    react_global_default.useEffect(() => {
+      if (!open) return;
+      const onKey = (e) => {
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          onClose && onClose();
+          return;
+        }
+        if (e.key !== "Tab" || !armed.current || !ref.current) return;
+        const nodes = Array.prototype.filter.call(
+          ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+          (n) => !n.disabled && n.tabIndex >= 0 && n.getAttribute("aria-hidden") !== "true"
+        );
+        if (!nodes.length) {
+          e.preventDefault();
+          ref.current.focus();
+          return;
+        }
+        const first = nodes[0], last = nodes[nodes.length - 1], active = document.activeElement;
+        const outside = !ref.current.contains(active);
+        if (outside || (e.shiftKey ? active === first || active === ref.current : active === last)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+        }
+      };
+      document.addEventListener("keydown", onKey, true);
+      return () => document.removeEventListener("keydown", onKey, true);
+    }, [open, onClose]);
+    if (!open) return null;
+    const isOn = (g, opt) => {
+      const v = value[g.key];
+      return g.mode === "multi" ? Array.isArray(v) && v.includes(opt.value) : v === opt.value;
+    };
+    const toggle = (g, opt) => {
+      if (!onChange) return;
+      if (g.mode === "multi") {
+        const v = Array.isArray(value[g.key]) ? value[g.key] : [];
+        onChange(g.key, v.includes(opt.value) ? v.filter((x) => x !== opt.value) : v.concat(opt.value));
+      } else {
+        onChange(g.key, value[g.key] === opt.value ? null : opt.value);
+      }
+    };
+    const applied = [];
+    groups.forEach((g) => {
+      const v = value[g.key];
+      const vals = g.mode === "multi" ? Array.isArray(v) ? v : [] : v == null ? [] : [v];
+      vals.forEach((val) => {
+        const opt = (g.options || []).find((o) => o.value === val);
+        if (opt) applied.push({ group: g, opt });
+      });
+    });
+    const none = resultCount === 0;
+    const commit = resultCount == null ? "View matches" : none ? `No ${unit} match \u2014 drop a filter` : `View ${resultCount.toLocaleString("en-IN")} ${unit}`;
+    return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { onClick: onClose, "aria-hidden": "true", style: { position: "absolute", inset: 0, zIndex: "var(--z-scrim)", background: "var(--scrim)", opacity: "var(--scrim-sheet)", animation: "ds-scrim var(--dur-screen) var(--ease) both" } }), /* @__PURE__ */ react_global_default.createElement(
+      "div",
+      {
+        ref,
+        role: "dialog",
+        "aria-modal": "true",
+        "aria-label": title,
+        tabIndex: -1,
+        style: { position: "absolute", left: 0, right: 0, bottom: 0, zIndex: "var(--z-modal)", display: "flex", flexDirection: "column", maxHeight: "88%", borderRadius: "var(--radius-24) var(--radius-24) 0 0", background: "var(--color-canvas)", boxSizing: "border-box", animation: "ds-sheet var(--dur-screen) var(--ease) both" }
+      },
+      /* @__PURE__ */ react_global_default.createElement("style", null, "@keyframes ds-sheet{from{transform:translateY(100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-sheet{from{opacity:0;transform:none}to{opacity:1;transform:none}}}"),
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, margin: "var(--space-10) auto var(--space-6)", height: "var(--space-5)", width: "var(--h-touch)", borderRadius: "var(--radius-full)", background: "var(--color-line)" } }),
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-8)", padding: `0 var(--space-20)` } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-sheet-title-font)", color: "var(--color-ink)" } }, title), applied.length > 0 && /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onClearAll, label: "Clear all filters", style: { display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Clear all"))),
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", padding: `var(--space-12) var(--space-20) var(--space-8)` } }, applied.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)", marginBottom: "var(--space-16)" } }, applied.map(({ group, opt }) => /* @__PURE__ */ react_global_default.createElement(
+        Pill,
+        {
+          key: `${group.key}:${opt.value}`,
+          tone: "filter",
+          size: "sm",
+          selected: true,
+          removable: true,
+          label: `${group.label}: ${opt.label}`,
+          onClick: () => toggle(group, opt)
+        }
+      ))), groups.map((g) => /* @__PURE__ */ react_global_default.createElement("div", { key: g.key, style: { marginBottom: "var(--space-16)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-label-font)", letterSpacing: "var(--tracking-eyebrow)", color: "var(--color-muted)", textTransform: "uppercase" } }, g.label), g.note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, g.note), /* @__PURE__ */ react_global_default.createElement("div", { role: "group", "aria-label": g.label, style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, (g.options || []).map((opt) => /* @__PURE__ */ react_global_default.createElement(
+        Pill,
+        {
+          key: opt.value,
+          tone: "filter",
+          size: "sm",
+          selected: isOn(g, opt),
+          disabled: opt.count === 0 || void 0,
+          label: opt.count == null ? opt.label : `${opt.label} (${opt.count.toLocaleString("en-IN")})`,
+          onClick: opt.count === 0 ? void 0 : () => toggle(g, opt)
+        }
+      )))))),
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, display: "flex", flexDirection: "column", gap: "var(--space-8)", padding: `var(--space-12) var(--space-20) var(--space-20)` } }, /* @__PURE__ */ react_global_default.createElement(DarkButton, { full: true, label: commit, onClick: onApply }))
+    ));
+  }
+
   // design-system/components/cards/HeroNumberCard.jsx
   function useCountUp(target, ms2, run = true) {
     const [v, setV] = react_global_default.useState(0);
@@ -990,81 +1235,6 @@ var __ds_out = (() => {
     const n = useCountUp(value, 600, true);
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", boxSizing: "border-box", padding: "var(--space-16)", animation: "ds-rise var(--dur-screen) var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-16)", lineHeight: "var(--leading-24)", color: "var(--color-ink)" } } }, title), /* @__PURE__ */ react_global_default.createElement(Badge, null, meta)), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-8)", display: "flex", alignItems: "flex-end", gap: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-display-font)", color: "var(--color-bronze-deep)" } }, n), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-10)", borderRadius: "var(--radius-full)", background: "var(--color-selected)", padding: "4px 12px", boxShadow: "0 0 0 1px var(--color-bubble-edge)", animation: "ds-fade 300ms var(--ease) both", animationDelay: "600ms" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-13)", color: "var(--color-ink)" } }, badge))), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "6px 0 0", ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink-soft)" } } }, copy), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-14)", display: "flex", flexDirection: "column", gap: "var(--space-12)" } }, rows.map((r, i) => /* @__PURE__ */ react_global_default.createElement("div", { key: r.label }, /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-5)", display: "flex", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: r.binding ? 700 : 500, fontSize: "var(--text-13)", lineHeight: "var(--leading-18)", color: r.binding ? "var(--color-ink)" : "var(--color-muted)" } }, r.label), /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: r.binding ? 700 : 500, fontSize: "var(--text-14)", color: r.binding ? "var(--color-bronze-deep)" : "var(--color-ink)" } }, r.value)), /* @__PURE__ */ react_global_default.createElement("div", { style: { height: 6, width: "100%", overflow: "hidden", borderRadius: "var(--radius-full)", background: "var(--color-track)", boxShadow: "inset 0 0 0 0.5px var(--color-line)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { height: "100%", width: `${r.value}%`, borderRadius: "var(--radius-full)", background: r.binding ? "var(--color-bronze)" : "var(--color-alloc-debt)", transformOrigin: "left", animation: "ds-grow 500ms var(--ease) both", animationDelay: `${600 + i * 120}ms` } }))))));
   }
-
-  // design-system/components/data/chartMath.jsx
-  var d3 = () => typeof window !== "undefined" && window.d3 ? window.d3 : null;
-  function hasD3() {
-    return !!(d3() && d3().scaleLinear && d3().line);
-  }
-  function step125(raw) {
-    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
-    const norm = raw / mag;
-    return (norm >= 5 ? 10 : norm >= 2 ? 5 : norm >= 1 ? 2 : 1) * mag;
-  }
-  function niceDomain(min, max, count = 4) {
-    const lib = d3();
-    if (lib && lib.scaleLinear) {
-      const s2 = lib.scaleLinear().domain([min, max]).nice(count);
-      return s2.domain();
-    }
-    if (max === min) return [min - 1, max + 1];
-    const s = step125((max - min) / count);
-    return [Math.floor(min / s) * s, Math.ceil(max / s) * s];
-  }
-  function ticks(min, max, count = 4) {
-    const lib = d3();
-    if (lib && lib.ticks) return lib.ticks(min, max, count);
-    const s = step125((max - min) / count);
-    const out = [];
-    for (let v = Math.ceil(min / s) * s; v <= max + 1e-9; v += s) out.push(Math.round(v * 1e6) / 1e6);
-    return out;
-  }
-  function linear(domain, range) {
-    const lib = d3();
-    if (lib && lib.scaleLinear) return lib.scaleLinear().domain(domain).range(range);
-    const [d0, d1] = domain, [r0, r1] = range;
-    const f = (v) => d1 === d0 ? r0 : r0 + (v - d0) / (d1 - d0) * (r1 - r0);
-    f.domain = () => domain;
-    f.range = () => range;
-    return f;
-  }
-  function band(labels, range, padding = 0.34) {
-    const lib = d3();
-    if (lib && lib.scaleBand) return lib.scaleBand().domain(labels).range(range).padding(padding);
-    const [r0, r1] = range;
-    const stepSize = (r1 - r0) / Math.max(labels.length, 1);
-    const w = stepSize * (1 - padding);
-    const f = (l) => r0 + labels.indexOf(l) * stepSize + (stepSize - w) / 2;
-    f.bandwidth = () => w;
-    f.step = () => stepSize;
-    return f;
-  }
-  function linePath(pts) {
-    const lib = d3();
-    if (lib && lib.line) return lib.line().x((p) => p[0]).y((p) => p[1]).curve(lib.curveMonotoneX)(pts);
-    return pts.map((p, i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join("");
-  }
-  function areaPath(pts, y0) {
-    const lib = d3();
-    if (lib && lib.area) return lib.area().x((p) => p[0]).y0(y0).y1((p) => p[1]).curve(lib.curveMonotoneX)(pts);
-    return `${pts.map((p, i) => `${i ? "L" : "M"}${p[0]},${p[1]}`).join("")}L${pts[pts.length - 1][0]},${y0}L${pts[0][0]},${y0}Z`;
-  }
-  var CHART_RAMP = ["var(--color-bronze-deep)", "var(--color-bronze)", "var(--color-alloc-debt)", "var(--color-bubble-edge)"];
-  function toneColor(tone, rank = 0) {
-    if (tone === "muted") return "var(--color-muted)";
-    if (tone === "status") return "var(--color-status-over-fg)";
-    return CHART_RAMP[Math.min(rank, CHART_RAMP.length - 1)];
-  }
-  function markColor(tone) {
-    if (tone === "muted") return "var(--color-muted)";
-    if (tone === "status") return "var(--color-status-over-fg)";
-    return CHART_RAMP[0];
-  }
-  var SEGMENT_GAP = "var(--space-2)";
-  var trackInset = { boxShadow: "inset 0 0 0 var(--border-hairline) var(--color-line)" };
-  var PLOT = { peek: 72, expanded: 180 };
-  var AXIS_BAND = 14;
-  var tabular = { fontVariantNumeric: "tabular-nums" };
 
   // design-system/components/data/ChartReadout.jsx
   function ChartReadout({ label, value, active = false, idleNote }) {
@@ -1215,6 +1385,43 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)", boxSizing: "border-box" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)", textWrap: "pretty" } }, name), meta && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-2) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, meta)), !manager && shelf && SHELF[shelf] && /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: SHELF[shelf].tone }, SHELF[shelf].text)), manager ? tenure ? /* @__PURE__ */ react_global_default.createElement(Tenure, { ...tenure }) : null : locked ? /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)", borderRadius: "var(--radius-12)", background: "var(--color-canvas)", boxShadow: `inset 0 0 0 var(--border-1) var(--color-line)`, padding: "var(--space-12)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-figure-font)", color: "var(--color-data-deemph)", fontVariantNumeric: "tabular-nums" } }, "\u2014\u2014"), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-4) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, lockReason || "Locked until the fund performance source is confirmed. Sentinel will not show a figure it cannot attribute.")) : /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-6)", marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, font: "var(--type-total-font)", color: "var(--color-bronze-deep)" } }, figure), figureNote && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, figureNote)), compare && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-row-font)", color: "var(--color-ink-soft)", textWrap: "pretty", fontVariantNumeric: "tabular-nums" } }, compare.label, " would be ", compare.value, compare.gap ? ` \u2014 ${compare.gap} ${compare.behind ? "behind" : "ahead"}` : "", "."), caveat && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-6) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", textWrap: "pretty" } }, caveat), series && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(ChartLine, { series, width: 311, run: false, valueFormat, xFormat })), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(RangePills, { ranges, value: range, onChange: onRange }))), provenance && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(Provenance, { text: provenance })), stats.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "grid", gridTemplateColumns: `repeat(${Math.min(stats.length, 2)}, minmax(0, 1fr))`, gap: "var(--space-8)", marginTop: "var(--space-12)" } }, stats.map((s) => /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, style: { borderRadius: "var(--radius-12)", background: "var(--color-canvas)", boxShadow: `inset 0 0 0 var(--border-1) var(--color-line)`, padding: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, s.label), /* @__PURE__ */ react_global_default.createElement(InfoDot, { figure: s.label, onOpen: () => onExplain && onExplain(s.label) })), /* @__PURE__ */ react_global_default.createElement("p", { style: { ...tabular, margin: `var(--space-2) 0 0`, font: "var(--type-row-font)", fontWeight: "var(--weight-bold)", color: s.locked ? "var(--color-data-deemph)" : "var(--color-ink)" } }, s.locked ? "\u2014\u2014" : s.value)))));
   }
 
+  // design-system/components/cards/IntentTile.jsx
+  var NUM = { fontVariantNumeric: "tabular-nums" };
+  function IntentTile({ label, count = null, unit = "funds", note, selected = false, unavailable = false, unavailableNote, onClick }) {
+    const inert = unavailable || !onClick;
+    return /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: unavailable ? void 0 : onClick,
+        "aria-disabled": unavailable || void 0,
+        tabIndex: unavailable ? -1 : void 0,
+        pressed: selected,
+        label: count == null ? label : `${label}, ${count} ${unit}`,
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: "var(--space-2)",
+          width: "100%",
+          minHeight: "var(--h-touch)",
+          padding: "var(--space-12)",
+          textAlign: "left",
+          borderRadius: "var(--radius-16)",
+          background: selected ? "var(--color-selected)" : "var(--color-surface)",
+          boxShadow: `0 0 0 var(--border-1) ${selected ? "var(--color-bronze)" : "var(--color-line)"}`,
+          cursor: inert ? "default" : void 0
+        }
+      },
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-title-font)", color: "var(--color-ink)" } }, label),
+      count != null && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)", ...NUM } }, count.toLocaleString("en-IN"), " ", unit),
+      note && !unavailable && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, note),
+      unavailable && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, unavailableNote || "No feed yet \u2014 nothing to show rather than nothing on the shelf.")
+    );
+  }
+  function IntentGrid({ children, cols = 2 }) {
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "var(--space-8)" } }, children);
+  }
+
   // design-system/components/cards/MoveCard.jsx
   function MoveCard({ n, title, body }) {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", gap: "var(--space-12)", width: "100%", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", boxSizing: "border-box", padding: "13px 14px" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-figure-font)", color: "var(--color-bronze-deep)" } }, n), /* @__PURE__ */ react_global_default.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-15)", lineHeight: "var(--leading-22)", color: "var(--color-ink)" } } }, title), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "3px 0 0", ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-13)", lineHeight: "var(--leading-18)", color: "var(--color-muted)" } } }, body)));
@@ -1255,6 +1462,24 @@ var __ds_out = (() => {
     }
     const text = label || (PRIMARY[journey] || PRIMARY.review)({ client, moves });
     return /* @__PURE__ */ react_global_default.createElement(DarkButton, { label: text, arrow: true, full: true, onClick: onPrimary });
+  }
+
+  // design-system/components/cards/ShortlistCard.jsx
+  var NUM2 = { fontVariantNumeric: "tabular-nums" };
+  function ShortlistCard({
+    name,
+    client,
+    count,
+    unit = "funds",
+    savedAt,
+    version = 1,
+    filters = [],
+    stale = null,
+    onOpen,
+    onRefresh,
+    children
+  }) {
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { padding: "var(--space-14)", display: "flex", flexDirection: "column", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)" } }, name), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-2) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: NUM2 }, count.toLocaleString("en-IN")), " ", unit, client && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", client), savedAt && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 saved ", savedAt), version > 1 && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM2 }, "v", version)))), onOpen && /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onOpen, label: `Open ${name}`, style: { flexShrink: 0, display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Open"))), filters.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, filters.map((f) => /* @__PURE__ */ react_global_default.createElement(Pill, { key: f, tone: "filter", size: "sm", label: f }))), children && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-6)" } }, children)), stale && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-8)", padding: `var(--space-10) var(--space-14)`, background: "var(--color-status-over-bg)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-ink)" } }, stale.text), onRefresh && /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onRefresh, label: "Run this shortlist again on today's data", style: { flexShrink: 0, display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Run again"))));
   }
 
   // design-system/components/cards/Surface.jsx
@@ -1778,12 +2003,115 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: peek ? 4 : 8, width: "100%" } }, bars.map((b, i) => /* @__PURE__ */ react_global_default.createElement("div", { key: b.label, style: { display: "flex", alignItems: "center", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 0 33%", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: FONT2, fontWeight: "var(--weight-medium)", fontSize: peek ? 11 : 12.5, lineHeight: `${rowH}px`, color: "var(--color-ink)" } }, b.label), /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative", flex: 1, minWidth: 0, height: rowH, display: "flex", alignItems: "center", borderRadius: "var(--radius-full)", background: "var(--color-track)", boxShadow: "inset 0 0 0 var(--border-hairline) var(--color-line)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "absolute", left: 0, top: (rowH - barH) / 2, height: barH, width: `${(b.value - d0) / (d1 - d0) * 100}%`, borderRadius: "0 4px 4px 0", background: markColor(b.tone || tone), transformOrigin: "left", transform: on ? "none" : "scaleX(0)", transition: run ? "transform var(--dur-bar) var(--ease)" : "none", transitionDelay: run ? `${i * 60}ms` : "0ms" } })), /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, flexShrink: 0, minWidth: "4ch", textAlign: "right", fontFamily: FONT2, fontWeight: "var(--weight-bold)", fontSize: peek ? 11 : 12.5, lineHeight: `${rowH}px`, color: "var(--color-bronze-deep)" } }, valueFormat(b.value)))), caveat && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-2) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)" } }, caveat));
   }
 
+  // design-system/components/data/ChartDonut.jsx
+  var TAU = Math.PI * 2;
+  function arcPath(cx, cy, r, a0, a1) {
+    const large = a1 - a0 > Math.PI ? 1 : 0;
+    const p = (a) => [cx + r * Math.cos(a - Math.PI / 2), cy + r * Math.sin(a - Math.PI / 2)];
+    const [x0, y0] = p(a0), [x1, y1] = p(a1);
+    return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+  }
+  function ChartDonut({
+    slices = [],
+    size = 168,
+    thickness = 22,
+    max = 5,
+    otherLabel = "Other",
+    center,
+    centerNote,
+    valueFormat = (v) => `${v.toFixed(1)}%`,
+    legend = true,
+    selected = null,
+    onSelect,
+    run = true,
+    caveat,
+    label = "Composition",
+    leadChip = false
+  }) {
+    const clean = slices.filter((s) => s && typeof s.value === "number" && s.value > 0);
+    const ordered = clean.slice().sort((a, b) => b.value - a.value);
+    const head = ordered.slice(0, max);
+    const rest = ordered.slice(max);
+    const rows = rest.length ? head.concat([{ label: `${otherLabel} \xB7 ${rest.length}`, value: +rest.reduce((t, s) => t + s.value, 0).toFixed(1), rest: true }]) : head;
+    const total = rows.reduce((t, s) => t + s.value, 0) || 1;
+    const [on, setOn] = react_global_default.useState(!run);
+    react_global_default.useEffect(() => {
+      if (!run) return;
+      const t = setTimeout(() => setOn(true), 20);
+      return () => clearTimeout(t);
+    }, [run]);
+    const cx = size / 2, cy = size / 2, r = (size - thickness) / 2;
+    const circumference = TAU * r;
+    const gapPx = 3;
+    const halfCap = thickness / 2 / r;
+    const halfGap = gapPx / 2 / r;
+    let acc = 0;
+    const segs = rows.map((s, i) => {
+      const frac = s.value / total;
+      const a0 = acc * TAU, a1 = (acc + frac) * TAU;
+      acc += frac;
+      const round = a1 - a0 > 2 * (halfCap + halfGap) + thickness / r;
+      const inset = round ? halfCap + halfGap : halfGap;
+      return {
+        ...s,
+        i,
+        frac,
+        a0,
+        a1,
+        d0: a0 + inset,
+        d1: a1 - inset,
+        cap: round ? "round" : "butt",
+        color: s.rest ? "var(--color-track)" : toneColor(s.tone, i),
+        edge: s.rest ? "var(--color-muted)" : edgeColor(s.tone, i)
+      };
+    });
+    return /* @__PURE__ */ react_global_default.createElement("div", null, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", justifyContent: "center" } }, /* @__PURE__ */ react_global_default.createElement("svg", { width: size, height: size, viewBox: `${leadChip ? -46 : 0} 0 ${size + (leadChip ? 92 : 0)} ${size}`, role: "img", "aria-label": `${label}: ${segs.map((s) => `${s.label} ${valueFormat(s.value)}`).join(", ")}` }, /* @__PURE__ */ react_global_default.createElement("circle", { cx, cy, r, fill: "none", stroke: "var(--color-chip)", strokeWidth: thickness }), segs.map((s) => {
+      const len = Math.max((s.d1 - s.d0) * r, 1);
+      const isSel = selected != null && selected === s.label;
+      const mid = (s.a0 + s.a1) / 2 - Math.PI / 2;
+      const push = isSel ? 5 : 0;
+      const dx = Math.cos(mid) * push, dy = Math.sin(mid) * push;
+      return /* @__PURE__ */ react_global_default.createElement("g", { key: s.label, style: { transform: `translate(${dx.toFixed(2)}px, ${dy.toFixed(2)}px)`, transition: `transform var(--dur-fast) var(--ease)` } }, /* @__PURE__ */ react_global_default.createElement(
+        "path",
+        {
+          d: arcPath(cx, cy, r, s.d0, s.d1),
+          fill: "none",
+          stroke: s.color,
+          strokeWidth: thickness,
+          strokeLinecap: s.cap,
+          strokeDasharray: `${on ? len : 0} ${circumference}`,
+          style: { transition: run ? `stroke-dasharray var(--dur-bar) var(--ease) ${s.i * 60}ms` : "none" }
+        }
+      ), /* @__PURE__ */ react_global_default.createElement("path", { d: arcPath(cx, cy, r + thickness / 2, s.d0, s.d1), fill: "none", stroke: s.edge, strokeWidth: "1", opacity: on ? 1 : 0, strokeLinecap: s.cap }), /* @__PURE__ */ react_global_default.createElement("path", { d: arcPath(cx, cy, r - thickness / 2, s.d0, s.d1), fill: "none", stroke: s.edge, strokeWidth: "1", opacity: on ? 1 : 0, strokeLinecap: s.cap }));
+    }), leadChip && segs.length > 0 && segs[0].frac >= 0.25 && (() => {
+      const m = (segs[0].a0 + segs[0].a1) / 2 - Math.PI / 2;
+      const lx = cx + (r + thickness / 2 + 12) * Math.cos(m);
+      const ly = cy + (r + thickness / 2 + 12) * Math.sin(m);
+      const anchor = lx < cx - 4 ? "end" : lx > cx + 4 ? "start" : "middle";
+      return /* @__PURE__ */ react_global_default.createElement(
+        "text",
+        {
+          x: lx.toFixed(1),
+          y: ly.toFixed(1),
+          textAnchor: anchor,
+          dominantBaseline: "middle",
+          style: { font: "var(--type-meta-font)", fill: "var(--color-muted)", fontVariantNumeric: "tabular-nums" }
+        },
+        segs[0].label
+      );
+    })()), (center || centerNote) && /* @__PURE__ */ react_global_default.createElement("div", { "aria-hidden": "true", style: { marginLeft: -size, width: size, height: size, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", pointerEvents: "none" } }, center && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-figure-font)", color: "var(--color-ink)", fontVariantNumeric: "tabular-nums" } }, center), centerNote && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)", textAlign: "center", maxWidth: size - thickness * 2 } }, centerNote))), legend && /* @__PURE__ */ react_global_default.createElement("div", { role: "list", style: { marginTop: "var(--space-12)", display: "flex", flexDirection: "column" } }, segs.map((s, i) => {
+      const row = /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { flexShrink: 0, width: "var(--space-8)", height: "var(--space-8)", borderRadius: "var(--radius-full)", background: s.color, boxShadow: `0 0 0 1px ${s.edge}` } }), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, font: "var(--type-row-font)", color: "var(--color-ink)" } }, s.label), /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, font: "var(--type-row-strong-font)", color: "var(--color-ink)", ...tabular } }, valueFormat(s.value)));
+      const style = { display: "flex", alignItems: "center", gap: "var(--space-8)", width: "100%", minHeight: "var(--h-row)", borderTop: i ? `var(--border-hairline) solid var(--color-line-soft)` : "none", textAlign: "left" };
+      return onSelect ? /* @__PURE__ */ react_global_default.createElement("button", { key: s.label, role: "listitem", type: "button", onClick: () => onSelect(s.label), style: { ...style, background: "none", border: 0, padding: 0, cursor: "pointer" } }, row) : /* @__PURE__ */ react_global_default.createElement("div", { key: s.label, role: "listitem", style }, row);
+    })), caveat && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-8) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, caveat));
+  }
+
   // design-system/components/data/ChartLegend.jsx
   var amountOf = (it) => typeof it.amount === "number" ? it.amount : parseFloat(String(it.value).replace(/[^0-9.-]/g, "")) || 0;
   function ChartLegend({ items = [], layout = "stacked", sort = true }) {
     const rows = sort ? items.slice().sort((a, b) => amountOf(b) - amountOf(a)) : items.slice();
     const stacked = layout === "stacked";
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: stacked ? "column" : "row", flexWrap: stacked ? "nowrap" : "wrap", gap: stacked ? 6 : "6px 14px", width: "100%", alignItems: stacked ? "stretch" : "flex-start" } }, rows.map((it, i) => /* @__PURE__ */ react_global_default.createElement("div", { key: it.label, style: { display: "flex", alignItems: "flex-start", gap: "var(--space-6)", width: stacked ? "100%" : "auto", minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, width: 8, height: 8, marginTop: "var(--space-4)", borderRadius: "var(--radius-full)", background: CHART_RAMP[Math.min(it.step ? it.step - 1 : i, CHART_RAMP.length - 1)] } }), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: stacked ? 1 : "0 1 auto", minWidth: 0, font: "var(--type-meta-font)", color: "var(--color-ink)", overflowWrap: "break-word" } }, it.label), it.value != null && /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, flexShrink: 0, marginLeft: stacked ? 8 : 0, font: "var(--type-meta-font)", color: "var(--color-muted)", textAlign: "right" } }, it.value))));
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: stacked ? "column" : "row", flexWrap: stacked ? "nowrap" : "wrap", gap: stacked ? 6 : "6px 14px", width: "100%", alignItems: stacked ? "stretch" : "flex-start" } }, rows.map((it, i) => /* @__PURE__ */ react_global_default.createElement("div", { key: it.label, style: { display: "flex", alignItems: "flex-start", gap: "var(--space-6)", width: stacked ? "100%" : "auto", minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, width: 8, height: 8, marginTop: "var(--space-4)", borderRadius: "var(--radius-full)", background: CHART_RAMP[Math.min(it.step ? it.step - 1 : i, CHART_RAMP.length - 1)], boxShadow: `0 0 0 1px ${CHART_EDGE[Math.min(it.step ? it.step - 1 : i, CHART_EDGE.length - 1)]}` } }), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: stacked ? 1 : "0 1 auto", minWidth: 0, font: "var(--type-meta-font)", color: "var(--color-ink)", overflowWrap: "break-word" } }, it.label), it.value != null && /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, flexShrink: 0, marginLeft: stacked ? 8 : 0, font: "var(--type-meta-font)", color: "var(--color-muted)", textAlign: "right" } }, it.value))));
   }
 
   // design-system/components/data/ChartShare.jsx
@@ -1814,7 +2142,11 @@ var __ds_out = (() => {
         "aria-label": ranked.map((s) => `${s.label} ${valueFormat(s.value, s.value / total * 100)}`).join(", "),
         style: { display: "flex", width: "100%", height: h, gap: SEGMENT_GAP, borderRadius: "var(--radius-full)", overflow: "hidden", background: "var(--color-track)", boxShadow: "inset 0 0 0 var(--border-hairline) var(--color-line)", transformOrigin: "left", transform: on ? "none" : "scaleX(0)", transition: run ? "transform var(--dur-bar) var(--ease)" : "none" }
       },
-      ranked.map((s, i) => /* @__PURE__ */ react_global_default.createElement("span", { key: s.label, style: { width: `calc(${s.value / total * 100}% - ${i ? "var(--space-2)" : "0px"})`, background: s.tone === "status" ? "var(--color-status-over-fg)" : s.other ? "var(--color-alloc-debt)" : CHART_RAMP[Math.min(i, CHART_RAMP.length - 1)] } }))
+      ranked.map((s, i) => /* @__PURE__ */ react_global_default.createElement("span", { key: s.label, style: {
+        width: `calc(${s.value / total * 100}% - ${i ? "var(--space-2)" : "0px"})`,
+        background: s.tone === "status" ? "var(--color-status-over-fg)" : s.other ? "var(--color-track)" : CHART_RAMP[Math.min(i, CHART_RAMP.length - 1)],
+        boxShadow: s.tone === "status" ? "none" : `inset 0 0 0 1px ${s.other ? "var(--color-muted)" : CHART_EDGE[Math.min(i, CHART_EDGE.length - 1)]}`
+      } }))
     ), /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", justifyContent: "space-between", gap: "var(--space-8)", marginTop: "var(--space-6)" } }, ranked.slice(0, 1).map((s) => /* @__PURE__ */ react_global_default.createElement("span", { key: s.label, style: { ...tabular, font: "var(--type-caption-font)", fontWeight: "var(--weight-bold)", color: "var(--color-bronze-deep)" } }, s.label, " ", valueFormat(s.value, s.value / total * 100))), ranked.length > 1 && ((s) => /* @__PURE__ */ react_global_default.createElement("span", { style: { ...tabular, font: "var(--type-caption-font)", fontWeight: "var(--weight-medium)", color: "var(--color-muted)" } }, s.label, " ", valueFormat(s.value, s.value / total * 100)))(ranked[ranked.length - 1])), showLegend && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(ChartLegend, { items: ranked.map((s, i) => ({ label: s.label, value: valueFormat(s.value, s.value / total * 100), amount: s.value, step: Math.min(i + 1, 4) })) })), caveat && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: "var(--space-6) 0 0", font: "var(--type-caption-font)", color: "var(--color-muted)" } }, caveat));
   }
 
@@ -2021,6 +2353,21 @@ var __ds_out = (() => {
     }
     const missing = pairs.some((c) => c.pct == null);
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%", boxSizing: "border-box", borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", padding: "var(--space-14)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)" } }, "How much these are the same fund"), onChangeMode && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", gap: "var(--space-6)", flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Pairs", size: "sm", tone: "filter", selected: mode === "pairs", onClick: () => onChangeMode("pairs") }), /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Matrix", size: "sm", tone: "filter", selected: mode === "matrix", onClick: () => onChangeMode("matrix") }))), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, controls), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-12)" } }, body), (footnote || missing) && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)" } }, /* @__PURE__ */ react_global_default.createElement(Provenance, { text: footnote || "An em dash is a pair whose holdings are not both disclosed yet \u2014 not a zero." })));
+  }
+
+  // design-system/components/data/PeerLine.jsx
+  var ORD = (n) => {
+    const t = n % 100;
+    if (t >= 11 && t <= 13) return `${n}th`;
+    return `${n}${["th", "st", "nd", "rd"][n % 10] || "th"}`;
+  };
+  var NUM3 = { fontVariantNumeric: "tabular-nums" };
+  function PeerLine({ value, peer, period, peerLabel, rank = null, unit = "%" }) {
+    const shown = (n) => Math.round(n * 10) / 10;
+    const a = shown(value), b = shown(peer);
+    const gap = shown(a - b);
+    const verdict = gap === 0 ? "level with its category" : `${Math.abs(gap).toFixed(1)} points ${gap > 0 ? "ahead" : "behind"}`;
+    return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...NUM3, color: "var(--color-ink)", font: "var(--type-meta-font)" } }, a.toFixed(1), unit), " over ", period, " \xB7 ", peerLabel, " ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, b.toFixed(1), unit), " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: { color: "var(--color-ink)" } }, verdict), rank && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: { color: "var(--color-ink)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, ORD(rank.n)), " of ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, rank.of))));
   }
 
   // design-system/components/data/ProgressRail.jsx
@@ -2265,6 +2612,91 @@ var __ds_out = (() => {
     ));
   }
 
+  // design-system/components/shell/ExplorerSheet.jsx
+  var DETENTS = ["peek", "half", "full"];
+  var HEIGHT = { peek: "auto", half: "52%", full: "86%" };
+  function ExplorerSheet({
+    open,
+    detent = "half",
+    onDetentChange,
+    onClose,
+    title,
+    count = null,
+    unit = "funds",
+    bottom = 0,
+    summary,
+    rail,
+    children,
+    label = "Fund explorer"
+  }) {
+    if (!open) return null;
+    const at = DETENTS.includes(detent) ? detent : "half";
+    const stepDown = () => {
+      const i = DETENTS.indexOf(at);
+      if (i <= 0) {
+        onClose && onClose();
+        return;
+      }
+      onDetentChange && onDetentChange(DETENTS[i - 1]);
+    };
+    const stepUp = () => {
+      const i = DETENTS.indexOf(at);
+      if (i < DETENTS.length - 1 && onDetentChange) onDetentChange(DETENTS[i + 1]);
+    };
+    return /* @__PURE__ */ react_global_default.createElement(
+      "section",
+      {
+        "aria-label": label,
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom,
+          zIndex: "var(--z-sheet)",
+          display: "flex",
+          flexDirection: "column",
+          height: HEIGHT[at],
+          maxHeight: "86%",
+          borderRadius: "var(--radius-24) var(--radius-24) 0 0",
+          background: "var(--color-canvas)",
+          /* Depth, not a scrim: the thread behind must stay readable. --shadow-bar is the system's
+             "this layer is above that one" without dimming anything. */
+          boxShadow: "var(--shadow-bar)",
+          boxSizing: "border-box",
+          animation: "ds-explorer var(--dur-screen) var(--ease) both"
+        }
+      },
+      /* @__PURE__ */ react_global_default.createElement("style", null, "@keyframes ds-explorer{from{transform:translateY(100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-explorer{from{opacity:0;transform:none}to{opacity:1;transform:none}}}"),
+      /* @__PURE__ */ react_global_default.createElement(
+        Pressable,
+        {
+          onClick: stepDown,
+          label: at === "peek" ? "Close the explorer" : "Show less of the explorer",
+          style: { flexShrink: 0, display: "flex", width: "100%", height: "var(--space-20)", alignItems: "center", justifyContent: "center" }
+        },
+        /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { display: "block", height: "var(--space-5)", width: "var(--h-touch)", borderRadius: "var(--radius-full)", background: "var(--color-line)" } })
+      ),
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "var(--space-8)", padding: `0 var(--space-16) var(--space-8)` } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minWidth: 0 } }, count != null && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)", fontVariantNumeric: "tabular-nums" } }, count.toLocaleString("en-IN"), " ", unit), title && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, title)), /* @__PURE__ */ react_global_default.createElement(
+        Pressable,
+        {
+          onClick: onClose,
+          label: "Close the explorer",
+          style: { flexShrink: 0, display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" }
+        },
+        /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Close")
+      )),
+      at === "peek" ? /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, padding: `0 var(--space-16) var(--space-16)` } }, summary, onDetentChange && /* @__PURE__ */ react_global_default.createElement(
+        Pressable,
+        {
+          onClick: stepUp,
+          label: "Show the list",
+          style: { display: "flex", minHeight: "var(--h-touch)", width: "100%", alignItems: "center", justifyContent: "center" }
+        },
+        /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Show the list")
+      )) : /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, at === "full" && rail && /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, padding: `0 var(--space-16) var(--space-8)` } }, rail), /* @__PURE__ */ react_global_default.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", padding: `0 var(--space-16) var(--space-20)` } }, children))
+    );
+  }
+
   // design-system/components/shell/HomeIndicator.jsx
   function HomeIndicator({ tone = "bronze" }) {
     return (
@@ -2444,6 +2876,65 @@ var __ds_out = (() => {
       },
       render(screen)
     ));
+  }
+
+  // design-system/components/shell/SectionStrip.jsx
+  function SectionStrip({ sections = [], active, onJump, label = "Sections" }) {
+    const ref = react_global_default.useRef(null);
+    react_global_default.useEffect(() => {
+      const el = ref.current && ref.current.querySelector('[data-active="true"]');
+      if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+    }, [active]);
+    if (!sections.length) return null;
+    return /* @__PURE__ */ react_global_default.createElement(
+      "div",
+      {
+        ref,
+        role: "group",
+        "aria-label": label,
+        className: "noscroll",
+        style: {
+          position: "sticky",
+          top: 0,
+          zIndex: "var(--z-sticky)",
+          display: "flex",
+          gap: "var(--space-6)",
+          width: "100%",
+          overflowX: "auto",
+          padding: `var(--space-8) var(--space-16)`,
+          boxSizing: "border-box",
+          background: "var(--color-canvas)",
+          /* A hairline, not a shadow: the strip is part of the page, not a layer above it. */
+          boxShadow: `inset 0 calc(-1 * var(--border-1)) 0 0 var(--color-line-soft)`
+        }
+      },
+      sections.map((s) => {
+        const on = s.id === active;
+        return /* @__PURE__ */ react_global_default.createElement(
+          Pressable,
+          {
+            key: s.id,
+            onClick: () => onJump && onJump(s.id),
+            pressed: on,
+            "data-active": on ? "true" : "false",
+            "aria-current": on ? "true" : void 0,
+            label: `Go to ${s.label}`,
+            style: {
+              display: "inline-flex",
+              height: "var(--h-filter-chip)",
+              flexShrink: 0,
+              alignItems: "center",
+              padding: `0 var(--space-12)`,
+              borderRadius: "var(--radius-full)",
+              scrollMargin: "var(--space-16)",
+              background: on ? "var(--color-selected)" : "var(--color-chip)",
+              boxShadow: `0 0 0 var(--border-1) ${on ? "var(--color-bronze)" : "var(--color-line)"}`
+            }
+          },
+          /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", letterSpacing: "var(--tracking-pill)", color: on ? "var(--color-ink)" : "var(--color-bronze-deep)", whiteSpace: "nowrap" } }, s.label)
+        );
+      })
+    );
   }
 
   // design-system/components/text/EyebrowDivider.jsx

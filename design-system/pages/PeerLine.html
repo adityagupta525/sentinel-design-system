@@ -1,0 +1,102 @@
+<!-- @dsCard group="Pages" viewport="1100x1500" name="PeerLine" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PeerLine — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/PeerLine.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { PeerLine, Surface, DataTable } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--type-caption-font','--type-meta-font','--color-ink','--color-muted'];
+
+function Row({ name, children }) {
+  return (
+    <Surface>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <span style={{ font: 'var(--type-title-font)', color: 'var(--color-ink)' }}>{name}</span>
+        {children}
+      </div>
+    </Surface>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="PeerLine" group="Data" status="shipped" requires={['PeerLine','Surface']}
+      summary="Thirty Indian products were torn down for the fund explorer, and every explorer that survived contact with users gives a fund its peer context ON ARRIVAL — INDmoney ranks inside the SEBI category, Groww carries Returns and Rankings against the category average, Kuvera opens Comparison pre-filled with four peers. A fund shown alone is a number; a fund shown beside its category is a judgement, and two bare cards of 1Y/3Y/5Y is what stakeholders called numbers thrown at you. This is the row-level half of a pair with Dumbbell, which draws the same comparison where a page has room.">
+
+      <Block n={1} title="Specimen" sub="One line under a fund's name, in a list row, a table row or a result card. Everything an advisor needs to say why this fund is on screen.">
+        <Specimen width={343}>
+          <Row name="Parag Parikh Flexi Cap">
+            <PeerLine value={21.4} peer={18.6} period="3 years" peerLabel="Flexi cap average" />
+          </Row>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="The fund's figure in meta, the category's in caption, the verdict in ink. The gap is computed here — a caller cannot hand in a verdict that disagrees with the two figures beside it.">
+        <Anatomy width={343} top="the fund's own figure, --type-meta-font, tabular"
+          left="the period, in words" right="the category's figure, tabular"
+          bottom="the verdict, computed from the two — one decimal, because the ramp prints returns to one">
+          <Row name="HDFC Flexi Cap">
+            <PeerLine value={22.8} peer={18.6} period="3 years" peerLabel="Flexi cap average" />
+          </Row>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Ahead, behind, level — the WORD carries it, never the colour" sub="Rule 1: colour never encodes. An advisor reads this line aloud to a client, and 'ahead' survives being spoken where green does not. The status family is reserved and may not be used without a word beside it — here the word does all the work, so the colour is not taken.">
+        <Grid cols={3} itemWidth={311} items={[
+          {label:'ahead', node:<Row name="Motilal Oswal Midcap"><PeerLine value={29.1} peer={25.3} period="3 years" peerLabel="Mid cap average" /></Row>,
+           note:'3.8 points ahead. Same ink as behind.'},
+          {label:'behind', node:<Row name="UTI Nifty 50 Index"><PeerLine value={15.9} peer={16.3} period="5 years" peerLabel="Index average" /></Row>,
+           note:'0.4 points behind. No red, no down arrow — the word is the signal.'},
+          {label:'level', node:<Row name="SBI Corporate Bond"><PeerLine value={6.62} peer={6.6} period="3 years" peerLabel="Corporate bond average" /></Row>,
+           note:'6.62 and 6.60 both print 6.6, so the gap is 0.0 — and "0.0 points ahead" is a sentence nobody would say. The gap is taken off the PRINTED figures, so the line can never disagree with them.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="Rank is optional, and is never invented" sub="A position needs the whole category as its denominator, not the ten rows that matched a filter. Pass `rank` where a real denominator exists; leave it out otherwise — the line is still a judgement without it.">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'with a real denominator', node:<Row name="Quant Small Cap"><PeerLine value={27.6} peer={24.9} period="3 years" peerLabel="Small cap average" rank={{ n: 4, of: 31 }} /></Row>,
+           note:'"4th of 31" — the category, not the shelf.'},
+          {label:'without one', node:<Row name="Quant Small Cap"><PeerLine value={27.6} peer={24.9} period="3 years" peerLabel="Small cap average" /></Row>,
+           note:'No rank rather than a rank out of the ten rows on screen. An invented denominator is worse than none.'},
+        ]} />
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/data/PeerLine.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<Row name="Parag Parikh Flexi Cap"><PeerLine value={21.4} peer={18.6} period="3 years" peerLabel="Flexi cap average" /></Row>}
+          doCaption="The fund, its category and the gap on one line. An advisor can read this to a client without opening anything."
+          dontNode={<Row name="Parag Parikh Flexi Cap"><p style={{margin:0, font:'var(--type-caption-font)', color:'var(--color-muted)'}}>21.4% over 3 years</p></Row>}
+          dontCaption="The figure alone. It is not wrong, it is not an answer — nothing on screen says whether 21.4% is good for a flexi cap." />
+      </Block>
+
+      <Block n={8} title="Motion" sub="None. It is type.">
+        <Motion rows={[{ name: 'Figure change on a refilter', property: 'none — tabular figures keep the digits from reflowing, which is why they are set', duration: '—', reduced: 'Unchanged.' }]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

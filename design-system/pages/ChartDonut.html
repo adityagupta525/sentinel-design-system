@@ -1,0 +1,113 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="ChartDonut" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ChartDonut — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/ChartDonut.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ChartDonut, ChartBar, Surface, Eyebrow } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-series-1','--color-series-2','--color-series-3','--color-series-4','--color-series-5','--type-figure-font','--type-row-font','--type-row-strong-font','--color-chip','--color-line','--h-row','--dur-bar','--space-2'];
+
+const CAPS = [{ label: 'Large cap', value: 67 }, { label: 'Mid cap', value: 20.6 }, { label: 'Small cap', value: 6.2 }, { label: 'Cash & other', value: 6.2 }];
+const SECTORS = [
+  { label: 'Financial services', value: 25.2 }, { label: 'Industrials', value: 15.9 }, { label: 'Utilities', value: 15.7 },
+  { label: 'Energy', value: 12.4 }, { label: 'Technology', value: 9.1 }, { label: 'Healthcare', value: 6.3 },
+  { label: 'Consumer staples', value: 5.2 }, { label: 'Materials', value: 4.8 }, { label: 'Telecom', value: 3.1 }, { label: 'Realty', value: 2.3 },
+];
+
+function Live() {
+  const [sel, setSel] = React.useState(null);
+  return <Surface><ChartDonut slices={CAPS} center="81" centerNote="holdings" selected={sel} onSelect={(l) => setSel(l === sel ? null : l)} caveat="as of Jun 2026" /></Surface>;
+}
+
+function App() {
+  return (
+    <PageShell name="ChartDonut" group="Data" status="shipped" requires={['ChartDonut','ChartBar','Surface']}
+      summary="Twenty shipped finance screens were read for this — Origin, Acorns, Revolut, Fidelity, Cash App, Starling, Binance, Crypto.com, Quicken, Lloyds — and NOT ONE is a solid pie. Every one is a ring whose hole carries the thing the reader came for: a balance, a total, a headline percentage. A pie spends its middle on nothing, so this component does not offer one. Colour is rank from the five-step series palette, which is legal here and not on a line: no pastel fill clears 3:1 against warm paper, so each one is drawn with its own darker contour, which does — and rank is allowed exactly where marks separate from EACH OTHER by edge, gap and label rather than from the page.">
+
+      <Block n={1} title="Specimen" sub="Live. Tap a legend row to emphasise its segment — thicker, never recoloured. Tap again to clear.">
+        <Specimen width={343}><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="The hole carries the answer" sub="The one thing every reference agrees on. Without it a ring is a decoration with a legend beside it; with it, the chart answers the question before the reader parses a single arc.">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'with the figure', node:<Surface><ChartDonut slices={CAPS} center="81" centerNote="holdings" run={false} /></Surface>,
+           note:'Origin, Acorns, Cash App and Starling all do exactly this.'},
+          {label:'without it', node:<Surface><ChartDonut slices={CAPS} run={false} /></Surface>,
+           note:'Legal, and weaker: the middle is now spent on nothing. Use it only where the total is already printed directly above.'},
+        ]} />
+      </Block>
+
+      <Block n={3} title="Capped at five, and the rest is named" sub="A ring is readable at four to six segments; past that a bar wins, because the eye is poor at comparing arcs that do not touch. One app in the reference set ships sixteen slices and is a colour wheel rather than a chart.">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'ten sectors, capped', node:<Surface><ChartDonut slices={SECTORS} center="10" centerNote="sectors held" run={false} /></Surface>,
+           note:'Five named, the remaining five folded into one row that says how many. The caller names it.'},
+          {label:'the same ten as bars', node:<Surface><ChartBar bars={SECTORS.slice(0,6).map((s) => ({ label: s.label, value: s.value }))} orientation="horizontal" density="expanded" valueFormat={(v) => `${v.toFixed(1)}%`} /></Surface>,
+           note:'When the job is comparing the parts with EACH OTHER rather than seeing the split, this is the better chart. Both are in the system; pick by the question.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="Three things taken from the reference set, redrawn in this system"
+        sub="Forty pins and twenty shipped finance screens were read. Almost all of it is decoration this product cannot use — 3D pies, neon on dark, gradient rings, glass. Three details were worth taking, and each is here for a reason rather than a look.">
+        <Grid cols={3} itemWidth={311} items={[
+          {label:'rounded caps and a gap', node:<Surface><ChartDonut slices={CAPS} center="81" centerNote="holdings" run={false} /></Surface>,
+           note:'Every ring that reads at a glance has both; every flush-segment ring reads as one solid shape until you look twice. The gap is the card\'s own ground, not a painted line.'},
+          {label:'the chosen wedge pushes out', node:<Surface><ChartDonut slices={CAPS} center="20.6%" centerNote="mid cap" selected="Mid cap" run={false} /></Surface>,
+           note:'Colour already carries rank, so selection cannot borrow it — two meanings in one channel. Distance is free and rule 1 stays intact.'},
+          {label:'one name on the ring', node:<Surface><ChartDonut slices={CAPS} center="81" centerNote="holdings" leadChip run={false} /></Surface>,
+           note:'A ring in the wild almost always carries one figure ON the arc. Only ONE, and only when that segment holds a quarter of the ring — two labels at this size collide.'},
+        ]} />
+      </Block>
+
+      <Block n={5} title="No segment is ever left to colour alone" sub="The ramp is ordinal and only its first step clears 3:1 against the page — so the ring earns its colour by touching: a hairline edge on every segment, a gap of the card's own ground between them, and a legend that names each one with its figure.">
+        <Specimen width={343}>
+          <Surface>
+            <Eyebrow>WHAT MAKES IT READ</Eyebrow>
+            <div style={{ marginTop: 'var(--space-8)' }}>
+              <ChartDonut slices={CAPS} center="93.8%" centerNote="in equity" run={false} />
+            </div>
+          </Surface>
+        </Specimen>
+      </Block>
+
+      <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={7} title="Props"><Props src="../components/data/ChartDonut.d.ts" /></Block>
+
+      <Block n={8} title="Do / Don't">
+        <DoDont
+          doNode={<Surface><ChartDonut slices={CAPS} center="81" centerNote="holdings" run={false} /></Surface>}
+          doCaption="Four segments, the total in the hole, every slice named with its figure underneath."
+          dontNode={<Surface><ChartDonut slices={SECTORS} max={10} legend={false} run={false} /></Surface>}
+          dontCaption="Ten segments and no legend. Now colour is the only thing telling the categories apart — in a ramp where three of four steps do not clear the page — and nothing on screen says which arc is which." />
+      </Block>
+
+      <Block n={9} title="Motion">
+        <Motion rows={[
+          { name: 'Segments sweep in', property: 'stroke-dasharray 0 → arc length, staggered 60ms by rank', duration: '--dur-bar 480ms', reduced: 'The stagger and the sweep are dropped; segments are drawn at full length on mount.' },
+          { name: 'Selection', property: 'stroke-width +4 on the chosen segment', duration: '--dur-fast 200ms', reduced: 'Unchanged — it is a width change, not a movement.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

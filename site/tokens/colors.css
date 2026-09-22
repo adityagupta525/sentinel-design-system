@@ -26,6 +26,66 @@
 --color-alloc-track:var(--color-track);
 --color-selected:#ebd4c3;
 
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+   THE SERIES PALETTE — five pastels and their edges. Added 22 Sep 2026 on the owner's ruling that the
+   charts were boring in one bronze, then redrawn twice the same day. The first attempt used five
+   saturated mid-darks: heavy and muddy on warm paper. The second used pastels but reached outside the
+   brand for them — a cool sky #bfd3d8 and a lilac #d6cade — and the owner rejected that too, then said
+   where to look: the palette boards under his own theme's name. Those boards are in
+   studio/fund-explorer/refs/palettes/ and they agree on ONE family — terracotta, sage, sand, olive and
+   copper on cream. Sky and lilac were never in it. This third palette is drawn only from hexes read off
+   those boards.
+
+   PASTEL FILL, SATURATED EDGE — and that pairing is the whole idea, not a decoration. A pastel cannot
+   clear WCAG 1.4.11's 3:1 against a light canvas; that is arithmetic, and it is exactly why the old
+   four-depth bronze ramp failed (2.57 / 1.66 / 1.30). So the CONTOUR carries the contrast and the FILL
+   carries the identity: every area is drawn in its pastel and outlined in its own deeper sibling, and
+   the sibling is what a small mark uses on its own. Each fill is its board hex blended toward white;
+   each edge is that same hex, darkened only as far as 3:1 demands, so the two are literally one colour.
+
+     fill                edge            edge vs canvas   hue
+     terracotta #d9a693  #c47457         3.20             16
+     laurel     #c0c8a8  #878f6d         3.10             75
+     copper     #d0ae7e  #b68036         3.12             35
+     truffle    #b6b5ac  #605f4b         5.91             54
+     sand       #dac2a5  #a08768         3.11             33
+
+   THE ORDER IS NOT THE BOARD'S ORDER. Ranks are handed out in the order a chart consumes them, so a
+   three-segment donut gets ranks 1-3 and those three must not be neighbouring hues. Sand (33) sits
+   beside copper (35) and would have been rank 2 by any natural reading of the family; it is rank 5
+   instead, and the green is pulled up to rank 2. Ranks 1-3 are therefore 16, 75 and 35 degrees apart.
+
+   MEASURED APART, INCLUDING FROM THE THINGS THEY MUST NEVER BE MISTAKEN FOR. Every fill is at least
+   12 ΔE (CIE76) from every other fill (worst pair: laurel/sand 12.6), from the canvas, from white,
+   from the track, and from BOTH reserved status grounds — the warning peach #f3e2da and the ok green
+   #e4ecdf. That last test is what shapes this palette and it cost real candidates. A light sage is the
+   obvious green for this family and every light sage fails it: at the lightness a pastel wants, sage
+   lands 7.7-9.8 from the ok ground. Laurel survives only because it is taken at a 0.34 blend instead
+   of 0.58 — darker than a pastel would naturally go, which is the price of not being mistakable for a
+   status band. A brighter alloy-orange #ebcbb3 scored a better worst pair (13.8) and was dropped for
+   sitting 12.9 from the warning peach; sand's 16.3 is worth the 1.2 ΔE.
+
+   WHERE EACH LAYER GOES. Fill + edge for an AREA — a donut segment, a share bar, a stacked band.
+   Edge alone for a small mark that must separate from the page — a legend dot, a sparkline, a single
+   line. Those two jobs used to share one token: rank 1's edge was pinned to --color-bronze-deep
+   #715035 so that no existing line changed colour when the palette did. It cost something visible. At
+   6.59 against the other four rims' 3.1-3.2, rank 1 read as the only OUTLINED segment on the ring and
+   the rest read as soft — one ring drawn in two different weights. So the two jobs now have two
+   sources: every rim is its own fill's sibling (rank 1 included, at 3.20), and `markColor` names
+   --color-bronze-deep directly instead of reading the first edge. Lines, bars and sparklines are
+   still bronze and still unchanged; only the ring's own rim moved. Rule 1 is intact: colour still
+   never carries identity alone, so every segment keeps its gap and its label. */
+--color-series-1:#d9a693;
+--color-series-2:#c0c8a8;
+--color-series-3:#d0ae7e;
+--color-series-4:#b6b5ac;
+--color-series-5:#dac2a5;
+--color-series-1-edge:#c47457;
+--color-series-2-edge:#878f6d;
+--color-series-3-edge:#b68036;
+--color-series-4-edge:#605f4b;
+--color-series-5-edge:#a08768;
+
 /* The CTA surface — the three stops of the one dark gradient (ui.tsx: DarkButton, Composer send, Stop, MoneyComposer send). */
 --color-cta:#1a1614;
 --color-cta-top:#3b3531;

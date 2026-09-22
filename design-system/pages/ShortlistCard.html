@@ -1,0 +1,97 @@
+<!-- @dsCard group="Pages" viewport="1100x1500" name="ShortlistCard" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ShortlistCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/ShortlistCard.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ShortlistCard, PeerLine, ArtifactCard, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--radius-16','--color-surface','--shadow-card','--color-status-over-bg','--type-title-font','--type-caption-font','--space-14'];
+
+const PREVIEW = (
+  <React.Fragment>
+    <div><p style={{ margin: 0, font: 'var(--type-row-strong-font)', color: 'var(--color-ink)' }}>Parag Parikh Flexi Cap</p>
+      <PeerLine value={21.4} peer={18.6} period="3 years" peerLabel="Flexi cap average" /></div>
+    <div><p style={{ margin: 0, font: 'var(--type-row-strong-font)', color: 'var(--color-ink)' }}>HDFC Flexi Cap</p>
+      <PeerLine value={22.8} peer={18.6} period="3 years" peerLabel="Flexi cap average" /></div>
+  </React.Fragment>
+);
+
+function App() {
+  return (
+    <PageShell name="ShortlistCard" group="Cards" status="shipped" requires={['ShortlistCard','PeerLine']}
+      summary="The durable object every serious advisor tool has and Sentinel had none: Tickertape saves a screen with a note, Wealthy Select is a monthly playbook, NJ ships a Recommended Portfolio. The explorer re-sent a fresh table every turn instead, so an eight-turn session left eight stale tables and nothing to return to — which is what 2–3 funds, bas was actually describing, since no app in the mined set has too few funds to complain about.">
+
+      <Block n={1} title="Specimen" sub="A named, dated, versioned list with the filters that produced it on its face — so the advisor can read it to a client without opening anything.">
+        <Specimen width={343}>
+          <ShortlistCard name="Sharma — flexi cap under 0.7%" client="R. Sharma" count={3} savedAt="22 Sep" version={2}
+            filters={['Flexi cap', 'Under 0.7%', 'On your shelf']} onOpen={() => {}}>{PREVIEW}</ShortlistCard>
+        </Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Name, then one line of provenance: how many, for whom, since when, which version. Every one of those is a thing an advisor gets asked.">
+        <Anatomy width={343} top="the name the ADVISOR gave it — not a query string"
+          left="--radius-16, surface, --shadow-card" right="Open, 44pt"
+          bottom="the filters, readable aloud; then a preview so the card is worth returning to">
+          <ShortlistCard name="Sharma — flexi cap under 0.7%" client="R. Sharma" count={3} savedAt="22 Sep" version={2}
+            filters={['Flexi cap', 'Under 0.7%']} onOpen={() => {}} />
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Stale is a SENTENCE, not a dot" sub="A saved list whose data has moved says what moved and offers to re-run. A coloured dot would say something is wrong; nothing is wrong, the world moved — and rule 1 says colour never encodes. The re-run is an offer, never automatic: a list that changed silently between opening it and reading it aloud is the defect this card exists to prevent.">
+        <Grid cols={2} itemWidth={343} items={[
+          {label:'current', node:<ShortlistCard name="Short duration for parked cash" count={4} savedAt="21 Sep" filters={['Debt', '1–3 years']} onOpen={() => {}} />,
+           note:'Nothing to say, so nothing is said.'},
+          {label:'stale', node:<ShortlistCard name="Short duration for parked cash" count={4} savedAt="12 Aug" version={3} filters={['Debt', '1–3 years']}
+            stale={{ text: 'Two of these changed category on 26 Feb.' }} onOpen={() => {}} onRefresh={() => {}} />,
+           note:'Rule 2\'s shape: text on the peach surface, with the offer beside it.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="It does not replace ArtifactCard" sub="ArtifactCard is a thing Sentinel made in THIS THREAD — it peeks, expands, fills, and dies with the conversation. This is a thing the advisor KEPT, with a name they gave it and a client it belongs to. One is an answer; the other is a working file. A screen that needs both uses both.">
+        <Grid cols={2} itemWidth={343} items={[
+          {label:'ArtifactCard — an answer', node:<ArtifactCard eyebrow="FUND SEARCH" title="5 funds match" provenance="On your shelf · as of 30 Sep 2026"><SentinelText text="Parag Parikh leads on cost, HDFC on three-year return." /></ArtifactCard>,
+           note:'Made in the thread, scoped to it.'},
+          {label:'ShortlistCard — a working file', node:<ShortlistCard name="Sharma — flexi cap under 0.7%" client="R. Sharma" count={3} savedAt="22 Sep" version={2} filters={['Flexi cap','Under 0.7%']} onOpen={() => {}} />,
+           note:'Kept, named, dated, re-runnable. Survives the thread.'},
+        ]} />
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/cards/ShortlistCard.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<ShortlistCard name="Sharma — flexi cap under 0.7%" client="R. Sharma" count={3} savedAt="22 Sep" filters={['Flexi cap','Under 0.7%','On your shelf']} onOpen={() => {}} />}
+          doCaption="The filters are on the card. The advisor reads the whole thing to a client without opening it."
+          dontNode={<ShortlistCard name="Shortlist 3" count={3} savedAt="22 Sep" onOpen={() => {}} />}
+          dontCaption="An auto-name and no filters. Next week nobody knows what it was for, and the advisor has to open it to find out — which is the return trip the card exists to save." />
+      </Block>
+
+      <Block n={8} title="Motion" sub="None of its own. It appears in a list or a drawer, and that surface owns the entrance.">
+        <Motion rows={[{ name: 'Press on Open / Run again', property: 'transform: scale(--press-scale)', duration: '--dur-press 150ms', reduced: 'Pressable drops the scale.' }]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

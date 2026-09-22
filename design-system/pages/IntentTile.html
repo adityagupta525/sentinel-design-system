@@ -1,0 +1,95 @@
+<!-- @dsCard group="Pages" viewport="1100x1500" name="IntentTile" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>IntentTile — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/IntentTile.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { IntentTile, IntentGrid } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--type-title-font','--type-meta-font','--type-caption-font','--color-surface','--color-selected','--color-bronze','--color-line','--radius-16','--h-touch','--space-12'];
+
+function Live() {
+  const [on, setOn] = React.useState('equity');
+  return (
+    <IntentGrid>
+      <IntentTile label="Equity" count={612} note="Flexi, large, mid, small" selected={on==='equity'} onClick={() => setOn('equity')} />
+      <IntentTile label="Debt" count={448} note="Corporate, short duration" selected={on==='debt'} onClick={() => setOn('debt')} />
+      <IntentTile label="Hybrid" count={216} note="Balanced advantage" selected={on==='hybrid'} onClick={() => setOn('hybrid')} />
+      <IntentTile label="Index" count={463} note="Passive, lowest cost" selected={on==='index'} onClick={() => setOn('index')} />
+    </IntentGrid>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="IntentTile" group="Cards" status="shipped" requires={['IntentTile','IntentGrid']}
+      summary="Eleven guided paths were found across the Indian market and ten of them are a SEPARATE surface from the screener — a quiz, a goal flow, a robo questionnaire. The eleventh, GoldenPi's purpose tiles, lives inside the explorer, and it is the only one an advisor can walk without leaving what they were doing. Centricity's own One Digital does the same at asset level: 'Choose your exposure · Equity 612 funds · Debt 448'. A tile is a pre-filled filter set with a name, so the first screen reads as a sentence and nobody meets an empty form.">
+
+      <Block n={1} title="Specimen" sub="Live. Two to a row at 375, which is the widest a label and a count sit on one line. Tap to select.">
+        <Specimen width={343}><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="Anatomy" sub="Label, count, note. The count is not decoration — a tile without one asks the advisor to tap and find out, which is the tap this component exists to save.">
+        <Anatomy width={343} top="--type-title-font, ink — what the set is called"
+          left="--radius-16, surface, 1px line" right="the count, tabular, bronze-deep"
+          bottom="the note: one line on what is inside the set">
+          <IntentGrid cols={1}><IntentTile label="Equity" count={612} note="Flexi, large, mid, small" onClick={() => {}} /></IntentGrid>
+        </Anatomy>
+      </Block>
+
+      <Block n={3} title="Unavailable is a WORD, never a zero" sub="Four of the five asset classes Centricity sells have no rows in the book. A tile reading 'Bonds · 0 funds' is a lie about an empty shelf rather than an admission of a missing feed — and the advisor still needs to know the class exists.">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'available', node:<IntentGrid cols={1}><IntentTile label="Mutual funds" count={1739} note="Direct plans, on and off your shelf" onClick={() => {}} /></IntentGrid>,
+           note:'A count and a note. Tappable.'},
+          {label:'unavailable', node:<IntentGrid cols={1}><IntentTile label="Bonds" unavailable unavailableNote="No feed yet — rating, yield and tenure are not on file." /></IntentGrid>,
+           note:'Inert, not disabled (F-46, F-31): the label stays legible and only the affordance goes. The reason says which feed is missing.'},
+        ]} />
+      </Block>
+
+      <Block n={4} title="Selected" sub="The sand fill and a bronze ring, which is how selection already reads in this system — the same pair RangePills and Pill use.">
+        <Specimen width={343}>
+          <IntentGrid>
+            <IntentTile label="Equity" count={612} note="Flexi, large, mid, small" selected onClick={() => {}} />
+            <IntentTile label="Debt" count={448} note="Corporate, short duration" onClick={() => {}} />
+          </IntentGrid>
+        </Specimen>
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/cards/IntentTile.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<IntentGrid cols={1}><IntentTile label="Maturing within 3 years" count={84} note="Short duration and corporate bond" onClick={() => {}} /></IntentGrid>}
+          doCaption="A named set with its count. GoldenPi's purpose tile: the advisor reads what they get before they tap."
+          dontNode={<IntentGrid cols={1}><IntentTile label="Short duration" onClick={() => {}} /></IntentGrid>}
+          dontCaption="A bare category name with no count and no note. It is a folder, not a filter set — the advisor has to tap it to learn anything." />
+      </Block>
+
+      <Block n={8} title="Motion" sub="Press only. The tile does not animate in; it is the first thing on the screen.">
+        <Motion rows={[{ name: 'Press', property: 'transform: scale(--press-scale)', duration: '--dur-press 150ms', reduced: 'Pressable drops the scale and keeps the fill change.' }]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

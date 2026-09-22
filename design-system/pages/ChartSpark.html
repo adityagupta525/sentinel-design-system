@@ -1,0 +1,108 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="ChartSpark" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ChartSpark — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/ChartSpark.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { ChartSpark, DataTable, Surface } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze-deep','--color-muted','--color-status-over-fg','--dur-bar','--ease','--type-row-font','--type-caption-font'];
+
+/* Three real three-year NAV paths that END within 0.4 points of each other. That is the whole
+   argument for the component, so the fixture has to carry it rather than assert it. */
+const STEADY  = [100,104,107,111,114,118,121,125,128,132,136,139,143];
+const VOLATILE= [100,118,96,124,88,131,101,139,94,146,108,151,142];
+const LATE    = [100,101,102,101,103,102,104,106,112,120,129,137,144];
+const ROWS = [
+  { fund: 'Steady compounder', path: STEADY,  ret: 12.6 },
+  { fund: 'Volatile winner',   path: VOLATILE, ret: 12.4 },
+  { fund: 'Late runner',       path: LATE,     ret: 12.8 },
+];
+
+function InTable() {
+  return (
+    <Surface>
+      <DataTable
+        columns={[
+          { key: 'fund', label: 'Fund', kind: 'text' },
+          { key: 'path', label: '3Y path', kind: 'sparkline' },
+          { key: 'ret', label: '3Y return', kind: 'percent' },
+        ]}
+        rows={ROWS} />
+    </Surface>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="ChartSpark" group="Data" status="shipped" requires={['ChartSpark','DataTable','Surface']}
+      summary="DataTable has declared a `sparkline` column kind since v1 and the system could not draw one, so every table that wanted a path printed a number instead. This is that line. It is deliberately not a chart: no axis, no grid, no label, no tooltip — the figure it sits beside is its label, and anything more would make a 56×18 box compete with the row it belongs to. What it adds is the one thing a single figure cannot carry: two funds on the same three-year return are not the same fund, and the spark is where that becomes visible without opening either of them.">
+
+      <Block n={1} title="Specimen" sub="Three funds whose three-year returns sit within 0.4 points of each other. The figures say they are interchangeable; the sparks say one compounded, one lurched, and one did nothing for two years.">
+        <InTable />
+      </Block>
+
+      <Block n={2} title="The end dot is not decoration" sub="`endDot` defaults to true because 'where did it end' is what a reader looks for, and without a mark the eye has to hunt along the line to find the right-hand end — which costs longer than reading the figure it was meant to support.">
+        <Grid cols={2} items={[
+          { label: 'endDot (the default)', node: <Surface><ChartSpark points={VOLATILE} /></Surface>, note: 'The end is found, not hunted.' },
+          { label: 'endDot={false}', node: <Surface><ChartSpark points={VOLATILE} endDot={false} /></Surface>, note: 'The line stops somewhere. The reader has to work out where.' },
+        ]} />
+      </Block>
+
+      <Block n={3} title="Tone is a role, never a colour" sub="`ramp` is the fund's own line, `muted` a benchmark or a prior period, `status` a crossed limit. A single 56px mark has no neighbour to separate from by edge and label, so it separates from the PAGE — which is why every tone here resolves through `markColor` and none of them resolves to a pastel.">
+        <Grid cols={3} items={[
+          { label: "tone='ramp'", node: <Surface><ChartSpark points={STEADY} /></Surface>, note: 'The fund itself.' },
+          { label: "tone='muted'", node: <Surface><ChartSpark points={STEADY} tone="muted" /></Surface>, note: 'A benchmark or a prior period.' },
+          { label: "tone='status'", node: <Surface><ChartSpark points={STEADY} tone="status" /></Surface>, note: 'A crossed limit, and nothing else.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="Too few points is a state, not an error" sub="A fund with less than two points of history renders an empty box of the same size. A column that collapses on one row makes every other row in the table move, and a table that moves while it is being read is worse than a gap in it.">
+        <Grid cols={3} items={[
+          { label: 'no history', node: <Surface><ChartSpark points={[]} /></Surface>, note: 'An empty box of the same size.' },
+          { label: 'one point', node: <Surface><ChartSpark points={[100]} /></Surface>, note: 'One point is not a path. Same box.' },
+          { label: 'thirteen points', node: <Surface><ChartSpark points={STEADY} /></Surface>, note: 'The column never changes height.' },
+        ]} />
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/data/ChartSpark.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<InTable />}
+          doCaption="The spark sits beside the figure it explains, in a column with a header that names it. The figure is still the answer; the line is the path."
+          dontNode={<Surface><ChartSpark points={VOLATILE} width={300} height={140} /></Surface>}
+          dontCaption="Blown up to chart size it is now a chart with no axis, no grid and no readout — every question it invites, it cannot answer. Past a table row, use ChartLine." />
+      </Block>
+
+      <Block n={8} title="Motion">
+        <Motion rows={[
+          { name: 'Line draws in', property: 'stroke-dashoffset, full length → 0', duration: '--dur-bar 480ms', reduced: 'The draw is dropped; the line is rendered whole on mount.' },
+          { name: 'End dot', property: 'opacity 0 → 1, after the line lands', duration: '--dur-fast 200ms', reduced: 'Rendered at full opacity with the line.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

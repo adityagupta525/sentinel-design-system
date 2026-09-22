@@ -36,8 +36,15 @@
 /* Layers and scrims — the modal vocabulary, so a component can be written with zero raw values. Two
    layers only: the scrim, and the modal surface above it. readme.md:206: sheets carry the scrim at 40%,
    the drawer at 25%, and nothing else carries one. ExplainerSheet still writes 20 / 30 / 0.4 raw; it
-   re-points to these on its next touch, with the screenshot hash proving the no-op. */
---z-scrim:20;--z-modal:30;
+   re-points to these on its next touch, with the screenshot hash proving the no-op.
+
+   TWO MORE LAYERS, 22 Sep 2026, BOTH BELOW THE SCRIM — and both non-modal, which is why they are not
+   part of the vocabulary above. --z-sticky is a bar that travels with its own scroll region
+   (SectionStrip's mini table of contents); it must clear the page's content and nothing else.
+   --z-sheet is the explorer sheet: a summoned browse surface that sits ABOVE the thread and BELOW a
+   modal, because a confirm sheet opened from inside it must still come out on top. Both were raw
+   literals for the length of one render before being named here. */
+--z-scrim:20;--z-modal:30;--z-sticky:10;--z-sheet:25;
 --scrim-sheet:0.4;--scrim-drawer:0.25;         /* v12 · ClientChip's box and ResponseFeedback's thumb targets. Both were
    setting 28 by hand, the only box in the product outside this vocabulary. The visual box is 28; the
    TARGET is still 44 — ClientChip's own header says so and both thumbs sit inside Pressable. Naming

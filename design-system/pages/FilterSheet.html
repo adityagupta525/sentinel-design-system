@@ -1,0 +1,138 @@
+<!-- @dsCard group="Pages" viewport="1100x1500" name="FilterSheet" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>FilterSheet — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/FilterSheet.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { FilterSheet, DarkButton, Pill, SentinelBlock, SentinelText } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--type-sheet-title-font','--type-label-font','--type-meta-font','--radius-24','--scrim','--scrim-sheet','--z-modal','--dur-screen','--space-20'];
+
+const GROUPS = [
+  { key: 'bucket', label: 'Asset', mode: 'multi', options: [
+    { value: 'Equity', label: 'Equity', count: 6 }, { value: 'Debt', label: 'Debt', count: 3 },
+    { value: 'Hybrid', label: 'Hybrid', count: 1 }, { value: 'Index', label: 'Index', count: 1 } ] },
+  { key: 'ter', label: 'Expense ratio', note: 'Bands an advisor says aloud, not a slider they cannot hit mid-call.',
+    options: [ { value: 'lt03', label: 'Under 0.3%', count: 3 }, { value: 'lt07', label: 'Under 0.7%', count: 6 },
+      { value: 'lt10', label: 'Under 1.0%', count: 10 } ] },
+  { key: 'risk', label: 'Riskometer', mode: 'multi', options: [
+    { value: 'Moderate', label: 'Moderate', count: 3 }, { value: 'High', label: 'High', count: 1 },
+    { value: 'Very high', label: 'Very high', count: 6 } ] },
+  { key: 'shelf', label: 'Your shelf', options: [
+    { value: 'on', label: 'On your shelf', count: 9 }, { value: 'off', label: 'Off the shelf', count: 1 } ] },
+];
+
+function Frame({ children, sheet, height = 560 }) {
+  return (
+    <div style={{ position: 'relative', width: 375, height, borderRadius: 24, overflow: 'hidden', background: 'var(--color-canvas)', backgroundImage: 'var(--paper-texture)', backgroundSize: 'var(--paper-texture-size)', boxShadow: '0 0 0 1px var(--ring-frame)' }}>
+      <div style={{ padding: '20px 16px' }}>{children}</div>
+      {sheet}
+    </div>
+  );
+}
+
+/* Mounted CLOSED and opened by the control — the only way the dialog contract arms (F-25). */
+function Live() {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState({ ter: 'lt07', bucket: ['Equity'] });
+  const count = (value.ter === 'lt03' ? 3 : value.ter === 'lt07' ? 6 : 10);
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Frame sheet={<FilterSheet open={open} groups={GROUPS} value={value} resultCount={count}
+        onChange={(k, v) => setValue((s) => ({ ...s, [k]: v }))}
+        onClearAll={() => setValue({})} onApply={() => setOpen(false)} onClose={() => setOpen(false)} />}>
+        <SentinelBlock><SentinelText text={`${count} funds match — equity, under 0.7% expense, on your shelf.`} /></SentinelBlock>
+        <div style={{ marginTop: 16 }}><DarkButton full label="Filters" onClick={() => setOpen(true)} /></div>
+      </Frame>
+    </div>
+  );
+}
+
+function Zero() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Frame height={480} sheet={<FilterSheet open={open} groups={GROUPS} value={{ ter: 'lt03', risk: ['Very high'] }} resultCount={0}
+        onApply={() => setOpen(false)} onClose={() => setOpen(false)} />}>
+        <SentinelBlock><SentinelText text="Nothing matches every filter. Drop one and I will widen the search." /></SentinelBlock>
+        <div style={{ marginTop: 16 }}><DarkButton full label="Filters" onClick={() => setOpen(true)} /></div>
+      </Frame>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="FilterSheet" group="Cards" status="shipped" requires={['FilterSheet','DarkButton','Pill']}
+      summary="Batch, not live — a phone should not spend a page load per tap. Bands, not sliders — an advisor mid-call thinks in 'under 0.7', not in 0.63, and a band can carry its own count where a slider cannot. The count rides the commit, and a count sits beside every option: the two highest-impact things a filter interface can do. Applied filters stay visible as removable chips, because an advisor has to be able to read them aloud to a client.">
+
+      <Block n={1} title="Specimen" sub="Live, and mounted closed — the way the product reaches it. Open Filters; change the expense band and watch the commit count follow. Then the scrim or Escape.">
+        <Live />
+      </Block>
+
+      <Block n={2} title="The commit carries the count" sub="Coin's 'View 1,731 funds', Airbnb's 'Show 45 homes'. A commit that says only Apply asks the advisor to tap and find out — and on a phone, to wait for a page load to find out.">
+        <Grid cols={2} itemWidth={311} items={[
+          {label:'matches', node:<div style={{padding:'var(--space-12)'}}><DarkButton full label="View 6 funds" /></div>,
+           note:'The number is the same one the list behind the sheet will show. One source, so they cannot disagree.'},
+          {label:'no matches', node:<div style={{padding:'var(--space-12)'}}><DarkButton full label="No funds match — drop a filter" /></div>,
+           note:'A sentence, not a dead control. The sheet still closes, so the advisor can see what they asked for and relax one — Redfin\'s recovery.'},
+        ]} />
+      </Block>
+
+      <Block n={3} title="Zero matches, end to end" sub="Open Filters: under 0.3% expense AND very high risk is a real contradiction on this shelf. The sheet says so on the button and stays operable.">
+        <Zero />
+      </Block>
+
+      <Block n={4} title="Applied filters are derived, never held" sub="The chip row is computed from `value`. Two sources for one truth is how a chip row and a list stop agreeing — and an advisor reads these chips aloud to a client.">
+        <Specimen width={343}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-6)' }}>
+            <Pill tone="filter" size="sm" selected removable label="Asset: Equity" />
+            <Pill tone="filter" size="sm" selected removable label="Expense ratio: Under 0.7%" />
+            <Pill tone="filter" size="sm" selected removable label="Your shelf: On your shelf" />
+          </div>
+        </Specimen>
+      </Block>
+
+      <Block n={5} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={6} title="Props"><Props src="../components/cards/FilterSheet.d.ts" /></Block>
+
+      <Block n={7} title="Do / Don't">
+        <DoDont
+          doNode={<div style={{padding:'var(--space-8)', display:'flex', flexWrap:'wrap', gap:'var(--space-6)'}}>
+            <Pill tone="filter" size="sm" label="Under 0.3% (3)" /><Pill tone="filter" size="sm" selected label="Under 0.7% (6)" /><Pill tone="filter" size="sm" label="Under 1.0% (10)" /></div>}
+          doCaption="Three named bands, each carrying what it would leave. The advisor picks the one they would say out loud."
+          dontNode={<div style={{padding:'var(--space-8)'}}><input type="range" min="0" max="100" defaultValue="63" style={{width:'100%'}} /><p style={{margin:'var(--space-6) 0 0', font:'var(--type-caption-font)', color:'var(--color-muted)'}}>0.63%</p></div>}
+          dontCaption="A slider. A fine motor task mid-client-call, and it produces a number where the advisor thinks in a band — and it cannot carry a count." />
+      </Block>
+
+      <Block n={8} title="Motion">
+        <Motion rows={[
+          { name: 'Sheet in', property: 'transform: translateY(100% → 0)', duration: '--dur-screen 320ms', reduced: 'Opacity only; no translate.' },
+          { name: 'Scrim', property: 'opacity 0 → --scrim-sheet', duration: '--dur-screen 320ms', reduced: 'Unchanged — it is opacity already.' },
+          { name: 'Chip toggle', property: 'fill and ring change; press scale on Pressable', duration: '--dur-press 150ms', reduced: 'Scale dropped, fill kept.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

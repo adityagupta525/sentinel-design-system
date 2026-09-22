@@ -2,6 +2,7 @@ import React from 'react';
 import { Eyebrow } from '../text/Eyebrow.jsx';
 import { Pill } from '../actions/Pill.jsx';
 import { Pressable } from '../actions/Pressable.jsx';
+import { ChartSpark } from '../data/ChartSpark.jsx';
 /* The full table — component request spec Part 7, a widening of DataTableCard rather than a rival to
    it. DataTableCard stays the three-column card that sits in a thread; this is the one that sorts,
    scrolls, filters and expands.
@@ -86,6 +87,18 @@ function Cell({ col, row, max }) {
       <div style={{ ...base, position: 'relative', paddingRight: 'var(--space-4)' }}>
         <span aria-hidden="true" style={{ position: 'absolute', inset: 0, transformOrigin: 'right center', transform: `scaleX(${pct})`, background: 'var(--tint-bronze-06)', borderRadius: 'var(--radius-6)' }} />
         <span style={{ position: 'relative' }} className="ds-tabular">{v}</span>
+      </div>
+    );
+  }
+  /* SPARKLINE — the kind this contract has declared since v1 and nothing rendered. Until 22 Sep 2026
+     `sparkline` existed in ColumnKind and in ALIGN and nowhere else, so a cell holding a series fell
+     through to the text branch and printed the array: `100104107111114118...` across three columns of
+     the fund table. The value is the series itself, oldest first; anything that is not an array of at
+     least two numbers falls back to the text branch, which is what a column of mixed history needs. */
+  if (col.kind === 'sparkline' && Array.isArray(v)) {
+    return (
+      <div style={{ ...base, display: 'flex', justifyContent: align === 'end' ? 'flex-end' : 'flex-start' }}>
+        <ChartSpark points={v} tone={col.tone} label={col.sparkLabel} />
       </div>
     );
   }

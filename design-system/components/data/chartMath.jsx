@@ -61,8 +61,18 @@ export function areaPath(pts, y0) {
   if (lib && lib.area) return lib.area().x((p) => p[0]).y0(y0).y1((p) => p[1]).curve(lib.curveMonotoneX)(pts);
   return `${pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]},${p[1]}`).join('')}L${pts[pts.length - 1][0]},${y0}L${pts[0][0]},${y0}Z`;
 }
-/* The four-step bronze ramp — the system's only chart palette, ordinal by rank. */
-export const CHART_RAMP = ['var(--color-bronze-deep)', 'var(--color-bronze)', 'var(--color-alloc-debt)', 'var(--color-bubble-edge)'];
+/* THE SERIES PALETTE, IN TWO LAYERS — five pastel fills and the five deeper edges that make them
+   legible. A pastel cannot clear 3:1 on a light page, so the contour carries the contrast and the
+   fill carries the identity. AREAS take both; a small mark that must separate from the page takes the
+   EDGE alone, which is what `markColor` returns. See tokens/colors.css for the measurements. */
+export const CHART_RAMP = ['var(--color-series-1)', 'var(--color-series-2)', 'var(--color-series-3)', 'var(--color-series-4)', 'var(--color-series-5)'];
+export const CHART_EDGE = ['var(--color-series-1-edge)', 'var(--color-series-2-edge)', 'var(--color-series-3-edge)', 'var(--color-series-4-edge)', 'var(--color-series-5-edge)'];
+/* The edge for a given rank — the colour an outline, a legend dot or a single line takes. */
+export function edgeColor(tone, rank = 0) {
+  if (tone === 'muted') return 'var(--color-muted)';
+  if (tone === 'status') return 'var(--color-status-over-fg)';
+  return CHART_EDGE[Math.min(rank, CHART_EDGE.length - 1)];
+}
 /* Colour comes from a data role, never from a prop. ramp = the client's own money · muted = benchmark,
    target, prior period · status = a crossed limit and nothing else. `tone` never accepts a colour.
    v11: muted swapped from --color-data-deemph (2.52 / 2.77 — below even the 3.0 non-text floor) to
@@ -72,21 +82,27 @@ export function toneColor(tone, rank = 0) {
   if (tone === 'status') return 'var(--color-status-over-fg)';
   return CHART_RAMP[Math.min(rank, CHART_RAMP.length - 1)];
 }
-/* v11 · PERCEIVABILITY. WCAG 1.4.11 asks a graphical object to clear 3.0:1 against adjacent colour.
-   Measured against canvas #f6f4f1 / surface #ffffff:
-     ramp 1 bronze-deep  6.59 / 7.24  pass
-     ramp 2 bronze       2.57 / 2.83  FAIL
-     ramp 3 alloc-debt   1.66 / 1.82  FAIL
-     ramp 4 bubble-edge  1.30 / 1.42  FAIL
-   So the palette carries exactly ONE chart mark that is legible as a shape against the page.
-   `markColor` is therefore the only correct source for a mark that must separate FROM THE BACKGROUND
-   — a line, a single bar, a crosshair, a sparkline. It returns ramp 1 regardless of rank.
-   `CHART_RAMP` by rank stays legal only where marks separate from EACH OTHER by edge and label
-   (stacked segments, adjacent bars), never from the page. No colour changed to fix this. */
+/* PERCEIVABILITY. WCAG 1.4.11 asks a graphical object to clear 3.0:1 against adjacent colour, and the
+   four-step bronze ramp this system used until 22 Sep 2026 cleared it exactly once — bronze-deep at
+   6.59, then 2.57, 1.66 and 1.30. Three of four steps failed. That measurement is why the ramp was
+   replaced rather than extended, and it is the reason the replacement is built in two layers: a pastel
+   cannot clear 3:1 on warm paper either, so CHART_RAMP (the fills) still clears nothing on its own and
+   CHART_EDGE (the contours) clears 3.10 to 6.59, every step.
+   Which means the rule did not change, only the arithmetic behind it. `markColor` remains the only
+   correct source for a mark that must separate FROM THE BACKGROUND — a line, a single bar, a
+   crosshair, a sparkline — and it returns a deep colour regardless of rank. `CHART_RAMP` by rank stays
+   legal only where marks separate from EACH OTHER by edge and label (ring segments, stacked bands,
+   adjacent bars), never from the page, and there it is always drawn with its own edge. */
 export function markColor(tone) {
   if (tone === 'muted') return 'var(--color-muted)';
   if (tone === 'status') return 'var(--color-status-over-fg)';
-  return CHART_RAMP[0];
+  /* BRONZE-DEEP BY NAME, not `CHART_EDGE[0]` by position — a line or a sparkline is a small mark
+     against the page and a pastel would vanish on it, so it needs a deep colour; but so does the ring's
+     rank-1 rim, and those are not the same requirement. While this read the first edge, the two were
+     locked together: giving the ring five rims of equal weight would have recoloured every line in the
+     product, and keeping the lines bronze left rank 1 as the only outlined segment on the ring. Naming
+     the token directly separates them. Three palette revisions have now changed no existing line. */
+  return 'var(--color-bronze-deep)';
 }
 /* Adjacent-segment separation cannot be solved by colour in this palette either — measured, every
    candidate fails against at least one ramp step (line 1.06, surface 1.42, ink 2.25, muted 1.05 at
