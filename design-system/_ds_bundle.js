@@ -850,7 +850,7 @@ var __ds_out = (() => {
     return CHART_EDGE[Math.min(rank, CHART_EDGE.length - 1)];
   }
   function toneColor(tone, rank = 0) {
-    if (tone === "muted") return "var(--color-muted)";
+    if (tone === "muted") return "var(--color-track)";
     if (tone === "status") return "var(--color-status-over-fg)";
     return CHART_RAMP[Math.min(rank, CHART_RAMP.length - 1)];
   }
@@ -1493,7 +1493,7 @@ var __ds_out = (() => {
     flat: "none"
   };
   var TONE2 = { surface: "var(--color-surface)", canvas: "var(--color-canvas)", bubble: "var(--color-bubble)" };
-  function Surface({
+  var Surface = react_global_default.forwardRef(function Surface2({
     children,
     elevation = "raised",
     tone = "surface",
@@ -1502,7 +1502,7 @@ var __ds_out = (() => {
     grow = false,
     style,
     ...rest
-  }) {
+  }, ref) {
     const e = ELEVATION[elevation] || ELEVATION.raised;
     const bg = TONE2[tone] || TONE2.surface;
     const r = [8, 12, 16, 20, 24].includes(radius) ? `var(--radius-${radius})` : "var(--radius-16)";
@@ -1510,6 +1510,7 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement(
       "div",
       {
+        ref,
         ...rest,
         style: {
           width: "100%",
@@ -1524,7 +1525,7 @@ var __ds_out = (() => {
       },
       children
     );
-  }
+  });
 
   // design-system/components/chat/UserBubble.jsx
   var rowsFor = (text) => Math.min(6, String(text).split("\n").length + Math.ceil(String(text).length / 38));

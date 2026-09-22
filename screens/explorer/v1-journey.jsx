@@ -362,17 +362,30 @@ const PAGE_SECTIONS = [
 ];
 const RANGE_OF = { r1: '1Y', r3: '3Y', r5: '5Y' };
 
-function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2 }) {
+function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2, openAt }) {
   const moreRef = React.useRef(null);
-  const [active, setActive] = useS1('returns');
+  const [active, setActive] = useS1(openAt || 'returns');
   const [period, setPeriod] = useS1('r3');
   const [asTable, setAsTable] = useS1(false);
   const [mix, setMix] = useS1('cap');
+  const [slice, setSlice] = useS1(null);
+  /* A REF PER SECTION, because SectionStrip was a control that did nothing. Until now `onJump` only
+     moved the strip's own highlight: the chip lit up, the page stayed exactly where it was, and a
+     reader who tapped 'Composition' was told the app had heard them and then shown the same screen.
+     A control that reports success without acting is worse than one that is absent. */
+  const secRefs = { returns: React.useRef(null), score: React.useRef(null), stats: React.useRef(null),
+    mix: React.useRef(null), clients: React.useRef(null), manager: React.useRef(null) };
+  const jump = (id) => {
+    setActive(id);
+    const n = secRefs[id] && secRefs[id].current;
+    if (n && n.scrollIntoView) n.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  };
   const f = fundById(id), p = perfOf(id), cat = categoryAvgOf(id), r = riskOf(id), h = holdingsOf(id);
   const held = holdersOf(id), nav = navSeries(id), mgr = managerOf(id), rk = categoryRank(id);
 
-  /* PRD §1.6: ONE horizontal bar graph, the breakdown switched by pills. Three of the PRD's four are
-     in the book; the sub-sector split is L2 and has no feed, so it is not offered. */
+  /* PRD §1.6: ONE chart, the breakdown switched by pills — the pills change the LENS, never the
+     chart type, or they would mean two things at once. Three of the PRD's four lenses are in the
+     book; the sub-sector split is L2 and has no feed, so it is not offered. */
   const capSum = h.caps.reduce((a, c) => a + c.pct, 0);
   const sect = h.sectors[h.asOf].slice(0, 5);
   const sectRest = +(100 - sect.reduce((a, x) => a + x.pct, 0)).toFixed(1);
@@ -384,10 +397,10 @@ function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2 }) {
 
   return (
     <ScreenScaffold title={f.name} body="thread" onMenu={onBack}
-      anchor={l2 ? moreRef : 0} revision={l2 ? 'l2' : 'l1'}
+      anchor={l2 ? moreRef : (openAt ? secRefs[openAt] : 0)} revision={l2 ? 'l2' : (openAt || 'l1')}
       composer={<Composer placeholder="Ask about this fund" onAttach={() => {}} />}>
       <div style={{ margin: `0 calc(-1 * var(--gutter))` }}>
-        <SectionStrip sections={PAGE_SECTIONS} active={active} onJump={setActive} />
+        <SectionStrip sections={PAGE_SECTIONS} active={active} onJump={jump} />
       </div>
 
       {/* PRD §1 NARRATION — the considered view, before any number. */}
@@ -444,7 +457,7 @@ function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2 }) {
         )}
 
         {/* PRD §1.2 CENTRICITY SCORE — with its basis, and marked for what it is. */}
-        <Surface>
+        <Surface ref={secRefs.score}>
           <Eyebrow>CENTRICITY SCORE</Eyebrow>
           <div style={{ marginTop: 'var(--space-8)' }}>
             <FigureRow label={`Rank ${rk.n} of ${rk.of} in ${f.category}`} value="Placeholder"
@@ -457,7 +470,7 @@ function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2 }) {
         </Surface>
 
         {/* PRD §1.4 STATISTICS — top five, each with an info icon that says how to JUDGE it. */}
-        <Surface>
+        <Surface ref={secRefs.stats}>
           <Eyebrow>STATISTICS</Eyebrow>
           <div style={{ marginTop: 'var(--space-8)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-8)' }}>
             <StatTile label="Sharpe ratio" value={r.sharpe.toFixed(2)} note="Return per unit of swing" onExplain={() => onExplain('Sharpe ratio')} />
@@ -468,8 +481,16 @@ function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2 }) {
           <div style={{ marginTop: 'var(--space-8)' }}><Provenance text={riskProvenance()} /></div>
         </Surface>
 
-        {/* PRD §1.6 COMPOSITION — one horizontal bar chart, switched by pills. */}
-        <Surface>
+        {/* PRD §1.6 COMPOSITION — a ring, switched by pills. It was a horizontal bar chart until the
+            owner pointed out that the explorer is where the data visuals should live and the donut
+            was sitting on a spec page and nowhere else. A ring is the right shape for this question
+            and a bar is not: every breakdown here is a SHARE OF ONE WHOLE that sums to 100, which is
+            what a ring says in its geometry and a bar only says in its labels — and the component's
+            own rule (four to six segments, past that a bar wins) is satisfied by all three lenses,
+            market cap at four, instrument at two, sector at five and an Other. The hole carries the
+            holding count, which is the thing a reader came for and a bar chart had nowhere to put.
+            `max` is the row count so the ring never re-folds an Other the fixture already folded. */}
+        <Surface ref={secRefs.mix}>
           <Eyebrow>COMPOSITION</Eyebrow>
           <div style={{ marginTop: 'var(--space-8)' }}>
             <SegmentedRow label="Breakdown" options={['Market cap', 'Sector', 'Instrument']}
@@ -477,13 +498,15 @@ function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2 }) {
               onChange={(x) => setMix({ 'Market cap': 'cap', Sector: 'sector', Instrument: 'instrument' }[x])} />
           </div>
           <div style={{ marginTop: 'var(--space-12)' }}>
-            <ChartBar bars={MIX[mix]} orientation="horizontal" density="expanded"
-              valueFormat={(v) => `${v.toFixed(1)}%`} caveat={`${h.count} holdings · as of ${h.asOf}`} />
+            <ChartDonut slices={MIX[mix]} max={MIX[mix].length}
+              center={String(h.count)} centerNote="holdings"
+              selected={slice} onSelect={(l) => setSlice(l === slice ? null : l)}
+              caveat={`as of ${h.asOf}`} />
           </div>
           <div style={{ marginTop: 'var(--space-8)' }}><Provenance text={holdingsProvenance()} /></div>
         </Surface>
 
-        <Surface>
+        <Surface ref={secRefs.clients}>
           <Eyebrow>YOUR CLIENTS</Eyebrow>
           <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
             {held.length ? `${held.length} of your clients already hold this — ${held.join(' · ')}.` : 'None of your clients hold this.'}
@@ -491,7 +514,7 @@ function FundPage({ id, onBack, onCompare, onOverlap, onExplain, l2, onL2 }) {
         </Surface>
 
         {/* PRD §1.5 FUND MANAGER. */}
-        <Surface>
+        <Surface ref={secRefs.manager}>
           <Eyebrow>FUND MANAGER</Eyebrow>
           <div style={{ marginTop: 'var(--space-8)' }}>
             <FigureRow label={mgr.name} value={`${mgr.years.toFixed(1)} years on this fund`} sub={{ label: 'Managing since', value: mgr.since }} />
@@ -640,7 +663,7 @@ const EXPLAIN = {
     'Not on file. The fixture draws a fund and its benchmark as separate paths, so anything measured against the benchmark is undefined until a real series arrives.'],
 };
 
-function V1({ start = 'explore', startValue, startPicked = [], startId = 'ppfas-flexi', startL2 = false, startFilters = false, startView = 'cards' }) {
+function V1({ start = 'explore', startValue, startPicked = [], startId = 'ppfas-flexi', startL2 = false, startFilters = false, startView = 'cards', startAt }) {
   const [step, setStep] = useS1(start);
   const [bucket, setBucket] = useS1('Equity');
   /* NO FILTER IS APPLIED BEFORE THE ADVISOR APPLIES ONE. The first cut seeded { bucket: ['Equity'] },
@@ -675,7 +698,7 @@ function V1({ start = 'explore', startValue, startPicked = [], startId = 'ppfas-
     onFilters={() => setFilters(true)}
     onCompare={() => setStep('compare')} onOverlap={() => setStep('overlap')} />;
   else if (step === 'cats') screen = <Categories bucket={bucket} onBucket={(b) => { setBucket(b); setValue({ bucket: [b] }); }} onBack={() => setStep('explore')} onPick={() => setStep('list')} />;
-  else if (step === 'fund') screen = <FundPage id={openId} l2={l2} onL2={setL2} onBack={() => setStep('list')} onExplain={setExplain}
+  else if (step === 'fund') screen = <FundPage id={openId} l2={l2} onL2={setL2} openAt={startAt} onBack={() => setStep('list')} onExplain={setExplain}
     onCompare={() => { setPicked([openId, openId === 'ppfas-flexi' ? 'hdfc-flexi' : 'ppfas-flexi']); setStep('compare'); }}
     onOverlap={() => { setPicked([openId, openId === 'ppfas-flexi' ? 'hdfc-flexi' : 'ppfas-flexi']); setStep('overlap'); }} />;
   else if (step === 'compare') screen = <Compare ids={pair} onBack={() => setStep('list')} onAdd={() => setStep('list')} />;
@@ -719,9 +742,10 @@ function App_V1() {
       </Section>
 
       <Section title="Step 4 · the fund one-pager — PRD §1"
-        sub="Narration first, then the headline as what ₹10,000 became, the curve against its benchmark with ranges, the score WITH its basis, four statistics each with an info icon, one horizontal bar switched by pills, the reverse lookup, the manager — and Show more for L2.">
+        sub="Narration first, then the headline as what ₹10,000 became, the curve against its benchmark with ranges, the score WITH its basis, four statistics each with an info icon, the composition as a ring switched by pills, the reverse lookup, the manager — and Show more for L2.">
         <StateRow>
           <State label="L1" note="Everything an advisor needs before they open their mouth."><V1 start="fund" /></State>
+          <State label="COMPOSITION" note="The section strip jumps here for real now. A ring, not a bar: every lens sums to one whole, and the hole carries the holding count. Tap a legend row to push its segment out — it is never recoloured."><V1 start="fund" startAt="mix" /></State>
           <State label="L2" tone="under" note="Show more opens the second level and names the L2 metrics that have no feed rather than leaving them out."><V1 start="fund" startL2 /></State>
         </StateRow>
       </Section>

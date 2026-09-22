@@ -40,5 +40,11 @@ export interface SurfaceProps extends React.HTMLAttributes<HTMLDivElement> {
  *
  *  **It is not a replacement for the cards that mean something.** `ArtifactCard` carries peek/expand
  *  and provenance; `InfoCard` is the fund's page; `ResultCard` is the end of a journey. Reach for
- *  `Surface` when the box is only a box. */
-export function Surface(props: SurfaceProps): JSX.Element;
+ *  `Surface` when the box is only a box.
+ *
+ *  **It forwards its ref to the underlying div** (22 Sep 2026), because a card is the thing a screen
+ *  scrolls to — a section jump, a focus move after a sheet closes. The alternative was wrapping it in
+ *  a bare div, which in a gapped flex column adds a gap nobody asked for. */
+export declare const Surface: React.ForwardRefExoticComponent<
+  SurfaceProps & React.RefAttributes<HTMLDivElement>
+>;

@@ -78,7 +78,14 @@ export function edgeColor(tone, rank = 0) {
    v11: muted swapped from --color-data-deemph (2.52 / 2.77 — below even the 3.0 non-text floor) to
    --color-muted (6.26 / 6.88). Same role, same warm grey family, already in the palette. */
 export function toneColor(tone, rank = 0) {
-  if (tone === 'muted') return 'var(--color-muted)';
+  /* THE MUTED FILL IS A FILL, NOT THE MUTED LINE. `--color-muted` #605954 was chosen for a muted
+     LINE, where 6.26 against the canvas is what makes a benchmark readable — and it is right there.
+     As an AREA in a ring of pastels it was the darkest thing on screen: the "Cash & other" segment
+     read as a black slab cut out of the ring and pulled the eye to the one category meant to recede.
+     So muted takes the same two layers as every series — the track as its fill, `--color-muted` as
+     its edge via `edgeColor` — which is also exactly what a folded `rest` segment already draws. A
+     remainder and a benchmark share a role here and now they share a shape. */
+  if (tone === 'muted') return 'var(--color-track)';
   if (tone === 'status') return 'var(--color-status-over-fg)';
   return CHART_RAMP[Math.min(rank, CHART_RAMP.length - 1)];
 }

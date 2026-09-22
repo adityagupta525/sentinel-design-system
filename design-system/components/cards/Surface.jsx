@@ -29,10 +29,16 @@ const ELEVATION = {
 };
 const TONE = { surface: 'var(--color-surface)', canvas: 'var(--color-canvas)', bubble: 'var(--color-bubble)' };
 
-export function Surface({
+/* FORWARDS ITS REF (22 Sep 2026). A card is the thing a screen scrolls TO — a section jump, a
+   "back to the top of this block", a focus move after a sheet closes — and until now the only way to
+   reach one was to wrap it in a bare div, which in a gapped flex column silently added a gap. The
+   explorer's section strip is what found this: it set its own highlight and never scrolled, because
+   there was nothing to scroll to. Additive and backwards compatible — a caller that passes no ref
+   renders exactly what it rendered before. */
+export const Surface = React.forwardRef(function Surface({
   children, elevation = 'raised', tone = 'surface',
   radius = 16, padding = 14, grow = false, style, ...rest
-}) {
+}, ref) {
   const e = ELEVATION[elevation] || ELEVATION.raised;
   const bg = TONE[tone] || TONE.surface;
   /* Numbers, not strings, so a caller cannot pass `13`: the value is looked up in the scale and an
@@ -42,10 +48,10 @@ export function Surface({
     : [6, 8, 10, 12, 14, 16, 20].includes(padding) ? `var(--space-${padding})`
     : 'var(--space-14)';
   return (
-    <div {...rest}
+    <div ref={ref} {...rest}
       style={{ width: '100%', boxSizing: 'border-box', borderRadius: r, background: bg, boxShadow: e,
         padding: p, ...(grow ? { flex: 1, minHeight: 0 } : null), ...style }}>
       {children}
     </div>
   );
-}
+});

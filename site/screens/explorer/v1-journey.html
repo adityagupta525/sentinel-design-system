@@ -3908,9 +3908,10 @@ function FundPage(_ref5) {
     onOverlap = _ref5.onOverlap,
     _onExplain = _ref5.onExplain,
     l2 = _ref5.l2,
-    onL2 = _ref5.onL2;
+    onL2 = _ref5.onL2,
+    openAt = _ref5.openAt;
   var moreRef = React.useRef(null);
-  var _useS3 = useS1('returns'),
+  var _useS3 = useS1(openAt || 'returns'),
     _useS4 = _slicedToArray(_useS3, 2),
     active = _useS4[0],
     setActive = _useS4[1];
@@ -3926,6 +3927,30 @@ function FundPage(_ref5) {
     _useS0 = _slicedToArray(_useS9, 2),
     mix = _useS0[0],
     setMix = _useS0[1];
+  var _useS1 = useS1(null),
+    _useS10 = _slicedToArray(_useS1, 2),
+    slice = _useS10[0],
+    setSlice = _useS10[1];
+  /* A REF PER SECTION, because SectionStrip was a control that did nothing. Until now `onJump` only
+     moved the strip's own highlight: the chip lit up, the page stayed exactly where it was, and a
+     reader who tapped 'Composition' was told the app had heard them and then shown the same screen.
+     A control that reports success without acting is worse than one that is absent. */
+  var secRefs = {
+    returns: React.useRef(null),
+    score: React.useRef(null),
+    stats: React.useRef(null),
+    mix: React.useRef(null),
+    clients: React.useRef(null),
+    manager: React.useRef(null)
+  };
+  var jump = function jump(id) {
+    setActive(id);
+    var n = secRefs[id] && secRefs[id].current;
+    if (n && n.scrollIntoView) n.scrollIntoView({
+      block: 'start',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    });
+  };
   var f = fundById(id),
     p = perfOf(id),
     cat = categoryAvgOf(id),
@@ -3936,8 +3961,9 @@ function FundPage(_ref5) {
     mgr = managerOf(id),
     rk = categoryRank(id);
 
-  /* PRD §1.6: ONE horizontal bar graph, the breakdown switched by pills. Three of the PRD's four are
-     in the book; the sub-sector split is L2 and has no feed, so it is not offered. */
+  /* PRD §1.6: ONE chart, the breakdown switched by pills — the pills change the LENS, never the
+     chart type, or they would mean two things at once. Three of the PRD's four lenses are in the
+     book; the sub-sector split is L2 and has no feed, so it is not offered. */
   var capSum = h.caps.reduce(function (a, c) {
     return a + c.pct;
   }, 0);
@@ -3979,8 +4005,8 @@ function FundPage(_ref5) {
     title: f.name,
     body: "thread",
     onMenu: onBack,
-    anchor: l2 ? moreRef : 0,
-    revision: l2 ? 'l2' : 'l1',
+    anchor: l2 ? moreRef : openAt ? secRefs[openAt] : 0,
+    revision: l2 ? 'l2' : openAt || 'l1',
     composer: /*#__PURE__*/React.createElement(Composer, {
       placeholder: "Ask about this fund",
       onAttach: function onAttach() {}
@@ -3992,7 +4018,7 @@ function FundPage(_ref5) {
   }, /*#__PURE__*/React.createElement(SectionStrip, {
     sections: PAGE_SECTIONS,
     active: active,
-    onJump: setActive
+    onJump: jump
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 'var(--space-12)'
@@ -4130,7 +4156,9 @@ function FundPage(_ref5) {
     emptyState: {
       title: 'No returns on file'
     }
-  }), /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Eyebrow, null, "CENTRICITY SCORE"), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement(Surface, {
+    ref: secRefs.score
+  }, /*#__PURE__*/React.createElement(Eyebrow, null, "CENTRICITY SCORE"), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 'var(--space-8)'
     }
@@ -4148,7 +4176,9 @@ function FundPage(_ref5) {
   }, /*#__PURE__*/React.createElement(ConstraintCallout, {
     eyebrow: "BEFORE YOU USE THIS",
     body: "The score's weights are a design placeholder, and a proprietary ranking is a research report needing a registered owner and a published method. The rank above is a fact about this shelf \u2014 the fund's three-year return against its peers here. Nothing else is claimed."
-  }))), /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Eyebrow, null, "STATISTICS"), /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement(Surface, {
+    ref: secRefs.stats
+  }, /*#__PURE__*/React.createElement(Eyebrow, null, "STATISTICS"), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 'var(--space-8)',
       display: 'grid',
@@ -4190,7 +4220,9 @@ function FundPage(_ref5) {
     }
   }, /*#__PURE__*/React.createElement(Provenance, {
     text: riskProvenance()
-  }))), /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Eyebrow, null, "COMPOSITION"), /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement(Surface, {
+    ref: secRefs.mix
+  }, /*#__PURE__*/React.createElement(Eyebrow, null, "COMPOSITION"), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 'var(--space-8)'
     }
@@ -4213,27 +4245,33 @@ function FundPage(_ref5) {
     style: {
       marginTop: 'var(--space-12)'
     }
-  }, /*#__PURE__*/React.createElement(ChartBar, {
-    bars: MIX[mix],
-    orientation: "horizontal",
-    density: "expanded",
-    valueFormat: function valueFormat(v) {
-      return "".concat(v.toFixed(1), "%");
+  }, /*#__PURE__*/React.createElement(ChartDonut, {
+    slices: MIX[mix],
+    max: MIX[mix].length,
+    center: String(h.count),
+    centerNote: "holdings",
+    selected: slice,
+    onSelect: function onSelect(l) {
+      return setSlice(l === slice ? null : l);
     },
-    caveat: "".concat(h.count, " holdings \xB7 as of ").concat(h.asOf)
+    caveat: "as of ".concat(h.asOf)
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 'var(--space-8)'
     }
   }, /*#__PURE__*/React.createElement(Provenance, {
     text: holdingsProvenance()
-  }))), /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Eyebrow, null, "YOUR CLIENTS"), /*#__PURE__*/React.createElement("p", {
+  }))), /*#__PURE__*/React.createElement(Surface, {
+    ref: secRefs.clients
+  }, /*#__PURE__*/React.createElement(Eyebrow, null, "YOUR CLIENTS"), /*#__PURE__*/React.createElement("p", {
     style: {
       margin: "var(--space-8) 0 0",
       font: 'var(--type-body-font)',
       color: 'var(--color-ink)'
     }
-  }, held.length ? "".concat(held.length, " of your clients already hold this \u2014 ").concat(held.join(' · '), ".") : 'None of your clients hold this.')), /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Eyebrow, null, "FUND MANAGER"), /*#__PURE__*/React.createElement("div", {
+  }, held.length ? "".concat(held.length, " of your clients already hold this \u2014 ").concat(held.join(' · '), ".") : 'None of your clients hold this.')), /*#__PURE__*/React.createElement(Surface, {
+    ref: secRefs.manager
+  }, /*#__PURE__*/React.createElement(Eyebrow, null, "FUND MANAGER"), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 'var(--space-8)'
     }
@@ -4414,10 +4452,10 @@ function Compare(_ref6) {
 function Overlap(_ref7) {
   var ids = _ref7.ids,
     onBack = _ref7.onBack;
-  var _useS1 = useS1('top10'),
-    _useS10 = _slicedToArray(_useS1, 2),
-    prop = _useS10[0],
-    setProp = _useS10[1];
+  var _useS11 = useS1('top10'),
+    _useS12 = _slicedToArray(_useS11, 2),
+    prop = _useS12[0],
+    setProp = _useS12[1];
   var funds = FUNDS.filter(function (f) {
     return holdingsOf(f.id);
   }).map(function (f) {
@@ -4553,53 +4591,54 @@ function V1(_ref8) {
     _ref8$startFilters = _ref8.startFilters,
     startFilters = _ref8$startFilters === void 0 ? false : _ref8$startFilters,
     _ref8$startView = _ref8.startView,
-    startView = _ref8$startView === void 0 ? 'cards' : _ref8$startView;
-  var _useS11 = useS1(start),
-    _useS12 = _slicedToArray(_useS11, 2),
-    step = _useS12[0],
-    setStep = _useS12[1];
-  var _useS13 = useS1('Equity'),
+    startView = _ref8$startView === void 0 ? 'cards' : _ref8$startView,
+    startAt = _ref8.startAt;
+  var _useS13 = useS1(start),
     _useS14 = _slicedToArray(_useS13, 2),
-    bucket = _useS14[0],
-    setBucket = _useS14[1];
+    step = _useS14[0],
+    setStep = _useS14[1];
+  var _useS15 = useS1('Equity'),
+    _useS16 = _slicedToArray(_useS15, 2),
+    bucket = _useS16[0],
+    setBucket = _useS16[1];
   /* NO FILTER IS APPLIED BEFORE THE ADVISOR APPLIES ONE. The first cut seeded { bucket: ['Equity'] },
      so the entry screen opened saying "Filters · 1 on" with an Equity chip nobody had chosen — the
      screen answering a question it had not been asked. */
-  var _useS15 = useS1(startValue || {}),
-    _useS16 = _slicedToArray(_useS15, 2),
-    value = _useS16[0],
-    setValue = _useS16[1];
-  var _useS17 = useS1({
+  var _useS17 = useS1(startValue || {}),
+    _useS18 = _slicedToArray(_useS17, 2),
+    value = _useS18[0],
+    setValue = _useS18[1];
+  var _useS19 = useS1({
       key: 'rank',
       dir: 'asc'
     }),
-    _useS18 = _slicedToArray(_useS17, 2),
-    sort = _useS18[0],
-    setSort = _useS18[1];
-  var _useS19 = useS1(startView),
     _useS20 = _slicedToArray(_useS19, 2),
-    view = _useS20[0],
-    setView = _useS20[1];
-  var _useS21 = useS1(startFilters),
+    sort = _useS20[0],
+    setSort = _useS20[1];
+  var _useS21 = useS1(startView),
     _useS22 = _slicedToArray(_useS21, 2),
-    filters = _useS22[0],
-    setFilters = _useS22[1];
-  var _useS23 = useS1(startPicked),
+    view = _useS22[0],
+    setView = _useS22[1];
+  var _useS23 = useS1(startFilters),
     _useS24 = _slicedToArray(_useS23, 2),
-    picked = _useS24[0],
-    setPicked = _useS24[1];
-  var _useS25 = useS1(startId),
+    filters = _useS24[0],
+    setFilters = _useS24[1];
+  var _useS25 = useS1(startPicked),
     _useS26 = _slicedToArray(_useS25, 2),
-    openId = _useS26[0],
-    setOpenId = _useS26[1];
-  var _useS27 = useS1(startL2),
+    picked = _useS26[0],
+    setPicked = _useS26[1];
+  var _useS27 = useS1(startId),
     _useS28 = _slicedToArray(_useS27, 2),
-    l2 = _useS28[0],
-    setL2 = _useS28[1];
-  var _useS29 = useS1(null),
+    openId = _useS28[0],
+    setOpenId = _useS28[1];
+  var _useS29 = useS1(startL2),
     _useS30 = _slicedToArray(_useS29, 2),
-    explain = _useS30[0],
-    setExplain = _useS30[1];
+    l2 = _useS30[0],
+    setL2 = _useS30[1];
+  var _useS31 = useS1(null),
+    _useS32 = _slicedToArray(_useS31, 2),
+    explain = _useS32[0],
+    setExplain = _useS32[1];
   var togglePick = function togglePick(id) {
     return setPicked(function (s) {
       return s.includes(id) ? s.filter(function (x) {
@@ -4683,6 +4722,7 @@ function V1(_ref8) {
     id: openId,
     l2: l2,
     onL2: setL2,
+    openAt: startAt,
     onBack: function onBack() {
       return setStep('list');
     },
@@ -4798,12 +4838,18 @@ function App_V1() {
     startFilters: true
   })))), /*#__PURE__*/React.createElement(Section, {
     title: "Step 4 \xB7 the fund one-pager \u2014 PRD \xA71",
-    sub: "Narration first, then the headline as what \u20B910,000 became, the curve against its benchmark with ranges, the score WITH its basis, four statistics each with an info icon, one horizontal bar switched by pills, the reverse lookup, the manager \u2014 and Show more for L2."
+    sub: "Narration first, then the headline as what \u20B910,000 became, the curve against its benchmark with ranges, the score WITH its basis, four statistics each with an info icon, the composition as a ring switched by pills, the reverse lookup, the manager \u2014 and Show more for L2."
   }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
     label: "L1",
     note: "Everything an advisor needs before they open their mouth."
   }, /*#__PURE__*/React.createElement(V1, {
     start: "fund"
+  })), /*#__PURE__*/React.createElement(State, {
+    label: "COMPOSITION",
+    note: "The section strip jumps here for real now. A ring, not a bar: every lens sums to one whole, and the hole carries the holding count. Tap a legend row to push its segment out \u2014 it is never recoloured."
+  }, /*#__PURE__*/React.createElement(V1, {
+    start: "fund",
+    startAt: "mix"
   })), /*#__PURE__*/React.createElement(State, {
     label: "L2",
     tone: "under",
