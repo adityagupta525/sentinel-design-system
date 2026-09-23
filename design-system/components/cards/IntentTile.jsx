@@ -18,11 +18,18 @@ import { Pressable } from '../actions/Pressable.jsx';
 
    REDRAWN 23 SEP 2026, ON THE OWNER'S NOTE THAT THE TILES READ AS LABELS IN BOXES. They did: a word, a
    figure, a hairline. Three things changed and none of them is a colour.
-     1. A MARK, OVERSIZED AND CLIPPED. `mark` is drawn at 76px in the bottom-right corner at 7% ink and
-        cropped by the tile's own radius, so it is a silhouette UNDER the label rather than an icon
-        beside it. The second time an advisor opens the explorer they reach for a shape instead of
-        reading four words. It is texture, never meaning — every tile still states its class in words,
-        so rule 1 holds and a tile with no mark is not a tile missing information.
+     1. A MARK IN THE BOTTOM-RIGHT, FULLY INSIDE THE TILE. It is a silhouette UNDER the label rather
+        than an icon beside it, so the second time an advisor opens the explorer they reach for a
+        shape instead of reading four words. It is texture, never meaning — every tile still states
+        its class in words, so rule 1 holds and a tile with no mark is not a tile missing information.
+
+        IT USED TO BLEED PAST THE CORNER AND IT LOOKED BROKEN. Drawn at 76px with a negative offset,
+        the mark was cut by the straight part of the border-box before the radius curved away: the
+        equity bars ended in a flat slice, the debt ladder's rungs stopped mid-rung, the ingot lost
+        its base. At a glance it read as intentional cropping; at 4x it read as clipping damage, and
+        the owner's note was that the outline was being cut. A bleeding object only reads as depth
+        when it is unmistakably a big shape passing through — which a 76px flat glyph in an 88pt tile
+        is not. So it sits inside with clearance, and nothing is clipped at all.
      2. THE TILE HAS A FLOOR, so a grid of four is a grid of four equal objects rather than four boxes
         of whatever height their text happened to need. 88 is the height at which a title, a count and
         the mark all sit without the mark touching the type.
@@ -68,8 +75,8 @@ export function IntentTile({
           box and a mark that swallowed a tap would make the bottom half of the tile dead. */}
       {mark && (
         <span aria-hidden="true" style={{
-          position: 'absolute', right: -10, bottom: -12, pointerEvents: 'none',
-          color: 'var(--color-bronze-deep)', opacity: unavailable ? 0.04 : selected ? 0.13 : 0.07,
+          position: 'absolute', right: 'var(--space-12)', bottom: 'var(--space-10)', pointerEvents: 'none',
+          color: 'var(--color-bronze-deep)', opacity: unavailable ? 0.06 : selected ? 0.18 : 0.11,
           transition: 'opacity var(--dur-fast) var(--ease)',
           display: 'grid', placeItems: 'center',
         }}>{mark}</span>

@@ -92,7 +92,7 @@ function cardFor(i) {
   }
 
   return {
-    name: deShout(i.name.replace(/ Direct Plan Growth$| Growth Option - Direct$| Direct Growth$| Growth$/i, '').trim()),
+    name: deShout(i.name.replace(/\s*-?\s*(Direct Plan|Direct)?\s*(Growth|Growth Option|Option)?\s*(-\s*Direct)?\s*$/i, (m) => (/(growth|direct|option|plan)/i.test(m) ? '' : m)).trim()),
     sub: parts.join(' · ') || i.category,
     logo: initials(i.amc || i.name),
     chips, headline, facts,
@@ -130,59 +130,44 @@ function rebase(series) {
   return base ? series.map((p, x) => ({ x, y: +((p[1] / base) * 100).toFixed(2) })) : null;
 }
 
-function OnePager({ i, onAct }) {
+function OnePager({ i, onAct, onClose, shortlisted }) {
   const p = onePagerOf(i.id) || {};
-  const s = shapeOf(i.id);
   const [metric, setMetric] = useS1(null);
   const [lens, setLens] = useS1('sector');
+  /* ONE SECTION OPEN AT A TIME, AND THE FIRST ONE BY DEFAULT. The owner's note was that the pager is
+     right but too long — "usme sab information bhi dikhaye aur itna lamba bhi na ho". A section strip
+     would have cost a permanent 44pt band; folding the sections costs nothing and uses the gesture
+     the funnel already taught. `StepBlock` IS that gesture, so the pager folds with the same
+     component the steps do rather than a second accordion with its own behaviour. */
+  const [fold, setFold] = useS1('returns');
   const t = (k) => () => setMetric((x) => (x === k ? null : k));
+  const f = (k) => () => setFold((x) => (x === k ? null : k));
 
   const nav = rebase(p.nav);
   const bench = rebase(p.bench);
   const held = holdersOf(i.id) || [];
 
-  /* The composition lenses this instrument actually has. An empty lens is not offered — a pill that
-     opens an empty chart is worse than a pill that is not there. */
   const lenses = [];
   if (p.sector) lenses.push({ key: 'sector', label: 'Sector' });
   if (p.marketCap) lenses.push({ key: 'cap', label: 'Market cap' });
   if (p.holdings) lenses.push({ key: 'holdings', label: 'Top holdings' });
   const useLens = lenses.some((l) => l.key === lens) ? lens : lenses[0]?.key;
-
   const rows = useLens === 'sector' ? p.sector : useLens === 'cap' ? p.marketCap : p.holdings;
-  /* A SINGLE-SEGMENT BREAKDOWN IS A SENTENCE, NOT A RING. Canara Robeco is 100% large cap and a
-     donut of one segment is a complete circle that says nothing an eight-word line does not. */
   const oneSegment = rows && rows.length === 1;
+  const mRows = metricRows(i, p);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)', paddingTop: 'var(--space-8)', borderTop: 'var(--border-hairline) solid var(--color-line)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)', paddingTop: 'var(--space-8)', borderTop: 'var(--border-hairline) solid var(--color-line)' }}>
       <SentinelText text={narrate(i)} />
 
-      {/* THE CURVE IS ONE SERIES, AND THE BENCHMARK IS A ROW UNDER IT.
-
-          The first build put both in `ChartLine` and the owner's note was that the two lines read as
-          one — same weight, same colour, no difference. He was right, and the fix is not to restyle
-          the chart: this system's own components already say the comparison better than a second
-          line can. `ChartLine` is drawn for ONE series with an area fill (its spec page shows exactly
-          that, and the fill is what makes the shape read); a second series is dashed, muted and
-          drawn behind, which at 53 points of real NAV is two scribbles on top of each other.
-
-          So the curve is the fund alone, and the benchmark is a `Dumbbell` — the component this
-          system already has for "two measurements of different things, and neither becomes the
-          other". It states the gap as a distance the eye measures in one look, which is the actual
-          question, instead of asking the reader to separate two lines. */}
       {nav && (
-        <div>
-          <Eyebrow>WHAT ₹100 BECAME</Eyebrow>
-          <div style={{ marginTop: 'var(--space-8)' }}>
-            <ChartReadout label={p.nav[p.nav.length - 1][0] ? monthYear(p.nav[p.nav.length - 1][0]) : 'Latest'}
-              value={String(Math.round(nav[nav.length - 1].y))} idleNote="rebased from 100" />
-          </div>
+        <StepBlock title="What ₹100 became" open={fold === 'returns'} onToggle={f('returns')}
+          summary={`${Math.round(nav[nav.length - 1].y)} from 100${bench ? ` · benchmark ${Math.round(bench[bench.length - 1].y)}` : ''}`}>
+          <ChartReadout label={monthYear(p.nav[p.nav.length - 1][0]) || 'Latest'}
+            value={String(Math.round(nav[nav.length - 1].y))} idleNote="rebased from 100" />
           <div style={{ marginTop: 'var(--space-4)' }}>
-            <ChartLine series={[{ label: 'This fund', points: nav }]}
-              density="expanded" width={311}
-              valueFormat={(v) => `${v.toFixed(0)}`}
-              xFormat={(x) => (p.nav[x] ? monthYear(p.nav[x][0]) : '')} />
+            <ChartLine series={[{ label: 'This fund', points: nav }]} density="expanded" width={295}
+              valueFormat={(v) => `${v.toFixed(0)}`} xFormat={(x) => (p.nav[x] ? monthYear(p.nav[x][0]) : '')} />
           </div>
           {bench && (
             <div style={{ marginTop: 'var(--space-12)' }}>
@@ -193,89 +178,96 @@ function OnePager({ i, onAct }) {
                 max={Math.max(115, Math.round(nav[nav.length - 1].y) + 5, Math.round(bench[bench.length - 1].y) + 5)} />
             </div>
           )}
-          <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
-            Both started at 100 on {monthYear(p.nav[0][0])}, so the two figures are comparable.
-          </p>
-        </div>
+        </StepBlock>
       )}
 
-      {/* THE FUND AGAINST ITS CATEGORY, IN WORDS. `PeerLine` exists for this and its own rule is that
-          the verdict is a word — "2.8 points ahead" — never a colour. It says in one line what the
-          metric list says in five rows, which is why it sits above them. */}
       {i.returns?.y3 != null && p.ratios?.cat3 != null && (
-        <PeerLine value={i.returns.y3} peer={p.ratios.cat3} period="over 3 years"
+        <PeerLine value={i.returns.y3} peer={p.ratios.cat3} period="3 years"
           peerLabel={`${(i.subTypeLabel || i.category || 'Category')} average`} unit="%" />
       )}
 
-      <div>
-        <Eyebrow>HOW IT HAS DONE</Eyebrow>
-        <div style={{ marginTop: 'var(--space-4)' }}>
+      {mRows.length > 0 && (
+        <StepBlock title="How it has done" open={fold === 'metrics'} onToggle={f('metrics')}
+          summary={`${mRows.length} figures, each against its peers`}>
           <MetricList>
-            {metricRows(i, p).map((m) => (
-              <MetricRow key={m.label} {...m} open={metric === m.label} onToggle={t(m.label)} />
-            ))}
+            {mRows.map((m) => <MetricRow key={m.label} {...m} open={metric === m.label} onToggle={t(m.label)} />)}
           </MetricList>
-        </div>
-      </div>
+        </StepBlock>
+      )}
 
       {rows && (
-        <div>
-          <Eyebrow>WHAT IT HOLDS</Eyebrow>
+        <StepBlock title="What it holds" open={fold === 'holds'} onToggle={f('holds')}
+          summary={oneSegment ? `All ${rows[0].pct}% ${rows[0].name.toLowerCase()}` : `${rows.length} ${useLens === 'sector' ? 'sectors' : useLens === 'cap' ? 'bands' : 'holdings'}`}>
           {lenses.length > 1 && (
-            <div style={{ marginTop: 'var(--space-8)' }}>
+            <div style={{ marginBottom: 'var(--space-12)' }}>
               <SegmentedRow label="Breakdown" options={lenses.map((l) => l.label)}
                 value={lenses.find((l) => l.key === useLens)?.label}
                 onChange={(x) => setLens(lenses.find((l) => l.label === x).key)} />
             </div>
           )}
-          <div style={{ marginTop: 'var(--space-12)' }}>
-            {oneSegment ? (
-              <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
-                {`All of it — ${rows[0].pct}% — is ${rows[0].name.toLowerCase()}.`}
-              </p>
-            ) : (
-              /* PARTS OF ONE WHOLE IS `ChartShare` — one stacked bar and a ranked legend with the
-                 figures on it. The first build reached for a donut and a bar chart; this system
-                 already has the component for exactly this shape of question, and it is better at it
-                 than either: the bar shows the proportions and the legend does the reading, so
-                 nothing is left to colour alone. */
-              <ChartShare
-                segments={rows.map((r) => ({ label: titleish(r.name), value: r.pct }))}
-                valueFormat={(v) => `${v.toFixed(1)}%`}
-                caveat={`top ${rows.length} · as of ${monthYear(i.priceDate) || 'the last file'}`} />
-            )}
-          </div>
-        </div>
+          {oneSegment ? (
+            <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
+              {`All of it — ${rows[0].pct}% — is ${rows[0].name.toLowerCase()}.`}
+            </p>
+          ) : (
+            <ChartShare segments={rows.map((r) => ({ label: titleish(r.name), value: r.pct }))}
+              valueFormat={(v) => `${v.toFixed(1)}%`}
+              caveat={`top ${rows.length} · as of ${monthYear(i.priceDate) || 'the last file'}`} />
+          )}
+        </StepBlock>
       )}
 
-      {held.length > 0 && (
-        <div>
-          <Eyebrow>YOUR CLIENTS</Eyebrow>
-          <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
-            {`${held.length} of your clients already hold this — ${held.join(' · ')}.`}
-          </p>
-        </div>
+      {(held.length > 0 || p.pending) && (
+        <StepBlock title="On file" open={fold === 'file'} onToggle={f('file')}
+          summary={held.length ? `${held.length} of your clients hold this` : `${p.pending.length} fields not on file`}>
+          {held.length > 0 && (
+            <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
+              {`${held.length} of your clients already hold this — ${held.join(' · ')}.`}
+            </p>
+          )}
+          {p.pending && (
+            <div style={{ marginTop: held.length ? 'var(--space-12)' : 0 }}>
+              <RejectCallout eyebrow="NOT ON FILE FOR THIS INSTRUMENT"
+                body={`${p.pending.slice(0, 5).map(prettyField).join(', ')}${p.pending.length > 5 ? `, and ${p.pending.length - 5} more` : ''}. Named here rather than left out, so the gap is visible.`} />
+            </div>
+          )}
+        </StepBlock>
       )}
 
-      {p.pending && (
-        <RejectCallout
-          eyebrow="NOT ON FILE FOR THIS INSTRUMENT"
-          body={`${p.pending.slice(0, 5).map(prettyField).join(', ')}${p.pending.length > 5 ? `, and ${p.pending.length - 5} more` : ''}. Named here rather than left out, so the gap is visible.`} />
-      )}
+      <Provenance text={`Catalogue · ${i.priceDate ? `priced ${monthYear(i.priceDate)}` : 'no price on file'}${i.benchmark ? ` · benchmark ${shortBench(i.benchmark)}` : ''}`} />
 
-      <Provenance text={`Catalogue · ${i.priceDate ? `priced ${monthYear(i.priceDate)}` : 'no price on file'}${i.benchmark ? ` · benchmark ${i.benchmark}` : ''}`} />
-
-      {/* THE OPTIONS AFTER THE PAGE, which the owner asked to appear everywhere. `InlineActionRow`
-          already is "pills placed inline in a message body, acting on the answer just given" — so
-          this is the system's own component doing the job it was written for, not a new rail. */}
+      {/* EVERY ONE OF THESE DOES SOMETHING NOW. They were `setActed(...)` — a string the screen then
+          printed as a provenance line, which is the F-61 defect wearing a different hat: four controls
+          that looked live and moved nothing. Compare and Shortlist act on this screen; proposal and
+          rebalance belong to other journeys and say so in the turn they produce, which is the honest
+          shape for a prototype boundary. */}
       <InlineActionRow actions={[
-        { label: 'Compare', onClick: () => onAct('compare', i) },
+        { label: 'Compare', tone: 'primary', onClick: () => onAct('compare', i) },
+        { label: shortlisted ? 'Shortlisted' : 'Shortlist', onClick: () => onAct('shortlist', i) },
         { label: 'Add to a proposal', onClick: () => onAct('proposal', i) },
         { label: 'Add to a rebalance', onClick: () => onAct('rebalance', i) },
-        { label: 'Shortlist', onClick: () => onAct('shortlist', i) },
       ]} />
+
+      {/* CLOSING FROM THE BOTTOM. The owner had to scroll back to the card's head to shut a page he
+          had just read to the end of — the one place he certainly was not. */}
+      <InlineActionRow actions={[{ label: 'Close this fund', onClick: onClose }]} />
     </div>
   );
+}
+
+/* WHAT THE LIST IS, IN A SENTENCE. Not a count — the count is already on the step and in the filter
+   row. This is the reading: the spread, and the one fact that decides between them. */
+function listNote(rows, cats, fams) {
+  const withRet = rows.filter((r) => r.returns?.y3 != null);
+  if (withRet.length >= 2) {
+    const sorted = [...withRet].sort((a, b) => b.returns.y3 - a.returns.y3);
+    const hi = sorted[0], lo = sorted[sorted.length - 1];
+    const cheapest = rows.filter((r) => r.ter != null).sort((a, b) => a.ter - b.ter)[0];
+    return `${rows.length} match. Three-year returns run from ${pc(lo.returns.y3)} to ${pc(hi.returns.y3)} — ${cardFor(hi).name} at the top${cheapest ? `, and ${cardFor(cheapest).name} is the cheapest at ${cheapest.ter.toFixed(2)}%` : ''}.`;
+  }
+  const noRet = rows.filter((r) => r.returns?.y3 == null).length;
+  if (noRet === rows.length) return `${rows.length} match. None of them carries a return in the catalogue — these are judged on their own terms: coupon, maturity, face value.`;
+  return `${rows.length} match.`;
 }
 
 /* Sector names arrive SHOUTING from the source — "FINANCIALS", "PHARMA & HEALTHCARE" — beside ones
@@ -741,6 +733,8 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
      accumulates ten parse notes has stopped being a funnel and become a chat transcript with a list
      at the bottom. The note is replaced, and what it did is already visible in the steps above it. */
   const [ask, setAsk] = useS1('');
+  const [shortlist, setShortlist] = useS1([]);
+  const [said, setSaid] = useS1(null);
   const [asked, setAsked] = useS1(startAsked || null);
   /* WHEN A PAGE IS OPEN, THE THREAD RESTS ON IT. Without this the scaffold stayed at the top and the
      page the advisor just opened was below the fold — they tapped a card and nothing appeared to
@@ -809,10 +803,15 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
      question appears the one above it COLLAPSES — which is the other half of his ruling, and the
      reason the funnel never grows taller than one open question plus its answers. */
   const reveal = { asset: true, product: assets.length > 0, category: fams.length > 0 };
-  React.useEffect(() => { if (assets.length && open === STEP.ASSET) setOpen(STEP.PRODUCT); },
-    [assets.length]); // eslint-disable-line react-hooks/exhaustive-deps
-  React.useEffect(() => { if (fams.length && open === STEP.PRODUCT) setOpen(STEP.CATEGORY); },
-    [fams.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* THE STEP DOES NOT CLOSE ITSELF ON THE FIRST PICK. It used to: choosing Equity collapsed the
+     asset step and opened the next one, which makes multi-select impossible — the owner's note was
+     "main ek ya do bhi to click kar sakta hu". A step that decides you are finished the moment you
+     touch it is a radio button pretending to be a checkbox.
+
+     So the step stays open and an ACTION appears inside it once there is an answer. Tapping that is
+     what collapses this step and opens the next, which is also the owner's earlier ruling that the
+     action should appear after the selection. Nothing advances without being told to. */
+  const advance = (to) => setOpen(to);
   /* The path, for the bar that never scrolls away. */
   const path = []
     .concat(assets.length ? [{ key: 'asset', label: assets.join(' · '), step: STEP.ASSET }] : [])
@@ -850,14 +849,72 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
     setOpen(0); setFund(null); setShow(null); setAsk('');
   };
 
+  /* WHAT EACH ACTION ACTUALLY DOES. Compare and Shortlist change this screen; proposal and rebalance
+     belong to journeys D and E and say so. Every one of them produces a SENTENCE built from this
+     instrument's own figures — two or three lines, which is what the owner asked for and also the
+     only thing that makes a shortlist worth having a week later, when "why did I save this" is the
+     whole question. */
+  const reason = (inst) => {
+    const pg = onePagerOf(inst.id) || {};
+    const bits = [];
+    if (inst.returns?.y3 != null && pg.ratios?.cat3 != null) {
+      const d = +(inst.returns.y3 - pg.ratios.cat3).toFixed(2);
+      bits.push(`${Math.abs(d).toFixed(2)} points ${d >= 0 ? 'ahead of' : 'behind'} its category over three years`);
+    }
+    if (inst.ter != null) {
+      const peers = instrumentsFor({ categories: [`${inst.family}:${inst.subType}`] }).filter((x) => x.ter != null);
+      const cheaper = peers.filter((x) => x.ter < inst.ter).length;
+      bits.push(`costs ${inst.ter.toFixed(2)}%${peers.length > 1 ? `, ${cheaper === 0 ? 'the cheapest' : `${cheaper} cheaper`} of the ${peers.length} in this category` : ''}`);
+    }
+    const held = holdersOf(inst.id) || [];
+    if (held.length) bits.push(`${held.length} of your clients already hold it`);
+    return bits.length ? `${cardFor(inst).name} — ${bits.join('; ')}.` : `${cardFor(inst).name}. The catalogue carries no return, cost or holding for it, so there is nothing here to judge it on yet.`;
+  };
+
+  const act = (what, inst) => {
+    if (what === 'compare') {
+      setPicked((s2) => (s2.includes(inst.id) ? s2 : s2.concat(inst.id).slice(-3)));
+      setShow('compare'); setFund(null);
+      setSaid({ say: `Added ${cardFor(inst).name} to the comparison.`, body: reason(inst) });
+      return;
+    }
+    if (what === 'shortlist') {
+      const on = shortlist.includes(inst.id);
+      setShortlist((s2) => (on ? s2.filter((x) => x !== inst.id) : s2.concat(inst.id)));
+      setSaid(on
+        ? { say: `Taken ${cardFor(inst).name} off the shortlist.`, body: null }
+        : { say: `Shortlisted ${cardFor(inst).name}.`, body: reason(inst) });
+      return;
+    }
+    /* A PROTOTYPE BOUNDARY, NAMED. These open journeys D and E, which this screen is not. Saying so
+       is the honest shape — a control that silently does nothing is the defect; a control that says
+       where it goes is a control. */
+    setSaid({
+      say: `${cardFor(inst).name} is staged for ${what === 'proposal' ? 'a proposal' : 'a rebalance'}.`,
+      body: `${reason(inst)} The ${what} itself opens in its own journey — this screen stages the fund and hands it over.`,
+    });
+  };
+
   const resetAll = () => { setAssets([]); setFams([]); setCats([]); setFacets({}); setQ(''); setPicked([]); setShow(null); setFund(null); setOpen(STEP.ASSET); };
 
   return (
-    <ScreenScaffold title="Explore" body="thread"
+    <ScreenScaffold title="Explore" body="thread" rest="top"
       anchor={fund ? openRef : show ? showRef : asked ? askRef : 0}
       revision={fund || show || (asked && asked.text) || 'list'} onMenu={() => {}}
       composer={<Composer value={ask} onChange={setAsk} onSend={send}
-        placeholder="Ask Sentinel — or name an asset, a product, a house" onAttach={() => {}} />}>
+        placeholder="Ask Sentinel — or name an asset, a product, a house" onAttach={() => {}} />}
+      overlay={(
+        /* THE SHEET IS THE SAME FILTERS THE BAR IS ALREADY SHOWING, opened for the ones that do not
+           fit in a row. Nothing here is only reachable through the sheet — it is a wider view of the
+           same state, which is why closing it changes nothing. It goes in `overlay` rather than in
+           the thread: a bottom sheet placed among the thread's children resolves its `bottom: 0`
+           against a scrolled content box and lands half off the top of the phone. */
+        <FilterSheet open={sheet} title="Narrow it" groups={groups} value={facets}
+          resultCount={rows.length} unit="instruments"
+          onChange={(k, next) => setFacets((s2) => ({ ...s2, [k]: next }))}
+          onClearAll={() => setFacets({})}
+          onApply={() => setSheet(false)} onClose={() => setSheet(false)} />
+      )}>
 
       <StepStack>
         <StepBlock step={1} title="Asset class" chips={assets} done={assets.length > 0}
@@ -866,10 +923,15 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           <IntentGrid>
             {ASSETS.map((a) => (
               <IntentTile key={a.label} label={a.label} count={a.count}
-                mark={<AssetMark asset={a.label} size={76} />}
+                mark={<AssetMark asset={a.label} size={52} />}
                 selected={assets.includes(a.label)} onClick={() => chooseAsset(a.label)} />
             ))}
           </IntentGrid>
+          {assets.length > 0 && (
+            <div style={{ marginTop: 'var(--space-12)' }}>
+              <InlineActionRow actions={[{ label: `Show ${familiesForAssets(assets).length} ${familiesForAssets(assets).length === 1 ? 'product' : 'products'}`, tone: 'primary', onClick: () => advance(STEP.PRODUCT) }]} />
+            </div>
+          )}
         </StepBlock>
 
         {reveal.product && (
@@ -883,10 +945,18 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           <IntentGrid>
             {famRows.map((f) => (
               <IntentTile key={f.key} label={f.label} count={f.count} unit="instruments"
-                mark={<AssetMark asset={f.assets[0]} size={76} />}
+                mark={<AssetMark asset={f.assets[0]} size={52} />}
                 selected={fams.includes(f.key)} onClick={() => chooseFam(f.key)} />
             ))}
           </IntentGrid>
+          {fams.length > 0 && (
+            <div style={{ marginTop: 'var(--space-12)' }}>
+              <InlineActionRow actions={[
+                { label: categoriesFor(assets, fams).length ? `Show ${categoriesFor(assets, fams).length} ${categoriesFor(assets, fams).length === 1 ? 'category' : 'categories'}` : `See ${atProduct.length} ${atProduct.length === 1 ? 'instrument' : 'instruments'}`,
+                  tone: 'primary', onClick: () => advance(categoriesFor(assets, fams).length ? STEP.CATEGORY : 0) },
+              ]} />
+            </div>
+          )}
         </StepBlock>
         )}
 
@@ -911,6 +981,11 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
             <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-muted)' }}>
               Nothing under this product is categorised in the catalogue.
             </p>
+          )}
+          {cats.length > 0 && (
+            <div style={{ marginTop: 'var(--space-12)' }}>
+              <InlineActionRow actions={[{ label: `See ${all.length} ${all.length === 1 ? 'instrument' : 'instruments'}`, tone: 'primary', onClick: () => advance(0) }]} />
+            </div>
           )}
         </StepBlock>
         )}
@@ -957,7 +1032,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
               selectable selected={picked.includes(i.id)}
               onSelect={() => setPicked((s) => (s.includes(i.id) ? s.filter((x) => x !== i.id) : s.concat(i.id).slice(-3)))}
               open={isOpen} onToggle={() => setFund((s) => (s === i.id ? null : i.id))}>
-              <OnePager i={i} onAct={(what, inst) => setActed(`${what}:${inst.id}`)} />
+              <OnePager i={i} onAct={act} onClose={() => setFund(null)} shortlisted={shortlist.includes(i.id)} />
             </FundCard>
             </div>
           );
@@ -990,18 +1065,23 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           <OverlapBlock ids={picked} onDrop={(id) => setPicked((s2) => s2.filter((x) => x !== id))} />
         )}
       </div>
-      {acted && (
-        <Provenance text={`Prototype: “${acted.split(':')[0]}” would open here. The catalogue is real; the destination is another journey.`} />
+      {/* WHAT SENTINEL SAYS BACK. The owner's note was that once the cards are shown nothing follows
+          them — the screen just stops. A list is an answer, and an answer in this product is followed
+          by the thing that reads it and what can be done next. */}
+      {said && (
+        <SentinelTurn say={said.say} body={said.body
+          ? <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>{said.body}</p>
+          : undefined} />
+      )}
+      {!said && assets.length > 0 && rows.length > 0 && !fund && !show && (
+        <SentinelTurn say={listNote(rows, cats, fams)}
+          body={shortlist.length ? (
+            <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
+              {`${shortlist.length} shortlisted so far — ${shortlist.map((id) => cardFor(instrumentById(id)).name).join(', ')}.`}
+            </p>
+          ) : undefined} />
       )}
 
-      {/* THE SHEET IS THE SAME FILTERS THE BAR IS ALREADY SHOWING, opened for the ones that do not fit
-          in a row. Nothing here is only reachable through the sheet — it is a wider view of the same
-          state, which is why closing it changes nothing. */}
-      <FilterSheet open={sheet} title="Narrow it" groups={groups} value={facets}
-        resultCount={rows.length} unit="instruments"
-        onChange={(k, next) => setFacets((s2) => ({ ...s2, [k]: next }))}
-        onClearAll={() => setFacets({})}
-        onApply={() => setSheet(false)} onClose={() => setSheet(false)} />
     </ScreenScaffold>
   );
 }

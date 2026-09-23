@@ -32,7 +32,7 @@ export function ScreenScaffold({
   time = '3:04', title = 'Sentinel', onMenu, onNew,
   progress, banner, body = 'thread', children,
   anchor = 'newest', revision = 0, scrollRef,
-  chips, composer,
+  chips, composer, rest = 'bottom', overlay,
 }) {
   const own = React.useRef(null);
   const el = () => (scrollRef ? scrollRef.current : own.current);
@@ -92,7 +92,14 @@ export function ScreenScaffold({
               could rest underneath it, and on several boards that line was the provenance or the
               standing disclaimer. 24 + 36 + 8: the disc's own height and its offset. A floating
               control may pass over content while you scroll; it may not sit on it at rest. */}
-          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--stack)', padding: `16px var(--gutter) ${body === 'thread' ? 68 : 24}px` }}>
+          {/* WHERE A SHORT THREAD RESTS (23 Sep 2026). `marginTop:auto` pushes content to the bottom
+              when it does not fill the screen, which is right for a thread of ANSWERS — the newest
+              one should sit above the composer where the eye already is. It is wrong for a thread
+              whose first turn is a QUESTION the advisor has to act on: the fund explorer opened with
+              its asset-class card 228pt down a 562pt thread, under a screenful of nothing, and the
+              owner's note was simply that it should be at the top. `rest="top"` is that case, and it
+              changes no existing screen. */}
+          <div style={{ marginTop: rest === 'top' ? 0 : 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--stack)', padding: `16px var(--gutter) ${body === 'thread' ? 68 : 24}px` }}>
             {children}
           </div>
         </div>
@@ -116,6 +123,14 @@ export function ScreenScaffold({
            measures from there and it sits 8px clear of the composer rather than behind it. */
         <div style={{ position: 'relative', height: 0 }}><ScrollToBottomButton show={away} onClick={toBottom} /></div>
       )}
+      {/* MODAL LAYERS BELONG TO THE SCREEN, NOT TO THE THREAD (23 Sep 2026). A bottom sheet is
+          `position:absolute; bottom:0`, and its nearest positioned ancestor decides what "bottom"
+          means. Rendered as a child of the thread — which is what a caller naturally does, because
+          that is where the rest of the screen's content goes — it resolves against a scrolled content
+          box instead of the phone, and the fund explorer's filter sheet came out half off the TOP of
+          the screen. This slot is the scaffold's own relative root, which is the only box in a
+          Sentinel screen that means "the phone". Scrim, sheet, drawer and explainer go here. */}
+      {overlay}
       {/* The Dock is NOT the caller's to place — that is how rule 3 survives the next screen. */}
       <Dock chips={chips} composer={composer} />
       <HomeIndicator />
