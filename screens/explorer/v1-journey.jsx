@@ -422,6 +422,158 @@ function applyFacets(rows, value) {
   }));
 }
 
+
+/* ─── THE COMPOSER DRIVES THE FUNNEL ────────────────────────────────────────────────────────────
+   The owner's ruling: it does not all have to be chat, but a sentence typed into the composer has to
+   move the same funnel the tiles move. Not a second way in with its own behaviour — the SAME state,
+   reached differently. Typing "equity mutual funds under 0.5%" and tapping Equity, Mutual fund, then
+   the expense filter must land in exactly the same place, because they are the same request.
+
+   THE VOCABULARY IS THE CATALOGUE'S OWN. Every phrase this understands is built at parse time from
+   the asset names, family labels, sub-type labels and house names that are actually in the data —
+   so it cannot learn a word the catalogue does not have, and it cannot fall behind when the
+   catalogue gains one. The only hand-written entries are abbreviations an advisor actually types
+   ("mf", "fd", "ncd"), and each one maps to a label that must already exist.
+
+   IT SAYS WHAT IT DID **AND WHAT IT DID NOT**. This is the part that matters. F-61 in this
+   repository's own findings is the prototype claiming it had filtered a shortlist and not doing it,
+   and a parser is where that defect is born: it matches two words out of nine, applies them, and the
+   advisor believes the other seven landed. So every parse returns `ignored` — the words it could not
+   place — and `ParseNote` prints them. A sentence that matched nothing changes nothing and says so.
+
+   LONGEST PHRASE FIRST. "large cap fund" must beat "cap", and "mutual fund" must beat "fund", or the
+   first match eats the words the better match needed. */
+const ASK_ALIASES = {
+  mf: 'Mutual fund', mfs: 'Mutual fund', 'mutual funds': 'Mutual fund',
+  fd: 'Fixed deposit', fds: 'Fixed deposit', deposits: 'Fixed deposit',
+  ncd: 'Bonds', ncds: 'Bonds', bond: 'Bonds', debentures: 'Bonds',
+  pms: 'PMS', aif: 'AIF', aifs: 'AIF', reit: 'REITs & InvITs', reits: 'REITs & InvITs',
+  invit: 'REITs & InvITs', invits: 'REITs & InvITs', gold: 'Commodity', sgb: 'Commodity',
+  equities: 'Equity', shares: 'Equity', debt: 'Debt',
+};
+const ASK_STOP = new Set(['show', 'me', 'find', 'a', 'an', 'the', 'and', 'or', 'with', 'in', 'of', 'for',
+  'that', 'which', 'any', 'all', 'some', 'please', 'give', 'want', 'need', 'looking', 'look', 'funds',
+  'fund', 'instrument', 'instruments', 'under', 'over', 'above', 'below', 'than', 'more', 'less',
+  'is', 'are', 'to', 'from', 'by', 'on', 'at', 'it', 'its', 'only', 'just', 'top', 'best', 'good',
+  /* Qualifiers the BAND already names. "expense under 0.5%" is understood in full, and reporting
+     "expense" as a word it could not place is the mirror of F-61: claiming it ignored something it
+     acted on is as untrue as claiming it acted on something it ignored. */
+  'expense', 'ratio', 'ter', 'cost', 'charge', 'charges', 'return', 'returns', 'size', 'aum',
+  'yield', 'coupon', 'year', 'years', 'yr', 'cr', 'crore', 'crores']);
+
+function parseAsk(raw) {
+  const text = ` ${String(raw).toLowerCase().replace(/[^a-z0-9.%&₹ -]/g, ' ').replace(/\s+/g, ' ')} `;
+  let left = text;
+  const out = { assets: [], families: [], cats: [], facets: {}, q: '', understood: [], ignored: [] };
+  /* The note reads in the order the FUNNEL asks — asset, product, category, house, band — not the
+     order the phrases happened to be matched in, which is by length. "Read as Mutual fund · Equity"
+     is the same facts in an order nobody thinks in. */
+  const say = { asset: [], family: [], cat: [], house: [], band: [] };
+
+  /* Every phrase the catalogue knows, longest first. */
+  const vocab = [];
+  for (const a of ASSETS) vocab.push({ phrase: a.label.toLowerCase(), kind: 'asset', value: a.label });
+  const assetWords = new Set(ASSETS.map((a) => a.label.toLowerCase()));
+  const familyWords = new Set(FAMILIES.map((f) => f.label.toLowerCase()));
+  for (const f of FAMILIES) {
+    vocab.push({ phrase: f.label.toLowerCase(), kind: 'family', value: f.key });
+    for (const st of f.subTypes) {
+      vocab.push({ phrase: st.label.toLowerCase(), kind: 'cat', value: `${f.key}:${st.key}` });
+      /* AND THE CATEGORY WITHOUT ITS PRODUCT WORD. Testing caught it: an advisor types "small cap",
+         never "Small Cap Fund", and the catalogue's own label carries the product on the end. The
+         short form is registered ONLY when it is two words or more — "Debt PMS" would shorten to
+         "debt", which is an asset class, and a parser that reads the asset as a category is worse
+         than one that reads nothing.
+
+         A short form that several families share — "large cap" is both a fund and a PMS — is applied
+         to ALL of them, deliberately. "Large cap" means large cap wherever it lives, and a category
+         whose family is not in the set simply matches nothing. */
+      const short = st.label.toLowerCase().replace(/ (fund|pms|aif|bond|debenture)s?$/, '').trim();
+      if (short !== st.label.toLowerCase() && short.split(' ').length >= 2
+        && !assetWords.has(short) && !familyWords.has(short)) {
+        vocab.push({ phrase: short, kind: 'cat', value: `${f.key}:${st.key}`, short: true });
+      }
+    }
+  }
+  for (const [k, v] of Object.entries(ASK_ALIASES)) {
+    const fam = FAMILIES.find((f) => f.label === v);
+    const asset = ASSETS.find((a) => a.label === v);
+    if (fam) vocab.push({ phrase: k, kind: 'family', value: fam.key });
+    else if (asset) vocab.push({ phrase: k, kind: 'asset', value: asset.label });
+  }
+  const houses = [...new Set(INSTRUMENTS.map(FACET_OF.amc).filter(Boolean))];
+  for (const h of houses) {
+    vocab.push({ phrase: h.toLowerCase(), kind: 'house', value: h });
+    const first = h.split(' ')[0].toLowerCase();
+    if (first.length > 3) vocab.push({ phrase: first, kind: 'house', value: h });
+  }
+  vocab.sort((a, b) => b.phrase.length - a.phrase.length);
+
+  for (const v of vocab) {
+    /* A TRAILING PLURAL IS THE SAME WORD. Testing caught this: "large cap funds" did not match the
+       catalogue's "Large Cap Fund", because the lookahead demanded a non-letter after "fund" and
+       found an "s". Advisors type plurals — "large cap funds", "bonds", "mutual funds" — and a
+       parser that reports those as words it could not place is a parser nobody will type into
+       twice. */
+    const re = new RegExp(`(?<=[^a-z0-9])${v.phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}s?(?=[^a-z0-9])`);
+    if (!re.test(left)) continue;
+    /* A SHORT CATEGORY DOES NOT CONSUME THE WORDS. "large cap" belongs to a fund and to a PMS, and
+       whichever sorted first would otherwise eat it for the other. Only full phrases consume. */
+    if (!v.short) left = left.replace(re, ' ');
+    if (v.kind === 'asset' && !out.assets.includes(v.value)) { out.assets.push(v.value); say.asset.push(v.value); }
+    if (v.kind === 'family' && !out.families.includes(v.value)) { out.families.push(v.value); say.family.push(familyByKey(v.value)?.label || v.value); }
+    if (v.kind === 'cat' && !out.cats.includes(v.value)) { out.cats.push(v.value); say.cat.push(v.phrase.replace(/\b\w/g, (c) => c.toUpperCase())); }
+    if (v.kind === 'house' && !(out.facets.amc || []).includes(v.value)) { out.facets.amc = (out.facets.amc || []).concat(v.value); say.house.push(v.value); }
+  }
+
+  /* NUMBERS ONLY WHERE A BAND EXISTS. "under 0.5%" is an expense ratio, "over 15%" a three-year
+     return, "over 5000 cr" a fund size — and each one resolves to a band the facet builder already
+     defines, so the sentence and the sheet cannot disagree about what the words mean. */
+  const ter = left.match(/(under|below|less than)\s*([0-9.]+)\s*%/);
+  if (ter && Number(ter[2]) <= 3) {
+    const b = TER_BANDS.find((x) => Number(ter[2]) <= x.hi) || TER_BANDS[0];
+    out.facets.ter = [b.key]; say.band.push(`expense ratio ${b.label.toLowerCase()}`);
+    left = left.replace(ter[0], ' ');
+  }
+  const ret = left.match(/(over|above|more than)\s*([0-9.]+)\s*%/);
+  if (ret) {
+    const b = RET_BANDS.find((x) => Number(ret[2]) >= x.lo) || RET_BANDS[0];
+    out.facets.r3 = [b.key]; say.band.push(`three-year return ${b.label.toLowerCase()}`);
+    left = left.replace(ret[0], ' ');
+  }
+  const aum = left.match(/(over|above|more than)\s*₹?\s*([0-9,]+)\s*(cr|crore|crores)/);
+  if (aum) {
+    const n = Number(aum[2].replace(/,/g, '')) * 1e7;
+    const b = AUM_BANDS.find((x) => n >= x.lo) || AUM_BANDS[AUM_BANDS.length - 1];
+    out.facets.aum = [b.key]; say.band.push(`fund size ${b.label.toLowerCase()}`);
+    left = left.replace(aum[0], ' ');
+  }
+
+  /* WHAT IS LEFT. Stopwords are dropped silently — they carried no request. Anything else is a word
+     the advisor meant and this did not place, and it is reported rather than swallowed. */
+  out.understood = [].concat(say.asset, say.family, say.cat, say.house, say.band);
+  /* Short forms did not consume their words above, so they are cleared here — once, after every
+     family has had its chance to claim them. */
+  for (const v of vocab) {
+    if (!v.short || !out.cats.includes(v.value)) continue;
+    left = left.replace(new RegExp(`(?<=[^a-z0-9])${v.phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}s?(?=[^a-z0-9])`, 'g'), ' ');
+  }
+  out.ignored = left.split(' ').map((w) => w.trim()).filter((w) => w.length > 2 && !ASK_STOP.has(w) && !/^[0-9.%₹,-]+$/.test(w));
+  return out;
+}
+
+/* The sentence Sentinel says back. Built from the parse, never templated over it — a note that reads
+   the same whether or not anything matched is the note that taught the advisor to stop reading it. */
+function askNote(parse, count) {
+  if (!parse.understood.length) {
+    return parse.ignored.length
+      ? `Nothing here matched the catalogue: ${parse.ignored.join(', ')}. The funnel is unchanged — try an asset class, a product, a category or a house.`
+      : 'Nothing in that to act on. The funnel is unchanged.';
+  }
+  const did = `Read as ${parse.understood.join(' · ')} — ${count.toLocaleString('en-IN')} left.`;
+  return parse.ignored.length ? `${did} Not used: ${parse.ignored.join(', ')}.` : did;
+}
+
 /* ─── THE FILTER BAR — always on screen, never a detour ─────────────────────────────────────────
    The owner's words: the advisor must be able to customise anywhere, and it must be visible, not
    only reachable through chat. So it is sticky at the top of the thread rather than a button in the
@@ -571,7 +723,7 @@ function OverlapBlock({ ids, onDrop }) {
    One screen. Four questions, each a function of the one above, each collapsing into its answer. */
 const STEP = { ASSET: 1, PRODUCT: 2, CATEGORY: 3 };
 
-function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpen = STEP.ASSET, startFundId = null, startQ = '', startPicked = [], startSheet = false, startShow = null }) {
+function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpen = STEP.ASSET, startFundId = null, startQ = '', startPicked = [], startSheet = false, startShow = null, startAsked = null }) {
   const [open, setOpen] = useS1(startOpen);
   const [assets, setAssets] = useS1(startAssets);
   const [fams, setFams] = useS1(startFamilies);
@@ -585,12 +737,18 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
   /* 'compare' | 'overlap' | null. One at a time: both open at once is two tables of the same three
      funds stacked on a phone, and the advisor scrolls past one to read the other. */
   const [show, setShow] = useS1(startShow);
+  /* The composer's own state, and the LAST thing it was asked. One turn, not a log: a funnel that
+     accumulates ten parse notes has stopped being a funnel and become a chat transcript with a list
+     at the bottom. The note is replaced, and what it did is already visible in the steps above it. */
+  const [ask, setAsk] = useS1('');
+  const [asked, setAsked] = useS1(startAsked || null);
   /* WHEN A PAGE IS OPEN, THE THREAD RESTS ON IT. Without this the scaffold stayed at the top and the
      page the advisor just opened was below the fold — they tapped a card and nothing appeared to
      happen. Anchoring to the open card is not a navigation: the list is still there above it, and
      closing the card leaves the thread exactly where it was. */
   const openRef = React.useRef(null);
   const showRef = React.useRef(null);
+  const askRef = React.useRef(null);
 
   /* Choosing higher up INVALIDATES what was chosen below it, and says so by simply dropping it. The
      alternative — keeping a category that no longer exists under the new product — is the bug every
@@ -660,12 +818,46 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
     .concat(assets.length ? [{ key: 'asset', label: assets.join(' · '), step: STEP.ASSET }] : [])
     .concat(fams.length ? [{ key: 'product', label: fams.map((f) => familyByKey(f)?.label || f).join(' · '), step: STEP.PRODUCT }] : [])
     .concat(cats.length ? [{ key: 'category', label: cats.map((c) => catRows.find((r) => r.key === c)?.label).filter(Boolean).join(' · '), step: STEP.CATEGORY }] : []);
+  /* A TYPED SENTENCE LANDS IN THE SAME STATE THE TILES DO. It replaces rather than accumulates:
+     "equity mutual funds" then "debt" means debt, which is what the words mean. Anything the parse
+     did not place is left in the search box rather than dropped, so a fund name typed mid-sentence
+     still does something. */
+  const send = () => {
+    const text = ask.trim();
+    if (!text) return;
+    const parse = parseAsk(text);
+    /* A CATEGORY IMPLIES ITS FAMILY, AND A FAMILY ITS ASSET. "large cap funds from canara" names no
+       asset class, and taking it literally left step 1 empty while the list below it was filtered —
+       the funnel's own steps disagreeing with the funnel's own result. A category cannot exist
+       without the product it belongs to; filling that in is not inventing a request, it is stating
+       what the request already meant. The crumbs then read as a path rather than as one orphan. */
+    const impliedFams = [...new Set(parse.families.concat(parse.cats.map((c) => c.split(':')[0])))];
+    const impliedAssets = [...new Set(parse.assets.concat(
+      impliedFams.flatMap((k) => familyByKey(k)?.assets || []),
+    ))].filter((a) => ASSETS.some((x) => x.label === a));
+
+    if (impliedAssets.length) { setAssets(impliedAssets); setFams([]); setCats([]); }
+    if (impliedFams.length) { setFams(impliedFams); setCats([]); }
+    if (parse.cats.length) setCats(parse.cats);
+    setFacets(Object.keys(parse.facets).length ? parse.facets : {});
+    const leftovers = parse.ignored.join(' ');
+    setQ(parse.understood.length ? '' : leftovers);
+    const nextAssets = impliedAssets.length ? impliedAssets : assets;
+    const nextFams = impliedFams.length ? impliedFams : (impliedAssets.length ? [] : fams);
+    const nextCats = parse.cats.length ? parse.cats : ((impliedAssets.length || impliedFams.length) ? [] : cats);
+    const n = applyFacets(instrumentsFor({ assets: nextAssets, families: nextFams, categories: nextCats }), parse.facets).length;
+    setAsked({ text, note: askNote(parse, n), ok: parse.understood.length > 0 });
+    setOpen(0); setFund(null); setShow(null); setAsk('');
+  };
+
   const resetAll = () => { setAssets([]); setFams([]); setCats([]); setFacets({}); setQ(''); setPicked([]); setShow(null); setFund(null); setOpen(STEP.ASSET); };
 
   return (
     <ScreenScaffold title="Explore" body="thread"
-      anchor={fund ? openRef : show ? showRef : 0} revision={fund || show || 'list'} onMenu={() => {}}
-      composer={<Composer placeholder="Ask Sentinel" onAttach={() => {}} />}>
+      anchor={fund ? openRef : show ? showRef : asked ? askRef : 0}
+      revision={fund || show || (asked && asked.text) || 'list'} onMenu={() => {}}
+      composer={<Composer value={ask} onChange={setAsk} onSend={send}
+        placeholder="Ask Sentinel — or name an asset, a product, a house" onAttach={() => {}} />}>
 
       <StepStack>
         <StepBlock step={1} title="Asset class" chips={assets} done={assets.length > 0}
@@ -724,11 +916,21 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
         )}
       </StepStack>
 
+      {/* THE TURN SITS WHERE ITS EFFECT IS — under the steps it just changed, not at the foot of the
+          thread. A parse note at the bottom of a list separates the cause from the thing it caused,
+          and the advisor has to scroll between them to check the sentence did what they meant. */}
+      {asked && (
+        <div ref={askRef} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+          <UserTurn text={asked.text} />
+          <ParseNote text={asked.note} />
+        </div>
+      )}
+
       {/* THE SCREEN OPENS ON ONE QUESTION AND NOTHING ELSE. The first build showed all eighty
           instruments under an unanswered first step, which undercuts the funnel: if the list is
           already there, the questions are decoration. Everything below appears with the first
           answer. */}
-      {assets.length > 0 && (
+      {(assets.length > 0 || asked) && (
         <>
           {/* ONE STICKY LINE, 36pt, and it is the only thing that never scrolls away. The search
               sits under it and scrolls, because searching is a deliberate act and orientation is
@@ -743,7 +945,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
       {/* THE RESULT IS NOT A STEP. The three questions collapse; the list is what they were for, so it
           is always open and always the tallest thing on the screen. */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
-        {assets.length === 0 ? null : rows.length === 0 ? (
+        {assets.length === 0 && !asked ? null : rows.length === 0 ? (
           <ConstraintCallout eyebrow="NOTHING MATCHES THAT YET"
             body={q ? `No instrument in the catalogue matches “${q}” under the filters above. Clear the search, or widen a step.` : 'Widen a step above — or clear a filter.'} />
         ) : rows.slice(0, 12).map((i) => {
@@ -760,7 +962,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
             </div>
           );
         })}
-        {assets.length > 0 && rows.length > 12 && (
+        {(assets.length > 0 || asked) && rows.length > 12 && (
           <p style={{ margin: 0, font: 'var(--type-caption-font)', color: 'var(--color-muted)', textAlign: 'center' }}>
             {`${rows.length - 12} more — narrow a step above, or search.`}
           </p>
@@ -832,6 +1034,14 @@ function App_V1() {
         <StateRow>
           <State label="SEARCH WITH NO MATCH" tone="under" note="The filters stay visible and the way out is named. The list does not silently empty."><Funnel startAssets={['Equity']} startQ="gilt" startOpen={0} /></State>
           <State label="COMMODITY" note="Ten instruments, four of which have a series. The six without one show their facts and no empty chart box."><Funnel startAssets={['Commodity']} startFamilies={['commodity']} startOpen={0} /></State>
+        </StateRow>
+      </Section>
+
+      <Section title="A typed sentence moves the same funnel"
+        sub="Not a second way in with its own behaviour — the SAME state, reached differently. Typing “equity mutual funds under 0.5%” and tapping the three tiles land in exactly the same place, because they are the same request. Every phrase it knows is built from the catalogue's own asset names, family labels, sub-type labels and houses, so it cannot learn a word the data does not have.">
+        <StateRow>
+          <State label="IT SAYS WHAT IT READ" note="The steps above are already changed. The note repeats nothing the screen is showing — it names the READING, which is the part the advisor cannot otherwise check."><Funnel startOpen={0} startAssets={['Equity']} startFamilies={['mutual_fund']} startCats={['mutual_fund:large_cap']} startAsked={{ text: 'large cap funds from canara', note: 'Read as Large Cap Fund · Canara Robeco — 1 left.', ok: true }} /></State>
+          <State label="AND WHAT IT DID NOT" tone="under" note="F-61 in this repository is the prototype claiming it had filtered and not doing it. A parser is where that defect is born, so every word it could not place is printed and the funnel is left alone."><Funnel startOpen={0} startQ="something about crypto" startAsked={{ text: 'show me something about crypto', note: 'Nothing here matched the catalogue: something, about, crypto. The funnel is unchanged — try an asset class, a product, a category or a house.', ok: false }} /></State>
         </StateRow>
       </Section>
 
