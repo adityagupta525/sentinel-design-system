@@ -1,5 +1,5 @@
-<!-- @dsCard group="Pages" viewport="1100x1500" name="IntentTile" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>IntentTile — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+<!-- @dsCard group="Pages" viewport="1100x2100" name="MetricRow" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>MetricRow — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
@@ -219,7 +219,7 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="../ds_bundle.js"></script>
 <style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
-<body><script>(function(){var M={"../components/cards/IntentTile.d.ts":"import * as React from 'react';\n\nexport interface IntentTileProps {\n  /** What the filter set is called, in the advisor's words: \"Equity\", \"Maturing within 3 years\". */\n  label: string;\n  /** How many rows the set holds. Omit only when the number is genuinely unknown — a tile with no\n   *  count asks the advisor to tap and find out, which is the tap this component exists to save. */\n  count?: number | null;\n  /** What `count` counts. Defaults to 'funds'; a bond tile says 'bonds'. */\n  unit?: string;\n  /** One line under the count: what is inside the set. Not shown when `unavailable`. */\n  note?: string;\n  /** A silhouette drawn at 76px in the bottom-right corner, at 7% ink, clipped by the tile's own\n   *  radius. It is TEXTURE, never meaning: every tile states its class in words, so a tile with no\n   *  mark is not a tile missing information, and rule 1 — colour and shape never carry a meaning\n   *  alone — holds. Pass an `AssetMark`, or any 24-viewBox glyph sized up. */\n  mark?: React.ReactNode;\n  /** The set is the one currently applied. */\n  selected?: boolean;\n  /** No feed for this asset class yet. The tile stays visible and legible and loses only its\n   *  affordance — an advisor needs to know the class exists. Never render `count={0}` for this. */\n  unavailable?: boolean;\n  /** Why it is unavailable, in words. Defaults to a line that says a feed is missing rather than\n   *  implying the shelf is empty. */\n  unavailableNote?: string;\n  onClick?: () => void;\n}\n\n/**\n * A pre-filled filter set with a name and a count — the explorer's first screen as a sentence\n * rather than a form.\n *\n * Ten of the eleven guided paths in the Indian market are a separate surface from the screener;\n * GoldenPi's purpose tiles are the exception that lives inside it, and Centricity's own One Digital\n * does the same at asset level (\"Equity 612 funds\"). The count is load-bearing: option counts are\n * the highest-impact fix to a filter interface, and every funnel that worked carries one.\n *\n * `unavailable` is how an asset class with no feed appears — inert, legible, with the reason in\n * words. Never `count={0}`, which says the shelf is empty rather than that the feed is missing.\n */\nexport function IntentTile(props: IntentTileProps): JSX.Element;\n\nexport interface IntentGridProps {\n  children: React.ReactNode;\n  /** Tiles per row. Two at 375, which is the widest a label and a count sit on one line. */\n  cols?: number;\n}\n\n/** The grid the tiles sit in. Here rather than on each screen so the gap cannot drift between the\n *  three explorer variations. */\nexport function IntentGrid(props: IntentGridProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<body><script>(function(){var M={"../components/data/MetricRow.d.ts":"import * as React from 'react';\n\nexport interface MetricPeer {\n  /** 'This fund', 'Category', 'Benchmark'. */\n  label: string;\n  /** Already formatted. */\n  value: string;\n  /** The fund's own figure — the one the others are read against. Takes the accent surface. The\n   *  label still says which is which, so colour is not carrying the meaning alone. */\n  self?: boolean;\n  /** This peer has no figure on file. The tile STAYS — dropping it would hide that a comparison is\n   *  meant to exist — and `value` becomes the words for the gap ('not on file'), set in caption\n   *  weight rather than figure weight, so the eye does not compare three things when there are two. */\n  missing?: boolean;\n}\n\nexport interface MetricRowProps {\n  /** 'Alpha (3Y)', 'Beta (3Y)', 'Expense ratio'. */\n  label: string;\n  /** The fund's own figure, already formatted. */\n  value: string;\n  /** What it is measured against, as tiles. Usually three: this fund, its category, its benchmark —\n   *  all of which the catalogue carries. Empty means there is nothing to compare it to, and the row\n   *  then has no chevron rather than a chevron that opens an empty panel. */\n  peers?: MetricPeer[];\n  /** One line under the tiles: what the comparison means here, not what the metric means in general.\n   *  \"Ahead of its category on both windows\" — a reading, not a definition. */\n  note?: string;\n  open?: boolean;\n  onToggle?: () => void;\n  /** Set by `MetricList`. The last row drops its rule — a hairline with nothing under it draws the\n   *  bottom of a box that is not there. */\n  last?: boolean;\n  id?: string;\n}\n\n/**\n * A figure that opens into what it is measured against.\n *\n * `Alpha 1.64` is only a fact once the reader knows the category did 8.64 and the benchmark 9.12.\n * The catalogue carries all three; printing all three per row makes a wall, so the row prints the\n * fund's own figure and opening it lays the peers beside it.\n *\n * Not `StatTile`, which is a headline figure with a door to a DEFINITION — what the metric means.\n * This is a row with a door to a COMPARISON — what it is here. A one-pager wants both, and a\n * component that did both would put two chevrons on one row.\n */\nexport function MetricRow(props: MetricRowProps): JSX.Element;\n\nexport interface MetricListProps { children?: React.ReactNode; }\n/** Applies the divider rule and drops it on the last row. */\nexport function MetricList(props: MetricListProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
 <script>"use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -896,164 +896,231 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
-  IntentTile = _window$SentinelDesig.IntentTile,
-  IntentGrid = _window$SentinelDesig.IntentGrid;
-var TOK = ['--type-title-font', '--type-meta-font', '--type-caption-font', '--color-surface', '--color-selected', '--color-bronze', '--color-line', '--radius-16', '--h-touch', '--space-12'];
+  MetricRow = _window$SentinelDesig.MetricRow,
+  MetricList = _window$SentinelDesig.MetricList,
+  Surface = _window$SentinelDesig.Surface,
+  Eyebrow = _window$SentinelDesig.Eyebrow,
+  InlineActionRow = _window$SentinelDesig.InlineActionRow,
+  Provenance = _window$SentinelDesig.Provenance;
+var TOK = ['--h-row-xl', '--border-hairline', '--radius-12', '--space-10', '--space-6', '--dur-enter', '--dur-fast', '--ease', '--color-selected', '--color-chip', '--type-row-font', '--type-row-strong-font'];
+
+/* Canara Robeco Large Cap, verbatim from the catalogue. It is BEHIND its category over one year and
+   AHEAD over three, which is the whole reason a figure needs its peers beside it — and the benchmark
+   return is not on file for any of the ten mutual funds in the sample, so the third tile says so. */
 function Live() {
-  var _React$useState = React.useState('equity'),
+  var _React$useState = React.useState('3Y return'),
     _React$useState2 = _slicedToArray(_React$useState, 2),
-    on = _React$useState2[0],
-    setOn = _React$useState2[1];
-  return /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: on === 'equity',
-    onClick: function onClick() {
-      return setOn('equity');
+    open = _React$useState2[0],
+    setOpen = _React$useState2[1];
+  var t = function t(k) {
+    return function () {
+      return setOpen(function (s) {
+        return s === k ? null : k;
+      });
+    };
+  };
+  return /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Eyebrow, null, "HOW IT HAS DONE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-8)'
     }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    selected: on === 'debt',
-    onClick: function onClick() {
-      return setOn('debt');
+  }, /*#__PURE__*/React.createElement(MetricList, null, /*#__PURE__*/React.createElement(MetricRow, {
+    label: "3Y return",
+    value: "9.76%",
+    open: open === '3Y return',
+    onToggle: t('3Y return'),
+    peers: [{
+      label: 'This fund',
+      value: '9.76%',
+      self: true
+    }, {
+      label: 'Large cap',
+      value: '8.64%'
+    }, {
+      label: 'Nifty 100',
+      value: 'not on file',
+      missing: true
+    }],
+    note: "1.1 points ahead of its category over three years."
+  }), /*#__PURE__*/React.createElement(MetricRow, {
+    label: "1Y return",
+    value: "\u22123.20%",
+    open: open === '1Y return',
+    onToggle: t('1Y return'),
+    peers: [{
+      label: 'This fund',
+      value: '−3.20%',
+      self: true
+    }, {
+      label: 'Large cap',
+      value: '−2.25%'
+    }, {
+      label: 'Nifty 100',
+      value: 'not on file',
+      missing: true
+    }],
+    note: "Behind its category over one year, ahead over three. Both are true and neither is the answer on its own."
+  }), /*#__PURE__*/React.createElement(MetricRow, {
+    label: "Alpha (3Y)",
+    value: "1.64",
+    open: open === 'Alpha (3Y)',
+    onToggle: t('Alpha (3Y)'),
+    note: "Return above what its beta would have predicted, over three years."
+  }), /*#__PURE__*/React.createElement(MetricRow, {
+    label: "Beta (3Y)",
+    value: "0.94",
+    open: open === 'Beta (3Y)',
+    onToggle: t('Beta (3Y)'),
+    note: "Moves about 6% less than Nifty 100, up and down."
+  }), /*#__PURE__*/React.createElement(MetricRow, {
+    label: "Expense ratio",
+    value: "0.45%"
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 'var(--space-8)'
     }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Hybrid",
-    count: 216,
-    note: "Balanced advantage",
-    selected: on === 'hybrid',
-    onClick: function onClick() {
-      return setOn('hybrid');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Index",
-    count: 463,
-    note: "Passive, lowest cost",
-    selected: on === 'index',
-    onClick: function onClick() {
-      return setOn('index');
-    }
-  }));
+  }, /*#__PURE__*/React.createElement(Provenance, {
+    text: "Catalogue, 17 Sep 2026 \xB7 category average across the sample"
+  })));
 }
 function App() {
   return /*#__PURE__*/React.createElement(PageShell, {
-    name: "IntentTile",
-    group: "Cards",
+    name: "MetricRow",
+    group: "Data",
     status: "shipped",
-    requires: ['IntentTile', 'IntentGrid'],
-    summary: "Eleven guided paths were found across the Indian market and ten of them are a SEPARATE surface from the screener \u2014 a quiz, a goal flow, a robo questionnaire. The eleventh, GoldenPi's purpose tiles, lives inside the explorer, and it is the only one an advisor can walk without leaving what they were doing. Centricity's own One Digital does the same at asset level: 'Choose your exposure \xB7 Equity 612 funds \xB7 Debt 448'. A tile is a pre-filled filter set with a name, so the first screen reads as a sentence and nobody meets an empty form."
+    requires: ['MetricRow', 'Surface', 'Eyebrow', 'Provenance'],
+    summary: "A one-pager is a column of numbers and a number on its own answers nothing. Alpha 1.64 is only a fact once the reader knows the category did 8.64. The catalogue carries the peers; printing all three per row makes a wall, so the row prints the fund's own figure and opening it lays the peers beside it. Not StatTile, which is a headline figure with a door to a DEFINITION \u2014 this is a row with a door to a COMPARISON, and a one-pager wants both."
   }, /*#__PURE__*/React.createElement(Block, {
     n: 1,
     title: "Specimen",
-    sub: "Live. Two to a row at 375, which is the widest a label and a count sit on one line. Tap to select."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
+    sub: "Live, and every figure is Canara Robeco Large Cap from the catalogue. Open the first two rows together: the fund is BEHIND its category over one year and AHEAD over three. Neither figure alone is the answer, which is why neither is printed alone."
+  }, /*#__PURE__*/React.createElement(Specimen, null, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
     n: 2,
-    title: "Anatomy",
-    sub: "Label, count, note. The count is not decoration \u2014 a tile without one asks the advisor to tap and find out, which is the tap this component exists to save."
-  }, /*#__PURE__*/React.createElement(Anatomy, {
-    width: 343,
-    top: "--type-title-font, ink \u2014 what the set is called",
-    left: "--radius-16, surface, 1px line",
-    right: "the count, tabular, bronze-deep",
-    bottom: "the note: one line on what is inside the set"
-  }, /*#__PURE__*/React.createElement(IntentGrid, {
-    cols: 1
-  }, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 3,
-    title: "Unavailable is a WORD, never a zero",
-    sub: "Four of the five asset classes Centricity sells have no rows in the book. A tile reading 'Bonds \xB7 0 funds' is a lie about an empty shelf rather than an admission of a missing feed \u2014 and the advisor still needs to know the class exists."
+    title: "A row with nothing to compare has no chevron",
+    sub: "Expense ratio has no peer in the catalogue, so the row does not offer a door that opens on an empty panel. The absence of the affordance IS the statement."
   }, /*#__PURE__*/React.createElement(Grid, {
     cols: 2,
-    itemWidth: 311,
     items: [{
-      label: 'available',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Mutual funds",
-        count: 1739,
-        note: "Direct plans, on and off your shelf",
-        onClick: function onClick() {}
-      })),
-      note: 'A count and a note. Tappable.'
+      label: 'Has peers',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(MetricList, null, /*#__PURE__*/React.createElement(MetricRow, {
+        label: "3Y return",
+        value: "9.76%",
+        peers: [{
+          label: 'This fund',
+          value: '9.76%',
+          self: true
+        }, {
+          label: 'Large cap',
+          value: '8.64%'
+        }]
+      }))),
+      note: 'Chevron, because opening it says something.'
     }, {
-      label: 'unavailable',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Bonds",
-        unavailable: true,
-        unavailableNote: "No feed yet \u2014 rating, yield and tenure are not on file."
-      })),
-      note: 'Inert, not disabled (F-46, F-31): the label stays legible and only the affordance goes. The reason says which feed is missing.'
+      label: 'Has none',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(MetricList, null, /*#__PURE__*/React.createElement(MetricRow, {
+        label: "Expense ratio",
+        value: "0.45%"
+      }))),
+      note: 'No chevron. Nothing promised that cannot be delivered.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "A missing peer is named, not dropped",
+    sub: "The benchmark return is not on file for any of the ten mutual funds in the sample \u2014 but the benchmark itself is: Nifty 100. Dropping the tile would hide that a comparison is meant to exist; printing a zero would invent it."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 1,
+    items: [{
+      label: 'Three tiles, one of them a gap',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(MetricList, null, /*#__PURE__*/React.createElement(MetricRow, {
+        label: "3Y return",
+        value: "9.76%",
+        open: true,
+        peers: [{
+          label: 'This fund',
+          value: '9.76%',
+          self: true
+        }, {
+          label: 'Large cap',
+          value: '8.64%'
+        }, {
+          label: 'Nifty 100',
+          value: 'not on file',
+          missing: true
+        }],
+        note: "1.1 points ahead of its category over three years."
+      }))),
+      note: 'We know which benchmark. We do not have its number. The tile says exactly that.'
     }]
   })), /*#__PURE__*/React.createElement(Block, {
     n: 4,
-    title: "Selected",
-    sub: "The sand fill and a bronze ring, which is how selection already reads in this system \u2014 the same pair RangePills and Pill use."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: true,
-    onClick: function onClick() {}
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 5,
     title: "Tokens"
   }, /*#__PURE__*/React.createElement(Tokens, {
     names: TOK
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 6,
+    n: 5,
     title: "Props"
   }, /*#__PURE__*/React.createElement(Props, {
-    src: "../components/cards/IntentTile.d.ts"
+    src: "../components/data/MetricRow.d.ts"
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 7,
+    n: 6,
     title: "Do / Don't"
   }, /*#__PURE__*/React.createElement(DoDont, {
-    doNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Maturing within 3 years",
-      count: 84,
-      note: "Short duration and corporate bond",
-      onClick: function onClick() {}
-    })),
-    doCaption: "A named set with its count. GoldenPi's purpose tile: the advisor reads what they get before they tap.",
-    dontNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Short duration",
-      onClick: function onClick() {}
-    })),
-    dontCaption: "A bare category name with no count and no note. It is a folder, not a filter set \u2014 the advisor has to tap it to learn anything."
+    doNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(MetricList, null, /*#__PURE__*/React.createElement(MetricRow, {
+      label: "3Y return",
+      value: "9.76%",
+      open: true,
+      peers: [{
+        label: 'This fund',
+        value: '9.76%',
+        self: true
+      }, {
+        label: 'Large cap',
+        value: '8.64%'
+      }],
+      note: "1.1 points ahead of its category over three years."
+    }))),
+    doCaption: "The fund's own tile carries the accent, the peer sits beside it, and one line reads the comparison rather than defining the metric.",
+    dontNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(MetricList, null, /*#__PURE__*/React.createElement(MetricRow, {
+      label: "3Y return",
+      value: "9.76%",
+      open: true,
+      peers: [{
+        label: 'This fund',
+        value: '9.76%',
+        self: true
+      }, {
+        label: 'Large cap',
+        value: '8.64%'
+      }, {
+        label: 'Nifty 100',
+        value: '9.12%'
+      }, {
+        label: 'Mid cap',
+        value: '15.33%'
+      }, {
+        label: 'Small cap',
+        value: '15.00%'
+      }]
+    }))),
+    dontCaption: "Five tiles across 311pt. Two of them are other categories this fund is not in, so the row now invites a comparison that means nothing \u2014 and at this width the figures have stopped being readable anyway."
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 8,
-    title: "Motion",
-    sub: "Press only. The tile does not animate in; it is the first thing on the screen."
+    n: 7,
+    title: "Motion"
   }, /*#__PURE__*/React.createElement(Motion, {
     rows: [{
-      name: 'Press',
-      property: 'transform: scale(--press-scale)',
-      duration: '--dur-press 150ms',
-      reduced: 'Pressable drops the scale and keeps the fill change.'
+      name: 'Peers open',
+      property: 'grid-template-rows 0fr → 1fr. The funnel\'s one expansion, shared with StepBlock and FundCard: three components, one gesture, one behaviour',
+      duration: '--dur-enter 240ms',
+      reduced: 'Appears at full height with no travel.'
+    }, {
+      name: 'Tiles fade',
+      property: 'opacity 0 → 1',
+      duration: '--dur-fast 200ms',
+      reduced: 'No visible fade.'
+    }, {
+      name: 'Chevron turns',
+      property: 'transform rotate(90deg → -90deg)',
+      duration: '--dur-fast 200ms',
+      reduced: 'Lands rotated with no travel.'
     }]
   })));
 }

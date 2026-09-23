@@ -1,5 +1,5 @@
-<!-- @dsCard group="Pages" viewport="1100x1500" name="IntentTile" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>IntentTile — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+<!-- @dsCard group="Pages" viewport="1100x2100" name="StepBlock" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>StepBlock — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
@@ -219,7 +219,7 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="../ds_bundle.js"></script>
 <style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
-<body><script>(function(){var M={"../components/cards/IntentTile.d.ts":"import * as React from 'react';\n\nexport interface IntentTileProps {\n  /** What the filter set is called, in the advisor's words: \"Equity\", \"Maturing within 3 years\". */\n  label: string;\n  /** How many rows the set holds. Omit only when the number is genuinely unknown — a tile with no\n   *  count asks the advisor to tap and find out, which is the tap this component exists to save. */\n  count?: number | null;\n  /** What `count` counts. Defaults to 'funds'; a bond tile says 'bonds'. */\n  unit?: string;\n  /** One line under the count: what is inside the set. Not shown when `unavailable`. */\n  note?: string;\n  /** A silhouette drawn at 76px in the bottom-right corner, at 7% ink, clipped by the tile's own\n   *  radius. It is TEXTURE, never meaning: every tile states its class in words, so a tile with no\n   *  mark is not a tile missing information, and rule 1 — colour and shape never carry a meaning\n   *  alone — holds. Pass an `AssetMark`, or any 24-viewBox glyph sized up. */\n  mark?: React.ReactNode;\n  /** The set is the one currently applied. */\n  selected?: boolean;\n  /** No feed for this asset class yet. The tile stays visible and legible and loses only its\n   *  affordance — an advisor needs to know the class exists. Never render `count={0}` for this. */\n  unavailable?: boolean;\n  /** Why it is unavailable, in words. Defaults to a line that says a feed is missing rather than\n   *  implying the shelf is empty. */\n  unavailableNote?: string;\n  onClick?: () => void;\n}\n\n/**\n * A pre-filled filter set with a name and a count — the explorer's first screen as a sentence\n * rather than a form.\n *\n * Ten of the eleven guided paths in the Indian market are a separate surface from the screener;\n * GoldenPi's purpose tiles are the exception that lives inside it, and Centricity's own One Digital\n * does the same at asset level (\"Equity 612 funds\"). The count is load-bearing: option counts are\n * the highest-impact fix to a filter interface, and every funnel that worked carries one.\n *\n * `unavailable` is how an asset class with no feed appears — inert, legible, with the reason in\n * words. Never `count={0}`, which says the shelf is empty rather than that the feed is missing.\n */\nexport function IntentTile(props: IntentTileProps): JSX.Element;\n\nexport interface IntentGridProps {\n  children: React.ReactNode;\n  /** Tiles per row. Two at 375, which is the widest a label and a count sit on one line. */\n  cols?: number;\n}\n\n/** The grid the tiles sit in. Here rather than on each screen so the gap cannot drift between the\n *  three explorer variations. */\nexport function IntentGrid(props: IntentGridProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<body><script>(function(){var M={"../components/chat/StepBlock.d.ts":"import * as React from 'react';\n\nexport interface StepBlockProps {\n  /** 1-based position in the funnel. Rendered as a numeral while the step is unanswered and as a\n   *  tick once it is — a shape and a figure, never a colour on its own. Omit for a block that is\n   *  not part of a numbered sequence. */\n  step?: number;\n  /** The question, in the advisor's words: \"Asset class\", \"Product\", \"Category\". */\n  title: string;\n  /** The answer, as the chips the advisor chose. Shown only while collapsed: while the step is open\n   *  the selector beneath is already showing them, and printing them twice is noise. Beyond\n   *  `maxChips` the remainder becomes `+N` — a count, never a fade, because a count is legible and a\n   *  gradient over the fourth chip is a guess. */\n  chips?: string[];\n  /** The answer when it is a sentence rather than a set — \"Parag Parikh Flexi Cap\". Ignored when\n   *  `chips` is non-empty. */\n  summary?: React.ReactNode;\n  /** The step has an answer. Drives the tick. A step can be `done` and closed, which is the resting\n   *  state of every step above the one being worked on. */\n  done?: boolean;\n  /** Open. Controlled — the funnel owns which step is open, because opening one closes the others\n   *  and a component cannot know that. */\n  open?: boolean;\n  onToggle?: () => void;\n  /** Default 3. */\n  maxChips?: number;\n  /** How many rows this step's answer yields, shown on the right of the collapsed row: `24 funds`.\n   *  This is the count the research found to be the highest-impact element of any filter interface —\n   *  it is what saves the advisor a tap to find out. Omit when genuinely unknown; never pass 0 to\n   *  mean \"no feed\", which is a lie about an empty shelf. */\n  count?: number;\n  /** What `count` counts. Default 'funds'. */\n  unit?: string;\n  /** The selector, list or panel this step opens. Stays mounted while closed so a half-made\n   *  selection survives the advisor glancing at the step above. */\n  children?: React.ReactNode;\n  /** Base for the generated body id, for pages that need a stable one. */\n  id?: string;\n}\n\n/**\n * A step of a funnel that collapses into its own answer.\n *\n * The explorer asks four questions in order and the owner's ruling is that all four live on one\n * screen with nothing opening a second. That only works if an answered question stops taking a\n * screenful — so a step collapses to one row carrying the answer, and the row is the control that\n * opens it again. The funnel then reads as a sentence down the screen, and changing any word of it\n * is one tap on that word.\n *\n * It grows from its own row rather than sliding in: `grid-template-rows: 0fr → 1fr`, which needs no\n * measurement and no max-height guess and does not jump when the content changes size. That is the\n * one expansion this system allows — an artifact expands in place, and there is no shared-element\n * transition.\n */\nexport function StepBlock(props: StepBlockProps): JSX.Element;\n\nexport interface StepStackProps { children?: React.ReactNode; }\n/** The funnel's own spacing — `--space-8`, because these are steps of one question rather than\n *  separate messages in a thread, which take `--stack`. */\nexport function StepStack(props: StepStackProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
 <script>"use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -896,164 +896,253 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
+  StepBlock = _window$SentinelDesig.StepBlock,
+  StepStack = _window$SentinelDesig.StepStack,
   IntentTile = _window$SentinelDesig.IntentTile,
-  IntentGrid = _window$SentinelDesig.IntentGrid;
-var TOK = ['--type-title-font', '--type-meta-font', '--type-caption-font', '--color-surface', '--color-selected', '--color-bronze', '--color-line', '--radius-16', '--h-touch', '--space-12'];
-function Live() {
-  var _React$useState = React.useState('equity'),
+  IntentGrid = _window$SentinelDesig.IntentGrid,
+  ChipRow = _window$SentinelDesig.ChipRow,
+  Surface = _window$SentinelDesig.Surface,
+  AssetMark = _window$SentinelDesig.AssetMark;
+var TOK = ['--radius-16', '--space-12', '--space-8', '--h-touch', '--dur-enter', '--dur-fast', '--ease', '--color-bronze', '--color-chip', '--type-row-strong-font', '--type-caption-font'];
+var ASSETS = [{
+  label: 'Equity',
+  count: 36
+}, {
+  label: 'Debt',
+  count: 24
+}, {
+  label: 'Commodity',
+  count: 10
+}, {
+  label: 'REITs / InvITs',
+  count: 10
+}];
+function Funnel() {
+  var _React$useState = React.useState(1),
     _React$useState2 = _slicedToArray(_React$useState, 2),
-    on = _React$useState2[0],
-    setOn = _React$useState2[1];
-  return /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: on === 'equity',
-    onClick: function onClick() {
-      return setOn('equity');
+    openStep = _React$useState2[0],
+    setOpen = _React$useState2[1];
+  var _React$useState3 = React.useState(['Equity', 'Debt']),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    assets = _React$useState4[0],
+    setAssets = _React$useState4[1];
+  var _React$useState5 = React.useState([]),
+    _React$useState6 = _slicedToArray(_React$useState5, 2),
+    product = _React$useState6[0],
+    setProduct = _React$useState6[1];
+  var toggle = function toggle(n) {
+    return setOpen(function (s) {
+      return s === n ? 0 : n;
+    });
+  };
+  var tapAsset = function tapAsset(l) {
+    return setAssets(function (s) {
+      return s.includes(l) ? s.filter(function (x) {
+        return x !== l;
+      }) : s.concat(l);
+    });
+  };
+  var count = ASSETS.filter(function (a) {
+    return assets.includes(a.label);
+  }).reduce(function (t, a) {
+    return t + a.count;
+  }, 0);
+  return /*#__PURE__*/React.createElement(StepStack, null, /*#__PURE__*/React.createElement(StepBlock, {
+    step: 1,
+    title: "Asset class",
+    chips: assets,
+    done: assets.length > 0,
+    count: count,
+    open: openStep === 1,
+    onToggle: function onToggle() {
+      return toggle(1);
     }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    selected: on === 'debt',
-    onClick: function onClick() {
-      return setOn('debt');
+  }, /*#__PURE__*/React.createElement(IntentGrid, null, ASSETS.map(function (a) {
+    return /*#__PURE__*/React.createElement(IntentTile, {
+      key: a.label,
+      label: a.label,
+      count: a.count,
+      mark: /*#__PURE__*/React.createElement(AssetMark, {
+        asset: a.label,
+        size: 76
+      }),
+      selected: assets.includes(a.label),
+      onClick: function onClick() {
+        return tapAsset(a.label);
+      }
+    });
+  }))), /*#__PURE__*/React.createElement(StepBlock, {
+    step: 2,
+    title: "Product",
+    chips: product,
+    done: product.length > 0,
+    open: openStep === 2,
+    onToggle: function onToggle() {
+      return toggle(2);
     }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Hybrid",
-    count: 216,
-    note: "Balanced advantage",
-    selected: on === 'hybrid',
-    onClick: function onClick() {
-      return setOn('hybrid');
+  }, /*#__PURE__*/React.createElement(ChipRow, {
+    chips: ['Mutual fund', 'PMS', 'AIF', 'Unlisted', 'Bonds', 'Fixed deposit'],
+    selected: product,
+    onToggle: function onToggle(c) {
+      return setProduct(function (s) {
+        return s.includes(c) ? s.filter(function (x) {
+          return x !== c;
+        }) : s.concat(c);
+      });
     }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Index",
-    count: 463,
-    note: "Passive, lowest cost",
-    selected: on === 'index',
-    onClick: function onClick() {
-      return setOn('index');
+  })), /*#__PURE__*/React.createElement(StepBlock, {
+    step: 3,
+    title: "Category",
+    summary: "Not yet chosen",
+    open: openStep === 3,
+    onToggle: function onToggle() {
+      return toggle(3);
     }
-  }));
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      font: 'var(--type-body-font)',
+      color: 'var(--color-muted)'
+    }
+  }, "Categories appear once a product is chosen \u2014 the third question is a function of the second.")));
 }
 function App() {
   return /*#__PURE__*/React.createElement(PageShell, {
-    name: "IntentTile",
-    group: "Cards",
+    name: "StepBlock",
+    group: "Chat",
     status: "shipped",
-    requires: ['IntentTile', 'IntentGrid'],
-    summary: "Eleven guided paths were found across the Indian market and ten of them are a SEPARATE surface from the screener \u2014 a quiz, a goal flow, a robo questionnaire. The eleventh, GoldenPi's purpose tiles, lives inside the explorer, and it is the only one an advisor can walk without leaving what they were doing. Centricity's own One Digital does the same at asset level: 'Choose your exposure \xB7 Equity 612 funds \xB7 Debt 448'. A tile is a pre-filled filter set with a name, so the first screen reads as a sentence and nobody meets an empty form."
+    requires: ['StepBlock', 'IntentTile', 'ChipRow', 'Surface'],
+    summary: "The explorer asks four questions in order and the owner's ruling is that all four live on ONE screen, in one thread, with nothing opening a second. That ruling only works if a question that has been answered stops taking a screenful \u2014 so a step collapses to a single row carrying its own answer, and the row is the control that opens it again. The funnel then reads as a sentence down the screen, and changing any word of it is one tap on that word."
   }, /*#__PURE__*/React.createElement(Block, {
     n: 1,
     title: "Specimen",
-    sub: "Live. Two to a row at 375, which is the widest a label and a count sit on one line. Tap to select."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
+    sub: "Live. Open a step; choosing inside it updates the row above. Only one step is open at a time, because two open steps is a form, and a form is what this replaces."
+  }, /*#__PURE__*/React.createElement(Specimen, null, /*#__PURE__*/React.createElement(Funnel, null))), /*#__PURE__*/React.createElement(Block, {
     n: 2,
-    title: "Anatomy",
-    sub: "Label, count, note. The count is not decoration \u2014 a tile without one asks the advisor to tap and find out, which is the tap this component exists to save."
-  }, /*#__PURE__*/React.createElement(Anatomy, {
-    width: 343,
-    top: "--type-title-font, ink \u2014 what the set is called",
-    left: "--radius-16, surface, 1px line",
-    right: "the count, tabular, bronze-deep",
-    bottom: "the note: one line on what is inside the set"
-  }, /*#__PURE__*/React.createElement(IntentGrid, {
-    cols: 1
-  }, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 3,
-    title: "Unavailable is a WORD, never a zero",
-    sub: "Four of the five asset classes Centricity sells have no rows in the book. A tile reading 'Bonds \xB7 0 funds' is a lie about an empty shelf rather than an admission of a missing feed \u2014 and the advisor still needs to know the class exists."
+    title: "Closed, the row IS the answer",
+    sub: "An accordion whose header is only a title makes the advisor open a step to remember what they chose. Here the header carries it, so the four steps read as one sentence: asset, product, category, fund."
   }, /*#__PURE__*/React.createElement(Grid, {
     cols: 2,
-    itemWidth: 311,
     items: [{
-      label: 'available',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Mutual funds",
-        count: 1739,
-        note: "Direct plans, on and off your shelf",
-        onClick: function onClick() {}
+      label: 'Answered and closed',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(StepBlock, {
+        step: 1,
+        title: "Asset class",
+        chips: ['Equity', 'Debt'],
+        done: true,
+        count: 60
       })),
-      note: 'A count and a note. Tappable.'
+      note: 'Tick, the chosen chips, the count it yields.'
     }, {
-      label: 'unavailable',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Bonds",
-        unavailable: true,
-        unavailableNote: "No feed yet \u2014 rating, yield and tenure are not on file."
+      label: 'Four chosen, room for three',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(StepBlock, {
+        step: 2,
+        title: "Product",
+        chips: ['Mutual fund', 'PMS', 'AIF', 'Unlisted'],
+        done: true,
+        count: 40
       })),
-      note: 'Inert, not disabled (F-46, F-31): the label stays legible and only the affordance goes. The reason says which feed is missing.'
+      note: 'The overflow is +1 — a count, never a fade over the fourth chip.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "Unanswered is not the same as empty",
+    sub: "A step still to be answered shows its numeral and no chips. A step whose answer is a sentence rather than a set takes `summary` instead."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 2,
+    items: [{
+      label: 'Not yet answered',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(StepBlock, {
+        step: 3,
+        title: "Category"
+      })),
+      note: 'Numeral, no tick, nothing claimed.'
+    }, {
+      label: 'A sentence, not a set',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(StepBlock, {
+        step: 4,
+        title: "Fund",
+        summary: "Parag Parikh Flexi Cap",
+        done: true
+      })),
+      note: '`summary` for a single answer.'
     }]
   })), /*#__PURE__*/React.createElement(Block, {
     n: 4,
-    title: "Selected",
-    sub: "The sand fill and a bronze ring, which is how selection already reads in this system \u2014 the same pair RangePills and Pill use."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: true,
-    onClick: function onClick() {}
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 5,
     title: "Tokens"
   }, /*#__PURE__*/React.createElement(Tokens, {
     names: TOK
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 6,
+    n: 5,
     title: "Props"
   }, /*#__PURE__*/React.createElement(Props, {
-    src: "../components/cards/IntentTile.d.ts"
+    src: "../components/chat/StepBlock.d.ts"
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 7,
+    n: 6,
     title: "Do / Don't"
   }, /*#__PURE__*/React.createElement(DoDont, {
-    doNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Maturing within 3 years",
-      count: 84,
-      note: "Short duration and corporate bond",
-      onClick: function onClick() {}
-    })),
-    doCaption: "A named set with its count. GoldenPi's purpose tile: the advisor reads what they get before they tap.",
-    dontNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Short duration",
-      onClick: function onClick() {}
-    })),
-    dontCaption: "A bare category name with no count and no note. It is a folder, not a filter set \u2014 the advisor has to tap it to learn anything."
+    doNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(StepStack, null, /*#__PURE__*/React.createElement(StepBlock, {
+      step: 1,
+      title: "Asset class",
+      chips: ['Equity'],
+      done: true,
+      count: 36
+    }), /*#__PURE__*/React.createElement(StepBlock, {
+      step: 2,
+      title: "Product",
+      chips: ['Mutual fund'],
+      done: true,
+      count: 10
+    }))),
+    doCaption: "Answered steps rest closed, each carrying its answer and its count. The advisor can read the whole funnel without opening anything.",
+    dontNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(StepStack, null, /*#__PURE__*/React.createElement(StepBlock, {
+      step: 1,
+      title: "Asset class",
+      open: true,
+      onToggle: function onToggle() {}
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: 0,
+        font: 'var(--type-caption-font)',
+        color: 'var(--color-muted)'
+      }
+    }, "A selector.")), /*#__PURE__*/React.createElement(StepBlock, {
+      step: 2,
+      title: "Product",
+      open: true,
+      onToggle: function onToggle() {}
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: 0,
+        font: 'var(--type-caption-font)',
+        color: 'var(--color-muted)'
+      }
+    }, "Another selector.")))),
+    dontCaption: "Two steps open at once. Now it is a form on a phone \u2014 the thing the funnel exists to replace \u2014 and neither row is carrying an answer."
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 8,
-    title: "Motion",
-    sub: "Press only. The tile does not animate in; it is the first thing on the screen."
+    n: 7,
+    title: "Motion"
   }, /*#__PURE__*/React.createElement(Motion, {
     rows: [{
-      name: 'Press',
-      property: 'transform: scale(--press-scale)',
-      duration: '--dur-press 150ms',
-      reduced: 'Pressable drops the scale and keeps the fill change.'
+      name: 'Panel opens',
+      property: 'grid-template-rows 0fr → 1fr — the content grows from its own row, with no measurement and no max-height guess',
+      duration: '--dur-enter 240ms',
+      reduced: 'The global block cuts every transition to 1ms, so the panel appears at full height with no travel.'
+    }, {
+      name: 'Content fades',
+      property: 'opacity 0 → 1 on the panel body, so text does not scroll into view before its box exists',
+      duration: '--dur-fast 200ms',
+      reduced: 'Same — 1ms, no visible fade.'
+    }, {
+      name: 'Chevron turns',
+      property: 'transform rotate(90deg → -90deg). One icon rotating, never two icons swapped',
+      duration: '--dur-fast 200ms',
+      reduced: 'Lands rotated with no travel.'
+    }, {
+      name: 'Ring on open',
+      property: 'box-shadow, --color-line → --color-bronze',
+      duration: '--dur-fast 200ms',
+      reduced: 'Unchanged — a colour change, not a movement.'
     }]
   })));
 }

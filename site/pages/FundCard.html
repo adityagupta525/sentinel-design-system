@@ -1,5 +1,5 @@
-<!-- @dsCard group="Pages" viewport="1100x1500" name="IntentTile" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>IntentTile — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+<!-- @dsCard group="Pages" viewport="1100x2100" name="FundCard" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>FundCard — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
@@ -219,7 +219,7 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="../ds_bundle.js"></script>
 <style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
-<body><script>(function(){var M={"../components/cards/IntentTile.d.ts":"import * as React from 'react';\n\nexport interface IntentTileProps {\n  /** What the filter set is called, in the advisor's words: \"Equity\", \"Maturing within 3 years\". */\n  label: string;\n  /** How many rows the set holds. Omit only when the number is genuinely unknown — a tile with no\n   *  count asks the advisor to tap and find out, which is the tap this component exists to save. */\n  count?: number | null;\n  /** What `count` counts. Defaults to 'funds'; a bond tile says 'bonds'. */\n  unit?: string;\n  /** One line under the count: what is inside the set. Not shown when `unavailable`. */\n  note?: string;\n  /** A silhouette drawn at 76px in the bottom-right corner, at 7% ink, clipped by the tile's own\n   *  radius. It is TEXTURE, never meaning: every tile states its class in words, so a tile with no\n   *  mark is not a tile missing information, and rule 1 — colour and shape never carry a meaning\n   *  alone — holds. Pass an `AssetMark`, or any 24-viewBox glyph sized up. */\n  mark?: React.ReactNode;\n  /** The set is the one currently applied. */\n  selected?: boolean;\n  /** No feed for this asset class yet. The tile stays visible and legible and loses only its\n   *  affordance — an advisor needs to know the class exists. Never render `count={0}` for this. */\n  unavailable?: boolean;\n  /** Why it is unavailable, in words. Defaults to a line that says a feed is missing rather than\n   *  implying the shelf is empty. */\n  unavailableNote?: string;\n  onClick?: () => void;\n}\n\n/**\n * A pre-filled filter set with a name and a count — the explorer's first screen as a sentence\n * rather than a form.\n *\n * Ten of the eleven guided paths in the Indian market are a separate surface from the screener;\n * GoldenPi's purpose tiles are the exception that lives inside it, and Centricity's own One Digital\n * does the same at asset level (\"Equity 612 funds\"). The count is load-bearing: option counts are\n * the highest-impact fix to a filter interface, and every funnel that worked carries one.\n *\n * `unavailable` is how an asset class with no feed appears — inert, legible, with the reason in\n * words. Never `count={0}`, which says the shelf is empty rather than that the feed is missing.\n */\nexport function IntentTile(props: IntentTileProps): JSX.Element;\n\nexport interface IntentGridProps {\n  children: React.ReactNode;\n  /** Tiles per row. Two at 375, which is the widest a label and a count sit on one line. */\n  cols?: number;\n}\n\n/** The grid the tiles sit in. Here rather than on each screen so the gap cannot drift between the\n *  three explorer variations. */\nexport function IntentGrid(props: IntentGridProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<body><script>(function(){var M={"../components/cards/FundCard.d.ts":"import * as React from 'react';\n\nexport interface FundHeadline {\n  /** The figure, already formatted — '9.76%', '₹1,04,318', '8.75%'. The card never formats, because\n   *  what a figure means differs per family and the caller is the one that knows. */\n  value: string;\n  /** What it is, in the advisor's words: '3Y return', 'Coupon', 'Current value'. */\n  label: string;\n}\n\nexport interface FundFact {\n  label: string;\n  /** Already formatted, Indian grouping applied. */\n  value: string;\n}\n\nexport interface FundCardProps {\n  /** The instrument, as the catalogue names it. */\n  name: string;\n  /** One line under it: category, plan, sub-type. */\n  sub?: string;\n  /** One or two letters for the AMC disc — 'CR', 'UTI'. A letter, not a logo image: this system ships\n   *  no images and a remote 24px logo is a request that can fail on a card. */\n  logo?: string;\n  /** 'On your shelf', 'New'. Takes the top-right corner, unless `selectable` needs it — then it moves\n   *  down to the chip row rather than sitting on top of the checkbox. */\n  badge?: string;\n  badgeTone?: 'over' | 'under' | 'ok';\n  /** Short facts that are labels rather than figures: 'Direct', 'Very high risk', 'Open ended'. */\n  chips?: string[];\n  /** The one number the advisor came for, shown in a rail on the RIGHT of the name rather than in a\n   *  row below it — the figure and the fund's name are the two things read together.\n   *  **Optional, and its absence is not a gap.** Four of the\n   *  eight families in the catalogue have no return at all; a bond's card is carried by `facts`. Never\n   *  pass a placeholder — an em dash where the headline goes reads as \"we do not know this fund\". */\n  headline?: FundHeadline;\n  /** The series behind the headline, oldest first. Drawn at the right end of the FACTS row, not in a\n   *  row of its own — that is where the card found the vertical room to come down from 173pt to\n   *  123pt. Drawn only when it exists: there is no empty state, because a blank box beside a number\n   *  reads as a chart that failed to load. Two funds on the same three-year return are not the same\n   *  fund, and this is what says so. */\n  spark?: number[];\n  /** The facts this KIND of instrument has: AUM and TER for a fund, maturity and frequency for a\n   *  bond. Divided by a hairline from the headline, and by middots from each other. */\n  facts?: FundFact[];\n  /** Show a checkbox for multi-select comparison. It is a SIBLING of the card's own control, never\n   *  nested inside it — a control inside a control is invalid, and this repository has shipped that\n   *  bug before. */\n  selectable?: boolean;\n  selected?: boolean;\n  onSelect?: () => void;\n  /** The one-pager, open. Controlled by the list, because opening one closes the others. */\n  open?: boolean;\n  onToggle?: () => void;\n  /** The one-pager itself. When present the card becomes its own control and grows into the page in\n   *  place — the same `0fr → 1fr` StepBlock uses, deliberately: two expansions in one funnel would\n   *  teach the advisor two behaviours for one gesture. */\n  children?: React.ReactNode;\n  id?: string;\n}\n\n/**\n * An instrument, as a card that opens into its own page.\n *\n * The card is not a fund card with fields missing. Of the catalogue's eight families only two carry\n * a return and a NAV series; a bond has a coupon, a yield, a face value, a maturity and a payment\n * frequency instead, and those are different facts rather than worse ones. So the card takes one\n * `headline` and a row of `facts`, and the caller — which has already asked `shapeOf(id)` — decides\n * what they are.\n *\n * It opens in place: the one-pager is not a screen, the card grows into it and shrinks back, in the\n * same thread, with the scroll position kept.\n */\nexport function FundCard(props: FundCardProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
 <script>"use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -889,6 +889,7 @@ Object.assign(window, {
 });</script>
 <script>"use strict";
 
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -896,164 +897,221 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
-  IntentTile = _window$SentinelDesig.IntentTile,
-  IntentGrid = _window$SentinelDesig.IntentGrid;
-var TOK = ['--type-title-font', '--type-meta-font', '--type-caption-font', '--color-surface', '--color-selected', '--color-bronze', '--color-line', '--radius-16', '--h-touch', '--space-12'];
+  FundCard = _window$SentinelDesig.FundCard,
+  Surface = _window$SentinelDesig.Surface,
+  Eyebrow = _window$SentinelDesig.Eyebrow,
+  Provenance = _window$SentinelDesig.Provenance;
+var TOK = ['--radius-16', '--space-14', '--border-hairline', '--dur-enter', '--dur-fast', '--ease', '--type-row-strong-font', '--type-figure-font', '--type-caption-font', '--color-chip', '--color-bronze'];
+
+/* Every figure on this page is a real row from the catalogue — Canara Robeco's 53 weekly NAV points,
+   ReNew Akshay Urja's real coupon and maturity, Suryoday's real and entirely empty record. */
+var NAV = [68.17, 64.4, 69.93, 70.25, 71.79, 71.9, 71.72, 72.92, 71.83, 74.11, 73.9, 72.78, 72.59, 71.98, 73.12, 71.48, 72.68, 74.33, 72.03, 73.41, 75.11, 74.81, 74.98, 75.34, 75.34, 74.81, 75.46, 75.29, 74.39, 73.12, 74.26, 74.83, 74.44, 71.8, 67.83, 67.77, 67.14, 71.16, 70.23, 70.91, 69.3, 69.11, 68.28, 71.26, 70.86, 71.29, 72.06, 72.38, 73.56, 72.87, 72.83, 71.73, 70.28];
+var FUND = {
+  name: 'Canara Robeco Large Cap Fund',
+  sub: 'Large Cap Fund · Direct · Open ended',
+  logo: 'CR',
+  chips: ['Nifty 100'],
+  headline: {
+    value: '9.76%',
+    label: '3Y return'
+  },
+  spark: NAV,
+  facts: [{
+    label: 'AUM',
+    value: '₹17,092 Cr'
+  }, {
+    label: 'TER',
+    value: '0.45%'
+  }]
+};
+var BOND = {
+  name: '8.75% ReNew Akshay Urja',
+  sub: 'Non-Convertible Debenture · Close ended',
+  logo: 'RA',
+  chips: ['Quarterly'],
+  headline: {
+    value: '8.75%',
+    label: 'Coupon'
+  },
+  facts: [{
+    label: 'Matures',
+    value: 'Sep 2034'
+  }, {
+    label: 'Face value',
+    value: '₹9,78,659'
+  }]
+};
+var FD = {
+  name: 'Suryoday Bank — FD',
+  sub: 'Bank FD',
+  logo: 'SB',
+  facts: [{
+    label: 'Rate',
+    value: 'not on file'
+  }]
+};
 function Live() {
-  var _React$useState = React.useState('equity'),
+  var _React$useState = React.useState(null),
     _React$useState2 = _slicedToArray(_React$useState, 2),
-    on = _React$useState2[0],
-    setOn = _React$useState2[1];
-  return /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: on === 'equity',
-    onClick: function onClick() {
-      return setOn('equity');
+    open = _React$useState2[0],
+    setOpen = _React$useState2[1];
+  var _React$useState3 = React.useState([]),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    picked = _React$useState4[0],
+    setPicked = _React$useState4[1];
+  var rows = [FUND, BOND, FD];
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-8)'
     }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    selected: on === 'debt',
-    onClick: function onClick() {
-      return setOn('debt');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Hybrid",
-    count: 216,
-    note: "Balanced advantage",
-    selected: on === 'hybrid',
-    onClick: function onClick() {
-      return setOn('hybrid');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Index",
-    count: 463,
-    note: "Passive, lowest cost",
-    selected: on === 'index',
-    onClick: function onClick() {
-      return setOn('index');
-    }
+  }, rows.map(function (r) {
+    return /*#__PURE__*/React.createElement(FundCard, _extends({
+      key: r.name
+    }, r, {
+      selectable: true,
+      selected: picked.includes(r.name),
+      onSelect: function onSelect() {
+        return setPicked(function (s) {
+          return s.includes(r.name) ? s.filter(function (x) {
+            return x !== r.name;
+          }) : s.concat(r.name);
+        });
+      },
+      open: open === r.name,
+      onToggle: function onToggle() {
+        return setOpen(function (s) {
+          return s === r.name ? null : r.name;
+        });
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        paddingTop: 'var(--space-8)',
+        borderTop: 'var(--border-hairline) solid var(--color-line)'
+      }
+    }, /*#__PURE__*/React.createElement(Eyebrow, null, "THE ONE-PAGER"), /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: "var(--space-8) 0 0",
+        font: 'var(--type-body-font)',
+        color: 'var(--color-ink)'
+      }
+    }, "The page opens here, inside the card, in the same thread. Nothing navigated; the list above is still where it was.")));
   }));
 }
 function App() {
   return /*#__PURE__*/React.createElement(PageShell, {
-    name: "IntentTile",
-    group: "Cards",
+    name: "FundCard",
+    group: "Chat",
     status: "shipped",
-    requires: ['IntentTile', 'IntentGrid'],
-    summary: "Eleven guided paths were found across the Indian market and ten of them are a SEPARATE surface from the screener \u2014 a quiz, a goal flow, a robo questionnaire. The eleventh, GoldenPi's purpose tiles, lives inside the explorer, and it is the only one an advisor can walk without leaving what they were doing. Centricity's own One Digital does the same at asset level: 'Choose your exposure \xB7 Equity 612 funds \xB7 Debt 448'. A tile is a pre-filled filter set with a name, so the first screen reads as a sentence and nobody meets an empty form."
+    requires: ['FundCard', 'ChartSpark', 'SelectionMark', 'Badge'],
+    summary: "The card is not a fund card with fields missing. Of the catalogue's eight families only two carry a return and a NAV series at all \u2014 a bond has a coupon, a yield, a face value, a maturity and a payment frequency instead, and those are different facts rather than worse ones. So the card takes ONE headline and a row of facts, and the caller, which has already asked shapeOf(id), decides what they are. A card with no headline is not broken: it is a card whose instrument has no single number, and the facts carry it."
   }, /*#__PURE__*/React.createElement(Block, {
     n: 1,
     title: "Specimen",
-    sub: "Live. Two to a row at 375, which is the widest a label and a count sit on one line. Tap to select."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
+    sub: "Live, and every figure is a real catalogue row. Tap a card to open its page in place; tap the checkbox to add it to a comparison. Three families, three different sets of facts, one card."
+  }, /*#__PURE__*/React.createElement(Specimen, null, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
     n: 2,
-    title: "Anatomy",
-    sub: "Label, count, note. The count is not decoration \u2014 a tile without one asks the advisor to tap and find out, which is the tap this component exists to save."
-  }, /*#__PURE__*/React.createElement(Anatomy, {
-    width: 343,
-    top: "--type-title-font, ink \u2014 what the set is called",
-    left: "--radius-16, surface, 1px line",
-    right: "the count, tabular, bronze-deep",
-    bottom: "the note: one line on what is inside the set"
-  }, /*#__PURE__*/React.createElement(IntentGrid, {
-    cols: 1
-  }, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 3,
-    title: "Unavailable is a WORD, never a zero",
-    sub: "Four of the five asset classes Centricity sells have no rows in the book. A tile reading 'Bonds \xB7 0 funds' is a lie about an empty shelf rather than an admission of a missing feed \u2014 and the advisor still needs to know the class exists."
+    title: "An em dash is not an answer",
+    sub: "The first build gave every instrument a fund's card and printed an em dash wherever the data ran out \u2014 which reads as 'we do not know this fund' rather than 'this is not that kind of thing'. Suryoday's record in the catalogue carries the name and literally nothing else: its `pending` list names rate_of_interest. So the card says that."
   }, /*#__PURE__*/React.createElement(Grid, {
     cols: 2,
-    itemWidth: 311,
     items: [{
-      label: 'available',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Mutual funds",
-        count: 1739,
-        note: "Direct plans, on and off your shelf",
-        onClick: function onClick() {}
-      })),
-      note: 'A count and a note. Tappable.'
+      label: 'What the data has',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(FundCard, BOND)),
+      note: 'A coupon IS the headline for a bond. Maturity and face value are its facts.'
     }, {
-      label: 'unavailable',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Bonds",
-        unavailable: true,
-        unavailableNote: "No feed yet \u2014 rating, yield and tenure are not on file."
-      })),
-      note: 'Inert, not disabled (F-46, F-31): the label stays legible and only the affordance goes. The reason says which feed is missing.'
+      label: 'What the data does not have',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(FundCard, FD)),
+      note: 'No headline, because there is no number. The gap is named in words, never printed as 0.00%.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "The spark is the path, not decoration",
+    sub: "Two funds on the same three-year return are not the same fund, and the figure alone cannot say so. It is drawn only where a series exists \u2014 there is no placeholder, because a blank box beside a number reads as a chart that failed to load."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 2,
+    items: [{
+      label: 'With its series',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(FundCard, FUND)),
+      note: '53 real weekly NAV points behind a 3-year figure.'
+    }, {
+      label: 'Without one',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(FundCard, _extends({}, FUND, {
+        spark: undefined
+      }))),
+      note: 'The headline sits alone. Nothing is reserved and nothing is faked.'
     }]
   })), /*#__PURE__*/React.createElement(Block, {
     n: 4,
-    title: "Selected",
-    sub: "The sand fill and a bronze ring, which is how selection already reads in this system \u2014 the same pair RangePills and Pill use."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: true,
-    onClick: function onClick() {}
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 5,
     title: "Tokens"
   }, /*#__PURE__*/React.createElement(Tokens, {
     names: TOK
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 6,
+    n: 5,
     title: "Props"
   }, /*#__PURE__*/React.createElement(Props, {
-    src: "../components/cards/IntentTile.d.ts"
+    src: "../components/cards/FundCard.d.ts"
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 7,
+    n: 6,
     title: "Do / Don't"
   }, /*#__PURE__*/React.createElement(DoDont, {
-    doNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Maturing within 3 years",
-      count: 84,
-      note: "Short duration and corporate bond",
-      onClick: function onClick() {}
+    doNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(FundCard, _extends({}, FUND, {
+      badge: "On your shelf"
+    }))),
+    doCaption: "One headline, the path behind it, and the two facts that decide between funds in this family. The badge takes the corner because nothing else needs it.",
+    dontNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(FundCard, {
+      name: "Canara Robeco Large Cap Fund",
+      sub: "Large Cap Fund \xB7 Direct \xB7 Open ended",
+      logo: "CR",
+      chips: ['Nifty 100', 'Direct', 'Open ended', 'Very high risk', 'Growth', 'Large cap'],
+      headline: {
+        value: '9.76%',
+        label: '3Y return'
+      },
+      spark: NAV,
+      facts: [{
+        label: 'AUM',
+        value: '₹17,092 Cr'
+      }, {
+        label: 'TER',
+        value: '0.45%'
+      }, {
+        label: 'Exit load',
+        value: '1% under 1Y'
+      }, {
+        label: 'NAV',
+        value: '₹70.28'
+      }, {
+        label: 'ISIN',
+        value: 'INF760K01FR2'
+      }]
     })),
-    doCaption: "A named set with its count. GoldenPi's purpose tile: the advisor reads what they get before they tap.",
-    dontNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Short duration",
-      onClick: function onClick() {}
-    })),
-    dontCaption: "A bare category name with no count and no note. It is a folder, not a filter set \u2014 the advisor has to tap it to learn anything."
+    dontCaption: "Six chips and five facts. Every one is true and none of them is the reason to pick this fund over the next \u2014 the card is now a record rather than a comparison, and the advisor reads all of it to find the two figures that matter."
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 8,
-    title: "Motion",
-    sub: "Press only. The tile does not animate in; it is the first thing on the screen."
+    n: 7,
+    title: "Motion"
   }, /*#__PURE__*/React.createElement(Motion, {
     rows: [{
-      name: 'Press',
-      property: 'transform: scale(--press-scale)',
-      duration: '--dur-press 150ms',
-      reduced: 'Pressable drops the scale and keeps the fill change.'
+      name: 'Page opens',
+      property: 'grid-template-rows 0fr → 1fr — the card grows into its own page, in place, with the list behind it unmoved. The same mechanic StepBlock uses, deliberately: two expansions in one funnel would teach two behaviours for one gesture',
+      duration: '--dur-enter 240ms',
+      reduced: 'Appears at full height with no travel.'
+    }, {
+      name: 'Page content fades',
+      property: 'opacity 0 → 1',
+      duration: '--dur-fast 200ms',
+      reduced: 'No visible fade.'
+    }, {
+      name: 'Ring on open or select',
+      property: 'box-shadow, --color-line → --color-bronze',
+      duration: '--dur-fast 200ms',
+      reduced: 'Unchanged — a colour change, not a movement.'
+    }, {
+      name: 'Spark draws',
+      property: 'Inherited from ChartSpark: stroke-dashoffset, full length → 0',
+      duration: '--dur-bar 480ms',
+      reduced: 'Rendered whole on mount.'
     }]
   })));
 }

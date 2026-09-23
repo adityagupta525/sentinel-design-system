@@ -1,5 +1,5 @@
-<!-- @dsCard group="Pages" viewport="1100x1500" name="IntentTile" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>IntentTile — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+<!-- @dsCard group="Pages" viewport="1100x2100" name="PathBar" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PathBar — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
@@ -219,7 +219,7 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="../ds_bundle.js"></script>
 <style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
-<body><script>(function(){var M={"../components/cards/IntentTile.d.ts":"import * as React from 'react';\n\nexport interface IntentTileProps {\n  /** What the filter set is called, in the advisor's words: \"Equity\", \"Maturing within 3 years\". */\n  label: string;\n  /** How many rows the set holds. Omit only when the number is genuinely unknown — a tile with no\n   *  count asks the advisor to tap and find out, which is the tap this component exists to save. */\n  count?: number | null;\n  /** What `count` counts. Defaults to 'funds'; a bond tile says 'bonds'. */\n  unit?: string;\n  /** One line under the count: what is inside the set. Not shown when `unavailable`. */\n  note?: string;\n  /** A silhouette drawn at 76px in the bottom-right corner, at 7% ink, clipped by the tile's own\n   *  radius. It is TEXTURE, never meaning: every tile states its class in words, so a tile with no\n   *  mark is not a tile missing information, and rule 1 — colour and shape never carry a meaning\n   *  alone — holds. Pass an `AssetMark`, or any 24-viewBox glyph sized up. */\n  mark?: React.ReactNode;\n  /** The set is the one currently applied. */\n  selected?: boolean;\n  /** No feed for this asset class yet. The tile stays visible and legible and loses only its\n   *  affordance — an advisor needs to know the class exists. Never render `count={0}` for this. */\n  unavailable?: boolean;\n  /** Why it is unavailable, in words. Defaults to a line that says a feed is missing rather than\n   *  implying the shelf is empty. */\n  unavailableNote?: string;\n  onClick?: () => void;\n}\n\n/**\n * A pre-filled filter set with a name and a count — the explorer's first screen as a sentence\n * rather than a form.\n *\n * Ten of the eleven guided paths in the Indian market are a separate surface from the screener;\n * GoldenPi's purpose tiles are the exception that lives inside it, and Centricity's own One Digital\n * does the same at asset level (\"Equity 612 funds\"). The count is load-bearing: option counts are\n * the highest-impact fix to a filter interface, and every funnel that worked carries one.\n *\n * `unavailable` is how an asset class with no feed appears — inert, legible, with the reason in\n * words. Never `count={0}`, which says the shelf is empty rather than that the feed is missing.\n */\nexport function IntentTile(props: IntentTileProps): JSX.Element;\n\nexport interface IntentGridProps {\n  children: React.ReactNode;\n  /** Tiles per row. Two at 375, which is the widest a label and a count sit on one line. */\n  cols?: number;\n}\n\n/** The grid the tiles sit in. Here rather than on each screen so the gap cannot drift between the\n *  three explorer variations. */\nexport function IntentGrid(props: IntentGridProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<body><script>(function(){var M={"../components/shell/PathBar.d.ts":"import * as React from 'react';\n\nexport interface PathStep {\n  /** Stable identity, so re-ordering does not re-key the row. Falls back to `label`. */\n  key?: string;\n  /** The answer, as the advisor gave it: 'Equity', 'Mutual fund', 'Large Cap Fund'. Not the question\n   *  — the question is in the step itself, and repeating it here would spend the one line twice. */\n  label: string;\n}\n\nexport interface PathBarProps {\n  /** The answers so far, oldest first. Empty renders 'Nothing chosen yet' rather than an empty bar,\n   *  because a bar with nothing in it reads as a component that failed to load. */\n  steps?: PathStep[];\n  /** Tapping a crumb reopens that step where it stands. The LAST crumb is not a control — tapping\n   *  where you already are is the thing every breadcrumb gets wrong. */\n  onStep?: (step: PathStep, index: number) => void;\n  /** Shown only once there is something to clear. */\n  onReset?: () => void;\n  /** One control on the right — the filter pill, usually. Anything taller than 28pt will push the\n   *  bar past the 36 it is allowed. */\n  action?: React.ReactNode;\n  /** Default true. Off for a specimen or a board. */\n  sticky?: boolean;\n}\n\n/**\n * Where you are, in one line, without scrolling back for it.\n *\n * A funnel that appends down a long conversation eventually puts its own first question above the\n * fold, and changing the second answer should not be a scroll through everything that came after it.\n * The steps already collapse into their answers; this is how you reach one from anywhere.\n *\n * It is deliberately ONE line — 36pt — because nothing may permanently eat the height the\n * conversation is read in. It is also the only thing in the funnel that never scrolls away;\n * everything else is content and behaves like it.\n *\n * It truncates from the LEFT: the oldest crumbs collapse to a '…' that reopens the first step,\n * because the recent end of a path is the part being worked on.\n */\nexport function PathBar(props: PathBarProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
 <script>"use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -896,164 +896,196 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
-  IntentTile = _window$SentinelDesig.IntentTile,
-  IntentGrid = _window$SentinelDesig.IntentGrid;
-var TOK = ['--type-title-font', '--type-meta-font', '--type-caption-font', '--color-surface', '--color-selected', '--color-bronze', '--color-line', '--radius-16', '--h-touch', '--space-12'];
+  PathBar = _window$SentinelDesig.PathBar,
+  Pill = _window$SentinelDesig.Pill,
+  Surface = _window$SentinelDesig.Surface;
+var TOK = ['--z-sticky', '--space-6', '--gutter', '--color-canvas', '--color-line-soft', '--type-caption-font', '--color-bronze-deep', '--color-ink'];
+var THREE = [{
+  key: 'a',
+  label: 'Equity'
+}, {
+  key: 'p',
+  label: 'Mutual fund'
+}, {
+  key: 'c',
+  label: 'Large Cap Fund'
+}];
 function Live() {
-  var _React$useState = React.useState('equity'),
+  var _React$useState = React.useState(3),
     _React$useState2 = _slicedToArray(_React$useState, 2),
-    on = _React$useState2[0],
-    setOn = _React$useState2[1];
-  return /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: on === 'equity',
-    onClick: function onClick() {
-      return setOn('equity');
+    n = _React$useState2[0],
+    setN = _React$useState2[1];
+  var steps = THREE.slice(0, n);
+  return /*#__PURE__*/React.createElement(Surface, {
+    tone: "canvas"
+  }, /*#__PURE__*/React.createElement(PathBar, {
+    sticky: false,
+    steps: steps,
+    onStep: function onStep(s, i) {
+      return setN(i + 1);
+    },
+    onReset: function onReset() {
+      return setN(0);
+    },
+    action: /*#__PURE__*/React.createElement(Pill, {
+      label: "Filters \xB7 2",
+      size: "sm",
+      selected: true,
+      onClick: function onClick() {}
+    })
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "var(--space-12) 0 0",
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-muted)'
     }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    selected: on === 'debt',
-    onClick: function onClick() {
-      return setOn('debt');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Hybrid",
-    count: 216,
-    note: "Balanced advantage",
-    selected: on === 'hybrid',
-    onClick: function onClick() {
-      return setOn('hybrid');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Index",
-    count: 463,
-    note: "Passive, lowest cost",
-    selected: on === 'index',
-    onClick: function onClick() {
-      return setOn('index');
-    }
-  }));
+  }, "Tap a crumb: it reopens that step, and everything after it is dropped. Tap the last one and nothing happens \u2014 that is where you already are."));
 }
 function App() {
   return /*#__PURE__*/React.createElement(PageShell, {
-    name: "IntentTile",
-    group: "Cards",
+    name: "PathBar",
+    group: "Foundations",
     status: "shipped",
-    requires: ['IntentTile', 'IntentGrid'],
-    summary: "Eleven guided paths were found across the Indian market and ten of them are a SEPARATE surface from the screener \u2014 a quiz, a goal flow, a robo questionnaire. The eleventh, GoldenPi's purpose tiles, lives inside the explorer, and it is the only one an advisor can walk without leaving what they were doing. Centricity's own One Digital does the same at asset level: 'Choose your exposure \xB7 Equity 612 funds \xB7 Debt 448'. A tile is a pre-filled filter set with a name, so the first screen reads as a sentence and nobody meets an empty form."
+    requires: ['PathBar', 'Pill'],
+    summary: "A funnel that appends down a long conversation eventually puts its own first question above the fold, and changing the second answer should not be a scroll through everything that came after it. The steps already collapse into their answers; this is how you reach one from anywhere. It is deliberately ONE line \u2014 36pt \u2014 because nothing may permanently eat the height the conversation is read in, and it is the only thing in the funnel that never scrolls away."
   }, /*#__PURE__*/React.createElement(Block, {
     n: 1,
     title: "Specimen",
-    sub: "Live. Two to a row at 375, which is the widest a label and a count sit on one line. Tap to select."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
+    sub: "Live. The crumbs are controls, not a label \u2014 this is the funnel's own state made touchable, and nothing here is a page being navigated to."
+  }, /*#__PURE__*/React.createElement(Specimen, null, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
     n: 2,
-    title: "Anatomy",
-    sub: "Label, count, note. The count is not decoration \u2014 a tile without one asks the advisor to tap and find out, which is the tap this component exists to save."
-  }, /*#__PURE__*/React.createElement(Anatomy, {
-    width: 343,
-    top: "--type-title-font, ink \u2014 what the set is called",
-    left: "--radius-16, surface, 1px line",
-    right: "the count, tabular, bronze-deep",
-    bottom: "the note: one line on what is inside the set"
-  }, /*#__PURE__*/React.createElement(IntentGrid, {
-    cols: 1
-  }, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
+    title: "Two crumbs, and the rest behind an ellipsis",
+    sub: "Three crumbs plus a filter pill plus a reset is 343pt asking for 420. The first render truncated all three to \u201CEq\u2026 \u203A Mutual\u2026 \u203A Large Ca\u2026\u201D, which is a bar that has stopped doing the one thing it is for. It truncates from the LEFT, because the recent end of a path is the part being worked on."
+  }, /*#__PURE__*/React.createElement(Grid, {
+    cols: 1,
+    items: [{
+      label: 'Four deep',
+      node: /*#__PURE__*/React.createElement(Surface, {
+        tone: "canvas"
+      }, /*#__PURE__*/React.createElement(PathBar, {
+        sticky: false,
+        steps: [{
+          label: 'Equity'
+        }, {
+          label: 'Mutual fund'
+        }, {
+          label: 'Large Cap Fund'
+        }, {
+          label: 'Canara Robeco'
+        }],
+        onStep: function onStep() {},
+        onReset: function onReset() {},
+        action: /*#__PURE__*/React.createElement(Pill, {
+          label: "Filters \xB7 3",
+          size: "sm",
+          selected: true,
+          onClick: function onClick() {}
+        })
+      })),
+      note: 'The “…” reopens the first step. The last crumb keeps whatever room is left, because it is the one you are in.'
+    }]
+  })), /*#__PURE__*/React.createElement(Block, {
     n: 3,
-    title: "Unavailable is a WORD, never a zero",
-    sub: "Four of the five asset classes Centricity sells have no rows in the book. A tile reading 'Bonds \xB7 0 funds' is a lie about an empty shelf rather than an admission of a missing feed \u2014 and the advisor still needs to know the class exists."
+    title: "Empty is a sentence, not an empty bar",
+    sub: "A bar with nothing in it reads as a component that failed to load. And the reset appears only once there is something to clear \u2014 an always-present reset on an empty funnel is a control offering to undo nothing."
   }, /*#__PURE__*/React.createElement(Grid, {
     cols: 2,
-    itemWidth: 311,
     items: [{
-      label: 'available',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Mutual funds",
-        count: 1739,
-        note: "Direct plans, on and off your shelf",
-        onClick: function onClick() {}
+      label: 'Nothing answered',
+      node: /*#__PURE__*/React.createElement(Surface, {
+        tone: "canvas"
+      }, /*#__PURE__*/React.createElement(PathBar, {
+        sticky: false,
+        steps: [],
+        action: /*#__PURE__*/React.createElement(Pill, {
+          label: "Filters",
+          size: "sm",
+          onClick: function onClick() {}
+        })
       })),
-      note: 'A count and a note. Tappable.'
+      note: 'No crumbs, no reset.'
     }, {
-      label: 'unavailable',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Bonds",
-        unavailable: true,
-        unavailableNote: "No feed yet \u2014 rating, yield and tenure are not on file."
+      label: 'One answer',
+      node: /*#__PURE__*/React.createElement(Surface, {
+        tone: "canvas"
+      }, /*#__PURE__*/React.createElement(PathBar, {
+        sticky: false,
+        steps: [{
+          label: 'Equity'
+        }],
+        onReset: function onReset() {},
+        action: /*#__PURE__*/React.createElement(Pill, {
+          label: "Filters",
+          size: "sm",
+          onClick: function onClick() {}
+        })
       })),
-      note: 'Inert, not disabled (F-46, F-31): the label stays legible and only the affordance goes. The reason says which feed is missing.'
+      note: 'One crumb, and it is the one you are in — so it is not a control.'
     }]
   })), /*#__PURE__*/React.createElement(Block, {
     n: 4,
-    title: "Selected",
-    sub: "The sand fill and a bronze ring, which is how selection already reads in this system \u2014 the same pair RangePills and Pill use."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: true,
-    onClick: function onClick() {}
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 5,
     title: "Tokens"
   }, /*#__PURE__*/React.createElement(Tokens, {
     names: TOK
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 6,
+    n: 5,
     title: "Props"
   }, /*#__PURE__*/React.createElement(Props, {
-    src: "../components/cards/IntentTile.d.ts"
+    src: "../components/shell/PathBar.d.ts"
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 7,
+    n: 6,
     title: "Do / Don't"
   }, /*#__PURE__*/React.createElement(DoDont, {
-    doNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Maturing within 3 years",
-      count: 84,
-      note: "Short duration and corporate bond",
-      onClick: function onClick() {}
+    doNode: /*#__PURE__*/React.createElement(Surface, {
+      tone: "canvas"
+    }, /*#__PURE__*/React.createElement(PathBar, {
+      sticky: false,
+      steps: THREE,
+      onStep: function onStep() {},
+      onReset: function onReset() {},
+      action: /*#__PURE__*/React.createElement(Pill, {
+        label: "Filters \xB7 2",
+        size: "sm",
+        selected: true,
+        onClick: function onClick() {}
+      })
     })),
-    doCaption: "A named set with its count. GoldenPi's purpose tile: the advisor reads what they get before they tap.",
-    dontNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Short duration",
-      onClick: function onClick() {}
+    doCaption: "The answers, not the questions. \u201CEquity \u203A Mutual fund \u203A Large Cap Fund\u201D \u2014 the question is in the step itself, and repeating it here would spend the one line twice.",
+    dontNode: /*#__PURE__*/React.createElement(Surface, {
+      tone: "canvas"
+    }, /*#__PURE__*/React.createElement(PathBar, {
+      sticky: false,
+      steps: [{
+        label: 'Asset class: Equity'
+      }, {
+        label: 'Product: Mutual fund'
+      }, {
+        label: 'Category: Large Cap Fund'
+      }],
+      onStep: function onStep() {},
+      onReset: function onReset() {},
+      action: /*#__PURE__*/React.createElement(Pill, {
+        label: "Filters \xB7 2",
+        size: "sm",
+        selected: true,
+        onClick: function onClick() {}
+      })
     })),
-    dontCaption: "A bare category name with no count and no note. It is a folder, not a filter set \u2014 the advisor has to tap it to learn anything."
+    dontCaption: "The questions carried alongside the answers. Now nothing fits, every crumb is ellipsised, and the bar costs a line to say less than it did."
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 8,
-    title: "Motion",
-    sub: "Press only. The tile does not animate in; it is the first thing on the screen."
+    n: 7,
+    title: "Motion"
   }, /*#__PURE__*/React.createElement(Motion, {
     rows: [{
+      name: 'A crumb appears',
+      property: 'Inherited — the bar re-renders when a step is answered. No entrance animation: a sticky bar that animates on every answer draws the eye away from the thing that was just chosen',
+      duration: 'none',
+      reduced: 'Unchanged.'
+    }, {
       name: 'Press',
-      property: 'transform: scale(--press-scale)',
+      property: 'Pressable — scale 0.98',
       duration: '--dur-press 150ms',
-      reduced: 'Pressable drops the scale and keeps the fill change.'
+      reduced: 'No travel.'
     }]
   })));
 }
