@@ -36,7 +36,14 @@ const { useState: useS1 } = React;
 /* ─── Formatting. Indian grouping, one decimal, and never a zero standing in for a gap ──────────── */
 const crore = (n) => (n == null ? null : `₹${Math.round(n / 1e7).toLocaleString('en-IN')} Cr`);
 const pc = (n) => (n == null ? null : `${n < 0 ? '−' : ''}${Math.abs(n).toFixed(2)}%`);
-const rupees = (n) => (n == null ? null : `₹${Math.round(n).toLocaleString('en-IN')}`);
+/* THE SIGN GOES BEFORE THE SYMBOL. Straight concatenation gave "₹-320", which is a currency symbol
+   applied to a minus rather than a negative amount of rupees — and the minus is U+2212, the one this
+   product already uses for a negative return, not a hyphen. */
+const rupees = (n) => {
+  if (n == null) return null;
+  const v = Math.round(n);
+  return `${v < 0 ? '−₹' : '₹'}${Math.abs(v).toLocaleString('en-IN')}`;
+};
 const monthYear = (iso) => {
   if (!iso) return null;
   const M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -112,6 +119,83 @@ function deShout(s) {
   return letters > 8 && caps / letters > 0.6 ? titleish(s) : s;
 }
 
+
+/* ─── WHAT IT WOULD HAVE BECOME ─────────────────────────────────────────────────────────────────
+   A return is a rate and nobody holds a rate. "9.76% over three years" and "₹10,000 became ₹13,229"
+   are the same fact, and only the second one is the sentence an advisor says out loud to a client.
+   The owner asked for both directions of it — the lump sum that was left alone and the SIP that was
+   paid in monthly.
+
+   EVERY FIGURE HERE IS COMPOUNDED FROM A RATE THE CATALOGUE ACTUALLY CARRIES, and the window is named
+   beside it. A fund with no five-year return does not get a five-year row: the row is absent, never
+   an em dash and never a projection dressed as a record. Nothing here is forecast — the words are
+   "would have become", past tense, because that is all a historical return can honestly say. A
+   forward projection is a different product with a different compliance burden and this screen does
+   not make one.
+
+   THE SIP IS THE STANDARD FUTURE-VALUE-OF-AN-ANNUITY-DUE, monthly, at the period's own CAGR: the
+   instalment is paid at the START of each month, which is what a real SIP mandate does and what makes
+   the figure match the ones an advisor sees elsewhere. */
+const AMOUNTS = [
+  { key: '10k', label: '₹10,000', value: 10000 },
+  { key: '1L', label: '₹1 lakh', value: 100000 },
+  { key: '10L', label: '₹10 lakh', value: 1000000 },
+];
+function lumpSum(amount, ratePc, years) { return amount * (1 + ratePc / 100) ** years; }
+function sipValue(monthly, ratePc, years) {
+  const m = (1 + ratePc / 100) ** (1 / 12) - 1;
+  const n = Math.round(years * 12);
+  if (m === 0) return monthly * n;
+  return monthly * ((((1 + m) ** n) - 1) / m) * (1 + m);
+}
+const WINDOWS = [
+  { key: 'y1', years: 1, label: 'one year' },
+  { key: 'y3', years: 3, label: 'three years' },
+  { key: 'y5', years: 5, label: 'five years' },
+];
+
+function GrowthCalc({ i, amount, onAmount }) {
+  const [mode, setMode] = useS1('lump');
+  const rows = WINDOWS.filter((w) => i.returns?.[w.key] != null);
+  if (!rows.length) return null;
+  const amt = AMOUNTS.find((a) => a.key === amount) || AMOUNTS[0];
+  const isSip = mode === 'sip';
+
+  return (
+    <div>
+      <SegmentedRow label="Put in" options={AMOUNTS.map((a) => a.label)}
+        value={amt.label} onChange={(x) => onAmount(AMOUNTS.find((a) => a.label === x).key)} />
+      <div style={{ marginTop: 'var(--space-8)' }}>
+        <SegmentedRow label="How" options={['All at once', 'Every month']}
+          value={isSip ? 'Every month' : 'All at once'}
+          onChange={(x) => setMode(x === 'Every month' ? 'sip' : 'lump')} />
+      </div>
+      <div style={{ marginTop: 'var(--space-12)' }}>
+        <MetricList>
+          {rows.map((w) => {
+            const r = i.returns[w.key];
+            const end = isSip ? sipValue(amt.value, r, w.years) : lumpSum(amt.value, r, w.years);
+            const put = isSip ? amt.value * w.years * 12 : amt.value;
+            const gain = end - put;
+            return (
+              <MetricRow key={w.key} label={`Over ${w.label}`} value={rupees(end)}
+                peers={[
+                  { label: 'Put in', value: rupees(put) },
+                  { label: 'Gained', value: rupees(gain), self: true },
+                  { label: 'At', value: `${r.toFixed(2)}%` },
+                ]}
+                note={`${isSip ? `${rupees(amt.value)} a month for ${w.label}` : `${rupees(amt.value)} left alone for ${w.label}`}, compounded at the ${w.label} return the catalogue carries. What it did, not what it will do.`} />
+            );
+          })}
+        </MetricList>
+      </div>
+      <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
+        Past returns, compounded. Not a projection, and not advice.
+      </p>
+    </div>
+  );
+}
+
 /* ─── THE INLINE ONE-PAGER ──────────────────────────────────────────────────────────────────────
    It is not a screen and it never was one. It opens inside the card, in the list, with the list
    still where it was — which is the whole of the owner's ruling and the reason nothing here calls a
@@ -130,7 +214,7 @@ function rebase(series) {
   return base ? series.map((p, x) => ({ x, y: +((p[1] / base) * 100).toFixed(2) })) : null;
 }
 
-function OnePager({ i, onAct, onClose, shortlisted }) {
+function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
   const p = onePagerOf(i.id) || {};
   const [metric, setMetric] = useS1(null);
   const [lens, setLens] = useS1('sector');
@@ -214,6 +298,15 @@ function OnePager({ i, onAct, onClose, shortlisted }) {
               valueFormat={(v) => `${v.toFixed(1)}%`}
               caveat={`top ${rows.length} · as of ${monthYear(i.priceDate) || 'the last file'}`} />
           )}
+        </StepBlock>
+      )}
+
+      {i.returns && (i.returns.y1 != null || i.returns.y3 != null || i.returns.y5 != null) && (
+        <StepBlock title="What ₹10,000 would have become" open={fold === 'calc'} onToggle={f('calc')}
+          summary={i.returns.y5 != null ? `₹${Math.round(lumpSum(10000, i.returns.y5, 5)).toLocaleString('en-IN')} over five years`
+            : i.returns.y3 != null ? `₹${Math.round(lumpSum(10000, i.returns.y3, 3)).toLocaleString('en-IN')} over three years`
+            : `₹${Math.round(lumpSum(10000, i.returns.y1, 1)).toLocaleString('en-IN')} over one year`}>
+          <GrowthCalc i={i} amount={amount} onAmount={onAmount} />
         </StepBlock>
       )}
 
@@ -542,6 +635,20 @@ function parseAsk(raw) {
     out.facets.r3 = [b.key]; say.band.push(`three-year return ${b.label.toLowerCase()}`);
     left = left.replace(ret[0], ' ');
   }
+  /* AN AMOUNT WITHOUT "over" OR "under" IS A SUM TO INVEST, not a filter. "10000 in canara" and
+     "1 lakh in large cap" are the calculator's question, and reading them as a fund-size band would
+     be the parser confidently doing the wrong thing — which is worse than not understanding. */
+  const amt = left.match(/(?<!(over|above|under|below|more than|less than)\s)₹?\s*([0-9][0-9,]*)\s*(lakhs|lakh|thousand|l|k)?(?!\s*(%|cr|crore))/);
+  if (amt) {
+    const n = Number(amt[2].replace(/,/g, '')) * (/^l/.test(amt[3] || '') ? 1e5 : /^(k|thousand)/.test(amt[3] || '') ? 1e3 : 1);
+    const band = n >= 5e5 ? '10L' : n >= 5e4 ? '1L' : '10k';
+    if (n >= 1000) {
+      out.amount = band;
+      say.band.push(`${AMOUNTS.find((a) => a.key === band).label} to put in`);
+      left = left.replace(amt[0], ' ');
+    }
+  }
+
   const aum = left.match(/(over|above|more than)\s*₹?\s*([0-9,]+)\s*(cr|crore|crores)/);
   if (aum) {
     const n = Number(aum[2].replace(/,/g, '')) * 1e7;
@@ -809,6 +916,10 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
   const [ask, setAsk] = useS1('');
   const [shortlist, setShortlist] = useS1([]);
   const [said, setSaid] = useS1(null);
+  /* The amount lives on the SCREEN, not on the card, so opening a second fund keeps the sum the
+     advisor was working in. Changing it on one page changes it on the next, which is what a person
+     comparing two funds at ten lakh actually wants. */
+  const [amount, setAmount] = useS1('10k');
   const [asked, setAsked] = useS1(startAsked || null);
   /* WHEN A PAGE IS OPEN, THE THREAD RESTS ON IT. Without this the scaffold stayed at the top and the
      page the advisor just opened was below the fold — they tapped a card and nothing appeared to
@@ -913,6 +1024,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
     if (impliedFams.length) { setFams(impliedFams); setCats([]); }
     if (parse.cats.length) setCats(parse.cats);
     setFacets(Object.keys(parse.facets).length ? parse.facets : {});
+    if (parse.amount) setAmount(parse.amount);
     const leftovers = parse.ignored.join(' ');
     setQ(parse.understood.length ? '' : leftovers);
     const nextAssets = impliedAssets.length ? impliedAssets : assets;
@@ -1106,7 +1218,8 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
               selectable selected={picked.includes(i.id)}
               onSelect={() => setPicked((s) => (s.includes(i.id) ? s.filter((x) => x !== i.id) : s.concat(i.id).slice(-3)))}
               open={isOpen} onToggle={() => setFund((s) => (s === i.id ? null : i.id))}>
-              <OnePager i={i} onAct={act} onClose={() => setFund(null)} shortlisted={shortlist.includes(i.id)} />
+              <OnePager i={i} onAct={act} onClose={() => setFund(null)} shortlisted={shortlist.includes(i.id)}
+                amount={amount} onAmount={setAmount} />
             </FundCard>
             </div>
           );
