@@ -28,13 +28,17 @@ export interface FundCardProps {
   badgeTone?: 'over' | 'under' | 'ok';
   /** Short facts that are labels rather than figures: 'Direct', 'Very high risk', 'Open ended'. */
   chips?: string[];
-  /** The one number the advisor came for. **Optional, and its absence is not a gap.** Four of the
+  /** The one number the advisor came for, shown in a rail on the RIGHT of the name rather than in a
+   *  row below it — the figure and the fund's name are the two things read together.
+   *  **Optional, and its absence is not a gap.** Four of the
    *  eight families in the catalogue have no return at all; a bond's card is carried by `facts`. Never
    *  pass a placeholder — an em dash where the headline goes reads as "we do not know this fund". */
   headline?: FundHeadline;
-  /** The series behind the headline, oldest first. Drawn only when it exists — there is no empty
-   *  state, because a blank 84x26 box beside a number reads as a chart that failed to load. Two funds
-   *  on the same three-year return are not the same fund, and this is what says so. */
+  /** The series behind the headline, oldest first. Drawn at the right end of the FACTS row, not in a
+   *  row of its own — that is where the card found the vertical room to come down from 173pt to
+   *  123pt. Drawn only when it exists: there is no empty state, because a blank box beside a number
+   *  reads as a chart that failed to load. Two funds on the same three-year return are not the same
+   *  fund, and this is what says so. */
   spark?: number[];
   /** The facts this KIND of instrument has: AUM and TER for a fund, maturity and frequency for a
    *  bond. Divided by a hairline from the headline, and by middots from each other. */

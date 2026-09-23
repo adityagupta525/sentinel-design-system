@@ -1278,7 +1278,7 @@ var __ds_out = (() => {
           display: "flex",
           flexDirection: "column",
           gap: "var(--space-8)",
-          padding: "var(--space-14)",
+          padding: "var(--space-12)",
           textAlign: "left",
           background: "transparent",
           cursor: hasPage ? void 0 : "default"
@@ -1294,24 +1294,21 @@ var __ds_out = (() => {
         display: "grid",
         placeItems: "center",
         font: "var(--type-meta-font)"
-      } }, logo), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-row-strong-font)", color: "var(--color-ink)" } }, name), sub && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, sub)), badge && !badgeInline && /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 0 auto" } }, /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: badgeTone }, badge))),
-      (chips.length > 0 || badgeInline) && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-6)", flexWrap: "wrap" } }, badgeInline && /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: badgeTone }, badge), chips.map((c) => /* @__PURE__ */ react_global_default.createElement("span", { key: c, style: {
+      } }, logo), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-row-strong-font)", color: "var(--color-ink)" } }, name), sub && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, sub), (chips.length > 0 || badgeInline) && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-6)", flexWrap: "wrap", marginTop: "var(--space-4)" } }, badgeInline && /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: badgeTone }, badge), chips.map((c) => /* @__PURE__ */ react_global_default.createElement("span", { key: c, style: {
         font: "var(--type-caption-font)",
         color: "var(--color-bronze-deep)",
         background: "var(--color-chip)",
         borderRadius: "var(--radius-full)",
         padding: "2px var(--space-8)"
-      } }, c))),
-      (headline || spark) && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "var(--space-12)", width: "100%" } }, headline && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexDirection: "column", gap: 0, minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-figure-font)", color: "var(--color-ink)", ...NUM } }, headline.value), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, headline.label)), spark && spark.length > 1 && /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 0 auto", paddingBottom: 2 } }, /* @__PURE__ */ react_global_default.createElement(ChartSpark, { points: spark, width: 84, height: 26 }))),
-      facts.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: {
+      } }, c)))), (headline || badge && !badgeInline) && /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 2 } }, badge && !badgeInline && /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: badgeTone }, badge), headline && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-figure-font)", color: "var(--color-ink)", ...NUM } }, headline.value), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)", whiteSpace: "nowrap" } }, headline.label)))),
+      (facts.length > 0 || spark && spark.length > 1) && /* @__PURE__ */ react_global_default.createElement("div", { style: {
         display: "flex",
         alignItems: "center",
         gap: "var(--space-10)",
         width: "100%",
         paddingTop: "var(--space-8)",
-        borderTop: "var(--border-hairline) solid var(--color-line)",
-        flexWrap: "wrap"
-      } }, facts.map((f, i) => /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, { key: f.label }, i > 0 && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { color: "var(--color-line)" } }, "\xB7"), /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, f.label), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-ink)", ...NUM } }, f.value)))))
+        borderTop: "var(--border-hairline) solid var(--color-line)"
+      } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: "var(--space-10)", flexWrap: "wrap" } }, facts.map((f, i) => /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, { key: f.label }, i > 0 && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, "\xB7"), /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, f.label), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-ink)", ...NUM } }, f.value))))), spark && spark.length > 1 && /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 0 auto" } }, /* @__PURE__ */ react_global_default.createElement(ChartSpark, { points: spark, width: 76, height: 22 })))
     ), selectable && /* @__PURE__ */ react_global_default.createElement(
       Pressable,
       {
