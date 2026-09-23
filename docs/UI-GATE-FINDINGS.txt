@@ -1,0 +1,40 @@
+FAIL  screens/journey-b/03-thread-answer.html
+   nameless            0  button  (a button with no name)
+FAIL  screens/thread/going-back.html
+   nameless            0  button  (a button with no name)
+FAIL  design-system/pages/AllocationCard.html
+   small-target    73x28  button  Fill again
+FAIL  design-system/pages/ArtifactCard.html
+   nameless            0  button  (a button with no name)
+   clipped-ring        0  button  Download PDF
+   clipped-ring        0  button  Send on WhatsApp
+FAIL  design-system/pages/AttributionChart.html
+   small-target   111x15  button  Replay the count-up
+   nameless            0  button  (a button with no name)
+FAIL  design-system/pages/ChartBar.html
+   small-target   138x30  button  Replay the assembly
+FAIL  design-system/pages/ChartLine.html
+   nameless            0  button  (a button with no name)
+FAIL  design-system/pages/ChartTooltip.html
+   nameless            0  button  (a button with no name)
+FAIL  design-system/pages/DataTable.html
+   small-target   150x19  button  Sort by Fund
+   small-target    73x19  button  Sort by Held
+   small-target    73x19  button  Sort by Weight
+FAIL  design-system/pages/DownloadAction.html
+   nameless            0  button  (a button with no name)
+   clipped-ring        0  button  Download PDF
+   clipped-ring        0  button  Send on WhatsApp
+FAIL  design-system/pages/Pill.html
+   small-target   102x43  button  Download PDF
+FAIL  design-system/pages/ProgressRail.html
+   small-target    51x17  button  ← back
+   small-target    68x17  button  forward →
+FAIL  design-system/pages/ProgressTrace.html
+   small-target    88x28  button  Run it again
+FAIL  design-system/pages/ScrollToBottomButton.html
+   small-target    34x15  button  Hide it
+FAIL  design-system/pages/SentinelThinking.html
+   small-target    88x28  button  Run it again
+FAIL  design-system/pages/VersionRow.html
+   nameless            0  button  (a button with no name)

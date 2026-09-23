@@ -41,6 +41,7 @@
     "shot": "node tools/phone-shot.mjs",
     "build:app": "node tools/build-app.mjs",
     "check:app": "node tools/check-app-boot.mjs",
+    "check:ui": "node tools/check-ui.mjs",
     "build:figma-map": "node tools/build-figma-map.mjs",
     "check:figma-parity": "node tools/figma-parity.mjs --self-test"
   },

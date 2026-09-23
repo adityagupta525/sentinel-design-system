@@ -2819,7 +2819,8 @@ var ArtifactCard = EX_DS.ArtifactCard,
   ChartShare = EX_DS.ChartShare,
   PathBar = EX_DS.PathBar,
   ParseNote = EX_DS.ParseNote,
-  UserTurn = EX_DS.UserTurn;
+  UserTurn = EX_DS.UserTurn,
+  SentinelTurn = EX_DS.SentinelTurn;
 var holdersOf = function holdersOf(fundId) {
   return CLIENTS.filter(function (c) {
     return (c.holdings || []).some(function (h) {
@@ -3161,6 +3162,7 @@ Object.assign(window, {
   PathBar: PathBar,
   ParseNote: ParseNote,
   UserTurn: UserTurn,
+  SentinelTurn: SentinelTurn,
   holdersOf: holdersOf,
   FundRow: FundRow,
   explorerProvenance: explorerProvenance,

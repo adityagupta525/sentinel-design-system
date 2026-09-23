@@ -1553,11 +1553,11 @@ var __ds_out = (() => {
       },
       mark && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
         position: "absolute",
-        right: -10,
-        bottom: -12,
+        right: "var(--space-12)",
+        bottom: "var(--space-10)",
         pointerEvents: "none",
         color: "var(--color-bronze-deep)",
-        opacity: unavailable ? 0.04 : selected ? 0.13 : 0.07,
+        opacity: unavailable ? 0.06 : selected ? 0.18 : 0.11,
         transition: "opacity var(--dur-fast) var(--ease)",
         display: "grid",
         placeItems: "center"
@@ -3264,7 +3264,9 @@ var __ds_out = (() => {
     revision = 0,
     scrollRef,
     chips,
-    composer
+    composer,
+    rest = "bottom",
+    overlay
   }) {
     const own = react_global_default.useRef(null);
     const el = () => scrollRef ? scrollRef.current : own.current;
@@ -3295,7 +3297,7 @@ var __ds_out = (() => {
     }), onNew: onNew || (() => {
     }) }), progress && /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 1, padding: "0 var(--gutter) var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement(ProgressRail, { n: progress.n, total: progress.total, dim: progress.dim })), banner && /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", zIndex: 1, paddingBottom: "var(--space-8)" } }, banner), body === "thread" ? (
       /* The screen carries the scroll — never a card inside it, and never a second scroller. */
-      /* @__PURE__ */ react_global_default.createElement("div", { ref: scrollRef || own, onScroll, style: { position: "relative", zIndex: 1, display: "flex", flex: 1, flexDirection: "column", overflowY: "auto", minHeight: 0 } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "auto", display: "flex", flexDirection: "column", gap: "var(--stack)", padding: `16px var(--gutter) ${body === "thread" ? 68 : 24}px` } }, children))
+      /* @__PURE__ */ react_global_default.createElement("div", { ref: scrollRef || own, onScroll, style: { position: "relative", zIndex: 1, display: "flex", flex: 1, flexDirection: "column", overflowY: "auto", minHeight: 0 } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: rest === "top" ? 0 : "auto", display: "flex", flexDirection: "column", gap: "var(--stack)", padding: `16px var(--gutter) ${body === "thread" ? 68 : 24}px` } }, children))
     ) : (
       /* A page does not scroll and is not bottom-anchored: its children sit under the bar with
          their own padding and a spacer pushes the Dock to the floor. Home is the only one, and a
@@ -3303,7 +3305,7 @@ var __ds_out = (() => {
       /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, children, /* @__PURE__ */ react_global_default.createElement("div", { style: { flex: 1 } }))
     ), body === "thread" && /* A zero-height relative line directly above the Dock, so the button's own `bottom: 8`
        measures from there and it sits 8px clear of the composer rather than behind it. */
-    /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", height: 0 } }, /* @__PURE__ */ react_global_default.createElement(ScrollToBottomButton, { show: away, onClick: toBottom })), /* @__PURE__ */ react_global_default.createElement(Dock, { chips, composer }), /* @__PURE__ */ react_global_default.createElement(HomeIndicator, null));
+    /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", height: 0 } }, /* @__PURE__ */ react_global_default.createElement(ScrollToBottomButton, { show: away, onClick: toBottom })), overlay, /* @__PURE__ */ react_global_default.createElement(Dock, { chips, composer }), /* @__PURE__ */ react_global_default.createElement(HomeIndicator, null));
   }
 
   // design-system/components/shell/ScreenStack.jsx

@@ -53,6 +53,19 @@ export interface ScreenScaffoldProps {
    *  required prop is how a rule survives the next screen. WHICH composer is the caller's decision —
    *  a rail step with `money` wants `MoneyComposer`. */
   composer: React.ReactNode;
+  /** Where a thread rests when it does NOT fill the screen. Default 'bottom' — right for a thread of
+   *  ANSWERS, where the newest should sit above the composer with the eye already on it. `'top'` is
+   *  for a thread whose first turn is a QUESTION the advisor has to act on: the fund explorer opened
+   *  with its asset-class card 228pt down a 562pt thread, under a screenful of nothing. Ignored when
+   *  the content is taller than the thread, and ignored entirely for `body='page'`. */
+  rest?: 'top' | 'bottom';
+  /** Modal layers that belong to the SCREEN rather than to the thread — a filter sheet, an explainer,
+   *  a confirm sheet, a drawer. A bottom sheet is `position:absolute; bottom:0`, and its nearest
+   *  positioned ancestor decides what 'bottom' means: rendered among the thread's children it
+   *  resolves against a scrolled content box, which is how the fund explorer's filter sheet came out
+   *  half off the TOP of the screen. This slot is the scaffold's own relative root, the only box in a
+   *  Sentinel screen that means 'the phone'. */
+  overlay?: React.ReactNode;
 }
 
 /** THE PHONE, WITH THE COMPOSER GUARANTEED.

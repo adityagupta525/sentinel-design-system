@@ -1330,7 +1330,14 @@ var __ds_out = (() => {
       gridTemplateRows: open ? "1fr" : "0fr",
       transition: "grid-template-rows var(--dur-enter) var(--ease)"
     } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
-      padding: `0 var(--space-14) var(--space-14)`,
+      /* THE PANEL CLIPS, SO ITS CONTENT NEEDS ROOM TO BE CLIPPED AROUND. `overflow:hidden` is
+         what makes `0fr → 1fr` animate, and a `box-shadow: 0 0 0 1px` ring renders OUTSIDE the
+         element's border-box — so a tile, chip or card sitting flush at the top of this panel
+         had its top stroke sliced off. The owner saw it on the asset tiles, the product tiles
+         and the category pills, and it was the same one line of padding in all three. 4pt, not
+         1: a focus ring is 2px of outline at 2px offset, and an outline clipped by its own
+         container is an accessibility defect wearing a cosmetic one. */
+      padding: `var(--space-4) var(--space-14) var(--space-14)`,
       opacity: open ? 1 : 0,
       transition: "opacity var(--dur-fast) var(--ease)"
     } }, children))));
@@ -2099,7 +2106,14 @@ var __ds_out = (() => {
       gridTemplateRows: open ? "1fr" : "0fr",
       transition: "grid-template-rows var(--dur-enter) var(--ease)"
     } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
-      padding: `0 var(--space-12) var(--space-12)`,
+      /* THE PANEL CLIPS, SO ITS CONTENT NEEDS ROOM TO BE CLIPPED AROUND. `overflow:hidden` is
+         what makes `0fr → 1fr` animate, and a `box-shadow: 0 0 0 1px` ring renders OUTSIDE the
+         element's border-box — so a tile, chip or card sitting flush at the top of this panel
+         had its top stroke sliced off. The owner saw it on the asset tiles, the product tiles
+         and the category pills, and it was the same one line of padding in all three. 4pt, not
+         1: a focus ring is 2px of outline at 2px offset, and an outline clipped by its own
+         container is an accessibility defect wearing a cosmetic one. */
+      padding: `var(--space-4) var(--space-12) var(--space-12)`,
       opacity: open ? 1 : 0,
       transition: "opacity var(--dur-fast) var(--ease)"
     } }, children))));
@@ -2543,7 +2557,14 @@ var __ds_out = (() => {
       gridTemplateRows: open ? "1fr" : "0fr",
       transition: "grid-template-rows var(--dur-enter) var(--ease)"
     } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
-      paddingBottom: "var(--space-12)",
+      /* THE PANEL CLIPS, SO ITS CONTENT NEEDS ROOM TO BE CLIPPED AROUND. `overflow:hidden` is
+         what makes `0fr → 1fr` animate, and a `box-shadow: 0 0 0 1px` ring renders OUTSIDE the
+         element's border-box — so a tile, chip or card sitting flush at the top of this panel
+         had its top stroke sliced off. The owner saw it on the asset tiles, the product tiles
+         and the category pills, and it was the same one line of padding in all three. 4pt, not
+         1: a focus ring is 2px of outline at 2px offset, and an outline clipped by its own
+         container is an accessibility defect wearing a cosmetic one. */
+      padding: `var(--space-4) 0 var(--space-12)`,
       display: "flex",
       flexDirection: "column",
       gap: "var(--space-8)",
