@@ -8,10 +8,68 @@ Written 18 Sep 2026, at commit `dcfe133`, when the work moved to a different Cla
 
 ---
 
-## 0 · Where this stopped — 20 Sep 2026, end of the long session
+## 0 · Where this stopped — 23 Sep 2026, the explorer joined the app
 
-**Read this section first.** §0b below is the 18 Sep drop, kept because its rulings still hold;
-§1–§10 are the standing document and are still true.
+**Read this section first.** §0a below is the 20 Sep drop and §0b the 18 Sep one; both are kept
+because their rulings still hold. §1–§10 are the standing document and are still true.
+
+| | |
+|---|---|
+| Branch / HEAD | `claude/practical-newton-fi0pof` — **two commits ahead of the remote and NOT PUSHED.** `git push origin HEAD` returns 403: the keychain identity is `centricitydesigner` and the repo is `adityagupta525`. Pushing needs the SSH key — see §0·push below |
+| Pages | **166 / 166 render clean** |
+| The system | **111 components**, every one with a contract, a prompt and a rendered spec page |
+| Parallel | **104 of 111** on a screen; the seven are `AssetMark`, `ChartTooltip`, `EyebrowDivider`, `IconCheckCircle`, `IconDownload`, `IconSpinner`, `MotionGuard` |
+| UI gate | `npm run check:ui` — 118/134 clean, 24 findings in `docs/UI-GATE-FINDINGS.txt`, none new today |
+| App artifact | https://claude.ai/artifact/CNPzjJSutX4gAZVDK4XDX5 — **version 5**, and it is now the BUILT APP (`npm run build:app`), not the V1 board. 17 supporting files: the 13 art files and the home-screen icons |
+| System artifact | https://claude.ai/artifact/H9KoAbs6Ha7goJgrhtJZ2T — **version 36**, 166 files. Rebuild with `npm run build:artifact`, republish with `url` |
+
+### What changed, and what to know before touching it
+
+**The explorer is the app's FOURTH SURFACE — `screen === 'explore'`, beside home, the rail and the
+thread.** It was returned from `body()`, the function that produces a *turn*, and `Funnel` renders a
+whole `ScreenScaffold`: one phone came out with two status bars, two app bars and two composers.
+The rule this leaves behind: **a component that renders a ScreenScaffold is a surface, and a surface
+goes in the ScreenStack.**
+
+**`Funnel` now takes `onMenu`, `onNew`, `onHandOff` and `startAsk`.** Without them it is the same
+standalone board it always was, so `screens/explorer/*.html` are unchanged. `startAsk` runs the
+sentence the app routed here through the funnel's own `send`, so the parse lives in one file.
+
+**"Add to a proposal" opens journey D carrying the fund** — the same `carried` hand-off journey C
+makes. **It is reachable on 2 of 80 instruments**, because `propCarriedLines` reasons from the book
+(the compliance shelf, the sleeve, the proposal split) and the book holds ten funds. The other 78 say
+so rather than opening a journey about a fund the rail cannot name. **Widening it means writing
+journey D a fourth branch for a shelf instrument the book has no position in — that is a product
+decision and it is the owner's, not a bug.**
+
+**A fold that is still animating measures wrong.** `send` bumps `settle` after `FOLD_SETTLE_MS`
+(260, one frame past `--dur-enter`) so the scaffold anchors on settled layout. Without it the seeded
+sentence left the parse note 9pt *above* the scroller, cut in half by the app bar. Only after a send,
+never on an ordinary fold toggle — re-anchoring on every collapse yanks the list.
+
+**`check:ui` gained a `placeholder-cut` detector.** Detector 1 measures boxes and text *content*; a
+placeholder is neither, and the explorer's composer drew 324pt of hint into 317pt of field.
+
+**`build:app` now asserts the explorer art copied.** It shipped zero of the 13 files while the page
+asked for them by path, and a 404 on an `<img>` is not a console error, so the boot check never saw it.
+
+**`build:artifact` folds the 111 `.d.ts` into one `contracts.d.ts`** — 276 files was past the 255
+publish ceiling. It runs *after* the precompile step: a page reads its contract at RUNTIME, and
+folding them earlier gave every page a 404 while `check:artifact` still reported 142/142, because a
+page renders around a failed fetch.
+
+### §0·push — the two commits that are not on the remote
+
+`364c2a6` (the explorer as the fourth surface) and `3918c39` (the artifact build). `origin` is HTTPS
+and the stored credential cannot push to it. The working push is over SSH — see the memory note
+"Push over SSH, not HTTPS". A session that cannot run that command should say so rather than leave
+the owner thinking the work is on the remote.
+
+---
+
+## 0a · Where this stopped — 20 Sep 2026, end of the long session
+
+§0b below is the 18 Sep drop, kept because its rulings still hold; §1–§10 are the standing document.
 
 | | |
 |---|---|
