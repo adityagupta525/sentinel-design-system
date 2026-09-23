@@ -9,7 +9,7 @@
    does not know it — never that the return was zero. `pending` names what the source itself flags as
    not on file. */
 
-export const CATALOGUE_META = {
+const CATALOGUE_META = {
  "generatedAt": "2026-09-22T17:24:58+00:00",
  "source": "atlas-backend product-catalogue API (PostgreSQL product_catalogue, synced from Databricks dwh_uat.onedigital)",
  "instruments": 80,
@@ -18,7 +18,7 @@ export const CATALOGUE_META = {
 };
 
 /* The explorer's first question. Derived from the rows' own `assetName`, never hand-written. */
-export const ASSETS = [
+const ASSETS = [
  {
   "label": "Equity",
   "families": [
@@ -56,7 +56,7 @@ export const ASSETS = [
 ];
 
 /* The second question — which products exist under the chosen assets. */
-export const FAMILIES = [
+const FAMILIES = [
  {
   "key": "mutual_fund",
   "label": "Mutual fund",
@@ -300,7 +300,7 @@ export const FAMILIES = [
  }
 ];
 
-export const INSTRUMENTS = [
+const INSTRUMENTS = [
  {
   "id": "F00000PDT6",
   "name": "Canara Robeco Large Cap Fund Direct Plan Growth",
@@ -1742,7 +1742,7 @@ export const INSTRUMENTS = [
 ];
 
 /* The fund one-pager's payload, by instrument id. Absent means there is no page-level data at all. */
-export const ONE_PAGERS = {
+const ONE_PAGERS = {
  "8": {
   "sector": [
    {
@@ -11171,20 +11171,20 @@ export const ONE_PAGERS = {
 
 /* ── Lookups, so no screen re-implements them ─────────────────────────────────────────────────── */
 const BY_ID = new Map(INSTRUMENTS.map((i) => [i.id, i]));
-export function instrumentById(id) { return BY_ID.get(id); }
-export function onePagerOf(id) { return ONE_PAGERS[id]; }
-export function familyByKey(k) { return FAMILIES.find((f) => f.key === k); }
+function instrumentById(id) { return BY_ID.get(id); }
+function onePagerOf(id) { return ONE_PAGERS[id]; }
+function familyByKey(k) { return FAMILIES.find((f) => f.key === k); }
 
 /* Families available under a set of chosen assets — the product step is a function of the asset step
    rather than a fixed list, which is the whole point of asking the asset question first. */
-export function familiesForAssets(assetLabels) {
+function familiesForAssets(assetLabels) {
   if (!assetLabels || !assetLabels.length) return FAMILIES;
   return FAMILIES.filter((f) => f.assets.some((a) => assetLabels.includes(a)));
 }
 
 /* Sub-types (the explorer's third question) under the chosen families, each with the count it will
    actually yield — a category that would open an empty list is not offered. */
-export function categoriesFor(assetLabels, familyKeys) {
+function categoriesFor(assetLabels, familyKeys) {
   const fams = familiesForAssets(assetLabels).filter((f) => !familyKeys?.length || familyKeys.includes(f.key));
   const out = [];
   for (const f of fams) {
@@ -11197,7 +11197,7 @@ export function categoriesFor(assetLabels, familyKeys) {
   return out;
 }
 
-export function instrumentsFor({ assets: a, families: f, categories: c } = {}) {
+function instrumentsFor({ assets: a, families: f, categories: c } = {}) {
   return INSTRUMENTS.filter((i) => (!a?.length || a.includes(i.asset))
     && (!f?.length || f.includes(i.family))
     && (!c?.length || c.includes(`${i.family}:${i.subType}`)));
@@ -11206,7 +11206,7 @@ export function instrumentsFor({ assets: a, families: f, categories: c } = {}) {
 /* WHAT A CARD MAY PRINT for this instrument. The explorer asks before it draws, because four of the
    eight families have no return and no series at all and a card that assumes otherwise renders an
    em dash where a figure should be — or worse, a zero. */
-export function shapeOf(id) {
+function shapeOf(id) {
   const i = BY_ID.get(id), p = ONE_PAGERS[id] || {};
   return {
     hasReturn: i?.returns?.y1 !== undefined || i?.returns?.y3 !== undefined,
@@ -11216,3 +11216,10 @@ export function shapeOf(id) {
     hasFees: !!p.fees, hasAum: i?.aum !== undefined, hasTer: i?.ter !== undefined,
   };
 }
+
+/* Published to `window`, exactly as book.jsx is: every `text/babel` script on a screen page is
+   compiled and run on its own, so a top-level binding here is invisible to the screen file. */
+Object.assign(typeof window !== 'undefined' ? window : globalThis, {
+  CATALOGUE_META, ASSETS, FAMILIES, INSTRUMENTS, ONE_PAGERS,
+  instrumentById, onePagerOf, familyByKey, familiesForAssets, categoriesFor, instrumentsFor, shapeOf,
+});
