@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"FundCard","sourcePath":"components/cards/FundCard.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepBlock","sourcePath":"components/chat/StepBlock.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"MetricRow","sourcePath":"components/data/MetricRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"AssetMark","sourcePath":"components/icons/AssetMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconFilter","sourcePath":"components/icons/IconFilter.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PathBar","sourcePath":"components/shell/PathBar.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"ClientAvatar","sourcePath":"components/brand/ClientAvatar.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"FundCard","sourcePath":"components/cards/FundCard.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepBlock","sourcePath":"components/chat/StepBlock.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"MetricRow","sourcePath":"components/data/MetricRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"AssetMark","sourcePath":"components/icons/AssetMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconFilter","sourcePath":"components/icons/IconFilter.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PathBar","sourcePath":"components/shell/PathBar.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -32,6 +32,7 @@ var __ds_out = (() => {
     Badge: () => Badge,
     CHART_EDGE: () => CHART_EDGE,
     CHART_RAMP: () => CHART_RAMP,
+    CLIENT_FACES: () => CLIENT_FACES,
     ChartBar: () => ChartBar,
     ChartDonut: () => ChartDonut,
     ChartLegend: () => ChartLegend,
@@ -42,6 +43,7 @@ var __ds_out = (() => {
     ChartSpark: () => ChartSpark,
     ChartTooltip: () => ChartTooltip,
     ChipRow: () => ChipRow,
+    ClientAvatar: () => ClientAvatar,
     ClientChip: () => ClientChip,
     CompareTable: () => CompareTable,
     Composer: () => Composer,
@@ -152,7 +154,9 @@ var __ds_out = (() => {
     UserTurn: () => UserTurn,
     VersionRow: () => VersionRow,
     areaPath: () => areaPath,
-    band: () => band,
+    band: () => band2,
+    clientFaceFor: () => clientFaceFor,
+    clientFaceKey: () => clientFaceKey,
     edgeColor: () => edgeColor,
     formatINR: () => formatINR,
     hasD3: () => hasD3,
@@ -249,9 +253,178 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", width: "100%", flexWrap: "wrap", gap: "var(--space-8)" } }, react_global_default.Children.map(children, (c, i) => /* @__PURE__ */ react_global_default.createElement("div", { key: i, style: animate ? { animation: `ds-rise var(--dur-enter) var(--ease) both`, animationDelay: `${i * 60}ms` } : void 0 }, c)));
   }
 
+  // design-system/components/brand/ClientAvatar.jsx
+  var FACES = {
+    "m-young": "data:image/webp;base64,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",
+    "f-old": "data:image/webp;base64,UklGRkwEAABXRUJQVlA4IEAEAADQGgCdASqgAKAAPm00lUekIyIhqLQp+IANiWdtyDW9EfDCgeH4bZo3W5ar1WjQ/CkRqp/sAuUksUD1EgobDFF2X6pQ152huwuRrzadU/kopQL9111kYarHA30vW1PDbQNK3UQaaxWtURJV2YJgW+TuSIOacVL1NJk5KAdOw3LaUzjwxnydEo74gsCvy6/8DR9c4Yp6KEGvFRP5WopbFLyaT9SRu0MIouyj30zEOp2kS7q0x3jX3Zc7flBtjT4GuKUfR0uUQ5ncDu8S+IeoVkebtZYbUizGti/4KnlxQPtAAP76G1/oSE8vms9cJ+qqe30c52Q5QUmHFHYMvEQUTa/Zxh3/th6C5ItcY0Z9CaTOpV5b3q5ba+pA2hYFxP7v8vHnP5g7vDhkagqEXwUc2xS+73H7MXuYhwnqh2fxFv+G1IpffCy4fzViyyCTfQAnNEa1AYHi75+P4VGxagI4yWKefayOZPDNrINpwlbh6diZMHO2KqHwVwwxrMjscD8orWlK9Dp/q0XQeoXIJwYERNSscA5158S+gwjZ26qwz0K5JRmx85HzMBlUxIHMAeu761Aq7JMk/oST3Frt9MrBHkUil+4RNsU/dKRHr6WvS5JVcPeBFDUHcIbMe8nkLJWPDIBKKn1eBaLXaPO4HkjdpNtsFpkj0/gL/aWXXYNRKcP4jVhDfjvzLZ1DkHbbashJnkOM7xATxlJxRenoucXBHZRVyI2hAzNCWH3ZDUTBMuzZ687vdqaPcQ8EPtbJj5RytHvznWtnj7NeqQqLjDSrip434W1H3DZb1hVyxCF7fQGiM0rr+c4prmm0EU4Jhe2eENhUHZx9ZJjtxuajhKEMwgh4oJUNDIfOXxmt9dzD6wMwX8ScQ7SeKc7lbbEddF5B2bVZFld22Z2zCPv4BSw44fYNiKsEt44yjvN3lG2JLQAlBCfEAJ8qeUdd+TCQQCJNjHNHREFqzNG81WbafLOZsgHiLcOoT2l4puPETT2E+xYkeI6ckG/tMeAmGQBD8zpUNAY0ePenBuh2hnONEyv4rZuLKj12UeqsML2F3VLQrrXHK6R7nJEqp4HFLGC7WuveMPF1NlC7fTSjBeZOskod+lK09o1dAsH2TAMoDwqSMlRDyReC4jxHXMIaouqGqFcDCDYA8Dj0YY65yAFYTwLwbB/7jE8beb1ebSgzdJnltEmQJjq91yfDmybH9j1srJ17g4iCHOHMXZv2oD92q/zxO1kfS6mrM0A4aF13E0XeznQglGHKTIAOZqJlXL9gba6d9rKAJ5q12UOuZ9bPPce/BJFB1hr6sgTCyjg7uoIWcFhSxoO/sB2RWBWqRymtY7+JYLUTZltsqEpTZesvFNRm+wqQbpgBSFJ4Y+bKJiU/kByJyek7b9BW+HxHx3U2BaA5Cw/5v3BJOkrkKatu4AeZMSzFtf5WXyg9CTwWN4mY1VgAAA==",
+    "f-mid": "data:image/webp;base64,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",
+    "m-mid": "data:image/webp;base64,UklGRpIEAABXRUJQVlA4IIYEAABwGQCdASqgAKAAPm00kUckIyIjK5cYwIANiWduDjA7gdl/OpK82tvmVgHvnT4jNq5TWozY79w8XzFTqGnBBr1bM2OkLK4SFi2ANgqHz12IaoLUhqZj2i9aV8ZALyhG90jwFdyLC5UVSTfNaZ2tSKNL4qBNPApdqov4KL8FEAgHsw2ZT7M48Y5IRt39HAINIHOjtfpnuUDF2Z30a/YM4XJKNIzBKb8vN6f7nyJdNo1G0318L1ERdhezYMKsvueeORW9hllTjljcwZ4Xd41QZIophdboAAD++htf1c5Ji85Cf6p5puE5tVEsOPAKFIU1UaIlJGZPq/jtteCZmwtxOrHCsiPDN6svLFeFK6FHJsrHCBbB+awS0a2wC+tfJf18UKheGQgbzMdA2+1q6K5dgi9LkhkIy1StN4bnwMZsvuK9TuCj4VnbFYqMes6Zmev1VM0Lkf4XiwNfcP30pPQnzAbXoToL9CVHfLrgPWs402R+EnxdiEVxgCcP6Lp0qA1Rvc4G1mXzbo2/zCbZFnSHofmhQyWq3g3WlpWbTkvci10p+xFkTk7fVp3yAD+EzKOH5uBclqkC0R5Y8hn6uPsrLVgoW0Wc9BkGueNYh7AxaqETe+c/h5jNBPdavf/teTfeeDhmSEIyNQ+2JLY7cPjhdsYp4kM5Z/nSwePoNbqgMFjALo2vf+E19JZ+Qdx8CoGTPOVt1t0CakTV6Xb+XC5tFK29RMF1dPfFIqFjL0WU2tPjCajfaB+UPrJSkWgZuEc0l8iq0H02CAcX587zGeuwAvoBZcXNodaDWvXmgHRxO/c7vS23v2xubRvx3Xt29WRbAZ3VhlM2sG2/LocCbNsrGVQFRYIlAQ9XAGs0Bs0+mgYUMXLnWejuBl61/kYm8G7NVGBhJRXn46eHAXYuTk3pJ9Iaj71cF3I4wqzMCGDgZqj+XSh2Xc7yaLYaRLAn6+KpkrdP4ZOcAIn7s+Gu4MtTonHYf3n/b7X2qNc6w9TlAs7Gl0eREOuMfuw0jNf9Eaoo9CremdI1Q+dOI72oSCE0nRs5MigOHZVbn42BTcuuGgW3M7/iq6XX6zUPNu2QtpzV8FIsMthUuO3n6PFyLDzIz6WbyJMGqN8meXXxR6OVGpj/aU5ORFhJsbHi6mm8qAdJrn5N0jjQtpFrzIElKukJb2jGOmhLo1WZfTCKVEfhE8fgFIWbTmC/OeAa4qv3kR0sAJOACEAAEqMAXCCLKiT2jUq5/xvcz4eNSylUvwrBAZzcgRDjN/Qk/ZrbbT4IksinyIUZxyWG8Awr5gQnIeB4NHh/U3vLlV1BPQOXX4v4VsMLd1E3TBptwbe9dxEPS2+mm1BkrQsWsUBOfBj9y8paCwvpiyNYcS95PNZpkJ8HDQVUOzbVTU30XyNMBOt7pY9+56mnn8RCZlm97ytCCTG9YYob4oJfVB2Fusrt5NGdy81Ltg+9IuhsXWNZ0iJtBSKKa5TAy4rbBxsqrrflp1RObq5wbfRqMY9r30PEh8dA6vHgt5jDY2gI6HiT7oiFOCXRbUU9REhBwAA=",
+    "m-turban": "data:image/webp;base64,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",
+    "f-young": "data:image/webp;base64,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",
+    "m-glasses": "data:image/webp;base64,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",
+    "m-old": "data:image/webp;base64,UklGRmgFAABXRUJQVlA4IFwFAAAwHQCdASqgAKAAPm00lkekIyIjqBepsIANiWVuDLlN3ZD1eVafbZXcz6ACAAZEPFdMvK9Lst591PwAzBjdsuU9sEK7SD2X+1ZrZdR/rPjeie86Vc36oDEReHjvmxSdhkOOFe27jUxHZTn7q4nhd/DiSG5moh4/otnAQYT7LO8whYx3Ps0Y4rQ5b/fSYyRUH2tQ2r+pbij+eiDZg88U7q9jZyiZlymGT51WWH/rcVYk5Lc1ils1voWbGQM9YXhZjMoiR8rN7a2KXRGjc6mAuE/q2dW0YM0nfZxMa6a+rrIJAroY2xRXQXzuFSb/8707Xas7MAD+/fzMDAv9enNhyBcp54kRJdyvnbYoOeXsAx2bdAKTJ70t7e+7uV6+Czwx0ky+9APnSaK5AYHr2ar1Inpc5+XPMlggYzqs2YaSY1QoQoshjZM/HmhXvZANpCdBxBL5jy9qGkVIRBFH038DZNg7tbybPMZjPQ/mBtyPaQ8qwxM4DNCyacxTQS8JgQbhrrUrTZPuDARgL4xbYHiS8sVEkQa+44W3xM2fFN2U28+ED3ZYxGRuBy6WYNpXpHxkt9FY7gCDKsN74YpcO1LIFrR6M5xhISCsytgcVmkZ8xSe3VU8gqlwieJvSOoVJJrthC1SNrth43MSqj4H/V4ztUokMGoa4k3C6WGNFW9Xai1xQ5WB84ERAANg53fVEAj2AII1b1kJzAVeppflLqej2Vsll9eL4U6myXNywdUAOoOb5uaDf2Aq9Pr96IF4yTMyDmzKEkz1SNPnFg48w4vlpp65dDwwyf9GE8wYriHzPboLTyZ/OA3f1lXy0L5m6gkRnhjV3nCddlni3cHD6WkbmydDIm8Yw/yVCSRvQE2tEr8WCLJHlNiH1dhdjFvtrH0zuG57xq9HGKIXEBb3WStxWgNQxVkUisqCjKMt743iShbwuCxl+SwSFgQs3ba3qxfUiD8FImpJoxb+4v17BxGHeAqNL2QAhU8vKYvOmfhV323BEULhtgdessXkoGuxcdF48WNXRVIxAporiglbEDwPTZ+83fN5q26YJcuadF5OsXgV5F+Ox6NjxRgXmnk/DY1rS0O4hRun9RBXGFQHdJGk243xJ+lKhAQ6ibQrEZD83nK93FPd3/42/XBKwnO4g2cCUgkv59CQtmQlLiqpoxaVgt2OVkfnOOPx/Q8BYb7WPDiAfcFZin63e3BWUgdSutNk0LV6u2wFXxR0Oc+0AIazBwKuLKM3Xd42lHiGNuzIqUcf9fNi270fjw5it+TB3/NtUtylK6kkka6OTnI/3GqK3Kmw4r+WNDuWps9KBOzYaSf13V0IkDl/gBeVrDHaVmPAtSNnnn6NWr7AwX3T4H3WcwXHp87m+d6w1h0B6VATFQXgPrr744F3saXA5o2AGBloR4gBCLEauEBLOEY5OqPMpdMDvOZS6Yxx1EZJ3YdqGfQjB7/babFFu7Yx2UebXPFwiT3X6wBzs+Q8Z+uMgiNl/oxqoHdbtx4Bb9Lip05GBlf5ttO9a6+XqQnB8pztfCbs2Etl0BUDhekmSYpD8gniJEAu62ebB9NBEUIoPQz9eoXbJ+2MurzBfq02jh7zlih6bn7cxYyrLj8cfIbfvEBwAX+YG5sHs7+bgMmXle8mJoZ5aQJFEet2VGkfSv/s1nc/aEuLTEWBIj6qZqDMhGGFwplDYtKCPcIIPOf9ESDbymG9ynsiy1fbf6h4pr0/sH0JJrPGHrg7EUCXY+E93QowXbYb4J77VCJNBKTgpUly5N5fVEbeX4yk60mKoZBjmuEgCEugoiSRRAjBFx/tDaSCHfl4R/34z75jIi8KXOAA"
+  };
+  var CLIENT_FACES = FACES;
+  var FEMALE_FACES = ["f-young", "f-mid", "f-old"];
+  var MALE_FACES = ["m-young", "m-mid", "m-old", "m-turban", "m-glasses"];
+  var ALL_FACES = ["m-young", "f-old", "f-mid", "m-mid", "m-turban", "f-young", "m-glasses", "m-old"];
+  var FEMALE = /* @__PURE__ */ new Set([
+    "meera",
+    "sunita",
+    "kavita",
+    "priya",
+    "lakshmi",
+    "anita",
+    "radha",
+    "sneha",
+    "divya",
+    "pooja",
+    "neha",
+    "rekha",
+    "asha",
+    "geeta",
+    "shanti",
+    "usha",
+    "nisha",
+    "ritu",
+    "swati",
+    "vandana",
+    "deepa",
+    "seema",
+    "sarita",
+    "aarti",
+    "shalini",
+    "nandini",
+    "ananya",
+    "ishita",
+    "riya",
+    "tanvi",
+    "aditi",
+    "sushma",
+    "madhuri",
+    "jaya",
+    "veena",
+    "padma",
+    "sudha",
+    "indira",
+    "kamala",
+    "savita",
+    "manju",
+    "rani",
+    "preeti",
+    "archana",
+    "bhavna",
+    "chitra",
+    "gayatri",
+    "hema",
+    "jyoti",
+    "latha",
+    "malini",
+    "namita",
+    "sangeeta",
+    "shobha",
+    "sujata",
+    "vidya",
+    "anjali",
+    "shruti",
+    "megha",
+    "pallavi",
+    "smita",
+    "trupti"
+  ]);
+  var MALE = /* @__PURE__ */ new Set([
+    "amit",
+    "rahul",
+    "vikram",
+    "anil",
+    "rohan",
+    "arjun",
+    "rajesh",
+    "sanjay",
+    "ravi",
+    "suresh",
+    "ramesh",
+    "mahesh",
+    "naveen",
+    "deepak",
+    "manoj",
+    "ashish",
+    "aditya",
+    "karan",
+    "nikhil",
+    "pranav",
+    "varun",
+    "gaurav",
+    "harsh",
+    "kunal",
+    "mohit",
+    "nitin",
+    "prateek",
+    "rohit",
+    "sachin",
+    "siddharth",
+    "tarun",
+    "vishal",
+    "yash",
+    "abhishek",
+    "akash",
+    "ankit",
+    "arun",
+    "ajay",
+    "bharat",
+    "chetan",
+    "dinesh",
+    "gopal",
+    "hemant",
+    "jatin",
+    "krishna",
+    "lalit",
+    "mukesh",
+    "pankaj",
+    "rakesh",
+    "sameer",
+    "tushar",
+    "uday",
+    "vijay",
+    "vinod",
+    "girish",
+    "satish",
+    "prakash",
+    "sunil"
+  ]);
+  var hash = (s) => {
+    let h = 0;
+    for (let i = 0; i < s.length; i += 1) h = (h * 31 + s.charCodeAt(i)) % 997;
+    return h;
+  };
+  var band = (age) => age < 35 ? "young" : age <= 55 ? "mid" : "old";
+  function clientFaceKey(name, age) {
+    const raw = String(name || "").trim();
+    if (!raw) return null;
+    const low = raw.toLowerCase();
+    const byTitle = /^(mrs|ms|miss|smt)\b/.test(low) ? FEMALE_FACES : /^(mr|shri|sri|dr)\b/.test(low) ? MALE_FACES : null;
+    const given = low.replace(/^(mr|mrs|ms|miss|smt|shri|sri|dr)\.?\s+/, "").split(/[^a-z]+/).filter((w) => w.length > 1)[0] || "";
+    const pool = byTitle || (FEMALE.has(given) ? FEMALE_FACES : MALE.has(given) ? MALE_FACES : ALL_FACES);
+    if (Number.isFinite(age) && age > 0) {
+      if (pool !== ALL_FACES) {
+        const want = `${pool === FEMALE_FACES ? "f" : "m"}-${band(age)}`;
+        if (pool.indexOf(want) !== -1) return want;
+      }
+    }
+    return pool[hash(raw) % pool.length];
+  }
+  function clientFaceFor(name, age) {
+    const key = clientFaceKey(name, age);
+    return key ? FACES[key] : null;
+  }
+  function ClientAvatar({ name, age, size = 32, initial }) {
+    const src = clientFaceFor(name, age);
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: size, height: size, flexShrink: 0, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", overflow: "hidden", background: "var(--surface-avatar)" } }, src ? /* @__PURE__ */ react_global_default.createElement("img", { src, alt: "", width: size, height: size, style: { display: "block", width: "100%", height: "100%", objectFit: "cover" } }) : /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: size >= 28 ? "var(--text-12)" : "var(--text-10)", color: "var(--color-bronze-deep)" } }, initial || (String(name || "?").trim().charAt(0).toUpperCase() || "?")));
+  }
+
   // design-system/components/actions/ClientChip.jsx
   function ClientChip({ name, initial, avatar, onRemove, disabled = false }) {
-    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", height: "var(--h-chip-sm)", maxWidth: 200, alignItems: "center", gap: "var(--space-6)", borderRadius: "var(--radius-full)", background: "var(--color-chip)", boxShadow: "0 0 0 1px var(--color-line)", padding: onRemove ? "0 2px 0 4px" : "0 10px 0 4px", boxSizing: "border-box", opacity: disabled ? 0.4 : 1 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", overflow: "hidden", background: "var(--surface-avatar)", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-10)", color: "var(--color-bronze-deep)" } }, avatar || initial || (name || "?").trim().charAt(0).toUpperCase()), /* @__PURE__ */ react_global_default.createElement("span", { style: { minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-ink)" } }, name), onRemove && /* @__PURE__ */ react_global_default.createElement(
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", height: "var(--h-chip-sm)", maxWidth: 200, alignItems: "center", gap: "var(--space-6)", borderRadius: "var(--radius-full)", background: "var(--color-chip)", boxShadow: "0 0 0 1px var(--color-line)", padding: onRemove ? "0 2px 0 4px" : "0 10px 0 4px", boxSizing: "border-box", opacity: disabled ? 0.4 : 1 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", overflow: "hidden", background: "var(--surface-avatar)", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-10)", color: "var(--color-bronze-deep)" } }, avatar || (clientFaceFor(name) ? /* @__PURE__ */ react_global_default.createElement("img", { src: clientFaceFor(name), alt: "", style: { display: "block", width: "100%", height: "100%", objectFit: "cover" } }) : null) || initial || (name || "?").trim().charAt(0).toUpperCase()), /* @__PURE__ */ react_global_default.createElement("span", { style: { minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-ink)" } }, name), onRemove && /* @__PURE__ */ react_global_default.createElement(
       "button",
       {
         type: "button",
@@ -451,7 +624,7 @@ var __ds_out = (() => {
     const t = Math.max(0, Math.min(1, x));
     return t * t * (3 - 2 * t);
   };
-  var hash = (a, b) => {
+  var hash2 = (a, b) => {
     const s = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
     return s - Math.floor(s);
   };
@@ -493,7 +666,7 @@ var __ds_out = (() => {
   function buildField() {
     const dots = [];
     const add = (pts, group, win, weight) => pts.forEach(([tx, ty], i) => {
-      const h1 = hash(i, group), h2 = hash(i + 7, group * 3 + 1), h3 = hash(i + 13, group * 5 + 2);
+      const h1 = hash2(i, group), h2 = hash2(i + 7, group * 3 + 1), h3 = hash2(i + 13, group * 5 + 2);
       const th = h1 * Math.PI * 2, phi = Math.acos(2 * h2 - 1);
       const nx = Math.sin(phi) * Math.cos(th), ny = Math.cos(phi), nz = Math.sin(phi) * Math.sin(th);
       let ux = -ny, uy = nx;
@@ -834,7 +1007,7 @@ var __ds_out = (() => {
     f.range = () => range;
     return f;
   }
-  function band(labels, range, padding = 0.34) {
+  function band2(labels, range, padding = 0.34) {
     const lib = d3();
     if (lib && lib.scaleBand) return lib.scaleBand().domain(labels).range(range).padding(padding);
     const [r0, r1] = range;
@@ -2337,7 +2510,7 @@ var __ds_out = (() => {
     const [d0, d1] = niceDomain(0, Math.max(...bars.map((b) => b.value), 1), peek ? 2 : 4);
     if (orientation === "vertical") {
       const labels = bars.map((b) => b.label);
-      const x = band(labels, [0, width - 8], 0.34);
+      const x = band2(labels, [0, width - 8], 0.34);
       const thick = Math.min(x.bandwidth(), MAX_THICK);
       const y = linear([d0, d1], [plot, 0]);
       return /* @__PURE__ */ react_global_default.createElement("div", { style: { width: "100%" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", height: plot, width: "100%" } }, bars.map((b, i) => /* @__PURE__ */ react_global_default.createElement("div", { key: b.label, style: { position: "absolute", left: x(b.label) + (x.bandwidth() - thick) / 2, bottom: 0, width: thick, height: Math.max(plot - y(b.value), 2), borderRadius: "var(--radius-4, 4px) var(--radius-4, 4px) 0 0", background: markColor(b.tone || tone), transformOrigin: "bottom", transform: on ? "none" : "scaleY(0)", transition: run ? "transform var(--dur-bar) var(--ease)" : "none", transitionDelay: run ? `${i * 60}ms` : "0ms" } })), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "absolute", left: 0, right: 0, bottom: -0.5, height: "var(--border-1)", background: "var(--color-line)" } })), /* @__PURE__ */ react_global_default.createElement("div", { style: { position: "relative", height: AXIS_BAND, width: "100%" } }, bars.map((b) => /* @__PURE__ */ react_global_default.createElement("span", { key: b.label, style: { position: "absolute", left: x(b.label), width: x.bandwidth(), textAlign: "center", fontFamily: FONT2, fontWeight: "var(--weight-medium)", fontSize: "var(--text-11)", lineHeight: `${AXIS_BAND}px`, color: "var(--color-muted)", whiteSpace: "nowrap" } }, b.label))));
@@ -2663,7 +2836,14 @@ var __ds_out = (() => {
     const isStatic = variant === "static";
     const h = (size || (subtitle ? "lg" : "md")) === "lg" ? "var(--h-row-2l)" : "var(--h-row-md)";
     const [down, setDown] = react_global_default.useState(false);
-    const lead = leading === "none" ? null : /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: leading === "index" ? 20 : 32, height: leading === "index" ? 20 : 32, flexShrink: 0, alignItems: "center", justifyContent: leading === "index" ? "flex-start" : "center", borderRadius: "var(--radius-full)", background: leading === "avatar" ? "var(--surface-avatar)" : "transparent" } }, leading === "avatar" ? /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", color: "var(--color-bronze-deep)" } }, leadingContent || (title || "?").trim().charAt(0).toUpperCase()) : leading === "index" ? /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } }, index) : leadingContent);
+    const lead = leading === "none" ? null : (
+      /* THE AVATAR DISC IS CLIPPED (23 Sep 2026). It was only ever a letter, so nothing needed cutting;
+         `leadingContent` has always accepted a node, and the moment a client's face went into one the
+         square illustration sat over the round disc's corners. `overflow: hidden` on the avatar leading
+         only — an `index` or a custom leading may have a control in it, and clipping those would take
+         the focus ring with them. */
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: leading === "index" ? 20 : 32, height: leading === "index" ? 20 : 32, flexShrink: 0, alignItems: "center", justifyContent: leading === "index" ? "flex-start" : "center", borderRadius: "var(--radius-full)", overflow: leading === "avatar" ? "hidden" : "visible", background: leading === "avatar" ? "var(--surface-avatar)" : "transparent" } }, leading === "avatar" ? leadingContent || clientFaceFor(title) ? leadingContent || /* @__PURE__ */ react_global_default.createElement("img", { src: clientFaceFor(title), alt: "", style: { display: "block", width: "100%", height: "100%", objectFit: "cover" } }) : /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-12)", color: "var(--color-bronze-deep)" } }, (title || "?").trim().charAt(0).toUpperCase()) : leading === "index" ? /* @__PURE__ */ react_global_default.createElement("span", { style: { fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", color: "var(--color-muted)" } }, index) : leadingContent)
+    );
     const trail = tr === "chevron" ? /* @__PURE__ */ react_global_default.createElement(IconChevronRight, { size: 16, stroke: "var(--color-bronze-deep)" }) : tr === "radio" ? /* @__PURE__ */ react_global_default.createElement(SelectionMark, { kind: "radio", selected, disabled }) : tr === "checkbox" ? /* @__PURE__ */ react_global_default.createElement(SelectionMark, { kind: "checkbox", selected, disabled }) : tr === "badge" && badge ? /* @__PURE__ */ react_global_default.createElement(Badge, { variant: badge.variant, tone: badge.tone }, badge.text) : tr === "meta" && meta ? /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-muted)", whiteSpace: "nowrap" } }, meta) : null;
     const body = /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, lead, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "var(--space-2)", textAlign: "left" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-6)", minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 1 auto", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" } }, title), chip), subtitle && /* @__PURE__ */ react_global_default.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-muted)" } }, subtitle)), tr !== "meta" && meta && /* @__PURE__ */ react_global_default.createElement("span", { style: { flexShrink: 0, font: "var(--type-meta-font)", color: "var(--color-muted)", whiteSpace: "nowrap" } }, meta), trail && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexShrink: 0, alignItems: "center" } }, trail), tr === "menu" && /* @__PURE__ */ react_global_default.createElement(
       "button",

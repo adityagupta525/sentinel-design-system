@@ -29,7 +29,7 @@ const TOK = ['--w-drawer','--scrim','--scrim-drawer','--z-scrim','--z-modal','--
 const SAVED = [{ title: "Meera Nair's risk profile", meta: '12 questions' }, { title: '₹25 L proposal', meta: '6 funds' }, { title: 'What Meera holds', meta: '43 funds' }, { title: "Sharma's rebalance", meta: '2 moves' }, { title: "Sunita Nair's Q2 review", meta: '31 funds' }];
 const RECENT = [['R. Sharma','Portfolio drift'],['Mr. Amit Aggrawal','Proposal draft'],['HDFC Diwali offer','AMC circular'],['Meera Nair','Q3 review'],['Sunita Nair','Exit load'],['Meera Nair','SIP change'],['R. Sharma','Mandate note'],['HDFC AMC','NFO circular'],['Mr. Amit Aggrawal','KYC']].map(([t, m]) => ({ title: t, meta: m }));
 const initials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
-const CLIENTS = ['Meera Nair','Mr. Amit Aggrawal','Sunita Nair','R. Sharma','Kavita Rao','Anil Menon','Priya Deshpande','Vikram Shah','Lakshmi Iyer','Rohan Gupta'].map((n) => ({ title: n, leading: 'avatar', leadingContent: initials(n), trailing: 'chevron' }));
+const CLIENTS = ['Meera Nair','Mr. Amit Aggrawal','Sunita Nair','R. Sharma','Kavita Rao','Anil Menon','Priya Deshpande','Vikram Shah','Lakshmi Iyer','Rohan Gupta'].map((n) => ({ title: n, leading: 'avatar', trailing: 'chevron' }));
 const Footer = () => (<React.Fragment>
   <Pressable onClick={() => {}} label="Back to home" style={{ display: 'flex', minHeight: 'var(--h-row-lg)', width: '100%', alignItems: 'center', boxSizing: 'border-box' }}>
     <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-semibold)', fontSize: 'var(--text-13)', color: 'var(--color-bronze-deep)' }}>‹ Back to home</span>

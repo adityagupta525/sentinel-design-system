@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge } from '../cards/Badge.jsx';
 import { SelectionMark } from '../forms/SelectionMark.jsx';
 import { IconChevronRight } from '../icons/IconChevronRight.jsx';
+import { clientFaceFor } from '../brand/ClientAvatar.jsx';
 /* One row with constrained pairings — not three list components.
    The legal pairings are enforced here, not left to the caller: an illegal trailing is dropped to the
    variant's default and warned about once. The chevron belongs to `nav` and nowhere else — an affordance
@@ -25,8 +26,21 @@ export function ListRow({ variant = 'static', size, leading = 'none', leadingCon
   const h = (size || (subtitle ? 'lg' : 'md')) === 'lg' ? 'var(--h-row-2l)' : 'var(--h-row-md)';
   const [down, setDown] = React.useState(false);
   const lead = leading === 'none' ? null : (
-    <span style={{ display: 'flex', width: leading === 'index' ? 20 : 32, height: leading === 'index' ? 20 : 32, flexShrink: 0, alignItems: 'center', justifyContent: leading === 'index' ? 'flex-start' : 'center', borderRadius: 'var(--radius-full)', background: leading === 'avatar' ? 'var(--surface-avatar)' : 'transparent' }}>
-      {leading === 'avatar' ? <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-12)', color: 'var(--color-bronze-deep)' }}>{leadingContent || (title || '?').trim().charAt(0).toUpperCase()}</span>
+    /* THE AVATAR DISC IS CLIPPED (23 Sep 2026). It was only ever a letter, so nothing needed cutting;
+       `leadingContent` has always accepted a node, and the moment a client's face went into one the
+       square illustration sat over the round disc's corners. `overflow: hidden` on the avatar leading
+       only — an `index` or a custom leading may have a control in it, and clipping those would take
+       the focus ring with them. */
+    <span style={{ display: 'flex', width: leading === 'index' ? 20 : 32, height: leading === 'index' ? 20 : 32, flexShrink: 0, alignItems: 'center', justifyContent: leading === 'index' ? 'flex-start' : 'center', borderRadius: 'var(--radius-full)', overflow: leading === 'avatar' ? 'hidden' : 'visible', background: leading === 'avatar' ? 'var(--surface-avatar)' : 'transparent' }}>
+      {/* AN AVATAR ROW IS A PERSON, SO IT GETS A FACE (23 Sep 2026). Checked before making it the
+          default: every `leading: 'avatar'` in this repository — the drawer, the client picker, both
+          spec pages, the group card — is a client's name, and not one is a fund or a document. So the
+          face is derived here rather than at eight call sites, and the drawer and the picker were
+          fixed without either of them being edited. A caller that passes `leadingContent` still wins,
+          and a name that hashes to nothing keeps its letter. */}
+      {leading === 'avatar' ? (leadingContent || clientFaceFor(title)
+        ? (leadingContent || <img src={clientFaceFor(title)} alt="" style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }} />)
+        : <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-12)', color: 'var(--color-bronze-deep)' }}>{(title || '?').trim().charAt(0).toUpperCase()}</span>)
         : leading === 'index' ? <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', color: 'var(--color-muted)' }}>{index}</span>
           : leadingContent}
     </span>

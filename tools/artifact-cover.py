@@ -164,7 +164,7 @@ doc = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <p class="sub">One phone, every journey, one router deciding which a sentence enters. Type into it — the
 sentences that work are listed in the demo script.</p>
 <div class="grid">
-  {card('screens/prototype.html','The prototype','Drive the whole product','Home, the six journeys, the ledger, the refusals and going back — wired together. Type “Show me flexi cap funds on my shelf”, then “under 0.7% TER”.',big=True)}
+  {card('screens/prototype.html','The prototype','Drive the whole product','Home, the six journeys, the fund explorer, the ledger, the refusals and going back — wired together. Type “Show me flexi cap funds on my shelf”, then “under 0.7% TER”. Or “what’s available in debt”, which opens the explorer.',big=True)}
 </div>
 
 <h2>The six journeys</h2>

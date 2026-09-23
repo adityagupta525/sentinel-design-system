@@ -20,9 +20,17 @@ const MENU_SAVED = [
 const MENU_RECENT = [['R. Sharma','Portfolio drift'],['Mr. Amit Aggrawal','Proposal draft'],['HDFC Diwali offer','AMC circular'],['Meera Nair','Q3 review'],
   ['Sunita Nair','Exit load'],['Meera Nair','SIP change'],['R. Sharma','Mandate note'],['HDFC AMC','NFO circular'],['Mr. Amit Aggrawal','KYC']].map(([t, m]) => ({ title: t, meta: m }));
 const menuInitials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]).join('').slice(0, 2);
-const menuClient = (name) => ({ title: name, leading: 'avatar', leadingContent: menuInitials(name), trailing: 'chevron' });
+/* NO `leadingContent` ANY MORE (23 Sep 2026). It carried two initials, and `ListRow` now derives the
+   client's face from the title — so the drawer got faces by DROPPING a line rather than adding one.
+   `menuInitials` stays: the long-name row below uses it to show what a two-initial fallback looks
+   like when a name hashes to nothing. */
+const menuClient = (c) => {
+  const name = typeof c === 'string' ? c : c.name;
+  const age = typeof c === 'string' ? undefined : c.age;
+  return { title: name, leading: 'avatar', leadingContent: <MENU_DS.ClientAvatar name={name} age={age} size={32} />, trailing: 'chevron' };
+};
 /* The book, not a second list of names — screens/data/book.jsx is where a client is written down. */
-const MENU_CLIENTS = CLIENTS.map((c) => menuClient(c.name));
+const MENU_CLIENTS = CLIENTS.map(menuClient);   // the whole client, so the face gets the age too
 const MENU_CLIENTS_LONG = ['Ramasubramanian Venkataraghavan', 'Mr. Amit Aggrawal', 'Sunita Nair'].map(menuClient);
 
 /* "Back to home" and the one-theme control. SegmentedRow is the system's; the row is locked because no

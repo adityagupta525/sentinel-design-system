@@ -3,6 +3,7 @@
    _adherence.oxlintrc.json warns on any import that reaches into components/ directly. */
 
 /* brand */
+export { CLIENT_FACES, clientFaceKey, clientFaceFor, ClientAvatar } from './components/brand/ClientAvatar.jsx';
 export { DotField } from './components/brand/DotField.jsx';
 export { Mascot } from './components/brand/Mascot.jsx';
 export { SplashScreen } from './components/brand/SplashScreen.jsx';

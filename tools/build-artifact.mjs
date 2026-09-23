@@ -185,6 +185,33 @@ await writeFile(join(OUT, 'contracts.d.ts'),
   + `   repository they are separate files at design-system/components/<group>/<Name>.d.ts. */\n\n`
   + contracts.join('\n\n'));
 console.log(`folded ${contracts.length} contracts into contracts.d.ts — each page already carries its own`);
+
+/* THE EXPLORER'S ART, INTO THE PAGES THAT DRAW IT (23 Sep 2026). This staging never carried
+   `screens/explorer/art/` — measured: ZERO webp files in `site/` — so the four explorer boards went
+   into the design-system artifact pointing `./art` at a directory that does not exist there. Copying
+   thirteen files in would have worked here and NOT in the artifact, where the page is served at a URL
+   with no trailing slash and a relative path resolves one directory too high; that is how the owner
+   found it, as broken-image glyphs on the asset tiles. So the bytes go into the page, the same answer
+   `build-app.mjs` uses, from the same function.
+
+   After the precompile, because the funnel's `artUrl()` map is read at module scope and the detection
+   string only exists once the .jsx is compiled in. Inserted before the page's first script for the
+   same reason: a tag after them arrives too late to be read. */
+const { explorerArtScript } = await import('./explorer-art.mjs');
+const { n: artN, script: artTag } = explorerArtScript(join(ROOT, 'screens', 'explorer', 'art'));
+let artPages = 0;
+if (artN) {
+  for (const p of await walk(OUT, (p) => p.endsWith('.html'))) {
+    const s = await readFile(p, 'utf8');
+    if (!s.includes('__EXPLORER_ART')) continue;
+    const at = s.indexOf('<script');
+    if (at < 0) continue;
+    await writeFile(p, s.slice(0, at) + artTag + '\n' + s.slice(at));
+    artPages += 1;
+  }
+}
+if (!artPages) { console.error('site/: no page took the explorer art — the boards would draw broken images'); process.exit(1); }
+console.log(`inlined ${artN} explorer art files into ${artPages} page(s) — the staging carries no art directory`);
 console.log(`inlined ${cached} fetched files, so a downloaded folder opens without a server`);
 
 /* THE COVER IS WRITTEN LAST, because this script starts by deleting `artifact/` — the first run

@@ -1,0 +1,122 @@
+<!-- @dsCard group="Pages" viewport="1000x1720" name="ClientAvatar" subtitle="Eight faces, chosen by the client’s name, so a column of clients is people rather than letters" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>ClientAvatar — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/index.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+
+const { ClientAvatar, clientFaceFor, clientFaceKey, CLIENT_FACES, ListRow, List, ClientChip } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--surface-avatar','--radius-full','--color-bronze-deep','--text-12','--text-10','--h-row-md'];
+const BOOK = ['Meera Nair','Mr. Amit Aggrawal','R. Sharma','Sunita Nair','Kavita Rao','Anil Menon','Priya Deshpande','Vikram Shah'];
+const disc = { display:'flex', flexWrap:'wrap', gap:'var(--space-12)', alignItems:'center' };
+const cap = { fontFamily:'var(--font-ui)', fontWeight:'var(--weight-regular)', fontSize:'var(--text-11)', lineHeight:'var(--leading-15)', color:'var(--color-muted)' };
+
+function Named({ name, size = 32 }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'var(--space-4)', width:96 }}>
+      <ClientAvatar name={name} size={size} />
+      <span style={{ ...cap, textAlign:'center' }}>{name}</span>
+    </div>
+  );
+}
+
+function App() {
+  return (
+  <PageShell name="ClientAvatar" group="Brand" status="shipped" requires={['ClientAvatar','ListRow','List','ClientChip']}
+    summary="Eight bronze discs each carrying one capital is a list the eye cannot hold — which is what the drawer, the client picker and Home all were. These are eight flat illustrations in this product's own palette, varying by age and gender, with no facial features beyond an accessory so that none of them is a portrait of anybody. The face is a function of the name and nothing else, so the same client is the same person on every screen and no screen carries a mapping. It is presentation and not a record: the book has no avatar field, two clients can share a face, and neither is claimed to look like it.">
+
+    <Block n={1} title="Specimen" sub="A real page of the book, at the 32pt a list row draws.">
+      <Specimen width={640}><div style={disc}>{BOOK.map((n) => <Named key={n} name={n} />)}</div></Specimen>
+    </Block>
+
+    <Block n={2} title="The set" sub="Eight — three women, three men and two men whose accessory carries no age. There is no ninth: a book of 512 shares them, deliberately, because a face here is a way to tell one row from the next and not a likeness of anybody.">
+      <Specimen width={640}>
+        <div style={disc}>
+          {['f-young','f-mid','f-old','m-young','m-mid','m-old','m-turban','m-glasses'].map((k) => (
+            <div key={k} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'var(--space-4)', width:72 }}>
+              <span style={{ display:'flex', width:56, height:56, alignItems:'center', justifyContent:'center', borderRadius:'var(--radius-full)', overflow:'hidden', background:'var(--surface-avatar)' }}>
+                <img src={CLIENT_FACES[k]} alt="" style={{ display:'block', width:'100%', height:'100%', objectFit:'cover' }} />
+              </span>
+              <span style={cap}>{k}</span>
+            </div>
+          ))}
+        </div>
+      </Specimen>
+    </Block>
+
+    <Block n={3} title="Sizes" sub="Three the product actually uses. 32 is ListRow's avatar leading, 20 is ClientChip's, 56 is the picker's own header.">
+      <Grid cols={3} itemWidth={200} items={[
+        {label:'20 — the bound chip', node:<ClientAvatar name="Meera Nair" size={20} />},
+        {label:'32 — a list row', node:<ClientAvatar name="Meera Nair" size={32} />},
+        {label:'56 — a header', node:<ClientAvatar name="Meera Nair" size={56} />},
+      ]} />
+    </Block>
+
+    <Block n={4} title="Where it appears without being asked" sub="ListRow derives the face from an avatar row's title and ClientChip from its name, so the drawer and the client picker got faces by DROPPING a line rather than adding one. Checked before making it the default: every `leading: 'avatar'` in this repository is a client's name, and not one is a fund or a document.">
+      <Grid cols={2} itemWidth={311} items={[
+        {label:'ListRow · nav — the drawer', node:(
+          <div style={{ background:'var(--color-surface)', borderRadius:'var(--radius-16)', padding:'var(--space-12) var(--space-16)' }}>
+            {BOOK.slice(0,3).map((n) => <ListRow key={n} variant="nav" leading="avatar" title={n} trailing="chevron" onPress={() => {}} />)}
+          </div>), note:'No leadingContent passed. The title is the name.'},
+        {label:'ClientChip — bound in the composer', node:(
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'var(--space-8)' }}>
+            {BOOK.slice(0,3).map((n) => <ClientChip key={n} name={n} />)}
+          </div>), note:'Clipped to the same 20pt disc the initial used.'},
+      ]} />
+    </Block>
+
+    <Block n={5} title="States" sub="What it does when it has nothing to derive a face from. It never renders an empty circle.">
+      <Grid cols={3} itemWidth={200} items={[
+        {label:'a name', node:<ClientAvatar name="Sunita Nair" />, note:'The face for that name, on every screen.'},
+        {label:'no name', node:<ClientAvatar name="" />, note:'The letter falls back — here, the “?” for nothing at all.'},
+        {label:'an explicit initial', node:<ClientAvatar name="" initial="AA" />, note:'For a placeholder row that has a label but no person yet.'},
+      ]} />
+    </Block>
+
+    <Block n={6} title="Tokens"><Tokens names={TOK} /></Block>
+    <Block n={7} title="Props"><Props src="../components/brand/ClientAvatar.d.ts" /></Block>
+
+    <Block n={8} title="Do / Don't">
+      <DoDont
+        doNode={<div style={{ background:'var(--color-surface)', borderRadius:'var(--radius-16)', padding:'var(--space-12) var(--space-16)' }}>
+          {BOOK.slice(0,3).map((n) => <ListRow key={n} variant="nav" leading="avatar" title={n} trailing="chevron" onPress={() => {}} />)}
+        </div>}
+        doCaption="Let the name choose it. Two screens showing the same client then agree without being told."
+        dontNode={<div style={{ background:'var(--color-surface)', borderRadius:'var(--radius-16)', padding:'var(--space-12) var(--space-16)' }}>
+          {BOOK.slice(0,3).map((n, i) => <ListRow key={n} variant="nav" leading="avatar" leadingContent={<img src={clientFaceFor(BOOK[(i+4)%BOOK.length])} alt="" style={{ display:'block', width:'100%', height:'100%', objectFit:'cover' }} />} title={n} trailing="chevron" onPress={() => {}} />)}
+        </div>}
+        dontCaption="Passing a face by hand. It compiles, it looks fine, and the drawer and the picker now disagree about who Meera is." />
+    </Block>
+
+    <Block n={9} title="Motion">
+      <Motion rows={[
+        {name:'None', property:'—', duration:'—', reduced:'Nothing to reduce. An avatar does not animate; the row it sits in carries the press state.'},
+      ]} />
+    </Block>
+  </PageShell>);
+}
+mountPage(App);
+
+</script>
+</body></html>

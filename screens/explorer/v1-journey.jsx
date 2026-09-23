@@ -54,11 +54,25 @@ const FOLD_SETTLE_MS = 260;
    the module. A wrong path here is four silently broken images, which is the one failure that looks
    like a design decision. */
 const ART_BASE = (typeof window !== 'undefined' && window.__EXPLORER_ART) || './art';
+/* AND A BUILD MAY HAND THE ART OVER AS DATA URIs INSTEAD OF A PATH (23 Sep 2026). Two places a
+   relative path does not survive, both found by looking at the published copies:
+
+     · THE ARTIFACT serves the page at a URL with no trailing slash, so `./explorer/art/equity.webp`
+       resolves one directory too high and every tile and every face came out a broken-image glyph.
+       The files were published, at exactly those paths; nothing could reach them.
+     · THE SITE BUILD staged zero of them — `screens/explorer/*.html` went into the design-system
+       artifact with `./art` pointing at a directory that is not in the staging at all.
+
+   `window.__EXPLORER_ART_MAP` is a build's answer to both: keys relative to the art root, values
+   `data:image/webp;base64,...`. Absent — the dev server, the repository, a folder on disk — the
+   path is used and nothing changes. 72 KB of art, so the whole set costs about 96 KB inlined. */
+const ART_MAP = (typeof window !== 'undefined' && window.__EXPLORER_ART_MAP) || null;
+const artUrl = (rel) => (ART_MAP && ART_MAP[rel]) || `${ART_BASE}/${rel}`;
 const ART = {
-  Equity: `${ART_BASE}/equity.webp`,
-  Debt: `${ART_BASE}/debt.webp`,
-  Commodity: `${ART_BASE}/commodity.webp`,
-  'REITs / InvITs': `${ART_BASE}/property.webp`,
+  Equity: artUrl('equity.webp'),
+  Debt: artUrl('debt.webp'),
+  Commodity: artUrl('commodity.webp'),
+  'REITs / InvITs': artUrl('property.webp'),
 };
 /* THE CLIENTS, AS PEOPLE RATHER THAN AS LETTERS. Eight bronze discs each carrying one capital is a
    list the eye cannot hold — the owner asked for avatars that vary by age and gender, and these are
@@ -91,15 +105,11 @@ function bookFundFor(inst) {
 }
 const clientsFor = (inst) => { const f = bookFundFor(inst); return f ? exHoldersOf(f.id) : []; };
 
-const AVATARS = ['m-young', 'f-old', 'f-mid', 'm-mid', 'm-turban', 'f-young', 'm-glasses', 'm-old'];
-function avatarFor(name) {
-  let h = 0;
-  for (let i = 0; i < String(name).length; i += 1) h = (h * 31 + String(name).charCodeAt(i)) % 997;
-  return `${ART_BASE}/avatars/${AVATARS[h % AVATARS.length]}.webp`;
-}
-function ClientFace({ name, size = 20 }) {
-  return <img src={avatarFor(name)} alt="" width={size} height={size} style={{ display: 'block', objectFit: 'cover' }} />;
-}
+/* THE FACES MOVED INTO THE SYSTEM (23 Sep 2026). They were drawn here, and the owner's next
+   question was why the drawer and every other client list still had letters — so `ClientAvatar`
+   carries them now, `ListRow` derives one from any avatar row's title and `ClientChip` from its
+   name. The eight images and the hash are identical, so no face on this screen changed; what
+   changed is that this file no longer owns a mapping two other components also needed. */
 
 function AssetArt({ asset, size = 62 }) {
   const src = ART[asset];
@@ -460,7 +470,7 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
                 {`${held.length} of your clients already hold this.`}
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-6)', marginTop: 'var(--space-8)' }}>
-                {held.map((n) => <ClientChip key={n} name={n} avatar={<ClientFace name={n} />} />)}
+                {held.map((n) => <ClientChip key={n} name={n} />)}
               </div>
             </>
           )}

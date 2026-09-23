@@ -75,7 +75,15 @@ const ROUTES = [
      catalogue, and the explorer walks it — four questions, each collapsing into its own answer. The
      old rule caught both with the word `fund` and gave both the shortlist, which is why asking what
      exists returned four funds somebody had already picked. */
-  { id: 'explore',  re: /\bexplore\b|\bbrowse\b|what(?:'|\u2019)?s (available|on the shelf)|asset class|show me (all |the )?(funds|products|instruments)|\b(bonds?|fds?|deposits?|pms|aifs?|reits?|invits?|unlisted|gold|sgb)\b/i, why: 'a browse of the catalogue' },
+  /* THREE THINGS THIS MISSED, and the owner found them by tapping (23 Sep 2026):
+       · `\bexplore\b` does not match \"explorer\" — so the HOME SCREEN'S OWN CHIP, labelled
+         \"Fund explorer\", opened journey C, and the word the product uses for the screen fell all
+         the way through to bucket 4. A control that does not do what it is named is the worst kind.
+       · A bare \"fund\" or \"funds\" is a BROWSE. It carries no criterion, so there is nothing to
+         search for, and answering it with a two-row shortlist somebody already picked answers a
+         different question. Anchored to the whole sentence, so \"flexi cap funds under 0.7%\" is
+         still a search and journey C's two demo sentences are untouched — both were checked. */
+  { id: 'explore',  re: /\bexplor(?:e|er|ers|ing)\b|\bbrowse\b|what(?:'|’)?s (?:available|on the shelf)|asset class|show me (?:all |the )?(?:funds|products|instruments)|^\s*(?:all |the )?(?:funds?|products?|instruments?|catalogue|catalog)\s*\??\s*$|\b(?:bonds?|fds?|deposits?|pms|aifs?|reits?|invits?|unlisted|gold|sgb)\b/i, why: 'a browse of the catalogue' },
   { id: 'funds',    re: /\bfund|flexi|small cap|large cap|shelf|search\b/i,          why: 'a fund search' },
   { id: 'miss',     re: /.*/,                                                        why: 'nothing matched — and nothing is guessed at' },
 ];

@@ -1,4 +1,5 @@
 import React from 'react';
+import { clientFaceFor } from '../brand/ClientAvatar.jsx';
 /* The bound client, living in the composer. Tapping a client anywhere — the drawer's CLIENTS section,
    a picker sheet — does not navigate: it binds the next thread to that client and puts this chip in the
    composer. One mechanism, two entry points, and typing a name resolves to the same bound state.
@@ -7,13 +8,17 @@ import React from 'react';
 export function ClientChip({ name, initial, avatar, onRemove, disabled = false }) {
   return (
     <span style={{ display: 'inline-flex', height: 'var(--h-chip-sm)', maxWidth: 200, alignItems: 'center', gap: 'var(--space-6)', borderRadius: 'var(--radius-full)', background: 'var(--color-chip)', boxShadow: '0 0 0 1px var(--color-line)', padding: onRemove ? '0 2px 0 4px' : '0 10px 0 4px', boxSizing: 'border-box', opacity: disabled ? 0.4 : 1 }}>
-      {/* AN AVATAR IF THE CALLER HAS ONE, THE INITIAL IF NOT. The initial is the honest default —
-          it is derived from the name and cannot be wrong about the person. `avatar` exists because a
-          list of eight clients that are all a bronze disc with a letter is a list the eye cannot
-          hold, and the fund explorer has drawn illustrations for exactly that. It is clipped to the
-          same 20pt disc either way, so a row of chips keeps one rhythm whichever it is given. */}
+      {/* THE FACE BY DEFAULT, THE INITIAL WHEN THERE IS NO NAME TO DERIVE ONE FROM (23 Sep 2026).
+          `avatar` was added first, so a caller could pass a face — and the owner's point was that a
+          bound client in the composer is the same person as the row in the drawer, and should not
+          depend on which screen remembered to pass one. `ClientAvatar` derives it from the name, the
+          same function `ListRow` uses, so the two agree without either of them being told. An
+          explicit `avatar` still wins, and it is clipped to the same 20pt disc either way, so a row
+          of chips keeps one rhythm whichever it is given. */}
       <span style={{ display: 'flex', width: 20, height: 20, flexShrink: 0, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', overflow: 'hidden', background: 'var(--surface-avatar)', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-10)', color: 'var(--color-bronze-deep)' }}>
-        {avatar || initial || (name || '?').trim().charAt(0).toUpperCase()}
+        {avatar
+          || (clientFaceFor(name) ? <img src={clientFaceFor(name)} alt="" style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }} /> : null)
+          || initial || (name || '?').trim().charAt(0).toUpperCase()}
       </span>
       <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', lineHeight: 'var(--leading-16)', color: 'var(--color-ink)' }}>{name}</span>
       {onRemove && (
