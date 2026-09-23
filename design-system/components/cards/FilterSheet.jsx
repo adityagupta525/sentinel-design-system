@@ -2,6 +2,7 @@ import React from 'react';
 import { Pill } from '../actions/Pill.jsx';
 import { DarkButton } from '../actions/DarkButton.jsx';
 import { Pressable } from '../actions/Pressable.jsx';
+import { SearchField } from '../forms/SearchField.jsx';
 /* THE FILTER SHEET — batch, not live; bands, not sliders; and the count rides the button.
 
    Three findings decided every part of this, and each came from measured evidence rather than taste.
@@ -33,6 +34,76 @@ import { Pressable } from '../actions/Pressable.jsx';
    false → true transition only, never for a sheet mounted already open — F-25. Three hand-written copies
    is three chances to drift; extracting it is recorded in FINDINGS.md rather than done here, because
    changing two shipped dialogs to prove a new one is the wrong order. */
+
+/* A GROUP, AND WHAT HAPPENS WHEN IT IS BIG (23 Sep 2026).
+
+   BANDS ARE FINITE AND HOUSES ARE NOT. A three-band expense filter is three pills forever. The house
+   filter is one pill per AMC, PMS manager and issuer on the shelf — eight in a ten-fund sample and
+   several hundred across a real catalogue, and the owner's question was exactly this: what happens at
+   fifteen thousand funds. The answer the screen had was `.slice(0, 8)`, which SILENTLY dropped every
+   house past the eighth. A filter that cannot reach a value is worse than no filter, and one that
+   cannot reach it without saying so is the F-61 defect again: the sheet looked complete and was not.
+
+   SO A LONG GROUP GETS A SEARCH AND A CEILING IT ADMITS TO. Past `--space` — past `CHIP_CEILING`
+   options — the group shows the most populous ones, says how many it is not showing, and takes a
+   search that filters the whole set rather than the shown part. Chosen options are pinned to the
+   front whatever the search says, because an advisor who has picked ICICI and then searches "kotak"
+   must still be able to see, and unpick, ICICI.
+
+   WHY NOT A SCROLLING LIST. Because the counts are the point — "ICICI Prudential AMC (3)" is what
+   makes the choice — and a list of several hundred rows with a count each is a screen of its own, not
+   a group in a sheet. Search-plus-top-N keeps the answer one tap away for the common case and one
+   word away for the rest. */
+const CHIP_CEILING = 8;
+
+function Group({ g, isOn, toggle }) {
+  const [q, setQ] = React.useState('');
+  const all = g.options || [];
+  const big = g.searchable || all.length > CHIP_CEILING;
+  const needle = q.trim().toLowerCase();
+  const chosen = all.filter((o) => isOn(g, o));
+  const matched = needle ? all.filter((o) => o.label.toLowerCase().includes(needle)) : all;
+  /* Chosen first, then by count, then dropped to the ceiling — but only the UNSELECTED ones are
+     dropped, so nothing an advisor has already picked can fall off the end. */
+  const rest = matched.filter((o) => !isOn(g, o));
+  const shown = big && !needle
+    ? chosen.concat(rest.slice(0, Math.max(CHIP_CEILING - chosen.length, 2)))
+    : chosen.concat(rest);
+  const hidden = matched.length - shown.length;
+
+  return (
+    <div style={{ marginBottom: 'var(--space-16)' }}>
+      <p style={{ margin: `0 0 var(--space-8)`, font: 'var(--type-label-font)', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-muted)', textTransform: 'uppercase' }}>{g.label}</p>
+      {g.note && <p style={{ margin: `0 0 var(--space-8)`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{g.note}</p>}
+      {big && (
+        <div style={{ marginBottom: 'var(--space-8)' }}>
+          <SearchField value={q} onChange={setQ} /* "Search 21 house" — the group's own header already says HOUSE, so repeating the noun
+                 buys a pluralisation bug and nothing else. */
+              placeholder={`Search all ${all.length.toLocaleString('en-IN')}`} onClear={() => setQ('')} />
+        </div>
+      )}
+      <div role="group" aria-label={g.label} style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-6)' }}>
+        {shown.map((opt) => (
+          <Pill key={opt.value} tone="filter" size="sm" selected={isOn(g, opt)}
+            disabled={opt.count === 0 || undefined}
+            label={opt.count == null ? opt.label : `${opt.label} (${opt.count.toLocaleString('en-IN')})`}
+            onClick={opt.count === 0 ? undefined : () => toggle(g, opt)} />
+        ))}
+      </div>
+      {/* THE CEILING SAYS SO. Silence here is the whole defect. */}
+      {hidden > 0 && (
+        <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)', fontVariantNumeric: 'tabular-nums' }}>
+          {`${hidden.toLocaleString('en-IN')} more — search to reach ${hidden === 1 ? 'it' : 'them'}.`}
+        </p>
+      )}
+      {needle && matched.length === 0 && (
+        <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
+          {`Nothing in ${g.label.toLowerCase()} matches “${q}”.`}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export function FilterSheet({
   open, title = 'Filters', groups = [], value = {}, onChange,
@@ -132,20 +203,7 @@ export function FilterSheet({
             </div>
           )}
 
-          {groups.map((g) => (
-            <div key={g.key} style={{ marginBottom: 'var(--space-16)' }}>
-              <p style={{ margin: `0 0 var(--space-8)`, font: 'var(--type-label-font)', letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--color-muted)', textTransform: 'uppercase' }}>{g.label}</p>
-              {g.note && <p style={{ margin: `0 0 var(--space-8)`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{g.note}</p>}
-              <div role="group" aria-label={g.label} style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-6)' }}>
-                {(g.options || []).map((opt) => (
-                  <Pill key={opt.value} tone="filter" size="sm" selected={isOn(g, opt)}
-                    disabled={opt.count === 0 || undefined}
-                    label={opt.count == null ? opt.label : `${opt.label} (${opt.count.toLocaleString('en-IN')})`}
-                    onClick={opt.count === 0 ? undefined : () => toggle(g, opt)} />
-                ))}
-              </div>
-            </div>
-          ))}
+          {groups.map((g) => <Group key={g.key} g={g} isOn={isOn} toggle={toggle} />)}
         </div>
 
         <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-8)', padding: `var(--space-12) var(--space-20) var(--space-20)` }}>

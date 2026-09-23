@@ -1100,7 +1100,68 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { onClick: onClose, "aria-hidden": "true", style: { position: "absolute", inset: 0, zIndex: "var(--z-scrim)", background: "var(--scrim)", opacity: "var(--scrim-sheet)", animation: "ds-scrim var(--dur-screen) var(--ease) both" } }), /* @__PURE__ */ react_global_default.createElement("div", { ref, role: "dialog", "aria-modal": "true", "aria-label": title, tabIndex: -1, style: { position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 30, borderRadius: "24px 24px 0 0", background: "var(--color-surface)", padding: "12px 20px 28px", animation: "ds-sheet 300ms var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("style", null, "@keyframes ds-sheet{from{transform:translateY(100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-sheet{from{opacity:0;transform:none}to{opacity:1;transform:none}}}"), /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "0 auto 14px", height: 5, width: 44, borderRadius: "var(--radius-full)", background: "var(--color-line)" } }), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...{ font: "var(--type-sheet-title-font)", color: "var(--color-ink)" } } }, title), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)", display: "flex", flexDirection: "column", gap: "var(--space-10)" } }, body.map((p, i) => /* @__PURE__ */ react_global_default.createElement("p", { key: i, style: { margin: 0, ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink-soft)" } } }, p))), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: 18 } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Got it", tone: "primary", onClick: onClose }))));
   }
 
+  // design-system/components/forms/SearchField.jsx
+  function SearchField({ value = "", onChange, placeholder = "Search 512 clients", onClear, autoFocus = false }) {
+    const [focus, setFocus] = react_global_default.useState(false);
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-8)", width: "100%", height: 44, borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "0 14px", boxSizing: "border-box", border: `1px solid ${focus ? "var(--color-bronze)" : "var(--color-line)"}`, boxShadow: focus ? "var(--focus-ring)" : "none", transition: "box-shadow var(--dur-press), border-color var(--dur-press)" } }, /* @__PURE__ */ react_global_default.createElement(
+      "input",
+      {
+        value,
+        autoFocus,
+        placeholder,
+        onChange: (e) => onChange && onChange(e.target.value),
+        onFocus: () => setFocus(true),
+        onBlur: () => setFocus(false),
+        style: { flex: 1, minWidth: 0, border: "none", background: "transparent", outline: "none", padding: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" },
+        className: "ds-search-input"
+      }
+    ), /* @__PURE__ */ react_global_default.createElement("style", null, ".ds-search-input::placeholder{color:var(--color-muted)}"), value ? /* @__PURE__ */ react_global_default.createElement(
+      "button",
+      {
+        type: "button",
+        onClick: () => {
+          onClear && onClear();
+          onChange && onChange("");
+        },
+        style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center", minHeight: 44, padding: "0 2px", font: "var(--type-meta-font)", color: "var(--color-muted)" }
+      },
+      "Clear"
+    ) : null);
+  }
+
   // design-system/components/cards/FilterSheet.jsx
+  var CHIP_CEILING = 8;
+  function Group({ g, isOn, toggle }) {
+    const [q, setQ] = react_global_default.useState("");
+    const all = g.options || [];
+    const big = g.searchable || all.length > CHIP_CEILING;
+    const needle = q.trim().toLowerCase();
+    const chosen = all.filter((o) => isOn(g, o));
+    const matched = needle ? all.filter((o) => o.label.toLowerCase().includes(needle)) : all;
+    const rest = matched.filter((o) => !isOn(g, o));
+    const shown = big && !needle ? chosen.concat(rest.slice(0, Math.max(CHIP_CEILING - chosen.length, 2))) : chosen.concat(rest);
+    const hidden = matched.length - shown.length;
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-16)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-label-font)", letterSpacing: "var(--tracking-eyebrow)", color: "var(--color-muted)", textTransform: "uppercase" } }, g.label), g.note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, g.note), big && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement(
+      SearchField,
+      {
+        value: q,
+        onChange: setQ,
+        placeholder: `Search all ${all.length.toLocaleString("en-IN")}`,
+        onClear: () => setQ("")
+      }
+    )), /* @__PURE__ */ react_global_default.createElement("div", { role: "group", "aria-label": g.label, style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, shown.map((opt) => /* @__PURE__ */ react_global_default.createElement(
+      Pill,
+      {
+        key: opt.value,
+        tone: "filter",
+        size: "sm",
+        selected: isOn(g, opt),
+        disabled: opt.count === 0 || void 0,
+        label: opt.count == null ? opt.label : `${opt.label} (${opt.count.toLocaleString("en-IN")})`,
+        onClick: opt.count === 0 ? void 0 : () => toggle(g, opt)
+      }
+    ))), hidden > 0 && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-8) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, `${hidden.toLocaleString("en-IN")} more \u2014 search to reach ${hidden === 1 ? "it" : "them"}.`), needle && matched.length === 0 && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-8) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, `Nothing in ${g.label.toLowerCase()} matches \u201C${q}\u201D.`));
+  }
   function FilterSheet({
     open,
     title = "Filters",
@@ -1206,18 +1267,7 @@ var __ds_out = (() => {
           label: `${group.label}: ${opt.label}`,
           onClick: () => toggle(group, opt)
         }
-      ))), groups.map((g) => /* @__PURE__ */ react_global_default.createElement("div", { key: g.key, style: { marginBottom: "var(--space-16)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-label-font)", letterSpacing: "var(--tracking-eyebrow)", color: "var(--color-muted)", textTransform: "uppercase" } }, g.label), g.note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, g.note), /* @__PURE__ */ react_global_default.createElement("div", { role: "group", "aria-label": g.label, style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, (g.options || []).map((opt) => /* @__PURE__ */ react_global_default.createElement(
-        Pill,
-        {
-          key: opt.value,
-          tone: "filter",
-          size: "sm",
-          selected: isOn(g, opt),
-          disabled: opt.count === 0 || void 0,
-          label: opt.count == null ? opt.label : `${opt.label} (${opt.count.toLocaleString("en-IN")})`,
-          onClick: opt.count === 0 ? void 0 : () => toggle(g, opt)
-        }
-      )))))),
+      ))), groups.map((g) => /* @__PURE__ */ react_global_default.createElement(Group, { key: g.key, g, isOn, toggle }))),
       /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, display: "flex", flexDirection: "column", gap: "var(--space-8)", padding: `var(--space-12) var(--space-20) var(--space-20)` } }, /* @__PURE__ */ react_global_default.createElement(DarkButton, { full: true, label: commit, onClick: onApply }))
     ));
   }
@@ -2743,35 +2793,6 @@ var __ds_out = (() => {
     const min = Math.min(...points), max = Math.max(...points), span = max - min || 1;
     const d = points.map((p, i) => `${i / (points.length - 1) * width},${height - (p - min) / span * height}`).join(" L ");
     return /* @__PURE__ */ react_global_default.createElement("svg", { width, height, viewBox: `0 0 ${width} ${height}`, fill: "none", style: { display: "block", marginTop: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: `M ${d}`, stroke: "var(--color-bronze-deep)", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }));
-  }
-
-  // design-system/components/forms/SearchField.jsx
-  function SearchField({ value = "", onChange, placeholder = "Search 512 clients", onClear, autoFocus = false }) {
-    const [focus, setFocus] = react_global_default.useState(false);
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-8)", width: "100%", height: 44, borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "0 14px", boxSizing: "border-box", border: `1px solid ${focus ? "var(--color-bronze)" : "var(--color-line)"}`, boxShadow: focus ? "var(--focus-ring)" : "none", transition: "box-shadow var(--dur-press), border-color var(--dur-press)" } }, /* @__PURE__ */ react_global_default.createElement(
-      "input",
-      {
-        value,
-        autoFocus,
-        placeholder,
-        onChange: (e) => onChange && onChange(e.target.value),
-        onFocus: () => setFocus(true),
-        onBlur: () => setFocus(false),
-        style: { flex: 1, minWidth: 0, border: "none", background: "transparent", outline: "none", padding: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" },
-        className: "ds-search-input"
-      }
-    ), /* @__PURE__ */ react_global_default.createElement("style", null, ".ds-search-input::placeholder{color:var(--color-muted)}"), value ? /* @__PURE__ */ react_global_default.createElement(
-      "button",
-      {
-        type: "button",
-        onClick: () => {
-          onClear && onClear();
-          onChange && onChange("");
-        },
-        style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center", minHeight: 44, padding: "0 2px", font: "var(--type-meta-font)", color: "var(--color-muted)" }
-      },
-      "Clear"
-    ) : null);
   }
 
   // design-system/components/icons/AssetMark.jsx

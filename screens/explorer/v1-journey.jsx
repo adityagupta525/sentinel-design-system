@@ -475,7 +475,9 @@ const RET_BANDS = [
 /* Which band or value a row falls in, per facet. One function, so the group builder and the filter
    cannot disagree about what "Over ₹10,000 Cr" means. */
 const FACET_OF = {
-  amc: (i) => (i.amc ? i.amc.replace(/ (Asset Management|Mutual Fund|Investment Managers?|Co\.?|Ltd\.?|Limited|Pvt\.?|Private).*$/i, '').trim() : null),
+  /* Houses shout too — "SINGULARITY AMC LLP" — and a filter chip in block capitals beside "Kotak
+     Mahindra" reads as a different kind of thing rather than the same kind louder. */
+  amc: (i) => (i.amc ? deShout(i.amc.replace(/ (Asset Management|Mutual Fund|Investment Managers?|Co\.?|Ltd\.?|Limited|Pvt\.?|Private).*$/i, '').trim()) : null),
   type: (i) => i.instrumentType || null,
   ter: (i) => (i.ter == null ? null : bandOf(i.ter, TER_BANDS)?.key),
   aum: (i) => (i.aum == null ? null : bandOf(i.aum, AUM_BANDS)?.key),
@@ -501,7 +503,11 @@ function facetGroups(rows) {
     const opts = m.order
       ? m.order.filter((b) => counts.has(b.key)).map((b) => ({ value: b.key, label: b.label, count: counts.get(b.key) }))
       : [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-        .slice(0, 8).map(([k, n]) => ({ value: k, label: k, count: n }));
+        /* NO TRUNCATION. This used to `.slice(0, 8)`, which silently made every house past the
+           eighth unfilterable — and at fifteen thousand funds that is most of them. The sheet's own
+           group now takes the whole set, shows the most populous, says how many it is holding back,
+           and searches the rest. The screen's job is to hand over everything it knows. */
+        .map(([k, n]) => ({ value: k, label: k, count: n }));
     groups.push({ key: m.key, label: m.label, note: m.note || undefined, mode: 'multi', options: opts });
   }
   return groups;
@@ -1318,7 +1324,7 @@ function App_V1() {
       <Section title="Narrowing, comparing, overlapping — none of them a screen"
         sub="The sheet is a wider view of the filters the bar is already showing, so closing it changes nothing. Two checkboxes open the comparison in the same thread, under the list it was picked from.">
         <StateRow>
-          <State label="THE SHEET" note="Facets built from the rows in front of the advisor: a house with nothing left in it is not offered, and expense ratio does not appear at all unless mutual funds are in the set."><Funnel startAssets={['Equity']} startFamilies={['mutual_fund']} startOpen={0} startSheet /></State>
+          <State label="THE SHEET, AND ITS CEILING" note="21 houses under Equity, past the eight a chip row can hold. It shows the most populous, SAYS how many it is holding back, and searches the whole set — the version before this silently dropped everything past the eighth, which at fifteen thousand funds is most of them."><Funnel startAssets={['Equity']} startOpen={0} startSheet /></State>
           <State label="COMPARE, IN THE THREAD" note="Rows are the union of what the chosen instruments have. A row appears where at least one has the figure; the ones that do not say so."><Funnel startAssets={['Equity']} startFamilies={['mutual_fund']} startCats={['mutual_fund:large_cap']} startOpen={0} startPicked={['F00000PDT6', 'F00000PDLU']} startShow="compare" /></State>
         </StateRow>
       </Section>
