@@ -1,4 +1,4 @@
-<!-- @dsCard group="Screens" viewport="1500x14000" name="Fund explorer · V1 the funnel" subtitle="Four questions on one screen, each collapsing into its own answer, and a fund's page opening inside the list rather than over it" -->
+<!-- @dsCard group="Screens" viewport="1500x7100" name="Fund explorer · V1 the funnel" subtitle="Four questions on one screen, each collapsing into its own answer, and a fund's page opening inside the list rather than over it" -->
 <!-- @gutter min="16" fullBleed="ScreenBackdrop, StatusSpacer, TopBar, Dock, HomeIndicator, scrim, sheet" truncation="allowed" -->
 <!-- truncation="allowed" is for ONE thing: DataTable's sticky Fund column is 148pt and a fund name is longer. That is the component's documented behaviour — a sticky column keeps the table readable sideways — and the row expands in place to show the name in full. -->
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>Fund explorer · V1 the funnel — Sentinel screens</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
@@ -6273,68 +6273,80 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 /* The system's components come off the published namespace, the way every other screen reaches them
    (`funds.jsx:14`) — a `text/babel` script has no import. */
 var EX_DS = window.SentinelDesignSystem_0682a2;
-var ArtifactCard = EX_DS.ArtifactCard,
-  Badge = EX_DS.Badge,
-  ChartBar = EX_DS.ChartBar,
-  ChartDonut = EX_DS.ChartDonut,
-  ChartLine = EX_DS.ChartLine,
-  ChartSpark = EX_DS.ChartSpark,
-  ChipRow = EX_DS.ChipRow,
-  ClientChip = EX_DS.ClientChip,
-  CompareTable = EX_DS.CompareTable,
-  Composer = EX_DS.Composer,
-  ConstraintCallout = EX_DS.ConstraintCallout,
-  DarkButton = EX_DS.DarkButton,
-  DataTable = EX_DS.DataTable,
-  DisclosureBlock = EX_DS.DisclosureBlock,
-  Drawer = EX_DS.Drawer,
-  Dumbbell = EX_DS.Dumbbell,
-  ExplainerSheet = EX_DS.ExplainerSheet,
-  ExplorerSheet = EX_DS.ExplorerSheet,
-  Eyebrow = EX_DS.Eyebrow,
-  FigureRow = EX_DS.FigureRow,
-  FilterSheet = EX_DS.FilterSheet,
-  FollowUpRow = EX_DS.FollowUpRow,
-  InfoCard = EX_DS.InfoCard,
-  InfoDot = EX_DS.InfoDot,
-  InlineActionRow = EX_DS.InlineActionRow,
-  IntentGrid = EX_DS.IntentGrid,
-  IntentTile = EX_DS.IntentTile,
-  List = EX_DS.List,
-  ListRow = EX_DS.ListRow,
-  OverlapView = EX_DS.OverlapView,
-  PeerLine = EX_DS.PeerLine,
-  Pill = EX_DS.Pill,
-  Pressable = EX_DS.Pressable,
-  Provenance = EX_DS.Provenance,
-  RangePills = EX_DS.RangePills,
-  RejectCallout = EX_DS.RejectCallout,
-  ScreenScaffold = EX_DS.ScreenScaffold,
-  SearchField = EX_DS.SearchField,
-  SectionStrip = EX_DS.SectionStrip,
-  SegmentedRow = EX_DS.SegmentedRow,
-  SelectionMark = EX_DS.SelectionMark,
-  SentinelBlock = EX_DS.SentinelBlock,
-  SentinelText = EX_DS.SentinelText,
-  ShortlistCard = EX_DS.ShortlistCard,
-  StandingDisclosure = EX_DS.StandingDisclosure,
-  StatTile = EX_DS.StatTile,
-  Surface = EX_DS.Surface,
-  UserBubble = EX_DS.UserBubble,
-  AssetMark = EX_DS.AssetMark,
-  FundCard = EX_DS.FundCard,
-  MetricList = EX_DS.MetricList,
-  MetricRow = EX_DS.MetricRow,
-  StepBlock = EX_DS.StepBlock,
-  StepStack = EX_DS.StepStack,
-  ChartLegend = EX_DS.ChartLegend,
-  ChartReadout = EX_DS.ChartReadout,
-  ChartShare = EX_DS.ChartShare,
-  PathBar = EX_DS.PathBar,
-  ParseNote = EX_DS.ParseNote,
-  UserTurn = EX_DS.UserTurn,
-  SentinelTurn = EX_DS.SentinelTurn;
-var holdersOf = function holdersOf(fundId) {
+/* PUBLISHED, NOT DECLARED — because the full app loads every journey into ONE Babel scope, and
+   `journey-b/home.jsx` already declares ScreenScaffold, Composer, Pill and three more. Two `const
+   ScreenScaffold` in one scope and the whole page renders nothing; the repo has shipped that failure
+   before and `check-previews` now catches it statically, which is why an IIFE does not satisfy it
+   either. Assigning to `window` instead means this file declares nothing: its own components read the
+   globals, and on the app page home.jsx's consts simply shadow them with the same values. */
+Object.assign(window, {
+  ArtifactCard: EX_DS.ArtifactCard,
+  Badge: EX_DS.Badge,
+  ChartBar: EX_DS.ChartBar,
+  ChartDonut: EX_DS.ChartDonut,
+  ChartLine: EX_DS.ChartLine,
+  ChartSpark: EX_DS.ChartSpark,
+  ChipRow: EX_DS.ChipRow,
+  ClientChip: EX_DS.ClientChip,
+  CompareTable: EX_DS.CompareTable,
+  Composer: EX_DS.Composer,
+  ConstraintCallout: EX_DS.ConstraintCallout,
+  DarkButton: EX_DS.DarkButton,
+  DataTable: EX_DS.DataTable,
+  DisclosureBlock: EX_DS.DisclosureBlock,
+  Drawer: EX_DS.Drawer,
+  Dumbbell: EX_DS.Dumbbell,
+  ExplainerSheet: EX_DS.ExplainerSheet,
+  ExplorerSheet: EX_DS.ExplorerSheet,
+  Eyebrow: EX_DS.Eyebrow,
+  FigureRow: EX_DS.FigureRow,
+  FilterSheet: EX_DS.FilterSheet,
+  FollowUpRow: EX_DS.FollowUpRow,
+  InfoCard: EX_DS.InfoCard,
+  InfoDot: EX_DS.InfoDot,
+  InlineActionRow: EX_DS.InlineActionRow,
+  IntentGrid: EX_DS.IntentGrid,
+  IntentTile: EX_DS.IntentTile,
+  List: EX_DS.List,
+  ListRow: EX_DS.ListRow,
+  OverlapView: EX_DS.OverlapView,
+  PeerLine: EX_DS.PeerLine,
+  Pill: EX_DS.Pill,
+  Pressable: EX_DS.Pressable,
+  Provenance: EX_DS.Provenance,
+  RangePills: EX_DS.RangePills,
+  RejectCallout: EX_DS.RejectCallout,
+  ScreenScaffold: EX_DS.ScreenScaffold,
+  SearchField: EX_DS.SearchField,
+  SectionStrip: EX_DS.SectionStrip,
+  SegmentedRow: EX_DS.SegmentedRow,
+  SelectionMark: EX_DS.SelectionMark,
+  SentinelBlock: EX_DS.SentinelBlock,
+  SentinelText: EX_DS.SentinelText,
+  ShortlistCard: EX_DS.ShortlistCard,
+  StandingDisclosure: EX_DS.StandingDisclosure,
+  StatTile: EX_DS.StatTile,
+  Surface: EX_DS.Surface,
+  UserBubble: EX_DS.UserBubble,
+  AssetMark: EX_DS.AssetMark,
+  FundCard: EX_DS.FundCard,
+  MetricList: EX_DS.MetricList,
+  MetricRow: EX_DS.MetricRow,
+  StepBlock: EX_DS.StepBlock,
+  StepStack: EX_DS.StepStack,
+  ChartLegend: EX_DS.ChartLegend,
+  ChartReadout: EX_DS.ChartReadout,
+  ChartShare: EX_DS.ChartShare,
+  PathBar: EX_DS.PathBar,
+  ParseNote: EX_DS.ParseNote,
+  UserTurn: EX_DS.UserTurn,
+  SentinelTurn: EX_DS.SentinelTurn,
+  IconFilter: EX_DS.IconFilter
+});
+
+/* `exHoldersOf`, not `holdersOf` — `journey-c/funds.jsx` declares a function of that name, and the
+   full app loads both into one Babel scope. Same answer, a name that cannot collide. */
+var exHoldersOf = function exHoldersOf(fundId) {
   return CLIENTS.filter(function (c) {
     return (c.holdings || []).some(function (h) {
       return h.fundId === fundId;
@@ -6363,7 +6375,7 @@ function FundRow(_ref) {
   var f = fundById(id);
   var p = perfOf(id);
   var cat = categoryAvgOf(id);
-  var held = holdersOf(id);
+  var held = exHoldersOf(id);
   var periodWords = period === 'r1' ? '1 year' : period === 'r3' ? '3 years' : '5 years';
   var body = /*#__PURE__*/React.createElement("div", {
     style: {
@@ -6613,7 +6625,7 @@ var ASSET_TILES = [{
 
 /* Published to `window` because each `text/babel` script is compiled and run on its own, so a top-level
    binding here is not visible to the variation files. Journey C does the same at the foot of funds.jsx. */
-Object.assign(window, {
+Object.assign(window, _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({
   EX_DS: EX_DS,
   ArtifactCard: ArtifactCard,
   Badge: Badge,
@@ -6676,16 +6688,8 @@ Object.assign(window, {
   ParseNote: ParseNote,
   UserTurn: UserTurn,
   SentinelTurn: SentinelTurn,
-  holdersOf: holdersOf,
-  FundRow: FundRow,
-  explorerProvenance: explorerProvenance,
-  applyFilters: applyFilters,
-  countFor: countFor,
-  filterGroups: filterGroups,
-  filterLabels: filterLabels,
-  matches: matches,
-  ASSET_TILES: ASSET_TILES
-});</script>
+  IconFilter: IconFilter
+}, "FigureRow", FigureRow), "exHoldersOf", exHoldersOf), "FundRow", FundRow), "explorerProvenance", explorerProvenance), "applyFilters", applyFilters), "countFor", countFor), "filterGroups", filterGroups), "filterLabels", filterLabels), "matches", matches), "ASSET_TILES", ASSET_TILES));</script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
 </head><body><div id="root"></div>
 <script>"use strict";
@@ -6697,7 +6701,6 @@ function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _toArray(r) { return _arrayWithHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableRest(); }
-function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n2 = 0, F = function F() {}; return { s: F, n: function n() { return _n2 >= r.length ? { done: !0 } : { done: !1, value: r[_n2++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
@@ -6705,10 +6708,11 @@ function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n2 = 0, F = function F() {}; return { s: F, n: function n() { return _n2 >= r.length ? { done: !0 } : { done: !1, value: r[_n2++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 /* FUND EXPLORER · V1 — THE FUNNEL.
 
    Rebuilt on 23 Sep 2026 against the owner's own sketch and against the real product catalogue. The
@@ -6744,6 +6748,106 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 var _React = React,
   useS1 = _React.useState;
+/* `--dur-enter` is 240ms (tokens/effects.css) — the fold's own `grid-template-rows` transition.
+   Twenty past it, so the re-anchor lands on a settled layout and not on its last frame. */
+var FOLD_SETTLE_MS = 260;
+
+/* ─── THE ART ───────────────────────────────────────────────────────────────────────────────────
+   The owner lifted this system's own "ships no images" rule for the fund explorer on 23 Sep 2026 —
+   his rule, his call, and his reason was that the tiles felt low and flat and the contrast was
+   missing. He is right that a glyph at a tenth of an ink cannot carry a card.
+
+   So four pieces of art, generated to this product's own palette and keyed to transparency so they
+   sit on any surface: the rising bars, the payment ladder, the ingot stack, the elevations — the same
+   four shapes `AssetMark` draws, at full colour with their own paper grain. 14 KB for all four.
+
+   THEY LIVE UNDER `screens/explorer/`, NOT IN THE DESIGN SYSTEM. The system still ships no images;
+   this screen does. That keeps the rule literally true, keeps the exception visible to the next
+   person, and means nothing outside the explorer inherits it by accident. `IntentTile` takes a node
+   and does not care what is in it. */
+/* The art is relative to THIS folder when the explorer's own page loads it, and relative to
+   `screens/` when the whole app does — so the base is declared by the page rather than assumed by
+   the module. A wrong path here is four silently broken images, which is the one failure that looks
+   like a design decision. */
+var ART_BASE = typeof window !== 'undefined' && window.__EXPLORER_ART || './art';
+var ART = {
+  Equity: "".concat(ART_BASE, "/equity.webp"),
+  Debt: "".concat(ART_BASE, "/debt.webp"),
+  Commodity: "".concat(ART_BASE, "/commodity.webp"),
+  'REITs / InvITs': "".concat(ART_BASE, "/property.webp")
+};
+/* THE CLIENTS, AS PEOPLE RATHER THAN AS LETTERS. Eight bronze discs each carrying one capital is a
+   list the eye cannot hold — the owner asked for avatars that vary by age and gender, and these are
+   eight flat mid-century illustrations in this product's own palette: a young man, an older woman
+   with grey hair, a woman in a dupatta, a man in a turban, someone in glasses. No facial features
+   beyond an accessory, so none of them is a portrait of anybody.
+
+   ASSIGNED BY HASH, NOT BY GUESS. Nothing in the book records a client's age or gender and inventing
+   one would be the screen asserting a fact about a real person it does not have. A stable hash of the
+   name picks the illustration: the same client is always the same face, and the face means nothing. */
+/* TWO DATA SETS, ONE INSTRUMENT, AND NO SHARED KEY. `holdersOf` answers "who holds this" from the
+   advisor's BOOK, whose funds are keyed `ppfas-flexi`; the catalogue keys the same fund `F00000PDT6`.
+   Passing a catalogue id straight in returned an empty list every single time, so the clients section
+   could never once have fired — a whole block of the page that looked implemented and was dead.
+
+   They do overlap, by NAME: the book's "Quant Small Cap" is the catalogue's "Quant Small Cap Fund
+   Growth", and "Motilal Oswal Midcap" is "Motilal Oswal Midcap Direct Growth". So the bridge is a
+   normalised name — plan and share-class words stripped from both sides, then one containing the
+   other. Where no book fund matches, the answer is honestly none. */
+var PLAN_WORDS = /\b(direct|regular|plan|growth|option|idcw|dividend|fund|scheme)\b/g;
+var normName = function normName(x) {
+  return String(x || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(PLAN_WORDS, ' ').replace(/\s+/g, ' ').trim();
+};
+function bookFundFor(inst) {
+  var a = normName(inst.name);
+  if (!a) return null;
+  return (typeof FUNDS !== 'undefined' ? FUNDS : []).find(function (f) {
+    var b = normName(f.name);
+    return b && (a === b || a.includes(b) || b.includes(a));
+  }) || null;
+}
+var clientsFor = function clientsFor(inst) {
+  var f = bookFundFor(inst);
+  return f ? exHoldersOf(f.id) : [];
+};
+var AVATARS = ['m-young', 'f-old', 'f-mid', 'm-mid', 'm-turban', 'f-young', 'm-glasses', 'm-old'];
+function avatarFor(name) {
+  var h = 0;
+  for (var i = 0; i < String(name).length; i += 1) h = (h * 31 + String(name).charCodeAt(i)) % 997;
+  return "".concat(ART_BASE, "/avatars/").concat(AVATARS[h % AVATARS.length], ".webp");
+}
+function ClientFace(_ref) {
+  var name = _ref.name,
+    _ref$size = _ref.size,
+    size = _ref$size === void 0 ? 20 : _ref$size;
+  return /*#__PURE__*/React.createElement("img", {
+    src: avatarFor(name),
+    alt: "",
+    width: size,
+    height: size,
+    style: {
+      display: 'block',
+      objectFit: 'cover'
+    }
+  });
+}
+function AssetArt(_ref2) {
+  var asset = _ref2.asset,
+    _ref2$size = _ref2.size,
+    size = _ref2$size === void 0 ? 62 : _ref2$size;
+  var src = ART[asset];
+  if (!src) return null;
+  return /*#__PURE__*/React.createElement("img", {
+    src: src,
+    alt: "",
+    width: size,
+    height: size,
+    style: {
+      display: 'block',
+      objectFit: 'contain'
+    }
+  });
+}
 
 /* ─── Formatting. Indian grouping, one decimal, and never a zero standing in for a gap ──────────── */
 var crore = function crore(n) {
@@ -6878,6 +6982,52 @@ function deShout(s) {
   return letters > 8 && caps / letters > 0.6 ? titleish(s) : s;
 }
 
+/* ─── RISK, COMPUTED FROM THE SERIES THE CATALOGUE ACTUALLY CARRIES ────────────────────────────
+   Beta is on file. Volatility and the deepest fall are NOT — but the weekly NAV series is, and both
+   are arithmetic on it rather than opinions about it, so computing them is honest where inventing a
+   "risk score" would not be. Each says which window it was computed over, because a drawdown with no
+   period is a number with no meaning.
+
+   WEEKLY, ANNUALISED BY sqrt(52). The series is weekly because a daily one at 311pt draws four points
+   per pixel; the annualisation factor follows the sampling, and stating it is the difference between
+   a figure an advisor can check and one they have to trust. */
+function riskFrom(nav) {
+  if (!nav || nav.length < 8) return null;
+  var v = nav.map(function (x) {
+    return x[1];
+  });
+  var peak = v[0],
+    dd = 0;
+  var _iterator = _createForOfIteratorHelper(v),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var x = _step.value;
+      peak = Math.max(peak, x);
+      dd = Math.min(dd, (x - peak) / peak);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  var rets = v.slice(1).map(function (x, k) {
+    return x / v[k] - 1;
+  });
+  var mean = rets.reduce(function (a, b) {
+    return a + b;
+  }, 0) / rets.length;
+  var sd = Math.sqrt(rets.reduce(function (a, b) {
+    return a + Math.pow(b - mean, 2);
+  }, 0) / (rets.length - 1)) * Math.sqrt(52);
+  var months = Math.round(nav.length / 52 * 12);
+  return {
+    maxDD: +(dd * 100).toFixed(1),
+    vol: +(sd * 100).toFixed(1),
+    months: months
+  };
+}
+
 /* ─── WHAT IT WOULD HAVE BECOME ─────────────────────────────────────────────────────────────────
    A return is a rate and nobody holds a rate. "9.76% over three years" and "₹10,000 became ₹13,229"
    are the same fact, and only the second one is the sentence an advisor says out loud to a client.
@@ -6929,10 +7079,10 @@ var WINDOWS = [{
   years: 5,
   label: 'five years'
 }];
-function GrowthCalc(_ref) {
-  var i = _ref.i,
-    amount = _ref.amount,
-    onAmount = _ref.onAmount;
+function GrowthCalc(_ref3) {
+  var i = _ref3.i,
+    amount = _ref3.amount,
+    onAmount = _ref3.onAmount;
   var _useS = useS1('lump'),
     _useS2 = _slicedToArray(_useS, 2),
     mode = _useS2[0],
@@ -7025,14 +7175,14 @@ function rebase(series) {
     };
   }) : null;
 }
-function OnePager(_ref2) {
-  var _lenses$, _i$returns4, _p$ratios, _lenses$find;
-  var i = _ref2.i,
-    onAct = _ref2.onAct,
-    onClose = _ref2.onClose,
-    shortlisted = _ref2.shortlisted,
-    amount = _ref2.amount,
-    onAmount = _ref2.onAmount;
+function OnePager(_ref4) {
+  var _lenses$, _i$returns4, _p$ratios, _lenses$find, _p$ratios2, _p$ratios3;
+  var i = _ref4.i,
+    onAct = _ref4.onAct,
+    onClose = _ref4.onClose,
+    shortlisted = _ref4.shortlisted,
+    amount = _ref4.amount,
+    onAmount = _ref4.onAmount;
   var p = onePagerOf(i.id) || {};
   var _useS3 = useS1(null),
     _useS4 = _slicedToArray(_useS3, 2),
@@ -7065,9 +7215,11 @@ function OnePager(_ref2) {
       });
     };
   };
+  var navPts = p.nav || [];
   var nav = rebase(p.nav);
   var bench = rebase(p.bench);
-  var held = holdersOf(i.id) || [];
+  var risk = riskFrom(p.nav);
+  var held = clientsFor(i) || [];
   var lenses = [];
   if (p.sector) lenses.push({
     key: 'sector',
@@ -7081,10 +7233,24 @@ function OnePager(_ref2) {
     key: 'holdings',
     label: 'Top holdings'
   });
+  if (p.issuers) lenses.push({
+    key: 'issuers',
+    label: 'Issuers'
+  });
+  if (p.rating) lenses.push({
+    key: 'rating',
+    label: 'Credit rating'
+  });
   var useLens = lenses.some(function (l) {
     return l.key === lens;
   }) ? lens : (_lenses$ = lenses[0]) === null || _lenses$ === void 0 ? void 0 : _lenses$.key;
-  var rows = useLens === 'sector' ? p.sector : useLens === 'cap' ? p.marketCap : p.holdings;
+  var rows = {
+    sector: p.sector,
+    cap: p.marketCap,
+    holdings: p.holdings,
+    issuers: p.issuers,
+    rating: p.rating
+  }[useLens];
   var oneSegment = rows && rows.length === 1;
   var mRows = metricRows(i, p);
   return /*#__PURE__*/React.createElement("div", {
@@ -7097,28 +7263,40 @@ function OnePager(_ref2) {
     }
   }, /*#__PURE__*/React.createElement(SentinelText, {
     text: narrate(i)
-  }), nav && /*#__PURE__*/React.createElement(StepBlock, {
-    title: "What \u20B9100 became",
+  }), nav &&
+  /*#__PURE__*/
+  /* THE NAV, AND THEN THE COMPARISON. The owner's note on the first version: "what ₹100 became
+     samajh nahi aaya — fund ka NAV kitna hai, NAV graph kidhar hai?" He is right that the
+     rebased index answered a question he had not asked first. A fund page opens with the NAV,
+     because that is the instrument's own number; the rebased pair comes after, as the thing
+     that makes two different scales comparable. */
+  React.createElement(StepBlock, {
+    title: "NAV, and how it moved",
     open: fold === 'returns',
     onToggle: f('returns'),
-    summary: "".concat(Math.round(nav[nav.length - 1].y), " from 100").concat(bench ? " \xB7 benchmark ".concat(Math.round(bench[bench.length - 1].y)) : '')
+    summary: "".concat(rupees(navPts[navPts.length - 1][1])).concat(bench ? " \xB7 ".concat(Math.round(nav[nav.length - 1].y), " vs ").concat(Math.round(bench[bench.length - 1].y), " from 100") : '')
   }, /*#__PURE__*/React.createElement(ChartReadout, {
-    label: monthYear(p.nav[p.nav.length - 1][0]) || 'Latest',
-    value: String(Math.round(nav[nav.length - 1].y)),
-    idleNote: "rebased from 100"
+    label: "NAV \xB7 ".concat(monthYear(p.nav[p.nav.length - 1][0]) || 'latest'),
+    value: rupees(navPts[navPts.length - 1][1]),
+    idleNote: "".concat(navPts.length, " weekly points on file")
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 'var(--space-4)'
     }
   }, /*#__PURE__*/React.createElement(ChartLine, {
     series: [{
-      label: 'This fund',
-      points: nav
+      label: 'NAV',
+      points: navPts.map(function (x, k) {
+        return {
+          x: k,
+          y: x[1]
+        };
+      })
     }],
     density: "expanded",
     width: 295,
     valueFormat: function valueFormat(v) {
-      return "".concat(v.toFixed(0));
+      return "\u20B9".concat(v.toFixed(0));
     },
     xFormat: function xFormat(x) {
       return p.nav[x] ? monthYear(p.nav[x][0]) : '';
@@ -7158,7 +7336,13 @@ function OnePager(_ref2) {
     title: "What it holds",
     open: fold === 'holds',
     onToggle: f('holds'),
-    summary: oneSegment ? "All ".concat(rows[0].pct, "% ").concat(rows[0].name.toLowerCase()) : "".concat(rows.length, " ").concat(useLens === 'sector' ? 'sectors' : useLens === 'cap' ? 'bands' : 'holdings')
+    summary: oneSegment ? "All ".concat(rows[0].pct, "% ").concat(rows[0].name.toLowerCase()) : "".concat(rows.length, " ").concat({
+      sector: 'sectors',
+      cap: 'bands',
+      holdings: 'holdings',
+      issuers: 'issuers',
+      rating: 'ratings'
+    }[useLens])
   }, lenses.length > 1 && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: 'var(--space-12)'
@@ -7202,18 +7386,73 @@ function OnePager(_ref2) {
     i: i,
     amount: amount,
     onAmount: onAmount
-  })), (held.length > 0 || p.pending) && /*#__PURE__*/React.createElement(StepBlock, {
+  })), (risk || ((_p$ratios2 = p.ratios) === null || _p$ratios2 === void 0 ? void 0 : _p$ratios2.beta3) != null) && /*#__PURE__*/React.createElement(StepBlock, {
+    title: "What it did in a bad month",
+    open: fold === 'risk',
+    onToggle: f('risk'),
+    summary: risk ? "Fell ".concat(Math.abs(risk.maxDD).toFixed(1), "% at worst") : "Beta ".concat(p.ratios.beta3.toFixed(2))
+  }, /*#__PURE__*/React.createElement(MetricList, null, risk && /*#__PURE__*/React.createElement(MetricRow, {
+    label: "Deepest fall",
+    value: "".concat(risk.maxDD.toFixed(1), "%"),
+    note: "Peak to trough over the ".concat(risk.months, " months on file. Computed from the NAV series, not quoted from a factsheet.")
+  }), risk && /*#__PURE__*/React.createElement(MetricRow, {
+    label: "Volatility",
+    value: "".concat(risk.vol.toFixed(1), "%"),
+    note: "Annualised from weekly moves over the same ".concat(risk.months, " months.")
+  }), ((_p$ratios3 = p.ratios) === null || _p$ratios3 === void 0 ? void 0 : _p$ratios3.beta3) != null && /*#__PURE__*/React.createElement(MetricRow, {
+    label: "Beta (3Y)",
+    value: p.ratios.beta3.toFixed(2),
+    note: "Moves about ".concat(Math.abs(Math.round((1 - p.ratios.beta3) * 100)), "% ").concat(p.ratios.beta3 < 1 ? 'less' : 'more', " than ").concat(shortBench(i.benchmark || 'its benchmark'), ", up and down.")
+  }))), /*#__PURE__*/React.createElement(StepBlock, {
+    title: "The fund itself",
+    open: fold === 'about',
+    onToggle: f('about'),
+    summary: [i.manager && i.manager.split(',')[0], i.amc && shortHouse(i.amc)].filter(Boolean).join(' · ') || i.category
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'var(--space-8)'
+    }
+  }, factRows(i, p).map(function (r) {
+    return /*#__PURE__*/React.createElement(FigureRow, {
+      key: r.label,
+      label: r.label,
+      value: r.value
+    });
+  })), p.about && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "var(--space-12) 0 0",
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-muted)'
+    }
+  }, p.about.length > 420 ? "".concat(p.about.slice(0, 420).trim(), "\u2026") : p.about)), (held.length > 0 || p.pending) && /*#__PURE__*/React.createElement(StepBlock, {
     title: "On file",
     open: fold === 'file',
     onToggle: f('file'),
     summary: held.length ? "".concat(held.length, " of your clients hold this") : "".concat(p.pending.length, " fields not on file")
-  }, held.length > 0 && /*#__PURE__*/React.createElement("p", {
+  }, held.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
     style: {
       margin: 0,
       font: 'var(--type-body-font)',
       color: 'var(--color-ink)'
     }
-  }, "".concat(held.length, " of your clients already hold this \u2014 ").concat(held.join(' · '), ".")), p.pending && /*#__PURE__*/React.createElement("div", {
+  }, "".concat(held.length, " of your clients already hold this.")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 'var(--space-6)',
+      marginTop: 'var(--space-8)'
+    }
+  }, held.map(function (n) {
+    return /*#__PURE__*/React.createElement(ClientChip, {
+      key: n,
+      name: n,
+      avatar: /*#__PURE__*/React.createElement(ClientFace, {
+        name: n
+      })
+    });
+  }))), p.pending && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: held.length ? 'var(--space-12)' : 0
     }
@@ -7305,7 +7544,7 @@ var prettyField = function prettyField(f) {
 /* One sentence, assembled only from what is known — which is why it is built rather than templated.
    Every clause here is guarded; a fund with no category average simply does not get that clause. */
 function narrate(i) {
-  var _i$returns5, _p$ratios2;
+  var _i$returns5, _p$ratios4;
   var p = onePagerOf(i.id) || {};
   var name = cardFor(i).name;
   var bits = [];
@@ -7317,7 +7556,7 @@ function narrate(i) {
   if (house && !name.toLowerCase().startsWith(house.toLowerCase())) bits.push("from ".concat(house));
   var s = bits.join(' ') + '.';
   var y3 = (_i$returns5 = i.returns) === null || _i$returns5 === void 0 ? void 0 : _i$returns5.y3,
-    cat3 = (_p$ratios2 = p.ratios) === null || _p$ratios2 === void 0 ? void 0 : _p$ratios2.cat3;
+    cat3 = (_p$ratios4 = p.ratios) === null || _p$ratios4 === void 0 ? void 0 : _p$ratios4.cat3;
   if (y3 != null && cat3 != null) {
     var d = +(y3 - cat3).toFixed(2);
     s += " Over three years it did ".concat(pc(y3), " against its category's ").concat(pc(cat3), " \u2014 ").concat(Math.abs(d).toFixed(2), " points ").concat(d >= 0 ? 'ahead' : 'behind', ".");
@@ -7390,6 +7629,46 @@ function metricRows(i, p) {
 var shortBench = function shortBench(b) {
   return String(b).replace(/ Total Return Index$| TRI$| Index$/i, '');
 };
+var shortHouse = function shortHouse(a) {
+  return deShout(String(a).replace(/ (Asset Management|Mutual Fund|Investment Managers?|Co\.?|Ltd\.?|Limited|Pvt\.?|Private).*$/i, '').trim());
+};
+
+/* THE FIELDS AN ADVISOR IS ASKED FOR ON A CALL. Every one is guarded: a row appears only where the
+   catalogue has the value, so a bond's record is short and a fund's is long and neither prints a
+   dash. The owner's note was that the pager had lost the manager, the house, the ISIN and the rest —
+   they were never removed, they were never put in. */
+function factRows(i, p) {
+  var out = [];
+  var add = function add(label, value) {
+    if (value != null && value !== '') out.push({
+      label: label,
+      value: String(value)
+    });
+  };
+  add('Fund manager', i.manager);
+  add('House', i.amc ? shortHouse(i.amc) : null);
+  add('Benchmark', i.benchmark ? shortBench(i.benchmark) : null);
+  add('Structure', i.instrumentType);
+  add('NAV', i.price != null ? "".concat(rupees(i.price), " \xB7 ").concat(monthYear(i.priceDate) || 'undated') : null);
+  add('Fund size', crore(i.aum));
+  add('Expense ratio', i.ter != null ? "".concat(i.ter.toFixed(2), "%") : null);
+  add('Exit load', i.exitLoad ? i.exitLoad.replace(/ Percentage upto /, '% up to ') : null);
+  add('Lock-in', p.lockIn);
+  add('Liquidity', p.liquidity);
+  add('Coupon', p.coupon != null ? "".concat(p.coupon.toFixed(2), "%") : null);
+  add('Yield', p["yield"] != null ? "".concat((p["yield"] * 100).toFixed(2), "%") : null);
+  add('Face value', p.faceValue != null ? rupees(p.faceValue) : null);
+  add('Matures', monthYear(p.maturity));
+  add('Pays', p.payFrequency);
+  add('Dividend yield', p.dividendYield != null ? "".concat(p.dividendYield.toFixed(2), "%") : null);
+  if (p.fees && p.fees[0]) {
+    var f = p.fees[0];
+    add('Fee', [f.fixed != null ? "".concat(f.fixed, "% fixed") : null, f.perf ? "".concat(f.perf, "% performance over ").concat(f.hurdle || 0, "%") : null].filter(Boolean).join(' · '));
+    add('Minimum', f.min != null ? rupees(f.min) : null);
+  }
+  add('ISIN', i.isin);
+  return out;
+}
 
 /* ─── FACETS, DERIVED FROM THE ROWS IN FRONT OF THE ADVISOR ─────────────────────────────────────
    Not a fixed list of filters. A facet is offered only when the CURRENT result set can actually be
@@ -7402,17 +7681,17 @@ var shortBench = function shortBench(b) {
    groups are built from what the rows hold, and a group with fewer than two options is dropped — a
    filter with one choice filters nothing. */
 function bandOf(v, bands) {
-  var _iterator = _createForOfIteratorHelper(bands),
-    _step;
+  var _iterator2 = _createForOfIteratorHelper(bands),
+    _step2;
   try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var b = _step.value;
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var b = _step2.value;
       if (v >= b.lo && v < b.hi) return b;
     }
   } catch (err) {
-    _iterator.e(err);
+    _iterator2.e(err);
   } finally {
-    _iterator.f();
+    _iterator2.f();
   }
   return null;
 }
@@ -7468,8 +7747,10 @@ var RET_BANDS = [{
 /* Which band or value a row falls in, per facet. One function, so the group builder and the filter
    cannot disagree about what "Over ₹10,000 Cr" means. */
 var FACET_OF = {
+  /* Houses shout too — "SINGULARITY AMC LLP" — and a filter chip in block capitals beside "Kotak
+     Mahindra" reads as a different kind of thing rather than the same kind louder. */
   amc: function amc(i) {
-    return i.amc ? i.amc.replace(/ (Asset Management|Mutual Fund|Investment Managers?|Co\.?|Ltd\.?|Limited|Pvt\.?|Private).*$/i, '').trim() : null;
+    return i.amc ? deShout(i.amc.replace(/ (Asset Management|Mutual Fund|Investment Managers?|Co\.?|Ltd\.?|Limited|Pvt\.?|Private).*$/i, '').trim()) : null;
   },
   type: function type(i) {
     return i.instrumentType || null;
@@ -7515,24 +7796,24 @@ var FACET_META = [{
 }];
 function facetGroups(rows) {
   var groups = [];
-  var _iterator2 = _createForOfIteratorHelper(FACET_META),
-    _step2;
+  var _iterator3 = _createForOfIteratorHelper(FACET_META),
+    _step3;
   try {
     var _loop2 = function _loop2() {
-      var m = _step2.value;
+      var m = _step3.value;
       var counts = new Map();
-      var _iterator3 = _createForOfIteratorHelper(rows),
-        _step3;
+      var _iterator4 = _createForOfIteratorHelper(rows),
+        _step4;
       try {
-        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var i = _step3.value;
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var i = _step4.value;
           var k = FACET_OF[m.key](i);
           if (k) counts.set(k, (counts.get(k) || 0) + 1);
         }
       } catch (err) {
-        _iterator3.e(err);
+        _iterator4.e(err);
       } finally {
-        _iterator3.f();
+        _iterator4.f();
       }
       if (counts.size < 2) return 1; // continue
       var opts = m.order ? m.order.filter(function (b) {
@@ -7545,10 +7826,14 @@ function facetGroups(rows) {
         };
       }) : _toConsumableArray(counts.entries()).sort(function (a, b) {
         return b[1] - a[1] || a[0].localeCompare(b[0]);
-      }).slice(0, 8).map(function (_ref3) {
-        var _ref4 = _slicedToArray(_ref3, 2),
-          k = _ref4[0],
-          n = _ref4[1];
+      })
+      /* NO TRUNCATION. This used to `.slice(0, 8)`, which silently made every house past the
+         eighth unfilterable — and at fifteen thousand funds that is most of them. The sheet's own
+         group now takes the whole set, shows the most populous, says how many it is holding back,
+         and searches the rest. The screen's job is to hand over everything it knows. */.map(function (_ref5) {
+        var _ref6 = _slicedToArray(_ref5, 2),
+          k = _ref6[0],
+          n = _ref6[1];
         return {
           value: k,
           label: k,
@@ -7563,13 +7848,13 @@ function facetGroups(rows) {
         options: opts
       });
     };
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
       if (_loop2()) continue;
     }
   } catch (err) {
-    _iterator2.e(err);
+    _iterator3.e(err);
   } finally {
-    _iterator2.f();
+    _iterator3.f();
   }
   return groups;
 }
@@ -7632,7 +7917,13 @@ var ASK_STOP = new Set(['show', 'me', 'find', 'a', 'an', 'the', 'and', 'or', 'wi
 /* Qualifiers the BAND already names. "expense under 0.5%" is understood in full, and reporting
    "expense" as a word it could not place is the mirror of F-61: claiming it ignored something it
    acted on is as untrue as claiming it acted on something it ignored. */
-'expense', 'ratio', 'ter', 'cost', 'charge', 'charges', 'return', 'returns', 'size', 'aum', 'yield', 'coupon', 'year', 'years', 'yr', 'cr', 'crore', 'crores']);
+'expense', 'ratio', 'ter', 'cost', 'charge', 'charges', 'return', 'returns', 'size', 'aum', 'yield', 'coupon', 'year', 'years', 'yr', 'cr', 'crore', 'crores',
+/* THE WORDS THAT OPEN THIS SCREEN (23 Sep 2026). "What's available in debt" is the app router's own
+   browse trigger, and the explorer answered it with "Not used: what, available." — reporting as
+   ignored the exact phrase that brought the advisor here. It is F-61 in the other direction, and the
+   comment three lines up already says so: a note is only worth reading if what it claims is true.
+   None of these narrows anything, so none of them was ignored. */
+'what', 'whats', 'available', 'availability', 'browse', 'explore', 'shelf', 'everything', 'options', 'list', 'tell', 'see', 'there', 'offer', 'offers', 'have', 'else']);
 function parseAsk(raw) {
   var text = " ".concat(String(raw).toLowerCase().replace(/[^a-z0-9.%&₹ -]/g, ' ').replace(/\s+/g, ' '), " ");
   var left = text;
@@ -7658,11 +7949,11 @@ function parseAsk(raw) {
 
   /* Every phrase the catalogue knows, longest first. */
   var vocab = [];
-  var _iterator4 = _createForOfIteratorHelper(ASSETS),
-    _step4;
+  var _iterator5 = _createForOfIteratorHelper(ASSETS),
+    _step5;
   try {
-    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-      var a = _step4.value;
+    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+      var a = _step5.value;
       vocab.push({
         phrase: a.label.toLowerCase(),
         kind: 'asset',
@@ -7670,9 +7961,9 @@ function parseAsk(raw) {
       });
     }
   } catch (err) {
-    _iterator4.e(err);
+    _iterator5.e(err);
   } finally {
-    _iterator4.f();
+    _iterator5.f();
   }
   var assetWords = new Set(ASSETS.map(function (a) {
     return a.label.toLowerCase();
@@ -7680,21 +7971,21 @@ function parseAsk(raw) {
   var familyWords = new Set(FAMILIES.map(function (f) {
     return f.label.toLowerCase();
   }));
-  var _iterator5 = _createForOfIteratorHelper(FAMILIES),
-    _step5;
+  var _iterator6 = _createForOfIteratorHelper(FAMILIES),
+    _step6;
   try {
-    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-      var f = _step5.value;
+    for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+      var f = _step6.value;
       vocab.push({
         phrase: f.label.toLowerCase(),
         kind: 'family',
         value: f.key
       });
-      var _iterator7 = _createForOfIteratorHelper(f.subTypes),
-        _step7;
+      var _iterator8 = _createForOfIteratorHelper(f.subTypes),
+        _step8;
       try {
-        for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-          var st = _step7.value;
+        for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+          var st = _step8.value;
           vocab.push({
             phrase: st.label.toLowerCase(),
             kind: 'cat',
@@ -7719,15 +8010,15 @@ function parseAsk(raw) {
           }
         }
       } catch (err) {
-        _iterator7.e(err);
+        _iterator8.e(err);
       } finally {
-        _iterator7.f();
+        _iterator8.f();
       }
     }
   } catch (err) {
-    _iterator5.e(err);
+    _iterator6.e(err);
   } finally {
-    _iterator5.f();
+    _iterator6.f();
   }
   var _loop3 = function _loop3() {
     var _Object$entries$_i = _slicedToArray(_Object$entries[_i2], 2),
@@ -7753,11 +8044,11 @@ function parseAsk(raw) {
     _loop3();
   }
   var houses = _toConsumableArray(new Set(INSTRUMENTS.map(FACET_OF.amc).filter(Boolean)));
-  var _iterator6 = _createForOfIteratorHelper(houses),
-    _step6;
+  var _iterator7 = _createForOfIteratorHelper(houses),
+    _step7;
   try {
-    for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-      var h = _step6.value;
+    for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+      var h = _step7.value;
       vocab.push({
         phrase: h.toLowerCase(),
         kind: 'house',
@@ -7771,9 +8062,9 @@ function parseAsk(raw) {
       });
     }
   } catch (err) {
-    _iterator6.e(err);
+    _iterator7.e(err);
   } finally {
-    _iterator6.f();
+    _iterator7.f();
   }
   vocab.sort(function (a, b) {
     return b.phrase.length - a.phrase.length;
@@ -7894,12 +8185,12 @@ function askNote(parse, count) {
    IT SHOWS WHAT IS ON, not just that something is. A bare "Filters (3)" makes the advisor open the
    sheet to remember which three — the same complaint the research recorded about every screener it
    read. The chips ARE the state, and each one removes itself. */
-function FilterBar(_ref5) {
-  var q = _ref5.q,
-    onQ = _ref5.onQ,
-    chips = _ref5.chips,
-    onDrop = _ref5.onDrop,
-    count = _ref5.count;
+function FilterBar(_ref7) {
+  var q = _ref7.q,
+    onQ = _ref7.onQ,
+    chips = _ref7.chips,
+    onDrop = _ref7.onDrop,
+    count = _ref7.count;
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -7953,13 +8244,13 @@ function missing() {
     }
   }, "not on file");
 }
-function CompareBlock(_ref6) {
-  var ids = _ref6.ids,
-    onClear = _ref6.onClear,
-    onDrop = _ref6.onDrop,
-    onAdd = _ref6.onAdd,
-    _ref6$candidates = _ref6.candidates,
-    candidates = _ref6$candidates === void 0 ? [] : _ref6$candidates;
+function CompareBlock(_ref8) {
+  var ids = _ref8.ids,
+    onClear = _ref8.onClear,
+    onDrop = _ref8.onDrop,
+    onAdd = _ref8.onAdd,
+    _ref8$candidates = _ref8.candidates,
+    candidates = _ref8$candidates === void 0 ? [] : _ref8$candidates;
   var rows = ids.map(instrumentById).filter(Boolean);
   if (rows.length < 2) return null;
   var val = function val(fn) {
@@ -8013,8 +8304,8 @@ function CompareBlock(_ref6) {
   }, {
     label: 'Beta (3Y)',
     get: function get(i, p) {
-      var _p$ratios3;
-      return ((_p$ratios3 = p.ratios) === null || _p$ratios3 === void 0 ? void 0 : _p$ratios3.beta3) == null ? null : p.ratios.beta3.toFixed(2);
+      var _p$ratios5;
+      return ((_p$ratios5 = p.ratios) === null || _p$ratios5 === void 0 ? void 0 : _p$ratios5.beta3) == null ? null : p.ratios.beta3.toFixed(2);
     }
   }, {
     label: 'Benchmark',
@@ -8104,18 +8395,18 @@ function sharedOn(a, b, key) {
     return [h.name.toLowerCase(), h.pct];
   }));
   var sum = 0;
-  var _iterator8 = _createForOfIteratorHelper(A),
-    _step8;
+  var _iterator9 = _createForOfIteratorHelper(A),
+    _step9;
   try {
-    for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-      var h = _step8.value;
+    for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+      var h = _step9.value;
       var other = byName.get(h.name.toLowerCase());
       if (other != null) sum += Math.min(h.pct, other);
     }
   } catch (err) {
-    _iterator8.e(err);
+    _iterator9.e(err);
   } finally {
-    _iterator8.f();
+    _iterator9.f();
   }
   return +sum.toFixed(1);
 }
@@ -8154,12 +8445,12 @@ function sharedNames(ids, key) {
     return b.pct - a.pct;
   });
 }
-function OverlapBlock(_ref7) {
-  var ids = _ref7.ids,
-    onDrop = _ref7.onDrop,
-    onAdd = _ref7.onAdd,
-    _ref7$candidates = _ref7.candidates,
-    candidates = _ref7$candidates === void 0 ? [] : _ref7$candidates;
+function OverlapBlock(_ref9) {
+  var ids = _ref9.ids,
+    onDrop = _ref9.onDrop,
+    onAdd = _ref9.onAdd,
+    _ref9$candidates = _ref9.candidates,
+    candidates = _ref9$candidates === void 0 ? [] : _ref9$candidates;
   var rows = ids.map(instrumentById).filter(Boolean);
   var _useS9 = useS1('holdings'),
     _useS0 = _slicedToArray(_useS9, 2),
@@ -8261,27 +8552,45 @@ var STEP = {
   PRODUCT: 2,
   CATEGORY: 3
 };
-function Funnel(_ref8) {
-  var _ref8$startAssets = _ref8.startAssets,
-    startAssets = _ref8$startAssets === void 0 ? [] : _ref8$startAssets,
-    _ref8$startFamilies = _ref8.startFamilies,
-    startFamilies = _ref8$startFamilies === void 0 ? [] : _ref8$startFamilies,
-    _ref8$startCats = _ref8.startCats,
-    startCats = _ref8$startCats === void 0 ? [] : _ref8$startCats,
-    _ref8$startOpen = _ref8.startOpen,
-    startOpen = _ref8$startOpen === void 0 ? STEP.ASSET : _ref8$startOpen,
-    _ref8$startFundId = _ref8.startFundId,
-    startFundId = _ref8$startFundId === void 0 ? null : _ref8$startFundId,
-    _ref8$startQ = _ref8.startQ,
-    startQ = _ref8$startQ === void 0 ? '' : _ref8$startQ,
-    _ref8$startPicked = _ref8.startPicked,
-    startPicked = _ref8$startPicked === void 0 ? [] : _ref8$startPicked,
-    _ref8$startSheet = _ref8.startSheet,
-    startSheet = _ref8$startSheet === void 0 ? false : _ref8$startSheet,
-    _ref8$startShow = _ref8.startShow,
-    startShow = _ref8$startShow === void 0 ? null : _ref8$startShow,
-    _ref8$startAsked = _ref8.startAsked,
-    startAsked = _ref8$startAsked === void 0 ? null : _ref8$startAsked;
+
+/* THE EXPLORER IS A SURFACE, AND IN THE APP IT IS THE FOURTH ONE (23 Sep 2026). It draws its own
+   ScreenScaffold — status bar, app bar, composer, home indicator — because that is what it is. Mounted
+   as a TURN inside the prototype's thread it drew all four a second time: two status bars, two app bars
+   and two composers on one phone. So the app routes it through `ScreenStack` beside home, the rail and
+   the thread, and it takes the three props a surface in this product needs:
+
+     onMenu      the drawer. The standalone board has no drawer, so it defaults to nothing.
+     onNew       "back to home". Same two doors as every other screen; no back arrow is invented here.
+     onHandOff   what the app can do that the board cannot. `act()` stages a fund for a proposal or a
+                 rebalance; on the board that is where it ends, and the note says so. In the app,
+                 journeys D and E EXIST, so the honest thing is to open them with the fund carried —
+                 which is the same `carried` hand-off the fund journey already uses. */
+function Funnel(_ref0) {
+  var _ref0$startAssets = _ref0.startAssets,
+    startAssets = _ref0$startAssets === void 0 ? [] : _ref0$startAssets,
+    _ref0$startFamilies = _ref0.startFamilies,
+    startFamilies = _ref0$startFamilies === void 0 ? [] : _ref0$startFamilies,
+    _ref0$startCats = _ref0.startCats,
+    startCats = _ref0$startCats === void 0 ? [] : _ref0$startCats,
+    _ref0$startOpen = _ref0.startOpen,
+    startOpen = _ref0$startOpen === void 0 ? STEP.ASSET : _ref0$startOpen,
+    _ref0$startFundId = _ref0.startFundId,
+    startFundId = _ref0$startFundId === void 0 ? null : _ref0$startFundId,
+    _ref0$startQ = _ref0.startQ,
+    startQ = _ref0$startQ === void 0 ? '' : _ref0$startQ,
+    _ref0$startPicked = _ref0.startPicked,
+    startPicked = _ref0$startPicked === void 0 ? [] : _ref0$startPicked,
+    _ref0$startSheet = _ref0.startSheet,
+    startSheet = _ref0$startSheet === void 0 ? false : _ref0$startSheet,
+    _ref0$startShow = _ref0.startShow,
+    startShow = _ref0$startShow === void 0 ? null : _ref0$startShow,
+    _ref0$startAsked = _ref0.startAsked,
+    startAsked = _ref0$startAsked === void 0 ? null : _ref0$startAsked,
+    _ref0$startAsk = _ref0.startAsk,
+    startAsk = _ref0$startAsk === void 0 ? '' : _ref0$startAsk,
+    onMenu = _ref0.onMenu,
+    onNew = _ref0.onNew,
+    onHandOff = _ref0.onHandOff;
   var _useS11 = useS1(startOpen),
     _useS12 = _slicedToArray(_useS11, 2),
     open = _useS12[0],
@@ -8328,32 +8637,38 @@ function Funnel(_ref8) {
     _useS32 = _slicedToArray(_useS31, 2),
     show = _useS32[0],
     setShow = _useS32[1];
+  /* Bumped once, `--dur-enter` after a send, so the scaffold's anchor is computed on settled folds
+     rather than on folds that are still animating. See `send`. */
+  var _useS33 = useS1(0),
+    _useS34 = _slicedToArray(_useS33, 2),
+    settle = _useS34[0],
+    setSettle = _useS34[1];
   /* The composer's own state, and the LAST thing it was asked. One turn, not a log: a funnel that
      accumulates ten parse notes has stopped being a funnel and become a chat transcript with a list
      at the bottom. The note is replaced, and what it did is already visible in the steps above it. */
-  var _useS33 = useS1(''),
-    _useS34 = _slicedToArray(_useS33, 2),
-    ask = _useS34[0],
-    setAsk = _useS34[1];
-  var _useS35 = useS1([]),
+  var _useS35 = useS1(''),
     _useS36 = _slicedToArray(_useS35, 2),
-    shortlist = _useS36[0],
-    setShortlist = _useS36[1];
-  var _useS37 = useS1(null),
+    ask = _useS36[0],
+    setAsk = _useS36[1];
+  var _useS37 = useS1([]),
     _useS38 = _slicedToArray(_useS37, 2),
-    said = _useS38[0],
-    setSaid = _useS38[1];
+    shortlist = _useS38[0],
+    setShortlist = _useS38[1];
+  var _useS39 = useS1(null),
+    _useS40 = _slicedToArray(_useS39, 2),
+    said = _useS40[0],
+    setSaid = _useS40[1];
   /* The amount lives on the SCREEN, not on the card, so opening a second fund keeps the sum the
      advisor was working in. Changing it on one page changes it on the next, which is what a person
      comparing two funds at ten lakh actually wants. */
-  var _useS39 = useS1('10k'),
-    _useS40 = _slicedToArray(_useS39, 2),
-    amount = _useS40[0],
-    setAmount = _useS40[1];
-  var _useS41 = useS1(startAsked || null),
+  var _useS41 = useS1('10k'),
     _useS42 = _slicedToArray(_useS41, 2),
-    asked = _useS42[0],
-    setAsked = _useS42[1];
+    amount = _useS42[0],
+    setAmount = _useS42[1];
+  var _useS43 = useS1(startAsked || null),
+    _useS44 = _slicedToArray(_useS43, 2),
+    asked = _useS44[0],
+    setAsked = _useS44[1];
   /* WHEN A PAGE IS OPEN, THE THREAD RESTS ON IT. Without this the scaffold stayed at the top and the
      page the advisor just opened was below the fold — they tapped a card and nothing appeared to
      happen. Anchoring to the open card is not a navigation: the list is still there above it, and
@@ -8531,8 +8846,12 @@ function Funnel(_ref8) {
      "equity mutual funds" then "debt" means debt, which is what the words mean. Anything the parse
      did not place is left in the search box rather than dropped, so a fund name typed mid-sentence
      still does something. */
-  var send = function send() {
-    var text = ask.trim();
+  /* `send` takes the sentence rather than only reading the composer, so the ONE place that turns a
+     sentence into a funnel state can also be reached by the app, which routed the sentence here in the
+     first place. "What's available in debt" opens an explorer with Debt already chosen and the note
+     already written; parsing it a second time in the app would be the same logic in two files. */
+  var send = function send(raw) {
+    var text = String(raw === undefined ? ask : raw).trim();
     if (!text) return;
     var parse = parseAsk(text);
     /* A CATEGORY IMPLIES ITS FAMILY, AND A FAMILY ITS ASSET. "large cap funds from canara" names no
@@ -8582,7 +8901,33 @@ function Funnel(_ref8) {
     setFund(null);
     setShow(null);
     setAsk('');
+    /* AND RE-ANCHOR ONCE THE FOLDS HAVE FINISHED MOVING. Measured 23 Sep 2026 on the app: a sentence
+       routed here from Home opened the explorer, `send` collapsed step 1, and the scaffold measured the
+       note while that fold was still at its open height — 240ms of `grid-template-rows` later the
+       content above had shrunk by about two hundred points, the scroll position had not, and the note's
+       first line sat NINE POINTS above the top of the scroller, cut in half by the app bar. Typing the
+       same sentence on the board never showed it, because there nothing was mid-transition when the
+       measurement was taken.
+        Only after a send, never on an ordinary fold toggle: the scaffold re-anchors whenever `revision`
+       changes, and making every collapse re-anchor would yank the list under an advisor who only
+       wanted to close a step. The second pass is idempotent — it recomputes the same target from the
+       settled rects, so where the scroll was already clamped it stays exactly where it is. */
+    setTimeout(function () {
+      return setSettle(function (n2) {
+        return n2 + 1;
+      });
+    }, FOLD_SETTLE_MS);
   };
+
+  /* THE SENTENCE THAT OPENED THE SCREEN IS ITS FIRST ANSWER. The app routed "what's available in debt"
+     here; arriving at an empty funnel would make the advisor say it again. Once, on mount — a layout
+     effect so the first paint already carries the answer rather than flashing the empty state first. */
+  var seeded = React.useRef(false);
+  React.useLayoutEffect(function () {
+    if (seeded.current || !startAsk) return;
+    seeded.current = true;
+    send(startAsk);
+  }, [startAsk]);
 
   /* WHAT EACH ACTION ACTUALLY DOES. Compare and Shortlist change this screen; proposal and rebalance
      belong to journeys D and E and say so. Every one of them produces a SENTENCE built from this
@@ -8608,7 +8953,7 @@ function Funnel(_ref8) {
       }).length;
       bits.push("costs ".concat(inst.ter.toFixed(2), "%").concat(peers.length > 1 ? ", ".concat(cheaper === 0 ? 'the cheapest' : "".concat(cheaper, " cheaper"), " of the ").concat(peers.length, " in this category") : ''));
     }
-    var held = holdersOf(inst.id) || [];
+    var held = exHoldersOf(inst.id) || [];
     if (held.length) bits.push("".concat(held.length, " of your clients already hold it"));
     return bits.length ? "".concat(cardFor(inst).name, " \u2014 ").concat(bits.join('; '), ".") : "".concat(cardFor(inst).name, ". The catalogue carries no return, cost or holding for it, so there is nothing here to judge it on yet.");
   };
@@ -8641,12 +8986,21 @@ function Funnel(_ref8) {
       });
       return;
     }
-    /* A PROTOTYPE BOUNDARY, NAMED. These open journeys D and E, which this screen is not. Saying so
-       is the honest shape — a control that silently does nothing is the defect; a control that says
-       where it goes is a control. */
+    /* PROPOSAL AND REBALANCE ARE JOURNEYS D AND E, AND WHETHER THEY EXIST DEPENDS ON THE HOST.
+       In the app they do, so the fund is handed over and the journey opens carrying it — the same
+       `carried` hand-off the fund journey already makes, through the book fund this instrument maps
+       to. A fund the book has never held cannot be carried, and the note says that rather than opening
+       a journey about a fund the rail cannot name. On the standalone board neither journey is mounted,
+       so the boundary is named instead: a control that silently does nothing is the defect; a control
+       that says where it goes is a control. */
+    var book = bookFundFor(inst);
+    if (onHandOff && book) {
+      onHandOff(what, book.id, cardFor(inst).name);
+      return;
+    }
     setSaid({
       say: "".concat(cardFor(inst).name, " is staged for ").concat(what === 'proposal' ? 'a proposal' : 'a rebalance', "."),
-      body: "".concat(reason(inst), " The ").concat(what, " itself opens in its own journey \u2014 this screen stages the fund and hands it over.")
+      body: onHandOff ? "".concat(reason(inst), " The ").concat(what, " opens with a fund the book holds; this one is on the shelf and not in it, so there is nothing for the rail to carry.") : "".concat(reason(inst), " The ").concat(what, " itself opens in its own journey \u2014 this screen stages the fund and hands it over.")
     });
   };
   var resetAll = function resetAll() {
@@ -8665,13 +9019,18 @@ function Funnel(_ref8) {
     body: "thread",
     rest: "top",
     anchor: fund ? openRef : show ? showRef : asked ? askRef : 0,
-    revision: fund || show || asked && asked.text || 'list',
-    onMenu: function onMenu() {},
+    revision: "".concat(fund || show || asked && asked.text || 'list', "\xB7").concat(settle),
+    onMenu: onMenu,
+    onNew: onNew,
     composer: /*#__PURE__*/React.createElement(Composer, {
       value: ask,
       onChange: setAsk,
-      onSend: send,
-      placeholder: "Ask Sentinel \u2014 or name an asset, a product, a house",
+      onSend: send
+      /* MEASURED AT 375, WHICH IS THE PHONE (23 Sep 2026): "Ask Sentinel — or name an asset, a
+         product, a house" draws 324pt into a field with 317pt of room, so the hint that teaches the
+         composer drives the funnel was the one thing on the screen you could not finish reading.
+         This one is 256 and still names all three steps. */,
+      placeholder: "Ask, or name an asset, a product, a house",
       onAttach: function onAttach() {}
     }),
     overlay:
@@ -8718,10 +9077,10 @@ function Funnel(_ref8) {
       key: a.label,
       label: a.label,
       count: a.count,
-      mark: /*#__PURE__*/React.createElement(AssetMark, {
-        asset: a.label,
-        size: 52
+      mark: /*#__PURE__*/React.createElement(AssetArt, {
+        asset: a.label
       }),
+      markKind: "art",
       selected: assets.includes(a.label),
       onClick: function onClick() {
         return chooseAsset(a.label);
@@ -8759,10 +9118,10 @@ function Funnel(_ref8) {
       label: f.label,
       count: f.count,
       unit: "instruments",
-      mark: /*#__PURE__*/React.createElement(AssetMark, {
-        asset: f.assets[0],
-        size: 52
+      mark: /*#__PURE__*/React.createElement(AssetArt, {
+        asset: f.assets[0]
       }),
+      markKind: "art",
       selected: fams.includes(f.key),
       onClick: function onClick() {
         return chooseFam(f.key);
@@ -8845,14 +9204,31 @@ function Funnel(_ref8) {
       return setOpen(st.step);
     },
     onReset: resetAll,
-    action: /*#__PURE__*/React.createElement(Pill, {
-      label: chips.length ? "Filters \xB7 ".concat(chips.length) : 'Filters',
-      size: "sm",
-      selected: chips.length > 0,
+    action: /*#__PURE__*/React.createElement(Pressable, {
       onClick: function onClick() {
         return setSheet(true);
+      },
+      label: chips.length ? "Filters, ".concat(chips.length, " on") : 'Filters',
+      pressed: chips.length > 0,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'var(--space-4)',
+        height: 'var(--h-filter-chip)',
+        padding: "0 var(--space-8)",
+        borderRadius: 'var(--radius-full)',
+        background: chips.length ? 'var(--color-selected)' : 'var(--color-chip)',
+        boxShadow: "0 0 0 var(--border-1) ".concat(chips.length ? 'var(--color-bronze)' : 'var(--color-bubble-edge)')
       }
-    })
+    }, /*#__PURE__*/React.createElement(IconFilter, {
+      stroke: chips.length ? 'var(--color-bronze-deep)' : 'var(--color-bronze)'
+    }), chips.length > 0 && /*#__PURE__*/React.createElement("span", {
+      style: {
+        font: 'var(--type-caption-font)',
+        color: 'var(--color-bronze-deep)',
+        fontVariantNumeric: 'tabular-nums'
+      }
+    }, chips.length))
   }), /*#__PURE__*/React.createElement(FilterBar, {
     q: q,
     onQ: setQ,
@@ -9025,6 +9401,15 @@ function App_V1() {
     startOpen: 0,
     startFundId: "F00000PDT6"
   })), /*#__PURE__*/React.createElement(State, {
+    label: "ONE THE BOOK ALREADY KNOWS",
+    note: "The catalogue and the advisor's book have no shared key \u2014 the book calls this fund `quant-small` and the catalogue calls it F0GBR06SGW \u2014 so the clients block could never once have fired. Bridged by name, it can: R. Sharma holds this one, with a face rather than a letter."
+  }, /*#__PURE__*/React.createElement(Funnel, {
+    startAssets: ['Equity'],
+    startFamilies: ['mutual_fund'],
+    startCats: ['mutual_fund:small_cap'],
+    startOpen: 0,
+    startFundId: "F0GBR06SGW"
+  })), /*#__PURE__*/React.createElement(State, {
     label: "A DIFFERENT KIND OF THING",
     tone: "under",
     note: "A bond. No return, no series, no AUM \u2014 a coupon, a maturity and a face value. Same card, different facts, and not one em dash."
@@ -9082,11 +9467,10 @@ function App_V1() {
     title: "Narrowing, comparing, overlapping \u2014 none of them a screen",
     sub: "The sheet is a wider view of the filters the bar is already showing, so closing it changes nothing. Two checkboxes open the comparison in the same thread, under the list it was picked from."
   }, /*#__PURE__*/React.createElement(StateRow, null, /*#__PURE__*/React.createElement(State, {
-    label: "THE SHEET",
-    note: "Facets built from the rows in front of the advisor: a house with nothing left in it is not offered, and expense ratio does not appear at all unless mutual funds are in the set."
+    label: "THE SHEET, AND ITS CEILING",
+    note: "21 houses under Equity, past the eight a chip row can hold. It shows the most populous, SAYS how many it is holding back, and searches the whole set \u2014 the version before this silently dropped everything past the eighth, which at fifteen thousand funds is most of them."
   }, /*#__PURE__*/React.createElement(Funnel, {
     startAssets: ['Equity'],
-    startFamilies: ['mutual_fund'],
     startOpen: 0,
     startSheet: true
   })), /*#__PURE__*/React.createElement(State, {

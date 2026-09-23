@@ -1,5 +1,5 @@
-<!-- @dsCard group="Pages" viewport="1100x1500" name="IntentTile" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>IntentTile — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+<!-- @dsCard group="Pages" viewport="1000x1200" name="IconFilter" subtitle="There is more, that way" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>IconFilter — Sentinel</title><style>@font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDyx4fFg.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqD-R4fFg.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDFRkfFg.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
 @font-face{font-family:'Urbanist';src:url('https://fonts.gstatic.com/s/urbanist/v18/L0xjDF02iFML4hGCyOCpRdycFsGxSrqDLBkfFg.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap}
@@ -218,8 +218,9 @@ body{font-family:var(--font-ui);color:var(--color-ink);-webkit-font-smoothing:an
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="../ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
 <style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
-<body><script>(function(){var M={"../components/cards/IntentTile.d.ts":"import * as React from 'react';\n\nexport interface IntentTileProps {\n  /** What the filter set is called, in the advisor's words: \"Equity\", \"Maturing within 3 years\". */\n  label: string;\n  /** How many rows the set holds. Omit only when the number is genuinely unknown — a tile with no\n   *  count asks the advisor to tap and find out, which is the tap this component exists to save. */\n  count?: number | null;\n  /** What `count` counts. Defaults to 'funds'; a bond tile says 'bonds'. */\n  unit?: string;\n  /** One line under the count: what is inside the set. Not shown when `unavailable`. */\n  note?: string;\n  /** A silhouette drawn at 76px in the bottom-right corner, at 7% ink, clipped by the tile's own\n   *  radius. It is TEXTURE, never meaning: every tile states its class in words, so a tile with no\n   *  mark is not a tile missing information, and rule 1 — colour and shape never carry a meaning\n   *  alone — holds. Pass an `AssetMark`, or any 24-viewBox glyph sized up. */\n  mark?: React.ReactNode;\n  /** How the mark is drawn. `'texture'` (default) tints it in the accent at a tenth of an ink so it\n   *  never competes with the label — that is what the four `AssetMark` glyphs are for. `'art'` leaves\n   *  it at full strength and lets it carry its own colour, for a mark that IS the contrast rather\n   *  than a hint of it. Only the caller knows which it handed over, so only the caller can say. */\n  markKind?: 'texture' | 'art';\n  /** The set is the one currently applied. */\n  selected?: boolean;\n  /** No feed for this asset class yet. The tile stays visible and legible and loses only its\n   *  affordance — an advisor needs to know the class exists. Never render `count={0}` for this. */\n  unavailable?: boolean;\n  /** Why it is unavailable, in words. Defaults to a line that says a feed is missing rather than\n   *  implying the shelf is empty. */\n  unavailableNote?: string;\n  onClick?: () => void;\n}\n\n/**\n * A pre-filled filter set with a name and a count — the explorer's first screen as a sentence\n * rather than a form.\n *\n * Ten of the eleven guided paths in the Indian market are a separate surface from the screener;\n * GoldenPi's purpose tiles are the exception that lives inside it, and Centricity's own One Digital\n * does the same at asset level (\"Equity 612 funds\"). The count is load-bearing: option counts are\n * the highest-impact fix to a filter interface, and every funnel that worked carries one.\n *\n * `unavailable` is how an asset class with no feed appears — inert, legible, with the reason in\n * words. Never `count={0}`, which says the shelf is empty rather than that the feed is missing.\n */\nexport function IntentTile(props: IntentTileProps): JSX.Element;\n\nexport interface IntentGridProps {\n  children: React.ReactNode;\n  /** Tiles per row. Two at 375, which is the widest a label and a count sit on one line. */\n  cols?: number;\n}\n\n/** The grid the tiles sit in. Here rather than on each screen so the gap cannot drift between the\n *  three explorer variations. */\nexport function IntentGrid(props: IntentGridProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
+<body><script>(function(){var M={"../components/icons/IconFilter.d.ts":"import * as React from 'react';\n\nexport interface IconFilterProps {\n  /** Defaults to `--color-bronze`, which is what the rest of the set takes. */\n  stroke?: string;\n  /** Default 15 — the set's one size. */\n  size?: number;\n}\n\n/**\n * Three sliders, not a funnel.\n *\n * A funnel glyph is the common choice and it is wrong here: this product HAS a funnel — four\n * questions down the screen — and using its picture for the thing that narrows the result would name\n * two different mechanics with one shape. Sliders say \"adjust\", which is what the sheet does.\n */\nexport function IconFilter(props: IconFilterProps): JSX.Element;\n"};var E=[];var f=window.fetch.bind(window);window.fetch=function(u,o){var k=typeof u==='string'?u:String(u&&u.url||u);if(Object.prototype.hasOwnProperty.call(M,k)){var t=M[k];return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve(t)},json:function(){return Promise.resolve(JSON.parse(t))}})}if(E.indexOf(k)>=0)return Promise.resolve({ok:true,status:200,text:function(){return Promise.resolve('')}});return f(u,o)}})()</script><div id="root"></div>
 <script>"use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -889,171 +890,150 @@ Object.assign(window, {
 });</script>
 <script>"use strict";
 
-function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var _window$SentinelDesig = window.SentinelDesignSystem_0682a2,
-  IntentTile = _window$SentinelDesig.IntentTile,
-  IntentGrid = _window$SentinelDesig.IntentGrid;
-var TOK = ['--type-title-font', '--type-meta-font', '--type-caption-font', '--color-surface', '--color-selected', '--color-bronze', '--color-line', '--radius-16', '--h-touch', '--space-12'];
-function Live() {
-  var _React$useState = React.useState('equity'),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    on = _React$useState2[0],
-    setOn = _React$useState2[1];
-  return /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: on === 'equity',
-    onClick: function onClick() {
-      return setOn('equity');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    selected: on === 'debt',
-    onClick: function onClick() {
-      return setOn('debt');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Hybrid",
-    count: 216,
-    note: "Balanced advantage",
-    selected: on === 'hybrid',
-    onClick: function onClick() {
-      return setOn('hybrid');
-    }
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Index",
-    count: 463,
-    note: "Passive, lowest cost",
-    selected: on === 'index',
-    onClick: function onClick() {
-      return setOn('index');
-    }
-  }));
-}
+  IconFilter = _window$SentinelDesig.IconFilter,
+  IconChevronRight = _window$SentinelDesig.IconChevronRight,
+  IconPlus = _window$SentinelDesig.IconPlus,
+  Surface = _window$SentinelDesig.Surface,
+  Pressable = _window$SentinelDesig.Pressable;
+var TOK = ['--color-bronze', '--color-bronze-deep', '--color-surface', '--h-filter-chip', '--radius-full'];
 function App() {
   return /*#__PURE__*/React.createElement(PageShell, {
-    name: "IntentTile",
-    group: "Cards",
+    name: "IconFilter",
+    group: "Foundations",
     status: "shipped",
-    requires: ['IntentTile', 'IntentGrid'],
-    summary: "Eleven guided paths were found across the Indian market and ten of them are a SEPARATE surface from the screener \u2014 a quiz, a goal flow, a robo questionnaire. The eleventh, GoldenPi's purpose tiles, lives inside the explorer, and it is the only one an advisor can walk without leaving what they were doing. Centricity's own One Digital does the same at asset level: 'Choose your exposure \xB7 Equity 612 funds \xB7 Debt 448'. A tile is a pre-filled filter set with a name, so the first screen reads as a sentence and nobody meets an empty form."
+    requires: ['IconFilter'],
+    summary: "Three sliders, not a funnel. A funnel glyph is the common choice and it is wrong here: this product HAS a funnel \u2014 four questions down the screen \u2014 and using its picture for the thing that NARROWS the result would name two different mechanics with one shape. Sliders say \u201Cadjust\u201D, which is what the sheet does. Added 23 Sep 2026 because the fund explorer's filter control was the word \u201CFilters\u201D, which on a 343pt bar costs a third of the crumbs' room and says nothing the glyph does not."
   }, /*#__PURE__*/React.createElement(Block, {
     n: 1,
     title: "Specimen",
-    sub: "Live. Two to a row at 375, which is the widest a label and a count sit on one line. Tap to select."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(Live, null))), /*#__PURE__*/React.createElement(Block, {
+    sub: "15 viewBox, 1.5 stroke, round caps, --color-bronze \u2014 the set's own idiom, so it sits with the others rather than beside them."
+  }, /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'var(--space-20)'
+    }
+  }, /*#__PURE__*/React.createElement(IconFilter, null), /*#__PURE__*/React.createElement(IconChevronRight, null), /*#__PURE__*/React.createElement(IconPlus, null)))), /*#__PURE__*/React.createElement(Block, {
     n: 2,
-    title: "Anatomy",
-    sub: "Label, count, note. The count is not decoration \u2014 a tile without one asks the advisor to tap and find out, which is the tap this component exists to save."
-  }, /*#__PURE__*/React.createElement(Anatomy, {
-    width: 343,
-    top: "--type-title-font, ink \u2014 what the set is called",
-    left: "--radius-16, surface, 1px line",
-    right: "the count, tabular, bronze-deep",
-    bottom: "the note: one line on what is inside the set"
-  }, /*#__PURE__*/React.createElement(IntentGrid, {
-    cols: 1
-  }, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 3,
-    title: "Unavailable is a WORD, never a zero",
-    sub: "Four of the five asset classes Centricity sells have no rows in the book. A tile reading 'Bonds \xB7 0 funds' is a lie about an empty shelf rather than an admission of a missing feed \u2014 and the advisor still needs to know the class exists."
+    title: "Two rails, not three",
+    sub: "Drawn first with three rails and three knobs, then looked at: at 15px with a 1.5 stroke it read as a dense smudge rather than as sliders. Two rails with larger knobs keeps the idea at the size it is actually used."
   }, /*#__PURE__*/React.createElement(Grid, {
     cols: 2,
-    itemWidth: 311,
     items: [{
-      label: 'available',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Mutual funds",
-        count: 1739,
-        note: "Direct plans, on and off your shelf",
-        onClick: function onClick() {}
-      })),
-      note: 'A count and a note. Tappable.'
+      label: 'At 15 — where it lives',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(IconFilter, null)),
+      note: 'Two rails, two knobs, off-centre.'
     }, {
-      label: 'unavailable',
-      node: /*#__PURE__*/React.createElement(IntentGrid, {
-        cols: 1
-      }, /*#__PURE__*/React.createElement(IntentTile, {
-        label: "Bonds",
-        unavailable: true,
-        unavailableNote: "No feed yet \u2014 rating, yield and tenure are not on file."
+      label: 'At 48 — where it does not',
+      node: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(IconFilter, {
+        size: 48
       })),
-      note: 'Inert, not disabled (F-46, F-31): the label stays legible and only the affordance goes. The reason says which feed is missing.'
+      note: 'The same drawing, enlarged. Nothing here is tuned for this size.'
     }]
   })), /*#__PURE__*/React.createElement(Block, {
+    n: 3,
+    title: "Where it is used",
+    sub: "In the fund explorer's path bar, as a glyph and a COUNT. The count stays because \u201Chow many are on\u201D is the one thing an icon cannot say, and it is exactly what an advisor needs before they open the sheet."
+  }, /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'var(--space-12)'
+    }
+  }, /*#__PURE__*/React.createElement(Pressable, {
+    label: "Filters",
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'var(--space-4)',
+      height: 'var(--h-filter-chip)',
+      padding: "0 var(--space-8)",
+      borderRadius: 'var(--radius-full)',
+      background: 'var(--color-chip)',
+      boxShadow: '0 0 0 var(--border-1) var(--color-bubble-edge)'
+    }
+  }, /*#__PURE__*/React.createElement(IconFilter, null)), /*#__PURE__*/React.createElement(Pressable, {
+    label: "Filters, 3 on",
+    pressed: true,
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'var(--space-4)',
+      height: 'var(--h-filter-chip)',
+      padding: "0 var(--space-8)",
+      borderRadius: 'var(--radius-full)',
+      background: 'var(--color-selected)',
+      boxShadow: '0 0 0 var(--border-1) var(--color-bronze)'
+    }
+  }, /*#__PURE__*/React.createElement(IconFilter, {
+    stroke: "var(--color-bronze-deep)"
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      font: 'var(--type-caption-font)',
+      color: 'var(--color-bronze-deep)',
+      fontVariantNumeric: 'tabular-nums'
+    }
+  }, "3"))))), /*#__PURE__*/React.createElement(Block, {
     n: 4,
-    title: "Selected",
-    sub: "The sand fill and a bronze ring, which is how selection already reads in this system \u2014 the same pair RangePills and Pill use."
-  }, /*#__PURE__*/React.createElement(Specimen, {
-    width: 343
-  }, /*#__PURE__*/React.createElement(IntentGrid, null, /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Equity",
-    count: 612,
-    note: "Flexi, large, mid, small",
-    selected: true,
-    onClick: function onClick() {}
-  }), /*#__PURE__*/React.createElement(IntentTile, {
-    label: "Debt",
-    count: 448,
-    note: "Corporate, short duration",
-    onClick: function onClick() {}
-  })))), /*#__PURE__*/React.createElement(Block, {
-    n: 5,
     title: "Tokens"
   }, /*#__PURE__*/React.createElement(Tokens, {
     names: TOK
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 6,
+    n: 5,
     title: "Props"
   }, /*#__PURE__*/React.createElement(Props, {
-    src: "../components/cards/IntentTile.d.ts"
+    src: "../components/icons/IconFilter.d.ts"
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 7,
+    n: 6,
     title: "Do / Don't"
   }, /*#__PURE__*/React.createElement(DoDont, {
-    doNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Maturing within 3 years",
-      count: 84,
-      note: "Short duration and corporate bond",
-      onClick: function onClick() {}
-    })),
-    doCaption: "A named set with its count. GoldenPi's purpose tile: the advisor reads what they get before they tap.",
-    dontNode: /*#__PURE__*/React.createElement(IntentGrid, {
-      cols: 1
-    }, /*#__PURE__*/React.createElement(IntentTile, {
-      label: "Short duration",
-      onClick: function onClick() {}
-    })),
-    dontCaption: "A bare category name with no count and no note. It is a folder, not a filter set \u2014 the advisor has to tap it to learn anything."
+    doNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Pressable, {
+      label: "Filters, 3 on",
+      pressed: true,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'var(--space-4)',
+        height: 'var(--h-filter-chip)',
+        padding: "0 var(--space-8)",
+        borderRadius: 'var(--radius-full)',
+        background: 'var(--color-selected)',
+        boxShadow: '0 0 0 var(--border-1) var(--color-bronze)'
+      }
+    }, /*#__PURE__*/React.createElement(IconFilter, {
+      stroke: "var(--color-bronze-deep)"
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        font: 'var(--type-caption-font)',
+        color: 'var(--color-bronze-deep)'
+      }
+    }, "3"))),
+    doCaption: "The glyph carries the door and the figure carries the state. An accessible name says both, because a screen reader cannot see either.",
+    dontNode: /*#__PURE__*/React.createElement(Surface, null, /*#__PURE__*/React.createElement(Pressable, {
+      label: "Filters",
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        height: 'var(--h-filter-chip)',
+        padding: "0 var(--space-8)",
+        borderRadius: 'var(--radius-full)',
+        background: 'var(--color-selected)',
+        boxShadow: '0 0 0 var(--border-1) var(--color-bronze)'
+      }
+    }, /*#__PURE__*/React.createElement(IconFilter, {
+      stroke: "var(--color-bronze-deep)"
+    }))),
+    dontCaption: "Selected, with no count. The ring says something is on and refuses to say what or how much \u2014 which is the tap the count exists to save."
   })), /*#__PURE__*/React.createElement(Block, {
-    n: 8,
-    title: "Motion",
-    sub: "Press only. The tile does not animate in; it is the first thing on the screen."
+    n: 7,
+    title: "Motion"
   }, /*#__PURE__*/React.createElement(Motion, {
     rows: [{
-      name: 'Press',
-      property: 'transform: scale(--press-scale)',
-      duration: '--dur-press 150ms',
-      reduced: 'Pressable drops the scale and keeps the fill change.'
+      name: 'None',
+      property: 'The glyph does not animate. A filter icon that spins or tilts on open is motion spent on the door rather than on what is behind it',
+      duration: 'none',
+      reduced: 'Unchanged.'
     }]
   })));
 }

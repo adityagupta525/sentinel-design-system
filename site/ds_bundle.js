@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"FundCard","sourcePath":"components/cards/FundCard.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepBlock","sourcePath":"components/chat/StepBlock.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"MetricRow","sourcePath":"components/data/MetricRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"AssetMark","sourcePath":"components/icons/AssetMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PathBar","sourcePath":"components/shell/PathBar.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"FundCard","sourcePath":"components/cards/FundCard.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepBlock","sourcePath":"components/chat/StepBlock.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"MetricRow","sourcePath":"components/data/MetricRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"AssetMark","sourcePath":"components/icons/AssetMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconFilter","sourcePath":"components/icons/IconFilter.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PathBar","sourcePath":"components/shell/PathBar.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -77,6 +77,7 @@ var __ds_out = (() => {
     IconChevronRight: () => IconChevronRight,
     IconDownload: () => IconDownload,
     IconFile: () => IconFile,
+    IconFilter: () => IconFilter,
     IconInfo: () => IconInfo,
     IconMenu: () => IconMenu,
     IconPlus: () => IconPlus,
@@ -249,8 +250,8 @@ var __ds_out = (() => {
   }
 
   // design-system/components/actions/ClientChip.jsx
-  function ClientChip({ name, initial, onRemove, disabled = false }) {
-    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", height: "var(--h-chip-sm)", maxWidth: 200, alignItems: "center", gap: "var(--space-6)", borderRadius: "var(--radius-full)", background: "var(--color-chip)", boxShadow: "0 0 0 1px var(--color-line)", padding: onRemove ? "0 2px 0 4px" : "0 10px 0 4px", boxSizing: "border-box", opacity: disabled ? 0.4 : 1 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", background: "var(--surface-avatar)", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-10)", color: "var(--color-bronze-deep)" } }, initial || (name || "?").trim().charAt(0).toUpperCase()), /* @__PURE__ */ react_global_default.createElement("span", { style: { minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-ink)" } }, name), onRemove && /* @__PURE__ */ react_global_default.createElement(
+  function ClientChip({ name, initial, avatar, onRemove, disabled = false }) {
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", height: "var(--h-chip-sm)", maxWidth: 200, alignItems: "center", gap: "var(--space-6)", borderRadius: "var(--radius-full)", background: "var(--color-chip)", boxShadow: "0 0 0 1px var(--color-line)", padding: onRemove ? "0 2px 0 4px" : "0 10px 0 4px", boxSizing: "border-box", opacity: disabled ? 0.4 : 1 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-full)", overflow: "hidden", background: "var(--surface-avatar)", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-bold)", fontSize: "var(--text-10)", color: "var(--color-bronze-deep)" } }, avatar || initial || (name || "?").trim().charAt(0).toUpperCase()), /* @__PURE__ */ react_global_default.createElement("span", { style: { minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-12)", lineHeight: "var(--leading-16)", color: "var(--color-ink)" } }, name), onRemove && /* @__PURE__ */ react_global_default.createElement(
       "button",
       {
         type: "button",
@@ -1100,7 +1101,68 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement("div", { onClick: onClose, "aria-hidden": "true", style: { position: "absolute", inset: 0, zIndex: "var(--z-scrim)", background: "var(--scrim)", opacity: "var(--scrim-sheet)", animation: "ds-scrim var(--dur-screen) var(--ease) both" } }), /* @__PURE__ */ react_global_default.createElement("div", { ref, role: "dialog", "aria-modal": "true", "aria-label": title, tabIndex: -1, style: { position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 30, borderRadius: "24px 24px 0 0", background: "var(--color-surface)", padding: "12px 20px 28px", animation: "ds-sheet 300ms var(--ease) both" } }, /* @__PURE__ */ react_global_default.createElement("style", null, "@keyframes ds-sheet{from{transform:translateY(100%)}to{transform:none}}@media (prefers-reduced-motion:reduce){@keyframes ds-sheet{from{opacity:0;transform:none}to{opacity:1;transform:none}}}"), /* @__PURE__ */ react_global_default.createElement("div", { style: { margin: "0 auto 14px", height: 5, width: 44, borderRadius: "var(--radius-full)", background: "var(--color-line)" } }), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, ...{ font: "var(--type-sheet-title-font)", color: "var(--color-ink)" } } }, title), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: "var(--space-10)", display: "flex", flexDirection: "column", gap: "var(--space-10)" } }, body.map((p, i) => /* @__PURE__ */ react_global_default.createElement("p", { key: i, style: { margin: 0, ...{ fontFamily: "var(--font-ui)", fontWeight: "var(--weight-regular)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink-soft)" } } }, p))), /* @__PURE__ */ react_global_default.createElement("div", { style: { marginTop: 18 } }, /* @__PURE__ */ react_global_default.createElement(Pill, { label: "Got it", tone: "primary", onClick: onClose }))));
   }
 
+  // design-system/components/forms/SearchField.jsx
+  function SearchField({ value = "", onChange, placeholder = "Search 512 clients", onClear, autoFocus = false }) {
+    const [focus, setFocus] = react_global_default.useState(false);
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-8)", width: "100%", height: 44, borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "0 14px", boxSizing: "border-box", border: `1px solid ${focus ? "var(--color-bronze)" : "var(--color-line)"}`, boxShadow: focus ? "var(--focus-ring)" : "none", transition: "box-shadow var(--dur-press), border-color var(--dur-press)" } }, /* @__PURE__ */ react_global_default.createElement(
+      "input",
+      {
+        value,
+        autoFocus,
+        placeholder,
+        onChange: (e) => onChange && onChange(e.target.value),
+        onFocus: () => setFocus(true),
+        onBlur: () => setFocus(false),
+        style: { flex: 1, minWidth: 0, border: "none", background: "transparent", outline: "none", padding: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" },
+        className: "ds-search-input"
+      }
+    ), /* @__PURE__ */ react_global_default.createElement("style", null, ".ds-search-input::placeholder{color:var(--color-muted)}"), value ? /* @__PURE__ */ react_global_default.createElement(
+      "button",
+      {
+        type: "button",
+        onClick: () => {
+          onClear && onClear();
+          onChange && onChange("");
+        },
+        style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center", minHeight: 44, padding: "0 2px", font: "var(--type-meta-font)", color: "var(--color-muted)" }
+      },
+      "Clear"
+    ) : null);
+  }
+
   // design-system/components/cards/FilterSheet.jsx
+  var CHIP_CEILING = 8;
+  function Group({ g, isOn, toggle }) {
+    const [q, setQ] = react_global_default.useState("");
+    const all = g.options || [];
+    const big = g.searchable || all.length > CHIP_CEILING;
+    const needle = q.trim().toLowerCase();
+    const chosen = all.filter((o) => isOn(g, o));
+    const matched = needle ? all.filter((o) => o.label.toLowerCase().includes(needle)) : all;
+    const rest = matched.filter((o) => !isOn(g, o));
+    const shown = big && !needle ? chosen.concat(rest.slice(0, Math.max(CHIP_CEILING - chosen.length, 2))) : chosen.concat(rest);
+    const hidden = matched.length - shown.length;
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-16)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-label-font)", letterSpacing: "var(--tracking-eyebrow)", color: "var(--color-muted)", textTransform: "uppercase" } }, g.label), g.note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, g.note), big && /* @__PURE__ */ react_global_default.createElement("div", { style: { marginBottom: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement(
+      SearchField,
+      {
+        value: q,
+        onChange: setQ,
+        placeholder: `Search all ${all.length.toLocaleString("en-IN")}`,
+        onClear: () => setQ("")
+      }
+    )), /* @__PURE__ */ react_global_default.createElement("div", { role: "group", "aria-label": g.label, style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, shown.map((opt) => /* @__PURE__ */ react_global_default.createElement(
+      Pill,
+      {
+        key: opt.value,
+        tone: "filter",
+        size: "sm",
+        selected: isOn(g, opt),
+        disabled: opt.count === 0 || void 0,
+        label: opt.count == null ? opt.label : `${opt.label} (${opt.count.toLocaleString("en-IN")})`,
+        onClick: opt.count === 0 ? void 0 : () => toggle(g, opt)
+      }
+    ))), hidden > 0 && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-8) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)", fontVariantNumeric: "tabular-nums" } }, `${hidden.toLocaleString("en-IN")} more \u2014 search to reach ${hidden === 1 ? "it" : "them"}.`), needle && matched.length === 0 && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-8) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, `Nothing in ${g.label.toLowerCase()} matches \u201C${q}\u201D.`));
+  }
   function FilterSheet({
     open,
     title = "Filters",
@@ -1206,18 +1268,7 @@ var __ds_out = (() => {
           label: `${group.label}: ${opt.label}`,
           onClick: () => toggle(group, opt)
         }
-      ))), groups.map((g) => /* @__PURE__ */ react_global_default.createElement("div", { key: g.key, style: { marginBottom: "var(--space-16)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-label-font)", letterSpacing: "var(--tracking-eyebrow)", color: "var(--color-muted)", textTransform: "uppercase" } }, g.label), g.note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `0 0 var(--space-8)`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, g.note), /* @__PURE__ */ react_global_default.createElement("div", { role: "group", "aria-label": g.label, style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, (g.options || []).map((opt) => /* @__PURE__ */ react_global_default.createElement(
-        Pill,
-        {
-          key: opt.value,
-          tone: "filter",
-          size: "sm",
-          selected: isOn(g, opt),
-          disabled: opt.count === 0 || void 0,
-          label: opt.count == null ? opt.label : `${opt.label} (${opt.count.toLocaleString("en-IN")})`,
-          onClick: opt.count === 0 ? void 0 : () => toggle(g, opt)
-        }
-      )))))),
+      ))), groups.map((g) => /* @__PURE__ */ react_global_default.createElement(Group, { key: g.key, g, isOn, toggle }))),
       /* @__PURE__ */ react_global_default.createElement("div", { style: { flexShrink: 0, display: "flex", flexDirection: "column", gap: "var(--space-8)", padding: `var(--space-12) var(--space-20) var(--space-20)` } }, /* @__PURE__ */ react_global_default.createElement(DarkButton, { full: true, label: commit, onClick: onApply }))
     ));
   }
@@ -1330,7 +1381,14 @@ var __ds_out = (() => {
       gridTemplateRows: open ? "1fr" : "0fr",
       transition: "grid-template-rows var(--dur-enter) var(--ease)"
     } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
-      padding: `0 var(--space-14) var(--space-14)`,
+      /* THE PANEL CLIPS, SO ITS CONTENT NEEDS ROOM TO BE CLIPPED AROUND. `overflow:hidden` is
+         what makes `0fr → 1fr` animate, and a `box-shadow: 0 0 0 1px` ring renders OUTSIDE the
+         element's border-box — so a tile, chip or card sitting flush at the top of this panel
+         had its top stroke sliced off. The owner saw it on the asset tiles, the product tiles
+         and the category pills, and it was the same one line of padding in all three. 4pt, not
+         1: a focus ring is 2px of outline at 2px offset, and an outline clipped by its own
+         container is an accessibility defect wearing a cosmetic one. */
+      padding: `var(--space-4) var(--space-14) var(--space-14)`,
       opacity: open ? 1 : 0,
       transition: "opacity var(--dur-fast) var(--ease)"
     } }, children))));
@@ -1519,6 +1577,7 @@ var __ds_out = (() => {
     unit = "funds",
     note,
     mark,
+    markKind = "texture",
     selected = false,
     unavailable = false,
     unavailableNote,
@@ -1553,11 +1612,11 @@ var __ds_out = (() => {
       },
       mark && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
         position: "absolute",
-        right: "var(--space-12)",
-        bottom: "var(--space-10)",
+        right: "var(--space-10)",
+        bottom: "var(--space-8)",
         pointerEvents: "none",
         color: "var(--color-bronze-deep)",
-        opacity: unavailable ? 0.06 : selected ? 0.18 : 0.11,
+        opacity: markKind === "art" ? unavailable ? 0.35 : 1 : unavailable ? 0.06 : selected ? 0.18 : 0.11,
         transition: "opacity var(--dur-fast) var(--ease)",
         display: "grid",
         placeItems: "center"
@@ -2099,7 +2158,14 @@ var __ds_out = (() => {
       gridTemplateRows: open ? "1fr" : "0fr",
       transition: "grid-template-rows var(--dur-enter) var(--ease)"
     } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
-      padding: `0 var(--space-12) var(--space-12)`,
+      /* THE PANEL CLIPS, SO ITS CONTENT NEEDS ROOM TO BE CLIPPED AROUND. `overflow:hidden` is
+         what makes `0fr → 1fr` animate, and a `box-shadow: 0 0 0 1px` ring renders OUTSIDE the
+         element's border-box — so a tile, chip or card sitting flush at the top of this panel
+         had its top stroke sliced off. The owner saw it on the asset tiles, the product tiles
+         and the category pills, and it was the same one line of padding in all three. 4pt, not
+         1: a focus ring is 2px of outline at 2px offset, and an outline clipped by its own
+         container is an accessibility defect wearing a cosmetic one. */
+      padding: `var(--space-4) var(--space-12) var(--space-12)`,
       opacity: open ? 1 : 0,
       transition: "opacity var(--dur-fast) var(--ease)"
     } }, children))));
@@ -2543,7 +2609,14 @@ var __ds_out = (() => {
       gridTemplateRows: open ? "1fr" : "0fr",
       transition: "grid-template-rows var(--dur-enter) var(--ease)"
     } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
-      paddingBottom: "var(--space-12)",
+      /* THE PANEL CLIPS, SO ITS CONTENT NEEDS ROOM TO BE CLIPPED AROUND. `overflow:hidden` is
+         what makes `0fr → 1fr` animate, and a `box-shadow: 0 0 0 1px` ring renders OUTSIDE the
+         element's border-box — so a tile, chip or card sitting flush at the top of this panel
+         had its top stroke sliced off. The owner saw it on the asset tiles, the product tiles
+         and the category pills, and it was the same one line of padding in all three. 4pt, not
+         1: a focus ring is 2px of outline at 2px offset, and an outline clipped by its own
+         container is an accessibility defect wearing a cosmetic one. */
+      padding: `var(--space-4) 0 var(--space-12)`,
       display: "flex",
       flexDirection: "column",
       gap: "var(--space-8)",
@@ -2724,35 +2797,6 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("svg", { width, height, viewBox: `0 0 ${width} ${height}`, fill: "none", style: { display: "block", marginTop: "var(--space-2)" } }, /* @__PURE__ */ react_global_default.createElement("path", { d: `M ${d}`, stroke: "var(--color-bronze-deep)", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }));
   }
 
-  // design-system/components/forms/SearchField.jsx
-  function SearchField({ value = "", onChange, placeholder = "Search 512 clients", onClear, autoFocus = false }) {
-    const [focus, setFocus] = react_global_default.useState(false);
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-8)", width: "100%", height: 44, borderRadius: "var(--radius-20)", background: "var(--color-surface)", padding: "0 14px", boxSizing: "border-box", border: `1px solid ${focus ? "var(--color-bronze)" : "var(--color-line)"}`, boxShadow: focus ? "var(--focus-ring)" : "none", transition: "box-shadow var(--dur-press), border-color var(--dur-press)" } }, /* @__PURE__ */ react_global_default.createElement(
-      "input",
-      {
-        value,
-        autoFocus,
-        placeholder,
-        onChange: (e) => onChange && onChange(e.target.value),
-        onFocus: () => setFocus(true),
-        onBlur: () => setFocus(false),
-        style: { flex: 1, minWidth: 0, border: "none", background: "transparent", outline: "none", padding: 0, fontFamily: "var(--font-ui)", fontWeight: "var(--weight-medium)", fontSize: "var(--text-14)", lineHeight: "var(--leading-20)", color: "var(--color-ink)" },
-        className: "ds-search-input"
-      }
-    ), /* @__PURE__ */ react_global_default.createElement("style", null, ".ds-search-input::placeholder{color:var(--color-muted)}"), value ? /* @__PURE__ */ react_global_default.createElement(
-      "button",
-      {
-        type: "button",
-        onClick: () => {
-          onClear && onClear();
-          onChange && onChange("");
-        },
-        style: { appearance: "none", border: "none", background: "transparent", cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center", minHeight: 44, padding: "0 2px", font: "var(--type-meta-font)", color: "var(--color-muted)" }
-      },
-      "Clear"
-    ) : null);
-  }
-
   // design-system/components/icons/AssetMark.jsx
   var BOX = { display: "block" };
   function Svg({ size, children, label }) {
@@ -2802,6 +2846,11 @@ var __ds_out = (() => {
   // design-system/components/icons/IconDownload.jsx
   function IconDownload({ stroke = "var(--color-bronze-deep)", size = 20 }) {
     return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", alignItems: "center", justifyContent: "center", width: size, height: size, flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "m7 10 5 5 5-5" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M12 15V3" })));
+  }
+
+  // design-system/components/icons/IconFilter.jsx
+  function IconFilter({ stroke = "var(--color-bronze)", size = 15 }) {
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "inline-flex", alignItems: "center", justifyContent: "center", width: size, height: size, flexShrink: 0 } }, /* @__PURE__ */ react_global_default.createElement("svg", { width: Math.round(size * 0.8), height: Math.round(size * 0.8), viewBox: "0 0 15 15", fill: "none", preserveAspectRatio: "xMidYMid meet" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M2.25 5.25h10.5M2.25 10.125h10.5", stroke, strokeWidth: "1.5", strokeLinecap: "round" }), /* @__PURE__ */ react_global_default.createElement("circle", { cx: "9.9", cy: "5.25", r: "2", fill: "var(--color-surface)", stroke, strokeWidth: "1.5" }), /* @__PURE__ */ react_global_default.createElement("circle", { cx: "5.1", cy: "10.125", r: "2", fill: "var(--color-surface)", stroke, strokeWidth: "1.5" })));
   }
 
   // design-system/components/icons/IconMenu.jsx

@@ -76,6 +76,8 @@ for (const f of await readdir(join(ROOT, 'design-system/pages'))) {
   if (f.endsWith('.html') || f.endsWith('.jsx')) await copyText(`design-system/pages/${f}`, `pages/${f}`);
 }
 for (const f of await readdir(join(ROOT, 'design-system/guidelines'))) await copyText(`design-system/guidelines/${f}`, `guidelines/${f}`);
+/* The contracts are staged so the precompile step can inline each one into the page that fetches it;
+   the 111 separate copies are then folded into a single `contracts.d.ts` further down. */
 for (const p of await walk(join(ROOT, 'design-system/components'), (p) => p.endsWith('.d.ts'))) {
   await copyText(relative(ROOT, p), relative(join(ROOT, 'design-system'), p));
 }
@@ -158,6 +160,31 @@ console.log(`precompiled ${tags} JSX blocks across ${pagesTouched} pages — no 
 let dropped = 0;
 for (const p of await walk(OUT, (p) => p.endsWith('.jsx'))) { await rm(p); dropped += 1; }
 console.log(`dropped ${dropped} compiled-in .jsx sources from the staging`);
+
+/* THE CONTRACTS, FOLDED INTO ONE DOCUMENT (23 Sep 2026) — and this runs HERE, after the inline step,
+   for the reason the .jsx drop does. At 111 components the per-component `.d.ts` took 111 of the
+   artifact's 255 slots and the staging reached 276, which is unpublishable; the header at the top of
+   this file predicted exactly that. Folding them costs one slot and loses nothing, because each page
+   already carries its own contract: the step above inlines the file the page fetches.
+
+   Doing it BEFORE that step was tried and looked fine — `check:artifact` still reported 142 of 142
+   links resolving and mounting, because the page renders around a failed fetch. Serving the staged
+   folder and opening one showed the truth: `404 components/actions/AnswerChip.d.ts`, and the count
+   of inlined files had quietly fallen from 112 to 1. A gate that passes on a page missing its
+   contract is a gate measuring the wrong thing; looking at it is what found it. */
+const contracts = [];
+for (const p of await walk(OUT, (p) => p.endsWith('.d.ts'))) {
+  contracts.push(`/* ${'='.repeat(94)}\n   ${relative(OUT, p)}\n   ${'='.repeat(94)} */\n\n${await readFile(p, 'utf8')}`);
+  await rm(p);
+}
+await writeFile(join(OUT, 'contracts.d.ts'),
+  `/* EVERY COMPONENT CONTRACT IN THE SENTINEL DESIGN SYSTEM — ${contracts.length} of them, in one file.\n`
+  + `   Each is the hand-written .d.ts that ships beside its .jsx, and the doc comments carry the\n`
+  + `   reasoning, which is the half of this system a rendered page cannot show you. Every component's\n`
+  + `   own page already has its contract inlined; this is the copy you can read end to end. In the\n`
+  + `   repository they are separate files at design-system/components/<group>/<Name>.d.ts. */\n\n`
+  + contracts.join('\n\n'));
+console.log(`folded ${contracts.length} contracts into contracts.d.ts — each page already carries its own`);
 console.log(`inlined ${cached} fetched files, so a downloaded folder opens without a server`);
 
 /* THE COVER IS WRITTEN LAST, because this script starts by deleting `artifact/` — the first run

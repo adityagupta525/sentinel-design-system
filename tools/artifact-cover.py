@@ -30,6 +30,10 @@ JOURNEYS = [
  ('F','Review','What does this client hold, and what can I not say about it?','screens/journey-f/review.html','A record that asks what it is for, and names the figure it will not give.'),
 ]
 OTHER = [
+ # THE EXPLORER WAS ON NO CARD (23 Sep 2026) — the newest and largest surface in the product, three
+ # variations and an 80-instrument catalogue, and the cover linked none of it. A board that documents
+ # the system while omitting a surface of it is a board that is quietly out of date.
+ ('The fund explorer','Browse the shelf: four questions on one screen, three variations','screens/explorer/prototype.html'),
  ('The ledger','What was placed, and what has not settled','screens/thread/ledger.html'),
  ('What it refuses','Five refusals, each naming what it can do instead','screens/thread/refusals.html'),
  ('Going back','Editing a question that has already been answered','screens/thread/going-back.html'),
@@ -70,6 +74,15 @@ def card(href, kicker, title, note, big=False):
     </a>'''
 
 total = sum(len(v) for v in g.values())
+# The page count was typed in as 144 and went stale the moment a page was added; it is 166 today.
+# Counted from disk, from the same two trees check-previews walks, so the cover cannot overstate it —
+# which is the reason the comment at the top of this file gives for reading _index.json rather than
+# a snapshot of it. The same rule, applied to the other number on the same line.
+# The two trees are design-system/ and screens/ WHOLE — not design-system/pages/ — and thumbnail.html
+# is skipped, because that is exactly what tools/check-previews.mjs walks. Narrowing it to pages/
+# gave 135, which would be a cover understating its own work by thirty-one pages.
+pages_rendered = sum(1 for b in ('design-system', 'screens')
+                     for f in pathlib.Path(b).rglob('*.html') if f.name != 'thumbnail.html')
 comp_sections = []
 for k in ORDER:
     rows = sorted(g.get(k, []), key=lambda r: r['n'])
@@ -86,7 +99,7 @@ for k in ORDER:
 
 doc = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Sentinel</title>
+<title>Sentinel design system</title>
 <link rel="stylesheet" href="styles.css">
 <style>
   :root {{ color-scheme: light; }}
@@ -189,7 +202,7 @@ the token files, so the documented numbers cannot drift from the real ones.</p>
   every figure comes from one fixture that is labelled as one on every screen that reads it. What this
   is, is the product's design made executable, so that what gets built can be checked against it rather
   than described.</p>
-  <p>{total} components, every one specified · 144 pages rendering clean · six journeys · one prototype.</p>
+  <p>{total} components, every one specified · {pages_rendered} pages rendering clean · six journeys · one prototype.</p>
 </footer>
 
 </div></body></html>'''
