@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"FundCard","sourcePath":"components/cards/FundCard.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepBlock","sourcePath":"components/chat/StepBlock.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"MetricRow","sourcePath":"components/data/MetricRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"AssetMark","sourcePath":"components/icons/AssetMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"FundCard","sourcePath":"components/cards/FundCard.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepBlock","sourcePath":"components/chat/StepBlock.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"MetricRow","sourcePath":"components/data/MetricRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"AssetMark","sourcePath":"components/icons/AssetMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PathBar","sourcePath":"components/shell/PathBar.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -104,6 +104,7 @@ var __ds_out = (() => {
     OverlapView: () => OverlapView,
     PLOT: () => PLOT,
     ParseNote: () => ParseNote,
+    PathBar: () => PathBar,
     PeerLine: () => PeerLine,
     PhoneFrame: () => PhoneFrame,
     Pill: () => Pill,
@@ -3126,6 +3127,96 @@ var __ds_out = (() => {
       installReducedMotion();
     }, []);
     return null;
+  }
+
+  // design-system/components/shell/PathBar.jsx
+  var NUM6 = { fontVariantNumeric: "tabular-nums" };
+  function PathBar({ steps = [], onStep, onReset, action, sticky = true }) {
+    const shown = steps.length > 2 ? steps.slice(-2) : steps;
+    const hidden = steps.length - shown.length;
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: {
+      position: sticky ? "sticky" : "relative",
+      top: 0,
+      zIndex: "var(--z-sticky)",
+      margin: `0 calc(-1 * var(--gutter))`,
+      padding: `var(--space-6) var(--gutter)`,
+      background: "var(--color-canvas)",
+      boxShadow: "inset 0 -1px 0 0 var(--color-line-soft)",
+      display: "flex",
+      alignItems: "center",
+      gap: "var(--space-8)",
+      minHeight: 36
+    } }, /* @__PURE__ */ react_global_default.createElement(
+      "nav",
+      {
+        "aria-label": "Where you are",
+        style: { flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: "var(--space-4)", overflow: "hidden" }
+      },
+      hidden > 0 && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, /* @__PURE__ */ react_global_default.createElement(
+        Pressable,
+        {
+          onClick: () => onStep && onStep(steps[0], 0),
+          label: `Back to ${steps[0].label}`,
+          style: { flex: "0 0 auto", padding: `0 var(--space-4)`, background: "transparent", font: "var(--type-caption-font)", color: "var(--color-muted)" }
+        },
+        "\u2026"
+      ), /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { color: "var(--color-line)", flex: "0 0 auto" } }, "\u203A")),
+      shown.map((s, n) => {
+        const idx = hidden + n;
+        const isLast = idx === steps.length - 1;
+        return /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, { key: s.key || s.label }, n > 0 && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { color: "var(--color-line)", flex: "0 0 auto" } }, "\u203A"), isLast ? (
+          /* The step you are in. Not a control — tapping where you already are is the thing
+             every breadcrumb gets wrong, and a control that does nothing is worse than none. */
+          /* @__PURE__ */ react_global_default.createElement("span", { style: {
+            font: "var(--type-caption-font)",
+            color: "var(--color-ink)",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            minWidth: 0
+          } }, s.label)
+        ) : /* @__PURE__ */ react_global_default.createElement(
+          Pressable,
+          {
+            onClick: () => onStep && onStep(s, idx),
+            label: `Change ${s.label}`,
+            style: {
+              /* An earlier crumb is capped; the LAST one takes whatever is left. The step you
+                 are in is the one that has to be readable. */
+              flex: "0 1 auto",
+              minWidth: 0,
+              maxWidth: 96,
+              padding: `2px var(--space-6)`,
+              background: "transparent",
+              borderRadius: "var(--radius-full)",
+              font: "var(--type-caption-font)",
+              color: "var(--color-bronze-deep)",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis"
+            }
+          },
+          s.label
+        ));
+      }),
+      steps.length === 0 && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, "Nothing chosen yet")
+    ), action, steps.length > 0 && onReset && /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: onReset,
+        label: "Start again",
+        style: {
+          flex: "0 0 auto",
+          padding: `2px var(--space-8)`,
+          background: "transparent",
+          font: "var(--type-caption-font)",
+          color: "var(--color-muted)",
+          whiteSpace: "nowrap",
+          ...NUM6
+        }
+      },
+      "Reset"
+    ));
   }
 
   // design-system/components/shell/PhoneFrame.jsx

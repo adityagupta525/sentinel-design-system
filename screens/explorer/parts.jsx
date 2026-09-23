@@ -20,7 +20,7 @@ const {
   ListRow, OverlapView, PeerLine, Pill, Pressable, Provenance, RangePills, RejectCallout, ScreenScaffold,
   SearchField, SectionStrip, SegmentedRow, SelectionMark, SentinelBlock, SentinelText, ShortlistCard,
   StandingDisclosure, StatTile, Surface, UserBubble,
-  AssetMark, FundCard, MetricList, MetricRow, StepBlock, StepStack
+  AssetMark, FundCard, MetricList, MetricRow, StepBlock, StepStack, ChartLegend, ChartReadout, ChartShare, PathBar
 } = EX_DS;
 
 const holdersOf = (fundId) => CLIENTS.filter((c) =>
@@ -160,6 +160,6 @@ Object.assign(window, {
   ListRow, OverlapView, PeerLine, Pill, Pressable, Provenance, RangePills, RejectCallout, ScreenScaffold,
   SearchField, SectionStrip, SegmentedRow, SelectionMark, SentinelBlock, SentinelText, ShortlistCard,
   StandingDisclosure, StatTile, Surface, UserBubble,
-  AssetMark, FundCard, MetricList, MetricRow, StepBlock, StepStack,
+  AssetMark, FundCard, MetricList, MetricRow, StepBlock, StepStack, ChartLegend, ChartReadout, ChartShare, PathBar,
   holdersOf, FundRow, explorerProvenance, applyFilters, countFor, filterGroups, filterLabels, matches, ASSET_TILES,
 });

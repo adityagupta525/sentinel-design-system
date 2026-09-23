@@ -30,6 +30,7 @@ export { Drawer } from './components/shell/Drawer.jsx';
 export { ExplorerSheet } from './components/shell/ExplorerSheet.jsx';
 export { HomeIndicator } from './components/shell/HomeIndicator.jsx';
 export { MOTION_CSS, REDUCED_MOTION_CSS, installReducedMotion, MotionGuard } from './components/shell/MotionGuard.jsx';
+export { PathBar } from './components/shell/PathBar.jsx';
 export { PhoneFrame } from './components/shell/PhoneFrame.jsx';
 export { ScreenBackdrop } from './components/shell/ScreenBackdrop.jsx';
 export { ScreenScaffold } from './components/shell/ScreenScaffold.jsx';

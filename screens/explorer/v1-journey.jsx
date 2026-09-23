@@ -158,20 +158,53 @@ function OnePager({ i, onAct }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-12)', paddingTop: 'var(--space-8)', borderTop: 'var(--border-hairline) solid var(--color-line)' }}>
       <SentinelText text={narrate(i)} />
 
+      {/* THE CURVE IS ONE SERIES, AND THE BENCHMARK IS A ROW UNDER IT.
+
+          The first build put both in `ChartLine` and the owner's note was that the two lines read as
+          one — same weight, same colour, no difference. He was right, and the fix is not to restyle
+          the chart: this system's own components already say the comparison better than a second
+          line can. `ChartLine` is drawn for ONE series with an area fill (its spec page shows exactly
+          that, and the fill is what makes the shape read); a second series is dashed, muted and
+          drawn behind, which at 53 points of real NAV is two scribbles on top of each other.
+
+          So the curve is the fund alone, and the benchmark is a `Dumbbell` — the component this
+          system already has for "two measurements of different things, and neither becomes the
+          other". It states the gap as a distance the eye measures in one look, which is the actual
+          question, instead of asking the reader to separate two lines. */}
       {nav && (
         <div>
-          <Eyebrow>{bench ? `AGAINST ${(i.benchmark || 'ITS BENCHMARK').toUpperCase()}` : 'HOW IT MOVED'}</Eyebrow>
+          <Eyebrow>WHAT ₹100 BECAME</Eyebrow>
           <div style={{ marginTop: 'var(--space-8)' }}>
-            <ChartLine
-              series={[{ label: 'This fund', points: nav }].concat(bench ? [{ label: 'Benchmark', points: bench, tone: 'muted' }] : [])}
+            <ChartReadout label={p.nav[p.nav.length - 1][0] ? monthYear(p.nav[p.nav.length - 1][0]) : 'Latest'}
+              value={String(Math.round(nav[nav.length - 1].y))} idleNote="rebased from 100" />
+          </div>
+          <div style={{ marginTop: 'var(--space-4)' }}>
+            <ChartLine series={[{ label: 'This fund', points: nav }]}
               density="expanded" width={311}
               valueFormat={(v) => `${v.toFixed(0)}`}
               xFormat={(x) => (p.nav[x] ? monthYear(p.nav[x][0]) : '')} />
           </div>
+          {bench && (
+            <div style={{ marginTop: 'var(--space-12)' }}>
+              <Dumbbell relation="against" label={`Against ${shortBench(i.benchmark || 'its benchmark')}`}
+                actual={Math.round(nav[nav.length - 1].y)} actualLabel="This fund"
+                target={Math.round(bench[bench.length - 1].y)} targetLabel={shortBench(i.benchmark || 'Benchmark')}
+                min={Math.min(90, Math.round(nav[nav.length - 1].y) - 5, Math.round(bench[bench.length - 1].y) - 5)}
+                max={Math.max(115, Math.round(nav[nav.length - 1].y) + 5, Math.round(bench[bench.length - 1].y) + 5)} />
+            </div>
+          )}
           <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
-            Both rebased to 100 at the start of the window, so the two are comparable.
+            Both started at 100 on {monthYear(p.nav[0][0])}, so the two figures are comparable.
           </p>
         </div>
+      )}
+
+      {/* THE FUND AGAINST ITS CATEGORY, IN WORDS. `PeerLine` exists for this and its own rule is that
+          the verdict is a word — "2.8 points ahead" — never a colour. It says in one line what the
+          metric list says in five rows, which is why it sits above them. */}
+      {i.returns?.y3 != null && p.ratios?.cat3 != null && (
+        <PeerLine value={i.returns.y3} peer={p.ratios.cat3} period="over 3 years"
+          peerLabel={`${(i.subTypeLabel || i.category || 'Category')} average`} unit="%" />
       )}
 
       <div>
@@ -200,16 +233,14 @@ function OnePager({ i, onAct }) {
               <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
                 {`All of it — ${rows[0].pct}% — is ${rows[0].name.toLowerCase()}.`}
               </p>
-            ) : useLens === 'cap' ? (
-              /* FEW PARTS OF ONE WHOLE — the ring, with the count in its hole. */
-              <ChartDonut slices={rows.map((r) => ({ label: r.name, value: r.pct }))}
-                max={rows.length} center={String(rows.length)} centerNote="bands"
-                caveat={`as of ${monthYear(i.priceDate) || 'the last file'}`} />
             ) : (
-              /* MANY, AND THE COMPARISON IS LENGTH — the horizontal bar, which is what the ring's own
-                 spec says wins past six segments. */
-              <ChartBar bars={rows.map((r) => ({ label: titleish(r.name), value: r.pct }))}
-                orientation="horizontal" density="expanded"
+              /* PARTS OF ONE WHOLE IS `ChartShare` — one stacked bar and a ranked legend with the
+                 figures on it. The first build reached for a donut and a bar chart; this system
+                 already has the component for exactly this shape of question, and it is better at it
+                 than either: the bar shows the proportions and the legend does the reading, so
+                 nothing is left to colour alone. */
+              <ChartShare
+                segments={rows.map((r) => ({ label: titleish(r.name), value: r.pct }))}
                 valueFormat={(v) => `${v.toFixed(1)}%`}
                 caveat={`top ${rows.length} · as of ${monthYear(i.priceDate) || 'the last file'}`} />
             )}
@@ -316,6 +347,81 @@ function metricRows(i, p) {
 }
 const shortBench = (b) => String(b).replace(/ Total Return Index$| TRI$| Index$/i, '');
 
+
+/* ─── FACETS, DERIVED FROM THE ROWS IN FRONT OF THE ADVISOR ─────────────────────────────────────
+   Not a fixed list of filters. A facet is offered only when the CURRENT result set can actually be
+   cut by it, and every option carries the count it would leave — which is the single
+   highest-impact element of a filter interface and the reason the first build's tiles carry one too.
+
+   This matters more here than in most products because the catalogue is uneven: expense ratio exists
+   for mutual funds and for nothing else, fund size for five of eight families. A fixed filter list
+   would show an advisor looking at bonds a TER slider that can only ever return zero rows. So the
+   groups are built from what the rows hold, and a group with fewer than two options is dropped — a
+   filter with one choice filters nothing. */
+function bandOf(v, bands) {
+  for (const b of bands) if (v >= b.lo && v < b.hi) return b;
+  return null;
+}
+const TER_BANDS = [
+  { key: 'ter:lo', label: 'Under 0.50%', lo: -Infinity, hi: 0.5 },
+  { key: 'ter:mid', label: '0.50% to 1.00%', lo: 0.5, hi: 1 },
+  { key: 'ter:hi', label: 'Over 1.00%', lo: 1, hi: Infinity },
+];
+const AUM_BANDS = [
+  { key: 'aum:lg', label: 'Over ₹10,000 Cr', lo: 1e11, hi: Infinity },
+  { key: 'aum:md', label: '₹1,000 to 10,000 Cr', lo: 1e10, hi: 1e11 },
+  { key: 'aum:sm', label: 'Under ₹1,000 Cr', lo: -Infinity, hi: 1e10 },
+];
+const RET_BANDS = [
+  { key: 'r3:hi', label: 'Over 15%', lo: 15, hi: Infinity },
+  { key: 'r3:md', label: '10% to 15%', lo: 10, hi: 15 },
+  { key: 'r3:lo', label: 'Under 10%', lo: -Infinity, hi: 10 },
+];
+
+/* Which band or value a row falls in, per facet. One function, so the group builder and the filter
+   cannot disagree about what "Over ₹10,000 Cr" means. */
+const FACET_OF = {
+  amc: (i) => (i.amc ? i.amc.replace(/ (Asset Management|Mutual Fund|Investment Managers?|Co\.?|Ltd\.?|Limited|Pvt\.?|Private).*$/i, '').trim() : null),
+  type: (i) => i.instrumentType || null,
+  ter: (i) => (i.ter == null ? null : bandOf(i.ter, TER_BANDS)?.key),
+  aum: (i) => (i.aum == null ? null : bandOf(i.aum, AUM_BANDS)?.key),
+  r3: (i) => (i.returns?.y3 == null ? null : bandOf(i.returns.y3, RET_BANDS)?.key),
+};
+const FACET_META = [
+  { key: 'amc', label: 'House', note: 'The AMC, PMS manager or issuer.', order: null },
+  { key: 'type', label: 'Structure', note: null, order: null },
+  { key: 'r3', label: 'Three-year return', note: 'Only instruments that have one.', order: RET_BANDS },
+  { key: 'aum', label: 'Fund size', note: null, order: AUM_BANDS },
+  { key: 'ter', label: 'Expense ratio', note: 'Mutual funds only — nothing else in the catalogue carries one.', order: TER_BANDS },
+];
+
+function facetGroups(rows) {
+  const groups = [];
+  for (const m of FACET_META) {
+    const counts = new Map();
+    for (const i of rows) {
+      const k = FACET_OF[m.key](i);
+      if (k) counts.set(k, (counts.get(k) || 0) + 1);
+    }
+    if (counts.size < 2) continue;
+    const opts = m.order
+      ? m.order.filter((b) => counts.has(b.key)).map((b) => ({ value: b.key, label: b.label, count: counts.get(b.key) }))
+      : [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .slice(0, 8).map(([k, n]) => ({ value: k, label: k, count: n }));
+    groups.push({ key: m.key, label: m.label, note: m.note || undefined, mode: 'multi', options: opts });
+  }
+  return groups;
+}
+
+function applyFacets(rows, value) {
+  return rows.filter((i) => FACET_META.every((m) => {
+    const want = value[m.key];
+    if (!want || (Array.isArray(want) && !want.length)) return true;
+    const got = FACET_OF[m.key](i);
+    return Array.isArray(want) ? want.includes(got) : want === got;
+  }));
+}
+
 /* ─── THE FILTER BAR — always on screen, never a detour ─────────────────────────────────────────
    The owner's words: the advisor must be able to customise anywhere, and it must be visible, not
    only reachable through chat. So it is sticky at the top of the thread rather than a button in the
@@ -324,21 +430,10 @@ const shortBench = (b) => String(b).replace(/ Total Return Index$| TRI$| Index$/
    IT SHOWS WHAT IS ON, not just that something is. A bare "Filters (3)" makes the advisor open the
    sheet to remember which three — the same complaint the research recorded about every screener it
    read. The chips ARE the state, and each one removes itself. */
-function FilterBar({ q, onQ, chips, onDrop, onOpen, count }) {
+function FilterBar({ q, onQ, chips, onDrop, count }) {
   return (
-    <div style={{
-      position: 'sticky', top: 0, zIndex: 'var(--z-sticky)',
-      margin: `0 calc(-1 * var(--gutter))`, padding: `var(--space-8) var(--gutter)`,
-      background: 'var(--color-canvas)',
-      boxShadow: 'inset 0 -1px 0 0 var(--color-line-soft)',
-      display: 'flex', flexDirection: 'column', gap: 'var(--space-8)',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-8)' }}>
-        <span style={{ flex: 1, minWidth: 0 }}>
-          <SearchField value={q} onChange={onQ} placeholder="Find a fund, AMC or category" />
-        </span>
-        <Pill label={chips.length ? `Filters · ${chips.length}` : 'Filters'} selected={chips.length > 0} onClick={onOpen} />
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+      <SearchField value={q} onChange={onQ} placeholder="Find a fund, AMC or category" />
       {chips.length > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)', flexWrap: 'wrap' }}>
           {chips.map((c) => <Pill key={c.key} label={c.label} size="sm" removable onClick={() => onDrop(c)} />)}
@@ -351,24 +446,151 @@ function FilterBar({ q, onQ, chips, onDrop, onOpen, count }) {
   );
 }
 
+
+/* ─── COMPARE, IN THE THREAD ────────────────────────────────────────────────────────────────────
+   The owner's ruling covers this too: no separate screen. Picking a second checkbox opens the
+   comparison as a block in the same thread, under the list it was picked from, and clearing it puts
+   the list back untouched.
+
+   THE ROWS ARE THE UNION OF WHAT THE CHOSEN INSTRUMENTS HAVE, not a fixed set. Comparing a fund with
+   a bond is a real thing an advisor does, and a fixed row list would print an em dash down a whole
+   column. A row appears when at least one of the chosen instruments has it, and the ones that do not
+   say so in words — which is the same rule the card already follows. */
+function missing() {
+  return <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>not on file</span>;
+}
+
+function CompareBlock({ ids, onClear, onDrop }) {
+  const rows = ids.map(instrumentById).filter(Boolean);
+  if (rows.length < 2) return null;
+  const val = (fn) => Object.fromEntries(rows.map((i) => {
+    const v = fn(i, onePagerOf(i.id) || {});
+    return [i.id, v == null ? missing() : v];
+  }));
+  const any = (fn) => rows.some((i) => fn(i, onePagerOf(i.id) || {}) != null);
+
+  const spec = [
+    { label: '3Y return', get: (i) => (i.returns?.y3 == null ? null : pc(i.returns.y3)), better: 'high' },
+    { label: '1Y return', get: (i) => (i.returns?.y1 == null ? null : pc(i.returns.y1)), better: 'high' },
+    { label: 'Fund size', get: (i) => crore(i.aum), better: 'high' },
+    { label: 'Expense ratio', get: (i) => (i.ter == null ? null : `${i.ter.toFixed(2)}%`), better: 'low' },
+    { label: 'Coupon', get: (i, p) => (p.coupon == null ? null : `${p.coupon.toFixed(2)}%`), better: 'high' },
+    { label: 'Matures', get: (i, p) => monthYear(p.maturity) },
+    { label: 'Beta (3Y)', get: (i, p) => (p.ratios?.beta3 == null ? null : p.ratios.beta3.toFixed(2)) },
+    { label: 'Benchmark', get: (i) => (i.benchmark ? shortBench(i.benchmark) : null) },
+  ].filter((r) => any(r.get));
+
+  return (
+    <Surface>
+      <CompareTable
+        title={`Side by side · ${rows.length}`}
+        entities={rows.map((i) => ({ id: i.id, name: cardFor(i).name, meta: i.subTypeLabel || i.category }))}
+        rows={spec.map((r) => ({ label: r.label, values: val(r.get), better: r.better }))}
+        cap={3}
+        capNote="Three at a time — a fourth column at 375 makes every figure unreadable, which is the PRD's own ceiling."
+        footnote="Rows appear where at least one of the chosen instruments has the figure. A blank is never printed as a zero." />
+      <div style={{ marginTop: 'var(--space-12)' }}>
+        {/* THE HOUSE, NOT THE FIRST TWO WORDS OF THE NAME. Slicing gave "Drop UTI Large", which is
+            not a thing — and in a comparison the house is exactly what tells two large cap funds
+            apart, so it is also the right word to say. */}
+        <InlineActionRow actions={rows.map((i) => ({ label: `Drop ${FACET_OF.amc(i) || cardFor(i).name}`, onClick: () => onDrop(i.id) }))
+          .concat([{ label: 'Clear', onClick: onClear }])} />
+      </div>
+    </Surface>
+  );
+}
+
+/* ─── OVERLAP, ON WHAT THE CATALOGUE ACTUALLY HAS ───────────────────────────────────────────────
+   AND THIS IS WHERE THE DATA HAS TO BE ADMITTED. A real overlap is computed on the full portfolio —
+   every holding, by weight. The catalogue carries the TOP FIVE holdings per instrument and nothing
+   more. So what is computed here is the shared weight among those five, and the footnote says so in
+   the advisor's own words rather than letting a number imply a portfolio-level answer it cannot
+   support. A figure whose basis is not stated is not a figure. */
+function sharedPct(a, b) {
+  const A = (onePagerOf(a)?.holdings) || [], B = (onePagerOf(b)?.holdings) || [];
+  if (!A.length || !B.length) return null;
+  const byName = new Map(B.map((h) => [h.name.toLowerCase(), h.pct]));
+  let sum = 0;
+  for (const h of A) {
+    const other = byName.get(h.name.toLowerCase());
+    if (other != null) sum += Math.min(h.pct, other);
+  }
+  return +sum.toFixed(1);
+}
+
+function OverlapBlock({ ids, onDrop }) {
+  const rows = ids.map(instrumentById).filter(Boolean);
+  if (rows.length < 2) return null;
+  const pairs = [];
+  for (let x = 0; x < rows.length; x += 1) {
+    for (let y = x + 1; y < rows.length; y += 1) {
+      pairs.push({ a: rows[x], b: rows[y], pct: sharedPct(rows[x].id, rows[y].id) });
+    }
+  }
+  const known = pairs.filter((c) => c.pct != null);
+
+  /* THE BAR NOBODY COULD SEE. `OverlapView`'s pair row draws its magnitude as a --tint-bronze-06
+     rectangle behind the label — 6% ink. The owner's words: "vo to mujhe visible hai, but as a user
+     kisi ko visible nahi hai." He is right, and I had waved it off as the component working as
+     designed, which was the wrong call: a magnitude you cannot see is not a magnitude, it is a
+     smudge behind a word.
+
+     So the pairs are drawn with `ChartLegend` instead, whose own spec page carries this exact case —
+     "Parag Parikh Flexi <-> HDFC Large Cap ... 62%" under a variant called LONG LABELS WRAP. It
+     ranks, it wraps rather than truncating a fund name, and its figure is TYPE at full ink rather
+     than a tint. Nothing was restyled to get here; the system already had the right component and
+     the first build reached for the wrong one. */
+  return (
+    <Surface>
+      <Eyebrow>WHERE THEY HOLD THE SAME THING</Eyebrow>
+      <div style={{ marginTop: 'var(--space-8)' }}>
+        {known.length ? (
+          <>
+            <ChartLegend layout="stacked" items={known.map((c) => ({
+              label: `${cardFor(c.a).name} ↔ ${cardFor(c.b).name}`,
+              value: `${c.pct}%`, amount: c.pct,
+            }))} />
+            <p style={{ margin: `var(--space-12) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
+              Shared weight among the top five holdings the catalogue carries for each — not the whole
+              portfolio. A true overlap needs every holding by weight, and that is not on file here.
+            </p>
+          </>
+        ) : (
+          <ConstraintCallout eyebrow="NO HOLDINGS ON FILE"
+            body="Neither of these carries a holdings list in the catalogue, so there is nothing to intersect. Bonds, deposits and REITs have no portfolio to overlap." />
+        )}
+      </div>
+      <div style={{ marginTop: 'var(--space-12)' }}>
+        <InlineActionRow actions={rows.map((i) => ({ label: `Drop ${FACET_OF.amc(i) || cardFor(i).name}`, onClick: () => onDrop(i.id) }))} />
+      </div>
+    </Surface>
+  );
+}
+
 /* ─── THE FUNNEL ────────────────────────────────────────────────────────────────────────────────
    One screen. Four questions, each a function of the one above, each collapsing into its answer. */
 const STEP = { ASSET: 1, PRODUCT: 2, CATEGORY: 3 };
 
-function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpen = STEP.ASSET, startFundId = null, startQ = '' }) {
+function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpen = STEP.ASSET, startFundId = null, startQ = '', startPicked = [], startSheet = false, startShow = null }) {
   const [open, setOpen] = useS1(startOpen);
   const [assets, setAssets] = useS1(startAssets);
   const [fams, setFams] = useS1(startFamilies);
   const [cats, setCats] = useS1(startCats);
   const [q, setQ] = useS1(startQ);
   const [fund, setFund] = useS1(startFundId);
-  const [picked, setPicked] = useS1([]);
+  const [picked, setPicked] = useS1(startPicked);
   const [acted, setActed] = useS1(null);
+  const [facets, setFacets] = useS1({});
+  const [sheet, setSheet] = useS1(startSheet);
+  /* 'compare' | 'overlap' | null. One at a time: both open at once is two tables of the same three
+     funds stacked on a phone, and the advisor scrolls past one to read the other. */
+  const [show, setShow] = useS1(startShow);
   /* WHEN A PAGE IS OPEN, THE THREAD RESTS ON IT. Without this the scaffold stayed at the top and the
      page the advisor just opened was below the fold — they tapped a card and nothing appeared to
      happen. Anchoring to the open card is not a navigation: the list is still there above it, and
      closing the card leaves the thread exactly where it was. */
   const openRef = React.useRef(null);
+  const showRef = React.useRef(null);
 
   /* Choosing higher up INVALIDATES what was chosen below it, and says so by simply dropping it. The
      alternative — keeping a category that no longer exists under the new product — is the bug every
@@ -397,19 +619,52 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
   const atProduct = instrumentsFor({ assets, families: fams });
   const all = instrumentsFor({ assets, families: fams, categories: cats });
   const needle = q.trim().toLowerCase();
-  const rows = needle
+  const searched = needle
     ? all.filter((i) => `${i.name} ${i.amc || ''} ${i.category || ''}`.toLowerCase().includes(needle))
     : all;
+  /* The facets are built from what the SEARCH left, not from the whole catalogue — so the counts in
+     the sheet are the counts the advisor would actually get, and a house with nothing left in it is
+     not offered. */
+  const groups = facetGroups(searched);
+  const rows = applyFacets(searched, facets);
+  const facetChips = groups.flatMap((g) => (facets[g.key] || []).map((v) => ({
+    key: `x:${g.key}:${v}`,
+    label: g.options.find((o) => o.value === v)?.label || v,
+    drop: () => setFacets((s2) => ({ ...s2, [g.key]: (s2[g.key] || []).filter((x) => x !== v) })),
+  })));
 
   const chips = []
     .concat(assets.map((a) => ({ key: `a:${a}`, label: a, drop: () => chooseAsset(a) })))
     .concat(fams.map((f) => ({ key: `f:${f}`, label: familyByKey(f)?.label || f, drop: () => chooseFam(f) })))
-    .concat(cats.map((c) => ({ key: `c:${c}`, label: catRows.find((r) => r.key === c)?.label || c, drop: () => chooseCat(c) })));
+    .concat(cats.map((c) => ({ key: `c:${c}`, label: catRows.find((r) => r.key === c)?.label || c, drop: () => chooseCat(c) })))
+    .concat(facetChips);
 
-  const toggleStep = (n) => setOpen((s) => (s === n ? 0 : n));
+  const toggleStep = (n) => setOpen((s2) => (s2 === n ? 0 : n));
+
+  /* PROGRESSIVE REVEAL — a question that cannot be answered yet is NOT ON THE SCREEN.
+     The first build rendered all three steps from the start, two of them saying "Choose an asset
+     class first". The owner's note: when the asset question comes, only the asset question should
+     be there. A row that exists only to say it is not ready is a row the eye reads and discards
+     every time, and on a phone it is a third of the first screenful spent on nothing.
+
+     So step 2 appears when step 1 has an answer, and step 3 when step 2 does. And the moment a new
+     question appears the one above it COLLAPSES — which is the other half of his ruling, and the
+     reason the funnel never grows taller than one open question plus its answers. */
+  const reveal = { asset: true, product: assets.length > 0, category: fams.length > 0 };
+  React.useEffect(() => { if (assets.length && open === STEP.ASSET) setOpen(STEP.PRODUCT); },
+    [assets.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(() => { if (fams.length && open === STEP.PRODUCT) setOpen(STEP.CATEGORY); },
+    [fams.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* The path, for the bar that never scrolls away. */
+  const path = []
+    .concat(assets.length ? [{ key: 'asset', label: assets.join(' · '), step: STEP.ASSET }] : [])
+    .concat(fams.length ? [{ key: 'product', label: fams.map((f) => familyByKey(f)?.label || f).join(' · '), step: STEP.PRODUCT }] : [])
+    .concat(cats.length ? [{ key: 'category', label: cats.map((c) => catRows.find((r) => r.key === c)?.label).filter(Boolean).join(' · '), step: STEP.CATEGORY }] : []);
+  const resetAll = () => { setAssets([]); setFams([]); setCats([]); setFacets({}); setQ(''); setPicked([]); setShow(null); setFund(null); setOpen(STEP.ASSET); };
 
   return (
-    <ScreenScaffold title="Explore" body="thread" anchor={fund ? openRef : 0} revision={fund || 'list'} onMenu={() => {}}
+    <ScreenScaffold title="Explore" body="thread"
+      anchor={fund ? openRef : show ? showRef : 0} revision={fund || show || 'list'} onMenu={() => {}}
       composer={<Composer placeholder="Ask Sentinel" onAttach={() => {}} />}>
 
       <StepStack>
@@ -425,9 +680,10 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           </IntentGrid>
         </StepBlock>
 
+        {reveal.product && (
         <StepBlock step={2} title="Product"
           chips={fams.map((f) => familyByKey(f)?.label || f)} done={fams.length > 0}
-          summary={assets.length ? `${famRows.length} available` : 'Choose an asset class first'}
+          summary={`${famRows.length} available`}
           count={fams.length ? atProduct.length : undefined}
           open={open === STEP.PRODUCT} onToggle={() => toggleStep(STEP.PRODUCT)}>
           {/* The products that exist under the chosen assets — derived, so this list cannot offer a
@@ -440,12 +696,14 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
             ))}
           </IntentGrid>
         </StepBlock>
+        )}
 
+        {reveal.category && (
         <StepBlock step={3} title="Category"
           chips={cats.map((c) => catRows.find((r) => r.key === c)?.label).filter(Boolean)}
           done={cats.length > 0}
           count={cats.length ? all.length : undefined}
-          summary={fams.length ? `${catRows.length} available` : 'Choose a product first'}
+          summary={`${catRows.length} available`}
           open={open === STEP.CATEGORY} onToggle={() => toggleStep(STEP.CATEGORY)}>
           {catRows.length ? (
             /* `ChipRow` takes CHILDREN, not a chips array — it is the row's rhythm and stagger, and
@@ -459,18 +717,33 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
             </ChipRow>
           ) : (
             <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-muted)' }}>
-              Categories appear once a product is chosen — the third question is a function of the second.
+              Nothing under this product is categorised in the catalogue.
             </p>
           )}
         </StepBlock>
+        )}
       </StepStack>
 
-      <FilterBar q={q} onQ={setQ} chips={chips} onDrop={(c) => c.drop()} onOpen={() => {}} count={rows.length} />
+      {/* THE SCREEN OPENS ON ONE QUESTION AND NOTHING ELSE. The first build showed all eighty
+          instruments under an unanswered first step, which undercuts the funnel: if the list is
+          already there, the questions are decoration. Everything below appears with the first
+          answer. */}
+      {assets.length > 0 && (
+        <>
+          {/* ONE STICKY LINE, 36pt, and it is the only thing that never scrolls away. The search
+              sits under it and scrolls, because searching is a deliberate act and orientation is
+              not. */}
+          <PathBar steps={path} onStep={(st) => setOpen(st.step)} onReset={resetAll}
+            action={<Pill label={chips.length ? `Filters · ${chips.length}` : 'Filters'} size="sm"
+              selected={chips.length > 0} onClick={() => setSheet(true)} />} />
+          <FilterBar q={q} onQ={setQ} chips={chips} onDrop={(c) => c.drop()} count={rows.length} />
+        </>
+      )}
 
       {/* THE RESULT IS NOT A STEP. The three questions collapse; the list is what they were for, so it
           is always open and always the tallest thing on the screen. */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
-        {rows.length === 0 ? (
+        {assets.length === 0 ? null : rows.length === 0 ? (
           <ConstraintCallout eyebrow="NOTHING MATCHES THAT YET"
             body={q ? `No instrument in the catalogue matches “${q}” under the filters above. Clear the search, or widen a step.` : 'Widen a step above — or clear a filter.'} />
         ) : rows.slice(0, 12).map((i) => {
@@ -487,7 +760,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
             </div>
           );
         })}
-        {rows.length > 12 && (
+        {assets.length > 0 && rows.length > 12 && (
           <p style={{ margin: 0, font: 'var(--type-caption-font)', color: 'var(--color-muted)', textAlign: 'center' }}>
             {`${rows.length - 12} more — narrow a step above, or search.`}
           </p>
@@ -496,14 +769,37 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
 
       {picked.length >= 2 && (
         <InlineActionRow actions={[
-          { label: `Compare ${picked.length}`, tone: 'solid' },
-          { label: 'See overlap' },
-          { label: 'Clear', onClick: () => setPicked([]) },
+          { label: show === 'compare' ? 'Hide the comparison' : `Compare ${picked.length}`, tone: show === 'compare' ? 'outline' : 'primary', onClick: () => setShow((s2) => (s2 === 'compare' ? null : 'compare')) },
+          { label: show === 'overlap' ? 'Hide the overlap' : 'See overlap', onClick: () => setShow((s2) => (s2 === 'overlap' ? null : 'overlap')) },
+          { label: 'Clear', onClick: () => { setPicked([]); setShow(null); } },
         ]} />
       )}
+      {/* THE THREAD RESTS ON WHATEVER WAS JUST OPENED. Without the ref the comparison landed below
+          the fold and tapping "Compare 2" appeared to do nothing — the same failure the fund page had
+          before it got one. It is still not a navigation: the list is above it and closing puts the
+          thread back. */}
+      <div ref={show ? showRef : undefined}>
+        {show === 'compare' && picked.length >= 2 && (
+          <CompareBlock ids={picked}
+            onClear={() => { setPicked([]); setShow(null); }}
+            onDrop={(id) => setPicked((s2) => s2.filter((x) => x !== id))} />
+        )}
+        {show === 'overlap' && picked.length >= 2 && (
+          <OverlapBlock ids={picked} onDrop={(id) => setPicked((s2) => s2.filter((x) => x !== id))} />
+        )}
+      </div>
       {acted && (
         <Provenance text={`Prototype: “${acted.split(':')[0]}” would open here. The catalogue is real; the destination is another journey.`} />
       )}
+
+      {/* THE SHEET IS THE SAME FILTERS THE BAR IS ALREADY SHOWING, opened for the ones that do not fit
+          in a row. Nothing here is only reachable through the sheet — it is a wider view of the same
+          state, which is why closing it changes nothing. */}
+      <FilterSheet open={sheet} title="Narrow it" groups={groups} value={facets}
+        resultCount={rows.length} unit="instruments"
+        onChange={(k, next) => setFacets((s2) => ({ ...s2, [k]: next }))}
+        onClearAll={() => setFacets({})}
+        onApply={() => setSheet(false)} onClose={() => setSheet(false)} />
     </ScreenScaffold>
   );
 }
@@ -536,6 +832,22 @@ function App_V1() {
         <StateRow>
           <State label="SEARCH WITH NO MATCH" tone="under" note="The filters stay visible and the way out is named. The list does not silently empty."><Funnel startAssets={['Equity']} startQ="gilt" startOpen={0} /></State>
           <State label="COMMODITY" note="Ten instruments, four of which have a series. The six without one show their facts and no empty chart box."><Funnel startAssets={['Commodity']} startFamilies={['commodity']} startOpen={0} /></State>
+        </StateRow>
+      </Section>
+
+      <Section title="Narrowing, comparing, overlapping — none of them a screen"
+        sub="The sheet is a wider view of the filters the bar is already showing, so closing it changes nothing. Two checkboxes open the comparison in the same thread, under the list it was picked from.">
+        <StateRow>
+          <State label="THE SHEET" note="Facets built from the rows in front of the advisor: a house with nothing left in it is not offered, and expense ratio does not appear at all unless mutual funds are in the set."><Funnel startAssets={['Equity']} startFamilies={['mutual_fund']} startOpen={0} startSheet /></State>
+          <State label="COMPARE, IN THE THREAD" note="Rows are the union of what the chosen instruments have. A row appears where at least one has the figure; the ones that do not say so."><Funnel startAssets={['Equity']} startFamilies={['mutual_fund']} startCats={['mutual_fund:large_cap']} startOpen={0} startPicked={['F00000PDT6', 'F00000PDLU']} startShow="compare" /></State>
+        </StateRow>
+      </Section>
+
+      <Section title="Overlap, and the limit it has to admit"
+        sub="A true overlap is computed on every holding by weight. The catalogue carries the top five per instrument, so that is what is intersected — and the footnote says so rather than letting a number imply a portfolio-level answer.">
+        <StateRow>
+          <State label="WHAT CAN BE COMPUTED" note="Shared weight among the top five each. Real names, real weights, a stated basis."><Funnel startAssets={['Equity']} startFamilies={['mutual_fund']} startCats={['mutual_fund:large_cap']} startOpen={0} startPicked={['F00000PDT6', 'F00000PDLU']} startShow="overlap" /></State>
+          <State label="WHAT CANNOT" tone="under" note="Bonds have no portfolio to intersect. The block says that instead of drawing an empty matrix."><Funnel startAssets={['Debt']} startFamilies={['bonds']} startOpen={0} startPicked={['BD00021596', 'BD00021753']} startShow="overlap" /></State>
         </StateRow>
       </Section>
 

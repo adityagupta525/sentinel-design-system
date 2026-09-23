@@ -1,0 +1,91 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="PathBar" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PathBar — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/PathBar.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { PathBar, Pill, Surface } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--z-sticky','--space-6','--gutter','--color-canvas','--color-line-soft','--type-caption-font','--color-bronze-deep','--color-ink'];
+
+const THREE = [
+  { key: 'a', label: 'Equity' }, { key: 'p', label: 'Mutual fund' }, { key: 'c', label: 'Large Cap Fund' },
+];
+
+function Live() {
+  const [n, setN] = React.useState(3);
+  const steps = THREE.slice(0, n);
+  return (
+    <Surface tone="canvas">
+      <PathBar sticky={false} steps={steps} onStep={(s, i) => setN(i + 1)} onReset={() => setN(0)}
+        action={<Pill label="Filters · 2" size="sm" selected onClick={() => {}} />} />
+      <p style={{ margin: `var(--space-12) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
+        Tap a crumb: it reopens that step, and everything after it is dropped. Tap the last one and nothing happens — that is where you already are.
+      </p>
+    </Surface>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="PathBar" group="Foundations" status="shipped" requires={['PathBar','Pill']}
+      summary="A funnel that appends down a long conversation eventually puts its own first question above the fold, and changing the second answer should not be a scroll through everything that came after it. The steps already collapse into their answers; this is how you reach one from anywhere. It is deliberately ONE line — 36pt — because nothing may permanently eat the height the conversation is read in, and it is the only thing in the funnel that never scrolls away.">
+
+      <Block n={1} title="Specimen" sub="Live. The crumbs are controls, not a label — this is the funnel's own state made touchable, and nothing here is a page being navigated to.">
+        <Specimen><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="Two crumbs, and the rest behind an ellipsis" sub="Three crumbs plus a filter pill plus a reset is 343pt asking for 420. The first render truncated all three to “Eq… › Mutual… › Large Ca…”, which is a bar that has stopped doing the one thing it is for. It truncates from the LEFT, because the recent end of a path is the part being worked on.">
+        <Grid cols={1} items={[
+          { label: 'Four deep', node: <Surface tone="canvas"><PathBar sticky={false} steps={[{label:'Equity'},{label:'Mutual fund'},{label:'Large Cap Fund'},{label:'Canara Robeco'}]} onStep={() => {}} onReset={() => {}} action={<Pill label="Filters · 3" size="sm" selected onClick={() => {}} />} /></Surface>, note: 'The “…” reopens the first step. The last crumb keeps whatever room is left, because it is the one you are in.' },
+        ]} />
+      </Block>
+
+      <Block n={3} title="Empty is a sentence, not an empty bar" sub="A bar with nothing in it reads as a component that failed to load. And the reset appears only once there is something to clear — an always-present reset on an empty funnel is a control offering to undo nothing.">
+        <Grid cols={2} items={[
+          { label: 'Nothing answered', node: <Surface tone="canvas"><PathBar sticky={false} steps={[]} action={<Pill label="Filters" size="sm" onClick={() => {}} />} /></Surface>, note: 'No crumbs, no reset.' },
+          { label: 'One answer', node: <Surface tone="canvas"><PathBar sticky={false} steps={[{label:'Equity'}]} onReset={() => {}} action={<Pill label="Filters" size="sm" onClick={() => {}} />} /></Surface>, note: 'One crumb, and it is the one you are in — so it is not a control.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={5} title="Props"><Props src="../components/shell/PathBar.d.ts" /></Block>
+
+      <Block n={6} title="Do / Don't">
+        <DoDont
+          doNode={<Surface tone="canvas"><PathBar sticky={false} steps={THREE} onStep={() => {}} onReset={() => {}} action={<Pill label="Filters · 2" size="sm" selected onClick={() => {}} />} /></Surface>}
+          doCaption="The answers, not the questions. “Equity › Mutual fund › Large Cap Fund” — the question is in the step itself, and repeating it here would spend the one line twice."
+          dontNode={<Surface tone="canvas"><PathBar sticky={false} steps={[{label:'Asset class: Equity'},{label:'Product: Mutual fund'},{label:'Category: Large Cap Fund'}]} onStep={() => {}} onReset={() => {}} action={<Pill label="Filters · 2" size="sm" selected onClick={() => {}} />} /></Surface>}
+          dontCaption="The questions carried alongside the answers. Now nothing fits, every crumb is ellipsised, and the bar costs a line to say less than it did." />
+      </Block>
+
+      <Block n={7} title="Motion">
+        <Motion rows={[
+          { name: 'A crumb appears', property: 'Inherited — the bar re-renders when a step is answered. No entrance animation: a sticky bar that animates on every answer draws the eye away from the thing that was just chosen', duration: 'none', reduced: 'Unchanged.' },
+          { name: 'Press', property: 'Pressable — scale 0.98', duration: '--dur-press 150ms', reduced: 'No travel.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>
