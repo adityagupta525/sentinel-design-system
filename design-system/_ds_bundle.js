@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
+/* @ds-bundle: {"format":4,"namespace":"SentinelDesignSystem_0682a2","components":[{"name":"AnswerChip","sourcePath":"components/actions/AnswerChip.jsx"},{"name":"ChipRow","sourcePath":"components/actions/ChipRow.jsx"},{"name":"ClientChip","sourcePath":"components/actions/ClientChip.jsx"},{"name":"DarkButton","sourcePath":"components/actions/DarkButton.jsx"},{"name":"DownloadAction","sourcePath":"components/actions/DownloadAction.jsx"},{"name":"InfoDot","sourcePath":"components/actions/InfoDot.jsx"},{"name":"InlineActionRow","sourcePath":"components/actions/InlineActionRow.jsx"},{"name":"Pill","sourcePath":"components/actions/Pill.jsx"},{"name":"Pressable","sourcePath":"components/actions/Pressable.jsx"},{"name":"RangePills","sourcePath":"components/actions/RangePills.jsx"},{"name":"SegmentedRow","sourcePath":"components/actions/SegmentedRow.jsx"},{"name":"SuggestionRow","sourcePath":"components/actions/SuggestionRow.jsx"},{"name":"DotField","sourcePath":"components/brand/DotField.jsx"},{"name":"Mascot","sourcePath":"components/brand/Mascot.jsx"},{"name":"SplashScreen","sourcePath":"components/brand/SplashScreen.jsx"},{"name":"AllocationCard","sourcePath":"components/cards/AllocationCard.jsx"},{"name":"ArtifactCard","sourcePath":"components/cards/ArtifactCard.jsx"},{"name":"Badge","sourcePath":"components/cards/Badge.jsx"},{"name":"ConfirmSheet","sourcePath":"components/cards/ConfirmSheet.jsx"},{"name":"ConstraintCallout","sourcePath":"components/cards/ConstraintCallout.jsx"},{"name":"DataTable","sourcePath":"components/cards/DataTable.jsx"},{"name":"DataTableCard","sourcePath":"components/cards/DataTableCard.jsx"},{"name":"DisclosureBlock","sourcePath":"components/cards/DisclosureBlock.jsx"},{"name":"ExplainerSheet","sourcePath":"components/cards/ExplainerSheet.jsx"},{"name":"FilterSheet","sourcePath":"components/cards/FilterSheet.jsx"},{"name":"FundCard","sourcePath":"components/cards/FundCard.jsx"},{"name":"HeroNumberCard","sourcePath":"components/cards/HeroNumberCard.jsx"},{"name":"InfoCard","sourcePath":"components/cards/InfoCard.jsx"},{"name":"IntentTile","sourcePath":"components/cards/IntentTile.jsx"},{"name":"MoveCard","sourcePath":"components/cards/MoveCard.jsx"},{"name":"RejectCallout","sourcePath":"components/cards/RejectCallout.jsx"},{"name":"ResultCard","sourcePath":"components/cards/ResultCard.jsx"},{"name":"ShortlistCard","sourcePath":"components/cards/ShortlistCard.jsx"},{"name":"Surface","sourcePath":"components/cards/Surface.jsx"},{"name":"AttachmentTurn","sourcePath":"components/chat/AttachmentTurn.jsx"},{"name":"DetourBanner","sourcePath":"components/chat/DetourBanner.jsx"},{"name":"GreetingDivider","sourcePath":"components/chat/GreetingDivider.jsx"},{"name":"MessageActions","sourcePath":"components/chat/MessageActions.jsx"},{"name":"ParseNote","sourcePath":"components/chat/ParseNote.jsx"},{"name":"ProgressTrace","sourcePath":"components/chat/ProgressTrace.jsx"},{"name":"QAPair","sourcePath":"components/chat/QAPair.jsx"},{"name":"RefusalTurn","sourcePath":"components/chat/RefusalTurn.jsx"},{"name":"ResponseFeedback","sourcePath":"components/chat/ResponseFeedback.jsx"},{"name":"SentinelBlock","sourcePath":"components/chat/SentinelBlock.jsx"},{"name":"SentinelText","sourcePath":"components/chat/SentinelText.jsx"},{"name":"SentinelThinking","sourcePath":"components/chat/SentinelThinking.jsx"},{"name":"SentinelTurn","sourcePath":"components/chat/SentinelTurn.jsx"},{"name":"StepBlock","sourcePath":"components/chat/StepBlock.jsx"},{"name":"StepTrace","sourcePath":"components/chat/StepTrace.jsx"},{"name":"UserBubble","sourcePath":"components/chat/UserBubble.jsx"},{"name":"UserTurn","sourcePath":"components/chat/UserTurn.jsx"},{"name":"VersionRow","sourcePath":"components/chat/VersionRow.jsx"},{"name":"Composer","sourcePath":"components/composer/Composer.jsx"},{"name":"MoneyComposer","sourcePath":"components/composer/MoneyComposer.jsx"},{"name":"StepComposer","sourcePath":"components/composer/StepComposer.jsx"},{"name":"AttributionChart","sourcePath":"components/data/AttributionChart.jsx"},{"name":"ChartBar","sourcePath":"components/data/ChartBar.jsx"},{"name":"ChartDonut","sourcePath":"components/data/ChartDonut.jsx"},{"name":"ChartLegend","sourcePath":"components/data/ChartLegend.jsx"},{"name":"ChartLine","sourcePath":"components/data/ChartLine.jsx"},{"name":"ChartReadout","sourcePath":"components/data/ChartReadout.jsx"},{"name":"ChartShare","sourcePath":"components/data/ChartShare.jsx"},{"name":"ChartSpark","sourcePath":"components/data/ChartSpark.jsx"},{"name":"ChartTooltip","sourcePath":"components/data/ChartTooltip.jsx"},{"name":"CompareTable","sourcePath":"components/data/CompareTable.jsx"},{"name":"ConcentrationBar","sourcePath":"components/data/ConcentrationBar.jsx"},{"name":"DrawnCheck","sourcePath":"components/data/DrawnCheck.jsx"},{"name":"Dumbbell","sourcePath":"components/data/Dumbbell.jsx"},{"name":"FigureRow","sourcePath":"components/data/FigureRow.jsx"},{"name":"MetricRow","sourcePath":"components/data/MetricRow.jsx"},{"name":"OverlapView","sourcePath":"components/data/OverlapView.jsx"},{"name":"PeerLine","sourcePath":"components/data/PeerLine.jsx"},{"name":"ProgressRail","sourcePath":"components/data/ProgressRail.jsx"},{"name":"StatTile","sourcePath":"components/data/StatTile.jsx"},{"name":"chartMath","sourcePath":"components/data/chartMath.jsx"},{"name":"FileUpload","sourcePath":"components/forms/FileUpload.jsx"},{"name":"SearchField","sourcePath":"components/forms/SearchField.jsx"},{"name":"SelectionMark","sourcePath":"components/forms/SelectionMark.jsx"},{"name":"AssetMark","sourcePath":"components/icons/AssetMark.jsx"},{"name":"IconArrow","sourcePath":"components/icons/IconArrow.jsx"},{"name":"IconAttach","sourcePath":"components/icons/IconAttach.jsx"},{"name":"IconCheckCircle","sourcePath":"components/icons/IconCheckCircle.jsx"},{"name":"IconChevronRight","sourcePath":"components/icons/IconChevronRight.jsx"},{"name":"IconDownload","sourcePath":"components/icons/IconDownload.jsx"},{"name":"IconFile","sourcePath":"components/icons/IconFile.jsx"},{"name":"IconInfo","sourcePath":"components/icons/IconInfo.jsx"},{"name":"IconMenu","sourcePath":"components/icons/IconMenu.jsx"},{"name":"IconPlus","sourcePath":"components/icons/IconPlus.jsx"},{"name":"IconSparkle","sourcePath":"components/icons/IconSparkle.jsx"},{"name":"IconSpinner","sourcePath":"components/icons/IconSpinner.jsx"},{"name":"FollowUpRow","sourcePath":"components/lists/FollowUpRow.jsx"},{"name":"List","sourcePath":"components/lists/List.jsx"},{"name":"ListRow","sourcePath":"components/lists/ListRow.jsx"},{"name":"Dock","sourcePath":"components/shell/Dock.jsx"},{"name":"Drawer","sourcePath":"components/shell/Drawer.jsx"},{"name":"ExplorerSheet","sourcePath":"components/shell/ExplorerSheet.jsx"},{"name":"HomeIndicator","sourcePath":"components/shell/HomeIndicator.jsx"},{"name":"MotionGuard","sourcePath":"components/shell/MotionGuard.jsx"},{"name":"PhoneFrame","sourcePath":"components/shell/PhoneFrame.jsx"},{"name":"ScreenBackdrop","sourcePath":"components/shell/ScreenBackdrop.jsx"},{"name":"ScreenScaffold","sourcePath":"components/shell/ScreenScaffold.jsx"},{"name":"ScreenStack","sourcePath":"components/shell/ScreenStack.jsx"},{"name":"ScrollToBottomButton","sourcePath":"components/shell/ScrollToBottomButton.jsx"},{"name":"SectionStrip","sourcePath":"components/shell/SectionStrip.jsx"},{"name":"StatusSpacer","sourcePath":"components/shell/StatusSpacer.jsx"},{"name":"TopBar","sourcePath":"components/shell/TopBar.jsx"},{"name":"Eyebrow","sourcePath":"components/text/Eyebrow.jsx"},{"name":"EyebrowDivider","sourcePath":"components/text/EyebrowDivider.jsx"},{"name":"Provenance","sourcePath":"components/text/Provenance.jsx"},{"name":"StandingDisclosure","sourcePath":"components/text/StandingDisclosure.jsx"}],"builtBy":"tools/build-bundle.mjs"} */
 var __ds_out = (() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -21,10 +21,12 @@ var __ds_out = (() => {
   // design-system/.bundle-entry.jsx
   var bundle_entry_exports = {};
   __export(bundle_entry_exports, {
+    ASSET_MARKS: () => ASSET_MARKS,
     AXIS_BAND: () => AXIS_BAND,
     AllocationCard: () => AllocationCard,
     AnswerChip: () => AnswerChip,
     ArtifactCard: () => ArtifactCard,
+    AssetMark: () => AssetMark,
     AttachmentTurn: () => AttachmentTurn,
     AttributionChart: () => AttributionChart,
     Badge: () => Badge,
@@ -65,6 +67,7 @@ var __ds_out = (() => {
     FileUpload: () => FileUpload,
     FilterSheet: () => FilterSheet,
     FollowUpRow: () => FollowUpRow,
+    FundCard: () => FundCard,
     GreetingDivider: () => GreetingDivider,
     HeroNumberCard: () => HeroNumberCard,
     HomeIndicator: () => HomeIndicator,
@@ -87,8 +90,14 @@ var __ds_out = (() => {
     List: () => List,
     ListRow: () => ListRow,
     MOTION_CSS: () => MOTION_CSS,
+    MarkCommodity: () => MarkCommodity,
+    MarkDebt: () => MarkDebt,
+    MarkEquity: () => MarkEquity,
+    MarkProperty: () => MarkProperty,
     Mascot: () => Mascot,
     MessageActions: () => MessageActions,
+    MetricList: () => MetricList,
+    MetricRow: () => MetricRow,
     MoneyComposer: () => MoneyComposer,
     MotionGuard: () => MotionGuard,
     MoveCard: () => MoveCard,
@@ -130,7 +139,9 @@ var __ds_out = (() => {
     StandingDisclosure: () => StandingDisclosure,
     StatTile: () => StatTile,
     StatusSpacer: () => StatusSpacer,
+    StepBlock: () => StepBlock,
     StepComposer: () => StepComposer,
+    StepStack: () => StepStack,
     StepTrace: () => StepTrace,
     SuggestionRow: () => SuggestionRow,
     Surface: () => Surface,
@@ -1210,6 +1221,123 @@ var __ds_out = (() => {
     ));
   }
 
+  // design-system/components/forms/SelectionMark.jsx
+  function SelectionMark({ kind, selected = false, disabled = false }) {
+    const ring = selected ? "var(--color-bronze)" : "var(--color-line)";
+    const base = { display: "inline-flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", boxSizing: "border-box", opacity: disabled ? 0.4 : 1, transition: "background-color var(--dur-press) var(--ease)" };
+    if (kind === "radio") {
+      return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-full)", boxShadow: `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 10, height: 10, borderRadius: "var(--radius-full)", background: "var(--color-bronze)" } }));
+    }
+    return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-6)", background: selected ? "var(--color-bronze)" : "transparent", boxShadow: selected ? "none" : `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("svg", { width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "2.6", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "m5 12 5 5 9-9" })));
+  }
+
+  // design-system/components/cards/FundCard.jsx
+  var NUM = { fontVariantNumeric: "tabular-nums" };
+  function FundCard({
+    name,
+    sub,
+    logo,
+    badge,
+    badgeTone = "ok",
+    chips = [],
+    headline,
+    spark,
+    facts = [],
+    selectable = false,
+    selected = false,
+    onSelect,
+    open = false,
+    onToggle,
+    children,
+    id
+  }) {
+    const auto = react_global_default.useId ? react_global_default.useId() : "fund";
+    const bodyId = `${id || auto}-page`;
+    const bodyRef = react_global_default.useRef(null);
+    react_global_default.useEffect(() => {
+      if (bodyRef.current) bodyRef.current.inert = !open;
+    }, [open]);
+    const hasPage = !!children;
+    const badgeInline = selectable && !!badge;
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: {
+      borderRadius: "var(--radius-16)",
+      background: "var(--color-surface)",
+      boxShadow: `0 0 0 var(--border-1) ${open || selected ? "var(--color-bronze)" : "var(--color-line)"}`,
+      transition: "box-shadow var(--dur-fast) var(--ease)",
+      overflow: "hidden"
+    } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "stretch" } }, /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: hasPage ? onToggle : void 0,
+        expanded: hasPage ? open : void 0,
+        controls: hasPage ? bodyId : void 0,
+        label: `${name}${headline ? `, ${headline.value} ${headline.label}` : ""}${hasPage ? `. ${open ? "Collapse" : "Open"}` : ""}`,
+        style: {
+          flex: 1,
+          minWidth: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--space-8)",
+          padding: "var(--space-14)",
+          textAlign: "left",
+          background: "transparent",
+          cursor: hasPage ? void 0 : "default"
+        }
+      },
+      /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-10)", width: "100%" } }, logo && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
+        flex: "0 0 auto",
+        width: 28,
+        height: 28,
+        borderRadius: "var(--radius-8)",
+        background: "var(--color-chip)",
+        color: "var(--color-bronze-deep)",
+        display: "grid",
+        placeItems: "center",
+        font: "var(--type-meta-font)"
+      } }, logo), /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-row-strong-font)", color: "var(--color-ink)" } }, name), sub && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, sub)), badge && !badgeInline && /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 0 auto" } }, /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: badgeTone }, badge))),
+      (chips.length > 0 || badgeInline) && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", gap: "var(--space-6)", flexWrap: "wrap" } }, badgeInline && /* @__PURE__ */ react_global_default.createElement(Badge, { variant: "status", tone: badgeTone }, badge), chips.map((c) => /* @__PURE__ */ react_global_default.createElement("span", { key: c, style: {
+        font: "var(--type-caption-font)",
+        color: "var(--color-bronze-deep)",
+        background: "var(--color-chip)",
+        borderRadius: "var(--radius-full)",
+        padding: "2px var(--space-8)"
+      } }, c))),
+      (headline || spark) && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "var(--space-12)", width: "100%" } }, headline && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexDirection: "column", gap: 0, minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-figure-font)", color: "var(--color-ink)", ...NUM } }, headline.value), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, headline.label)), spark && spark.length > 1 && /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: "0 0 auto", paddingBottom: 2 } }, /* @__PURE__ */ react_global_default.createElement(ChartSpark, { points: spark, width: 84, height: 26 }))),
+      facts.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--space-10)",
+        width: "100%",
+        paddingTop: "var(--space-8)",
+        borderTop: "var(--border-hairline) solid var(--color-line)",
+        flexWrap: "wrap"
+      } }, facts.map((f, i) => /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, { key: f.label }, i > 0 && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: { color: "var(--color-line)" } }, "\xB7"), /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "baseline", gap: "var(--space-4)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, f.label), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-ink)", ...NUM } }, f.value)))))
+    ), selectable && /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: onSelect,
+        pressed: selected,
+        label: `${selected ? "Remove" : "Add"} ${name} ${selected ? "from" : "to"} the comparison`,
+        style: {
+          flex: "0 0 auto",
+          display: "grid",
+          placeItems: "start center",
+          padding: "var(--space-14) var(--space-12) var(--space-14) 0",
+          background: "transparent"
+        }
+      },
+      /* @__PURE__ */ react_global_default.createElement(SelectionMark, { kind: "checkbox", selected })
+    )), hasPage && /* @__PURE__ */ react_global_default.createElement("div", { id: bodyId, ref: bodyRef, style: {
+      display: "grid",
+      gridTemplateRows: open ? "1fr" : "0fr",
+      transition: "grid-template-rows var(--dur-enter) var(--ease)"
+    } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
+      padding: `0 var(--space-14) var(--space-14)`,
+      opacity: open ? 1 : 0,
+      transition: "opacity var(--dur-fast) var(--ease)"
+    } }, children))));
+  }
+
   // design-system/components/cards/HeroNumberCard.jsx
   function useCountUp(target, ms2, run = true) {
     const [v, setV] = react_global_default.useState(0);
@@ -1386,8 +1514,18 @@ var __ds_out = (() => {
   }
 
   // design-system/components/cards/IntentTile.jsx
-  var NUM = { fontVariantNumeric: "tabular-nums" };
-  function IntentTile({ label, count = null, unit = "funds", note, selected = false, unavailable = false, unavailableNote, onClick }) {
+  var NUM2 = { fontVariantNumeric: "tabular-nums" };
+  function IntentTile({
+    label,
+    count = null,
+    unit = "funds",
+    note,
+    mark,
+    selected = false,
+    unavailable = false,
+    unavailableNote,
+    onClick
+  }) {
     const inert = unavailable || !onClick;
     return /* @__PURE__ */ react_global_default.createElement(
       Pressable,
@@ -1398,24 +1536,52 @@ var __ds_out = (() => {
         pressed: selected,
         label: count == null ? label : `${label}, ${count} ${unit}`,
         style: {
+          position: "relative",
+          overflow: "hidden",
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
           gap: "var(--space-2)",
           width: "100%",
-          minHeight: "var(--h-touch)",
+          minHeight: 88,
           padding: "var(--space-12)",
           textAlign: "left",
           borderRadius: "var(--radius-16)",
           background: selected ? "var(--color-selected)" : "var(--color-surface)",
           boxShadow: `0 0 0 var(--border-1) ${selected ? "var(--color-bronze)" : "var(--color-line)"}`,
+          transition: "box-shadow var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease)",
           cursor: inert ? "default" : void 0
         }
       },
-      /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-title-font)", color: "var(--color-ink)" } }, label),
-      count != null && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)", ...NUM } }, count.toLocaleString("en-IN"), " ", unit),
-      note && !unavailable && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, note),
-      unavailable && /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, unavailableNote || "No feed yet \u2014 nothing to show rather than nothing on the shelf.")
+      mark && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
+        position: "absolute",
+        right: -10,
+        bottom: -12,
+        pointerEvents: "none",
+        color: "var(--color-bronze-deep)",
+        opacity: unavailable ? 0.04 : selected ? 0.13 : 0.07,
+        transition: "opacity var(--dur-fast) var(--ease)",
+        display: "grid",
+        placeItems: "center"
+      } }, mark),
+      selected && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
+        position: "absolute",
+        top: "var(--space-10)",
+        right: "var(--space-10)",
+        width: 18,
+        height: 18,
+        borderRadius: "var(--radius-full)",
+        background: "var(--color-bronze-deep)",
+        color: "var(--color-surface)",
+        display: "grid",
+        placeItems: "center",
+        font: "var(--type-caption-font)",
+        lineHeight: 1
+      } }, "\u2713"),
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative", font: "var(--type-title-font)", color: "var(--color-ink)", paddingRight: selected ? 22 : 0 } }, label),
+      count != null && /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative", font: "var(--type-meta-font)", color: "var(--color-bronze-deep)", ...NUM2 } }, count.toLocaleString("en-IN"), " ", unit),
+      note && !unavailable && /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative", font: "var(--type-caption-font)", color: "var(--color-muted)" } }, note),
+      unavailable && /* @__PURE__ */ react_global_default.createElement("span", { style: { position: "relative", font: "var(--type-caption-font)", color: "var(--color-muted)" } }, unavailableNote || "No feed yet \u2014 nothing to show rather than nothing on the shelf.")
     );
   }
   function IntentGrid({ children, cols = 2 }) {
@@ -1465,7 +1631,7 @@ var __ds_out = (() => {
   }
 
   // design-system/components/cards/ShortlistCard.jsx
-  var NUM2 = { fontVariantNumeric: "tabular-nums" };
+  var NUM3 = { fontVariantNumeric: "tabular-nums" };
   function ShortlistCard({
     name,
     client,
@@ -1479,7 +1645,7 @@ var __ds_out = (() => {
     onRefresh,
     children
   }) {
-    return /* @__PURE__ */ react_global_default.createElement("div", { style: { borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { padding: "var(--space-14)", display: "flex", flexDirection: "column", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)" } }, name), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-2) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: NUM2 }, count.toLocaleString("en-IN")), " ", unit, client && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", client), savedAt && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 saved ", savedAt), version > 1 && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM2 }, "v", version)))), onOpen && /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onOpen, label: `Open ${name}`, style: { flexShrink: 0, display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Open"))), filters.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, filters.map((f) => /* @__PURE__ */ react_global_default.createElement(Pill, { key: f, tone: "filter", size: "sm", label: f }))), children && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-6)" } }, children)), stale && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-8)", padding: `var(--space-10) var(--space-14)`, background: "var(--color-status-over-bg)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-ink)" } }, stale.text), onRefresh && /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onRefresh, label: "Run this shortlist again on today's data", style: { flexShrink: 0, display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Run again"))));
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { borderRadius: "var(--radius-16)", background: "var(--color-surface)", boxShadow: "var(--shadow-card)", overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { padding: "var(--space-14)", display: "flex", flexDirection: "column", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--space-8)" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minWidth: 0 } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-title-font)", color: "var(--color-ink)" } }, name), /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: `var(--space-2) 0 0`, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, count.toLocaleString("en-IN")), " ", unit, client && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", client), savedAt && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 saved ", savedAt), version > 1 && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, "v", version)))), onOpen && /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onOpen, label: `Open ${name}`, style: { flexShrink: 0, display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Open"))), filters.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--space-6)" } }, filters.map((f) => /* @__PURE__ */ react_global_default.createElement(Pill, { key: f, tone: "filter", size: "sm", label: f }))), children && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-6)" } }, children)), stale && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-8)", padding: `var(--space-10) var(--space-14)`, background: "var(--color-status-over-bg)" } }, /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-ink)" } }, stale.text), onRefresh && /* @__PURE__ */ react_global_default.createElement(Pressable, { onClick: onRefresh, label: "Run this shortlist again on today's data", style: { flexShrink: 0, display: "inline-flex", minHeight: "var(--h-touch)", alignItems: "center" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-meta-font)", color: "var(--color-bronze-deep)" } }, "Run again"))));
   }
 
   // design-system/components/cards/Surface.jsx
@@ -1829,6 +1995,119 @@ var __ds_out = (() => {
       },
       /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-label-font)", color: "var(--color-bronze-deep)", whiteSpace: "nowrap" } }, r)
     ))), note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-data-deemph)" } }, note));
+  }
+
+  // design-system/components/chat/StepBlock.jsx
+  var CLUSTER_MAX = 3;
+  function StepBlock({
+    step: step2,
+    title,
+    chips = [],
+    summary,
+    done = false,
+    open = false,
+    onToggle,
+    maxChips = CLUSTER_MAX,
+    count,
+    unit = "funds",
+    children,
+    id
+  }) {
+    const auto = react_global_default.useId ? react_global_default.useId() : "step";
+    const bodyId = `${id || auto}-body`;
+    const shown = chips.slice(0, maxChips);
+    const rest = chips.length - shown.length;
+    const bodyRef = react_global_default.useRef(null);
+    react_global_default.useEffect(() => {
+      if (bodyRef.current) bodyRef.current.inert = !open;
+    }, [open]);
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: {
+      borderRadius: "var(--radius-16)",
+      background: "var(--color-surface)",
+      boxShadow: `0 0 0 var(--border-1) ${open ? "var(--color-bronze)" : "var(--color-line)"}`,
+      transition: "box-shadow var(--dur-fast) var(--ease)",
+      overflow: "hidden"
+    } }, /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: onToggle,
+        expanded: open,
+        controls: bodyId,
+        label: `${title}${chips.length ? `, ${chips.join(", ")}` : ""}. ${open ? "Collapse" : "Expand"}`,
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-10)",
+          width: "100%",
+          minHeight: "var(--h-touch)",
+          padding: "var(--space-12)",
+          textAlign: "left",
+          background: "transparent"
+        }
+      },
+      step2 != null && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
+        flex: "0 0 auto",
+        width: 22,
+        height: 22,
+        borderRadius: "var(--radius-full)",
+        display: "grid",
+        placeItems: "center",
+        font: "var(--type-meta-font)",
+        fontVariantNumeric: "tabular-nums",
+        background: done ? "var(--color-bronze-deep)" : open ? "var(--color-selected)" : "var(--color-chip)",
+        color: done ? "var(--color-surface)" : "var(--color-bronze-deep)",
+        boxShadow: done ? "none" : `inset 0 0 0 var(--border-1) var(--color-line)`,
+        transition: "background var(--dur-fast) var(--ease)"
+      } }, done ? "\u2713" : step2),
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", flexDirection: "column", gap: 2, minWidth: 0, flex: 1 } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-row-strong-font)", color: "var(--color-ink)" } }, title), !open && (chips.length > 0 || summary) && /* @__PURE__ */ react_global_default.createElement("span", { style: { display: "flex", alignItems: "center", gap: "var(--space-4)", flexWrap: "nowrap", minWidth: 0 } }, chips.length > 0 ? /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, shown.map((c) => /* @__PURE__ */ react_global_default.createElement("span", { key: c, style: {
+        font: "var(--type-caption-font)",
+        color: "var(--color-bronze-deep)",
+        background: "var(--color-chip)",
+        borderRadius: "var(--radius-full)",
+        padding: "2px var(--space-8)",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        maxWidth: 108
+      } }, c)), rest > 0 && /* @__PURE__ */ react_global_default.createElement("span", { style: {
+        font: "var(--type-caption-font)",
+        color: "var(--color-muted)",
+        fontVariantNumeric: "tabular-nums",
+        whiteSpace: "nowrap"
+      } }, "+", rest)) : /* @__PURE__ */ react_global_default.createElement("span", { style: {
+        font: "var(--type-caption-font)",
+        color: "var(--color-muted)",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis"
+      } }, summary))),
+      count != null && !open && /* @__PURE__ */ react_global_default.createElement("span", { style: {
+        flex: "0 0 auto",
+        font: "var(--type-meta-font)",
+        color: "var(--color-muted)",
+        fontVariantNumeric: "tabular-nums",
+        whiteSpace: "nowrap"
+      } }, count.toLocaleString("en-IN"), " ", unit),
+      /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
+        flex: "0 0 auto",
+        display: "grid",
+        placeItems: "center",
+        transform: `rotate(${open ? -90 : 90}deg)`,
+        transition: "transform var(--dur-fast) var(--ease)",
+        color: "var(--color-muted)"
+      } }, /* @__PURE__ */ react_global_default.createElement(IconChevronRight, null))
+    ), /* @__PURE__ */ react_global_default.createElement("div", { id: bodyId, ref: bodyRef, style: {
+      display: "grid",
+      gridTemplateRows: open ? "1fr" : "0fr",
+      transition: "grid-template-rows var(--dur-enter) var(--ease)"
+    } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
+      padding: `0 var(--space-12) var(--space-12)`,
+      opacity: open ? 1 : 0,
+      transition: "opacity var(--dur-fast) var(--ease)"
+    } }, children))));
+  }
+  function StepStack({ children }) {
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-8)" } }, children);
   }
 
   // design-system/components/chat/UserTurn.jsx
@@ -2222,14 +2501,75 @@ var __ds_out = (() => {
     return /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "var(--space-6)" } }, /* @__PURE__ */ react_global_default.createElement(Pair, { label, value, weight, tone }), /* @__PURE__ */ react_global_default.createElement(Pair, { label: sub.label, value: sub.value, weight: "quiet", tone: sub.tone || "ink" }));
   }
 
-  // design-system/components/forms/SelectionMark.jsx
-  function SelectionMark({ kind, selected = false, disabled = false }) {
-    const ring = selected ? "var(--color-bronze)" : "var(--color-line)";
-    const base = { display: "inline-flex", width: 20, height: 20, flexShrink: 0, alignItems: "center", justifyContent: "center", boxSizing: "border-box", opacity: disabled ? 0.4 : 1, transition: "background-color var(--dur-press) var(--ease)" };
-    if (kind === "radio") {
-      return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-full)", boxShadow: `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("span", { style: { width: 10, height: 10, borderRadius: "var(--radius-full)", background: "var(--color-bronze)" } }));
-    }
-    return /* @__PURE__ */ react_global_default.createElement("span", { style: { ...base, borderRadius: "var(--radius-6)", background: selected ? "var(--color-bronze)" : "transparent", boxShadow: selected ? "none" : `inset 0 0 0 1.5px ${ring}` } }, selected && /* @__PURE__ */ react_global_default.createElement("svg", { width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "var(--color-surface)", strokeWidth: "2.6", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ react_global_default.createElement("path", { d: "m5 12 5 5 9-9" })));
+  // design-system/components/data/MetricRow.jsx
+  var NUM4 = { fontVariantNumeric: "tabular-nums" };
+  function MetricRow({ label, value, peers = [], note, open = false, onToggle, id, last = false }) {
+    const auto = react_global_default.useId ? react_global_default.useId() : "metric";
+    const bodyId = `${id || auto}-peers`;
+    const bodyRef = react_global_default.useRef(null);
+    react_global_default.useEffect(() => {
+      if (bodyRef.current) bodyRef.current.inert = !open;
+    }, [open]);
+    const canOpen = peers.length > 0 || !!note;
+    return /* @__PURE__ */ react_global_default.createElement("div", { style: { borderBottom: last ? "none" : "var(--border-hairline) solid var(--color-line)" } }, /* @__PURE__ */ react_global_default.createElement(
+      Pressable,
+      {
+        onClick: canOpen ? onToggle : void 0,
+        expanded: canOpen ? open : void 0,
+        controls: canOpen ? bodyId : void 0,
+        label: `${label}, ${value}${canOpen ? `. ${open ? "Hide" : "Show"} what it is measured against` : ""}`,
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-10)",
+          width: "100%",
+          minHeight: "var(--h-row-xl)",
+          padding: `var(--space-8) 0`,
+          textAlign: "left",
+          background: "transparent",
+          cursor: canOpen ? void 0 : "default"
+        }
+      },
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { flex: 1, minWidth: 0, font: "var(--type-row-font)", color: "var(--color-ink)" } }, label),
+      /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-row-strong-font)", color: "var(--color-ink)", ...NUM4 } }, value),
+      canOpen && /* @__PURE__ */ react_global_default.createElement("span", { "aria-hidden": "true", style: {
+        flex: "0 0 auto",
+        display: "grid",
+        placeItems: "center",
+        transform: `rotate(${open ? -90 : 90}deg)`,
+        transition: "transform var(--dur-fast) var(--ease)",
+        color: "var(--color-muted)"
+      } }, /* @__PURE__ */ react_global_default.createElement(IconChevronRight, null))
+    ), canOpen && /* @__PURE__ */ react_global_default.createElement("div", { id: bodyId, ref: bodyRef, style: {
+      display: "grid",
+      gridTemplateRows: open ? "1fr" : "0fr",
+      transition: "grid-template-rows var(--dur-enter) var(--ease)"
+    } }, /* @__PURE__ */ react_global_default.createElement("div", { style: { minHeight: 0, overflow: "hidden" } }, /* @__PURE__ */ react_global_default.createElement("div", { style: {
+      paddingBottom: "var(--space-12)",
+      display: "flex",
+      flexDirection: "column",
+      gap: "var(--space-8)",
+      opacity: open ? 1 : 0,
+      transition: "opacity var(--dur-fast) var(--ease)"
+    } }, peers.length > 0 && /* @__PURE__ */ react_global_default.createElement("div", { style: { display: "grid", gridTemplateColumns: `repeat(${peers.length}, 1fr)`, gap: "var(--space-6)" } }, peers.map((p) => /* @__PURE__ */ react_global_default.createElement("div", { key: p.label, style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+      padding: "var(--space-10)",
+      borderRadius: "var(--radius-12)",
+      /* The fund's own tile is the one the other two are read against, so it carries
+         the accent surface. The accent is a SURFACE here and the label still says
+         which is which — colour is not doing the work alone. */
+      background: p.self ? "var(--color-selected)" : "var(--color-chip)"
+    } }, /* @__PURE__ */ react_global_default.createElement("span", { style: {
+      font: p.missing ? "var(--type-caption-font)" : "var(--type-row-strong-font)",
+      color: p.missing ? "var(--color-muted)" : "var(--color-ink)",
+      ...p.missing ? null : NUM4
+    } }, p.value), /* @__PURE__ */ react_global_default.createElement("span", { style: { font: "var(--type-caption-font)", color: "var(--color-muted)" } }, p.label)))), note && /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, note)))));
+  }
+  function MetricList({ children }) {
+    const items = react_global_default.Children.toArray(children);
+    return /* @__PURE__ */ react_global_default.createElement("div", null, items.map((c, i) => react_global_default.isValidElement(c) ? react_global_default.cloneElement(c, { last: i === items.length - 1 }) : c));
   }
 
   // design-system/components/lists/ListRow.jsx
@@ -2362,13 +2702,13 @@ var __ds_out = (() => {
     if (t >= 11 && t <= 13) return `${n}th`;
     return `${n}${["th", "st", "nd", "rd"][n % 10] || "th"}`;
   };
-  var NUM3 = { fontVariantNumeric: "tabular-nums" };
+  var NUM5 = { fontVariantNumeric: "tabular-nums" };
   function PeerLine({ value, peer, period, peerLabel, rank = null, unit = "%" }) {
     const shown = (n) => Math.round(n * 10) / 10;
     const a = shown(value), b = shown(peer);
     const gap = shown(a - b);
     const verdict = gap === 0 ? "level with its category" : `${Math.abs(gap).toFixed(1)} points ${gap > 0 ? "ahead" : "behind"}`;
-    return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...NUM3, color: "var(--color-ink)", font: "var(--type-meta-font)" } }, a.toFixed(1), unit), " over ", period, " \xB7 ", peerLabel, " ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, b.toFixed(1), unit), " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: { color: "var(--color-ink)" } }, verdict), rank && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: { color: "var(--color-ink)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, ORD(rank.n)), " of ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM3 }, rank.of))));
+    return /* @__PURE__ */ react_global_default.createElement("p", { style: { margin: 0, font: "var(--type-caption-font)", color: "var(--color-muted)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: { ...NUM5, color: "var(--color-ink)", font: "var(--type-meta-font)" } }, a.toFixed(1), unit), " over ", period, " \xB7 ", peerLabel, " ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM5 }, b.toFixed(1), unit), " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: { color: "var(--color-ink)" } }, verdict), rank && /* @__PURE__ */ react_global_default.createElement(react_global_default.Fragment, null, " \xB7 ", /* @__PURE__ */ react_global_default.createElement("span", { style: { color: "var(--color-ink)" } }, /* @__PURE__ */ react_global_default.createElement("span", { style: NUM5 }, ORD(rank.n)), " of ", /* @__PURE__ */ react_global_default.createElement("span", { style: NUM5 }, rank.of))));
   }
 
   // design-system/components/data/ProgressRail.jsx
@@ -2413,6 +2753,47 @@ var __ds_out = (() => {
       },
       "Clear"
     ) : null);
+  }
+
+  // design-system/components/icons/AssetMark.jsx
+  var BOX = { display: "block" };
+  function Svg({ size, children, label }) {
+    return /* @__PURE__ */ react_global_default.createElement(
+      "svg",
+      {
+        width: size,
+        height: size,
+        viewBox: "0 0 24 24",
+        fill: "currentColor",
+        style: BOX,
+        role: label ? "img" : void 0,
+        "aria-label": label,
+        "aria-hidden": label ? void 0 : "true"
+      },
+      children
+    );
+  }
+  function MarkEquity({ size = 24, label }) {
+    return /* @__PURE__ */ react_global_default.createElement(Svg, { size, label }, /* @__PURE__ */ react_global_default.createElement("rect", { x: "2", y: "15", width: "4", height: "7", rx: "1" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "8", y: "11", width: "4", height: "11", rx: "1" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "14", y: "6", width: "4", height: "16", rx: "1" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "20", y: "2", width: "2", height: "20", rx: "1" }));
+  }
+  function MarkDebt({ size = 24, label }) {
+    return /* @__PURE__ */ react_global_default.createElement(Svg, { size, label }, /* @__PURE__ */ react_global_default.createElement("rect", { x: "2", y: "3.5", width: "19", height: "3", rx: "1.5" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "2", y: "9", width: "13", height: "3", rx: "1.5" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "2", y: "14.5", width: "17", height: "3", rx: "1.5" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "2", y: "20", width: "9", height: "3", rx: "1.5" }));
+  }
+  function MarkCommodity({ size = 24, label }) {
+    return /* @__PURE__ */ react_global_default.createElement(Svg, { size, label }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M7 2.5h10l2.2 5.5H4.8L7 2.5Z" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M4 9h16l2.4 6H1.6L4 9Z" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M1 16h22l2 7.5H-1L1 16Z" }));
+  }
+  function MarkProperty({ size = 24, label }) {
+    return /* @__PURE__ */ react_global_default.createElement(Svg, { size, label }, /* @__PURE__ */ react_global_default.createElement("path", { d: "M3 9h7v13H3V9Z" }), /* @__PURE__ */ react_global_default.createElement("path", { d: "M12 2h9v20h-9V2Z" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "5", y: "12", width: "3", height: "2.5", rx: "0.6", fill: "var(--color-surface)", opacity: "0.55" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "14.5", y: "5", width: "4", height: "2.5", rx: "0.6", fill: "var(--color-surface)", opacity: "0.55" }), /* @__PURE__ */ react_global_default.createElement("rect", { x: "14.5", y: "10", width: "4", height: "2.5", rx: "0.6", fill: "var(--color-surface)", opacity: "0.55" }));
+  }
+  var ASSET_MARKS = {
+    Equity: MarkEquity,
+    Debt: MarkDebt,
+    Commodity: MarkCommodity,
+    "REITs / InvITs": MarkProperty
+  };
+  function AssetMark({ asset, size = 24, label }) {
+    const M = ASSET_MARKS[asset];
+    return M ? /* @__PURE__ */ react_global_default.createElement(M, { size, label }) : null;
   }
 
   // design-system/components/icons/IconCheckCircle.jsx

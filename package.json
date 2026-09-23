@@ -1,7 +1,7 @@
 {
   "name": "@centricity/sentinel-design-system",
   "version": "2026.9.0",
-  "description": "Sentinel \u2014 the design system for Centricity WealthTech's chat-led wealth-management assistant for advisors.",
+  "description": "Sentinel — the design system for Centricity WealthTech's chat-led wealth-management assistant for advisors.",
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
@@ -25,6 +25,7 @@
     "build:artifact": "node tools/build-artifact.mjs",
     "build:barrel": "node tools/build-barrel.mjs",
     "build:bundle": "node tools/build-bundle.mjs",
+    "build:catalogue": "node tools/build-catalogue.mjs",
     "build:handoff": "node tools/build-handoff.mjs",
     "build:index": "node tools/build-index.mjs",
     "build:scale": "node tools/extract-scale.mjs",

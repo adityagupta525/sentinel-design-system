@@ -10,6 +10,11 @@ export interface IntentTileProps {
   unit?: string;
   /** One line under the count: what is inside the set. Not shown when `unavailable`. */
   note?: string;
+  /** A silhouette drawn at 76px in the bottom-right corner, at 7% ink, clipped by the tile's own
+   *  radius. It is TEXTURE, never meaning: every tile states its class in words, so a tile with no
+   *  mark is not a tile missing information, and rule 1 — colour and shape never carry a meaning
+   *  alone — holds. Pass an `AssetMark`, or any 24-viewBox glyph sized up. */
+  mark?: React.ReactNode;
   /** The set is the one currently applied. */
   selected?: boolean;
   /** No feed for this asset class yet. The tile stays visible and legible and loses only its

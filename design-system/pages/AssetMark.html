@@ -1,0 +1,97 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="AssetMark" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>AssetMark — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/AssetMark.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { AssetMark, MarkEquity, MarkDebt, MarkCommodity, MarkProperty, IntentTile, IntentGrid, Surface } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze-deep','--color-surface','--radius-16','--space-12'];
+const FOUR = [
+  { asset: 'Equity', count: 36, why: 'The rising step — four columns, the shape a NAV curve makes as bars.' },
+  { asset: 'Debt', count: 24, why: 'The coupon ladder, staggered — a schedule of payments, each landing and stopping.' },
+  { asset: 'Commodity', count: 10, why: 'The ingot, stacked — gold is the whole of this class in the catalogue.' },
+  { asset: 'REITs / InvITs', count: 10, why: 'The elevation — rent from built things.' },
+];
+
+function Sheet({ tint = 'var(--color-bronze-deep)', opacity = 1 }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-12)', color: tint, opacity }}>
+      {FOUR.map((f) => (
+        <div key={f.asset} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-8)' }}>
+          <AssetMark asset={f.asset} size={56} />
+          <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)', textAlign: 'center' }}>{f.asset}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="AssetMark" group="Foundations" status="shipped" requires={['AssetMark','IntentTile']}
+      summary="Four tiles carrying only a word and a number is the flattest surface in the product, and the owner said so on 23 Sep 2026 — they read as labels in boxes. A mark gives each tile a silhouette the eye can learn, so the second time an advisor opens the explorer they reach for a shape rather than read four words. They are TEXTURE, never iconography: drawn at 7% ink under a label that already says the same word, so nothing here is ever the only thing carrying a meaning and rule 1 holds. They are geometry rather than pictures because this system ships no images — not one, anywhere — and each mark is the shape the quantity already has in this product.">
+
+      <Block n={1} title="The four, at full ink" sub="24 viewBox, currentColor, no stroke — so a caller sizes them and tints them on the parent, and the four cannot drift apart in weight.">
+        <Surface><Sheet /></Surface>
+      </Block>
+
+      <Block n={2} title="Where they actually live" sub="At 76px in the bottom-right of a tile, at 7% ink, cropped by the tile's own radius. Each shape was redrawn once the crop was looked at: the debt ladder's rungs were full width and cropped into three unfinished bars, and the ingot's two halves floated apart once the lower one was cut.">
+        <Specimen>
+          <IntentGrid>
+            {FOUR.map((f) => (
+              <IntentTile key={f.asset} label={f.asset} count={f.count}
+                mark={<AssetMark asset={f.asset} size={76} />}
+                selected={f.asset === 'Equity'} onClick={() => {}} />
+            ))}
+          </IntentGrid>
+        </Specimen>
+      </Block>
+
+      <Block n={3} title="At the ink they are drawn at" sub="7% unselected, 13% selected. Below that they vanish on a warm page; above it they compete with the label, which is the one thing on the tile that carries meaning.">
+        <Grid cols={2} items={[
+          { label: '7% — unselected', node: <Surface><Sheet opacity={0.07} /></Surface>, note: 'Texture. You see it without reading it.' },
+          { label: '100% — never shipped', node: <Surface><Sheet /></Surface>, note: 'At full ink the mark is an illustration and the tile is about the picture.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={5} title="Props"><Props src="../components/icons/AssetMark.d.ts" /></Block>
+
+      <Block n={6} title="Do / Don't">
+        <DoDont
+          doNode={<Specimen><IntentGrid><IntentTile label="Equity" count={36} mark={<AssetMark asset="Equity" size={76} />} onClick={() => {}} /><IntentTile label="Debt" count={24} mark={<AssetMark asset="Debt" size={76} />} onClick={() => {}} /></IntentGrid></Specimen>}
+          doCaption="The word carries the meaning; the mark carries the memory. Remove every mark and the tiles still say everything they say."
+          dontNode={<Specimen><IntentGrid><IntentTile label="" count={36} mark={<AssetMark asset="Equity" size={76} />} onClick={() => {}} /><IntentTile label="" count={24} mark={<AssetMark asset="Debt" size={76} />} onClick={() => {}} /></IntentGrid></Specimen>}
+          dontCaption="The mark left to carry the class on its own. Now it needs a legend — and a legend on a four-tile grid is an admission the tiles failed. An unknown asset renders nothing at all for the same reason: a wrong shape is worse than no shape, because the eye learns it anyway." />
+      </Block>
+
+      <Block n={7} title="Motion">
+        <Motion rows={[
+          { name: 'Mark on selection', property: 'opacity 0.07 → 0.13, on the tile', duration: '--dur-fast 200ms', reduced: 'Unchanged — an opacity change, not a movement.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

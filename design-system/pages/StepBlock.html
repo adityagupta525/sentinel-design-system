@@ -1,0 +1,114 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="StepBlock" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>StepBlock — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/StepBlock.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { StepBlock, StepStack, IntentTile, IntentGrid, ChipRow, Surface, AssetMark } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--radius-16','--space-12','--space-8','--h-touch','--dur-enter','--dur-fast','--ease','--color-bronze','--color-chip','--type-row-strong-font','--type-caption-font'];
+
+const ASSETS = [
+  { label: 'Equity', count: 36 }, { label: 'Debt', count: 24 },
+  { label: 'Commodity', count: 10 }, { label: 'REITs / InvITs', count: 10 },
+];
+
+function Funnel() {
+  const [openStep, setOpen] = React.useState(1);
+  const [assets, setAssets] = React.useState(['Equity', 'Debt']);
+  const [product, setProduct] = React.useState([]);
+  const toggle = (n) => setOpen((s) => (s === n ? 0 : n));
+  const tapAsset = (l) => setAssets((s) => (s.includes(l) ? s.filter((x) => x !== l) : s.concat(l)));
+  const count = ASSETS.filter((a) => assets.includes(a.label)).reduce((t, a) => t + a.count, 0);
+  return (
+    <StepStack>
+      <StepBlock step={1} title="Asset class" chips={assets} done={assets.length > 0}
+        count={count} open={openStep === 1} onToggle={() => toggle(1)}>
+        <IntentGrid>
+          {ASSETS.map((a) => (
+            <IntentTile key={a.label} label={a.label} count={a.count}
+              mark={<AssetMark asset={a.label} size={76} />}
+              selected={assets.includes(a.label)} onClick={() => tapAsset(a.label)} />
+          ))}
+        </IntentGrid>
+      </StepBlock>
+      <StepBlock step={2} title="Product" chips={product} done={product.length > 0}
+        open={openStep === 2} onToggle={() => toggle(2)}>
+        <ChipRow chips={['Mutual fund', 'PMS', 'AIF', 'Unlisted', 'Bonds', 'Fixed deposit']}
+          selected={product} onToggle={(c) => setProduct((s) => (s.includes(c) ? s.filter((x) => x !== c) : s.concat(c)))} />
+      </StepBlock>
+      <StepBlock step={3} title="Category" summary="Not yet chosen" open={openStep === 3} onToggle={() => toggle(3)}>
+        <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-muted)' }}>
+          Categories appear once a product is chosen — the third question is a function of the second.
+        </p>
+      </StepBlock>
+    </StepStack>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="StepBlock" group="Chat" status="shipped" requires={['StepBlock','IntentTile','ChipRow','Surface']}
+      summary="The explorer asks four questions in order and the owner's ruling is that all four live on ONE screen, in one thread, with nothing opening a second. That ruling only works if a question that has been answered stops taking a screenful — so a step collapses to a single row carrying its own answer, and the row is the control that opens it again. The funnel then reads as a sentence down the screen, and changing any word of it is one tap on that word.">
+
+      <Block n={1} title="Specimen" sub="Live. Open a step; choosing inside it updates the row above. Only one step is open at a time, because two open steps is a form, and a form is what this replaces.">
+        <Specimen><Funnel /></Specimen>
+      </Block>
+
+      <Block n={2} title="Closed, the row IS the answer" sub="An accordion whose header is only a title makes the advisor open a step to remember what they chose. Here the header carries it, so the four steps read as one sentence: asset, product, category, fund.">
+        <Grid cols={2} items={[
+          { label: 'Answered and closed', node: <Surface><StepBlock step={1} title="Asset class" chips={['Equity','Debt']} done count={60} /></Surface>, note: 'Tick, the chosen chips, the count it yields.' },
+          { label: 'Four chosen, room for three', node: <Surface><StepBlock step={2} title="Product" chips={['Mutual fund','PMS','AIF','Unlisted']} done count={40} /></Surface>, note: 'The overflow is +1 — a count, never a fade over the fourth chip.' },
+        ]} />
+      </Block>
+
+      <Block n={3} title="Unanswered is not the same as empty" sub="A step still to be answered shows its numeral and no chips. A step whose answer is a sentence rather than a set takes `summary` instead.">
+        <Grid cols={2} items={[
+          { label: 'Not yet answered', node: <Surface><StepBlock step={3} title="Category" /></Surface>, note: 'Numeral, no tick, nothing claimed.' },
+          { label: 'A sentence, not a set', node: <Surface><StepBlock step={4} title="Fund" summary="Parag Parikh Flexi Cap" done /></Surface>, note: '`summary` for a single answer.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={5} title="Props"><Props src="../components/chat/StepBlock.d.ts" /></Block>
+
+      <Block n={6} title="Do / Don't">
+        <DoDont
+          doNode={<Surface><StepStack><StepBlock step={1} title="Asset class" chips={['Equity']} done count={36} /><StepBlock step={2} title="Product" chips={['Mutual fund']} done count={10} /></StepStack></Surface>}
+          doCaption="Answered steps rest closed, each carrying its answer and its count. The advisor can read the whole funnel without opening anything."
+          dontNode={<Surface><StepStack><StepBlock step={1} title="Asset class" open onToggle={() => {}}><p style={{ margin: 0, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>A selector.</p></StepBlock><StepBlock step={2} title="Product" open onToggle={() => {}}><p style={{ margin: 0, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>Another selector.</p></StepBlock></StepStack></Surface>}
+          dontCaption="Two steps open at once. Now it is a form on a phone — the thing the funnel exists to replace — and neither row is carrying an answer." />
+      </Block>
+
+      <Block n={7} title="Motion">
+        <Motion rows={[
+          { name: 'Panel opens', property: 'grid-template-rows 0fr → 1fr — the content grows from its own row, with no measurement and no max-height guess', duration: '--dur-enter 240ms', reduced: 'The global block cuts every transition to 1ms, so the panel appears at full height with no travel.' },
+          { name: 'Content fades', property: 'opacity 0 → 1 on the panel body, so text does not scroll into view before its box exists', duration: '--dur-fast 200ms', reduced: 'Same — 1ms, no visible fade.' },
+          { name: 'Chevron turns', property: 'transform rotate(90deg → -90deg). One icon rotating, never two icons swapped', duration: '--dur-fast 200ms', reduced: 'Lands rotated with no travel.' },
+          { name: 'Ring on open', property: 'box-shadow, --color-line → --color-bronze', duration: '--dur-fast 200ms', reduced: 'Unchanged — a colour change, not a movement.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

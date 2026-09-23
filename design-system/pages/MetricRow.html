@@ -1,0 +1,103 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="MetricRow" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>MetricRow — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/MetricRow.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { MetricRow, MetricList, Surface, Eyebrow, InlineActionRow, Provenance } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--h-row-xl','--border-hairline','--radius-12','--space-10','--space-6','--dur-enter','--dur-fast','--ease','--color-selected','--color-chip','--type-row-font','--type-row-strong-font'];
+
+/* Canara Robeco Large Cap, verbatim from the catalogue. It is BEHIND its category over one year and
+   AHEAD over three, which is the whole reason a figure needs its peers beside it — and the benchmark
+   return is not on file for any of the ten mutual funds in the sample, so the third tile says so. */
+function Live() {
+  const [open, setOpen] = React.useState('3Y return');
+  const t = (k) => () => setOpen((s) => (s === k ? null : k));
+  return (
+    <Surface>
+      <Eyebrow>HOW IT HAS DONE</Eyebrow>
+      <div style={{ marginTop: 'var(--space-8)' }}>
+        <MetricList>
+          <MetricRow label="3Y return" value="9.76%" open={open === '3Y return'} onToggle={t('3Y return')}
+            peers={[{ label: 'This fund', value: '9.76%', self: true }, { label: 'Large cap', value: '8.64%' }, { label: 'Nifty 100', value: 'not on file', missing: true }]}
+            note="1.1 points ahead of its category over three years." />
+          <MetricRow label="1Y return" value="−3.20%" open={open === '1Y return'} onToggle={t('1Y return')}
+            peers={[{ label: 'This fund', value: '−3.20%', self: true }, { label: 'Large cap', value: '−2.25%' }, { label: 'Nifty 100', value: 'not on file', missing: true }]}
+            note="Behind its category over one year, ahead over three. Both are true and neither is the answer on its own." />
+          <MetricRow label="Alpha (3Y)" value="1.64" open={open === 'Alpha (3Y)'} onToggle={t('Alpha (3Y)')}
+            note="Return above what its beta would have predicted, over three years." />
+          <MetricRow label="Beta (3Y)" value="0.94" open={open === 'Beta (3Y)'} onToggle={t('Beta (3Y)')}
+            note="Moves about 6% less than Nifty 100, up and down." />
+          <MetricRow label="Expense ratio" value="0.45%" />
+        </MetricList>
+      </div>
+      <div style={{ marginTop: 'var(--space-8)' }}><Provenance text="Catalogue, 17 Sep 2026 · category average across the sample" /></div>
+    </Surface>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="MetricRow" group="Data" status="shipped" requires={['MetricRow','Surface','Eyebrow','Provenance']}
+      summary="A one-pager is a column of numbers and a number on its own answers nothing. Alpha 1.64 is only a fact once the reader knows the category did 8.64. The catalogue carries the peers; printing all three per row makes a wall, so the row prints the fund's own figure and opening it lays the peers beside it. Not StatTile, which is a headline figure with a door to a DEFINITION — this is a row with a door to a COMPARISON, and a one-pager wants both.">
+
+      <Block n={1} title="Specimen" sub="Live, and every figure is Canara Robeco Large Cap from the catalogue. Open the first two rows together: the fund is BEHIND its category over one year and AHEAD over three. Neither figure alone is the answer, which is why neither is printed alone.">
+        <Specimen><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="A row with nothing to compare has no chevron" sub="Expense ratio has no peer in the catalogue, so the row does not offer a door that opens on an empty panel. The absence of the affordance IS the statement.">
+        <Grid cols={2} items={[
+          { label: 'Has peers', node: <Surface><MetricList><MetricRow label="3Y return" value="9.76%" peers={[{ label: 'This fund', value: '9.76%', self: true }, { label: 'Large cap', value: '8.64%' }]} /></MetricList></Surface>, note: 'Chevron, because opening it says something.' },
+          { label: 'Has none', node: <Surface><MetricList><MetricRow label="Expense ratio" value="0.45%" /></MetricList></Surface>, note: 'No chevron. Nothing promised that cannot be delivered.' },
+        ]} />
+      </Block>
+
+      <Block n={3} title="A missing peer is named, not dropped" sub="The benchmark return is not on file for any of the ten mutual funds in the sample — but the benchmark itself is: Nifty 100. Dropping the tile would hide that a comparison is meant to exist; printing a zero would invent it.">
+        <Grid cols={1} items={[
+          { label: 'Three tiles, one of them a gap', node: <Surface><MetricList><MetricRow label="3Y return" value="9.76%" open peers={[{ label: 'This fund', value: '9.76%', self: true }, { label: 'Large cap', value: '8.64%' }, { label: 'Nifty 100', value: 'not on file', missing: true }]} note="1.1 points ahead of its category over three years." /></MetricList></Surface>, note: 'We know which benchmark. We do not have its number. The tile says exactly that.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={5} title="Props"><Props src="../components/data/MetricRow.d.ts" /></Block>
+
+      <Block n={6} title="Do / Don't">
+        <DoDont
+          doNode={<Surface><MetricList><MetricRow label="3Y return" value="9.76%" open peers={[{ label: 'This fund', value: '9.76%', self: true }, { label: 'Large cap', value: '8.64%' }]} note="1.1 points ahead of its category over three years." /></MetricList></Surface>}
+          doCaption="The fund's own tile carries the accent, the peer sits beside it, and one line reads the comparison rather than defining the metric."
+          dontNode={<Surface><MetricList><MetricRow label="3Y return" value="9.76%" open peers={[{ label: 'This fund', value: '9.76%', self: true }, { label: 'Large cap', value: '8.64%' }, { label: 'Nifty 100', value: '9.12%' }, { label: 'Mid cap', value: '15.33%' }, { label: 'Small cap', value: '15.00%' }]} /></MetricList></Surface>}
+          dontCaption="Five tiles across 311pt. Two of them are other categories this fund is not in, so the row now invites a comparison that means nothing — and at this width the figures have stopped being readable anyway." />
+      </Block>
+
+      <Block n={7} title="Motion">
+        <Motion rows={[
+          { name: 'Peers open', property: 'grid-template-rows 0fr → 1fr. The funnel\'s one expansion, shared with StepBlock and FundCard: three components, one gesture, one behaviour', duration: '--dur-enter 240ms', reduced: 'Appears at full height with no travel.' },
+          { name: 'Tiles fade', property: 'opacity 0 → 1', duration: '--dur-fast 200ms', reduced: 'No visible fade.' },
+          { name: 'Chevron turns', property: 'transform rotate(90deg → -90deg)', duration: '--dur-fast 200ms', reduced: 'Lands rotated with no travel.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

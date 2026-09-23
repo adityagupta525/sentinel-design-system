@@ -1,0 +1,117 @@
+<!-- @dsCard group="Pages" viewport="1100x2100" name="FundCard" subtitle="A label and its figure on one baseline — and the tabular figures are set here, not remembered four times" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>FundCard — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/FundCard.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { FundCard, Surface, Eyebrow, Provenance } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--radius-16','--space-14','--border-hairline','--dur-enter','--dur-fast','--ease','--type-row-strong-font','--type-figure-font','--type-caption-font','--color-chip','--color-bronze'];
+
+/* Every figure on this page is a real row from the catalogue — Canara Robeco's 53 weekly NAV points,
+   ReNew Akshay Urja's real coupon and maturity, Suryoday's real and entirely empty record. */
+const NAV = [68.17,64.4,69.93,70.25,71.79,71.9,71.72,72.92,71.83,74.11,73.9,72.78,72.59,71.98,73.12,71.48,72.68,74.33,72.03,73.41,75.11,74.81,74.98,75.34,75.34,74.81,75.46,75.29,74.39,73.12,74.26,74.83,74.44,71.8,67.83,67.77,67.14,71.16,70.23,70.91,69.3,69.11,68.28,71.26,70.86,71.29,72.06,72.38,73.56,72.87,72.83,71.73,70.28];
+
+const FUND = {
+  name: 'Canara Robeco Large Cap Fund', sub: 'Large Cap Fund · Direct · Open ended', logo: 'CR',
+  chips: ['Nifty 100'], headline: { value: '9.76%', label: '3Y return' }, spark: NAV,
+  facts: [{ label: 'AUM', value: '₹17,092 Cr' }, { label: 'TER', value: '0.45%' }],
+};
+const BOND = {
+  name: '8.75% ReNew Akshay Urja', sub: 'Non-Convertible Debenture · Close ended', logo: 'RA',
+  chips: ['Quarterly'], headline: { value: '8.75%', label: 'Coupon' },
+  facts: [{ label: 'Matures', value: 'Sep 2034' }, { label: 'Face value', value: '₹9,78,659' }],
+};
+const FD = {
+  name: 'Suryoday Bank — FD', sub: 'Bank FD', logo: 'SB',
+  facts: [{ label: 'Rate', value: 'not on file' }],
+};
+
+function Live() {
+  const [open, setOpen] = React.useState(null);
+  const [picked, setPicked] = React.useState([]);
+  const rows = [FUND, BOND, FD];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+      {rows.map((r) => (
+        <FundCard key={r.name} {...r} selectable selected={picked.includes(r.name)}
+          onSelect={() => setPicked((s) => (s.includes(r.name) ? s.filter((x) => x !== r.name) : s.concat(r.name)))}
+          open={open === r.name} onToggle={() => setOpen((s) => (s === r.name ? null : r.name))}>
+          <div style={{ paddingTop: 'var(--space-8)', borderTop: 'var(--border-hairline) solid var(--color-line)' }}>
+            <Eyebrow>THE ONE-PAGER</Eyebrow>
+            <p style={{ margin: `var(--space-8) 0 0`, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
+              The page opens here, inside the card, in the same thread. Nothing navigated; the list above is still where it was.
+            </p>
+          </div>
+        </FundCard>
+      ))}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <PageShell name="FundCard" group="Chat" status="shipped" requires={['FundCard','ChartSpark','SelectionMark','Badge']}
+      summary="The card is not a fund card with fields missing. Of the catalogue's eight families only two carry a return and a NAV series at all — a bond has a coupon, a yield, a face value, a maturity and a payment frequency instead, and those are different facts rather than worse ones. So the card takes ONE headline and a row of facts, and the caller, which has already asked shapeOf(id), decides what they are. A card with no headline is not broken: it is a card whose instrument has no single number, and the facts carry it.">
+
+      <Block n={1} title="Specimen" sub="Live, and every figure is a real catalogue row. Tap a card to open its page in place; tap the checkbox to add it to a comparison. Three families, three different sets of facts, one card.">
+        <Specimen><Live /></Specimen>
+      </Block>
+
+      <Block n={2} title="An em dash is not an answer" sub="The first build gave every instrument a fund's card and printed an em dash wherever the data ran out — which reads as 'we do not know this fund' rather than 'this is not that kind of thing'. Suryoday's record in the catalogue carries the name and literally nothing else: its `pending` list names rate_of_interest. So the card says that.">
+        <Grid cols={2} items={[
+          { label: 'What the data has', node: <Surface><FundCard {...BOND} /></Surface>, note: 'A coupon IS the headline for a bond. Maturity and face value are its facts.' },
+          { label: 'What the data does not have', node: <Surface><FundCard {...FD} /></Surface>, note: 'No headline, because there is no number. The gap is named in words, never printed as 0.00%.' },
+        ]} />
+      </Block>
+
+      <Block n={3} title="The spark is the path, not decoration" sub="Two funds on the same three-year return are not the same fund, and the figure alone cannot say so. It is drawn only where a series exists — there is no placeholder, because a blank box beside a number reads as a chart that failed to load.">
+        <Grid cols={2} items={[
+          { label: 'With its series', node: <Surface><FundCard {...FUND} /></Surface>, note: '53 real weekly NAV points behind a 3-year figure.' },
+          { label: 'Without one', node: <Surface><FundCard {...FUND} spark={undefined} /></Surface>, note: 'The headline sits alone. Nothing is reserved and nothing is faked.' },
+        ]} />
+      </Block>
+
+      <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={5} title="Props"><Props src="../components/cards/FundCard.d.ts" /></Block>
+
+      <Block n={6} title="Do / Don't">
+        <DoDont
+          doNode={<Surface><FundCard {...FUND} badge="On your shelf" /></Surface>}
+          doCaption="One headline, the path behind it, and the two facts that decide between funds in this family. The badge takes the corner because nothing else needs it."
+          dontNode={<Surface><FundCard name="Canara Robeco Large Cap Fund" sub="Large Cap Fund · Direct · Open ended" logo="CR" chips={['Nifty 100','Direct','Open ended','Very high risk','Growth','Large cap']} headline={{ value: '9.76%', label: '3Y return' }} spark={NAV} facts={[{label:'AUM',value:'₹17,092 Cr'},{label:'TER',value:'0.45%'},{label:'Exit load',value:'1% under 1Y'},{label:'NAV',value:'₹70.28'},{label:'ISIN',value:'INF760K01FR2'}]} /></Surface>}
+          dontCaption="Six chips and five facts. Every one is true and none of them is the reason to pick this fund over the next — the card is now a record rather than a comparison, and the advisor reads all of it to find the two figures that matter." />
+      </Block>
+
+      <Block n={7} title="Motion">
+        <Motion rows={[
+          { name: 'Page opens', property: 'grid-template-rows 0fr → 1fr — the card grows into its own page, in place, with the list behind it unmoved. The same mechanic StepBlock uses, deliberately: two expansions in one funnel would teach two behaviours for one gesture', duration: '--dur-enter 240ms', reduced: 'Appears at full height with no travel.' },
+          { name: 'Page content fades', property: 'opacity 0 → 1', duration: '--dur-fast 200ms', reduced: 'No visible fade.' },
+          { name: 'Ring on open or select', property: 'box-shadow, --color-line → --color-bronze', duration: '--dur-fast 200ms', reduced: 'Unchanged — a colour change, not a movement.' },
+          { name: 'Spark draws', property: 'Inherited from ChartSpark: stroke-dashoffset, full length → 0', duration: '--dur-bar 480ms', reduced: 'Rendered whole on mount.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>

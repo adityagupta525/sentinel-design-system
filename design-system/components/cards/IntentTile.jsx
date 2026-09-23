@@ -16,8 +16,23 @@ import { Pressable } from '../actions/Pressable.jsx';
    funds", One Digital's "612 funds". A tile with no count asks the advisor to tap and find out, which is
    the tap this component exists to save.
 
+   REDRAWN 23 SEP 2026, ON THE OWNER'S NOTE THAT THE TILES READ AS LABELS IN BOXES. They did: a word, a
+   figure, a hairline. Three things changed and none of them is a colour.
+     1. A MARK, OVERSIZED AND CLIPPED. `mark` is drawn at 76px in the bottom-right corner at 7% ink and
+        cropped by the tile's own radius, so it is a silhouette UNDER the label rather than an icon
+        beside it. The second time an advisor opens the explorer they reach for a shape instead of
+        reading four words. It is texture, never meaning — every tile still states its class in words,
+        so rule 1 holds and a tile with no mark is not a tile missing information.
+     2. THE TILE HAS A FLOOR, so a grid of four is a grid of four equal objects rather than four boxes
+        of whatever height their text happened to need. 88 is the height at which a title, a count and
+        the mark all sit without the mark touching the type.
+     3. SELECTION IS A TICK AND A RING, not a fill alone. The old tile signalled only with
+        --color-selected, which is a 1.06 contrast change against the surface — invisible to a good
+        number of people and to anyone outdoors. The tick is a shape, and rule 1 is that colour never
+        carries a meaning by itself.
+
    UNAVAILABLE IS A WORD, NEVER A ZERO. Four of the five asset classes Centricity sells — bonds, PMS, AIF,
-   GIFT City — have no rows in the book at all. The product's rule is that what it cannot say, it says in
+   GIFT City — had no rows in the book at all. The product's rule is that what it cannot say, it says in
    words; a tile reading "Bonds · 0 funds" is a lie about an empty shelf rather than an admission of a
    missing feed. `unavailable` renders the tile inert with the reason underneath, and it is still visible,
    because an advisor needs to know the asset class exists and is coming.
@@ -27,7 +42,10 @@ import { Pressable } from '../actions/Pressable.jsx';
    already carry. */
 const NUM = { fontVariantNumeric: 'tabular-nums' };
 
-export function IntentTile({ label, count = null, unit = 'funds', note, selected = false, unavailable = false, unavailableNote, onClick }) {
+export function IntentTile({
+  label, count = null, unit = 'funds', note, mark, selected = false,
+  unavailable = false, unavailableNote, onClick,
+}) {
   const inert = unavailable || !onClick;
   return (
     <Pressable
@@ -37,24 +55,48 @@ export function IntentTile({ label, count = null, unit = 'funds', note, selected
       pressed={selected}
       label={count == null ? label : `${label}, ${count} ${unit}`}
       style={{
+        position: 'relative', overflow: 'hidden',
         display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--space-2)',
-        width: '100%', minHeight: 'var(--h-touch)', padding: 'var(--space-12)', textAlign: 'left',
+        width: '100%', minHeight: 88, padding: 'var(--space-12)', textAlign: 'left',
         borderRadius: 'var(--radius-16)',
         background: selected ? 'var(--color-selected)' : 'var(--color-surface)',
         boxShadow: `0 0 0 var(--border-1) ${selected ? 'var(--color-bronze)' : 'var(--color-line)'}`,
+        transition: 'box-shadow var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease)',
         cursor: inert ? 'default' : undefined,
       }}>
-      <span style={{ font: 'var(--type-title-font)', color: 'var(--color-ink)' }}>{label}</span>
+      {/* THE MARK IS BEHIND EVERYTHING, and `pointerEvents:none` matters — it overlaps the label's
+          box and a mark that swallowed a tap would make the bottom half of the tile dead. */}
+      {mark && (
+        <span aria-hidden="true" style={{
+          position: 'absolute', right: -10, bottom: -12, pointerEvents: 'none',
+          color: 'var(--color-bronze-deep)', opacity: unavailable ? 0.04 : selected ? 0.13 : 0.07,
+          transition: 'opacity var(--dur-fast) var(--ease)',
+          display: 'grid', placeItems: 'center',
+        }}>{mark}</span>
+      )}
+
+      {/* The tick sits where the eye already goes for state on a card in this system — top right,
+          the same corner Badge takes — and it is a shape, so selection survives a greyscale print. */}
+      {selected && (
+        <span aria-hidden="true" style={{
+          position: 'absolute', top: 'var(--space-10)', right: 'var(--space-10)',
+          width: 18, height: 18, borderRadius: 'var(--radius-full)',
+          background: 'var(--color-bronze-deep)', color: 'var(--color-surface)',
+          display: 'grid', placeItems: 'center', font: 'var(--type-caption-font)', lineHeight: 1,
+        }}>✓</span>
+      )}
+
+      <span style={{ position: 'relative', font: 'var(--type-title-font)', color: 'var(--color-ink)', paddingRight: selected ? 22 : 0 }}>{label}</span>
       {/* The count and the note are one line of caption, because two lines of small type under a title
           is a card, and this is a tile. */}
       {count != null && (
-        <span style={{ font: 'var(--type-meta-font)', color: 'var(--color-bronze-deep)', ...NUM }}>
+        <span style={{ position: 'relative', font: 'var(--type-meta-font)', color: 'var(--color-bronze-deep)', ...NUM }}>
           {count.toLocaleString('en-IN')} {unit}
         </span>
       )}
-      {note && !unavailable && <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{note}</span>}
+      {note && !unavailable && <span style={{ position: 'relative', font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>{note}</span>}
       {unavailable && (
-        <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
+        <span style={{ position: 'relative', font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
           {unavailableNote || 'No feed yet — nothing to show rather than nothing on the shelf.'}
         </span>
       )}
