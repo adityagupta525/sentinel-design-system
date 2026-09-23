@@ -275,6 +275,13 @@ export interface ClientAvatarProps {
    * wrong gender would be two wrong answers rather than one.
    */
   age?: number;
+  /**
+   * An explicit face key — `'f-mid-a'`, `'m-old-b'`. It WINS over the derivation, and it is how a list
+   * stops repeating: drawing eight faces from eighteen leaves no repeat only about 9% of the time even
+   * with a perfect hash, so `book.jsx` records one per client instead of guessing. Use it whenever the
+   * caller has the client's record; leave it out for a bare name.
+   */
+  face?: string;
   /** Disc diameter in points. 32 matches `ListRow`'s avatar leading, 20 matches `ClientChip`. */
   size?: number;
   /** Shown instead of the derived letter when there is no name — for a placeholder row. */

@@ -50,10 +50,29 @@ import { Pressable } from '../actions/Pressable.jsx';
 const NUM = { fontVariantNumeric: 'tabular-nums' };
 
 export function IntentTile({
-  label, count = null, unit = 'funds', note, mark, markKind = 'texture', selected = false,
+  label, count = null, unit = 'funds', note, mark, markKind = 'texture', markWidth = 62, selected = false,
   unavailable = false, unavailableNote, onClick,
 }) {
   const inert = unavailable || !onClick;
+  /* AN `art` MARK IS OPAQUE, SO THE LABEL MAY NOT RUN OVER IT (23 Sep 2026). The note at the top of
+     this file says 88 is the height at which the title, the count and the mark sit without the mark
+     touching the type — and that was measured on the four ASSET tiles, whose labels are one short
+     word. Step 2's are not: at 375 the tiles are 156 wide and "Mutual fund" crossed its mark by 14pt,
+     "Fixed deposit" by 22. Under an 11% texture that is the intended effect; under a solid shape at
+     full strength it is ink on terracotta.
+     So an art mark reserves its column and the label wraps into what is left. A texture reserves
+     nothing, because a texture is meant to sit under the words. */
+  /* NO RESERVE AT 46. Measured at 375: "10 instruments" ends at x=97 and a 46pt mark at right:10
+     begins at x=100, so the count already clears it by three points — and a reserve wide enough to be
+     safe broke the count onto two lines, which is a worse tile than the one it was protecting. The
+     reserve stays in the file for a mark large enough to need it; at this size it is zero. */
+  const reserve = mark && markKind === 'art' && markWidth > 56 ? markWidth + 10 : 0;
+  /* THE TITLE KEEPS THE FULL WIDTH AND THE COUNT GIVES WAY. The mark is bottom-right, so it shares a
+     line with the COUNT and not with the title — reserving the column on both wrapped "Mutual fund"
+     onto two lines and pushed the tile from 88 to 106, which is a taller tile to solve a collision
+     the title never had. Measured at 375 after the mark came down to 46: the title's line box clears
+     the mark's top edge, the count's does not. */
+  const textPad = selected ? 22 : 0;
   return (
     <Pressable
       onClick={unavailable ? undefined : onClick}
@@ -82,7 +101,12 @@ export function IntentTile({
           caller knows which it handed over, so only the caller can say. */}
       {mark && (
         <span aria-hidden="true" style={{
-          position: 'absolute', right: 'var(--space-10)', bottom: 'var(--space-8)', pointerEvents: 'none',
+          /* AN `art` MARK SITS 4 FROM THE FLOOR, A TEXTURE 8. At 46 tall in an 88 tile, bottom:8 puts
+             the mark's top edge at y=34 and the title's line box ends at y=36 — two points of overlap,
+             invisible under an 11% texture and ink-on-terracotta under a solid one. Four points lower
+             clears the title outright, so the title keeps the full width and only the COUNT, which
+             really does share the mark's line, gives way. */
+          position: 'absolute', right: 'var(--space-10)', bottom: markKind === 'art' ? 'var(--space-4)' : 'var(--space-8)', pointerEvents: 'none',
           color: 'var(--color-bronze-deep)',
           opacity: markKind === 'art'
             ? (unavailable ? 0.35 : 1)
@@ -103,11 +127,11 @@ export function IntentTile({
         }}>✓</span>
       )}
 
-      <span style={{ position: 'relative', font: 'var(--type-title-font)', color: 'var(--color-ink)', paddingRight: selected ? 22 : 0 }}>{label}</span>
+      <span style={{ position: 'relative', font: 'var(--type-title-font)', color: 'var(--color-ink)', paddingRight: textPad }}>{label}</span>
       {/* The count and the note are one line of caption, because two lines of small type under a title
           is a card, and this is a tile. */}
       {count != null && (
-        <span style={{ position: 'relative', font: 'var(--type-meta-font)', color: 'var(--color-bronze-deep)', ...NUM }}>
+        <span style={{ position: 'relative', font: 'var(--type-meta-font)', color: 'var(--color-bronze-deep)', paddingRight: reserve, ...NUM }}>
           {count.toLocaleString('en-IN')} {unit}
         </span>
       )}

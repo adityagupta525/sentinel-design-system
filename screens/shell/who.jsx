@@ -53,7 +53,7 @@ const whoRow = (c) => ({
      own, and that is right for every caller that has only a name — but this screen is built from
      CLIENTS, where every client carries an `age`, and a picker showing a 38-year-old as grey when the
      record says otherwise is a wrong answer it had the data to avoid. */
-  leadingContent: <WHO_DS.ClientAvatar name={c.name} age={c.age} size={32} />,
+  leadingContent: <WHO_DS.ClientAvatar name={c.name} age={c.age} face={c.face} size={32} />,
   subtitle: c.portfolio && c.portfolio.valueRs
     ? `${inr(c.portfolio.valueRs)} · ${c.portfolio.funds} funds`
     : c.kyc && c.kyc.status !== 'Valid' ? `KYC ${c.kyc.status.toLowerCase()}`

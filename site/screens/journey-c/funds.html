@@ -1868,6 +1868,7 @@ var TAX = {
 var CLIENTS = [{
   id: 'meera',
   name: 'Meera Nair',
+  face: 'f-mid-a',
   age: 38,
   city: 'Kochi',
   since: 2019,
@@ -1940,6 +1941,7 @@ var CLIENTS = [{
 }, {
   id: 'sharma',
   name: 'R. Sharma',
+  face: 'm-mid-a',
   age: 46,
   city: 'Pune',
   since: 2017,
@@ -2100,6 +2102,7 @@ var CLIENTS = [{
 }, {
   id: 'amit',
   name: 'Mr. Amit Aggrawal',
+  face: 'm-mid-c',
   age: 52,
   city: 'Delhi',
   since: 2026,
@@ -2157,6 +2160,7 @@ var CLIENTS = [{
 }, {
   id: 'sunita',
   name: 'Sunita Nair',
+  face: 'f-mid-b',
   age: 41,
   city: 'Kochi',
   since: 2020,
@@ -2235,6 +2239,7 @@ var CLIENTS = [{
 {
   id: 'kavita',
   name: 'Kavita Rao',
+  face: 'f-young-a',
   city: 'Bengaluru',
   since: 2021,
   kyc: {
@@ -2243,6 +2248,7 @@ var CLIENTS = [{
 }, {
   id: 'anil',
   name: 'Anil Menon',
+  face: 'm-young-a',
   city: 'Chennai',
   since: 2018,
   kyc: {
@@ -2251,6 +2257,7 @@ var CLIENTS = [{
 }, {
   id: 'priya',
   name: 'Priya Deshpande',
+  face: 'f-young-b',
   city: 'Pune',
   since: 2022,
   kyc: {
@@ -2259,6 +2266,7 @@ var CLIENTS = [{
 }, {
   id: 'vikram',
   name: 'Vikram Shah',
+  face: 'm-old-b',
   city: 'Ahmedabad',
   since: 2019,
   kyc: {
@@ -2267,6 +2275,7 @@ var CLIENTS = [{
 }, {
   id: 'lakshmi',
   name: 'Lakshmi Iyer',
+  face: 'f-old-a',
   city: 'Coimbatore',
   since: 2023,
   kyc: {
@@ -2275,6 +2284,7 @@ var CLIENTS = [{
 }, {
   id: 'rohan',
   name: 'Rohan Gupta',
+  face: 'm-young-c',
   city: 'Gurugram',
   since: 2024,
   kyc: {
@@ -2949,6 +2959,7 @@ var whoRow = function whoRow(c) {
     leadingContent: /*#__PURE__*/React.createElement(WHO_DS.ClientAvatar, {
       name: c.name,
       age: c.age,
+      face: c.face,
       size: 32
     }),
     subtitle: c.portfolio && c.portfolio.valueRs ? "".concat(inr(c.portfolio.valueRs), " \xB7 ").concat(c.portfolio.funds, " funds") : c.kyc && c.kyc.status !== 'Valid' ? "KYC ".concat(c.kyc.status.toLowerCase()) : 'Nothing on file yet'

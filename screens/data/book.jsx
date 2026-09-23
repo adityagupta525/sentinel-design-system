@@ -490,7 +490,7 @@ const TAX = { stcgPct: 20, ltcgPct: 12.5, ltcgExemptionRs: 125000, equityHolding
    name, city and enough to be reached, which is what the drawer actually shows. */
 const CLIENTS = [
   {
-    id: 'meera', name: 'Meera Nair', age: 38, city: 'Kochi', since: 2019,
+    id: 'meera', name: 'Meera Nair', face: 'f-mid-a', age: 38, city: 'Kochi', since: 2019,
     pan: 'ABCPN••••K', kyc: { status: 'Valid', mode: 'CKYC', updated: '11 Feb 2026' },
     nominee: { name: 'Rahul Nair', relation: 'Spouse', share: 100 },
     income: { monthly: 180000, source: 'Salary plus bonus', evidence: 'ITR, AY 2025-26' },
@@ -509,7 +509,7 @@ const CLIENTS = [
     flags: ['Review due — 43 funds, 29 of them under 1.5%'],
   },
   {
-    id: 'sharma', name: 'R. Sharma', age: 46, city: 'Pune', since: 2017,
+    id: 'sharma', name: 'R. Sharma', face: 'm-mid-a', age: 46, city: 'Pune', since: 2017,
     pan: 'AXSPS••••M', kyc: { status: 'Valid', mode: 'KRA', updated: '3 Aug 2025' },
     nominee: { name: 'Anita Sharma', relation: 'Spouse', share: 100 },
     income: { monthly: 240000, source: 'Own business', evidence: 'ITR, AY 2025-26' },
@@ -571,7 +571,7 @@ const CLIENTS = [
     flags: ['Equity 11 points over mandate', 'Quant Small Cap over the single-fund ceiling'],
   },
   {
-    id: 'amit', name: 'Mr. Amit Aggrawal', age: 52, city: 'Delhi', since: 2026,
+    id: 'amit', name: 'Mr. Amit Aggrawal', face: 'm-mid-c', age: 52, city: 'Delhi', since: 2026,
     pan: 'AGGPA••••R', kyc: { status: 'In process', mode: 'CKYC', updated: '—', note: 'PAN–Aadhaar seeding pending' },
     nominee: null,
     income: { monthly: 400000, source: 'Own business', evidence: 'Declared — no ITR on file yet' },
@@ -590,7 +590,7 @@ const CLIENTS = [
     flags: ['KYC in process — nothing can be executed until it clears', 'No risk profile'],
   },
   {
-    id: 'sunita', name: 'Sunita Nair', age: 41, city: 'Kochi', since: 2020,
+    id: 'sunita', name: 'Sunita Nair', face: 'f-mid-b', age: 41, city: 'Kochi', since: 2020,
     pan: 'BNSPS••••J', kyc: { status: 'Valid', mode: 'CKYC', updated: '19 Jan 2026' },
     nominee: { name: 'Meera Nair', relation: 'Sister', share: 100 },
     income: { monthly: 150000, source: 'Fixed salary', evidence: 'Form 16, FY 2025-26' },
@@ -611,12 +611,12 @@ const CLIENTS = [
   },
   /* The rest of the drawer's book. Enough to be reached and named; no portfolio detail, because none of
      the built screens shows any and inventing it would be inventing. */
-  { id: 'kavita',  name: 'Kavita Rao',       city: 'Bengaluru', since: 2021, kyc: { status: 'Valid' } },
-  { id: 'anil',    name: 'Anil Menon',       city: 'Chennai',   since: 2018, kyc: { status: 'Valid' } },
-  { id: 'priya',   name: 'Priya Deshpande',  city: 'Pune',      since: 2022, kyc: { status: 'Valid' } },
-  { id: 'vikram',  name: 'Vikram Shah',      city: 'Ahmedabad', since: 2019, kyc: { status: 'Re-KYC due' } },
-  { id: 'lakshmi', name: 'Lakshmi Iyer',     city: 'Coimbatore',since: 2023, kyc: { status: 'Valid' } },
-  { id: 'rohan',   name: 'Rohan Gupta',      city: 'Gurugram',  since: 2024, kyc: { status: 'Valid' } },
+  { id: 'kavita',  name: 'Kavita Rao', face: 'f-young-a',       city: 'Bengaluru', since: 2021, kyc: { status: 'Valid' } },
+  { id: 'anil',    name: 'Anil Menon', face: 'm-young-a',       city: 'Chennai',   since: 2018, kyc: { status: 'Valid' } },
+  { id: 'priya',   name: 'Priya Deshpande', face: 'f-young-b',  city: 'Pune',      since: 2022, kyc: { status: 'Valid' } },
+  { id: 'vikram',  name: 'Vikram Shah', face: 'm-old-b',      city: 'Ahmedabad', since: 2019, kyc: { status: 'Re-KYC due' } },
+  { id: 'lakshmi', name: 'Lakshmi Iyer', face: 'f-old-a',     city: 'Coimbatore',since: 2023, kyc: { status: 'Valid' } },
+  { id: 'rohan',   name: 'Rohan Gupta', face: 'm-young-c',      city: 'Gurugram',  since: 2024, kyc: { status: 'Valid' } },
 ];
 const clientById = (id) => CLIENTS.find((x) => x.id === id);
 

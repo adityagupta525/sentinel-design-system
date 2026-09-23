@@ -91,6 +91,14 @@ const artHook = /<script>window\.__EXPLORER_ART = "[^"]*";/;
 if (!artHook.test(html)) { console.error('app/: screens/app.html no longer sets __EXPLORER_ART — the art cannot be injected'); process.exit(1); }
 html = html.replace(artHook, (m) => `${artScript}\n${m}`);
 
+/* A BUILD STAMP, so "the old one is coming up" is a five-second check rather than an argument. It is
+   a meta tag and a global, not anything on screen: the product does not carry a version number and
+   this is not the place to introduce one. `curl -s <url> | grep sentinel-build` answers it from
+   anywhere, and `window.__SENTINEL_BUILD` answers it from the console on the phone. */
+const stamp = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+html = html.replace(/<meta charset="utf-8">/i,
+  `<meta charset="utf-8">\n<meta name="sentinel-build" content="${stamp}">\n<script>window.__SENTINEL_BUILD = ${JSON.stringify(stamp)};</script>`);
+
 await writeFile(join(OUT, 'index.html'), html);
 
 /* The home-screen files sit beside the page rather than inside it: a manifest has to be its own
@@ -105,11 +113,24 @@ for (const f of await readdir(ASSETS)) {
   assets += 1;
 }
 
+/* `no-cache` ON THE PAGE, AND IT IS NOT BELT-AND-BRACES (23 Sep 2026). The owner tapped "Fund
+   explorer" on the deployed app and got the OLD screen — while the deployed file, checked by fetching
+   it, already carried the fix, and both aliases pointed at that deployment. It was his copy: a page
+   added to an iOS home screen is held by the installed app and Vercel's default for static HTML
+   (`max-age=0, must-revalidate`) did not get it revalidated. `no-cache` is not "do not store" — it is
+   "ask every time", so an unchanged build still answers 304 and nothing is re-downloaded. For a 1.1 MB
+   page that changes on every deploy and is opened as an app, that is the right trade.
+
+   The icons and the manifest keep the default: they are small and they do not change. */
 await writeFile(join(OUT, 'vercel.json'), JSON.stringify({
   $schema: 'https://openapi.vercel.sh/vercel.json',
   cleanUrls: false,
   trailingSlash: false,
-  headers: [{ source: '/(.*)', headers: [{ key: 'X-Content-Type-Options', value: 'nosniff' }] }],
+  headers: [
+    { source: '/(.*)', headers: [{ key: 'X-Content-Type-Options', value: 'nosniff' }] },
+    { source: '/', headers: [{ key: 'Cache-Control', value: 'no-cache' }] },
+    { source: '/index.html', headers: [{ key: 'Cache-Control', value: 'no-cache' }] },
+  ],
 }, null, 2) + '\n');
 
 const left = [

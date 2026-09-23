@@ -27,7 +27,7 @@ Object.assign(window, {
   ChartLine: EX_DS.ChartLine,
   ChartSpark: EX_DS.ChartSpark,
   ChipRow: EX_DS.ChipRow,
-  ClientChip: EX_DS.ClientChip,
+  ClientChip: EX_DS.ClientChip, ClientAvatar: EX_DS.ClientAvatar,
   CompareTable: EX_DS.CompareTable,
   Composer: EX_DS.Composer,
   ConstraintCallout: EX_DS.ConstraintCallout,

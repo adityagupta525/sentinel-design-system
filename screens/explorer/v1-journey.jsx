@@ -117,6 +117,37 @@ function AssetArt({ asset, size = 62 }) {
   return <img src={src} alt="" width={size} height={size} style={{ display: 'block', objectFit: 'contain' }} />;
 }
 
+/* EACH PRODUCT ITS OWN MARK (23 Sep 2026). Step 2 drew `AssetArt` for the family — the asset class's
+   own texture, reused — so Mutual fund, PMS, AIF and Unlisted all carried the same rising bars,
+   because all four sit under Equity. Eight tiles, four pictures. The owner's words for it were the
+   same as for the faces: "same image design lagaya, same image use kiya."
+
+   Eight marks now, one per family, each a flat pictogram in a colour from the series palette: pooled
+   circles, a faceted gem, stacked folders, a sealed certificate, a vault door, an arched bridge, a
+   balance, and a grid with one square outside it. Measured before shipping — the generated colours
+   came back at saturation 0.72 and 0.66, where nothing in this system passes 0.35 — so every one was
+   recoloured to a token value rather than kept as drawn. */
+const FAMILY_ART = {
+  mutual_fund: `${ART_BASE}/products/mutual_fund.webp`,
+  aif: `${ART_BASE}/products/aif.webp`,
+  pms: `${ART_BASE}/products/pms.webp`,
+  bonds: `${ART_BASE}/products/bonds.webp`,
+  fd: `${ART_BASE}/products/fd.webp`,
+  reit: `${ART_BASE}/products/reit.webp`,
+  commodity: `${ART_BASE}/products/commodity.webp`,
+  unlisted: `${ART_BASE}/products/unlisted.webp`,
+};
+/* 46, NOT 62 (23 Sep 2026). The owner: the picture is eating the card. A texture at 11% could be
+   large because it was barely there; a solid mark at full strength cannot. Three quarters of the
+   old size, still bottom-right, still inside the tile. */
+function FamilyArt({ family, assets, size = 46 }) {
+  const src = (ART_MAP && ART_MAP[`products/${family}.webp`]) || FAMILY_ART[family];
+  /* A family the catalogue grows later has no mark yet; it falls back to its asset's texture rather
+     than to an empty tile, which is the same answer this screen gives everywhere data runs out. */
+  if (!src) return <AssetArt asset={assets && assets[0]} size={size} />;
+  return <img src={src} alt="" width={size} height={size} style={{ display: 'block', objectFit: 'contain' }} />;
+}
+
 /* ─── Formatting. Indian grouping, one decimal, and never a zero standing in for a gap ──────────── */
 const crore = (n) => (n == null ? null : `₹${Math.round(n / 1e7).toLocaleString('en-IN')} Cr`);
 const pc = (n) => (n == null ? null : `${n < 0 ? '−' : ''}${Math.abs(n).toFixed(2)}%`);
@@ -470,7 +501,7 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
                 {`${held.length} of your clients already hold this.`}
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-6)', marginTop: 'var(--space-8)' }}>
-                {held.map((n) => <ClientChip key={n} name={n} />)}
+                {held.map((n) => { const c = (typeof CLIENTS !== 'undefined' ? CLIENTS : []).find((x) => x.name === n); return <ClientChip key={n} name={n} avatar={<ClientAvatar name={n} age={c && c.age} face={c && c.face} size={20} />} />; })}
               </div>
             </>
           )}
@@ -1276,6 +1307,15 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
   React.useLayoutEffect(() => {
     if (seeded.current || !startAsk) return;
     seeded.current = true;
+    /* ONLY IF THE SENTENCE SAYS SOMETHING ABOUT THE CATALOGUE (23 Sep 2026). Home's chip is labelled
+       "Fund explorer", and the router hands that label on as the sentence — so the funnel parsed the
+       chip's own name, found nothing, and opened on "Nothing here matched the catalogue: explorer",
+       a search box holding the word "explorer", a "Nothing chosen yet" bar and an empty-state card.
+       The advisor tapped a door and was shown a failed search.
+       A sentence the parser understood NOTHING from is not a request, so the funnel stays at rest:
+       step 1 open, nothing chosen, nothing claimed. `(assets.length > 0 || asked)` below is the gate
+       that hides the rest, and leaving `asked` unset is what closes it. */
+    if (!parseAsk(startAsk).understood.length) return;
     send(startAsk);
   }, [startAsk]);
 
@@ -1387,7 +1427,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           <IntentGrid>
             {famRows.map((f) => (
               <IntentTile key={f.key} label={f.label} count={f.count} unit="instruments"
-                mark={<AssetArt asset={f.assets[0]} />} markKind="art"
+                mark={<FamilyArt family={f.key} assets={f.assets} />} markKind="art" markWidth={46}
                 selected={fams.includes(f.key)} onClick={() => chooseFam(f.key)} />
             ))}
           </IntentGrid>

@@ -25,9 +25,9 @@ const menuInitials = (n) => n.replace(/^Mr\.\s*/, '').split(' ').map((w) => w[0]
    `menuInitials` stays: the long-name row below uses it to show what a two-initial fallback looks
    like when a name hashes to nothing. */
 const menuClient = (c) => {
-  const name = typeof c === 'string' ? c : c.name;
-  const age = typeof c === 'string' ? undefined : c.age;
-  return { title: name, leading: 'avatar', leadingContent: <MENU_DS.ClientAvatar name={name} age={age} size={32} />, trailing: 'chevron' };
+  const o = typeof c === 'string' ? { name: c } : c;
+  return { title: o.name, leading: 'avatar', trailing: 'chevron',
+    leadingContent: <MENU_DS.ClientAvatar name={o.name} age={o.age} face={o.face} size={32} /> };
 };
 /* The book, not a second list of names — screens/data/book.jsx is where a client is written down. */
 const MENU_CLIENTS = CLIENTS.map(menuClient);   // the whole client, so the face gets the age too
