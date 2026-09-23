@@ -13,17 +13,80 @@
 /* The system's components come off the published namespace, the way every other screen reaches them
    (`funds.jsx:14`) — a `text/babel` script has no import. */
 const EX_DS = window.SentinelDesignSystem_0682a2;
-const {
-  ArtifactCard, Badge, ChartBar, ChartDonut, ChartLine, ChartSpark, ChipRow, ClientChip, CompareTable, Composer, ConstraintCallout,
-  DarkButton, DataTable, DisclosureBlock, Drawer, Dumbbell, ExplainerSheet, ExplorerSheet, Eyebrow,
-  FigureRow, FilterSheet, FollowUpRow, InfoCard, InfoDot, InlineActionRow, IntentGrid, IntentTile, List,
-  ListRow, OverlapView, PeerLine, Pill, Pressable, Provenance, RangePills, RejectCallout, ScreenScaffold,
-  SearchField, SectionStrip, SegmentedRow, SelectionMark, SentinelBlock, SentinelText, ShortlistCard,
-  StandingDisclosure, StatTile, Surface, UserBubble,
-  AssetMark, FundCard, MetricList, MetricRow, StepBlock, StepStack, ChartLegend, ChartReadout, ChartShare, PathBar, ParseNote, UserTurn, SentinelTurn, IconFilter
-} = EX_DS;
+/* PUBLISHED, NOT DECLARED — because the full app loads every journey into ONE Babel scope, and
+   `journey-b/home.jsx` already declares ScreenScaffold, Composer, Pill and three more. Two `const
+   ScreenScaffold` in one scope and the whole page renders nothing; the repo has shipped that failure
+   before and `check-previews` now catches it statically, which is why an IIFE does not satisfy it
+   either. Assigning to `window` instead means this file declares nothing: its own components read the
+   globals, and on the app page home.jsx's consts simply shadow them with the same values. */
+Object.assign(window, {
+  ArtifactCard: EX_DS.ArtifactCard,
+  Badge: EX_DS.Badge,
+  ChartBar: EX_DS.ChartBar,
+  ChartDonut: EX_DS.ChartDonut,
+  ChartLine: EX_DS.ChartLine,
+  ChartSpark: EX_DS.ChartSpark,
+  ChipRow: EX_DS.ChipRow,
+  ClientChip: EX_DS.ClientChip,
+  CompareTable: EX_DS.CompareTable,
+  Composer: EX_DS.Composer,
+  ConstraintCallout: EX_DS.ConstraintCallout,
+  DarkButton: EX_DS.DarkButton,
+  DataTable: EX_DS.DataTable,
+  DisclosureBlock: EX_DS.DisclosureBlock,
+  Drawer: EX_DS.Drawer,
+  Dumbbell: EX_DS.Dumbbell,
+  ExplainerSheet: EX_DS.ExplainerSheet,
+  ExplorerSheet: EX_DS.ExplorerSheet,
+  Eyebrow: EX_DS.Eyebrow,
+  FigureRow: EX_DS.FigureRow,
+  FilterSheet: EX_DS.FilterSheet,
+  FollowUpRow: EX_DS.FollowUpRow,
+  InfoCard: EX_DS.InfoCard,
+  InfoDot: EX_DS.InfoDot,
+  InlineActionRow: EX_DS.InlineActionRow,
+  IntentGrid: EX_DS.IntentGrid,
+  IntentTile: EX_DS.IntentTile,
+  List: EX_DS.List,
+  ListRow: EX_DS.ListRow,
+  OverlapView: EX_DS.OverlapView,
+  PeerLine: EX_DS.PeerLine,
+  Pill: EX_DS.Pill,
+  Pressable: EX_DS.Pressable,
+  Provenance: EX_DS.Provenance,
+  RangePills: EX_DS.RangePills,
+  RejectCallout: EX_DS.RejectCallout,
+  ScreenScaffold: EX_DS.ScreenScaffold,
+  SearchField: EX_DS.SearchField,
+  SectionStrip: EX_DS.SectionStrip,
+  SegmentedRow: EX_DS.SegmentedRow,
+  SelectionMark: EX_DS.SelectionMark,
+  SentinelBlock: EX_DS.SentinelBlock,
+  SentinelText: EX_DS.SentinelText,
+  ShortlistCard: EX_DS.ShortlistCard,
+  StandingDisclosure: EX_DS.StandingDisclosure,
+  StatTile: EX_DS.StatTile,
+  Surface: EX_DS.Surface,
+  UserBubble: EX_DS.UserBubble,
+  AssetMark: EX_DS.AssetMark,
+  FundCard: EX_DS.FundCard,
+  MetricList: EX_DS.MetricList,
+  MetricRow: EX_DS.MetricRow,
+  StepBlock: EX_DS.StepBlock,
+  StepStack: EX_DS.StepStack,
+  ChartLegend: EX_DS.ChartLegend,
+  ChartReadout: EX_DS.ChartReadout,
+  ChartShare: EX_DS.ChartShare,
+  PathBar: EX_DS.PathBar,
+  ParseNote: EX_DS.ParseNote,
+  UserTurn: EX_DS.UserTurn,
+  SentinelTurn: EX_DS.SentinelTurn,
+  IconFilter: EX_DS.IconFilter,
+});
 
-const holdersOf = (fundId) => CLIENTS.filter((c) =>
+/* `exHoldersOf`, not `holdersOf` — `journey-c/funds.jsx` declares a function of that name, and the
+   full app loads both into one Babel scope. Same answer, a name that cannot collide. */
+const exHoldersOf = (fundId) => CLIENTS.filter((c) =>
   (c.holdings || []).some((h) => h.fundId === fundId) || (c.sips || []).some((sp) => sp.fundId === fundId)).map((c) => c.name);
 
 /* ONE fund row, used by all three variations, carrying the three things the research said a shortlist
@@ -36,7 +99,7 @@ function FundRow({ id, period = 'r3', onOpen, trailing, compact = false }) {
   const f = fundById(id);
   const p = perfOf(id);
   const cat = categoryAvgOf(id);
-  const held = holdersOf(id);
+  const held = exHoldersOf(id);
   const periodWords = period === 'r1' ? '1 year' : period === 'r3' ? '3 years' : '5 years';
   const body = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', minWidth: 0, flex: 1 }}>
@@ -160,6 +223,6 @@ Object.assign(window, {
   ListRow, OverlapView, PeerLine, Pill, Pressable, Provenance, RangePills, RejectCallout, ScreenScaffold,
   SearchField, SectionStrip, SegmentedRow, SelectionMark, SentinelBlock, SentinelText, ShortlistCard,
   StandingDisclosure, StatTile, Surface, UserBubble,
-  AssetMark, FundCard, MetricList, MetricRow, StepBlock, StepStack, ChartLegend, ChartReadout, ChartShare, PathBar, ParseNote, UserTurn, SentinelTurn, IconFilter,
-  holdersOf, FundRow, explorerProvenance, applyFilters, countFor, filterGroups, filterLabels, matches, ASSET_TILES,
+  AssetMark, FundCard, MetricList, MetricRow, StepBlock, StepStack, ChartLegend, ChartReadout, ChartShare, PathBar, ParseNote, UserTurn, SentinelTurn, IconFilter, FigureRow,
+  exHoldersOf, FundRow, explorerProvenance, applyFilters, countFor, filterGroups, filterLabels, matches, ASSET_TILES,
 });

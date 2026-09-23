@@ -32,6 +32,9 @@
    escape hatch for the thing the funnel cannot ask — which is what a composer is for. */
 
 const { useState: useS1 } = React;
+/* `--dur-enter` is 240ms (tokens/effects.css) — the fold's own `grid-template-rows` transition.
+   Twenty past it, so the re-anchor lands on a settled layout and not on its last frame. */
+const FOLD_SETTLE_MS = 260;
 
 /* ─── THE ART ───────────────────────────────────────────────────────────────────────────────────
    The owner lifted this system's own "ships no images" rule for the fund explorer on 23 Sep 2026 —
@@ -46,11 +49,16 @@ const { useState: useS1 } = React;
    this screen does. That keeps the rule literally true, keeps the exception visible to the next
    person, and means nothing outside the explorer inherits it by accident. `IntentTile` takes a node
    and does not care what is in it. */
+/* The art is relative to THIS folder when the explorer's own page loads it, and relative to
+   `screens/` when the whole app does — so the base is declared by the page rather than assumed by
+   the module. A wrong path here is four silently broken images, which is the one failure that looks
+   like a design decision. */
+const ART_BASE = (typeof window !== 'undefined' && window.__EXPLORER_ART) || './art';
 const ART = {
-  Equity: './art/equity.webp',
-  Debt: './art/debt.webp',
-  Commodity: './art/commodity.webp',
-  'REITs / InvITs': './art/property.webp',
+  Equity: `${ART_BASE}/equity.webp`,
+  Debt: `${ART_BASE}/debt.webp`,
+  Commodity: `${ART_BASE}/commodity.webp`,
+  'REITs / InvITs': `${ART_BASE}/property.webp`,
 };
 /* THE CLIENTS, AS PEOPLE RATHER THAN AS LETTERS. Eight bronze discs each carrying one capital is a
    list the eye cannot hold — the owner asked for avatars that vary by age and gender, and these are
@@ -81,13 +89,13 @@ function bookFundFor(inst) {
     return b && (a === b || a.includes(b) || b.includes(a));
   }) || null;
 }
-const clientsFor = (inst) => { const f = bookFundFor(inst); return f ? holdersOf(f.id) : []; };
+const clientsFor = (inst) => { const f = bookFundFor(inst); return f ? exHoldersOf(f.id) : []; };
 
 const AVATARS = ['m-young', 'f-old', 'f-mid', 'm-mid', 'm-turban', 'f-young', 'm-glasses', 'm-old'];
 function avatarFor(name) {
   let h = 0;
   for (let i = 0; i < String(name).length; i += 1) h = (h * 31 + String(name).charCodeAt(i)) % 997;
-  return `./art/avatars/${AVATARS[h % AVATARS.length]}.webp`;
+  return `${ART_BASE}/avatars/${AVATARS[h % AVATARS.length]}.webp`;
 }
 function ClientFace({ name, size = 20 }) {
   return <img src={avatarFor(name)} alt="" width={size} height={size} style={{ display: 'block', objectFit: 'cover' }} />;
@@ -185,6 +193,27 @@ function deShout(s) {
   return letters > 8 && caps / letters > 0.6 ? titleish(s) : s;
 }
 
+
+/* ─── RISK, COMPUTED FROM THE SERIES THE CATALOGUE ACTUALLY CARRIES ────────────────────────────
+   Beta is on file. Volatility and the deepest fall are NOT — but the weekly NAV series is, and both
+   are arithmetic on it rather than opinions about it, so computing them is honest where inventing a
+   "risk score" would not be. Each says which window it was computed over, because a drawdown with no
+   period is a number with no meaning.
+
+   WEEKLY, ANNUALISED BY sqrt(52). The series is weekly because a daily one at 311pt draws four points
+   per pixel; the annualisation factor follows the sampling, and stating it is the difference between
+   a figure an advisor can check and one they have to trust. */
+function riskFrom(nav) {
+  if (!nav || nav.length < 8) return null;
+  const v = nav.map((x) => x[1]);
+  let peak = v[0], dd = 0;
+  for (const x of v) { peak = Math.max(peak, x); dd = Math.min(dd, (x - peak) / peak); }
+  const rets = v.slice(1).map((x, k) => x / v[k] - 1);
+  const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
+  const sd = Math.sqrt(rets.reduce((a, b) => a + (b - mean) ** 2, 0) / (rets.length - 1)) * Math.sqrt(52);
+  const months = Math.round(nav.length / 52 * 12);
+  return { maxDD: +(dd * 100).toFixed(1), vol: +(sd * 100).toFixed(1), months };
+}
 
 /* ─── WHAT IT WOULD HAVE BECOME ─────────────────────────────────────────────────────────────────
    A return is a rate and nobody holds a rate. "9.76% over three years" and "₹10,000 became ₹13,229"
@@ -293,16 +322,20 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
   const t = (k) => () => setMetric((x) => (x === k ? null : k));
   const f = (k) => () => setFold((x) => (x === k ? null : k));
 
+  const navPts = p.nav || [];
   const nav = rebase(p.nav);
   const bench = rebase(p.bench);
+  const risk = riskFrom(p.nav);
   const held = clientsFor(i) || [];
 
   const lenses = [];
   if (p.sector) lenses.push({ key: 'sector', label: 'Sector' });
   if (p.marketCap) lenses.push({ key: 'cap', label: 'Market cap' });
   if (p.holdings) lenses.push({ key: 'holdings', label: 'Top holdings' });
+  if (p.issuers) lenses.push({ key: 'issuers', label: 'Issuers' });
+  if (p.rating) lenses.push({ key: 'rating', label: 'Credit rating' });
   const useLens = lenses.some((l) => l.key === lens) ? lens : lenses[0]?.key;
-  const rows = useLens === 'sector' ? p.sector : useLens === 'cap' ? p.marketCap : p.holdings;
+  const rows = { sector: p.sector, cap: p.marketCap, holdings: p.holdings, issuers: p.issuers, rating: p.rating }[useLens];
   const oneSegment = rows && rows.length === 1;
   const mRows = metricRows(i, p);
 
@@ -311,13 +344,19 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
       <SentinelText text={narrate(i)} />
 
       {nav && (
-        <StepBlock title="What ₹100 became" open={fold === 'returns'} onToggle={f('returns')}
-          summary={`${Math.round(nav[nav.length - 1].y)} from 100${bench ? ` · benchmark ${Math.round(bench[bench.length - 1].y)}` : ''}`}>
-          <ChartReadout label={monthYear(p.nav[p.nav.length - 1][0]) || 'Latest'}
-            value={String(Math.round(nav[nav.length - 1].y))} idleNote="rebased from 100" />
+        /* THE NAV, AND THEN THE COMPARISON. The owner's note on the first version: "what ₹100 became
+           samajh nahi aaya — fund ka NAV kitna hai, NAV graph kidhar hai?" He is right that the
+           rebased index answered a question he had not asked first. A fund page opens with the NAV,
+           because that is the instrument's own number; the rebased pair comes after, as the thing
+           that makes two different scales comparable. */
+        <StepBlock title="NAV, and how it moved" open={fold === 'returns'} onToggle={f('returns')}
+          summary={`${rupees(navPts[navPts.length - 1][1])}${bench ? ` · ${Math.round(nav[nav.length - 1].y)} vs ${Math.round(bench[bench.length - 1].y)} from 100` : ''}`}>
+          <ChartReadout label={`NAV · ${monthYear(p.nav[p.nav.length - 1][0]) || 'latest'}`}
+            value={rupees(navPts[navPts.length - 1][1])} idleNote={`${navPts.length} weekly points on file`} />
           <div style={{ marginTop: 'var(--space-4)' }}>
-            <ChartLine series={[{ label: 'This fund', points: nav }]} density="expanded" width={295}
-              valueFormat={(v) => `${v.toFixed(0)}`} xFormat={(x) => (p.nav[x] ? monthYear(p.nav[x][0]) : '')} />
+            <ChartLine series={[{ label: 'NAV', points: navPts.map((x, k) => ({ x: k, y: x[1] })) }]}
+              density="expanded" width={295}
+              valueFormat={(v) => `₹${v.toFixed(0)}`} xFormat={(x) => (p.nav[x] ? monthYear(p.nav[x][0]) : '')} />
           </div>
           {bench && (
             <div style={{ marginTop: 'var(--space-12)' }}>
@@ -347,7 +386,8 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
 
       {rows && (
         <StepBlock title="What it holds" open={fold === 'holds'} onToggle={f('holds')}
-          summary={oneSegment ? `All ${rows[0].pct}% ${rows[0].name.toLowerCase()}` : `${rows.length} ${useLens === 'sector' ? 'sectors' : useLens === 'cap' ? 'bands' : 'holdings'}`}>
+          summary={oneSegment ? `All ${rows[0].pct}% ${rows[0].name.toLowerCase()}`
+            : `${rows.length} ${{ sector: 'sectors', cap: 'bands', holdings: 'holdings', issuers: 'issuers', rating: 'ratings' }[useLens]}`}>
           {lenses.length > 1 && (
             <div style={{ marginBottom: 'var(--space-12)' }}>
               <SegmentedRow label="Breakdown" options={lenses.map((l) => l.label)}
@@ -375,6 +415,41 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
           <GrowthCalc i={i} amount={amount} onAmount={onAmount} />
         </StepBlock>
       )}
+
+      {(risk || p.ratios?.beta3 != null) && (
+        <StepBlock title="What it did in a bad month" open={fold === 'risk'} onToggle={f('risk')}
+          summary={risk ? `Fell ${Math.abs(risk.maxDD).toFixed(1)}% at worst` : `Beta ${p.ratios.beta3.toFixed(2)}`}>
+          <MetricList>
+            {risk && (
+              <MetricRow label="Deepest fall" value={`${risk.maxDD.toFixed(1)}%`}
+                note={`Peak to trough over the ${risk.months} months on file. Computed from the NAV series, not quoted from a factsheet.`} />
+            )}
+            {risk && (
+              <MetricRow label="Volatility" value={`${risk.vol.toFixed(1)}%`}
+                note={`Annualised from weekly moves over the same ${risk.months} months.`} />
+            )}
+            {p.ratios?.beta3 != null && (
+              <MetricRow label="Beta (3Y)" value={p.ratios.beta3.toFixed(2)}
+                note={`Moves about ${Math.abs(Math.round((1 - p.ratios.beta3) * 100))}% ${p.ratios.beta3 < 1 ? 'less' : 'more'} than ${shortBench(i.benchmark || 'its benchmark')}, up and down.`} />
+            )}
+          </MetricList>
+        </StepBlock>
+      )}
+
+      <StepBlock title="The fund itself" open={fold === 'about'} onToggle={f('about')}
+        summary={[i.manager && i.manager.split(',')[0], i.amc && shortHouse(i.amc)].filter(Boolean).join(' · ') || i.category}>
+        {/* THE RECORD. Nothing computed, nothing compared — the fields an advisor is asked for on a
+            call and had to leave this screen to find. `FigureRow` is the system's own label-and-value
+            pair on one baseline, which is what every one of these is. */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+          {factRows(i, p).map((r) => <FigureRow key={r.label} label={r.label} value={r.value} />)}
+        </div>
+        {p.about && (
+          <p style={{ margin: `var(--space-12) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
+            {p.about.length > 420 ? `${p.about.slice(0, 420).trim()}…` : p.about}
+          </p>
+        )}
+      </StepBlock>
 
       {(held.length > 0 || p.pending) && (
         <StepBlock title="On file" open={fold === 'file'} onToggle={f('file')}
@@ -511,6 +586,39 @@ function metricRows(i, p) {
   return out;
 }
 const shortBench = (b) => String(b).replace(/ Total Return Index$| TRI$| Index$/i, '');
+const shortHouse = (a) => deShout(String(a).replace(/ (Asset Management|Mutual Fund|Investment Managers?|Co\.?|Ltd\.?|Limited|Pvt\.?|Private).*$/i, '').trim());
+
+/* THE FIELDS AN ADVISOR IS ASKED FOR ON A CALL. Every one is guarded: a row appears only where the
+   catalogue has the value, so a bond's record is short and a fund's is long and neither prints a
+   dash. The owner's note was that the pager had lost the manager, the house, the ISIN and the rest —
+   they were never removed, they were never put in. */
+function factRows(i, p) {
+  const out = [];
+  const add = (label, value) => { if (value != null && value !== '') out.push({ label, value: String(value) }); };
+  add('Fund manager', i.manager);
+  add('House', i.amc ? shortHouse(i.amc) : null);
+  add('Benchmark', i.benchmark ? shortBench(i.benchmark) : null);
+  add('Structure', i.instrumentType);
+  add('NAV', i.price != null ? `${rupees(i.price)} · ${monthYear(i.priceDate) || 'undated'}` : null);
+  add('Fund size', crore(i.aum));
+  add('Expense ratio', i.ter != null ? `${i.ter.toFixed(2)}%` : null);
+  add('Exit load', i.exitLoad ? i.exitLoad.replace(/ Percentage upto /, '% up to ') : null);
+  add('Lock-in', p.lockIn);
+  add('Liquidity', p.liquidity);
+  add('Coupon', p.coupon != null ? `${p.coupon.toFixed(2)}%` : null);
+  add('Yield', p.yield != null ? `${(p.yield * 100).toFixed(2)}%` : null);
+  add('Face value', p.faceValue != null ? rupees(p.faceValue) : null);
+  add('Matures', monthYear(p.maturity));
+  add('Pays', p.payFrequency);
+  add('Dividend yield', p.dividendYield != null ? `${p.dividendYield.toFixed(2)}%` : null);
+  if (p.fees && p.fees[0]) {
+    const f = p.fees[0];
+    add('Fee', [f.fixed != null ? `${f.fixed}% fixed` : null, f.perf ? `${f.perf}% performance over ${f.hurdle || 0}%` : null].filter(Boolean).join(' · '));
+    add('Minimum', f.min != null ? rupees(f.min) : null);
+  }
+  add('ISIN', i.isin);
+  return out;
+}
 
 
 /* ─── FACETS, DERIVED FROM THE ROWS IN FRONT OF THE ADVISOR ─────────────────────────────────────
@@ -630,7 +738,14 @@ const ASK_STOP = new Set(['show', 'me', 'find', 'a', 'an', 'the', 'and', 'or', '
      "expense" as a word it could not place is the mirror of F-61: claiming it ignored something it
      acted on is as untrue as claiming it acted on something it ignored. */
   'expense', 'ratio', 'ter', 'cost', 'charge', 'charges', 'return', 'returns', 'size', 'aum',
-  'yield', 'coupon', 'year', 'years', 'yr', 'cr', 'crore', 'crores']);
+  'yield', 'coupon', 'year', 'years', 'yr', 'cr', 'crore', 'crores',
+  /* THE WORDS THAT OPEN THIS SCREEN (23 Sep 2026). "What's available in debt" is the app router's own
+     browse trigger, and the explorer answered it with "Not used: what, available." — reporting as
+     ignored the exact phrase that brought the advisor here. It is F-61 in the other direction, and the
+     comment three lines up already says so: a note is only worth reading if what it claims is true.
+     None of these narrows anything, so none of them was ignored. */
+  'what', 'whats', 'available', 'availability', 'browse', 'explore', 'shelf', 'everything',
+  'options', 'list', 'tell', 'see', 'there', 'offer', 'offers', 'have', 'else']);
 
 function parseAsk(raw) {
   const text = ` ${String(raw).toLowerCase().replace(/[^a-z0-9.%&₹ -]/g, ' ').replace(/\s+/g, ' ')} `;
@@ -973,7 +1088,19 @@ function OverlapBlock({ ids, onDrop, onAdd, candidates = [] }) {
    One screen. Four questions, each a function of the one above, each collapsing into its answer. */
 const STEP = { ASSET: 1, PRODUCT: 2, CATEGORY: 3 };
 
-function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpen = STEP.ASSET, startFundId = null, startQ = '', startPicked = [], startSheet = false, startShow = null, startAsked = null }) {
+/* THE EXPLORER IS A SURFACE, AND IN THE APP IT IS THE FOURTH ONE (23 Sep 2026). It draws its own
+   ScreenScaffold — status bar, app bar, composer, home indicator — because that is what it is. Mounted
+   as a TURN inside the prototype's thread it drew all four a second time: two status bars, two app bars
+   and two composers on one phone. So the app routes it through `ScreenStack` beside home, the rail and
+   the thread, and it takes the three props a surface in this product needs:
+
+     onMenu      the drawer. The standalone board has no drawer, so it defaults to nothing.
+     onNew       "back to home". Same two doors as every other screen; no back arrow is invented here.
+     onHandOff   what the app can do that the board cannot. `act()` stages a fund for a proposal or a
+                 rebalance; on the board that is where it ends, and the note says so. In the app,
+                 journeys D and E EXIST, so the honest thing is to open them with the fund carried —
+                 which is the same `carried` hand-off the fund journey already uses. */
+function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpen = STEP.ASSET, startFundId = null, startQ = '', startPicked = [], startSheet = false, startShow = null, startAsked = null, startAsk = '', onMenu, onNew, onHandOff }) {
   const [open, setOpen] = useS1(startOpen);
   const [assets, setAssets] = useS1(startAssets);
   const [fams, setFams] = useS1(startFamilies);
@@ -987,6 +1114,9 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
   /* 'compare' | 'overlap' | null. One at a time: both open at once is two tables of the same three
      funds stacked on a phone, and the advisor scrolls past one to read the other. */
   const [show, setShow] = useS1(startShow);
+  /* Bumped once, `--dur-enter` after a send, so the scaffold's anchor is computed on settled folds
+     rather than on folds that are still animating. See `send`. */
+  const [settle, setSettle] = useS1(0);
   /* The composer's own state, and the LAST thing it was asked. One turn, not a log: a funnel that
      accumulates ten parse notes has stopped being a funnel and become a chat transcript with a list
      at the bottom. The note is replaced, and what it did is already visible in the steps above it. */
@@ -1083,8 +1213,12 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
      "equity mutual funds" then "debt" means debt, which is what the words mean. Anything the parse
      did not place is left in the search box rather than dropped, so a fund name typed mid-sentence
      still does something. */
-  const send = () => {
-    const text = ask.trim();
+  /* `send` takes the sentence rather than only reading the composer, so the ONE place that turns a
+     sentence into a funnel state can also be reached by the app, which routed the sentence here in the
+     first place. "What's available in debt" opens an explorer with Debt already chosen and the note
+     already written; parsing it a second time in the app would be the same logic in two files. */
+  const send = (raw) => {
+    const text = String(raw === undefined ? ask : raw).trim();
     if (!text) return;
     const parse = parseAsk(text);
     /* A CATEGORY IMPLIES ITS FAMILY, AND A FAMILY ITS ASSET. "large cap funds from canara" names no
@@ -1110,7 +1244,30 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
     const n = applyFacets(instrumentsFor({ assets: nextAssets, families: nextFams, categories: nextCats }), parse.facets).length;
     setAsked({ text, note: askNote(parse, n), ok: parse.understood.length > 0 });
     setOpen(0); setFund(null); setShow(null); setAsk('');
+    /* AND RE-ANCHOR ONCE THE FOLDS HAVE FINISHED MOVING. Measured 23 Sep 2026 on the app: a sentence
+       routed here from Home opened the explorer, `send` collapsed step 1, and the scaffold measured the
+       note while that fold was still at its open height — 240ms of `grid-template-rows` later the
+       content above had shrunk by about two hundred points, the scroll position had not, and the note's
+       first line sat NINE POINTS above the top of the scroller, cut in half by the app bar. Typing the
+       same sentence on the board never showed it, because there nothing was mid-transition when the
+       measurement was taken.
+
+       Only after a send, never on an ordinary fold toggle: the scaffold re-anchors whenever `revision`
+       changes, and making every collapse re-anchor would yank the list under an advisor who only
+       wanted to close a step. The second pass is idempotent — it recomputes the same target from the
+       settled rects, so where the scroll was already clamped it stays exactly where it is. */
+    setTimeout(() => setSettle((n2) => n2 + 1), FOLD_SETTLE_MS);
   };
+
+  /* THE SENTENCE THAT OPENED THE SCREEN IS ITS FIRST ANSWER. The app routed "what's available in debt"
+     here; arriving at an empty funnel would make the advisor say it again. Once, on mount — a layout
+     effect so the first paint already carries the answer rather than flashing the empty state first. */
+  const seeded = React.useRef(false);
+  React.useLayoutEffect(() => {
+    if (seeded.current || !startAsk) return;
+    seeded.current = true;
+    send(startAsk);
+  }, [startAsk]);
 
   /* WHAT EACH ACTION ACTUALLY DOES. Compare and Shortlist change this screen; proposal and rebalance
      belong to journeys D and E and say so. Every one of them produces a SENTENCE built from this
@@ -1129,7 +1286,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
       const cheaper = peers.filter((x) => x.ter < inst.ter).length;
       bits.push(`costs ${inst.ter.toFixed(2)}%${peers.length > 1 ? `, ${cheaper === 0 ? 'the cheapest' : `${cheaper} cheaper`} of the ${peers.length} in this category` : ''}`);
     }
-    const held = holdersOf(inst.id) || [];
+    const held = exHoldersOf(inst.id) || [];
     if (held.length) bits.push(`${held.length} of your clients already hold it`);
     return bits.length ? `${cardFor(inst).name} — ${bits.join('; ')}.` : `${cardFor(inst).name}. The catalogue carries no return, cost or holding for it, so there is nothing here to judge it on yet.`;
   };
@@ -1149,12 +1306,20 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
         : { say: `Shortlisted ${cardFor(inst).name}.`, body: reason(inst) });
       return;
     }
-    /* A PROTOTYPE BOUNDARY, NAMED. These open journeys D and E, which this screen is not. Saying so
-       is the honest shape — a control that silently does nothing is the defect; a control that says
-       where it goes is a control. */
+    /* PROPOSAL AND REBALANCE ARE JOURNEYS D AND E, AND WHETHER THEY EXIST DEPENDS ON THE HOST.
+       In the app they do, so the fund is handed over and the journey opens carrying it — the same
+       `carried` hand-off the fund journey already makes, through the book fund this instrument maps
+       to. A fund the book has never held cannot be carried, and the note says that rather than opening
+       a journey about a fund the rail cannot name. On the standalone board neither journey is mounted,
+       so the boundary is named instead: a control that silently does nothing is the defect; a control
+       that says where it goes is a control. */
+    const book = bookFundFor(inst);
+    if (onHandOff && book) { onHandOff(what, book.id, cardFor(inst).name); return; }
     setSaid({
       say: `${cardFor(inst).name} is staged for ${what === 'proposal' ? 'a proposal' : 'a rebalance'}.`,
-      body: `${reason(inst)} The ${what} itself opens in its own journey — this screen stages the fund and hands it over.`,
+      body: onHandOff
+        ? `${reason(inst)} The ${what} opens with a fund the book holds; this one is on the shelf and not in it, so there is nothing for the rail to carry.`
+        : `${reason(inst)} The ${what} itself opens in its own journey — this screen stages the fund and hands it over.`,
     });
   };
 
@@ -1163,9 +1328,13 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
   return (
     <ScreenScaffold title="Explore" body="thread" rest="top"
       anchor={fund ? openRef : show ? showRef : asked ? askRef : 0}
-      revision={fund || show || (asked && asked.text) || 'list'} onMenu={() => {}}
+      revision={`${fund || show || (asked && asked.text) || 'list'}\u00b7${settle}`} onMenu={onMenu} onNew={onNew}
       composer={<Composer value={ask} onChange={setAsk} onSend={send}
-        placeholder="Ask Sentinel — or name an asset, a product, a house" onAttach={() => {}} />}
+        /* MEASURED AT 375, WHICH IS THE PHONE (23 Sep 2026): "Ask Sentinel — or name an asset, a
+           product, a house" draws 324pt into a field with 317pt of room, so the hint that teaches the
+           composer drives the funnel was the one thing on the screen you could not finish reading.
+           This one is 256 and still names all three steps. */
+        placeholder="Ask, or name an asset, a product, a house" onAttach={() => {}} />}
       overlay={(
         /* THE SHEET IS THE SAME FILTERS THE BAR IS ALREADY SHOWING, opened for the ones that do not
            fit in a row. Nothing here is only reachable through the sheet — it is a wider view of the

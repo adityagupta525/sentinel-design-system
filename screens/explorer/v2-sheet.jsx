@@ -24,7 +24,7 @@ const V2_SORTS = [{ key: 'r3', label: '3Y return' }, { key: 'ter', label: 'Expen
 function v2Sort(list, key) {
   const c = list.slice();
   if (key === 'ter') c.sort((a, b) => perfOf(a.id).ter - perfOf(b.id).ter);
-  else if (key === 'held') c.sort((a, b) => holdersOf(b.id).length - holdersOf(a.id).length);
+  else if (key === 'held') c.sort((a, b) => exHoldersOf(b.id).length - exHoldersOf(a.id).length);
   else c.sort((a, b) => perfOf(b.id).r3 - perfOf(a.id).r3);
   return c;
 }

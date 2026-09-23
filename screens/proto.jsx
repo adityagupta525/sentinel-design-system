@@ -69,6 +69,13 @@ const ROUTES = [
   { id: 'propose',  re: /\bproposal\b|\bpropose\b|build .*(for|to) (mr|ms|mrs)?\.? ?\w*ag+ra?wal/i, why: 'a proposal' },
   { id: 'risk',     re: /\brisk\b|\bprofile\b/i,                                     why: 'a risk profile' },
   { id: 'ledger',   re: /placed|ledger|this month|what did i (do|send)/i,            why: 'a question about money already sent' },
+  /* BROWSE AND SEARCH ARE NOT THE SAME QUESTION, and this is why `explore` is tested before
+     `funds`. "Flexi cap funds under 0.7%" is a search: it has an answer, and journey C gives it as a
+     shortlist in the thread. "What's available in debt" is a BROWSE: it has no answer, it has a
+     catalogue, and the explorer walks it — four questions, each collapsing into its own answer. The
+     old rule caught both with the word `fund` and gave both the shortlist, which is why asking what
+     exists returned four funds somebody had already picked. */
+  { id: 'explore',  re: /\bexplore\b|\bbrowse\b|what(?:'|\u2019)?s (available|on the shelf)|asset class|show me (all |the )?(funds|products|instruments)|\b(bonds?|fds?|deposits?|pms|aifs?|reits?|invits?|unlisted|gold|sgb)\b/i, why: 'a browse of the catalogue' },
   { id: 'funds',    re: /\bfund|flexi|small cap|large cap|shelf|search\b/i,          why: 'a fund search' },
   { id: 'miss',     re: /.*/,                                                        why: 'nothing matched — and nothing is guessed at' },
 ];
@@ -111,6 +118,17 @@ function affordances(s) {
     next.push('Tap a client row', 'Tap a starter', 'Type anything — the router decides', 'Attach a statement', 'Open the menu');
     back.push('Nothing to go back from — this is the front door');
     return { next, back, where: 'Home', journey: '—', step: 'at rest' };
+  }
+  /* THE EXPLORER IS THE FOURTH SURFACE, so the panel answers the same four questions on it. It is the
+     only screen in the product whose controls are all visible at once — the four steps, the filter bar
+     and the composer — which is the point of it: nothing here is reached by opening something else. */
+  if (s.screen === 'explore') {
+    next.push('Pick an asset class — more than one is allowed', 'Narrow by product, then by category',
+      'Open a fund — its page opens inside the list, not over it', 'Filter by house, cost or size — the bar or the sheet',
+      'Type a sentence — “PMS under 1.5%”, “₹25,000 a month” — the funnel reads it');
+    back.push('Collapse any step — the answer stays in its header', 'Tap a crumb to reopen that step',
+      'Leave by the menu or a new thread — this product has no back arrow');
+    return { next, back, where: 'Explorer', journey: 'The shelf', step: 'four questions, one screen' };
   }
   if (s.screen === 'rail') {
     const J = { propose: 'D · Amit’s proposal', rebal: 'E · Sharma’s rebalance', review: 'F · Meera’s review', risk: 'A · Meera’s risk profile' }[s.railJourney] || 'A · Meera’s risk profile';
@@ -287,6 +305,15 @@ function Proto({ onEvent }) {
         reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
       return;
     }
+    /* THE EXPLORER IS A SURFACE, LIKE THE RAIL — it brings its own composer and its own app bar, so
+       it replaces the phone rather than sitting in a turn. It opens with the sentence already read:
+       "what's available in debt" arrives at an explorer whose asset step is answered. */
+    if (r.id === 'explore') {
+      setDir('forward'); setScreen('explore');
+      log('The explorer opens — one screen, four questions, and the sentence is its first answer',
+        reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+      return;
+    }
     if (screen !== 'thread') { setDir('forward'); setScreen('thread'); log('Thread in, Home out', reduced() ? 'a fade · 320ms' : 'ScreenStack forward: ds-screen-in over ds-screen-out · 320ms'); }
     if (r.id === 'drift') {
       setPhase('trace'); setArtifact('filling'); setResumeFrom(0); setTraceKey((k) => k + 1); traceStart.current = performance.now();
@@ -355,7 +382,7 @@ function Proto({ onEvent }) {
     'A switch is a redemption and a purchase at the registrar. Checking means asking the RTA whether both legs have settled and what NAV each got.',
     'This build has no RTA connection, so the status you see is the instruction\u2019s own — sent, acknowledged — and not the registrar\u2019s. It will say "sent" whatever the registrar does.',
     'In the real build this is where a settlement failure would surface, and it is the one thing a placed instruction cannot be trusted about until it does.'] };
-  const goHome = () => { setDir('back'); setScreen('home'); setJourney(null); setAsk(''); setPhase('trace'); setArtifact('filling'); setClient(null); setPending(null); setShared(false); setNote(false); setSaved({}); att.clear && att.clear(); log('Back to Home — the thread ends, and the bound client goes with it', reduced() ? 'a fade · 320ms' : 'ScreenStack BACK: the same two keyframes, reversed — you came out, not in'); };
+  const goHome = () => { setDir('back'); setScreen('home'); setJourney(null); setAsk(''); setPhase('trace'); setArtifact('filling'); setClient(null); setPending(null); setShared(false); setNote(false); setSaved({}); setCarried(null); att.clear && att.clear(); log('Back to Home — the thread ends, and the bound client and the carried fund go with it', reduced() ? 'a fade · 320ms' : 'ScreenStack BACK: the same two keyframes, reversed — you came out, not in'); };
 
 
   /* The body of the thread is the journey, and nothing else changes. One surface, one composer. */
@@ -404,6 +431,10 @@ function Proto({ onEvent }) {
           onBack={() => send("Review Sharma's portfolio")} />}
       </PROTO_R.Fragment>
     );
+    /* THE EXPLORER IS NOT A TURN — it is `screen === 'explore'`, below. Returning it from here drew
+       the whole phone twice: its own status bar, app bar, composer and home indicator inside the
+       thread's, which already had all four. A component that renders a ScreenScaffold is a surface,
+       and a surface belongs in the ScreenStack. */
     if (journey === 'funds') return (
       <PROTO_R.Fragment>
         <FundResults funds={fundShortlist} period={period} openRow={null}
@@ -556,6 +587,23 @@ function Proto({ onEvent }) {
     onAttach={(f) => { att.onAttach(f); setAsk('Read this and tell me what moved.'); setJourney('drift'); setDir('forward'); setScreen('thread'); setPhase('answer'); setArtifact('peek'); log(`Attached ${f.name} on Home — it opens a thread with the file in it`, 'ScreenStack forward · 320ms'); }}
     onRow={(label) => send(label)} onStarter={(c) => send(c)} onSend={send} />;
 
+  /* THE EXPLORER — the same component its own board mounts, not a copy, so a fix there is a fix here.
+     It is a SURFACE: it brings its own app bar and its own composer, which is why it sits in the
+     ScreenStack beside home and the rail rather than inside the thread. Two things the board cannot do
+     and the app can: the menu is the real drawer, and "Add to a proposal" opens journey D carrying the
+     fund, through the same `carried` hand-off a fund's own journey makes. */
+  const explore = <Funnel key={ask} startAsk={ask} onNew={goHome}
+    onMenu={() => { setMenu(true); log('Menu opens from the explorer — the same door as everywhere else', 'panel 320ms; scrim to 0.25'); }}
+    onHandOff={(what, fid, name) => {
+      setCarried(fid);
+      setRailJourney(what === 'proposal' ? 'propose' : 'rebal');
+      setJourney(what === 'proposal' ? 'propose' : 'rebal');
+      setAsk(`Add ${name} to a ${what === 'proposal' ? 'proposal' : 'rebalance'}`);
+      setDir('forward'); setScreen(what === 'proposal' ? 'rail' : 'thread');
+      log(`“${name}” handed from the explorer to journey ${what === 'proposal' ? 'D' : 'E'} — the fund rides along, the shelf does not`,
+        reduced() ? 'ds-screen-in as a fade · 320ms' : 'ScreenStack forward · 320ms');
+    }} />;
+
   /* The rail leaves by the same two doors as everything else — the menu's "Back to home", or a new
      thread. There is no back arrow in this product and the prototype does not invent one. */
   /* ONE RAIL, TWO JOURNEYS. The steps and the result are arguments, so the loop that decides what
@@ -632,7 +680,7 @@ function Proto({ onEvent }) {
 
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <ScreenStack screen={screen} direction={dir} render={(s) => (s === 'home' ? home : s === 'rail' ? rail : thread)}
+      <ScreenStack screen={screen} direction={dir} render={(s) => (s === 'home' ? home : s === 'rail' ? rail : s === 'explore' ? explore : thread)}
         onSettle={(to, from) => log(`Settled on ${to}`, `${from} unmounted after --dur-screen`)} />
       <ExplainerSheet open={!!why} title={(why || {}).title || ''} body={(why || {}).body || []} onClose={() => { setWhy(null); log('Explainer closes — focus returns to the chip', 'immediate'); }} />
       {/* BOTH CONFIRM SHEETS MOUNT HERE, above the ScreenStack, because a confirm is a SURFACE and not
@@ -656,7 +704,12 @@ function Proto({ onEvent }) {
       <Drawer open={menu} onClose={() => { setMenu(false); log('Menu closes', 'immediate'); }} onNew={() => { setMenu(false); goHome(); }}
         saved={MENU_SAVED} recent={MENU_RECENT} clients={MENU_CLIENTS}
         footer={<MenuFooter onHome={() => { setMenu(false); goHome(); }} />} />
-      <Bridge state={{ screen, journey, phase, artifact, railJourney, rebalPicked, audience }} />
+      {/* THREE KEYS THE PANEL READS AND NOBODY SENT (23 Sep 2026). `affordances` branches on `carried`,
+          `uncosted` and `fundPhase`; none of the three was in this object, so "the fund came with you
+          from the explorer", the uncosted rule's two exits and every one of journey C's four states
+          were unreachable lines in a function whose whole claim is that it IS the screen's control
+          list. Found by wiring the explorer's hand-off, which sets `carried`. */}
+      <Bridge state={{ screen, journey, phase, artifact, railJourney, rebalPicked, audience, carried, uncosted, fundPhase }} />
     </div>
   );
 }
@@ -665,7 +718,7 @@ function Proto({ onEvent }) {
 const StateBus = React.createContext(null);
 function Bridge({ state }) {
   const set = React.useContext(StateBus);
-  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney, state.rebalPicked, state.audience]);
+  React.useEffect(() => { if (set) set(state); }, [state.screen, state.journey, state.phase, state.artifact, state.railJourney, state.rebalPicked, state.audience, state.carried, state.uncosted && state.uncosted.id, state.fundPhase]);
   return null;
 }
 

@@ -97,6 +97,23 @@ const PROBE = () => {
         }
       }
 
+      /* 1b — A PLACEHOLDER THAT DOES NOT FIT ITS FIELD. Detector 1 measures boxes and text CONTENT, so
+         it cannot see this: a placeholder is an attribute, the input's box stays inside the phone, and
+         the hint is simply cut off mid-word by the field's own overflow. Found by looking, on the one
+         screen whose placeholder is teaching — the explorer's composer drew 324pt of hint into 317pt of
+         field, so the sentence that tells an advisor the composer drives the funnel ended at "a hous".
+         Measured with the field's own computed font, against its content box. */
+      if (el.tagName === 'INPUT' && (el.getAttribute('placeholder') || '').trim()) {
+        const probe = document.createElement('span');
+        probe.style.cssText = `position:absolute;visibility:hidden;white-space:pre;left:-9999px;font-family:${cs.fontFamily};font-size:${cs.fontSize};font-weight:${cs.fontWeight};letter-spacing:${cs.letterSpacing}`;
+        probe.textContent = el.getAttribute('placeholder');
+        document.body.appendChild(probe);
+        const room = r.width - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0);
+        const over = Math.round(probe.getBoundingClientRect().width - room);
+        probe.remove();
+        if (over > 0) out.push({ kind: 'placeholder-cut', by: over, what: el.getAttribute('placeholder').slice(0, 44), tag: 'input' });
+      }
+
       /* 2 — CLIPPED RING */
       const sh = cs.boxShadow || '';
       const outerRing = sh !== 'none' && !sh.includes('inset') && /0px 0px 0px [1-9]/.test(sh);

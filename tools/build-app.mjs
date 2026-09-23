@@ -87,6 +87,32 @@ for (const f of await readdir(ASSETS)) {
   await copyFile(join(ASSETS, f), join(OUT, f));
   assets += 1;
 }
+/* AND THE EXPLORER'S ART, WHICH THE PAGE ASKS FOR BY PATH (23 Sep 2026). `window.__EXPLORER_ART` is
+   `./explorer/art`, and the funnel builds `<img src>` from it for the four asset textures, the eight
+   client faces and the lattice. Inlining them is not an option the way the bundle was: they are
+   referenced as URLs from inside compiled JSX, not imported. So they are copied, the way the home-
+   screen icons already are. Measured before this ran: `app/` shipped ZERO of them, so every tile and
+   every face in the deployed app was a broken image — the build's own boot check never caught it
+   because a 404 on an <img> is not a console error and the page renders around it.
+
+   A build that silently drops what the page asks for is the failure this whole file exists to avoid,
+   so the count is asserted rather than reported: no art, no build. */
+const ART_SRC = join(ROOT, 'screens', 'explorer', 'art');
+let art = 0;
+if (existsSync(ART_SRC)) {
+  const walkArt = async (dir, rel = '') => {
+    for (const e of await readdir(dir, { withFileTypes: true })) {
+      if (e.name.startsWith('.')) continue;
+      const from = join(dir, e.name);
+      const to = join(OUT, 'explorer', 'art', rel, e.name);
+      if (e.isDirectory()) { await mkdir(to, { recursive: true }); await walkArt(from, join(rel, e.name)); }
+      else { await mkdir(dirname(to), { recursive: true }); await copyFile(from, to); art += 1; }
+    }
+  };
+  await walkArt(ART_SRC);
+}
+if (!art) { console.error('app/: the explorer art did not copy — every tile and face would be a broken image'); process.exit(1); }
+
 await writeFile(join(OUT, 'vercel.json'), JSON.stringify({
   $schema: 'https://openapi.vercel.sh/vercel.json',
   cleanUrls: false,
@@ -107,6 +133,6 @@ const left = [
 const bad = left.filter(([, present]) => present).map(([what]) => what);
 if (bad.length) { console.error(`app/index.html still carries ${bad.join(', ')}`); process.exit(1); }
 
-console.log(`app/index.html: ${(html.length / 1024).toFixed(0)} KB, ${n} JSX blocks compiled in, plus ${assets} home-screen files`);
+console.log(`app/index.html: ${(html.length / 1024).toFixed(0)} KB, ${n} JSX blocks compiled in, plus ${assets} home-screen files and ${art} explorer art files`);
 console.log('check it boots:  npm run check:app');
 console.log('deploy it with:  cd app && npx vercel --prod');

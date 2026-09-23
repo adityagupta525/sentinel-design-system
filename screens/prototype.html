@@ -6,8 +6,14 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="../design-system/_ds_bundle.js"></script>
 <script>window.__screenRequires = ['AllocationCard','AnswerChip','ArtifactCard','AttachmentTurn','AttributionChart','Badge','ChartBar','ChipRow','Composer','ConcentrationBar','ConfirmSheet','ConstraintCallout','DarkButton','DataTable','DetourBanner','DisclosureBlock','Dock','DownloadAction','Drawer','DrawnCheck','Dumbbell','ExplainerSheet','Eyebrow','FigureRow','FileUpload','FollowUpRow','GreetingDivider','HeroNumberCard','HomeIndicator','InfoCard','InfoDot','List','MessageActions','MoneyComposer','MoveCard','OverlapView','ParseNote','PhoneFrame','Pill','Pressable','ProgressRail','ProgressTrace','Provenance','QAPair','RangePills','RefusalTurn','RejectCallout','ResponseFeedback','ResultActions','ResultCard','ResultPrimary','ScreenBackdrop','ScreenStack','SegmentedRow','SentinelBlock','SentinelText','SentinelThinking','SentinelTurn','StandingDisclosure','StatTile','StatusSpacer','StepTrace','SuggestionRow','Surface','TopBar','UserBubble','UserTurn','VersionRow'];</script>
+<!-- THE EXPLORER IS PART OF THE APP, so the page that documents the app loads it (23 Sep 2026).
+     `proto.jsx` gained a fourth surface and this page did not gain its module, so the router
+     matched a browse and `ReferenceError: Funnel is not defined` took the whole board down.
+     `__EXPLORER_PROTOTYPE` stops the explorer mounting its own root, which this page owns. -->
+<script>window.__EXPLORER_ART = "./explorer/art"; window.__EXPLORER_PROTOTYPE = true;</script>
 <script type="text/babel" src="./screen-kit.jsx"></script>
 <script type="text/babel" src="./data/book.jsx"></script>
+<script type="text/babel" src="./data/catalogue.jsx"></script>
 <script type="text/babel" src="./journey-b/home.jsx"></script>
 <script type="text/babel" src="./journey-b/thread.jsx"></script>
 <script type="text/babel" src="./journey-b/answer.jsx"></script>
@@ -20,6 +26,8 @@
 <script type="text/babel" src="./shell/who.jsx"></script>
 <script type="text/babel" src="./thread/refusals.jsx"></script>
 <script type="text/babel" src="./thread/ledger.jsx"></script>
+<script type="text/babel" src="./explorer/parts.jsx"></script>
+<script type="text/babel" src="./explorer/v1-journey.jsx"></script>
 <script type="text/babel" src="./shell/menu.jsx"></script>
 <script type="text/babel" src="./proto.jsx"></script>
 <style>body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}</style>
