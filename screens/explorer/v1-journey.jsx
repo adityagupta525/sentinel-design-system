@@ -273,10 +273,19 @@ function listNote(rows, cats, fams) {
 /* Sector names arrive SHOUTING from the source — "FINANCIALS", "PHARMA & HEALTHCARE" — beside ones
    that do not — "Consumer Cyclical". Rule 6 is sentence case, and a chart legend that is half caps is
    the data's formatting leaking onto the screen. */
+/* Sector and company names arrive SHOUTING from the source — "FINANCIALS", "RELIANCE INDUSTRIES LTD"
+   — beside ones that do not, and rule 6 is sentence case. But an ACRONYM is not shouting: ICICI, HDFC,
+   SBI, NTPC and L&T are the names, and the first pass turned them into "Icici" and "Hdfc", which is a
+   different and more embarrassing wrong than leaving them capitalised. So a word of five letters or
+   fewer in full caps is kept — that is where Indian financial acronyms live — and anything longer is
+   a shouted word and is lowered. */
 function titleish(s) {
   if (!s) return s;
-  return s.split(' ').map((w) => (w.length > 2 && w === w.toUpperCase()
-    ? w[0] + w.slice(1).toLowerCase() : w)).join(' ');
+  return s.split(' ').map((w) => {
+    const bare = w.replace(/[^A-Za-z]/g, '');
+    if (bare.length <= 5 && w === w.toUpperCase()) return w;
+    return w.length > 2 && w === w.toUpperCase() ? w[0] + w.slice(1).toLowerCase() : w;
+  }).join(' ');
 }
 const prettyField = (f) => String(f).replace(/^section:/, '').replace(/_/g, ' ');
 
@@ -604,7 +613,7 @@ function missing() {
   return <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>not on file</span>;
 }
 
-function CompareBlock({ ids, onClear, onDrop }) {
+function CompareBlock({ ids, onClear, onDrop, onAdd, candidates = [] }) {
   const rows = ids.map(instrumentById).filter(Boolean);
   if (rows.length < 2) return null;
   const val = (fn) => Object.fromEntries(rows.map((i) => {
@@ -631,8 +640,27 @@ function CompareBlock({ ids, onClear, onDrop }) {
         entities={rows.map((i) => ({ id: i.id, name: cardFor(i).name, meta: i.subTypeLabel || i.category }))}
         rows={spec.map((r) => ({ label: r.label, values: val(r.get), better: r.better }))}
         cap={3}
+        onAdd={rows.length < 3 && candidates.length ? onAdd : undefined}
+        addLabel="Add a third"
         capNote="Three at a time — a fourth column at 375 makes every figure unreadable, which is the PRD's own ceiling."
         footnote="Rows appear where at least one of the chosen instruments has the figure. A blank is never printed as a zero." />
+
+      {/* ADDING THE THIRD WITHOUT LEAVING. The owner's note: inside the comparison there was no way
+          to add one and no way to drop one — the only controls were back up in the list, which is
+          exactly where he was not. The candidates are the rest of the CURRENT result set, so this
+          cannot offer a fund the filters have already excluded. */}
+      {rows.length < 3 && candidates.length > 0 && (
+        <div style={{ marginTop: 'var(--space-12)' }}>
+          <Eyebrow>ADD A THIRD</Eyebrow>
+          <div style={{ marginTop: 'var(--space-8)' }}>
+            <ChipRow>
+              {candidates.slice(0, 6).map((c) => (
+                <Pill key={c.id} label={cardFor(c).name} size="sm" onClick={() => onAdd(c.id)} />
+              ))}
+            </ChipRow>
+          </div>
+        </div>
+      )}
       <div style={{ marginTop: 'var(--space-12)' }}>
         {/* THE HOUSE, NOT THE FIRST TWO WORDS OF THE NAME. Slicing gave "Drop UTI Large", which is
             not a thing — and in a comparison the house is exactly what tells two large cap funds
@@ -644,14 +672,23 @@ function CompareBlock({ ids, onClear, onDrop }) {
   );
 }
 
-/* ─── OVERLAP, ON WHAT THE CATALOGUE ACTUALLY HAS ───────────────────────────────────────────────
-   AND THIS IS WHERE THE DATA HAS TO BE ADMITTED. A real overlap is computed on the full portfolio —
-   every holding, by weight. The catalogue carries the TOP FIVE holdings per instrument and nothing
-   more. So what is computed here is the shared weight among those five, and the footnote says so in
-   the advisor's own words rather than letting a number imply a portfolio-level answer it cannot
-   support. A figure whose basis is not stated is not a figure. */
-function sharedPct(a, b) {
-  const A = (onePagerOf(a)?.holdings) || [], B = (onePagerOf(b)?.holdings) || [];
+/* ─── OVERLAP — A MATRIX, AND WHAT IS ACTUALLY SHARED ──────────────────────────────────────────
+   AND THIS IS WHERE THE DATA HAS TO BE ADMITTED. A real overlap is computed on the full portfolio,
+   every holding by weight. The catalogue carries the TOP FIVE holdings and the TOP FIVE SECTORS per
+   instrument, and nothing more. So what is computed here is the shared weight among those, and the
+   footnote says so in the advisor's own words rather than letting a number imply a portfolio-level
+   answer it cannot support. A figure whose basis is not stated is not a figure.
+
+   TWO PROPERTIES, BECAUSE THEY ANSWER DIFFERENT QUESTIONS. Holdings overlap tells an advisor the two
+   funds own the same companies — the concentration risk. Sector overlap tells them the two funds
+   make the same BET even where the names differ, which is the risk that hides from a holdings check
+   and is the one a client asks about after a bad quarter.
+
+   A MATRIX AT THREE, PAIRS AT TWO. With two funds a matrix is one cell with two empty ones around it,
+   which is a grid drawn to hold a single number. The owner's cap is three and three is where the
+   matrix earns itself: three pairs, read at once, with the worst of them obvious. */
+function sharedOn(a, b, key) {
+  const A = (onePagerOf(a) || {})[key] || [], B = (onePagerOf(b) || {})[key] || [];
   if (!A.length || !B.length) return null;
   const byName = new Map(B.map((h) => [h.name.toLowerCase(), h.pct]));
   let sum = 0;
@@ -661,51 +698,88 @@ function sharedPct(a, b) {
   }
   return +sum.toFixed(1);
 }
+const sharedPct = (a, b) => sharedOn(a, b, 'holdings');
 
-function OverlapBlock({ ids, onDrop }) {
+/* The names behind the number. "62%" is not an answer on its own — the advisor's next question is
+   always WHICH, and answering it is the difference between a figure and a finding. */
+function sharedNames(ids, key) {
+  const lists = ids.map((id) => (onePagerOf(id) || {})[key] || []);
+  if (lists.some((l) => !l.length)) return [];
+  const [first, ...rest] = lists;
+  return first
+    .map((h) => {
+      const others = rest.map((l) => l.find((x) => x.name.toLowerCase() === h.name.toLowerCase()));
+      if (others.some((o) => !o)) return null;
+      return { name: h.name, pct: Math.min(h.pct, ...others.map((o) => o.pct)) };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.pct - a.pct);
+}
+
+function OverlapBlock({ ids, onDrop, onAdd, candidates = [] }) {
   const rows = ids.map(instrumentById).filter(Boolean);
+  const [prop, setProp] = useS1('holdings');
+  const [mode, setMode] = useS1(null);
   if (rows.length < 2) return null;
+  const key = prop === 'sector' ? 'sector' : 'holdings';
   const pairs = [];
   for (let x = 0; x < rows.length; x += 1) {
     for (let y = x + 1; y < rows.length; y += 1) {
-      pairs.push({ a: rows[x], b: rows[y], pct: sharedPct(rows[x].id, rows[y].id) });
+      pairs.push({ a: rows[x].id, b: rows[y].id, pct: sharedOn(rows[x].id, rows[y].id, key) });
     }
   }
   const known = pairs.filter((c) => c.pct != null);
+  const useMode = mode || (rows.length >= 3 ? 'matrix' : 'pairs');
+  const shared = sharedNames(ids, key);
 
-  /* THE BAR NOBODY COULD SEE. `OverlapView`'s pair row draws its magnitude as a --tint-bronze-06
-     rectangle behind the label — 6% ink. The owner's words: "vo to mujhe visible hai, but as a user
-     kisi ko visible nahi hai." He is right, and I had waved it off as the component working as
-     designed, which was the wrong call: a magnitude you cannot see is not a magnitude, it is a
-     smudge behind a word.
-
-     So the pairs are drawn with `ChartLegend` instead, whose own spec page carries this exact case —
-     "Parag Parikh Flexi <-> HDFC Large Cap ... 62%" under a variant called LONG LABELS WRAP. It
-     ranks, it wraps rather than truncating a fund name, and its figure is TYPE at full ink rather
-     than a tint. Nothing was restyled to get here; the system already had the right component and
-     the first build reached for the wrong one. */
   return (
     <Surface>
       <Eyebrow>WHERE THEY HOLD THE SAME THING</Eyebrow>
+      {/* THE LENS SWITCH IS A SEGMENTED ROW, not OverlapView's own "Add property" pill. That pill
+          renders only when a property is INACTIVE and it is labelled for adding, which is a different
+          promise from switching — and this screen already switches the composition lens with a
+          SegmentedRow, so one control does one job across the whole funnel. */}
+      {known.length > 0 && (
+        <div style={{ marginTop: 'var(--space-8)' }}>
+          <SegmentedRow label="Computed on" options={['Top holdings', 'Sector']}
+            value={prop === 'sector' ? 'Sector' : 'Top holdings'}
+            onChange={(x) => setProp(x === 'Sector' ? 'sector' : 'holdings')} />
+        </div>
+      )}
       <div style={{ marginTop: 'var(--space-8)' }}>
         {known.length ? (
           <>
-            <ChartLegend layout="stacked" items={known.map((c) => ({
-              label: `${cardFor(c.a).name} ↔ ${cardFor(c.b).name}`,
-              value: `${c.pct}%`, amount: c.pct,
-            }))} />
-            <p style={{ margin: `var(--space-12) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
-              Shared weight among the top five holdings the catalogue carries for each — not the whole
-              portfolio. A true overlap needs every holding by weight, and that is not on file here.
-            </p>
+            <OverlapView mode={useMode}
+              funds={rows.map((i) => ({ id: i.id, name: cardFor(i).name, inComparison: true }))}
+              properties={[{ id: key, label: key === 'sector' ? 'Sector' : 'Top holdings', active: true }]}
+              cells={pairs} maxFunds={3}
+              onToggleFund={(id) => onDrop(id)}
+              onChangeMode={(m) => setMode(m)}
+              onAddFund={candidates.length ? onAdd : undefined}
+              footnote={`Shared weight among the top five ${key === 'sector' ? 'sectors' : 'holdings'} the catalogue carries for each — not the whole portfolio. A true overlap needs every holding by weight, and that is not on file here.`} />
+
+            {/* WHICH ONES. The number says how much; this says what — and an advisor asked "why do
+                these two move together" needs the second one to answer a client. */}
+            {shared.length > 0 && (
+              <div style={{ marginTop: 'var(--space-12)' }}>
+                <Eyebrow>{key === 'sector' ? 'THE SECTORS ALL OF THEM HOLD' : 'THE COMPANIES ALL OF THEM HOLD'}</Eyebrow>
+                <div style={{ marginTop: 'var(--space-8)' }}>
+                  <ChartLegend layout="stacked" items={shared.slice(0, 5).map((h) => ({
+                    label: titleish(h.name), value: `${h.pct.toFixed(1)}%`, amount: h.pct,
+                  }))} />
+                </div>
+              </div>
+            )}
+            {shared.length === 0 && (
+              <p style={{ margin: `var(--space-12) 0 0`, font: 'var(--type-caption-font)', color: 'var(--color-muted)' }}>
+                {`No single ${key === 'sector' ? 'sector' : 'company'} appears in all ${rows.length} — the overlap above is pairwise.`}
+              </p>
+            )}
           </>
         ) : (
           <ConstraintCallout eyebrow="NO HOLDINGS ON FILE"
             body="Neither of these carries a holdings list in the catalogue, so there is nothing to intersect. Bonds, deposits and REITs have no portfolio to overlap." />
         )}
-      </div>
-      <div style={{ marginTop: 'var(--space-12)' }}>
-        <InlineActionRow actions={rows.map((i) => ({ label: `Drop ${FACET_OF.amc(i) || cardFor(i).name}`, onClick: () => onDrop(i.id) }))} />
       </div>
     </Surface>
   );
@@ -1062,7 +1136,10 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
             onDrop={(id) => setPicked((s2) => s2.filter((x) => x !== id))} />
         )}
         {show === 'overlap' && picked.length >= 2 && (
-          <OverlapBlock ids={picked} onDrop={(id) => setPicked((s2) => s2.filter((x) => x !== id))} />
+          <OverlapBlock ids={picked}
+          candidates={rows.filter((r) => !picked.includes(r.id))}
+          onAdd={() => { const n = rows.find((r) => !picked.includes(r.id)); if (n) setPicked((s2) => s2.concat(n.id).slice(-3)); }}
+          onDrop={(id) => setPicked((s2) => s2.filter((x) => x !== id))} />
         )}
       </div>
       {/* WHAT SENTINEL SAYS BACK. The owner's note was that once the cards are shown nothing follows
