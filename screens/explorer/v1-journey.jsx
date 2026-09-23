@@ -33,6 +33,31 @@
 
 const { useState: useS1 } = React;
 
+/* ─── THE ART ───────────────────────────────────────────────────────────────────────────────────
+   The owner lifted this system's own "ships no images" rule for the fund explorer on 23 Sep 2026 —
+   his rule, his call, and his reason was that the tiles felt low and flat and the contrast was
+   missing. He is right that a glyph at a tenth of an ink cannot carry a card.
+
+   So four pieces of art, generated to this product's own palette and keyed to transparency so they
+   sit on any surface: the rising bars, the payment ladder, the ingot stack, the elevations — the same
+   four shapes `AssetMark` draws, at full colour with their own paper grain. 14 KB for all four.
+
+   THEY LIVE UNDER `screens/explorer/`, NOT IN THE DESIGN SYSTEM. The system still ships no images;
+   this screen does. That keeps the rule literally true, keeps the exception visible to the next
+   person, and means nothing outside the explorer inherits it by accident. `IntentTile` takes a node
+   and does not care what is in it. */
+const ART = {
+  Equity: './art/equity.webp',
+  Debt: './art/debt.webp',
+  Commodity: './art/commodity.webp',
+  'REITs / InvITs': './art/property.webp',
+};
+function AssetArt({ asset, size = 62 }) {
+  const src = ART[asset];
+  if (!src) return null;
+  return <img src={src} alt="" width={size} height={size} style={{ display: 'block', objectFit: 'contain' }} />;
+}
+
 /* ─── Formatting. Indian grouping, one decimal, and never a zero standing in for a gap ──────────── */
 const crore = (n) => (n == null ? null : `₹${Math.round(n / 1e7).toLocaleString('en-IN')} Cr`);
 const pc = (n) => (n == null ? null : `${n < 0 ? '−' : ''}${Math.abs(n).toFixed(2)}%`);
@@ -1115,7 +1140,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           <IntentGrid>
             {ASSETS.map((a) => (
               <IntentTile key={a.label} label={a.label} count={a.count}
-                mark={<AssetMark asset={a.label} size={52} />}
+                mark={<AssetArt asset={a.label} />} markKind="art"
                 selected={assets.includes(a.label)} onClick={() => chooseAsset(a.label)} />
             ))}
           </IntentGrid>
@@ -1137,7 +1162,7 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           <IntentGrid>
             {famRows.map((f) => (
               <IntentTile key={f.key} label={f.label} count={f.count} unit="instruments"
-                mark={<AssetMark asset={f.assets[0]} size={52} />}
+                mark={<AssetArt asset={f.assets[0]} />} markKind="art"
                 selected={fams.includes(f.key)} onClick={() => chooseFam(f.key)} />
             ))}
           </IntentGrid>
@@ -1202,9 +1227,28 @@ function Funnel({ startAssets = [], startFamilies = [], startCats = [], startOpe
           {/* ONE STICKY LINE, 36pt, and it is the only thing that never scrolls away. The search
               sits under it and scrolls, because searching is a deliberate act and orientation is
               not. */}
+          {/* THE FILTER CONTROL IS A GLYPH AND A COUNT, not the word. The owner's note: do not write
+              "Filters" out — on a 343pt bar the word costs a third of the crumbs' room and says
+              nothing the icon does not. The COUNT stays, because "how many are on" is the one thing
+              an icon cannot say, and it is exactly what an advisor needs to know before they open it. */}
           <PathBar steps={path} onStep={(st) => setOpen(st.step)} onReset={resetAll}
-            action={<Pill label={chips.length ? `Filters · ${chips.length}` : 'Filters'} size="sm"
-              selected={chips.length > 0} onClick={() => setSheet(true)} />} />
+            action={(
+              <Pressable onClick={() => setSheet(true)}
+                label={chips.length ? `Filters, ${chips.length} on` : 'Filters'}
+                pressed={chips.length > 0}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 'var(--space-4)',
+                  height: 'var(--h-filter-chip)', padding: `0 var(--space-8)`,
+                  borderRadius: 'var(--radius-full)',
+                  background: chips.length ? 'var(--color-selected)' : 'var(--color-chip)',
+                  boxShadow: `0 0 0 var(--border-1) ${chips.length ? 'var(--color-bronze)' : 'var(--color-bubble-edge)'}`,
+                }}>
+                <IconFilter stroke={chips.length ? 'var(--color-bronze-deep)' : 'var(--color-bronze)'} />
+                {chips.length > 0 && (
+                  <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>{chips.length}</span>
+                )}
+              </Pressable>
+            )} />
           <FilterBar q={q} onQ={setQ} chips={chips} onDrop={(c) => c.drop()} count={rows.length} />
         </>
       )}

@@ -15,6 +15,11 @@ export interface IntentTileProps {
    *  mark is not a tile missing information, and rule 1 — colour and shape never carry a meaning
    *  alone — holds. Pass an `AssetMark`, or any 24-viewBox glyph sized up. */
   mark?: React.ReactNode;
+  /** How the mark is drawn. `'texture'` (default) tints it in the accent at a tenth of an ink so it
+   *  never competes with the label — that is what the four `AssetMark` glyphs are for. `'art'` leaves
+   *  it at full strength and lets it carry its own colour, for a mark that IS the contrast rather
+   *  than a hint of it. Only the caller knows which it handed over, so only the caller can say. */
+  markKind?: 'texture' | 'art';
   /** The set is the one currently applied. */
   selected?: boolean;
   /** No feed for this asset class yet. The tile stays visible and legible and loses only its

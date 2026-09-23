@@ -50,7 +50,7 @@ import { Pressable } from '../actions/Pressable.jsx';
 const NUM = { fontVariantNumeric: 'tabular-nums' };
 
 export function IntentTile({
-  label, count = null, unit = 'funds', note, mark, selected = false,
+  label, count = null, unit = 'funds', note, mark, markKind = 'texture', selected = false,
   unavailable = false, unavailableNote, onClick,
 }) {
   const inert = unavailable || !onClick;
@@ -72,11 +72,21 @@ export function IntentTile({
         cursor: inert ? 'default' : undefined,
       }}>
       {/* THE MARK IS BEHIND EVERYTHING, and `pointerEvents:none` matters — it overlaps the label's
-          box and a mark that swallowed a tap would make the bottom half of the tile dead. */}
+          box and a mark that swallowed a tap would make the bottom half of the tile dead.
+
+          TWO KINDS OF MARK, AND THEY ARE NOT THE SAME THING. A `texture` is a system glyph tinted in
+          the accent and held at a tenth of an ink, so it never competes with the label — that is what
+          the four `AssetMark` shapes are. An `art` mark carries its OWN colour and is drawn at full
+          strength, because it IS the contrast rather than a hint of it; the owner's note on 23 Sep
+          2026 was that the tiles felt low and flat, and a 7% glyph cannot answer that. Only the
+          caller knows which it handed over, so only the caller can say. */}
       {mark && (
         <span aria-hidden="true" style={{
-          position: 'absolute', right: 'var(--space-12)', bottom: 'var(--space-10)', pointerEvents: 'none',
-          color: 'var(--color-bronze-deep)', opacity: unavailable ? 0.06 : selected ? 0.18 : 0.11,
+          position: 'absolute', right: 'var(--space-10)', bottom: 'var(--space-8)', pointerEvents: 'none',
+          color: 'var(--color-bronze-deep)',
+          opacity: markKind === 'art'
+            ? (unavailable ? 0.35 : 1)
+            : (unavailable ? 0.06 : selected ? 0.18 : 0.11),
           transition: 'opacity var(--dur-fast) var(--ease)',
           display: 'grid', placeItems: 'center',
         }}>{mark}</span>

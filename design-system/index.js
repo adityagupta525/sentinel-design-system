@@ -19,6 +19,7 @@ export { IconCheckCircle } from './components/icons/IconCheckCircle.jsx';
 export { IconChevronRight } from './components/icons/IconChevronRight.jsx';
 export { IconDownload } from './components/icons/IconDownload.jsx';
 export { IconFile } from './components/icons/IconFile.jsx';
+export { IconFilter } from './components/icons/IconFilter.jsx';
 export { IconInfo } from './components/icons/IconInfo.jsx';
 export { IconMenu } from './components/icons/IconMenu.jsx';
 export { IconPlus } from './components/icons/IconPlus.jsx';

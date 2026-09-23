@@ -33,6 +33,8 @@ export type { IconDownloadProps } from './components/icons/IconDownload';
 export { IconDownload } from './components/icons/IconDownload';
 export type { IconFileProps } from './components/icons/IconFile';
 export { IconFile } from './components/icons/IconFile';
+export type { IconFilterProps } from './components/icons/IconFilter';
+export { IconFilter } from './components/icons/IconFilter';
 export type { IconInfoProps } from './components/icons/IconInfo';
 export { IconInfo } from './components/icons/IconInfo';
 export type { IconMenuProps } from './components/icons/IconMenu';

@@ -2,7 +2,7 @@
  "generated": "2026-09-23",
  "generator": "scripts/build-index.js",
  "counts": {
-  "shipped": 110
+  "shipped": 111
  },
  "rows": [
   {
@@ -239,6 +239,19 @@
    "file": "components/icons/IconFile.jsx",
    "tokens": [
     "--color-muted"
+   ],
+   "locals": [],
+   "literals": 0
+  },
+  {
+   "name": "IconFilter",
+   "group": "Foundations",
+   "status": "shipped",
+   "page": "IconFilter.html",
+   "file": "components/icons/IconFilter.jsx",
+   "tokens": [
+    "--color-bronze",
+    "--color-surface"
    ],
    "locals": [],
    "literals": 0

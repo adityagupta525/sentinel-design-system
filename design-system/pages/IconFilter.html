@@ -1,0 +1,85 @@
+<!-- @dsCard group="Pages" viewport="1000x1200" name="IconFilter" subtitle="There is more, that way" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>IconFilter — Sentinel</title><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="module">import * as s from 'https://cdn.jsdelivr.net/npm/d3-scale@4/+esm';import * as h from 'https://cdn.jsdelivr.net/npm/d3-shape@3/+esm';window.d3=Object.assign({},window.d3||{},s,h);window.dispatchEvent(new Event('d3ready'));</script>
+<style>html,body{margin:0;background:var(--color-desk);font-family:var(--font-ui)}#root{background:var(--color-canvas);min-height:100vh}a{color:var(--color-bronze-deep)}a:hover{color:var(--color-bronze)}.noscroll{scrollbar-width:none}.noscroll::-webkit-scrollbar{display:none}</style></head>
+<body><script data-ds-file-guard>if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var h = "../../site/pages/IconFilter.html";
+    var S = 'font:500 13px/1.6 -apple-system,BlinkMacSystemFont,sans-serif';
+    var bar = document.createElement('div');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;top:0;z-index:2147483647;background:#251f1b;color:#fff;padding:10px 14px;' + S);
+    bar.innerHTML = 'Opened from a file:// URL, where this page cannot compile its JSX. <a href="' + h + '" style="color:#d6a15f">Open the built copy</a>, or run <code>npm run preview</code>.';
+    document.body.appendChild(bar);
+    setTimeout(function () {
+      var r = document.getElementById('root');
+      if (r && !r.childElementCount) {
+        r.innerHTML = '<p style="margin:76px 20px 20px;' + S + ';color:#251f1b">Nothing rendered here. This page compiles its JSX in the browser, and a file:// URL cannot fetch the source to compile — so the page is not broken, it is being opened the wrong way. <a href="' + h + '" style="color:#8a6a3b">Open the built copy of this page</a>, or run <code>npm run preview</code> and open it over http.</p>';
+      }
+    }, 1400);
+  });
+}
+</script><div id="root"></div>
+<script type="text/babel" src="./page-kit.jsx"></script>
+<script type="text/babel">
+const { IconFilter, IconChevronRight, IconPlus, Surface, Pressable } = window.SentinelDesignSystem_0682a2;
+const TOK = ['--color-bronze','--color-bronze-deep','--color-surface','--h-filter-chip','--radius-full'];
+
+function App() {
+  return (
+    <PageShell name="IconFilter" group="Foundations" status="shipped" requires={['IconFilter']}
+      summary="Three sliders, not a funnel. A funnel glyph is the common choice and it is wrong here: this product HAS a funnel — four questions down the screen — and using its picture for the thing that NARROWS the result would name two different mechanics with one shape. Sliders say “adjust”, which is what the sheet does. Added 23 Sep 2026 because the fund explorer's filter control was the word “Filters”, which on a 343pt bar costs a third of the crumbs' room and says nothing the glyph does not.">
+
+      <Block n={1} title="Specimen" sub="15 viewBox, 1.5 stroke, round caps, --color-bronze — the set's own idiom, so it sits with the others rather than beside them.">
+        <Surface>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-20)' }}>
+            <IconFilter /><IconChevronRight /><IconPlus />
+          </div>
+        </Surface>
+      </Block>
+
+      <Block n={2} title="Two rails, not three" sub="Drawn first with three rails and three knobs, then looked at: at 15px with a 1.5 stroke it read as a dense smudge rather than as sliders. Two rails with larger knobs keeps the idea at the size it is actually used.">
+        <Grid cols={2} items={[
+          { label: 'At 15 — where it lives', node: <Surface><IconFilter /></Surface>, note: 'Two rails, two knobs, off-centre.' },
+          { label: 'At 48 — where it does not', node: <Surface><IconFilter size={48} /></Surface>, note: 'The same drawing, enlarged. Nothing here is tuned for this size.' },
+        ]} />
+      </Block>
+
+      <Block n={3} title="Where it is used" sub="In the fund explorer's path bar, as a glyph and a COUNT. The count stays because “how many are on” is the one thing an icon cannot say, and it is exactly what an advisor needs before they open the sheet.">
+        <Surface>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
+            <Pressable label="Filters" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', height: 'var(--h-filter-chip)', padding: `0 var(--space-8)`, borderRadius: 'var(--radius-full)', background: 'var(--color-chip)', boxShadow: '0 0 0 var(--border-1) var(--color-bubble-edge)' }}>
+              <IconFilter />
+            </Pressable>
+            <Pressable label="Filters, 3 on" pressed style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', height: 'var(--h-filter-chip)', padding: `0 var(--space-8)`, borderRadius: 'var(--radius-full)', background: 'var(--color-selected)', boxShadow: '0 0 0 var(--border-1) var(--color-bronze)' }}>
+              <IconFilter stroke="var(--color-bronze-deep)" />
+              <span style={{ font: 'var(--type-caption-font)', color: 'var(--color-bronze-deep)', fontVariantNumeric: 'tabular-nums' }}>3</span>
+            </Pressable>
+          </div>
+        </Surface>
+      </Block>
+
+      <Block n={4} title="Tokens"><Tokens names={TOK} /></Block>
+      <Block n={5} title="Props"><Props src="../components/icons/IconFilter.d.ts" /></Block>
+
+      <Block n={6} title="Do / Don't">
+        <DoDont
+          doNode={<Surface><Pressable label="Filters, 3 on" pressed style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', height: 'var(--h-filter-chip)', padding: `0 var(--space-8)`, borderRadius: 'var(--radius-full)', background: 'var(--color-selected)', boxShadow: '0 0 0 var(--border-1) var(--color-bronze)' }}><IconFilter stroke="var(--color-bronze-deep)" /><span style={{ font: 'var(--type-caption-font)', color: 'var(--color-bronze-deep)' }}>3</span></Pressable></Surface>}
+          doCaption="The glyph carries the door and the figure carries the state. An accessible name says both, because a screen reader cannot see either."
+          dontNode={<Surface><Pressable label="Filters" style={{ display: 'flex', alignItems: 'center', height: 'var(--h-filter-chip)', padding: `0 var(--space-8)`, borderRadius: 'var(--radius-full)', background: 'var(--color-selected)', boxShadow: '0 0 0 var(--border-1) var(--color-bronze)' }}><IconFilter stroke="var(--color-bronze-deep)" /></Pressable></Surface>}
+          dontCaption="Selected, with no count. The ring says something is on and refuses to say what or how much — which is the tap the count exists to save." />
+      </Block>
+
+      <Block n={7} title="Motion">
+        <Motion rows={[
+          { name: 'None', property: 'The glyph does not animate. A filter icon that spins or tilts on open is motion spent on the door rather than on what is behind it', duration: 'none', reduced: 'Unchanged.' },
+        ]} />
+      </Block>
+    </PageShell>
+  );
+}
+mountPage(App);
+</script></body></html>
