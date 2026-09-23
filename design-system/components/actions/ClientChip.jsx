@@ -4,10 +4,17 @@ import React from 'react';
    composer. One mechanism, two entry points, and typing a name resolves to the same bound state.
    Removable by definition: a binding the advisor cannot undo in place is a trap. The ✕ carries a 44pt
    target even though the chip itself is 28px tall. */
-export function ClientChip({ name, initial, onRemove, disabled = false }) {
+export function ClientChip({ name, initial, avatar, onRemove, disabled = false }) {
   return (
     <span style={{ display: 'inline-flex', height: 'var(--h-chip-sm)', maxWidth: 200, alignItems: 'center', gap: 'var(--space-6)', borderRadius: 'var(--radius-full)', background: 'var(--color-chip)', boxShadow: '0 0 0 1px var(--color-line)', padding: onRemove ? '0 2px 0 4px' : '0 10px 0 4px', boxSizing: 'border-box', opacity: disabled ? 0.4 : 1 }}>
-      <span style={{ display: 'flex', width: 20, height: 20, flexShrink: 0, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', background: 'var(--surface-avatar)', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-10)', color: 'var(--color-bronze-deep)' }}>{initial || (name || '?').trim().charAt(0).toUpperCase()}</span>
+      {/* AN AVATAR IF THE CALLER HAS ONE, THE INITIAL IF NOT. The initial is the honest default —
+          it is derived from the name and cannot be wrong about the person. `avatar` exists because a
+          list of eight clients that are all a bronze disc with a letter is a list the eye cannot
+          hold, and the fund explorer has drawn illustrations for exactly that. It is clipped to the
+          same 20pt disc either way, so a row of chips keeps one rhythm whichever it is given. */}
+      <span style={{ display: 'flex', width: 20, height: 20, flexShrink: 0, alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-full)', overflow: 'hidden', background: 'var(--surface-avatar)', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-bold)', fontSize: 'var(--text-10)', color: 'var(--color-bronze-deep)' }}>
+        {avatar || initial || (name || '?').trim().charAt(0).toUpperCase()}
+      </span>
       <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', fontWeight: 'var(--weight-medium)', fontSize: 'var(--text-12)', lineHeight: 'var(--leading-16)', color: 'var(--color-ink)' }}>{name}</span>
       {onRemove && (
         <button type="button" onClick={onRemove} disabled={disabled} aria-label={`Unbind ${name}`}

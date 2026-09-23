@@ -52,6 +52,47 @@ const ART = {
   Commodity: './art/commodity.webp',
   'REITs / InvITs': './art/property.webp',
 };
+/* THE CLIENTS, AS PEOPLE RATHER THAN AS LETTERS. Eight bronze discs each carrying one capital is a
+   list the eye cannot hold — the owner asked for avatars that vary by age and gender, and these are
+   eight flat mid-century illustrations in this product's own palette: a young man, an older woman
+   with grey hair, a woman in a dupatta, a man in a turban, someone in glasses. No facial features
+   beyond an accessory, so none of them is a portrait of anybody.
+
+   ASSIGNED BY HASH, NOT BY GUESS. Nothing in the book records a client's age or gender and inventing
+   one would be the screen asserting a fact about a real person it does not have. A stable hash of the
+   name picks the illustration: the same client is always the same face, and the face means nothing. */
+/* TWO DATA SETS, ONE INSTRUMENT, AND NO SHARED KEY. `holdersOf` answers "who holds this" from the
+   advisor's BOOK, whose funds are keyed `ppfas-flexi`; the catalogue keys the same fund `F00000PDT6`.
+   Passing a catalogue id straight in returned an empty list every single time, so the clients section
+   could never once have fired — a whole block of the page that looked implemented and was dead.
+
+   They do overlap, by NAME: the book's "Quant Small Cap" is the catalogue's "Quant Small Cap Fund
+   Growth", and "Motilal Oswal Midcap" is "Motilal Oswal Midcap Direct Growth". So the bridge is a
+   normalised name — plan and share-class words stripped from both sides, then one containing the
+   other. Where no book fund matches, the answer is honestly none. */
+const PLAN_WORDS = /\b(direct|regular|plan|growth|option|idcw|dividend|fund|scheme)\b/g;
+const normName = (x) => String(x || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ')
+  .replace(PLAN_WORDS, ' ').replace(/\s+/g, ' ').trim();
+function bookFundFor(inst) {
+  const a = normName(inst.name);
+  if (!a) return null;
+  return (typeof FUNDS !== 'undefined' ? FUNDS : []).find((f) => {
+    const b = normName(f.name);
+    return b && (a === b || a.includes(b) || b.includes(a));
+  }) || null;
+}
+const clientsFor = (inst) => { const f = bookFundFor(inst); return f ? holdersOf(f.id) : []; };
+
+const AVATARS = ['m-young', 'f-old', 'f-mid', 'm-mid', 'm-turban', 'f-young', 'm-glasses', 'm-old'];
+function avatarFor(name) {
+  let h = 0;
+  for (let i = 0; i < String(name).length; i += 1) h = (h * 31 + String(name).charCodeAt(i)) % 997;
+  return `./art/avatars/${AVATARS[h % AVATARS.length]}.webp`;
+}
+function ClientFace({ name, size = 20 }) {
+  return <img src={avatarFor(name)} alt="" width={size} height={size} style={{ display: 'block', objectFit: 'cover' }} />;
+}
+
 function AssetArt({ asset, size = 62 }) {
   const src = ART[asset];
   if (!src) return null;
@@ -254,7 +295,7 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
 
   const nav = rebase(p.nav);
   const bench = rebase(p.bench);
-  const held = holdersOf(i.id) || [];
+  const held = clientsFor(i) || [];
 
   const lenses = [];
   if (p.sector) lenses.push({ key: 'sector', label: 'Sector' });
@@ -339,9 +380,14 @@ function OnePager({ i, onAct, onClose, shortlisted, amount, onAmount }) {
         <StepBlock title="On file" open={fold === 'file'} onToggle={f('file')}
           summary={held.length ? `${held.length} of your clients hold this` : `${p.pending.length} fields not on file`}>
           {held.length > 0 && (
-            <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
-              {`${held.length} of your clients already hold this — ${held.join(' · ')}.`}
-            </p>
+            <>
+              <p style={{ margin: 0, font: 'var(--type-body-font)', color: 'var(--color-ink)' }}>
+                {`${held.length} of your clients already hold this.`}
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-6)', marginTop: 'var(--space-8)' }}>
+                {held.map((n) => <ClientChip key={n} name={n} avatar={<ClientFace name={n} />} />)}
+              </div>
+            </>
           )}
           {p.pending && (
             <div style={{ marginTop: held.length ? 'var(--space-12)' : 0 }}>
@@ -1345,6 +1391,7 @@ function App_V1() {
         sub="The owner's ruling, and the reason nothing here calls a router. The card grows into its page and the list stays where it was; closing it puts the list back exactly as it was left.">
         <StateRow>
           <State label="OPEN IN PLACE" note="Narration, the rebased curve against its benchmark, the metrics with their peers, what it holds, and the options — all inside the card."><Funnel startAssets={['Equity']} startFamilies={['mutual_fund']} startCats={['mutual_fund:large_cap']} startOpen={0} startFundId="F00000PDT6" /></State>
+          <State label="ONE THE BOOK ALREADY KNOWS" note="The catalogue and the advisor's book have no shared key — the book calls this fund `quant-small` and the catalogue calls it F0GBR06SGW — so the clients block could never once have fired. Bridged by name, it can: R. Sharma holds this one, with a face rather than a letter."><Funnel startAssets={['Equity']} startFamilies={['mutual_fund']} startCats={['mutual_fund:small_cap']} startOpen={0} startFundId="F0GBR06SGW" /></State>
           <State label="A DIFFERENT KIND OF THING" tone="under" note="A bond. No return, no series, no AUM — a coupon, a maturity and a face value. Same card, different facts, and not one em dash."><Funnel startAssets={['Debt']} startFamilies={['bonds']} startOpen={0} /></State>
         </StateRow>
       </Section>
